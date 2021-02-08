@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -82,23 +81,35 @@ public class SubCommand_Create implements CommandProcesser {
         }
 
         final Player p = (Player) sender;
-        ItemStack item = p.getInventory().getItemInMainHand();
-        String itemName = Util.mergeArgs(cmdArg);
+        ItemStack item;
+        final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
 
-        if (Util.isAir(item.getType())) {
-            if (cmdArg.length > 0) {
-                Material material = matchMaterial(itemName);
-                if (material == null) {
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("item-not-exist", sender, itemName));
-                    return;
-                }
-            } else {
+        if (cmdArg.length == 0) {
+            item = p.getInventory().getItemInMainHand();
+            if (Util.isAir(item.getType())) {
                 MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-anythings-in-your-hand", sender));
                 return;
             }
+            MsgUtil.sendMessage(p,
+                    MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1)));
+            return;
+        }
+        if (cmdArg.length == 1) {
+            item = p.getInventory().getItemInMainHand();
+            if (Util.isAir(item.getType())) {
+                MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-anythings-in-your-hand", sender));
+                return;
+            }
+        } else {
+            Material material = matchMaterial(cmdArg[1]);
+            if (material == null) {
+                MsgUtil.sendMessage(sender, MsgUtil.getMessage("item-not-exist", sender, cmdArg[1]));
+                return;
+            }
+            item = new ItemStack(material, 1);
         }
 
-        final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
+        String price = cmdArg[0];
 
         while (bIt.hasNext()) {
             final Block b = bIt.next();
@@ -146,22 +157,8 @@ public class SubCommand_Create implements CommandProcesser {
 
             // Send creation menu.
             plugin.getShopManager().getActions().put(p.getUniqueId(),
-                    new Info(b.getLocation(),
-                            ShopAction.CREATE,
-                            item,
-                            b.getRelative(p.getFacing().getOppositeFace())));
-
-            if (cmdArg.length > 0) {
-                if (StringUtils.isNumeric(cmdArg[0])) {
-                    // /qs create 100
-                    plugin.getShopManager().handleChat(p, cmdArg[0]);
-                } else {
-                    // /qs create item 100
-                    plugin.getShopManager().handleChat(p, cmdArg[1]);
-                }
-                return;
-            }
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1)));
+                    new Info(b.getLocation(), ShopAction.CREATE, item, b.getRelative(p.getFacing().getOppositeFace())));
+            plugin.getShopManager().handleChat(p, price);
             return;
         }
     }
