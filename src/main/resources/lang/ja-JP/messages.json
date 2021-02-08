@@ -138,7 +138,7 @@
     "no-amount-given": "&c個数が入力されていません。&a/qs refill <amount>&c を使用してください",
     "now-debuging": "&a開発者モードに切り替え成功、QuickShopをリロードしています。",
     "now-nolonger-debuging": "&a開発者モードを無効化しました。QuickShopをリロードしています。",
-    "wrong-args": "&c無効な引数。コマンドを&l/qs help &rで確認して下さい",
+    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto preview the list of commands.",
     "description": {
       "title": "&aQuickShop ヘルプ",
       "unlimited": "&eショップに無制限の在庫を与えます",

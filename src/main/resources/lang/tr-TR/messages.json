@@ -138,7 +138,7 @@
     "no-amount-given": "&cMiktar sağlanmadı. &a/qs refill <amount>&c komudunu kullan.",
     "now-debuging": "&aGeliştirici modu başarıyla aktive edildi. QuickShop yeniden yükleniyor...",
     "now-nolonger-debuging": "&aGeliştirici modu başarıyla devre dışı bırakıldı. QuickShop yeniden yükleniyor...",
-    "wrong-args": "&cGeçersiz argümanları. Komutların listesini önizlemek için &l/qs help &rkomudunu kullanın.",
+    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto preview the list of commands.",
     "description": {
       "title": "&aQuickShop yardım",
       "unlimited": "&eBir markete sınırsız stok sağlar.",
