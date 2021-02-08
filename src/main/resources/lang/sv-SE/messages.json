@@ -138,7 +138,7 @@
     "no-amount-given": "&cInget belopp angivet. Använd &a/qs refill <antal>&c",
     "now-debuging": "&Framgångsrikt aktiverat utvecklarläge. Laddar om QuickShop...",
     "now-nolonger-debuging": "&aFramgångsrikt inaktiverat utvecklarläge. Laddar om QuickShop...",
-    "wrong-args": "&cOgiltiga argument. Använd &l/qs help &rför att förhandsgranska listan över kommandon.",
+    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto preview the list of commands.",
     "description": {
       "title": "&aQuickShop-hjälp",
       "unlimited": "&eGer en butik obegränsat lager.",
