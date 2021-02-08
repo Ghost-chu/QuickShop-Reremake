@@ -1733,7 +1733,5 @@ public class QuickShop extends JavaPlugin {
         } catch (IOException ioe) {
             getLogger().warning("Error when creating the example config file: " + ioe.getMessage());
         }
-
-
     }
 }

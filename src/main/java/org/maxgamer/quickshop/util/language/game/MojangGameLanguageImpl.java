@@ -23,7 +23,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bukkit.Material;
@@ -60,16 +59,20 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
     @Nullable
     private final JsonObject lang;
 
-    private final Lock lock = new ReentrantLock();
-    private final Condition downloadCondition = lock.newCondition();
+    private final static Lock lock = new ReentrantLock();
+    private static final Condition downloadCondition = lock.newCondition();
 
     @SneakyThrows
     public MojangGameLanguageImpl(@NotNull QuickShop plugin, @NotNull String languageCode) {
         super(plugin);
         this.plugin = plugin;
-        languageCode = languageCode.replace("-", "_");
-        final GameLanguageLoadThread loadThread = new GameLanguageLoadThread(plugin, languageCode, downloadCondition);
-
+        if ("default".equalsIgnoreCase(languageCode)) {
+            Locale locale = Locale.getDefault();
+            languageCode = locale.getLanguage() + "_" + locale.getCountry();
+        }
+        languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
+        lock.lock();
+        final GameLanguageLoadThread loadThread = new GameLanguageLoadThread(plugin, languageCode);
         loadThread.start();
         boolean timeout = downloadCondition.await(20, TimeUnit.SECONDS);
         if (timeout) {
@@ -77,6 +80,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
             plugin.getLogger().info("No longer waiting file downloading because it now timed out, now downloading in background, please reset itemi18n.yml, potioni18n.yml and enchi18n.yml after download completed.");
         }
         this.lang = loadThread.getLang(); // Get the Lang whatever thread running or died.
+        lock.unlock();
 
     }
 
@@ -163,159 +167,152 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         }
         return jsonElement.getAsString();
     }
-}
 
-@Getter
-@Setter
-class GameLanguageLoadThread extends Thread {
-    private final Condition condition;
-    private JsonObject lang;
+    @Getter
+    static class GameLanguageLoadThread extends Thread {
+        private final String languageCode;
+        private final QuickShop plugin;
+        private JsonObject lang;
+        private boolean isLatest = false; //Does assets is latest?
+        private boolean isUpdated = false; //Did we tried update assets?
 
-    private String languageCode;
+        public GameLanguageLoadThread(@NotNull QuickShop plugin, @NotNull String languageCode) {
+            this.plugin = plugin;
+            this.languageCode = languageCode;
+        }
 
-    private boolean isLatest = false; //Does assets is latest?
+        public void run() {
+            lock.lock();
+            execute();
+            downloadCondition.signalAll();
+            lock.unlock();
+        }
 
-    private boolean isUpdated = false; //Did we tried update assets?
-
-    private final QuickShop plugin;
-
-    public GameLanguageLoadThread(@NotNull QuickShop plugin, @NotNull String languageCode, @NotNull Condition condition) {
-        this.plugin = plugin;
-        this.languageCode = languageCode;
-        this.condition = condition;
-    }
-
-    public void run() {
-        execute();
-        condition.signal();
-    }
-
-    public void execute() {
-        try {
-            File cacheFile = new File(Util.getCacheFolder(), "mojanglang.cache"); // Load cache file
-            if (!cacheFile.exists()) {
-                //noinspection ResultOfMethodCallIgnored
-                cacheFile.createNewFile();
-            }
-            YamlConfiguration yamlConfiguration = new YamlConfiguration();
-            yamlConfiguration.load(cacheFile);
-            /* The cache data, if it all matches, we doesn't need connect to internet to download files again. */
-            //String cacheVersion = yamlConfiguration.getString("ver");
-            String cacheSha1 = yamlConfiguration.getString("sha1", "ERROR");
-            String cacheCode = yamlConfiguration.getString("lang");
-            /* If language name is default, use computer language */
-            if ("default".equals(languageCode)) {
-                Locale locale = Locale.getDefault();
-                languageCode = locale.getLanguage() + "_" + locale.getCountry();
-            }
-            if (languageCode.equalsIgnoreCase("en_us")) {
-                isLatest = true;
-                return; //Ignore english language
-            }
-            File cachedFile = new File(Util.getCacheFolder(), cacheSha1);
-            if (languageCode.equals(cacheCode)) { //Language same
-                if (cachedFile.exists()) { //File exists
-                    if (DigestUtils.sha1Hex(new FileInputStream(cachedFile)).equals(cacheSha1)) { //Check if file broken
-                        isLatest = true;
-                        try (FileReader reader = new FileReader(cachedFile)) {
-                            lang = new JsonParser().parse(reader).getAsJsonObject();
-                            return; //We doesn't need to update it
-                        } catch (Exception e) {
-                            //Keep it empty so continue to update files
+        public void execute() {
+            try {
+                File cacheFile = new File(Util.getCacheFolder(), "mojanglang.cache"); // Load cache file
+                if (!cacheFile.exists()) {
+                    //noinspection ResultOfMethodCallIgnored
+                    cacheFile.createNewFile();
+                }
+                YamlConfiguration yamlConfiguration = new YamlConfiguration();
+                yamlConfiguration.load(cacheFile);
+                /* The cache data, if it all matches, we doesn't need connect to internet to download files again. */
+                //String cacheVersion = yamlConfiguration.getString("ver");
+                String cacheSha1 = yamlConfiguration.getString("sha1", "ERROR");
+                String cacheCode = yamlConfiguration.getString("lang");
+                /* If language name is default, use computer language */
+                if (languageCode.equalsIgnoreCase("en-us")) {
+                    isLatest = true;
+                    return; //Ignore english language
+                }
+                File cachedFile = new File(Util.getCacheFolder(), cacheSha1);
+                if (languageCode.equals(cacheCode)) { //Language same
+                    if (cachedFile.exists()) { //File exists
+                        if (DigestUtils.sha1Hex(new FileInputStream(cachedFile)).equals(cacheSha1)) { //Check if file broken
+                            isLatest = true;
+                            try (FileReader reader = new FileReader(cachedFile)) {
+                                lang = new JsonParser().parse(reader).getAsJsonObject();
+                                return; //We doesn't need to update it
+                            } catch (Exception e) {
+                                //Keep it empty so continue to update files
+                            }
                         }
                     }
                 }
-            }
 
-            //UPDATE
-            isUpdated = true;
+                //UPDATE
+                isUpdated = true;
 
-            plugin.getLogger().info("Loading required files from Mojang API, Please allow up to 20 secs.");
+                plugin.getLogger().info("Loading required files from Mojang API, Please allow up to 20 secs.");
 
-            //Download new things from Mojang launcher meta site
-            MojangAPI mojangAPI = new MojangAPI();
-            MojangAPI.AssetsAPI assetsAPI = mojangAPI.getAssetsAPI(ReflectFactory.getServerVersion());
-            if (!assetsAPI.isAvailable()) { //This version no meta can be found, bug?
-                Util.debugLog("AssetsAPI returns not available, This may caused by Mojang servers down or connection issue.");
-                plugin.getLogger().warning("Failed to update game assets from MojangAPI server, This may caused by Mojang servers down, connection issue or invalid language code.");
-                return;
-            }
-            //Download AssetsIndex
-            Optional<MojangAPI.AssetsFileData> assetsFileData = assetsAPI.getGameAssetsFile();
-            if (!assetsFileData.isPresent()) {
-                Util.debugLog("AssetsAPI returns nothing about required game asset file, This may caused by Mojang servers down or connection issue.");
-                plugin.getLogger().warning("Failed to update game assets from MojangAPI server, This may caused by Mojang servers down, connection issue or invalid language code.");
-                return;
-            }
-            Util.debugLog(MsgUtil.fillArgs("Assets file loaded! id:[{0}], sha1:[{1}], Content Length:[{2}]",
-                    assetsFileData.get().getId(),
-                    assetsFileData.get().getSha1(),
-                    String.valueOf(assetsFileData.get().getContent().length())));
-
-
-            String indexSha1Hex = DigestUtils.sha1Hex(assetsFileData.get().getContent());
-
-            if (!assetsFileData.get().getSha1().equals(indexSha1Hex)) {
-                Util.debugLog(MsgUtil.fillArgs("File hashing equals failed! excepted:[{0}], file:[{1}]",
+                //Download new things from Mojang launcher meta site
+                MojangAPI mojangAPI = new MojangAPI();
+                MojangAPI.AssetsAPI assetsAPI = mojangAPI.getAssetsAPI(ReflectFactory.getServerVersion());
+                if (!assetsAPI.isAvailable()) { //This version no meta can be found, bug?
+                    Util.debugLog("AssetsAPI returns not available, This may caused by Mojang servers down or connection issue.");
+                    plugin.getLogger().warning("Failed to update game assets from MojangAPI server, This may caused by Mojang servers down, connection issue or invalid language code.");
+                    return;
+                }
+                //Download AssetsIndex
+                Optional<MojangAPI.AssetsFileData> assetsFileData = assetsAPI.getGameAssetsFile();
+                if (!assetsFileData.isPresent()) {
+                    Util.debugLog("AssetsAPI returns nothing about required game asset file, This may caused by Mojang servers down or connection issue.");
+                    plugin.getLogger().warning("Failed to update game assets from MojangAPI server, This may caused by Mojang servers down, connection issue or invalid language code.");
+                    return;
+                }
+                Util.debugLog(MsgUtil.fillArgs("Assets file loaded! id:[{0}], sha1:[{1}], Content Length:[{2}]",
+                        assetsFileData.get().getId(),
                         assetsFileData.get().getSha1(),
-                        indexSha1Hex));
-                plugin.getLogger().warning("Failed to update game assets from MojangAPI server because the file seems invalid, please try again later.");
-                return;
-            }
+                        String.valueOf(assetsFileData.get().getContent().length())));
 
-            try {
-                Files.write(new File(Util.getCacheFolder(), indexSha1Hex).toPath(), assetsFileData.get().getContent().getBytes(StandardCharsets.UTF_8));
-            } catch (IOException ioException) {
-                plugin.getLogger().log(Level.WARNING, "Failed save file to local drive, game language system caches will stop work, we will try download again in next reboot. skipping...", ioException);
-            }
 
-            //Download language json
+                String indexSha1Hex = DigestUtils.sha1Hex(assetsFileData.get().getContent());
 
-            JsonElement indexJson = new JsonParser().parse(assetsFileData.get().getContent());
-            if (!indexJson.isJsonObject()) {
-                plugin.getLogger().warning("Failed to update game assets from MojangAPI server because the json structure seems invalid, please try again later.");
-                return;
-            }
-            if (!indexJson.getAsJsonObject().get("objects").isJsonObject()) {
-                plugin.getLogger().warning("Failed to update game assets from MojangAPI server because the json structure about objects seems invalid, please try again later.");
-                return;
-            }
-            JsonElement langElement = indexJson.getAsJsonObject().get("objects").getAsJsonObject().get("minecraft/lang/" + languageCode + ".json");
-            if (langElement == null) {
-                plugin.getLogger().warning("Failed to update game assets from MojangAPI server because the language code " + languageCode + " not supported by Minecraft.");
-                return;
-            }
+                if (!assetsFileData.get().getSha1().equals(indexSha1Hex)) {
+                    Util.debugLog(MsgUtil.fillArgs("File hashing equals failed! excepted:[{0}], file:[{1}]",
+                            assetsFileData.get().getSha1(),
+                            indexSha1Hex));
+                    plugin.getLogger().warning("Failed to update game assets from MojangAPI server because the file seems invalid, please try again later.");
+                    return;
+                }
 
-            String langHash = langElement.getAsJsonObject().get("hash").getAsString();
-            Optional<String> langContent = mojangAPI.getResourcesAPI().get(langHash);
-            if (!langContent.isPresent()) {
-                plugin.getLogger().warning("Failed to update game assets from MojangAPI server because network connection issue.");
-                return;
-            }
+                try {
+                    Files.write(new File(Util.getCacheFolder(), indexSha1Hex).toPath(), assetsFileData.get().getContent().getBytes(StandardCharsets.UTF_8));
+                } catch (IOException ioException) {
+                    plugin.getLogger().log(Level.WARNING, "Failed save file to local drive, game language system caches will stop work, we will try download again in next reboot. skipping...", ioException);
+                }
 
-            try {
-                Files.write(new File(Util.getCacheFolder(), langHash).toPath(), langContent.get().getBytes(StandardCharsets.UTF_8));
-            } catch (IOException ioException) {
-                plugin.getLogger().log(Level.WARNING, "Failed save file to local drive, game language system caches will stop work, we will try download again in next reboot. skipping...", ioException);
-            }
+                //Download language json
 
-            //Save the caches
-            lang = new JsonParser().parse(langContent.get()).getAsJsonObject();
-            yamlConfiguration.set("ver", ReflectFactory.getServerVersion());
-            yamlConfiguration.set("sha1", langHash);
-            yamlConfiguration.set("lang", languageCode);
-            yamlConfiguration.save(cacheFile);
-            isLatest = true;
-            Util.debugLog("Successfully update game assets.");
-            plugin.getLogger().info("Success! The game assets now up-to-date :)");
-            plugin.getLogger().info("Now you can execute [/qs reset lang] command to regenerate files with localized.");
-        } catch (Exception e) {
-            plugin.getSentryErrorReporter().ignoreThrow();
-            plugin.getLogger().log(Level.WARNING, "Something going wrong when loading game translation assets", e);
+                JsonElement indexJson = new JsonParser().parse(assetsFileData.get().getContent());
+                if (!indexJson.isJsonObject()) {
+                    plugin.getLogger().warning("Failed to update game assets from MojangAPI server because the json structure seems invalid, please try again later.");
+                    return;
+                }
+                if (!indexJson.getAsJsonObject().get("objects").isJsonObject()) {
+                    plugin.getLogger().warning("Failed to update game assets from MojangAPI server because the json structure about objects seems invalid, please try again later.");
+                    return;
+                }
+                JsonElement langElement = indexJson.getAsJsonObject().get("objects").getAsJsonObject().get("minecraft/lang/" + languageCode + ".json");
+                if (langElement == null) {
+                    plugin.getLogger().warning("Failed to update game assets from MojangAPI server because the language code " + languageCode + " not supported by Minecraft.");
+                    return;
+                }
+
+                String langHash = langElement.getAsJsonObject().get("hash").getAsString();
+                Optional<String> langContent = mojangAPI.getResourcesAPI().get(langHash);
+                if (!langContent.isPresent()) {
+                    plugin.getLogger().warning("Failed to update game assets from MojangAPI server because network connection issue.");
+                    return;
+                }
+
+                try {
+                    Files.write(new File(Util.getCacheFolder(), langHash).toPath(), langContent.get().getBytes(StandardCharsets.UTF_8));
+                } catch (IOException ioException) {
+                    plugin.getLogger().log(Level.WARNING, "Failed save file to local drive, game language system caches will stop work, we will try download again in next reboot. skipping...", ioException);
+                }
+
+                //Save the caches
+                lang = new JsonParser().parse(langContent.get()).getAsJsonObject();
+                yamlConfiguration.set("ver", ReflectFactory.getServerVersion());
+                yamlConfiguration.set("sha1", langHash);
+                yamlConfiguration.set("lang", languageCode);
+                yamlConfiguration.save(cacheFile);
+                isLatest = true;
+                Util.debugLog("Successfully update game assets.");
+                plugin.getLogger().info("Success! The game assets now up-to-date :)");
+                plugin.getLogger().info("Now you can execute [/qs reset lang] command to regenerate files with localized.");
+            } catch (Exception e) {
+                plugin.getSentryErrorReporter().ignoreThrow();
+                plugin.getLogger().log(Level.WARNING, "Something going wrong when loading game translation assets", e);
+            }
+        }
+
+        public boolean isLatest() {
+            return isLatest;
         }
     }
-
-    public boolean isLatest() {
-        return isLatest;
-    }
 }
+
+
