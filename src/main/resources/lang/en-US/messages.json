@@ -1,5 +1,5 @@
 {
-  "file-test": "This is file test text, We use this for testing if messages.json is broken. You can fill any easter egg you like in there :)",
+  "file-test": "This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)",
   "translation-author": "Translator: Ghost_chu, Andre_601",
   "translation-version": "Support Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
@@ -32,7 +32,7 @@
   "you-cant-afford-to-buy": "&cIt costs {0}, but you only have {1}",
   "negative-amount": "&cYou can't trade negative amounts",
   "not-a-number": "&cYou can only input a number, your input was {0}.",
-  "exceeded-maximum": "&cThe value has exceeded the maximum java value.",
+  "exceeded-maximum": "&cThe value exceeded the maximum value in Java.",
   "not-a-integer": "&cYou must input a number, your input was {0}.",
   "player-bought-from-your-store": "&c{0} purchased {1} {2} from your shop, and you earned {3}.",
   "shop-out-of-stock": "&5Your shop at {0}, {1}, {2} has run out of {3}!",
