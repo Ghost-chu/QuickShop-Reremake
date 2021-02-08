@@ -3,7 +3,7 @@
   "translation-version": "지원 버전: Reremake",
   "translation-contributors": "기여자: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "언어 지역: 한국어 (Ko)",
-  "language-version": "48",
+  "language-version": "49",
   "not-looking-at-shop": "&c퀵샵을 찾을수 없습니다. 상점을 보고있어야만합니다!",
   "no-anythings-in-your-hand": "&c당신의 손에 아무것도 없습니다.",
   "no-permission": "&c이것을 하기위해선 권한이 필요합니다.",
@@ -220,7 +220,8 @@
   "tabcomplete": {
     "price": "[가격]",
     "range": "[범위]",
-    "amount": "[수량]"
+    "amount": "[수량]",
+    "currency": "[currency name]"
   },
   "updatenotify": {
     "buttontitle": "[지금 업데이트]",
@@ -292,5 +293,6 @@
   "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
   "currency-set": "&aSuccessfully set shop currency to {0}.",
   "currency-unset": "&aSuccessfully remove shop currency setup, will use default now.",
-  "currency-not-support": "&c이코노미 플러그인은 다중 통화 기능을 지원하지 않습니다."
+  "currency-not-support": "&c이코노미 플러그인은 다중 통화 기능을 지원하지 않습니다.",
+  "item-not-exist": "&cThe item &e{0} &cnot exists, please check your spelling."
 }
