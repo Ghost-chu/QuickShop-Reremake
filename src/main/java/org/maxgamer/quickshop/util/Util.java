@@ -1003,7 +1003,6 @@ public class Util {
      * @param b The chest to check.
      * @return the block which is also a chest and connected to b.
      */
-    @Nullable
     public static Block getSecondHalf(@NotNull Block b) {
         BlockState state = b.getState();
         if (!(state instanceof Chest)) {
@@ -1013,12 +1012,10 @@ public class Util {
         InventoryHolder chestHolder = oneSideOfChest.getInventory().getHolder();
         if (chestHolder instanceof DoubleChest) {
             DoubleChest doubleChest = (DoubleChest) chestHolder;
-            InventoryHolder left = doubleChest.getLeftSide();
-            InventoryHolder right = doubleChest.getRightSide();
-            Chest leftC = (Chest) left;
-            Chest rightC = (Chest) right;
+            Chest leftC = (Chest) doubleChest.getLeftSide();
+            Chest rightC = (Chest) doubleChest.getRightSide();
             if (equalsBlockStateLocation(oneSideOfChest.getLocation(), Objects.requireNonNull(rightC).getLocation())) {
-                return Objects.requireNonNull(leftC).getBlock();
+                return leftC.getBlock();
             }
             if (equalsBlockStateLocation(oneSideOfChest.getLocation(), Objects.requireNonNull(leftC).getLocation())) {
                 return rightC.getBlock();

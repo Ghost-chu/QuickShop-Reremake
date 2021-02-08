@@ -35,9 +35,6 @@ import org.maxgamer.quickshop.QuickShop;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-/**
- * @deprecated Unstable
- */
 public class Economy_TNE implements EconomyCore {
 
     private final QuickShop plugin;
@@ -70,7 +67,7 @@ public class Economy_TNE implements EconomyCore {
                 return apiCurrency;
             }
         }
-        return this.api.getCurrencies().iterator().next(); // Want to get some default currency available in thi world
+        return this.api.getDefault(world.getName()); // Want to get some default currency available in thi world
     }
 
     /**
@@ -101,10 +98,10 @@ public class Economy_TNE implements EconomyCore {
             return false;
         }
         BigDecimal decimal = BigDecimal.valueOf(amount);
-        if (!this.api.canAddHoldings(trader.getName(), decimal)) {
+        if (!this.api.canAddHoldings(trader.getUniqueId().toString(), decimal, getCurrency(world, currency), world.getName())) {
             return false;
         }
-        return this.api.addHoldings(trader.getName(), decimal, getCurrency(world, currency));
+        return this.api.addHoldings(trader.getUniqueId().toString(), decimal, getCurrency(world, currency), world.getName());
     }
 
 
@@ -183,10 +180,10 @@ public class Economy_TNE implements EconomyCore {
             return false;
         }
         BigDecimal decimal = BigDecimal.valueOf(amount);
-        if (!this.api.canRemoveHoldings(trader.getName(), decimal, getCurrency(world, currency))) {
+        if (!this.api.canRemoveHoldings(trader.getUniqueId().toString(), decimal, getCurrency(world, currency), world.getName())) {
             return false;
         }
-        return this.api.removeHoldings(trader.getName(), decimal);
+        return this.api.removeHoldings(trader.getUniqueId().toString(), decimal, getCurrency(world, currency), world.getName());
     }
 
     /**
@@ -222,7 +219,7 @@ public class Economy_TNE implements EconomyCore {
 
     @Override
     public @NotNull String getName() {
-        return "BuiltIn-TNE-Unstable";
+        return "BuiltIn-TNE";
     }
 
     @Override

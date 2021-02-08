@@ -138,7 +138,7 @@
     "no-amount-given": "&c未指定数量。使用方式为 &a/qs refill <数量>&c",
     "now-debuging": "&a成功切换到了开发者模式，插件重载中...",
     "now-nolonger-debuging": "&a成功切换到了生产模式，插件重载中...",
-    "wrong-args": "&c参数无效。请使用 &l/qs help&r查看帮助。",
+    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto preview the list of commands.",
     "description": {
       "title": "&aQuickShop 帮助",
       "unlimited": "&e将商店设置为无限库存。",

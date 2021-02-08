@@ -1,5 +1,5 @@
 {
-  "file-test": "This is file test text, We use this for testing if messages.json is broken. You can fill any easter egg you like in there :)",
+  "file-test": "To jest testowy plik tekstowy, używamy go do testowania, jeśli plik messages.json jest uszkodzony. Możesz wypełnić dowolnymi easter egg'ami to miejsce :)",
   "translation-author": "Tłumacz: Ghost_chu, Andre_601",
   "translation-version": "Wspierana wersja: Reremake",
   "translation-contributors": "Współtwórcy: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken i Andre_601",
@@ -138,7 +138,7 @@
     "no-amount-given": "&cNie podano ilości. Użyj &a/qs refill <amount>&c",
     "now-debuging": "&aPomyślnie przełączono się do trybu developerskiego. Przeładuj QuickShop...",
     "now-nolonger-debuging": "&aPomyślnie przełączono się do trybu developerskiego. Przeładuj QuickShop...",
-    "wrong-args": "&cNieprawidłowe argumenty. Użyj &l/qs help &raby wyświetlić podgląd listy poleceń.",
+    "wrong-args": "&cNieprawidłowe argumenty. Użyj &l/qs help &cdo podglądu listy poleceń.",
     "description": {
       "title": "&aPomoc Sklepu",
       "unlimited": "&eDaje sklepowi nieograniczone zapasy.",
@@ -169,7 +169,7 @@
       "removeall": "&eUsuń WSZYSTKIE sklepy określonego gracza",
       "transfer": "&ePrzenieś czyjeś WSZYSTKIE sklepy do innych",
       "removeworld": "&eUsuń WSZYSTKIE sklepy w określonym świecie",
-      "currency": "&eSet or remove the currency setting on shop"
+      "currency": "&eUstaw lub usuń ustawienia waluty w sklepie"
     }
   },
   "signs": {
@@ -205,8 +205,8 @@
     "stack-hover": "&eKliknij, aby ustawić ilość produktu na stack. Ustaw na 1 dla normalnego zachowania.",
     "item": "&aPrzedmiot sklepu: {0} &e[&d&lZmień&e]",
     "item-hover": "&eKliknij, aby zmienić przedmiot sklepu",
-    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
-    "currency-hover": "&eClick to set or remove the currency that shop using"
+    "currency": "&aWaluta: &b{0} &e[&d&lUstaw&e]",
+    "currency-hover": "&eKliknij, aby ustawić lub usunąć walutę używaną w sklepie"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -222,7 +222,7 @@
     "price": "[cena]",
     "range": "[zakres]",
     "amount": "[ilość]",
-    "currency": "[currency name]",
+    "currency": "[nazwa waluty]",
     "item": "[item]"
   },
   "updatenotify": {

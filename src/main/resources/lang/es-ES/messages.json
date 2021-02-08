@@ -138,7 +138,7 @@
     "no-amount-given": "&cNo se especificó cantidad. Usa &a/qs refill <amount>&c",
     "now-debuging": "&aModo desarrollador habilitado. Recargando QuickShop...",
     "now-nolonger-debuging": "&aModo desarrollador deshabilitado. Recargando QuickShop...",
-    "wrong-args": "&cArgumentos no válidos. Usa &l/qs help &rpara previsualizar la lista de comandos.",
+    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto preview the list of commands.",
     "description": {
       "title": "&aAyuda de QuickShop",
       "unlimited": "&eDa un stock ilimitado a una tienda.",
