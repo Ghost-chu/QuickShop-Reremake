@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.util.paste;
 
+import com.github.benmanes.caffeine.cache.stats.CacheStats;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
@@ -157,6 +158,7 @@ public class Paste {
         }
         finalReport.append("\tDatabaseCore: ").append(plugin.getDatabaseManager().getDatabase().getName()).append("@").append(plugin.getDatabaseManager().getDatabase().getPlugin().getName()).append("\n");
         finalReport.append("\tGameLanguage Processor: ").append(MsgUtil.gameLanguage.getName()).append("@").append(MsgUtil.gameLanguage.getPlugin().getName()).append("\n");
+
         finalReport.append("================================================\n");
         finalReport.append("Worlds:\n");
         finalReport.append("\tTotal: ").append(Bukkit.getWorlds().size()).append("\n");
@@ -172,6 +174,8 @@ public class Paste {
                     .append("\n");
         }
         finalReport.append("\t*********************************\n"); // Add a line after last world
+
+
         finalReport.append("================================================\n");
         finalReport.append("Plugins:\n");
         finalReport
@@ -213,12 +217,36 @@ public class Paste {
             }
             finalReport.append("\n");
         }
+
+
         finalReport.append("================================================\n");
-        finalReport.append("Internal Data:\n");
-        finalReport.append("Caching Pool Enabled: ").append(plugin.getShopCache() != null).append("\n");
+        finalReport.append("Cache:\n");
+        finalReport.append("\tCache      Enabled: ").append(plugin.getShopCache() != null).append("\n");
         if (plugin.getShopCache() != null) {
-            finalReport.append("Caching Contents: ").append(plugin.getShopCache().getCachingSize()).append("\n");
+            CacheStats stats = plugin.getShopCache().getStats();
+            finalReport.append("---------------------");
+            finalReport.append("\tAvg  Load  Penalty: ").append(stats.averageLoadPenalty()).append("\n");
+            finalReport.append("\tHit           Rate: ").append(stats.hitRate()).append("\n");
+            finalReport.append("\tMiss          Rate: ").append(stats.missRate()).append("\n");
+            finalReport.append("---------------------");
+            finalReport.append("\tHit          Count: ").append(stats.hitCount()).append("\n");
+            finalReport.append("\tMiss         Count: ").append(stats.missCount()).append("\n");
+            finalReport.append("\tLoad         Count: ").append(stats.loadCount()).append("\n");
+            finalReport.append("\tLoad Success Count: ").append(stats.loadSuccessCount()).append("\n");
+            finalReport.append("---------------------");
+            finalReport.append("\tLoad Failure Rate : ").append(stats.loadFailureRate()).append("\n");
+            finalReport.append("\tLoad Failure Count: ").append(stats.loadFailureCount()).append("\n");
+            finalReport.append("\tLoad Success Count: ").append(stats.loadSuccessCount()).append("\n");
+            finalReport.append("---------------------");
+            finalReport.append("\tEviction     Count: ").append(stats.evictionCount()).append("\n");
+            finalReport.append("\tEviction    Weight: ").append(stats.evictionWeight()).append("\n");
+            finalReport.append("\tEviction     Count: ").append(stats.evictionCount()).append("\n");
+            finalReport.append("---------------------");
+            finalReport.append("\tRequest      Count: ").append(stats.requestCount()).append("\n");
+            finalReport.append("\tTotal Loading Time: ").append(stats.totalLoadTime()).append("\n");
         }
+
+
         finalReport.append("================================================\n");
         finalReport.append("Configurations:\n");
         try {
@@ -265,7 +293,7 @@ public class Paste {
                                             Util.inputStream2ByteArray(plugin.getDataFolder() + "/messages.json")),
                                     StandardCharsets.UTF_8))
                     .append("\n");
-            finalReport.append("\t*********************************\n");
+
             finalReport.append("\t*********************************\n");
             finalReport.append("\titemi18n.yml:\n");
             finalReport
@@ -277,7 +305,7 @@ public class Paste {
                                                     new File(plugin.getDataFolder(), "itemi18n.yml").getPath())),
                                     StandardCharsets.UTF_8))
                     .append("\n");
-            finalReport.append("\t*********************************\n");
+
             finalReport.append("\t*********************************\n");
             finalReport.append("\tenchi18n.yml:\n");
             finalReport
@@ -289,7 +317,7 @@ public class Paste {
                                                     new File(plugin.getDataFolder(), "enchi18n.yml").getPath())),
                                     StandardCharsets.UTF_8))
                     .append("\n");
-            finalReport.append("\t*********************************\n");
+
             finalReport.append("\t*********************************\n");
             finalReport.append("\tpotioni18n.yml:\n");
             finalReport
@@ -301,14 +329,14 @@ public class Paste {
                                                     new File(plugin.getDataFolder(), "potioni18n.yml").getPath())),
                                     StandardCharsets.UTF_8))
                     .append("\n");
-            finalReport.append("\t*********************************\n");
+
             finalReport.append("\t*********************************\n");
             finalReport.append("\tInternal Debug Log:\n");
             finalReport
                     .append("\t\t\n")
                     .append(Util.list2String(Util.getDebugLogs()).replaceAll(",", "\n"))
                     .append("\n");
-            finalReport.append("\t*********************************\n");
+
             //            try {
             //                finalReport.append("\t*********************************\n");
             //                finalReport.append("\tlatest.log:\n");
@@ -334,12 +362,12 @@ public class Paste {
                                                         new File(new File("."), "bukkit.yml").getPath())),
                                         StandardCharsets.UTF_8))
                         .append("\n");
-                finalReport.append("\t*********************************\n");
+
             } catch (Exception th) {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tbukkit.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
-                finalReport.append("\t*********************************\n");
+
             }
             try {
                 finalReport.append("\t*********************************\n");
@@ -353,12 +381,10 @@ public class Paste {
                                                         new File(new File("."), "spigot.yml").getPath())),
                                         StandardCharsets.UTF_8))
                         .append("\n");
-                finalReport.append("\t*********************************\n");
             } catch (Exception th) {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tspigot.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
-                finalReport.append("\t*********************************\n");
             }
             try {
                 finalReport.append("\t*********************************\n");
@@ -371,12 +397,10 @@ public class Paste {
                                                 Util.inputStream2ByteArray(new File(new File("."), "paper.yml").getPath())),
                                         StandardCharsets.UTF_8))
                         .append("\n");
-                finalReport.append("\t*********************************\n");
             } catch (Exception th) {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tpaper.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
-                finalReport.append("\t*********************************\n");
             }
             try {
                 finalReport.append("\t*********************************\n");
@@ -389,12 +413,10 @@ public class Paste {
                                                 Util.inputStream2ByteArray(new File(new File("."), "tuinity.yml").getPath())),
                                         StandardCharsets.UTF_8))
                         .append("\n");
-                finalReport.append("\t*********************************\n");
             } catch (Exception th) {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\ttuinity.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
-                finalReport.append("\t*********************************\n");
             }
         } catch (Exception ignored) {
             finalReport.append("\tFailed to get data\n");

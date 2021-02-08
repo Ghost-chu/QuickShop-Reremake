@@ -138,7 +138,7 @@
     "no-amount-given": "&cНе предоставлено. Используйте &a/qs пополнить <amount>&c",
     "now-debuging": "&aРежим разработчика. Перезагрузка Быстрого Магазина...",
     "now-nolonger-debuging": "&aУспешно выключен режим разработчика. Перезагрузка Быстрого магазина...",
-    "wrong-args": "&cНедопустимые аргументы. Используйте &l/qs help &rto предпросмотр списка команд.",
+    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto preview the list of commands.",
     "description": {
       "title": "&aQuickShop справка",
       "unlimited": "&eПредоставляет неограниченный запас магазина.",

@@ -138,7 +138,7 @@
     "no-amount-given": "&cMäärää ei annettu. Käytä &a/qs refill <määrä>&c",
     "now-debuging": "&aOnnistuneesti siirrytty kehittäjätilaan. QuickShop ladataan uudelleen...",
     "now-nolonger-debuging": "&aOnnistuneesti siirrytty käyttötilaan. QuickShop ladataan uudelleen...",
-    "wrong-args": "&cEpäkelvot arkumentit. Käytä &l/qs help &rnähdäksesi listan komennoista.",
+    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto preview the list of commands.",
     "description": {
       "title": "&aQuickShop apu",
       "unlimited": "&eAntaa kaupalle loputtoman varaston.",

@@ -138,7 +138,7 @@
     "no-amount-given": "&c沒有提供數量。請使用：&a/qs refill <數量>&c",
     "now-debuging": "&a成功開啟開發者模式，插件重新載入中...",
     "now-nolonger-debuging": "&a成功關閉開發者模式，插件重新載入中...",
-    "wrong-args": "&c參數錯誤，使用 /qs help 查看指令列表。",
+    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto preview the list of commands.",
     "description": {
       "title": "&aQuickShop 幫助",
       "unlimited": "&e設置商店為無限空間。",

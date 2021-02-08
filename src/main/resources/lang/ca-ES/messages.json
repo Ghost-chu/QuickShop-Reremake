@@ -138,7 +138,7 @@
     "no-amount-given": "&cNo s'ha proporcionat cap quantitat. Utilitza &a/qs refill <quantitat>&c.",
     "now-debuging": "&aMode de desenvolupador activat. Recarregant QuickShop...",
     "now-nolonger-debuging": "%Mode de desenvolupador desactivat. Recarregant QuickShop...",
-    "wrong-args": "&cArguments invàlids. Utilitza &l/qs help &rper a veure la llista de commands.",
+    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto preview the list of commands.",
     "description": {
       "title": "&aAjuda de QuickShop",
       "unlimited": "&eLi dona estoc il·limitat a una botiga.",
