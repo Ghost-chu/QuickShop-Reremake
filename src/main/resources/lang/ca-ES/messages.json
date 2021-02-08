@@ -1,9 +1,10 @@
 {
+  "file-test": "This is file test text, We use this for testing if messages.json is broken. You can fill any easter egg you like in there :)",
   "translation-author": "Traductor: Javiooli",
   "translation-version": "Versiò suportada: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Zona de l'idioma: Català (ca_ES)",
-  "language-version": "48",
+  "language-version": "49",
   "not-looking-at-shop": "No s'ha trobat cap QuickShop. Has de mirar a una.",
   "no-anythings-in-your-hand": "Ni hi ha res a la teva mà.",
   "no-permission": "No tens permisos per a fer això.",
@@ -220,7 +221,9 @@
   "tabcomplete": {
     "price": "[price]",
     "range": "[range]",
-    "amount": "[amount]"
+    "amount": "[amount]",
+    "currency": "[currency name]",
+    "item": "[item]"
   },
   "updatenotify": {
     "buttontitle": "[Update Now]",
@@ -292,5 +295,6 @@
   "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
   "currency-set": "&aSuccessfully set shop currency to {0}.",
   "currency-unset": "&aSuccessfully remove shop currency setup, will use default now.",
-  "currency-not-support": "&cThe economy plugin doesn't support multi-currency feature."
+  "currency-not-support": "&cThe economy plugin doesn't support multi-currency feature.",
+  "item-not-exist": "&cThe item &e{0} &cnot exists, please check your spelling."
 }
