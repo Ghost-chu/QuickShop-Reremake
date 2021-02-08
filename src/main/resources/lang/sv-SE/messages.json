@@ -1,9 +1,10 @@
 {
+  "file-test": "This is file test text, We use this for testing if messages.json is broken. You can fill any easter egg you like in there :)",
   "translation-author": "Översättare: Ghost_chu, Andre_601",
   "translation-version": "Supportversion: Reremake",
   "translation-contributors": "Medhjälpare: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken och Andre_601",
   "translation-country": "Språkområde: Engelska (en_US)",
-  "language-version": "46",
+  "language-version": "49",
   "not-looking-at-shop": "&cKunde inte hitta en QuickShop. Du måste titta på en.",
   "no-anythings-in-your-hand": "&cDet finns inget i din hand.",
   "no-permission": "&cDu har inte tillåtelse till att göra detta.",
@@ -43,6 +44,7 @@
   "fee-charged-for-price-change": "&aDu betalade &c{0}&a för att ändra priset.",
   "price-is-now": "&aDet nya priset för butiken är &e{0}",
   "thats-not-a-number": "&cOgiltig siffra",
+  "forbidden-vanilla-behavior": "&cOperationen är förbjuden på grund av att den inte är konsekvent med standardbeteendet.",
   "no-price-given": "&cVar god ange ett giltigt pris.",
   "average-price-nearby": "&aNärliggande genomsnittspris: &e{0}",
   "shop-has-changed": "&cButiken du försökte använda har ändrats sedan du klickade på den!",
@@ -166,7 +168,8 @@
       "language": "&eÄndra det språk som används för nuvarande",
       "removeall": "&eTa bort alla butiker från en angiven spelare",
       "transfer": "&eÖverför alla butiker från en spelare till en annan",
-      "removeworld": "&eTa bort ALLA butiker i angiven värld"
+      "removeworld": "&eTa bort ALLA butiker i angiven värld",
+      "currency": "&eSet or remove the currency setting on shop"
     }
   },
   "signs": {
@@ -201,7 +204,9 @@
     "stack": "&aPer paket-belopp: &b{0} &e[&d&lÄndra&e]",
     "stack-hover": "&eKlicka för att ställa in mängden föremål per paket. Ange 1 för normalt beteende.",
     "item": "&aButikens produkt: {0} &e[&d&lÄndra&e]",
-    "item-hover": "&eKlicka för att ändra butiksprodukten"
+    "item-hover": "&eKlicka för att ändra butiksprodukten",
+    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
+    "currency-hover": "&eClick to set or remove the currency that shop using"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -216,7 +221,9 @@
   "tabcomplete": {
     "price": "[pris]",
     "range": "[intervall]",
-    "amount": "[antal]"
+    "amount": "[antal]",
+    "currency": "[currency name]",
+    "item": "[item]"
   },
   "updatenotify": {
     "buttontitle": "[Uppdatera nu]",
@@ -284,5 +291,10 @@
     "approval-progress": "&eGodkända Framsteg: &b{0}%",
     "qa-issues": "&eKvalitetsförsäkringsfrågor: &b{0}%",
     "help-us": "&a[Hjälp oss att förbättra översättningens kvalitet]"
-  }
+  },
+  "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
+  "currency-set": "&aSuccessfully set shop currency to {0}.",
+  "currency-unset": "&aSuccessfully remove shop currency setup, will use default now.",
+  "currency-not-support": "&cEkonomi-pluginet stöder inte flervaluta-funktionen.",
+  "item-not-exist": "&cThe item &e{0} &cnot exists, please check your spelling."
 }

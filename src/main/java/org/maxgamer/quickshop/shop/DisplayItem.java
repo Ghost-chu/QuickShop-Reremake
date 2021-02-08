@@ -65,7 +65,7 @@ public abstract class DisplayItem {
      * @return Contains protect flag.
      */
     public static boolean checkIsGuardItemStack(@Nullable final ItemStack itemStack) {
-
+        Util.ensureThread(false);
         if (!plugin.isDisplay()) {
             return false;
         }

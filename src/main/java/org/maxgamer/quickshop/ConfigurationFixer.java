@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Objects;
+import java.util.logging.Level;
 
 @AllArgsConstructor
 public class ConfigurationFixer {
@@ -44,7 +45,7 @@ public class ConfigurationFixer {
         try {
             Files.copy(new File(plugin.getDataFolder(), "config.yml").toPath(), new File(plugin.getDataFolder(), "config.yml." + System.currentTimeMillis()).toPath());
         } catch (IOException ioException) {
-            ioException.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Failed to create config.yml backup.", ioException);
         }
         plugin.getLogger().warning("Fix - Fixing the configuration, this may take a while...");
 

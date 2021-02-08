@@ -1,9 +1,10 @@
 {
+  "file-test": "This is file test text, We use this for testing if messages.json is broken. You can fill any easter egg you like in there :)",
   "translation-author": "المترجم: Ghost_chu, Andre_601, MoroccanTea",
   "translation-version": "إصدار الدعم: إعادة التشكيل",
   "translation-contributors": "المساهمون: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken و Andre_601",
   "translation-country": "منطقة اللغة: العربية (ar_AR)",
-  "language-version": "46",
+  "language-version": "49",
   "not-looking-at-shop": "&cلا يمكن العثور على QuickShop. تحتاج إلى النظر إلى واحد.",
   "no-anythings-in-your-hand": "&cلا يوجد شيء في يديك.",
   "no-permission": "لا تملك الصلاحيّات للقيام بذلك.",
@@ -43,6 +44,7 @@
   "fee-charged-for-price-change": "&aلقد دفعت &c{0}&a لتغيير السعر.",
   "price-is-now": "&aالسعر الجديد للمتجر هو &e{0}",
   "thats-not-a-number": "&cرقم غير صالح",
+  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to is not consist with vanilla behavior",
   "no-price-given": "&cالرجاء إعطاء سعر صحيح.",
   "average-price-nearby": "&aNearby average price: &e{0}",
   "shop-has-changed": "&cالمتجر الذي حاولت استخدامه قد تغير منذ أن نقرت عليه!",
@@ -166,7 +168,8 @@
       "language": "&eChange the currently used language",
       "removeall": "&eRemove ALL shops of a specified player",
       "transfer": "&eTransfer someone's ALL shops to other",
-      "removeworld": "&eRemove ALL shops in a specified world"
+      "removeworld": "&eRemove ALL shops in a specified world",
+      "currency": "&eSet or remove the currency setting on shop"
     }
   },
   "signs": {
@@ -201,7 +204,9 @@
     "stack": "&aPer bulk amount: &b{0} &e[&d&lChange&e]",
     "stack-hover": "&eClick to set the amount of item per bulk. Set to 1 for normal behaviour.",
     "item": "&aShop Item: {0} &e[&d&lChange&e]",
-    "item-hover": "&eClick to change shop Item"
+    "item-hover": "&eClick to change shop Item",
+    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
+    "currency-hover": "&eClick to set or remove the currency that shop using"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -216,7 +221,9 @@
   "tabcomplete": {
     "price": "[price]",
     "range": "[range]",
-    "amount": "[amount]"
+    "amount": "[amount]",
+    "currency": "[currency name]",
+    "item": "[item]"
   },
   "updatenotify": {
     "buttontitle": "[Update Now]",
@@ -284,5 +291,10 @@
     "approval-progress": "&eApproval Progress: &b{0}%",
     "qa-issues": "&eQuality assurance issues: &b{0}%",
     "help-us": "&a[Help us improve the translation quality]"
-  }
+  },
+  "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
+  "currency-set": "&aSuccessfully set shop currency to {0}.",
+  "currency-unset": "&aSuccessfully remove shop currency setup, will use default now.",
+  "currency-not-support": "&cThe economy plugin doesn't support multi-currency feature.",
+  "item-not-exist": "&cThe item &e{0} &cnot exists, please check your spelling."
 }

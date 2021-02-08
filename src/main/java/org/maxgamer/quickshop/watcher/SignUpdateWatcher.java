@@ -39,7 +39,7 @@ public class SignUpdateWatcher extends BukkitRunnable {
     @Override
     public void run() {
         Shop shop = signUpdateQueue.poll();
-        while (shop != null) {
+        while (shop != null && !shop.isDeleted()) {
             shop.setSignText();
             shop = signUpdateQueue.poll();
         }

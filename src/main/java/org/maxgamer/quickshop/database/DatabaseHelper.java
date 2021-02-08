@@ -34,6 +34,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 /**
  * A Util to execute all SQLs.
@@ -190,8 +191,7 @@ public class DatabaseHelper {
                 if (onFailed != null) {
                     onFailed.accept(e);
                 } else {
-                    e.printStackTrace();
-                    plugin.getLogger().warning("Warning: Shop " + shop.toString() + " failed save to database, the shop may disappear after plugin reload or server restart!");
+                    plugin.getLogger().log(Level.WARNING, "Warning: Shop " + shop.toString() + " failed save to database, the shop may disappear after plugin reload or server restart!", e);
                 }
             }
         }));

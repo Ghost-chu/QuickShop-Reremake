@@ -1,9 +1,10 @@
 {
+  "file-test": "This is file test text, We use this for testing if messages.json is broken. You can fill any easter egg you like in there :)",
   "translation-author": "Kääntäjät: eemunni, Antti",
   "translation-version": "Tuettu versio: Reremake",
   "translation-contributors": "Avustajat: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Kielialue: Suomi (fi_FI)",
-  "language-version": "46",
+  "language-version": "49",
   "not-looking-at-shop": "&cQuickShoppia ei löytynyt. Sinun täytyy katsoa yhtä.",
   "no-anythings-in-your-hand": "&cKädessäsi ei ole mitään.",
   "no-permission": "&cSinulla ei ole oikeutta tehdä noin.",
@@ -43,6 +44,7 @@
   "fee-charged-for-price-change": "&aMaksoit {0} vaihtaaksesi kaupan hinnan.",
   "price-is-now": "&aKaupan uusi hinta on nyt &e{0}",
   "thats-not-a-number": "&cEpäkelpo numero.",
+  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to is not consist with vanilla behavior",
   "no-price-given": "&cAnnathan validin hinnan.",
   "average-price-nearby": "&aLähistöllä olevien keskimääräinen hinta: &e{0}",
   "shop-has-changed": "&cKauppa, jota yritit käyttää, on muuttanut hintaansa tai muita tietoja sen jälkeen kun klikkasit sitä!",
@@ -166,7 +168,8 @@
       "language": "&eVaihda tällä hetkellä käytettyä kieltä",
       "removeall": "&ePoista KAIKKI kaupat kyseiseltä pelaajalta",
       "transfer": "&eSiirrä jonkun KAIKKI kaupat toiselle",
-      "removeworld": "&ePoista KAIKKI kaupat kyseisestä maailmasta"
+      "removeworld": "&ePoista KAIKKI kaupat kyseisestä maailmasta",
+      "currency": "&eSet or remove the currency setting on shop"
     }
   },
   "signs": {
@@ -201,7 +204,9 @@
     "stack": "&aMäärä bulkkia kohden: &b{0} &e[&d&lVaihda&e]",
     "stack-hover": "&eKlikkaa asettaaksesi tavaran määrä bulkkia kohden. Aseta 1 normaalia käytöstä varten.",
     "item": "&aKaupan tuote: {0} &e[&d&|Vaihda&e]",
-    "item-hover": "&ePaina vaihtaaksesi kaupan esinettä"
+    "item-hover": "&ePaina vaihtaaksesi kaupan esinettä",
+    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
+    "currency-hover": "&eClick to set or remove the currency that shop using"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -216,7 +221,9 @@
   "tabcomplete": {
     "price": "[hinta]",
     "range": "[säde]",
-    "amount": "[määrä]"
+    "amount": "[määrä]",
+    "currency": "[currency name]",
+    "item": "[item]"
   },
   "updatenotify": {
     "buttontitle": "[Päivitä nyt]",
@@ -284,5 +291,10 @@
     "approval-progress": "&eHyväksynnän edistyminen: &b{0}%",
     "qa-issues": "&eLaadunvarmistuksen ongelmat: &b{0}%",
     "help-us": "&a[Auta meitä parantamaan käännöksen laatua]"
-  }
+  },
+  "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
+  "currency-set": "&aSuccessfully set shop currency to {0}.",
+  "currency-unset": "&aSuccessfully remove shop currency setup, will use default now.",
+  "currency-not-support": "&cThe economy plugin doesn't support multi-currency feature.",
+  "item-not-exist": "&cThe item &e{0} &cnot exists, please check your spelling."
 }

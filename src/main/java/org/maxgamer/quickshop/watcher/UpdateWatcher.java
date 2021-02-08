@@ -108,8 +108,7 @@ public class UpdateWatcher implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (getUpdater().isLatest(getUpdater().getCurrentRunning())
-                        || !QuickShop.getPermissionManager().hasPermission(e.getPlayer(), "quickshop.alerts")) {
+                if (!QuickShop.getPermissionManager().hasPermission(e.getPlayer(), "quickshop.alerts") || getUpdater().isLatest(getUpdater().getCurrentRunning())) {
                     return;
                 }
                 List<String> notifys = MsgUtil.getI18nFile().getStringList("updatenotify.list");

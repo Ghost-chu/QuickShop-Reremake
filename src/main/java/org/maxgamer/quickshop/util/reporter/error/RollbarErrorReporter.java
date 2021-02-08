@@ -30,6 +30,8 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.GameVersion;
+import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.paste.Paste;
 
@@ -154,23 +156,26 @@ public class RollbarErrorReporter {
                     pasteURL = this.lastPaste;
                 }
             }
-            this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
-            plugin
-                    .getLogger()
-                    .warning(
-                            "A exception was thrown, QuickShop already caught this exception and reported it, switch to debug mode to see the full errors.");
-            plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
-            plugin.getLogger().warning("Description: " + throwable.getMessage());
-            plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID());
-            plugin.getLogger().warning("====QuickShop Error Report E N D===");
-            Util.debugLog(throwable.getMessage());
-            Arrays.stream(throwable.getStackTrace()).forEach(a -> Util.debugLog(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
-            if (Util.isDevMode()) {
-                throwable.printStackTrace();
-            }
+            new Thread(() -> {
+                this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
+                plugin
+                        .getLogger()
+                        .warning(
+                                "A exception was thrown, QuickShop already caught this exception and reported it, switch to debug mode to see the full errors.");
+                plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
+                plugin.getLogger().warning("Description: " + throwable.getMessage());
+                plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID());
+                plugin.getLogger().warning("====QuickShop Error Report E N D===");
+                Util.debugLog(throwable.getMessage());
+                Arrays.stream(throwable.getStackTrace()).forEach(a -> Util.debugLog(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
+                if (Util.isDevMode()) {
+                    throwable.printStackTrace();
+                }
+            }).start();
             return null;
         } catch (Exception th) {
-            th.printStackTrace();
+            ignoreThrow();
+            plugin.getLogger().log(Level.WARNING, "Something going wrong when automatic report errors, please submit this error on Issue Tracker", th);
             return null;
         }
     }
@@ -191,11 +196,14 @@ public class RollbarErrorReporter {
         if (!plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) { // We only receive latest reports.
             return false;
         }
-        if (!plugin.getEnvironmentChecker().getGameVersion().isCoreSupports()) { // Ignore errors if user install quickshop on unsupported
+        if (!GameVersion.get(ReflectFactory.getServerVersion()).isCoreSupports()) { // Ignore errors if user install quickshop on unsupported
             // version.
             return false;
         }
         if (!checkWasCauseByQS(throwable)) {
+            return false;
+        }
+        if (throwable.getMessage().startsWith("#")) {
             return false;
         }
         StackTraceElement stackTraceElement;

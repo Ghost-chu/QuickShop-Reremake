@@ -101,28 +101,6 @@ public class MsgUtil {
         plugin.getDatabaseHelper().cleanMessage(System.currentTimeMillis() - 604800000);
     }
 
-//    @SneakyThrows
-//    public static void sendItemholochat(
-//            @NotNull Player player,
-//            @NotNull String left,
-//            @NotNull ItemStack itemStack,
-//            @NotNull String right) {
-//        String json = ItemNMS.saveJsonfromNMS(itemStack);
-//        if (json == null) {
-//            return;
-//        }
-//
-////        Util.debugLog(left);
-////        Util.debugLog(json);
-////        Util.debugLog(right);
-//
-//
-//        net.md_5.bungee.api.chat.TextComponent centerItem = new TextComponent(left + Util.getItemStackName(itemStack) + right);
-//        net.md_5.bungee.api.chat.ComponentBuilder cBuilder = new ComponentBuilder(json);
-//        centerItem.setHoverEvent(new net.md_5.bungee.api.chat.HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
-//        player.spigot().sendMessage(centerItem);
-//    }
-
     /**
      * Empties the queue of messages a player has and sends them to the player.
      *
@@ -209,7 +187,7 @@ public class MsgUtil {
             return filled;
         } catch (Exception th) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            th.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Failed to process messages", th);
             return "Cannot load language key: " + loc + " because something not right, check the console for details.";
         }
     }
@@ -328,7 +306,7 @@ public class MsgUtil {
     }
 
     public static void loadEnchi18n() {
-        plugin.getLogger().info("Starting loading enchantments translation...");
+        plugin.getLogger().info("Loading enchantments translations...");
         File enchi18nFile = new File(plugin.getDataFolder(), "enchi18n.yml");
         if (!enchi18nFile.exists()) {
             plugin.getLogger().info("Creating enchi18n.yml");
@@ -355,12 +333,7 @@ public class MsgUtil {
         try {
             enchi18n.save(enchi18nFile);
         } catch (IOException e) {
-            e.printStackTrace();
-            plugin
-                    .getLogger()
-                    .log(
-                            Level.WARNING,
-                            "Could not load/save transaction enchname from enchi18n.yml. Skipping.");
+            plugin.getLogger().log(Level.WARNING, "Could not load/save transaction enchname from enchi18n.yml. Skipping...", e);
         }
         plugin.getLogger().info("Complete to load enchantments translation.");
     }
@@ -369,7 +342,7 @@ public class MsgUtil {
      * Load Itemi18n fron file
      */
     public static void loadItemi18n() {
-        plugin.getLogger().info("Starting loading items translation...");
+        plugin.getLogger().info("Loading items translations...");
         File itemi18nFile = new File(plugin.getDataFolder(), "itemi18n.yml");
         if (!itemi18nFile.exists()) {
             plugin.getLogger().info("Creating itemi18n.yml");
@@ -398,18 +371,13 @@ public class MsgUtil {
         try {
             itemi18n.save(itemi18nFile);
         } catch (IOException e) {
-            e.printStackTrace();
-            plugin
-                    .getLogger()
-                    .log(
-                            Level.WARNING,
-                            "Could not load/save transaction itemname from itemi18n.yml. Skipping.");
+            plugin.getLogger().log(Level.WARNING, "Could not load/save transaction itemname from itemi18n.yml. Skipping...", e);
         }
         plugin.getLogger().info("Complete to load items translation.");
     }
 
     public static void loadPotioni18n() {
-        plugin.getLogger().info("Starting loading potions translation...");
+        plugin.getLogger().info("Loading potions translations...");
         File potioni18nFile = new File(plugin.getDataFolder(), "potioni18n.yml");
         if (!potioni18nFile.exists()) {
             plugin.getLogger().info("Creating potioni18n.yml");
@@ -424,7 +392,6 @@ public class MsgUtil {
         potioni18n.setDefaults(potioni18nYAML);
         Util.parseColours(potioni18n);
         for (PotionEffectType potion : PotionEffectType.values()) {
-            //noinspection ConstantConditions
             if (potion == null) {
                 continue;
             }
@@ -439,8 +406,7 @@ public class MsgUtil {
         try {
             potioni18n.save(potioni18nFile);
         } catch (IOException e) {
-            e.printStackTrace();
-            plugin.getLogger().warning("Could not load/save transaction potionname from potioni18n.yml. Skipping.");
+            plugin.getLogger().log(Level.WARNING, "Could not load/save transaction potionname from potioni18n.yml. Skipping...", e);
         }
         plugin.getLogger().info("Complete to load potions effect translation.");
     }
@@ -466,8 +432,7 @@ public class MsgUtil {
                 msgs.add(message);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            plugin.getLogger().warning("Could not load transaction messages from database. Skipping.");
+            plugin.getLogger().log(Level.WARNING, "Could not load transaction messages from database. Skipping.", e);
         }
     }
 
@@ -745,7 +710,7 @@ public class MsgUtil {
             return filled;
         } catch (Throwable th) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            th.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Failed to load language key", th);
             return "Cannot load language key: " + loc + " because something not right, check the console for details.";
         }
     }
@@ -819,7 +784,7 @@ public class MsgUtil {
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successful-purchase", sender));
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.item-name-and-price", sender, Integer.toString(amount * shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()), Util.format((amount * shop.getPrice()))));
+        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.item-name-and-price", sender, Integer.toString(amount * shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()), Util.format(amount * shop.getPrice(), shop)));
         printEnchantment(sender, shop, chatSheetPrinter);
         chatSheetPrinter.printFooter();
     }
@@ -863,14 +828,14 @@ public class MsgUtil {
                         sender,
                         Integer.toString(amount),
                         Util.getItemStackName(shop.getItem()),
-                        Util.format((amount * shop.getPrice()))));
+                        Util.format(amount * shop.getPrice(), shop)));
         if (plugin.getConfig().getBoolean("show-tax")) {
             double tax = plugin.getConfig().getDouble("tax");
             double total = amount * shop.getPrice();
             if (tax != 0) {
                 if (!seller.equals(shop.getOwner())) {
                     chatSheetPrinter.printLine(
-                            MsgUtil.getMessage("menu.sell-tax", sender, Util.format((tax * total))));
+                            MsgUtil.getMessage("menu.sell-tax", sender, Util.format(tax * total, shop)));
                 } else {
                     chatSheetPrinter.printLine(MsgUtil.getMessage("menu.sell-tax-self", sender));
                 }
@@ -946,9 +911,9 @@ public class MsgUtil {
             }
         }
         if (shop.getItem().getAmount() == 1) {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.price-per", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice())));
+            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.price-per", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice(), shop)));
         } else {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.price-per-stack", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice()), Integer.toString(shop.getItem().getAmount())));
+            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.price-per-stack", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice(), shop), Integer.toString(shop.getItem().getAmount())));
         }
         if (shop.isBuying()) {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-buying", p));
@@ -1014,12 +979,11 @@ public class MsgUtil {
         }
         if (!messagei18n.getString("language-name").get().equals(languageName)) {
             Util.debugLog("Language name " + messagei18n.getString("language-name").get() + " not matched with " + languageName);
-            File pendingDelete = new File(plugin.getDataFolder(), "messages.json");
+            File pending = new File(plugin.getDataFolder(), "messages.json");
             try {
-                Files.copy(pendingDelete.toPath(), new File(plugin.getDataFolder(), "messages-bak-" + UUID.randomUUID().toString() + ".json").toPath());
+                Files.move(pending.toPath(), new File(plugin.getDataFolder(), "messages-bak-" + UUID.randomUUID().toString() + ".json").toPath());
             } catch (IOException ignored) {
             }
-            pendingDelete.delete();
             try {
                 loadCfgMessages();
             } catch (Exception ignore) {
@@ -1483,10 +1447,32 @@ public class MsgUtil {
             setAndUpdate("exceeded-maximum", "&cThe value has exceeded the maximum java value.");
             setAndUpdate("language-version", ++selectedVersion);
         }
+        if (selectedVersion == 46) {
+            setAndUpdate("currency-not-exists", "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.");
+            setAndUpdate("currency-set", "&aSuccessfully set shop currency to {0}.");
+            setAndUpdate("currency-unset", "&aSuccessfully remove shop currency setup, will use default now.");
+            setAndUpdate("command.description.currency", "&eSet or remove the currency setting on shop");
+            setAndUpdate("controlpanel.currency", "&aCurrency: &b{0} &e[&d&lSet&e]");
+            setAndUpdate("controlpanel.currency-hover", "&eClick to set or remove the currency that shop using");
+            setAndUpdate("currency-not-support", "&cThe economy plugin doesn't support multi-currency feature.");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
+        if (selectedVersion == 47) {
+            setAndUpdate("forbidden-vanilla-behavior", "&cThe operation is forbidden due to is not consist with vanilla behavior");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
+        if (selectedVersion == 48) {
+            setAndUpdate("tabcomplete.currency", "[currency name]");
+            setAndUpdate("tabcomplete.item", "[item]");
+            setAndUpdate("item-not-exist", "&cThe item &e{0} &cnot exists, please check your spelling.");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
+
         messagei18n.save();
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
     }
+
 
     private static void setAndUpdate(@NotNull String path, @Nullable Object object) {
         if (object == null) {
@@ -1502,11 +1488,6 @@ public class MsgUtil {
         } else {
             messagei18n.set(path, alt);
         }
-//    Object objFromBuiltIn = builtInDefaultLanguage.get(path); / Apply english default
-//    if (objFromBuiltIn == null) {
-//      objFromBuiltIn =
-//          object; // Apply hard-code default, maybe a language file i forgotten update??
-//    }
     }
 
     public static void sendColoredMessage(@NotNull CommandSender sender, @NotNull ChatColor chatColor, @Nullable String... messages) {

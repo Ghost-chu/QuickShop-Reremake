@@ -78,7 +78,7 @@ public class BungeeQuickChat implements QuickChat {
             centerItem.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
             player.spigot().sendMessage(centerItem);
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException | InstantiationException e) {
-            e.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Failed to process chat component", e);
             player.spigot().sendMessage(errorComponent);
         }
     }
@@ -104,7 +104,7 @@ public class BungeeQuickChat implements QuickChat {
             normalmessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
             return new QuickComponentImpl(normalmessage);
         } catch (Throwable t) {
-            t.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Failed to process chat component", t);
             return new QuickComponentImpl(errorComponent);
         }
     }

@@ -23,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.maxgamer</groupId>
     <artifactId>QuickShop</artifactId>
-    <version>4.0.6.3</version>
+    <version>4.0.7.0</version>
 
     <licenses>
         <license>
@@ -137,6 +137,36 @@
                             <pattern>org.apache.commons.compress.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.org.apache.commons.compress.</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>org.apache.commons.codec.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade. org.apache.commons.codec.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.esotericsoftware.reflectasm.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.com.esotericsoftware.reflectasm.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>me.lucko.helper.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.me.lucko.helper.</shadedPattern>
+                        </relocation>
+
+                        <relocation>
+                            <pattern>org.slf4j.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.org.slf4j.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.github.SparklingComet.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.com.github.SparklingComet.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.offbytwo.jenkins.jenkins-client.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.com.offbytwo.jenkins.jenkins-client.
+                            </shadedPattern>
+                        </relocation>
+                        <!--                        <relocation>-->
+                        <!--                            <pattern>de.leonhard</pattern>-->
+                        <!--                            <shadedPattern>org.maxgamer.quickshop.shade.de.leonhard.storage</shadedPattern>-->
+                        <!--                        </relocation>-->
 
                     </relocations>
                     <transformers>
@@ -221,7 +251,7 @@
         </repository>
         <repository>
             <id>sk89q-repo</id>
-            <url>http://maven.sk89q.com/repo/</url>
+            <url>https://maven.sk89q.com/repo/</url>
         </repository>
         <repository>
             <id>fanciful-repo</id>
@@ -229,12 +259,12 @@
         </repository>
         <repository>
             <id>dmulloy2-repo</id>
-            <url>http://repo.dmulloy2.net/nexus/repository/public/</url>
+            <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
         </repository>
         <repository>
             <id>Sonatype-public</id>
             <name>SnakeYAML repository</name>
-            <url>http://oss.sonatype.org/content/groups/public/</url>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
         <repository>
             <id>md_5-snapshots</id>
@@ -245,16 +275,12 @@
             <url>https://repo.md-5.net/content/repositories/releases/</url>
         </repository>
         <repository>
-            <id>lang-utils-repo</id>
-            <url>https://ci.nyaacat.com/maven/</url>
-        </repository>
-        <repository>
             <id>placeholderapi</id>
-            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
         <repository>
             <id>EnderZone</id>
-            <url>http://ci.ender.zone/plugin/repository/everything/</url>
+            <url>https://ci.ender.zone/plugin/repository/everything/</url>
         </repository>
         <repository>
             <id>reserve-repo</id>
@@ -283,8 +309,8 @@
             <url>https://repo.minebench.de/</url>
         </repository>
         <repository>
-            <id>minecraft-repo</id>
-            <url>https://libraries.minecraft.net/</url>
+            <id>songoda-repo</id>
+            <url>https://repo.songoda.com/repository/public/</url>
         </repository>
     </repositories>
 
@@ -299,11 +325,21 @@
             <artifactId>LWCX</artifactId>
             <version>2.2.6</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jsr305</artifactId>
+                    <groupId>com.google.code.findbugs</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.github.TechFortress</groupId>
             <artifactId>GriefPrevention</artifactId>
-            <version>16.17.0</version>
+            <version>16.17.1</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -377,7 +413,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.16</version>
+            <version>1.18.18</version>
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
@@ -416,7 +452,7 @@
         <dependency>
             <groupId>com.github.angeschossen</groupId>
             <artifactId>LandsAPI</artifactId>
-            <version>4.12.20</version>
+            <version>5.0.5</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -441,20 +477,20 @@
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
             <artifactId>MockBukkit-v1.16</artifactId>
-            <version>0.20.0</version>
+            <version>0.24.0</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spigot-api</artifactId>
+                    <groupId>org.spigotmc</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.16.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>me.vagdedes.spartan</groupId>
@@ -507,6 +543,14 @@
                 <exclusion>
                     <artifactId>snakeyaml</artifactId>
                     <groupId>org.yaml</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jsr305</artifactId>
+                    <groupId>com.google.code.findbugs</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spigot-api</artifactId>
+                    <groupId>org.spigotmc</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -682,12 +726,68 @@
             <version>1.7.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-
         <dependency>
             <groupId>me.lucko</groupId>
             <artifactId>helper</artifactId>
             <version>5.6.5</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>me.xanium</groupId>
+            <artifactId>GemsEconomy</artifactId>
+            <scope>system</scope>
+            <version>4.9.2</version>
+            <systemPath>${project.basedir}/lib/GemsEconomy-4.9.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>tne.tne</groupId>
+            <artifactId>TheNewEconomy</artifactId>
+            <scope>system</scope>
+            <version>4.9.2</version>
+            <systemPath>${project.basedir}/lib/TNE.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.songoda</groupId>
+            <artifactId>skyblock</artifactId>
+            <version>2.2.13</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>team.aura_dev.lib.slf4j-plugin.spigot</groupId>-->
+        <!--            <artifactId>slf4j-plugin-spigot</artifactId>-->
+        <!--            <version>1.2.0</version>-->
+        <!--            <classifier>1.7.25</classifier>-->
+        <!--            <scope>compile</scope>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>reflectasm</artifactId>
+            <version>1.11.9</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.lucko</groupId>
+            <artifactId>helper</artifactId>
+            <version>5.6.5</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-nop -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.6</version>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.simplix-softworks</groupId>-->
+        <!--            <artifactId>SimplixStorage</artifactId>-->
+        <!--            <version>3.1.9</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
     </dependencies>
 </project>

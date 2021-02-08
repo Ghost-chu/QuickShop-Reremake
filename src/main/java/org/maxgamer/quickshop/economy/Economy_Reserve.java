@@ -25,6 +25,7 @@ import net.tnemc.core.Reserve;
 import net.tnemc.core.economy.EconomyAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,6 +35,7 @@ import org.maxgamer.quickshop.util.Util;
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * @author creatorfromhell
@@ -43,7 +45,7 @@ import java.util.UUID;
 public class Economy_Reserve implements EconomyCore {
 
     private static final String errorMsg =
-            "QuickShop got an error when calling your Economy system, this is NOT a QuickShop error, please do not report this issue to the QuickShop's Issue tracker, ask your Economy plugin's author.";
+            "QuickShop received an error when processing Economy response, THIS NOT A QUICKSHOP FAULT, you might need ask help with your Economy Provider plugin author.";
 
     private final QuickShop plugin;
 
@@ -87,20 +89,19 @@ public class Economy_Reserve implements EconomyCore {
      */
     @Deprecated
     @Override
-    public boolean deposit(@NotNull UUID name, double amount) {
+    public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
         try {
             return Objects.requireNonNull(reserve).addHoldings(name, new BigDecimal(amount));
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            throwable.printStackTrace();
-            plugin.getLogger().warning(errorMsg);
+            plugin.getLogger().log(Level.WARNING, errorMsg, throwable);
             return false;
         }
     }
 
     @Override
-    public boolean deposit(@NotNull OfflinePlayer trader, double amount) {
-        return deposit(trader.getUniqueId(), amount);
+    public boolean deposit(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
+        return deposit(trader.getUniqueId(), amount, world, currency);
     }
 
     /**
@@ -112,19 +113,18 @@ public class Economy_Reserve implements EconomyCore {
      */
     @Deprecated
     @Override
-    public String format(double balance) {
+    public String format(double balance, @NotNull World world, @Nullable String currency) {
         try {
             return Objects.requireNonNull(reserve).format(new BigDecimal(balance));
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            throwable.printStackTrace();
-            plugin.getLogger().warning(errorMsg);
+            plugin.getLogger().log(Level.WARNING, errorMsg, throwable);
             return formatInternal(balance);
         }
     }
 
     private String formatInternal(double balance) {
-        return Util.format(balance, true);
+        return Util.format(balance, true, Bukkit.getWorlds().get(0), (String) null);
     }
 
     /**
@@ -136,20 +136,19 @@ public class Economy_Reserve implements EconomyCore {
      */
     @Override
     @Deprecated
-    public double getBalance(@NotNull UUID name) {
+    public double getBalance(@NotNull UUID name, @NotNull World world, @Nullable String currency) {
         try {
             return Objects.requireNonNull(reserve).getHoldings(name).doubleValue();
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            throwable.printStackTrace();
-            plugin.getLogger().warning(errorMsg);
+            plugin.getLogger().log(Level.WARNING, errorMsg, throwable);
             return 0.0;
         }
     }
 
     @Override
-    public double getBalance(@NotNull OfflinePlayer player) {
-        return getBalance(player.getUniqueId());
+    public double getBalance(@NotNull OfflinePlayer player, @NotNull World world, @Nullable String currency) {
+        return getBalance(player.getUniqueId(), world, currency);
     }
 
     /**
@@ -163,13 +162,12 @@ public class Economy_Reserve implements EconomyCore {
      */
     @Override
     @Deprecated
-    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount) {
+    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @NotNull World world, @Nullable String currency) {
         try {
             return Objects.requireNonNull(reserve).transferHoldings(from, to, new BigDecimal(amount));
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            throwable.printStackTrace();
-            plugin.getLogger().warning(errorMsg);
+            plugin.getLogger().log(Level.WARNING, errorMsg, throwable);
             return false;
         }
     }
@@ -182,23 +180,44 @@ public class Economy_Reserve implements EconomyCore {
      * @return True if success, false if they didn't have enough cash
      */
     @Override
-    public boolean withdraw(@NotNull UUID name, double amount) {
+    public boolean withdraw(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
         try {
-            if ((!plugin.getConfig().getBoolean("shop.allow-economy-loan")) && getBalance(name) < amount) {
+            if ((!plugin.getConfig().getBoolean("shop.allow-economy-loan")) && getBalance(name, world, currency) < amount) {
                 return false;
             }
             return Objects.requireNonNull(reserve).removeHoldings(name, new BigDecimal(amount));
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            throwable.printStackTrace();
-            plugin.getLogger().warning(errorMsg);
+            plugin.getLogger().log(Level.WARNING, errorMsg, throwable);
             return false;
         }
     }
 
     @Override
-    public boolean withdraw(@NotNull OfflinePlayer trader, double amount) {
-        return withdraw(trader.getUniqueId(), amount);
+    public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
+        return withdraw(trader.getUniqueId(), amount, world, currency);
+    }
+
+
+    /**
+     * Gets the currency does exists
+     *
+     * @param currency Currency name
+     * @return exists
+     */
+    @Override
+    public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
+        return false;
+    }
+
+    /**
+     * Gets currency supports status
+     *
+     * @return true if supports
+     */
+    @Override
+    public boolean supportCurrency() {
+        return false;
     }
 
     /**

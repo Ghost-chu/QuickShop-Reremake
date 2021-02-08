@@ -49,6 +49,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public class ShopProtectionListener extends ProtectionListenerBase {
 
@@ -60,9 +61,7 @@ public class ShopProtectionListener extends ProtectionListenerBase {
         super(plugin, cache);
         this.sendProtectionAlert = plugin.getConfig().getBoolean("send-shop-protection-alert", false);
         useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-shop-protect");
-        if (plugin.getConfig().getBoolean("protect.hopper")) {
-            scanAndFixPaperListener();
-        }
+        scanAndFixPaperListener();
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -71,6 +70,9 @@ public class ShopProtectionListener extends ProtectionListenerBase {
     }
 
     public void scanAndFixPaperListener() {
+        if (!plugin.getConfig().getBoolean("protect.hopper")) {
+            return;
+        }
         if (!Util.isClassAvailable("com.destroystokyo.paper.PaperWorldConfig")) {
             return;
         }
@@ -114,8 +116,7 @@ public class ShopProtectionListener extends ProtectionListenerBase {
                     }
                 }
             } catch (NoSuchFieldException | IllegalAccessException | NullPointerException | IOException e) {
-                e.printStackTrace();
-                plugin.getLogger().warning("Failed to automatic disable disable-move-event for world [" + world.getName() + "], please disable it by yourself or player can steal items from shops.");
+                plugin.getLogger().log(Level.WARNING, "Failed to automatic disable disable-move-event for world [" + world.getName() + "], please disable it by yourself or player can steal items from shops.", e);
             }
         });
 
@@ -270,7 +271,7 @@ public class ShopProtectionListener extends ProtectionListenerBase {
         }
 
         if (sendProtectionAlert) {
-            MsgUtil.sendGlobalAlert("[DisplayGuard] Defened a item steal action at" + location);
+            MsgUtil.sendGlobalAlert("[DisplayGuard] Defend a item steal action at" + location);
         }
     }
 

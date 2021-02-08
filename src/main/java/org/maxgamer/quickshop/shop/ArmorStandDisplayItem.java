@@ -34,7 +34,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.event.ShopDisplayItemDespawnEvent;
 import org.maxgamer.quickshop.event.ShopDisplayItemSpawnEvent;
+import org.maxgamer.quickshop.util.GameVersion;
 import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.Objects;
@@ -179,7 +181,7 @@ public class ArmorStandDisplayItem extends DisplayItem {
         // Set item protect in the armorstand's hand
         this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         Objects.requireNonNull(armorStand.getEquipment()).setHelmet(guardedIstack);
-        if (plugin.getEnvironmentChecker().getGameVersion().isPersistentStorageApiSupports()) {
+        if (GameVersion.get(ReflectFactory.getServerVersion()).isPersistentStorageApiSupports()) {
             armorStand
                     .getPersistentDataContainer()
                     .set(
@@ -192,6 +194,9 @@ public class ArmorStandDisplayItem extends DisplayItem {
 
     @Override
     public void spawn() {
+        if (shop.isDeleted() || !shop.isLoaded()) {
+            return;
+        }
         if (shop.getLocation().getWorld() == null) {
             Util.debugLog("Canceled the displayItem spawning because the location in the world is null.");
             return;
