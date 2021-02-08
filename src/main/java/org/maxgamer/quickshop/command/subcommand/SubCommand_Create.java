@@ -84,17 +84,10 @@ public class SubCommand_Create implements CommandProcesser {
         ItemStack item;
         final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
 
-        if (cmdArg.length == 0) {
-            item = p.getInventory().getItemInMainHand();
-            if (Util.isAir(item.getType())) {
-                MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-anythings-in-your-hand", sender));
-                return;
-            }
-            MsgUtil.sendMessage(p,
-                    MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1)));
+        if (cmdArg.length < 1) {
+            MsgUtil.sendMessage(p, "command.wrong-args");
             return;
-        }
-        if (cmdArg.length == 1) {
+        } else if (cmdArg.length == 1) {
             item = p.getInventory().getItemInMainHand();
             if (Util.isAir(item.getType())) {
                 MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-anythings-in-your-hand", sender));
@@ -108,6 +101,7 @@ public class SubCommand_Create implements CommandProcesser {
             }
             item = new ItemStack(material, 1);
         }
+        Util.debugLog("Pending task for material: " + item.toString());
 
         String price = cmdArg[0];
 
@@ -170,7 +164,9 @@ public class SubCommand_Create implements CommandProcesser {
         if (cmdArg.length == 1) {
             return Collections.singletonList(MsgUtil.getMessage("tabcomplete.price", sender));
         }
-
+        if (cmdArg.length == 2) {
+            return Collections.singletonList(MsgUtil.getMessage("tabcomplete.item", sender));
+        }
         return Collections.emptyList();
     }
 
