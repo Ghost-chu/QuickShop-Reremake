@@ -42,6 +42,7 @@ import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.mojangapi.MojangAPI;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -203,13 +204,18 @@ class GameLanguageLoadThread extends Thread {
                 isLatest = true;
                 return; //Ignore english language
             }
-            if (languageCode.equals(cacheCode) && new File(Util.getCacheFolder(), cacheSha1).exists()) {
-                isLatest = true;
-                try (FileReader reader = new FileReader(new File(Util.getCacheFolder(), cacheSha1))) {
-                    lang = new JsonParser().parse(reader).getAsJsonObject();
-                    return; //We doesn't need to update it
-                } catch (Exception e) {
-
+            File cachedFile = new File(Util.getCacheFolder(), cacheSha1);
+            if (languageCode.equals(cacheCode)) { //Language same
+                if (cachedFile.exists()) { //File exists
+                    if (DigestUtils.sha1Hex(new FileInputStream(cachedFile)).equals(cacheSha1)) { //Check if file broken
+                        isLatest = true;
+                        try (FileReader reader = new FileReader(cachedFile)) {
+                            lang = new JsonParser().parse(reader).getAsJsonObject();
+                            return; //We doesn't need to update it
+                        } catch (Exception e) {
+                            //Keep it empty so continue to update files
+                        }
+                    }
                 }
             }
 
