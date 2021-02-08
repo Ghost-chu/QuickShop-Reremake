@@ -138,7 +138,7 @@
     "no-amount-given": "&cNincs megadva mennyiség! Használd &a/qs refill <mennyiség>&c",
     "now-debuging": "&aSikeresen átváltottál fejlesztő módba. Gyorsbolt újratöltése...",
     "now-nolonger-debuging": "&aSikeresen átváltottál gyártás módba. Gyorsbolt újratöltése...",
-    "wrong-args": "&cIsmeretlen parancs! Használd /qs help parancsot!",
+    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto preview the list of commands.",
     "description": {
       "title": "&aGyorsbolt segítség",
       "unlimited": "&eA bolt korlátlanná tétele",

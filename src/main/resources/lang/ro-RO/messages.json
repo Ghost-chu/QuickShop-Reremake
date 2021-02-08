@@ -138,7 +138,7 @@
     "no-amount-given": "&cNicio suma furnizata. Foloseste &a/qs reîncărcare <amount>&c",
     "now-debuging": "&aActivare modul dezvoltator activata cu succes. Reincarcare quickShop...",
     "now-nolonger-debuging": "&aMod dezvoltator dezactivat cu succes. Reîncărcare cu quickhop...",
-    "wrong-args": "&cArgumente incorecte. Foloseste &r&o/qs ajuta sa previzualizezi lista de comenzi.",
+    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto preview the list of commands.",
     "description": {
       "title": "&aAjutor QuickShop",
       "unlimited": "&fOfera magazinului un stoc nelimitat.",

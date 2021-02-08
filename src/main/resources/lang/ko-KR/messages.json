@@ -138,7 +138,7 @@
     "no-amount-given": "&a<개수>&c가 지정되지 않았습니다. &a/qs refill <개수>&c를 사용하여 물품을 보충하세요.",
     "now-debuging": "&a개발자 모드 활성화 완료. Quickshop 리로드 중...",
     "now-nolonger-debuging": "&a개발자 모드 비활성화 완료. Quickshop 리로드 중...",
-    "wrong-args": "&c명령어가 올바르지 않습니다. &l/qs help &r를 사용하여 명령어 목록을 확인해주세요.",
+    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto preview the list of commands.",
     "description": {
       "title": "&aQuickshop 도움말",
       "unlimited": "&a상점의 개수제한을 무제한으로 설정합니다.",
