@@ -3,7 +3,7 @@
   "translation-version": "Version suportée: Reremake",
   "translation-contributors": "Contributeurs : Timtower, Netherfoam, KaiNoMood, Mgazul, JackThePicken, Andre_601 et brunopaiva15, HiiRaZ",
   "translation-country": "Langue: Français (fr_FR)",
-  "language-version": "Successfully added\nas a staff member for your shop",
+  "language-version": "49",
   "not-looking-at-shop": "&cImpossible de trouver un QuickShop. Vous devez en regarder un.",
   "no-anythings-in-your-hand": "&cVous n'avez aucun objet dans votre main.",
   "no-permission": "&cVous n'avez pas la permission de faire ceci.",
@@ -220,7 +220,8 @@
   "tabcomplete": {
     "price": "[prix]",
     "range": "[distance]",
-    "amount": "[quantité]"
+    "amount": "[quantité]",
+    "currency": "[currency name]"
   },
   "updatenotify": {
     "buttontitle": "[Mettre à jour]",
@@ -292,5 +293,6 @@
   "currency-not-exists": "&cImpossible de trouver la devise que vous voulez définir, est peut-être une mauvaise orthographe ou cette devise n'est pas disponible dans ce monde.",
   "currency-set": "&aLa devise de la boutique a été définie avec succès à {0}.",
   "currency-unset": "&cYou only have room for {0} more.",
-  "currency-not-support": "&cYou only have room for {0} more!"
+  "currency-not-support": "&cYou only have room for {0} more!",
+  "item-not-exist": "&cThe item &e{0} &cnot exists, please check your spelling."
 }
