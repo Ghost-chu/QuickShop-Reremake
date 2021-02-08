@@ -138,7 +138,7 @@
     "no-amount-given": "&cNo amount provided. Use &a/qs refill <amount>&c",
     "now-debuging": "&aSuccessfully enabled developer mode. Reloading QuickShop...",
     "now-nolonger-debuging": "&aSuccessfully disabled Developer mode. Reloading QuickShop...",
-    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto preview the list of commands.",
+    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto see a list of commands.",
     "description": {
       "title": "&aQuickShop help",
       "unlimited": "&eGives a shop unlimited stock.",
@@ -296,5 +296,5 @@
   "currency-set": "&aShop currency successfully set to {0}.",
   "currency-unset": "&aShop currency removed successfully. Using default settings now.",
   "currency-not-support": "&cThe economy plugin doesn't support the multi-economy feature.",
-  "item-not-exist": "&cThe item &e{0} &cnot exists, please check your spelling."
+  "item-not-exist": "&cThe item &e{0} &cdoes not exist, please check your spelling."
 }
