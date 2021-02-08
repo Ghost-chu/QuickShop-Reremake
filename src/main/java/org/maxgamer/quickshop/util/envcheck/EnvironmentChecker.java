@@ -96,7 +96,6 @@ public class EnvironmentChecker {
             }
             try {
                 EnvCheckEntry envCheckEntry = declaredMethod.getAnnotation(EnvCheckEntry.class);
-                try {
                     ResultContainer executeResult = (ResultContainer) declaredMethod.invoke(this);
                     //plugin.getLogger().info("Result: "+executeResult.getResultMessage());
                     if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if it worse than latest one.
@@ -126,11 +125,6 @@ public class EnvironmentChecker {
                             break;
                     }
                     results.put(envCheckEntry, executeResult);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    plugin.getLogger().warning("Failed executing EnvCheckEntry [" + declaredMethod.getName() + "]: Exception thrown out without caught. Something going wrong!");
-                    plugin.getLogger().warning("[FAIL] " + envCheckEntry.name() + ": Uncaught exception.");
-                }
             } catch (Exception e) {
                 e.printStackTrace();
                 plugin.getLogger().warning("Failed executing EnvCheckEntry [" + declaredMethod.getName() + "]: Exception thrown out without caught. Something going wrong!");
