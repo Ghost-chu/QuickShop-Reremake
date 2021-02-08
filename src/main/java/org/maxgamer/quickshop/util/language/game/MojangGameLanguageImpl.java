@@ -202,7 +202,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 String cacheSha1 = yamlConfiguration.getString("sha1", "ERROR");
                 String cacheCode = yamlConfiguration.getString("lang");
                 /* If language name is default, use computer language */
-                if (languageCode.equalsIgnoreCase("en-us")) {
+                if (languageCode.equalsIgnoreCase("en_us")) {
                     isLatest = true;
                     return; //Ignore english language
                 }
