@@ -3,7 +3,7 @@
   "translation-version": "Tuettu versio: Reremake",
   "translation-contributors": "Avustajat: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Kielialue: Suomi (fi_FI)",
-  "language-version": "48",
+  "language-version": "49",
   "not-looking-at-shop": "&cQuickShoppia ei löytynyt. Sinun täytyy katsoa yhtä.",
   "no-anythings-in-your-hand": "&cKädessäsi ei ole mitään.",
   "no-permission": "&cSinulla ei ole oikeutta tehdä noin.",
@@ -220,7 +220,8 @@
   "tabcomplete": {
     "price": "[hinta]",
     "range": "[säde]",
-    "amount": "[määrä]"
+    "amount": "[määrä]",
+    "currency": "[currency name]"
   },
   "updatenotify": {
     "buttontitle": "[Päivitä nyt]",
@@ -292,5 +293,6 @@
   "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
   "currency-set": "&aSuccessfully set shop currency to {0}.",
   "currency-unset": "&aSuccessfully remove shop currency setup, will use default now.",
-  "currency-not-support": "&cThe economy plugin doesn't support multi-currency feature."
+  "currency-not-support": "&cThe economy plugin doesn't support multi-currency feature.",
+  "item-not-exist": "&cThe item &e{0} &cnot exists, please check your spelling."
 }
