@@ -3,7 +3,7 @@
   "translation-version": "إصدار الدعم: إعادة التشكيل",
   "translation-contributors": "المساهمون: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken و Andre_601",
   "translation-country": "منطقة اللغة: العربية (ar_AR)",
-  "language-version": "48",
+  "language-version": "49",
   "not-looking-at-shop": "&cلا يمكن العثور على QuickShop. تحتاج إلى النظر إلى واحد.",
   "no-anythings-in-your-hand": "&cلا يوجد شيء في يديك.",
   "no-permission": "لا تملك الصلاحيّات للقيام بذلك.",
@@ -220,7 +220,8 @@
   "tabcomplete": {
     "price": "[price]",
     "range": "[range]",
-    "amount": "[amount]"
+    "amount": "[amount]",
+    "currency": "[currency name]"
   },
   "updatenotify": {
     "buttontitle": "[Update Now]",
@@ -292,5 +293,6 @@
   "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
   "currency-set": "&aSuccessfully set shop currency to {0}.",
   "currency-unset": "&aSuccessfully remove shop currency setup, will use default now.",
-  "currency-not-support": "&cThe economy plugin doesn't support multi-currency feature."
+  "currency-not-support": "&cThe economy plugin doesn't support multi-currency feature.",
+  "item-not-exist": "&cThe item &e{0} &cnot exists, please check your spelling."
 }
