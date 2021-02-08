@@ -23,9 +23,9 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Paste link:**
- Execute command /qs paste, you will get a link contains your server information, paste it under this text.
- You must create a paste, except plugin completely won't work.
- If you create failed, you should find a paste file under the plugin/QuickShop folder.
+ Execute command `/qs paste`, you will get a link contains your server information, paste it under this text.
+ **You must create a paste, except plugin completely won't work.**
+ If you create failed, you should find a paste file under the `plugins/QuickShop` folder.
 - 【REPLACE ME TO PASTE LINK】
 
 **Additional context**
