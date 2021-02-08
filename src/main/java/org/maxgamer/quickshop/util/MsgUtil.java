@@ -187,7 +187,7 @@ public class MsgUtil {
             return filled;
         } catch (Exception th) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            th.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Failed to process messages", th);
             return "Cannot load language key: " + loc + " because something not right, check the console for details.";
         }
     }
@@ -333,12 +333,7 @@ public class MsgUtil {
         try {
             enchi18n.save(enchi18nFile);
         } catch (IOException e) {
-            e.printStackTrace();
-            plugin
-                    .getLogger()
-                    .log(
-                            Level.WARNING,
-                            "Could not load/save transaction enchname from enchi18n.yml. Skipping.");
+            plugin.getLogger().log(Level.WARNING, "Could not load/save transaction enchname from enchi18n.yml. Skipping...", e);
         }
         plugin.getLogger().info("Complete to load enchantments translation.");
     }
@@ -376,12 +371,7 @@ public class MsgUtil {
         try {
             itemi18n.save(itemi18nFile);
         } catch (IOException e) {
-            e.printStackTrace();
-            plugin
-                    .getLogger()
-                    .log(
-                            Level.WARNING,
-                            "Could not load/save transaction itemname from itemi18n.yml. Skipping.");
+            plugin.getLogger().log(Level.WARNING, "Could not load/save transaction itemname from itemi18n.yml. Skipping...", e);
         }
         plugin.getLogger().info("Complete to load items translation.");
     }
@@ -416,8 +406,7 @@ public class MsgUtil {
         try {
             potioni18n.save(potioni18nFile);
         } catch (IOException e) {
-            e.printStackTrace();
-            plugin.getLogger().warning("Could not load/save transaction potionname from potioni18n.yml. Skipping.");
+            plugin.getLogger().log(Level.WARNING, "Could not load/save transaction potionname from potioni18n.yml. Skipping...", e);
         }
         plugin.getLogger().info("Complete to load potions effect translation.");
     }
@@ -443,8 +432,7 @@ public class MsgUtil {
                 msgs.add(message);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            plugin.getLogger().warning("Could not load transaction messages from database. Skipping.");
+            plugin.getLogger().log(Level.WARNING, "Could not load transaction messages from database. Skipping.", e);
         }
     }
 
@@ -722,7 +710,7 @@ public class MsgUtil {
             return filled;
         } catch (Throwable th) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            th.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Failed to load language key", th);
             return "Cannot load language key: " + loc + " because something not right, check the console for details.";
         }
     }

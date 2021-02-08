@@ -49,6 +49,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public class ShopProtectionListener extends ProtectionListenerBase {
 
@@ -115,8 +116,7 @@ public class ShopProtectionListener extends ProtectionListenerBase {
                     }
                 }
             } catch (NoSuchFieldException | IllegalAccessException | NullPointerException | IOException e) {
-                e.printStackTrace();
-                plugin.getLogger().warning("Failed to automatic disable disable-move-event for world [" + world.getName() + "], please disable it by yourself or player can steal items from shops.");
+                plugin.getLogger().log(Level.WARNING, "Failed to automatic disable disable-move-event for world [" + world.getName() + "], please disable it by yourself or player can steal items from shops.", e);
             }
         });
 

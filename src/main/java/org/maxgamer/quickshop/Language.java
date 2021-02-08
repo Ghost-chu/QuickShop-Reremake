@@ -27,6 +27,7 @@ import org.maxgamer.quickshop.util.Util;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
 
 public class Language {
     private final QuickShop plugin;
@@ -49,7 +50,7 @@ public class Language {
             try {
                 targetFile.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                plugin.getLogger().log(Level.WARNING, "Failed to save translation files.", e);
             }
         }
 
@@ -58,7 +59,7 @@ public class Language {
             new Copied(targetFile).accept(is);
             is.close();
         } catch (Exception err) {
-            err.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Failed to save translation files.", err);
         }
     }
 

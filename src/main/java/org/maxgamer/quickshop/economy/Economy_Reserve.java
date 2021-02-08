@@ -35,6 +35,7 @@ import org.maxgamer.quickshop.util.Util;
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * @author creatorfromhell
@@ -44,7 +45,7 @@ import java.util.UUID;
 public class Economy_Reserve implements EconomyCore {
 
     private static final String errorMsg =
-            "QuickShop got an error when calling your Economy system, this is NOT a QuickShop error, please do not report this issue to the QuickShop's Issue tracker, ask your Economy plugin's author.";
+            "QuickShop received an error when processing Economy response, THIS NOT A QUICKSHOP FAULT, you might need ask help with your Economy Provider plugin author.";
 
     private final QuickShop plugin;
 
@@ -93,8 +94,7 @@ public class Economy_Reserve implements EconomyCore {
             return Objects.requireNonNull(reserve).addHoldings(name, new BigDecimal(amount));
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            throwable.printStackTrace();
-            plugin.getLogger().warning(errorMsg);
+            plugin.getLogger().log(Level.WARNING, errorMsg, throwable);
             return false;
         }
     }
@@ -118,8 +118,7 @@ public class Economy_Reserve implements EconomyCore {
             return Objects.requireNonNull(reserve).format(new BigDecimal(balance));
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            throwable.printStackTrace();
-            plugin.getLogger().warning(errorMsg);
+            plugin.getLogger().log(Level.WARNING, errorMsg, throwable);
             return formatInternal(balance);
         }
     }
@@ -142,8 +141,7 @@ public class Economy_Reserve implements EconomyCore {
             return Objects.requireNonNull(reserve).getHoldings(name).doubleValue();
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            throwable.printStackTrace();
-            plugin.getLogger().warning(errorMsg);
+            plugin.getLogger().log(Level.WARNING, errorMsg, throwable);
             return 0.0;
         }
     }
@@ -169,8 +167,7 @@ public class Economy_Reserve implements EconomyCore {
             return Objects.requireNonNull(reserve).transferHoldings(from, to, new BigDecimal(amount));
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            throwable.printStackTrace();
-            plugin.getLogger().warning(errorMsg);
+            plugin.getLogger().log(Level.WARNING, errorMsg, throwable);
             return false;
         }
     }
@@ -191,8 +188,7 @@ public class Economy_Reserve implements EconomyCore {
             return Objects.requireNonNull(reserve).removeHoldings(name, new BigDecimal(amount));
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            throwable.printStackTrace();
-            plugin.getLogger().warning(errorMsg);
+            plugin.getLogger().log(Level.WARNING, errorMsg, throwable);
             return false;
         }
     }

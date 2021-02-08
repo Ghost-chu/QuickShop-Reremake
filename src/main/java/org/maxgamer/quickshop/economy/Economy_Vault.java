@@ -38,6 +38,7 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.util.Objects;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class Economy_Vault implements EconomyCore, Listener {
 
@@ -47,6 +48,10 @@ public class Economy_Vault implements EconomyCore, Listener {
     @Setter
     @Nullable
     private net.milkbowl.vault.economy.Economy vault;
+
+    private static final String errorMsg =
+            "QuickShop received an error when processing Economy response, THIS NOT A QUICKSHOP FAULT, you might need ask help with your Economy Provider plugin (%s) author.";
+
 
     public Economy_Vault(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -129,13 +134,7 @@ public class Economy_Vault implements EconomyCore, Listener {
                 plugin.getLogger().warning("Deposit failed and player name is NULL, Player uuid: " + trader.getUniqueId() + ". Provider (" + getProviderName() + ")");
                 return false;
             }
-            t.printStackTrace();
-            plugin
-                    .getLogger()
-                    .warning(
-                            "This seems not QuickShop fault, you should contact with your economy plugin author. ("
-                                    + getProviderName()
-                                    + ")");
+            plugin.getLogger().log(Level.WARNING, String.format(errorMsg, getProviderName()), t);
             return false;
         }
     }
@@ -187,13 +186,7 @@ public class Economy_Vault implements EconomyCore, Listener {
             return Objects.requireNonNull(this.vault).getBalance(player);
         } catch (Exception t) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            t.printStackTrace();
-            plugin
-                    .getLogger()
-                    .warning(
-                            "This seems not QuickShop fault, you should contact with your economy plugin author. ("
-                                    + getProviderName()
-                                    + ")");
+            plugin.getLogger().log(Level.WARNING, String.format(errorMsg, getProviderName()), t);
             return 0.0;
         }
     }
@@ -222,13 +215,7 @@ public class Economy_Vault implements EconomyCore, Listener {
                 plugin.getLogger().warning("Withdraw failed and player name is NULL, Player uuid: " + trader.getUniqueId() + ", Provider: " + getProviderName());
                 return false;
             }
-            t.printStackTrace();
-            plugin
-                    .getLogger()
-                    .warning(
-                            "This seems not QuickShop fault, you should contact with your economy plugin author. ("
-                                    + getProviderName()
-                                    + ")");
+            plugin.getLogger().log(Level.WARNING, String.format(errorMsg, getProviderName()), t);
             return false;
         }
     }

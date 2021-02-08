@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class EnvironmentChecker {
     private final QuickShop plugin;
@@ -126,8 +127,7 @@ public class EnvironmentChecker {
                     }
                     results.put(envCheckEntry, executeResult);
             } catch (Exception e) {
-                e.printStackTrace();
-                plugin.getLogger().warning("Failed executing EnvCheckEntry [" + declaredMethod.getName() + "]: Exception thrown out without caught. Something going wrong!");
+                plugin.getLogger().log(Level.WARNING, "Failed executing EnvCheckEntry [" + declaredMethod.getName() + "]: Exception thrown out without caught. Something going wrong!", e);
                 plugin.getLogger().warning("[FAIL] " + declaredMethod.getName());
             }
         }
@@ -142,7 +142,6 @@ public class EnvironmentChecker {
             Util.debugLog("Failed to parse jvm version to check: " + jvmVersion);
             return false;
         }
-        int major = 0;
         try {
             int majorVersion = Integer.parseInt(splitVersion[0]);
             return majorVersion < 11; //Target JDK/JRE version
@@ -222,7 +221,7 @@ public class EnvironmentChecker {
             }
             return success;
         } catch (Exception e) {
-            e.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Failed to check Spigot API, the server " + Bukkit.getBukkitVersion() + " may not Spigot or Spigot's forks");
             return failed;
         }
 

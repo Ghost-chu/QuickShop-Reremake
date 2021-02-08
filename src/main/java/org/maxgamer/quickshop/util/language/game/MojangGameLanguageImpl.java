@@ -303,7 +303,7 @@ class GameLanguageLoadThread extends Thread {
             plugin.getLogger().info("Now you can execute [/qs reset lang] command to regenerate files with localized.");
         } catch (Exception e) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            e.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Something going wrong when loading game translation assets", e);
         }
     }
 

@@ -35,6 +35,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.logging.Level;
 
 @AllArgsConstructor
 public class SubCommand_Paste implements CommandProcesser {
@@ -103,7 +104,7 @@ public class SubCommand_Paste implements CommandProcesser {
             return true;
         } catch (IOException e) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            e.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Failed to save paste to your local drive, the content will print to Console", e);
             MsgUtil.sendMessage(sender, "Saving failed, output to console...");
             plugin.getLogger().info(pasteText);
             return false;
