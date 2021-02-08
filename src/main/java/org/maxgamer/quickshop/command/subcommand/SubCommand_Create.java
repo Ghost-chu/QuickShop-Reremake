@@ -40,7 +40,6 @@ import org.maxgamer.quickshop.util.holder.Result;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 public class SubCommand_Create implements CommandProcesser {
 
@@ -54,38 +53,23 @@ public class SubCommand_Create implements CommandProcesser {
     @Nullable
     private Material matchMaterial(String itemName) {
         Material material = Material.matchMaterial(itemName);
-        if (material == null || Util.isAir(material)) {
-            ConfigurationSection section = MsgUtil.getItemi18n().getConfigurationSection("itemi18n");
-            for (String itemKey : section.getKeys(false)) {
-                if (itemName.equalsIgnoreCase(section.getString(itemKey))) {
-                    material = Material.matchMaterial(itemKey);
-                    break;
-                }
+        if (isValidMaterial(material))
+            return material;
+        ConfigurationSection section = MsgUtil.getItemi18n().getConfigurationSection("itemi18n");
+        for (String itemKey : section.getKeys(false)) {
+            if (itemName.equalsIgnoreCase(section.getString(itemKey))) {
+                material = Material.matchMaterial(itemKey);
+                break;
             }
         }
-        if (material == null || Util.isAir(material)) {
-            String uppercaseName = itemName.toUpperCase(Locale.ROOT);
-            for (Material value : Material.values()) {
-                if (value.name().startsWith(uppercaseName)) {
-                    material = value;
-                    break;
-                }
-            }
-        }
-        if (material == null || Util.isAir(material)) {
-            String uppercaseName = itemName.toUpperCase(Locale.ROOT);
-            ConfigurationSection section = MsgUtil.getItemi18n().getConfigurationSection("itemi18n");
-            for (String itemKey : section.getKeys(false)) {
-                if (section.getString(itemKey).toUpperCase(Locale.ROOT).startsWith(uppercaseName)) {
-                    material = Material.matchMaterial(itemKey);
-                    break;
-                }
-            }
-        }
-        if (material == null || Util.isAir(material)) {
+        if (isValidMaterial(material)) {
             return null;
         }
         return material;
+    }
+
+    private boolean isValidMaterial(@Nullable Material material) {
+        return material != null && !Util.isAir(material);
     }
 
     @Override
@@ -102,7 +86,7 @@ public class SubCommand_Create implements CommandProcesser {
 
         if (Util.isAir(item.getType())) {
             if (cmdArg.length > 0) {
-                Material material = matchMaterial(cmdArg[0]);
+                Material material = matchMaterial(Util.mergeArgs(cmdArg));
                 if (material == null) {
                     MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-anythings-in-your-hand", sender));
                     return;

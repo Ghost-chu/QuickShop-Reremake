@@ -1528,6 +1528,21 @@ public class Util {
     }
 
     /**
+     * Merge args array to a String object with space
+     *
+     * @param args Args
+     * @return String object
+     */
+    @NotNull
+    public static String mergeArgs(@NotNull String[] args) {
+        StringBuilder builder = new StringBuilder();
+        for (String arg : args) {
+            builder.append(arg).append(" ");
+        }
+        return builder.toString().trim();
+    }
+
+    /**
      * Ensure this method is calling from specific thread
      *
      * @param async on async thread or main server thread.
