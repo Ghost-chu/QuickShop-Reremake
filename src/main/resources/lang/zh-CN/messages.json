@@ -221,7 +221,8 @@
     "price": "[价格]",
     "range": "[范围]",
     "amount": "[数量]",
-    "currency": "[currency name]"
+    "currency": "[currency name]",
+    "item": "[item]"
   },
   "updatenotify": {
     "buttontitle": "[立即更新]",
