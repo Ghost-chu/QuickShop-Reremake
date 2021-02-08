@@ -243,7 +243,7 @@ public class EconomyTransaction {
 
     interface TransactionCallback {
         default boolean onCommit(@NotNull EconomyTransaction economyTransaction) {
-            return Util.fireCancellableEvent(new EconomyCommitEvent(economyTransaction));
+            return !Util.fireCancellableEvent(new EconomyCommitEvent(economyTransaction));
         }
 
         default void onSuccess(@NotNull EconomyTransaction economyTransaction) {
