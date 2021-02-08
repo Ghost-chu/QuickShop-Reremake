@@ -1,6 +1,6 @@
 /*
- * This file is a part of project QuickShop, the name is ShopControlPanelImpl.java
- *  Copyright (C) PotatoCraft Studio and contributors
+ * This file is a part of project QuickShop, the name is
+ * ShopControlPanelImpl.java Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
  *  under the terms of the GNU General Public License as published by the
@@ -22,9 +22,7 @@ package org.maxgamer.quickshop.shop;
 import org.maxgamer.quickshop.QuickShop;
 
 public class ShopControlPanelImpl {
-    private final QuickShop plugin;
+  private final QuickShop plugin;
 
-    public ShopControlPanelImpl(QuickShop plugin) {
-        this.plugin = plugin;
-    }
+  public ShopControlPanelImpl(QuickShop plugin) { this.plugin = plugin; }
 }

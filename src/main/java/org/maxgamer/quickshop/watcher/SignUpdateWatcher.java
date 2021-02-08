@@ -19,30 +19,28 @@
 
 package org.maxgamer.quickshop.watcher;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.shop.Shop;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 public class SignUpdateWatcher extends BukkitRunnable {
-    private final Queue<Shop> signUpdateQueue = new LinkedList<>();
+  private final Queue<Shop> signUpdateQueue = new LinkedList<>();
 
-    public void scheduleSignUpdate(@NotNull Shop shop) {
-        if (signUpdateQueue.contains(shop)) {
-            return; // Ignore
-        }
-        signUpdateQueue.add(shop);
+  public void scheduleSignUpdate(@NotNull Shop shop) {
+    if (signUpdateQueue.contains(shop)) {
+      return; // Ignore
     }
+    signUpdateQueue.add(shop);
+  }
 
-    @Override
-    public void run() {
-        Shop shop = signUpdateQueue.poll();
-        while (shop != null && !shop.isDeleted()) {
-            shop.setSignText();
-            shop = signUpdateQueue.poll();
-        }
+  @Override
+  public void run() {
+    Shop shop = signUpdateQueue.poll();
+    while (shop != null && !shop.isDeleted()) {
+      shop.setSignText();
+      shop = signUpdateQueue.poll();
     }
-
+  }
 }

@@ -1,6 +1,6 @@
 /*
- * This file is a part of project QuickShop, the name is SubCommand_Currency.java
- *  Copyright (C) PotatoCraft Studio and contributors
+ * This file is a part of project QuickShop, the name is
+ * SubCommand_Currency.java Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
  *  under the terms of the GNU General Public License as published by the
@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
+import java.util.Collections;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -31,73 +33,81 @@ import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 
-import java.util.Collections;
-import java.util.List;
-
 @AllArgsConstructor
 public class SubCommand_Currency implements CommandProcesser {
 
-    private final QuickShop plugin;
+  private final QuickShop plugin;
 
-    @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+  @Override
+  public void onCommand(@NotNull CommandSender sender,
+                        @NotNull String commandLabel,
+                        @NotNull String[] cmdArg) {
 
-        if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "This command can't be run by console");
-            return;
-        }
-
-        final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
-
-
-        if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
-            return;
-        }
-
-
-        while (bIt.hasNext()) {
-            final Block b = bIt.next();
-            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-
-            if (shop != null) {
-                if (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.currency")) {
-                    //shop.setShopType(ShopType.BUYING);
-                    // shop.setSignText();
-                    //shop.update();
-                    //MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.now-buying", sender, Util.getItemStackName(shop.getItem())));
-                    if (cmdArg.length < 1) {
-                        shop.setCurrency(null);
-                        MsgUtil.sendMessage(sender, MsgUtil.getMessage("currency-unset", sender));
-                        return;
-                    }
-                    if (!plugin.getEconomy().supportCurrency()) {
-                        MsgUtil.sendMessage(sender, MsgUtil.getMessage("currency-not-support", sender));
-                        return;
-                    }
-                    if (!plugin.getEconomy().hasCurrency(shop.getLocation().getWorld(), cmdArg[0])) {
-                        MsgUtil.sendMessage(sender, MsgUtil.getMessage("currency-not-exists", sender));
-                        return;
-                    }
-                    shop.setCurrency(cmdArg[0]);
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("currency-set", sender, cmdArg[0]));
-                    return;
-
-                } else {
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-managed-shop", sender));
-                }
-                return;
-            }
-        }
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+    if (!(sender instanceof Player)) {
+      MsgUtil.sendMessage(sender, "This command can't be run by console");
+      return;
     }
 
-    @NotNull
-    @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return Collections.emptyList();
+    final BlockIterator bIt = new BlockIterator((LivingEntity)sender, 10);
+
+    if (!bIt.hasNext()) {
+      MsgUtil.sendMessage(sender,
+                          MsgUtil.getMessage("not-looking-at-shop", sender));
+      return;
     }
 
+    while (bIt.hasNext()) {
+      final Block b = bIt.next();
+      final Shop shop = plugin.getShopManager().getShop(b.getLocation());
+
+      if (shop != null) {
+        if (shop.getModerator().isModerator(((Player)sender).getUniqueId()) ||
+            QuickShop.getPermissionManager().hasPermission(
+                sender, "quickshop.other.currency")) {
+          // shop.setShopType(ShopType.BUYING);
+          // shop.setSignText();
+          // shop.update();
+          // MsgUtil.sendMessage(sender,
+          // MsgUtil.getMessage("command.now-buying", sender,
+          // Util.getItemStackName(shop.getItem())));
+          if (cmdArg.length < 1) {
+            shop.setCurrency(null);
+            MsgUtil.sendMessage(sender,
+                                MsgUtil.getMessage("currency-unset", sender));
+            return;
+          }
+          if (!plugin.getEconomy().supportCurrency()) {
+            MsgUtil.sendMessage(
+                sender, MsgUtil.getMessage("currency-not-support", sender));
+            return;
+          }
+          if (!plugin.getEconomy().hasCurrency(shop.getLocation().getWorld(),
+                                               cmdArg[0])) {
+            MsgUtil.sendMessage(
+                sender, MsgUtil.getMessage("currency-not-exists", sender));
+            return;
+          }
+          shop.setCurrency(cmdArg[0]);
+          MsgUtil.sendMessage(
+              sender, MsgUtil.getMessage("currency-set", sender, cmdArg[0]));
+          return;
+
+        } else {
+          MsgUtil.sendMessage(sender,
+                              MsgUtil.getMessage("not-managed-shop", sender));
+        }
+        return;
+      }
+    }
+    MsgUtil.sendMessage(sender,
+                        MsgUtil.getMessage("not-looking-at-shop", sender));
+  }
+
+  @NotNull
+  @Override
+  public List<String> onTabComplete(@NotNull CommandSender sender,
+                                    @NotNull String commandLabel,
+                                    @NotNull String[] cmdArg) {
+    return Collections.emptyList();
+  }
 }

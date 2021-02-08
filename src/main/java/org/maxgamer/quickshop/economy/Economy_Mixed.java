@@ -7,7 +7,8 @@
 // *  Free Software Foundation, either version 3 of the License, or
 // *  (at your option) any later version.
 // *
-// *  This program is distributed in the hope that it will be useful, but WITHOUT
+// *  This program is distributed in the hope that it will be useful, but
+// WITHOUT
 // *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 // *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
 // *  for more details.
@@ -17,20 +18,20 @@
 // *
 // */
 //
-//package org.maxgamer.quickshop.economy;
+// package org.maxgamer.quickshop.economy;
 //
-//import org.bukkit.Bukkit;
-//import org.bukkit.OfflinePlayer;
-//import org.bukkit.plugin.Plugin;
-//import org.jetbrains.annotations.NotNull;
-//import org.jetbrains.annotations.Nullable;
-//import org.maxgamer.quickshop.QuickShop;
-//import org.maxgamer.quickshop.util.MsgUtil;
-//import org.maxgamer.quickshop.util.Util;
+// import org.bukkit.Bukkit;
+// import org.bukkit.OfflinePlayer;
+// import org.bukkit.plugin.Plugin;
+// import org.jetbrains.annotations.NotNull;
+// import org.jetbrains.annotations.Nullable;
+// import org.maxgamer.quickshop.QuickShop;
+// import org.maxgamer.quickshop.util.MsgUtil;
+// import org.maxgamer.quickshop.util.Util;
 //
-//import java.util.UUID;
+// import java.util.UUID;
 //
-//public class Economy_Mixed implements EconomyCore {
+// public class Economy_Mixed implements EconomyCore {
 //    private final EconomyCore core;
 //    private final QuickShop plugin;
 //
@@ -40,7 +41,8 @@
 //    }
 //
 //    @Override
-//    public boolean deposit(@NotNull UUID name, double amount, @Nullable String currency) {
+//    public boolean deposit(@NotNull UUID name, double amount, @Nullable String
+//    currency) {
 //        if (getBalance(name, currency) < amount) {
 //            return false;
 //        }
@@ -54,7 +56,8 @@
 //    }
 //
 //    @Override
-//    public boolean deposit(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
+//    public boolean deposit(@NotNull OfflinePlayer trader, double amount,
+//    @Nullable String currency) {
 //        if (getBalance(trader, currency) < amount) {
 //            return false;
 //        }
@@ -78,12 +81,14 @@
 //    }
 //
 //    @Override
-//    public double getBalance(@NotNull OfflinePlayer player, @Nullable String currency) {
+//    public double getBalance(@NotNull OfflinePlayer player, @Nullable String
+//    currency) {
 //        return core.getBalance(player, currency);
 //    }
 //
 //    @Override
-//    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @Nullable String currency) {
+//    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double
+//    amount, @Nullable String currency) {
 //        boolean result;
 //        result = withdraw(from, amount, currency);
 //        if (!result) {
@@ -97,7 +102,8 @@
 //    }
 //
 //    @Override
-//    public boolean withdraw(@NotNull UUID name, double amount, @Nullable String currency) {
+//    public boolean withdraw(@NotNull UUID name, double amount, @Nullable
+//    String currency) {
 //        if (getBalance(name, currency) > amount) {
 //            return false;
 //        }
@@ -111,7 +117,8 @@
 //    }
 //
 //    @Override
-//    public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
+//    public boolean withdraw(@NotNull OfflinePlayer trader, double amount,
+//    @Nullable String currency) {
 //        if (getBalance(trader, currency) > amount) {
 //            return false;
 //        }

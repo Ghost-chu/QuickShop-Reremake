@@ -19,52 +19,54 @@
 
 package org.maxgamer.quickshop;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import lombok.Data;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
 @Data
 public class BuildInfo {
-    private final int buildId;
-    private final String buildTag;
-    private final String buildUrl;
-    private final String jobUrl;
-    private final String gitCommit;
-    private final String gitBranch;
-    private final String pomGruopId;
-    private final String pomArtifactId;
-    private final String jobName;
+  private final int buildId;
+  private final String buildTag;
+  private final String buildUrl;
+  private final String jobUrl;
+  private final String gitCommit;
+  private final String gitBranch;
+  private final String pomGruopId;
+  private final String pomArtifactId;
+  private final String jobName;
 
-    public BuildInfo(@Nullable InputStream inputStream) {
-        if (inputStream == null) {
-            buildId = 0;
-            buildTag = "Unknown";
-            buildUrl = "Unknown";
-            gitCommit = "Custom Build";
-            gitBranch = "Unknown";
-            pomGruopId = "Unknown";
-            pomArtifactId = "Unknown";
-            jobName = "Unknown";
-            jobUrl = "https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/";
-            return;
-        }
-        YamlConfiguration buildInfo = YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
-        buildId = buildInfo.getInt("build-id", 0);
-        buildTag = buildInfo.getString("build-tag", "Unknown");
-        buildUrl = buildInfo.getString("build-url", "Unknown");
-        gitCommit = buildInfo.getString("git-commit", "Invalid");
-        gitBranch = buildInfo.getString("git-branch", "Unknown");
-        pomGruopId = buildInfo.getString("pom-groupid", "Unknown");
-        pomArtifactId = buildInfo.getString("pom-artifactid", "Unknown");
-        jobUrl = buildInfo.getString("job-url", "https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/");
-        jobName = buildInfo.getString("job-name", "Unknown");
-        try {
-            inputStream.close();
-        } catch (IOException ignored) {
-        }
+  public BuildInfo(@Nullable InputStream inputStream) {
+    if (inputStream == null) {
+      buildId = 0;
+      buildTag = "Unknown";
+      buildUrl = "Unknown";
+      gitCommit = "Custom Build";
+      gitBranch = "Unknown";
+      pomGruopId = "Unknown";
+      pomArtifactId = "Unknown";
+      jobName = "Unknown";
+      jobUrl = "https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/";
+      return;
     }
+    YamlConfiguration buildInfo =
+        YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
+    buildId = buildInfo.getInt("build-id", 0);
+    buildTag = buildInfo.getString("build-tag", "Unknown");
+    buildUrl = buildInfo.getString("build-url", "Unknown");
+    gitCommit = buildInfo.getString("git-commit", "Invalid");
+    gitBranch = buildInfo.getString("git-branch", "Unknown");
+    pomGruopId = buildInfo.getString("pom-groupid", "Unknown");
+    pomArtifactId = buildInfo.getString("pom-artifactid", "Unknown");
+    jobUrl = buildInfo.getString(
+        "job-url",
+        "https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/");
+    jobName = buildInfo.getString("job-name", "Unknown");
+    try {
+      inputStream.close();
+    } catch (IOException ignored) {
+    }
+  }
 }

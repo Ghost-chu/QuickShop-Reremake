@@ -19,14 +19,13 @@
 
 package org.maxgamer.quickshop.util.envcheck;
 
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.util.Map;
 
 @AllArgsConstructor
 @Data
 public class ResultReport {
-   private final CheckResult finalResult;
-   private final Map<EnvCheckEntry, ResultContainer> results;
+  private final CheckResult finalResult;
+  private final Map<EnvCheckEntry, ResultContainer> results;
 }

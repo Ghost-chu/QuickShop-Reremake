@@ -1,6 +1,6 @@
 /*
- * This file is a part of project QuickShop, the name is SubCommand_Recovery.java
- *  Copyright (C) PotatoCraft Studio and contributors
+ * This file is a part of project QuickShop, the name is
+ * SubCommand_Recovery.java Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
  *  under the terms of the GNU General Public License as published by the
@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
+import java.io.File;
+import java.util.logging.Level;
 import lombok.AllArgsConstructor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -29,37 +31,37 @@ import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
-import java.io.File;
-import java.util.logging.Level;
-
 @AllArgsConstructor
 public class SubCommand_Recovery implements CommandProcesser {
 
-    private final QuickShop plugin;
+  private final QuickShop plugin;
 
-    @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (!(sender instanceof ConsoleCommandSender)) {
-            return;
-        }
-        File file = new File(plugin.getDataFolder(), "recovery.txt");
-        if (!file.exists()) {
-            MsgUtil.sendMessage(sender, "recovery.txt not exist, do not execute this command unless you know what are you doing.");
-            return;
-        }
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                try {
-                    Util.backupDatabase();
-                    plugin.getShopLoader().recoverFromFile(Util.readToString(file));
-                } catch (Exception e) {
-                    plugin.getLogger().log(Level.WARNING, "Failed to recovery data cause something going wrong", e);
-                }
-            }
-        }.runTaskAsynchronously(plugin);
-
+  @Override
+  public void onCommand(@NotNull CommandSender sender,
+                        @NotNull String commandLabel,
+                        @NotNull String[] cmdArg) {
+    if (!(sender instanceof ConsoleCommandSender)) {
+      return;
     }
-
+    File file = new File(plugin.getDataFolder(), "recovery.txt");
+    if (!file.exists()) {
+      MsgUtil.sendMessage(
+          sender,
+          "recovery.txt not exist, do not execute this command unless you know what are you doing.");
+      return;
+    }
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        try {
+          Util.backupDatabase();
+          plugin.getShopLoader().recoverFromFile(Util.readToString(file));
+        } catch (Exception e) {
+          plugin.getLogger().log(
+              Level.WARNING,
+              "Failed to recovery data cause something going wrong", e);
+        }
+      }
+    }.runTaskAsynchronously(plugin);
+  }
 }

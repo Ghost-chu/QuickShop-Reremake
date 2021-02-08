@@ -1,6 +1,6 @@
 /*
- * This file is a part of project QuickShop, the name is ShopContainerWatcher.java
- *  Copyright (C) PotatoCraft Studio and contributors
+ * This file is a part of project QuickShop, the name is
+ * ShopContainerWatcher.java Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
  *  under the terms of the GNU General Public License as published by the
@@ -19,39 +19,35 @@
 
 package org.maxgamer.quickshop.watcher;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.shop.Shop;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 /**
- * Check the shops after server booted up, make sure shop can correct self-deleted when container
- * lost.
+ * Check the shops after server booted up, make sure shop can correct
+ * self-deleted when container lost.
  */
 public class ShopContainerWatcher extends BukkitRunnable {
-    private final Queue<Shop> checkQueue = new LinkedList<>();
+  private final Queue<Shop> checkQueue = new LinkedList<>();
 
-    public void scheduleCheck(@NotNull Shop shop) {
-        checkQueue.add(shop);
+  public void scheduleCheck(@NotNull Shop shop) { checkQueue.add(shop); }
+
+  @Override
+  public void run() {
+    long beginTime = System.currentTimeMillis();
+    Shop shop = checkQueue.poll();
+    while (shop != null && !shop.isDeleted()) {
+      if (shop instanceof ContainerShop) {
+        ((ContainerShop)shop).checkContainer();
+      }
+      if (System.currentTimeMillis() - beginTime >
+          45) { // Don't let quickshop eat more than 45 ms per tick.
+        break;
+      }
+      shop = checkQueue.poll();
     }
-
-    @Override
-    public void run() {
-        long beginTime = System.currentTimeMillis();
-        Shop shop = checkQueue.poll();
-        while (shop != null && !shop.isDeleted()) {
-            if (shop instanceof ContainerShop) {
-                ((ContainerShop) shop).checkContainer();
-            }
-            if (System.currentTimeMillis() - beginTime
-                    > 45) { // Don't let quickshop eat more than 45 ms per tick.
-                break;
-            }
-            shop = checkQueue.poll();
-        }
-    }
-
+  }
 }

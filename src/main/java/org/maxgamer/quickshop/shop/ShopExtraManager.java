@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.shop;
 
+import java.util.List;
+import java.util.Map;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -27,70 +29,69 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * Quick access Extra API
  */
 public class ShopExtraManager {
-    private final Shop shop;
-    private final Plugin namespace;
+  private final Shop shop;
+  private final Plugin namespace;
 
-    ShopExtraManager(@NotNull Shop shop, @NotNull Plugin namespace) {
-        this.shop = shop;
-        this.namespace = namespace;
+  ShopExtraManager(@NotNull Shop shop, @NotNull Plugin namespace) {
+    this.shop = shop;
+    this.namespace = namespace;
+  }
+
+  public Integer getInteger(@NotNull String key, @Nullable Integer def) {
+    return Integer.parseInt(
+        this.shop.getExtra(namespace).getOrDefault(key, String.valueOf(def)));
+  }
+
+  public Double getDouble(@NotNull String key, @Nullable Double def) {
+    return Double.parseDouble(
+        this.shop.getExtra(namespace).getOrDefault(key, String.valueOf(def)));
+  }
+
+  public String getString(@NotNull String key, @Nullable String def) {
+    return this.shop.getExtra(namespace).getOrDefault(key, def);
+  }
+
+  public List<String> getStringList(@NotNull String key,
+                                    @Nullable List<String> def) {
+    String listString = this.shop.getExtra(namespace).get(key);
+    if (listString == null) {
+      return def;
     }
+    // noinspection unchecked
+    return (List<String>)JsonUtil.getGson().fromJson(listString, List.class);
+  }
 
-    public Integer getInteger(@NotNull String key, @Nullable Integer def) {
-        return Integer.parseInt(this.shop.getExtra(namespace).getOrDefault(key, String.valueOf(def)));
+  public ItemStack getItemStack(@NotNull String key, @Nullable ItemStack def) {
+    String stackStr = this.shop.getExtra(namespace).get(key);
+    if (stackStr == null) {
+      return def;
     }
-
-    public Double getDouble(@NotNull String key, @Nullable Double def) {
-        return Double.parseDouble(this.shop.getExtra(namespace).getOrDefault(key, String.valueOf(def)));
+    try {
+      return Util.deserialize(stackStr);
+    } catch (InvalidConfigurationException ignored) {
+      return null;
     }
+  }
 
-    public String getString(@NotNull String key, @Nullable String def) {
-        return this.shop.getExtra(namespace).getOrDefault(key, def);
+  public void set(@NotNull String key, @Nullable Object obj) {
+    Map<String, String> map = this.shop.getExtra(namespace);
+    if (obj == null) {
+      map.remove(key);
+    } else {
+      if (obj instanceof Integer) {
+        map.put(key, String.valueOf(obj));
+      } else if (obj instanceof Double) {
+        map.put(key, String.valueOf(obj));
+      } else if (obj instanceof ItemStack) {
+        map.put(key, Util.serialize((ItemStack)obj));
+      } else {
+        map.put(key, JsonUtil.getGson().toJson(obj));
+      }
     }
-
-    public List<String> getStringList(@NotNull String key, @Nullable List<String> def) {
-        String listString = this.shop.getExtra(namespace).get(key);
-        if (listString == null) {
-            return def;
-        }
-        //noinspection unchecked
-        return (List<String>) JsonUtil.getGson().fromJson(listString, List.class);
-    }
-
-    public ItemStack getItemStack(@NotNull String key, @Nullable ItemStack def) {
-        String stackStr = this.shop.getExtra(namespace).get(key);
-        if (stackStr == null) {
-            return def;
-        }
-        try {
-            return Util.deserialize(stackStr);
-        } catch (InvalidConfigurationException ignored) {
-            return null;
-        }
-    }
-
-    public void set(@NotNull String key, @Nullable Object obj) {
-        Map<String, String> map = this.shop.getExtra(namespace);
-        if (obj == null) {
-            map.remove(key);
-        } else {
-            if (obj instanceof Integer) {
-                map.put(key, String.valueOf(obj));
-            } else if (obj instanceof Double) {
-                map.put(key, String.valueOf(obj));
-            } else if (obj instanceof ItemStack) {
-                map.put(key, Util.serialize((ItemStack) obj));
-            } else {
-                map.put(key, JsonUtil.getGson().toJson(obj));
-            }
-        }
-        this.shop.setExtra(namespace, map);
-    }
-
+    this.shop.setExtra(namespace, map);
+  }
 }

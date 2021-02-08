@@ -20,34 +20,35 @@
 package org.maxgamer.quickshop.util;
 
 import com.google.common.cache.CacheLoader;
-import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
 
 public class HttpCacheLoader extends CacheLoader<URL, Optional<String>> {
-    /**
-     * Computes or retrieves the value corresponding to {@code key}.
-     *
-     * @param key the non-null key whose value should be loaded
-     * @return the value associated with {@code key}; <b>must not be null</b>
-     * @throws Exception            if unable to load the result
-     * @throws InterruptedException if this method is interrupted. {@code InterruptedException} is
-     *                              treated like any other {@code Exception} in all respects except that, when it is caught,
-     *                              the thread's interrupt status is set
-     */
-    @Override
-    public Optional<String> load(@NotNull URL key) throws Exception {
-        try {
-            return Optional.ofNullable(HttpRequest.get(key)
-                    .execute()
-                    .expectResponseCode(200)
-                    .returnContent()
-                    .asString("UTF-8"));
-        } catch (IOException e) {
-            return Optional.empty();
-        }
+  /**
+   * Computes or retrieves the value corresponding to {@code key}.
+   *
+   * @param key the non-null key whose value should be loaded
+   * @return the value associated with {@code key}; <b>must not be null</b>
+   * @throws Exception            if unable to load the result
+   * @throws InterruptedException if this method is interrupted. {@code
+   *     InterruptedException} is
+   *                              treated like any other {@code Exception} in
+   * all respects except that, when it is caught, the thread's interrupt status
+   * is set
+   */
+  @Override
+  public Optional<String> load(@NotNull URL key) throws Exception {
+    try {
+      return Optional.ofNullable(HttpRequest.get(key)
+                                     .execute()
+                                     .expectResponseCode(200)
+                                     .returnContent()
+                                     .asString("UTF-8"));
+    } catch (IOException e) {
+      return Optional.empty();
     }
+  }
 }

@@ -19,6 +19,9 @@
 
 package org.maxgamer.quickshop.util.updater.impl;
 
+import java.io.*;
+import java.net.URL;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.InvalidDescriptionException;
@@ -32,123 +35,141 @@ import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.updater.QuickUpdater;
 import org.maxgamer.quickshop.util.updater.VersionType;
 
-import java.io.*;
-import java.net.URL;
-import java.util.UUID;
-
 public class JenkinsUpdater implements QuickUpdater {
-    private final BuildInfo pluginBuildInfo;
-    private final String jobUrl;
-    private BuildInfo lastRemoteBuildInfo;
+  private final BuildInfo pluginBuildInfo;
+  private final String jobUrl;
+  private BuildInfo lastRemoteBuildInfo;
 
-    public JenkinsUpdater(BuildInfo pluginBuildInfo) {
-        this.pluginBuildInfo = pluginBuildInfo;
-        this.jobUrl = pluginBuildInfo.getJobUrl();
+  public JenkinsUpdater(BuildInfo pluginBuildInfo) {
+    this.pluginBuildInfo = pluginBuildInfo;
+    this.jobUrl = pluginBuildInfo.getJobUrl();
+  }
+
+  @Override
+  public @NotNull VersionType getCurrentRunning() {
+    return VersionType.STABLE; // TODO LTS
+  }
+
+  @Override
+  public int getRemoteServerBuildId() {
+    if (this.lastRemoteBuildInfo == null) {
+      isLatest(getCurrentRunning());
     }
-
-    @Override
-    public @NotNull VersionType getCurrentRunning() {
-        return VersionType.STABLE; //TODO LTS
+    if (this.lastRemoteBuildInfo == null) {
+      return -1;
     }
+    return this.lastRemoteBuildInfo.getBuildId();
+  }
 
-    @Override
-    public int getRemoteServerBuildId() {
-        if (this.lastRemoteBuildInfo == null) {
-            isLatest(getCurrentRunning());
-        }
-        if (this.lastRemoteBuildInfo == null) {
-            return -1;
-        }
-        return this.lastRemoteBuildInfo.getBuildId();
+  @Override
+  public @NotNull String getRemoteServerVersion() {
+    if (this.lastRemoteBuildInfo == null) {
+      isLatest(getCurrentRunning());
     }
-
-    @Override
-    public @NotNull String getRemoteServerVersion() {
-        if (this.lastRemoteBuildInfo == null) {
-            isLatest(getCurrentRunning());
-        }
-        if (this.lastRemoteBuildInfo == null) {
-            return "Error";
-        }
-        return this.lastRemoteBuildInfo.getBuildTag();
+    if (this.lastRemoteBuildInfo == null) {
+      return "Error";
     }
+    return this.lastRemoteBuildInfo.getBuildTag();
+  }
 
-    @Override
-    public boolean isLatest(@NotNull VersionType versionType) {
-        try (InputStream inputStream = HttpRequest.get(new URL(jobUrl + "lastSuccessfulBuild/artifact/target/BUILDINFO"))
-                .header("User-Agent", "QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion())
-                .execute()
-                .expectResponseCode(200)
-                .getInputStream()) {
-            this.lastRemoteBuildInfo = new BuildInfo(inputStream);
-            return lastRemoteBuildInfo.getBuildId() >= pluginBuildInfo.getBuildId() || lastRemoteBuildInfo.getGitCommit().equalsIgnoreCase(pluginBuildInfo.getGitCommit());
-        } catch (IOException ioException) {
-            MsgUtil.sendMessage(Bukkit.getConsoleSender(), ChatColor.RED + "[QuickShop] Failed to check for an update on build server! It might be an internet issue or the build server host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often, Error: " + ioException.getMessage());
-            return true;
-        }
+  @Override
+  public boolean isLatest(@NotNull VersionType versionType) {
+    try (InputStream inputStream =
+             HttpRequest
+                 .get(new URL(jobUrl +
+                              "lastSuccessfulBuild/artifact/target/BUILDINFO"))
+                 .header("User-Agent", "QuickShop-" + QuickShop.getFork() +
+                                           " " + QuickShop.getVersion())
+                 .execute()
+                 .expectResponseCode(200)
+                 .getInputStream()) {
+      this.lastRemoteBuildInfo = new BuildInfo(inputStream);
+      return lastRemoteBuildInfo.getBuildId() >= pluginBuildInfo.getBuildId() ||
+          lastRemoteBuildInfo.getGitCommit().equalsIgnoreCase(
+              pluginBuildInfo.getGitCommit());
+    } catch (IOException ioException) {
+      MsgUtil.sendMessage(
+          Bukkit.getConsoleSender(),
+          ChatColor.RED +
+              "[QuickShop] Failed to check for an update on build server! It might be an internet issue or the build server host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often, Error: " +
+              ioException.getMessage());
+      return true;
     }
+  }
 
-    @Override
-    public byte[] update(@NotNull VersionType versionType) throws IOException {
-        InputStream is = HttpRequest.get(new URL(jobUrl + "lastSuccessfulBuild/artifact/target/QuickShop.jar"))
-                .header("User-Agent", "QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion())
-                .execute()
-                .getInputStream();
-        try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-            byte[] buff = new byte[1024];
-            int len;
-            long downloaded = 0;
-            if (is == null) {
-                throw new IOException("Failed downloading: Cannot open connection with remote server.");
-            }
-            while ((len = is.read(buff)) != -1) {
-                os.write(buff, 0, len);
-                downloaded += len;
-                Util.debugLog("File Downloader: " + downloaded + " bytes.");
-            }
-            is.close();
-            byte[] file = os.toByteArray();
-            os.close();
-            return file;
-        }
+  @Override
+  public byte[] update(@NotNull VersionType versionType) throws IOException {
+    InputStream is =
+        HttpRequest
+            .get(new URL(jobUrl +
+                         "lastSuccessfulBuild/artifact/target/QuickShop.jar"))
+            .header("User-Agent", "QuickShop-" + QuickShop.getFork() + " " +
+                                      QuickShop.getVersion())
+            .execute()
+            .getInputStream();
+    try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+      byte[] buff = new byte[1024];
+      int len;
+      long downloaded = 0;
+      if (is == null) {
+        throw new IOException(
+            "Failed downloading: Cannot open connection with remote server.");
+      }
+      while ((len = is.read(buff)) != -1) {
+        os.write(buff, 0, len);
+        downloaded += len;
+        Util.debugLog("File Downloader: " + downloaded + " bytes.");
+      }
+      is.close();
+      byte[] file = os.toByteArray();
+      os.close();
+      return file;
     }
+  }
 
-    @Override
-    public void install(byte[] bytes) throws IOException {
-        File pluginFolder = new File("plugins");
-        if (!pluginFolder.exists()) {
-            throw new RuntimeException("Can't find the plugins folder.");
-        }
-        if (!pluginFolder.isDirectory()) {
-            throw new RuntimeException("Plugins not a folder.");
-        }
-        File[] plugins = pluginFolder.listFiles();
-        if (plugins == null) {
-            throw new IOException("Can't get the files in plugins folder");
-        }
-        File newJar = new File(pluginFolder, "QuickShop" + UUID.randomUUID().toString().replace("-", "") + ".jar");
-
-        for (File pluginJar : plugins) {
-            try { //Delete all old jar files
-                PluginDescriptionFile desc = QuickShop.getInstance().getPluginLoader().getPluginDescription(pluginJar);
-                if (!desc.getName().equals(QuickShop.getInstance().getDescription().getName())) {
-                    continue;
-                }
-                Util.debugLog("Deleting: " + pluginJar.getPath());
-                if (!pluginJar.delete()) {
-                    Util.debugLog("Delete failed, using replacing method");
-                    try (OutputStream outputStream = new FileOutputStream(pluginJar, false)) {
-                        outputStream.write(bytes);
-                        outputStream.flush();
-                    }
-                } else {
-                    try (OutputStream outputStream = new FileOutputStream(newJar, false)) {
-                        outputStream.write(bytes);
-                        outputStream.flush();
-                    }
-                }
-            } catch (InvalidDescriptionException ignored) {
-            }
-        }
+  @Override
+  public void install(byte[] bytes) throws IOException {
+    File pluginFolder = new File("plugins");
+    if (!pluginFolder.exists()) {
+      throw new RuntimeException("Can't find the plugins folder.");
     }
+    if (!pluginFolder.isDirectory()) {
+      throw new RuntimeException("Plugins not a folder.");
+    }
+    File[] plugins = pluginFolder.listFiles();
+    if (plugins == null) {
+      throw new IOException("Can't get the files in plugins folder");
+    }
+    File newJar = new File(
+        pluginFolder,
+        "QuickShop" + UUID.randomUUID().toString().replace("-", "") + ".jar");
+
+    for (File pluginJar : plugins) {
+      try { // Delete all old jar files
+        PluginDescriptionFile desc =
+            QuickShop.getInstance().getPluginLoader().getPluginDescription(
+                pluginJar);
+        if (!desc.getName().equals(
+                QuickShop.getInstance().getDescription().getName())) {
+          continue;
+        }
+        Util.debugLog("Deleting: " + pluginJar.getPath());
+        if (!pluginJar.delete()) {
+          Util.debugLog("Delete failed, using replacing method");
+          try (OutputStream outputStream =
+                   new FileOutputStream(pluginJar, false)) {
+            outputStream.write(bytes);
+            outputStream.flush();
+          }
+        } else {
+          try (OutputStream outputStream =
+                   new FileOutputStream(newJar, false)) {
+            outputStream.write(bytes);
+            outputStream.flush();
+          }
+        }
+      } catch (InvalidDescriptionException ignored) {
+      }
+    }
+  }
 }

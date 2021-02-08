@@ -19,7 +19,9 @@
 
 package org.maxgamer.quickshop.economy;
 
-
+import java.util.Objects;
+import java.util.UUID;
+import java.util.logging.Level;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -36,231 +38,238 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
 
-import java.util.Objects;
-import java.util.UUID;
-import java.util.logging.Level;
-
 public class Economy_Vault implements EconomyCore, Listener {
 
-    private final QuickShop plugin;
-    private final boolean allowLoan;
-    @Getter
-    @Setter
-    @Nullable
-    private net.milkbowl.vault.economy.Economy vault;
+  private final QuickShop plugin;
+  private final boolean allowLoan;
+  @Getter @Setter @Nullable private net.milkbowl.vault.economy.Economy vault;
 
-    private static final String errorMsg =
-            "QuickShop received an error when processing Economy response, THIS NOT A QUICKSHOP FAULT, you might need ask help with your Economy Provider plugin (%s) author.";
+  private static final String errorMsg =
+      "QuickShop received an error when processing Economy response, THIS NOT A QUICKSHOP FAULT, you might need ask help with your Economy Provider plugin (%s) author.";
 
+  public Economy_Vault(@NotNull QuickShop plugin) {
+    this.plugin = plugin;
+    this.allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
+    setupEconomy();
+  }
 
-    public Economy_Vault(@NotNull QuickShop plugin) {
-        this.plugin = plugin;
-        this.allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
-        setupEconomy();
+  private boolean setupEconomy() {
+    if (!Util.isClassAvailable("net.milkbowl.vault.economy.Economy")) {
+      return false; // QUICKSHOP-YS I can't believe it broken almost a year and
+                    // nobody found it, my sentry exploded.
+    }
+    RegisteredServiceProvider<net.milkbowl.vault.economy.Economy>
+        economyProvider;
+    try {
+      economyProvider = Bukkit.getServicesManager().getRegistration(
+          net.milkbowl.vault.economy.Economy.class);
+    } catch (Exception e) {
+      return false;
     }
 
-    private boolean setupEconomy() {
-        if (!Util.isClassAvailable("net.milkbowl.vault.economy.Economy")) {
-            return false; // QUICKSHOP-YS I can't believe it broken almost a year and nobody found it, my sentry exploded.
-        }
-        RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> economyProvider;
-        try {
-            economyProvider = Bukkit.getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        } catch (Exception e) {
-            return false;
-        }
-
-        if (economyProvider != null) {
-            this.vault = economyProvider.getProvider();
-        }
-
-        if (this.vault == null) {
-            return false;
-        }
-
-        if (this.vault.getName() == null || this.vault.getName().isEmpty()) {
-            plugin
-                    .getLogger()
-                    .warning(
-                            "Current economy plugin not correct process all request, this usually cause by irregular code, you should report this issue to your economy plugin author or use other economy plugin.");
-            plugin
-                    .getLogger()
-                    .warning(
-                            "This is technical information, please send this to economy plugin author: "
-                                    + "VaultEconomyProvider.getName() return a null or empty.");
-        } else {
-            plugin.getLogger().info("Using economy system: " + this.vault.getName());
-        }
-        Bukkit.getPluginManager().registerEvents(this, plugin);
-        Util.debugLog("Economy service listener was registered.");
-        return true;
+    if (economyProvider != null) {
+      this.vault = economyProvider.getProvider();
     }
 
-    @EventHandler
-    public void onServiceRegister(ServiceRegisterEvent event) {
-        if (!(event.getProvider() instanceof net.milkbowl.vault.economy.Economy)) {
-            return;
-        }
-        setupEconomy();
+    if (this.vault == null) {
+      return false;
     }
 
-    @EventHandler
-    public void onServiceUnregister(ServiceUnregisterEvent event) {
-        if (!(event.getProvider() instanceof net.milkbowl.vault.economy.Economy)) {
-            return;
-        }
-        setupEconomy();
+    if (this.vault.getName() == null || this.vault.getName().isEmpty()) {
+      plugin.getLogger().warning(
+          "Current economy plugin not correct process all request, this usually cause by irregular code, you should report this issue to your economy plugin author or use other economy plugin.");
+      plugin.getLogger().warning(
+          "This is technical information, please send this to economy plugin author: "
+          + "VaultEconomyProvider.getName() return a null or empty.");
+    } else {
+      plugin.getLogger().info("Using economy system: " + this.vault.getName());
     }
+    Bukkit.getPluginManager().registerEvents(this, plugin);
+    Util.debugLog("Economy service listener was registered.");
+    return true;
+  }
 
-    @Override
-    public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
-        if (!isValid()) {
-            return false;
-        }
-        return deposit(Bukkit.getOfflinePlayer(name), amount, world, currency);
-
+  @EventHandler
+  public void onServiceRegister(ServiceRegisterEvent event) {
+    if (!(event.getProvider() instanceof net.milkbowl.vault.economy.Economy)) {
+      return;
     }
+    setupEconomy();
+  }
 
-    @Override
-    public boolean deposit(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
-        if (!isValid()) {
-            return false;
-        }
-        try {
-            return Objects.requireNonNull(this.vault).depositPlayer(trader, amount).transactionSuccess();
-        } catch (Exception t) {
-            plugin.getSentryErrorReporter().ignoreThrow();
-            if (trader.getName() == null) {
-                plugin.getLogger().warning("Deposit failed and player name is NULL, Player uuid: " + trader.getUniqueId() + ". Provider (" + getProviderName() + ")");
-                return false;
-            }
-            plugin.getLogger().log(Level.WARNING, String.format(errorMsg, getProviderName()), t);
-            return false;
-        }
+  @EventHandler
+  public void onServiceUnregister(ServiceUnregisterEvent event) {
+    if (!(event.getProvider() instanceof net.milkbowl.vault.economy.Economy)) {
+      return;
     }
+    setupEconomy();
+  }
 
-    @Override
-    public String format(double balance, @NotNull World world, @Nullable String currency) {
-        if (!isValid()) {
-            return "Error";
-        }
-        try {
-            String formatedBalance = Objects.requireNonNull(this.vault).format(balance);
-            if (formatedBalance == null) // Stupid Ecosystem
-            {
-                return formatInternal(balance);
-            }
-            return formatedBalance;
-        } catch (Exception e) {
-            return formatInternal(balance);
-        }
+  @Override
+  public boolean deposit(@NotNull UUID name, double amount,
+                         @NotNull World world, @Nullable String currency) {
+    if (!isValid()) {
+      return false;
     }
+    return deposit(Bukkit.getOfflinePlayer(name), amount, world, currency);
+  }
 
-    private String formatInternal(double balance) {
-        if (!isValid()) {
-            return "Error";
-        }
-
-        return Util.format(balance, true, Bukkit.getWorlds().get(0), (String) null);
+  @Override
+  public boolean deposit(@NotNull OfflinePlayer trader, double amount,
+                         @NotNull World world, @Nullable String currency) {
+    if (!isValid()) {
+      return false;
     }
-
-    @Override
-    public double getBalance(@NotNull UUID name, @NotNull World world, @Nullable String currency) {
-        if (!isValid()) {
-            return 0.0;
-        }
-
-        return getBalance(Bukkit.getOfflinePlayer(name), world, currency);
-
-    }
-
-    @Override
-    public double getBalance(@NotNull OfflinePlayer player, @NotNull World world, @Nullable String currency) {
-        if (!isValid()) {
-            return 0.0;
-        }
-        if (player.getName() == null) {
-            return 0.0;
-        }
-        try {
-            return Objects.requireNonNull(this.vault).getBalance(player);
-        } catch (Exception t) {
-            plugin.getSentryErrorReporter().ignoreThrow();
-            plugin.getLogger().log(Level.WARNING, String.format(errorMsg, getProviderName()), t);
-            return 0.0;
-        }
-    }
-
-    @Override
-    public boolean withdraw(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
-        if (!isValid()) {
-            return false;
-        }
-        return withdraw(Bukkit.getOfflinePlayer(name), amount, world, currency);
-    }
-
-    @Override
-    public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
-        if (!isValid()) {
-            return false;
-        }
-        try {
-            if ((!allowLoan) && (getBalance(trader, world, currency) < amount)) {
-                return false;
-            }
-            return Objects.requireNonNull(this.vault).withdrawPlayer(trader, amount).transactionSuccess();
-        } catch (Exception t) {
-            plugin.getSentryErrorReporter().ignoreThrow();
-            if (trader.getName() == null) {
-                plugin.getLogger().warning("Withdraw failed and player name is NULL, Player uuid: " + trader.getUniqueId() + ", Provider: " + getProviderName());
-                return false;
-            }
-            plugin.getLogger().log(Level.WARNING, String.format(errorMsg, getProviderName()), t);
-            return false;
-        }
-    }
-
-    /**
-     * Gets the currency does exists
-     *
-     * @param currency Currency name
-     * @return exists
-     */
-    @Override
-    public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
+    try {
+      return Objects.requireNonNull(this.vault)
+          .depositPlayer(trader, amount)
+          .transactionSuccess();
+    } catch (Exception t) {
+      plugin.getSentryErrorReporter().ignoreThrow();
+      if (trader.getName() == null) {
+        plugin.getLogger().warning(
+            "Deposit failed and player name is NULL, Player uuid: " +
+            trader.getUniqueId() + ". Provider (" + getProviderName() + ")");
         return false;
+      }
+      plugin.getLogger().log(Level.WARNING,
+                             String.format(errorMsg, getProviderName()), t);
+      return false;
+    }
+  }
+
+  @Override
+  public String format(double balance, @NotNull World world,
+                       @Nullable String currency) {
+    if (!isValid()) {
+      return "Error";
+    }
+    try {
+      String formatedBalance =
+          Objects.requireNonNull(this.vault).format(balance);
+      if (formatedBalance == null) // Stupid Ecosystem
+      {
+        return formatInternal(balance);
+      }
+      return formatedBalance;
+    } catch (Exception e) {
+      return formatInternal(balance);
+    }
+  }
+
+  private String formatInternal(double balance) {
+    if (!isValid()) {
+      return "Error";
     }
 
-    /**
-     * Gets currency supports status
-     *
-     * @return true if supports
-     */
-    @Override
-    public boolean supportCurrency() {
+    return Util.format(balance, true, Bukkit.getWorlds().get(0), (String)null);
+  }
+
+  @Override
+  public double getBalance(@NotNull UUID name, @NotNull World world,
+                           @Nullable String currency) {
+    if (!isValid()) {
+      return 0.0;
+    }
+
+    return getBalance(Bukkit.getOfflinePlayer(name), world, currency);
+  }
+
+  @Override
+  public double getBalance(@NotNull OfflinePlayer player, @NotNull World world,
+                           @Nullable String currency) {
+    if (!isValid()) {
+      return 0.0;
+    }
+    if (player.getName() == null) {
+      return 0.0;
+    }
+    try {
+      return Objects.requireNonNull(this.vault).getBalance(player);
+    } catch (Exception t) {
+      plugin.getSentryErrorReporter().ignoreThrow();
+      plugin.getLogger().log(Level.WARNING,
+                             String.format(errorMsg, getProviderName()), t);
+      return 0.0;
+    }
+  }
+
+  @Override
+  public boolean withdraw(@NotNull UUID name, double amount,
+                          @NotNull World world, @Nullable String currency) {
+    if (!isValid()) {
+      return false;
+    }
+    return withdraw(Bukkit.getOfflinePlayer(name), amount, world, currency);
+  }
+
+  @Override
+  public boolean withdraw(@NotNull OfflinePlayer trader, double amount,
+                          @NotNull World world, @Nullable String currency) {
+    if (!isValid()) {
+      return false;
+    }
+    try {
+      if ((!allowLoan) && (getBalance(trader, world, currency) < amount)) {
         return false;
+      }
+      return Objects.requireNonNull(this.vault)
+          .withdrawPlayer(trader, amount)
+          .transactionSuccess();
+    } catch (Exception t) {
+      plugin.getSentryErrorReporter().ignoreThrow();
+      if (trader.getName() == null) {
+        plugin.getLogger().warning(
+            "Withdraw failed and player name is NULL, Player uuid: " +
+            trader.getUniqueId() + ", Provider: " + getProviderName());
+        return false;
+      }
+      plugin.getLogger().log(Level.WARNING,
+                             String.format(errorMsg, getProviderName()), t);
+      return false;
     }
+  }
 
-    @Override
-    public boolean isValid() {
-        return this.vault != null;
+  /**
+   * Gets the currency does exists
+   *
+   * @param currency Currency name
+   * @return exists
+   */
+  @Override
+  public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
+    return false;
+  }
+
+  /**
+   * Gets currency supports status
+   *
+   * @return true if supports
+   */
+  @Override
+  public boolean supportCurrency() {
+    return false;
+  }
+
+  @Override
+  public boolean isValid() {
+    return this.vault != null;
+  }
+
+  @Override
+  public @NotNull String getName() {
+    return "BuiltIn-Vault";
+  }
+
+  @Override
+  public @NotNull Plugin getPlugin() {
+    return plugin;
+  }
+
+  public String getProviderName() {
+    if (this.vault == null) {
+      return "Provider not found.";
     }
-
-    @Override
-    public @NotNull String getName() {
-        return "BuiltIn-Vault";
-    }
-
-    @Override
-    public @NotNull Plugin getPlugin() {
-        return plugin;
-    }
-
-    public String getProviderName() {
-        if (this.vault == null) {
-            return "Provider not found.";
-        }
-        return String.valueOf(this.vault.getName());
-    }
-
+    return String.valueOf(this.vault.getName());
+  }
 }

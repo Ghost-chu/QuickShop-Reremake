@@ -23,20 +23,30 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class MojangAPITest {
-    @Test
-    public void testMojangMetaApi(){
-        MojangAPI api = new MojangAPI();
-        Assert.assertTrue(api.getMetaAPI("1.16.5").get().isPresent());
-        Assert.assertFalse(api.getMetaAPI("1.16.5").get().get().isEmpty());
-    }
+  @Test
+  public void testMojangMetaApi() {
+    MojangAPI api = new MojangAPI();
+    Assert.assertTrue(api.getMetaAPI("1.16.5").get().isPresent());
+    Assert.assertFalse(api.getMetaAPI("1.16.5").get().get().isEmpty());
+  }
 
-    @Test
-    public void testMojangAssetsApi(){
-        MojangAPI api = new MojangAPI();
-        Assert.assertTrue(api.getAssetsAPI("1.16.5").isAvailable());
-        Assert.assertTrue(api.getAssetsAPI("1.16.5").getGameAssetsFile().isPresent());
-        Assert.assertFalse(api.getAssetsAPI("1.16.5").getGameAssetsFile().get().getContent().isEmpty());
-        Assert.assertFalse(api.getAssetsAPI("1.16.5").getGameAssetsFile().get().getId().isEmpty());
-        Assert.assertFalse(api.getAssetsAPI("1.16.5").getGameAssetsFile().get().getSha1().isEmpty());
-    }
+  @Test
+  public void testMojangAssetsApi() {
+    MojangAPI api = new MojangAPI();
+    Assert.assertTrue(api.getAssetsAPI("1.16.5").isAvailable());
+    Assert.assertTrue(
+        api.getAssetsAPI("1.16.5").getGameAssetsFile().isPresent());
+    Assert.assertFalse(api.getAssetsAPI("1.16.5")
+                           .getGameAssetsFile()
+                           .get()
+                           .getContent()
+                           .isEmpty());
+    Assert.assertFalse(
+        api.getAssetsAPI("1.16.5").getGameAssetsFile().get().getId().isEmpty());
+    Assert.assertFalse(api.getAssetsAPI("1.16.5")
+                           .getGameAssetsFile()
+                           .get()
+                           .getSha1()
+                           .isEmpty());
+  }
 }

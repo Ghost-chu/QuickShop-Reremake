@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.watcher;
 
+import java.util.Objects;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -27,77 +29,76 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
-import java.util.Objects;
-import java.util.UUID;
-
 /**
- * Check the shops after server booted up, make sure shop can correct self-deleted when container
- * lost.
+ * Check the shops after server booted up, make sure shop can correct
+ * self-deleted when container lost.
  */
 public class OngoingFeeWatcher extends BukkitRunnable {
-    private final QuickShop plugin;
+  private final QuickShop plugin;
 
-    public OngoingFeeWatcher(@NotNull QuickShop plugin) {
-        this.plugin = plugin;
+  public OngoingFeeWatcher(@NotNull QuickShop plugin) { this.plugin = plugin; }
+
+  @Override
+  public void run() {
+    Util.debugLog("Run task for ongoing fee...");
+    if (plugin.getEconomy() == null) {
+      Util.debugLog("Economy hadn't get ready.");
+      return;
     }
-
-    @Override
-    public void run() {
-        Util.debugLog("Run task for ongoing fee...");
-        if (plugin.getEconomy() == null) {
-            Util.debugLog("Economy hadn't get ready.");
-            return;
-        }
-        int cost = plugin.getConfig().getInt("shop.ongoing-fee.cost-per-shop");
-        boolean allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
-        boolean ignoreUnlimited = plugin.getConfig().getBoolean("shop.ongoing-fee.ignore-unlimited");
-        for (Shop shop : plugin.getShopManager().getAllShops()) {
-            if ((!shop.isUnlimited() || !ignoreUnlimited) && !shop.isDeleted()) {
-                UUID shopOwner = shop.getOwner();
-                Bukkit.getScheduler().runTask(plugin, () -> {
-                    if (!allowLoan && (plugin.getEconomy().getBalance(shopOwner, shop.getLocation().getWorld(), shop.getCurrency()) < cost)) {// Disallow loan
-                        this.removeShop(shop);
-                    }
-                    boolean success = plugin.getEconomy().withdraw(shop.getOwner(), cost, shop.getLocation().getWorld(), shop.getCurrency());
-                    if (!success) {
-                        this.removeShop(shop);
-                    } else {
-                        try {
-                            //noinspection ConstantConditions,deprecation
-                            plugin.getEconomy().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax")).getUniqueId(), cost, shop.getLocation().getWorld(), shop.getCurrency());
-                        } catch (Exception ignored) {
-                        }
-                    }
-                });
-            } else {
-                Util.debugLog(
-                        "Shop was ignored for ongoing fee cause it is unlimited and ignoreUnlimited = true : "
-                                + shop);
+    int cost = plugin.getConfig().getInt("shop.ongoing-fee.cost-per-shop");
+    boolean allowLoan =
+        plugin.getConfig().getBoolean("shop.allow-economy-loan");
+    boolean ignoreUnlimited =
+        plugin.getConfig().getBoolean("shop.ongoing-fee.ignore-unlimited");
+    for (Shop shop : plugin.getShopManager().getAllShops()) {
+      if ((!shop.isUnlimited() || !ignoreUnlimited) && !shop.isDeleted()) {
+        UUID shopOwner = shop.getOwner();
+        Bukkit.getScheduler().runTask(plugin, () -> {
+          if (!allowLoan && (plugin.getEconomy().getBalance(
+                                 shopOwner, shop.getLocation().getWorld(),
+                                 shop.getCurrency()) < cost)) { // Disallow loan
+            this.removeShop(shop);
+          }
+          boolean success = plugin.getEconomy().withdraw(
+              shop.getOwner(), cost, shop.getLocation().getWorld(),
+              shop.getCurrency());
+          if (!success) {
+            this.removeShop(shop);
+          } else {
+            try {
+              // noinspection ConstantConditions,deprecation
+              plugin.getEconomy().deposit(
+                  Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax"))
+                      .getUniqueId(),
+                  cost, shop.getLocation().getWorld(), shop.getCurrency());
+            } catch (Exception ignored) {
             }
-        }
+          }
+        });
+      } else {
+        Util.debugLog(
+            "Shop was ignored for ongoing fee cause it is unlimited and ignoreUnlimited = true : " +
+            shop);
+      }
     }
+  }
 
-    /**
-     * Remove shop and send alert to shop owner
-     *
-     * @param shop The shop was remove cause no enough ongoing fee
-     */
-    public void removeShop(@NotNull Shop shop) {
-        Bukkit.getScheduler().runTask(plugin, (@NotNull Runnable) shop::delete);
-        MsgUtil.send(
-                shop,
-                shop.getOwner(),
-                MsgUtil.getMessageOfflinePlayer(
-                        "shop-removed-cause-ongoing-fee",
-                        Bukkit.getOfflinePlayer(shop.getOwner()),
-                        "World:"
-                                + Objects.requireNonNull(shop.getLocation().getWorld()).getName()
-                                + " X:"
-                                + shop.getLocation().getBlockX()
-                                + " Y:"
-                                + shop.getLocation().getBlockY()
-                                + " Z:"
-                                + shop.getLocation().getBlockZ()));
-    }
-
+  /**
+   * Remove shop and send alert to shop owner
+   *
+   * @param shop The shop was remove cause no enough ongoing fee
+   */
+  public void removeShop(@NotNull Shop shop) {
+    Bukkit.getScheduler().runTask(plugin, (@NotNull Runnable)shop::delete);
+    MsgUtil.send(shop, shop.getOwner(),
+                 MsgUtil.getMessageOfflinePlayer(
+                     "shop-removed-cause-ongoing-fee",
+                     Bukkit.getOfflinePlayer(shop.getOwner()),
+                     "World:" +
+                         Objects.requireNonNull(shop.getLocation().getWorld())
+                             .getName() +
+                         " X:" + shop.getLocation().getBlockX() +
+                         " Y:" + shop.getLocation().getBlockY() +
+                         " Z:" + shop.getLocation().getBlockZ()));
+  }
 }

@@ -26,7 +26,7 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 @Inherited
 public @interface EnvCheckEntry {
-    String name() default "Unknown EnvCheck Test";
+  String name() default "Unknown EnvCheck Test";
 
-    int priority() default 50;
+  int priority() default 50;
 }

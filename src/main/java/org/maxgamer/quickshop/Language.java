@@ -19,75 +19,76 @@
 
 package org.maxgamer.quickshop;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.util.Copied;
 import org.maxgamer.quickshop.util.Util;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
-
 public class Language {
-    private final QuickShop plugin;
-    // private List<String> languages = new ArrayList<>();
+  private final QuickShop plugin;
+  // private List<String> languages = new ArrayList<>();
 
-    Language(QuickShop plugin) {
-        this.plugin = plugin;
+  Language(QuickShop plugin) { this.plugin = plugin; }
+
+  /**
+   * Save the target language's type file to the datafolder
+   *
+   * @param language Target language
+   * @param type     Target type
+   * @param fileName The filename you want write to the plugin datafolder.
+   */
+  public void saveFile(@NotNull String language, @NotNull String type,
+                       @NotNull String fileName) {
+    File targetFile = new File(plugin.getDataFolder(), fileName);
+    if (!targetFile.exists()) {
+      try {
+        targetFile.createNewFile();
+      } catch (IOException e) {
+        plugin.getLogger().log(Level.WARNING,
+                               "Failed to save translation files.", e);
+      }
     }
 
-    /**
-     * Save the target language's type file to the datafolder
-     *
-     * @param language Target language
-     * @param type     Target type
-     * @param fileName The filename you want write to the plugin datafolder.
-     */
-    public void saveFile(@NotNull String language, @NotNull String type, @NotNull String fileName) {
-        File targetFile = new File(plugin.getDataFolder(), fileName);
-        if (!targetFile.exists()) {
-            try {
-                targetFile.createNewFile();
-            } catch (IOException e) {
-                plugin.getLogger().log(Level.WARNING, "Failed to save translation files.", e);
-            }
-        }
-
-        try {
-            InputStream is = getFile(language, type);
-            new Copied(targetFile).accept(is);
-            is.close();
-        } catch (Exception err) {
-            plugin.getLogger().log(Level.WARNING, "Failed to save translation files.", err);
-        }
+    try {
+      InputStream is = getFile(language, type);
+      new Copied(targetFile).accept(is);
+      is.close();
+    } catch (Exception err) {
+      plugin.getLogger().log(Level.WARNING, "Failed to save translation files.",
+                             err);
     }
+  }
 
-    // Write file under plugin folder
+  // Write file under plugin folder
 
-    /**
-     * Get target language's type file.
-     *
-     * @param language The target language
-     * @param type     The file type for you want get. e.g. messages
-     * @return The target file's InputStream.
-     */
-    @Nullable
-    public InputStream getFile(@Nullable String language, @Nullable String type) {
-        if (language == null) {
-            language = "en-US";
-            Util.debugLog("Using the default language (EN) cause language is null.");
-        }
-        if (type == null || type.isEmpty()) {
-            throw new IllegalArgumentException("Type cannot be null or empty");
-        }
-        InputStream inputStream = plugin.getResource("lang/" + language + "/" + type + ".json");
-        if (inputStream == null) {
-            Util.debugLog("Using the default language because we can't get the InputStream.");
-            inputStream = plugin.getResource("lang/en-US/" + type + ".json");
-        }
-        return inputStream;
-        // File name should call    type-language.yml    ---> config-zh.yml
+  /**
+   * Get target language's type file.
+   *
+   * @param language The target language
+   * @param type     The file type for you want get. e.g. messages
+   * @return The target file's InputStream.
+   */
+  @Nullable
+  public InputStream getFile(@Nullable String language, @Nullable String type) {
+    if (language == null) {
+      language = "en-US";
+      Util.debugLog("Using the default language (EN) cause language is null.");
     }
-
+    if (type == null || type.isEmpty()) {
+      throw new IllegalArgumentException("Type cannot be null or empty");
+    }
+    InputStream inputStream =
+        plugin.getResource("lang/" + language + "/" + type + ".json");
+    if (inputStream == null) {
+      Util.debugLog(
+          "Using the default language because we can't get the InputStream.");
+      inputStream = plugin.getResource("lang/en-US/" + type + ".json");
+    }
+    return inputStream;
+    // File name should call    type-language.yml    ---> config-zh.yml
+  }
 }

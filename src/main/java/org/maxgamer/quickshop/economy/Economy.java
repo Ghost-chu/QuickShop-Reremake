@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.economy;
 
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.OfflinePlayer;
@@ -29,116 +30,120 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
 
-import java.util.UUID;
-
 public class Economy implements EconomyCore {
 
-    private final QuickShop plugin;
-    @Getter
-    @Setter
-    @NotNull
-    private EconomyCore core;
+  private final QuickShop plugin;
+  @Getter @Setter @NotNull private EconomyCore core;
 
-    public Economy(@NotNull QuickShop plugin, @NotNull EconomyCore core) {
-        this.plugin = plugin;
-        this.core = core;
-    }
+  public Economy(@NotNull QuickShop plugin, @NotNull EconomyCore core) {
+    this.plugin = plugin;
+    this.core = core;
+  }
 
-    public static EconomyType getNowUsing() {
-        return EconomyType.fromID(QuickShop.getInstance().getConfig().getInt("economy-type"));
-    }
+  public static EconomyType getNowUsing() {
+    return EconomyType.fromID(
+        QuickShop.getInstance().getConfig().getInt("economy-type"));
+  }
 
-    @Override
-    public String toString() {
-        return core.getClass().getName().split("_")[1];
-    }
+  @Override
+  public String toString() {
+    return core.getClass().getName().split("_")[1];
+  }
 
-    @Override
-    public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
-        return core.deposit(name, amount, world, currency);
-    }
+  @Override
+  public boolean deposit(@NotNull UUID name, double amount,
+                         @NotNull World world, @Nullable String currency) {
+    return core.deposit(name, amount, world, currency);
+  }
 
-    @Override
-    public boolean deposit(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
-        return core.deposit(trader, amount, world, currency);
-    }
+  @Override
+  public boolean deposit(@NotNull OfflinePlayer trader, double amount,
+                         @NotNull World world, @Nullable String currency) {
+    return core.deposit(trader, amount, world, currency);
+  }
 
-    /**
-     * Formats the given number... E.g. 50.5 becomes $50.5 Dollars, or 50 Dollars 5 Cents
-     *
-     * @param balance The given number
-     * @return The balance in human readable text.
-     */
-    @Override
-    public String format(double balance, @NotNull World world, @Nullable String currency) {
-        return Util.parseColours(core.format(balance, world, currency));
-        // Fix color issue from some stupid economy plugin....
-    }
+  /**
+   * Formats the given number... E.g. 50.5 becomes $50.5 Dollars, or 50 Dollars
+   * 5 Cents
+   *
+   * @param balance The given number
+   * @return The balance in human readable text.
+   */
+  @Override
+  public String format(double balance, @NotNull World world,
+                       @Nullable String currency) {
+    return Util.parseColours(core.format(balance, world, currency));
+    // Fix color issue from some stupid economy plugin....
+  }
 
-    @Override
-    public double getBalance(@NotNull UUID name, @NotNull World world, @Nullable String currency) {
-        return core.getBalance(name, world, currency);
-    }
+  @Override
+  public double getBalance(@NotNull UUID name, @NotNull World world,
+                           @Nullable String currency) {
+    return core.getBalance(name, world, currency);
+  }
 
-    @Override
-    public double getBalance(@NotNull OfflinePlayer player, @NotNull World world, @Nullable String currency) {
-        return core.getBalance(player, world, currency);
-    }
+  @Override
+  public double getBalance(@NotNull OfflinePlayer player, @NotNull World world,
+                           @Nullable String currency) {
+    return core.getBalance(player, world, currency);
+  }
 
-    @Override
-    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @NotNull World world, @Nullable String currency) {
-        return core.transfer(from, to, amount, world, currency);
-    }
+  @Override
+  public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount,
+                          @NotNull World world, @Nullable String currency) {
+    return core.transfer(from, to, amount, world, currency);
+  }
 
-    @Override
-    public boolean withdraw(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
-        return core.withdraw(name, amount, world, currency);
-    }
+  @Override
+  public boolean withdraw(@NotNull UUID name, double amount,
+                          @NotNull World world, @Nullable String currency) {
+    return core.withdraw(name, amount, world, currency);
+  }
 
-    @Override
-    public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
-        return core.withdraw(trader, amount, world, currency);
-    }
+  @Override
+  public boolean withdraw(@NotNull OfflinePlayer trader, double amount,
+                          @NotNull World world, @Nullable String currency) {
+    return core.withdraw(trader, amount, world, currency);
+  }
 
-    /**
-     * Gets the currency does exists
-     *
-     * @param currency Currency name
-     * @return exists
-     */
-    @Override
-    public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
-        return this.core.hasCurrency(world, currency);
-    }
+  /**
+   * Gets the currency does exists
+   *
+   * @param currency Currency name
+   * @return exists
+   */
+  @Override
+  public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
+    return this.core.hasCurrency(world, currency);
+  }
 
-    /**
-     * Gets currency supports status
-     *
-     * @return true if supports
-     */
-    @Override
-    public boolean supportCurrency() {
-        return this.core.supportCurrency();
-    }
+  /**
+   * Gets currency supports status
+   *
+   * @return true if supports
+   */
+  @Override
+  public boolean supportCurrency() {
+    return this.core.supportCurrency();
+  }
 
-    /**
-     * Checks that this economy is valid. Returns false if it is not valid.
-     *
-     * @return True if this economy will work, false if it will not.
-     */
-    @Override
-    public boolean isValid() {
-        return core.isValid();
-    }
+  /**
+   * Checks that this economy is valid. Returns false if it is not valid.
+   *
+   * @return True if this economy will work, false if it will not.
+   */
+  @Override
+  public boolean isValid() {
+    return core.isValid();
+  }
 
-    @Override
-    public @NotNull String getName() {
-        return "BuiltIn-Economy Processor";
-    }
+  @Override
+  public @NotNull String getName() {
+    return "BuiltIn-Economy Processor";
+  }
 
-    @Override
-    public @NotNull Plugin getPlugin() {
-        return plugin;
-    }
-
+  @Override
+  public @NotNull Plugin getPlugin() {
+    return plugin;
+  }
 }

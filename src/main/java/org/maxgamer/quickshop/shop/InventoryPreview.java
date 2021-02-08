@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.shop;
 
+import java.util.Collections;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.bukkit.Bukkit;
@@ -36,8 +37,6 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
 
-import java.util.Collections;
-
 /**
  * A class to create a GUI item preview quickly
  */
@@ -45,88 +44,93 @@ import java.util.Collections;
 @ToString
 public class InventoryPreview implements Listener {
 
-    private final ItemStack itemStack;
-    private final Player player;
-    @Nullable
-    private Inventory inventory;
+  private final ItemStack itemStack;
+  private final Player player;
+  @Nullable private Inventory inventory;
 
-    /**
-     * Create a preview item GUI for a player.
-     *
-     * @param itemStack The item you want create.
-     * @param player    Target player.
-     * @param plugin    The plugin instance.
-     */
-    public InventoryPreview(@NotNull QuickShop plugin, @NotNull ItemStack itemStack, @NotNull Player player) {
-        Util.ensureThread(false);
-        this.itemStack = itemStack.clone();
-        this.player = player;
+  /**
+   * Create a preview item GUI for a player.
+   *
+   * @param itemStack The item you want create.
+   * @param player    Target player.
+   * @param plugin    The plugin instance.
+   */
+  public InventoryPreview(@NotNull QuickShop plugin,
+                          @NotNull ItemStack itemStack,
+                          @NotNull Player player) {
+    Util.ensureThread(false);
+    this.itemStack = itemStack.clone();
+    this.player = player;
 
-        ItemMeta itemMeta;
-        if (itemStack.hasItemMeta()) {
-            itemMeta = this.itemStack.getItemMeta();
-        } else {
-            itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
-        }
-        if (itemMeta != null) {
-            if (itemMeta.hasLore()) {
-                itemMeta.getLore().add(plugin.getPreviewProtectionLore());
-            } else {
-                //itemMeta.setLore(Lists.newArrayList(plugin.getPreviewProtectionLore()));
-                itemMeta.setLore(Collections.singletonList(plugin.getPreviewProtectionLore()));
-            }
-            this.itemStack.setItemMeta(itemMeta);
-        }
+    ItemMeta itemMeta;
+    if (itemStack.hasItemMeta()) {
+      itemMeta = this.itemStack.getItemMeta();
+    } else {
+      itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
     }
-
-    @Deprecated
-    public static boolean isPreviewItem(@Nullable ItemStack stack) {
-        if (stack == null) {
-            return false;
-        }
-        if (!stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
-            return false;
-        }
-        for (String string : stack.getItemMeta().getLore()) {
-            if (QuickShop.instance.getPreviewProtectionLore().equals(string)) {
-                return true;
-            }
-        }
-        return false;
+    if (itemMeta != null) {
+      if (itemMeta.hasLore()) {
+        itemMeta.getLore().add(plugin.getPreviewProtectionLore());
+      } else {
+        // itemMeta.setLore(Lists.newArrayList(plugin.getPreviewProtectionLore()));
+        itemMeta.setLore(
+            Collections.singletonList(plugin.getPreviewProtectionLore()));
+      }
+      this.itemStack.setItemMeta(itemMeta);
     }
+  }
 
-    /**
-     * Open the preview GUI for player.
-     */
-    public void show() {
-        Util.ensureThread(false);
-        if (itemStack == null || player == null || player.isSleeping()) // Null pointer exception
-        {
-            return;
-        }
-        this.close(); //Close anyway
-        ShopInventoryPreviewEvent shopInventoryPreview = new ShopInventoryPreviewEvent(player, itemStack);
-        if (Util.fireCancellableEvent(shopInventoryPreview)) {
-            Util.debugLog("Inventory preview was canceled by a plugin.");
-            return;
-        }
-        final int size = 9;
-        inventory = Bukkit.createInventory(new QuickShopPreviewInventoryHolder(), size, MsgUtil.getMessage("menu.preview", player));
-        for (int i = 0; i < size; i++) {
-            inventory.setItem(i, itemStack);
-        }
-        player.openInventory(inventory);
+  @Deprecated
+  public static boolean isPreviewItem(@Nullable ItemStack stack) {
+    if (stack == null) {
+      return false;
     }
-
-    public void close() {
-        Util.ensureThread(false);
-        if (inventory == null) {
-            return;
-        }
-        for (HumanEntity player : inventory.getViewers()) {
-            player.closeInventory();
-        }
-        inventory = null; // Destroy
+    if (!stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
+      return false;
     }
+    for (String string : stack.getItemMeta().getLore()) {
+      if (QuickShop.instance.getPreviewProtectionLore().equals(string)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
+  /**
+   * Open the preview GUI for player.
+   */
+  public void show() {
+    Util.ensureThread(false);
+    if (itemStack == null || player == null ||
+        player.isSleeping()) // Null pointer exception
+    {
+      return;
+    }
+    this.close(); // Close anyway
+    ShopInventoryPreviewEvent shopInventoryPreview =
+        new ShopInventoryPreviewEvent(player, itemStack);
+    if (Util.fireCancellableEvent(shopInventoryPreview)) {
+      Util.debugLog("Inventory preview was canceled by a plugin.");
+      return;
+    }
+    final int size = 9;
+    inventory =
+        Bukkit.createInventory(new QuickShopPreviewInventoryHolder(), size,
+                               MsgUtil.getMessage("menu.preview", player));
+    for (int i = 0; i < size; i++) {
+      inventory.setItem(i, itemStack);
+    }
+    player.openInventory(inventory);
+  }
+
+  public void close() {
+    Util.ensureThread(false);
+    if (inventory == null) {
+      return;
+    }
+    for (HumanEntity player : inventory.getViewers()) {
+      player.closeInventory();
+    }
+    inventory = null; // Destroy
+  }
 }
