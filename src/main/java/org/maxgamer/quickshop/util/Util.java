@@ -62,6 +62,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.logging.Level;
 
 public class Util {
     private static final EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
@@ -141,8 +142,7 @@ public class Util {
         try {
             Files.copy(sqlfile.toPath(), bksqlfile.toPath());
         } catch (Exception e1) {
-            e1.printStackTrace();
-            plugin.getLogger().warning("Failed to backup the database.");
+            plugin.getLogger().log(Level.WARNING, "Failed to backup the database", e1);
             return false;
         }
         return true;
@@ -1310,7 +1310,7 @@ public class Util {
         try (FileInputStream in = new FileInputStream(file)) {
             in.read(filecontent);
         } catch (IOException e) {
-            e.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Failed to read file: " + file, e);
         }
         return new String(filecontent, StandardCharsets.UTF_8);
     }
@@ -1420,7 +1420,7 @@ public class Util {
                     | IllegalArgumentException
                     | InvocationTargetException
                     | NoSuchMethodException e) {
-                e.printStackTrace();
+                plugin.getLogger().log(Level.WARNING, "Failed to getting server TPS, please report to QuickShop.", e);
                 serverInstance = null;
                 tpsField = null;
                 Util.debugLog("Failed to get TPS " + e.getMessage());

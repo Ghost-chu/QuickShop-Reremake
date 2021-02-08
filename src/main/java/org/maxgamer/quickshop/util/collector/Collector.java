@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 @Data
 public class Collector {
@@ -58,8 +59,7 @@ public class Collector {
                 }
                 return map;
             } catch (IllegalAccessException | ClassCastException | InvocationTargetException e) {
-                e.printStackTrace();
-                plugin.getLogger().warning("Failed to resolve the field " + field + " when collecting data. Please report to author.");
+                plugin.getLogger().log(Level.WARNING, "Failed to resolve the field " + field + " when collecting data. Please report to author.", e);
             }
         }
         return new HashMap<>();

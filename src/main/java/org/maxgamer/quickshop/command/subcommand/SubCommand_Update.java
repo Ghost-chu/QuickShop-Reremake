@@ -28,6 +28,8 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.util.MsgUtil;
 
+import java.util.logging.Level;
+
 @AllArgsConstructor
 public class SubCommand_Update implements CommandProcesser {
 
@@ -60,7 +62,7 @@ public class SubCommand_Update implements CommandProcesser {
                 } catch (Exception e) {
                     MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed, get details to look the console.");
                     plugin.getSentryErrorReporter().ignoreThrow();
-                    e.printStackTrace();
+                    plugin.getLogger().log(Level.WARNING, "Failed to update QuickShop cause something going wrong", e);
                     return;
                 }
 

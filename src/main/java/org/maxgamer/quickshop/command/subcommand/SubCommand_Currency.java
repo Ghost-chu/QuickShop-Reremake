@@ -90,23 +90,7 @@ public class SubCommand_Currency implements CommandProcesser {
                 return;
             }
         }
-
         MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
-
-        if (cmdArg.length < 1) {
-
-            return;
-        }
-
-
-        final Player player = (Player) sender;
-
-        if (!plugin.getShopManager().getActions().containsKey(player.getUniqueId())) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-pending-action", sender));
-            return;
-        }
-
-        plugin.getShopManager().handleChat(player, cmdArg[0]);
     }
 
     @NotNull

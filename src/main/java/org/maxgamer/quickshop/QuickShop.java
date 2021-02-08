@@ -79,6 +79,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
@@ -454,7 +455,7 @@ public class QuickShop extends JavaPlugin {
             }
         } catch (Exception e) {
             this.getSentryErrorReporter().ignoreThrow();
-            e.printStackTrace();
+            getLogger().log(Level.WARNING, "Something going wrong when loading up economy system", e);
             getLogger().severe("QuickShop could not hook into a economy/Not found Vault or Reserve!");
             getLogger().severe("QuickShop CANNOT start!");
             bootError = BuiltInSolution.econError();
@@ -722,8 +723,7 @@ public class QuickShop extends JavaPlugin {
         try {
             MsgUtil.loadCfgMessages();
         } catch (Exception e) {
-            getLogger().warning("An error throws when loading messages");
-            e.printStackTrace();
+            getLogger().log(Level.WARNING, "Error when loading translation", e);
         }
         MsgUtil.loadItemi18n();
         MsgUtil.loadEnchi18n();
@@ -911,22 +911,16 @@ public class QuickShop extends JavaPlugin {
             // Make the database up to date
             this.databaseHelper = new DatabaseHelper(this, this.databaseManager);
         } catch (DatabaseManager.ConnectionException e) {
-            e.printStackTrace();
+            getLogger().log(Level.SEVERE, "Error when connecting to the database", e);
             if (setupDBonEnableding) {
                 bootError = BuiltInSolution.databaseError();
-                return false;
-            } else {
-                getLogger().severe("Error connecting to the database.");
             }
             return false;
         } catch (Exception e) {
-            e.printStackTrace();
+            getLogger().log(Level.SEVERE, "Error when setup database", e);
             getServer().getPluginManager().disablePlugin(this);
             if (setupDBonEnableding) {
                 bootError = BuiltInSolution.databaseError();
-                return false;
-            } else {
-                getLogger().severe("Error setting up the database.");
             }
             return false;
         }

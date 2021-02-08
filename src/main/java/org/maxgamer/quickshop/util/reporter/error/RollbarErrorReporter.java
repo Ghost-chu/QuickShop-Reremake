@@ -174,7 +174,8 @@ public class RollbarErrorReporter {
             }).start();
             return null;
         } catch (Exception th) {
-            th.printStackTrace();
+            ignoreThrow();
+            plugin.getLogger().log(Level.WARNING, "Something going wrong when automatic report errors, please submit this error on Issue Tracker", th);
             return null;
         }
     }
