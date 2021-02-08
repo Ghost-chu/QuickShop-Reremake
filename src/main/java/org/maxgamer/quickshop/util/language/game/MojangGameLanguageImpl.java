@@ -48,6 +48,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.logging.Level;
 
 public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements GameLanguage {
     private final QuickShop plugin;
@@ -251,8 +252,7 @@ class GameLanguageLoadThread extends Thread {
             try {
                 Files.write(new File(Util.getCacheFolder(), indexSha1Hex).toPath(), assetsFileData.get().getContent().getBytes(StandardCharsets.UTF_8));
             } catch (IOException ioException) {
-                ioException.printStackTrace();
-                plugin.getLogger().warning("Failed save file to local drive, game language system caches will stop work, we will try download again in next reboot. skipping...");
+                plugin.getLogger().log(Level.WARNING, "Failed save file to local drive, game language system caches will stop work, we will try download again in next reboot. skipping...", ioException);
             }
 
             //Download language json
@@ -282,8 +282,7 @@ class GameLanguageLoadThread extends Thread {
             try {
                 Files.write(new File(Util.getCacheFolder(), langHash).toPath(), langContent.get().getBytes(StandardCharsets.UTF_8));
             } catch (IOException ioException) {
-                ioException.printStackTrace();
-                plugin.getLogger().warning("Failed save file to local drive, game language system caches will stop work, we will try download again in next reboot. skipping...");
+                plugin.getLogger().log(Level.WARNING, "Failed save file to local drive, game language system caches will stop work, we will try download again in next reboot. skipping...", ioException);
             }
 
             //Save the caches
