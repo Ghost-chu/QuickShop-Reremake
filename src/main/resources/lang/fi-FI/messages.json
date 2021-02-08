@@ -221,7 +221,8 @@
     "price": "[hinta]",
     "range": "[säde]",
     "amount": "[määrä]",
-    "currency": "[currency name]"
+    "currency": "[currency name]",
+    "item": "[item]"
   },
   "updatenotify": {
     "buttontitle": "[Päivitä nyt]",
