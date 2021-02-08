@@ -186,11 +186,7 @@ class GameLanguageLoadThread extends Thread {
     }
 
     public void run() {
-        try {
-            execute();
-        } catch (Throwable throwable) {
-            plugin.getLogger().log(Level.WARNING, "Something wrong", throwable);
-        }
+        execute();
         condition.signal();
     }
 
