@@ -221,7 +221,8 @@
     "price": "[prezzo]",
     "range": "[raggio]",
     "amount": "[quantità]",
-    "currency": "[currency name]"
+    "currency": "[currency name]",
+    "item": "[item]"
   },
   "updatenotify": {
     "buttontitle": "[Aggiorna ora]",
