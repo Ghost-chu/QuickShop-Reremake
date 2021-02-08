@@ -296,5 +296,5 @@
   "currency-set": "&aShopwährung erfolgreich geändert zu {0}.",
   "currency-unset": "&aShopwährung erfolgreich entfernt. Vervende Standarteinstellung jetzt.",
   "currency-not-support": "&cDas Währungsplugin unterstützt nicht mehrere Währungen.",
-  "item-not-exist": "&cThe item &e{0} &cnot exists, please check your spelling."
+  "item-not-exist": "&cDas Item &e{0} &cexistiert nicht. Bitte überprüfe deine Rechtschreibung."
 }
