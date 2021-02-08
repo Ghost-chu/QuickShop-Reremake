@@ -71,7 +71,7 @@ public class Util {
     private static final EnumMap<Material, Integer> customStackSize = new EnumMap<>(Material.class);
     private static final EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
     private static final List<BlockFace> verticalFacing = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
-    private static final List<String> debugLogs = new LinkedList<>();
+    private static final List<String> debugLogs = new ArrayList<>();
     private static final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private static int bypassedCustomStackSize = -1;
     private static Yaml yaml = null;
