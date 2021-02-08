@@ -85,7 +85,7 @@ public class SubCommand_Create implements CommandProcesser {
         final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
 
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(p, "command.wrong-args");
+            MsgUtil.sendMessage(p, MsgUtil.getMessage(p.getUniqueId(), "command.wrong-args"));
             return;
         } else if (cmdArg.length == 1) {
             item = p.getInventory().getItemInMainHand();
