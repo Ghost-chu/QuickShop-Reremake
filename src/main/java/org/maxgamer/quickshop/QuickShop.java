@@ -59,8 +59,6 @@ import org.maxgamer.quickshop.permission.PermissionManager;
 import org.maxgamer.quickshop.shop.*;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.*;
-import org.maxgamer.quickshop.util.bukkitwrapper.BukkitAPIWrapper;
-import org.maxgamer.quickshop.util.bukkitwrapper.SpigotWrapper;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.util.config.ConfigProvider;
 import org.maxgamer.quickshop.util.envcheck.*;
@@ -69,6 +67,11 @@ import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import org.maxgamer.quickshop.util.reporter.error.RollbarErrorReporter;
+import org.maxgamer.quickshop.util.wrapper.bukkit.BukkitAPIWrapper;
+import org.maxgamer.quickshop.util.wrapper.bukkit.SpigotWrapper;
+import org.maxgamer.quickshop.util.wrapper.performance.BKCommonLibPerformance;
+import org.maxgamer.quickshop.util.wrapper.performance.BukkitPerformance;
+import org.maxgamer.quickshop.util.wrapper.performance.PerformanceUtil;
 import org.maxgamer.quickshop.watcher.*;
 
 import java.io.BufferedInputStream;
@@ -254,6 +257,8 @@ public class QuickShop extends JavaPlugin {
     private String currency = null;
     @Getter
     private ShopControlPanel shopControlPanelManager;
+    @Getter
+    private PerformanceUtil performanceUtil;
 
 
     @NotNull
@@ -509,6 +514,12 @@ public class QuickShop extends JavaPlugin {
         } else {
             logWatcher = null;
         }
+        if (this.getConfig().getBoolean("plugin.BKCommonLib", false) && Bukkit.getPluginManager().getPlugin("BKCommonLib").isEnabled()) {
+            this.performanceUtil = new BKCommonLibPerformance();
+        } else {
+            this.performanceUtil = new BukkitPerformance();
+        }
+        getLogger().info("PerformanceUtils selected: " + this.performanceUtil.getName());
     }
 
     /**
@@ -1714,6 +1725,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.fabledskyblock.whitelist-mode", false);
             getConfig().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 124) {
+            getConfig().set("plugin.BKCommonLib", true);
+            getConfig().set("config-version", ++selectedVersion);
+        }
+
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");

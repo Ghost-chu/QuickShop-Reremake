@@ -29,6 +29,7 @@ softdepend:
   - GriefPrevention
   - JulySafe
   - FabledSkyblock
+  - BKCommonLib
 
 api-version: 1.13
 

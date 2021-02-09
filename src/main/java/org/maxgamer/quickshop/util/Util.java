@@ -155,7 +155,7 @@ public class Util {
      * @return True if it can be made into a shop, otherwise false.
      */
     public static boolean canBeShop(@NotNull Block b) {
-        final BlockState bs = b.getState();
+        final BlockState bs = plugin.getPerformanceUtil().getState(b);
 
         if (isBlacklistWorld(b.getWorld())) {
             return false;
@@ -626,10 +626,11 @@ public class Util {
         if (b == null) {
             return false;
         }
-        if (!(b.getState() instanceof Container)) {
+        BlockState state = plugin.getPerformanceUtil().getState(b);
+        if (!(state instanceof Container)) {
             return false;
         }
-        final Container container = (Container) b.getState();
+        final Container container = (Container) state;
         return (container.getInventory() instanceof DoubleChestInventory);
     }
 
@@ -986,7 +987,7 @@ public class Util {
      * @return true if a nearby shop was found, false otherwise.
      */
     public static boolean isOtherShopWithinHopperReach(@NotNull Block b, @NotNull Player p) {
-        Block bshop = getAttached(b);
+        Block bshop = plugin.getPerformanceUtil().getAttached(b);
         if (bshop == null) {
             return false;
         }

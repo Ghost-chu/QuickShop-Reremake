@@ -29,6 +29,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
@@ -417,7 +418,7 @@ public class ContainerShop implements Shop {
     @Override
     public boolean isAttached(@NotNull Block b) {
         Util.ensureThread(false);
-        return this.getLocation().getBlock().equals(Util.getAttached(b));
+        return this.getLocation().getBlock().equals(plugin.getPerformanceUtil().getAttached(b));
     }
 
     /**
@@ -958,13 +959,14 @@ public class ContainerShop implements Shop {
                 continue;
             }
 
-            if (!(b.getState() instanceof Sign)) {
+            BlockState state = plugin.getPerformanceUtil().getState(b);
+            if (!(state instanceof Sign)) {
                 continue;
             }
             if (!isAttached(b)) {
                 continue;
             }
-            Sign sign = (Sign) b.getState();
+            Sign sign = (Sign) state;
             String[] lines = sign.getLines();
             if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3].isEmpty()) {
                 signs.add(sign); //NEW SIGN
@@ -1182,7 +1184,8 @@ public class ContainerShop implements Shop {
     public @Nullable Inventory getInventory() {
         Util.ensureThread(false);
         try {
-            if (location.getBlock().getState().getType() == Material.ENDER_CHEST
+            BlockState state = plugin.getPerformanceUtil().getState(location.getBlock());
+            if (state.getType() == Material.ENDER_CHEST
                     && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
                 OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
                 return openInv.getSpecialEnderChest(
@@ -1197,7 +1200,7 @@ public class ContainerShop implements Shop {
         }
         InventoryHolder container;
         try {
-            container = (InventoryHolder) this.location.getBlock().getState();
+            container = (InventoryHolder) plugin.getPerformanceUtil().getState(this.location.getBlock());
             return container.getInventory();
         } catch (Exception e) {
             if (!createBackup) {

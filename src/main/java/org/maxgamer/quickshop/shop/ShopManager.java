@@ -26,10 +26,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import lombok.Getter;
 import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Sign;
+import org.bukkit.block.*;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
@@ -226,7 +223,7 @@ public class ShopManager {
             if (Util.isAir(info.getSignBlock().getType())
                     || info.getSignBlock().getType() == Material.WATER) {
                 info.getSignBlock().setType(Util.getSignMaterial());
-                BlockState bs = info.getSignBlock().getState();
+                BlockState bs = plugin.getPerformanceUtil().getState(info.getSignBlock());
                 if (info.getSignBlock().getType() == Material.WATER
                         && (bs.getBlockData() instanceof Waterlogged)) {
                     Waterlogged waterable = (Waterlogged) bs.getBlockData();
@@ -318,7 +315,7 @@ public class ShopManager {
      * @return The shop at that location
      */
     public @Nullable Shop getShop(@NotNull Location loc, boolean skipShopableChecking) {
-        if (!skipShopableChecking && !Util.isShoppables(loc.getBlock().getType())) {
+        if (!skipShopableChecking && !Util.isShoppables(plugin.getPerformanceUtil().getState(loc.getBlock()).getType())) {
             return null;
         }
         final Map<Location, Shop> inChunk = getShops(loc.getChunk());
@@ -392,9 +389,10 @@ public class ShopManager {
         }
 
         // only check if is sign
-        if (loc.getBlock().getState() instanceof Sign) {
+        BlockState state = plugin.getPerformanceUtil().getState(loc.getBlock());
+        if (state instanceof Sign) {
             // If that chunk nothing we founded, we should check it is attached.
-            @Nullable Block attachedBlock = Util.getAttached(loc.getBlock());
+            @Nullable Block attachedBlock = plugin.getPerformanceUtil().getAttached(loc.getBlock());
             // Check is attached on some block.
             if (attachedBlock == null) {
                 // Nope
@@ -1354,16 +1352,23 @@ public class ShopManager {
 
         // failed, get attached shop
         if (shop == null) {
+            if (!Util.isShoppables(plugin.getPerformanceUtil().getState(loc.getBlock()).getType())) {
+                return null;
+            }
             final Block currentBlock = loc.getBlock();
             if (!fromAttach) {
                 // sign
                 if (Util.isWallSign(currentBlock.getType())) {
-                    final Block attached = Util.getAttached(currentBlock);
+                    final Block attached = plugin.getPerformanceUtil().getAttached(currentBlock);
                     if (attached != null) {
                         shop = this.getShopIncludeAttached_Fast(attached.getLocation(), true, useCache);
                     }
                     // double chest
                 } else {
+                    // optimize for performance
+                    if (!(plugin.getPerformanceUtil().getState(currentBlock) instanceof Container)) {
+                        return null;
+                    }
                     @Nullable final Block half = Util.getSecondHalf(currentBlock);
                     if (half != null) {
                         shop = getShop(half.getLocation());
