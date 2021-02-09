@@ -60,7 +60,7 @@ public class ContainerShop implements Shop {
     private final Location location;
     @EqualsAndHashCode.Exclude
     private final QuickShop plugin;
-    private final Map<String, Map<String, String>> extra;
+    private final Map<String, Map<String, Object>> extra;
     @EqualsAndHashCode.Exclude
     private final UUID runtimeRandomUniqueId = UUID.randomUUID();
     @NotNull
@@ -122,7 +122,7 @@ public class ContainerShop implements Shop {
             @NotNull ShopModerator moderator,
             boolean unlimited,
             @NotNull ShopType type,
-            @NotNull Map<String, Map<String, String>> extra) {
+            @NotNull Map<String, Map<String, Object>> extra) {
         Util.ensureThread(false);
         this.location = location;
         this.price = price;
@@ -150,8 +150,8 @@ public class ContainerShop implements Shop {
         this.extra = extra;
         initDisplayItem();
         this.lastChangedAt = System.currentTimeMillis();
-        Map<String, String> dataMap = extra.get(plugin.getName());
-        version = Integer.parseInt(dataMap != null ? dataMap.getOrDefault("version", "0") : "0");
+        Map<String, Object> dataMap = extra.get(plugin.getName());
+        version = dataMap != null ? (int) dataMap.getOrDefault("version", 0) : 0;
     }
 
     private void initDisplayItem() {
@@ -931,8 +931,8 @@ public class ContainerShop implements Shop {
 
     public void setShopVersion(int ver) {
         version = ver;
-        Map<String, String> extraMap = extra.getOrDefault(plugin.getName(), new ConcurrentHashMap<>());
-        extraMap.put("version", Integer.toString(ver));
+        Map<String, Object> extraMap = getExtra(plugin);
+        extraMap.put("version", ver);
         extra.put(plugin.getName(), extraMap);
         this.update();
     }
@@ -1310,8 +1310,14 @@ public class ContainerShop implements Shop {
      * @return The data table
      */
     @Override
-    public @NotNull Map<String, String> getExtra(@NotNull Plugin plugin) {
-        return this.extra.getOrDefault(plugin.getName(), new ConcurrentHashMap<>());
+    public @NotNull Map<String, Object> getExtra(@NotNull Plugin plugin) {
+        Map<String, Object> extraMap = this.extra.get(plugin.getName());
+        if (extraMap == null) {
+            extraMap = new ConcurrentHashMap<>();
+            this.extra.put(plugin.getName(), extraMap);
+        }
+
+        return extraMap;
     }
 
     /**
@@ -1330,12 +1336,12 @@ public class ContainerShop implements Shop {
      *
      * @param plugin Plugin instace
      * @param data   The data table
+     * @deprecated Extra Map doen't need set to save it.
      */
     @Override
-    public void setExtra(@NotNull Plugin plugin, @NotNull Map<String, String> data) {
-        this.extra.put(plugin.getName(), data);
-        this.lastChangedAt = System.currentTimeMillis();
-        this.update();
+    @Deprecated
+    public void setExtra(@NotNull Plugin plugin, @NotNull Map<String, Object> data) {
+        //DONOTHING
     }
 
     /**
@@ -1366,8 +1372,8 @@ public class ContainerShop implements Shop {
      */
     @Override
     public @Nullable String getCurrency() {
-        Map<String, String> extraMap = extra.getOrDefault(plugin.getName(), new ConcurrentHashMap<>());
-        return extraMap.get("currency");
+        Map<String, Object> extraMap = getExtra(plugin);
+        return (String) extraMap.get("currency");
     }
 
     /**
@@ -1377,7 +1383,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void setCurrency(@Nullable String currency) {
-        Map<String, String> extraMap = extra.getOrDefault(plugin.getName(), new ConcurrentHashMap<>());
+        Map<String, Object> extraMap = getExtra(plugin);
         if (currency == null) {
             extraMap.remove("currency");
         } else {

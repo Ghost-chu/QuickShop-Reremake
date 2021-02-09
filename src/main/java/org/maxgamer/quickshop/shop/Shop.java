@@ -399,7 +399,7 @@ public interface Shop {
      * @return The data table
      */
     @NotNull
-    Map<String, String> getExtra(@NotNull Plugin plugin);
+    Map<String, Object> getExtra(@NotNull Plugin plugin);
 
     /**
      * Gets ExtraManager to quick access extra data
@@ -415,8 +415,10 @@ public interface Shop {
      *
      * @param plugin Plugin instace
      * @param data   The data table
+     * @deprecated Extra doesn't need save
      */
-    void setExtra(@NotNull Plugin plugin, @NotNull Map<String, String> data);
+    @Deprecated
+    void setExtra(@NotNull Plugin plugin, @NotNull Map<String, Object> data);
 
     /**
      * Gets shop status is stacking shop
