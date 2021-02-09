@@ -224,24 +224,24 @@ public class Paste {
         finalReport.append("\tCache      Enabled: ").append(plugin.getShopCache() != null).append("\n");
         if (plugin.getShopCache() != null) {
             CacheStats stats = plugin.getShopCache().getStats();
-            finalReport.append("---------------------").append("\n");
+            finalReport.append("\t--------------------------").append("\n");
             finalReport.append("\tAvg  Load  Penalty: ").append(stats.averageLoadPenalty()).append("\n");
             finalReport.append("\tHit           Rate: ").append(stats.hitRate()).append("\n");
             finalReport.append("\tMiss          Rate: ").append(stats.missRate()).append("\n");
-            finalReport.append("---------------------").append("\n");
+            finalReport.append("\t--------------------------").append("\n");
             finalReport.append("\tHit          Count: ").append(stats.hitCount()).append("\n");
             finalReport.append("\tMiss         Count: ").append(stats.missCount()).append("\n");
             finalReport.append("\tLoad         Count: ").append(stats.loadCount()).append("\n");
             finalReport.append("\tLoad Success Count: ").append(stats.loadSuccessCount()).append("\n");
-            finalReport.append("---------------------").append("\n");
+            finalReport.append("\t--------------------------").append("\n");
             finalReport.append("\tLoad Failure Rate : ").append(stats.loadFailureRate()).append("\n");
             finalReport.append("\tLoad Failure Count: ").append(stats.loadFailureCount()).append("\n");
             finalReport.append("\tLoad Success Count: ").append(stats.loadSuccessCount()).append("\n");
-            finalReport.append("---------------------").append("\n");
+            finalReport.append("\t--------------------------").append("\n");
             finalReport.append("\tEviction     Count: ").append(stats.evictionCount()).append("\n");
             finalReport.append("\tEviction    Weight: ").append(stats.evictionWeight()).append("\n");
             finalReport.append("\tEviction     Count: ").append(stats.evictionCount()).append("\n");
-            finalReport.append("---------------------").append("\n");
+            finalReport.append("\t--------------------------").append("\n");
             finalReport.append("\tRequest      Count: ").append(stats.requestCount()).append("\n");
             finalReport.append("\tTotal Loading Time: ").append(stats.totalLoadTime()).append("\n");
         }
