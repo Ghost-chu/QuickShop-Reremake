@@ -58,10 +58,17 @@ public class Cache {
     @Nullable
     public Shop getCaching(@NotNull Location location, boolean includeAttached) {
         WeakReference<Shop> result = accessCaching.get(location, update -> {
+            Shop shop; //Because we need the data from Caffeine, so we cannot direct return WeakReference directly
+            //Cause we will see 100% load success data :(
             if (includeAttached) {
-                return new WeakReference<>(plugin.getShopManager().getShopIncludeAttached(update));
+                shop = plugin.getShopManager().getShopIncludeAttached(update);
             } else {
-                return new WeakReference<>(plugin.getShopManager().getShop(update));
+                shop = plugin.getShopManager().getShop(update);
+            }
+            if (shop == null) {
+                return null;
+            } else {
+                return new WeakReference<>(shop);
             }
         });
         if (result == null) {
