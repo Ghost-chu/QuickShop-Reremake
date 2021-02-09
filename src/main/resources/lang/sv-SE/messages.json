@@ -222,7 +222,7 @@
     "price": "[pris]",
     "range": "[intervall]",
     "amount": "[antal]",
-    "currency": "[currency name]",
+    "currency": "[valutans namn]",
     "item": "[item]"
   },
   "updatenotify": {
@@ -296,5 +296,5 @@
   "currency-set": "&aSuccessfully set shop currency to {0}.",
   "currency-unset": "&aSuccessfully remove shop currency setup, will use default now.",
   "currency-not-support": "&cEkonomi-pluginet stöder inte flervaluta-funktionen.",
-  "item-not-exist": "&cThe item &e{0} &cnot exists, please check your spelling."
+  "item-not-exist": "&cObjektet &e{0} &cexisterar inte, kontrollera din stavning."
 }
