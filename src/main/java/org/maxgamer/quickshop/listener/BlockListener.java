@@ -24,7 +24,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.Chest;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
@@ -33,7 +33,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -115,8 +114,9 @@ public class BlockListener extends ProtectionListenerBase {
             shop.delete();
             MsgUtil.sendMessage(p, MsgUtil.getMessage("success-removed-shop", p));
         } else if (Util.isWallSign(b.getType())) {
-            if (b.getState() instanceof Sign) {
-                Sign sign = (Sign) b.getState();
+            BlockState state = plugin.getPerformanceUtil().getState(b);
+            if (state instanceof Sign) {
+                Sign sign = (Sign) state;
                 if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
                         || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
                     // Ignore break lockette sign
@@ -167,7 +167,7 @@ public class BlockListener extends ProtectionListenerBase {
      */
     @Nullable
     private Shop getShopNextTo(@NotNull Location loc) {
-        final Block b = Util.getAttached(loc.getBlock());
+        final Block b = plugin.getPerformanceUtil().getAttached(loc.getBlock());
         // Util.getAttached(b)
         if (b == null) {
             return null;
@@ -211,26 +211,27 @@ public class BlockListener extends ProtectionListenerBase {
             return;
         }
         Block chest = null;
+
         //Chest combine mechanic based checking
         if (player.isSneaking()) {
             Block blockAgainst = e.getBlockAgainst();
-            if (blockAgainst.getType() == Material.CHEST && placingBlock.getFace(blockAgainst) != BlockFace.UP && placingBlock.getFace(blockAgainst) != BlockFace.DOWN && !(((Chest) blockAgainst.getState()).getInventory() instanceof DoubleChestInventory)) {
+            if (blockAgainst.getType() == Material.CHEST && placingBlock.getFace(blockAgainst) != BlockFace.UP && placingBlock.getFace(blockAgainst) != BlockFace.DOWN && !Util.isDoubleChest(blockAgainst)) {
                 chest = e.getBlockAgainst();
             } else {
                 return;
             }
         } else {
             //Get all chest in vertical Location
-            BlockFace placingChestFacing = ((Directional) (placingBlock.getState().getBlockData())).getFacing();
+            BlockFace placingChestFacing = ((Directional) (plugin.getPerformanceUtil().getState(placingBlock).getBlockData())).getFacing();
             for (BlockFace face : Util.getVerticalFacing()) {
                 //just check the right side and left side
                 if (!face.equals(placingChestFacing) && !face.equals(placingChestFacing.getOppositeFace())) {
                     Block nearByBlock = placingBlock.getRelative(face);
                     if (nearByBlock.getType() == Material.CHEST
                             //non double chest
-                            && !(((Chest) nearByBlock.getState()).getInventory() instanceof DoubleChestInventory)
+                            && !Util.isDoubleChest(nearByBlock)
                             //same facing
-                            && placingChestFacing == ((Directional) nearByBlock.getState().getBlockData()).getFacing()) {
+                            && placingChestFacing == ((Directional) plugin.getPerformanceUtil().getState(nearByBlock).getBlockData()).getFacing()) {
                         if (chest == null) {
                             chest = nearByBlock;
                         } else {

@@ -69,7 +69,7 @@ public class PlayerListener extends QSListener {
             if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Util.isWallSign(e.getClickedBlock().getType())) {
                 final Block block;
                 if (Util.isWallSign(e.getClickedBlock().getType())) {
-                    block = Util.getAttached(e.getClickedBlock());
+                    block = plugin.getPerformanceUtil().getAttached(e.getClickedBlock());
                 } else {
                     block = e.getClickedBlock();
                 }
@@ -98,7 +98,7 @@ public class PlayerListener extends QSListener {
         if (shop == null) {
             final Block attached;
             if (Util.isWallSign(b.getType())) {
-                attached = Util.getAttached(b);
+                attached = plugin.getPerformanceUtil().getAttached(b);
                 if (attached != null) {
                     shop = plugin.getShopManager().getShop(attached.getLocation());
                 }
@@ -312,7 +312,7 @@ public class PlayerListener extends QSListener {
         if (block == null || !Util.isWallSign(block.getType())) {
             return;
         }
-        final Block attachedBlock = Util.getAttached(block);
+        final Block attachedBlock = plugin.getPerformanceUtil().getAttached(block);
         if (attachedBlock == null || plugin.getShopManager().getShopIncludeAttached(attachedBlock.getLocation()) == null) {
             return;
         }

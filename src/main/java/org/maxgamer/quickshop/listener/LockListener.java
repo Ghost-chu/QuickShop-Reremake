@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.listener;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -49,9 +50,9 @@ public class LockListener extends ProtectionListenerBase {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onBreak(BlockBreakEvent e) {
         Block b = e.getBlock();
-
-        if (b.getState() instanceof Sign) {
-            final Sign sign = (Sign) b.getState();
+        BlockState state = plugin.getPerformanceUtil().getState(b);
+        if (state instanceof Sign) {
+            final Sign sign = (Sign) state;
 
             if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
                     || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
@@ -85,7 +86,7 @@ public class LockListener extends ProtectionListenerBase {
                     return;
                 }
             }
-            b = Util.getAttached(b);
+            b = plugin.getPerformanceUtil().getAttached(b);
 
             if (b == null) {
                 return;

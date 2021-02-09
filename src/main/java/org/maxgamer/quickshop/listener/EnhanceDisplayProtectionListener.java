@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.listener;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Furnace;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -178,15 +179,13 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
 //            return;
 //        }
         final ItemStack itemStack = event.getFuel();
+        BlockState state = plugin.getPerformanceUtil().getState(event.getBlock());
         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
             Block furnace = event.getBlock();
-            if (furnace.getState() instanceof Furnace) {
+            if (state instanceof Furnace) {
                 Furnace furnace1 = (Furnace) furnace.getState();
-                sendAlert(
-                        "[DisplayGuard] Block  "
-                                + event.getBlock().getLocation()
-                                + " trying burn with DisplayItem.");
+                sendAlert("[DisplayGuard] Block  " + event.getBlock().getLocation() + " trying burn with DisplayItem.");
                 Util.inventoryCheck(furnace1.getInventory());
             }
         }
@@ -198,11 +197,11 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
 //            return;
 //        }
         ItemStack itemStack = event.getSource();
+        BlockState furnace = plugin.getPerformanceUtil().getState(event.getBlock());
         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
-            Block furnace = event.getBlock();
-            if (furnace.getState() instanceof Furnace) {
-                Furnace furnace1 = (Furnace) furnace.getState();
+            if (furnace instanceof Furnace) {
+                Furnace furnace1 = (Furnace) furnace;
                 sendAlert(
                         "[DisplayGuard] Block  "
                                 + event.getBlock().getLocation()
@@ -214,9 +213,8 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
         itemStack = event.getResult();
         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
-            Block furnace = event.getBlock();
-            if (furnace.getState() instanceof Furnace) {
-                Furnace furnace1 = (Furnace) furnace.getState();
+            if (furnace instanceof Furnace) {
+                Furnace furnace1 = (Furnace) furnace;
                 sendAlert(
                         "[DisplayGuard] Block  "
                                 + event.getBlock().getLocation()

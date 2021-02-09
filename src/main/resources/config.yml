@@ -4,7 +4,7 @@
 
 
 #Do not touch if you not clear know about this
-config-version: 124
+config-version: 125
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -438,6 +438,8 @@ plugin:
   PlaceHolderAPI: true
   #If you have LWC/LWCX,QSRR will check access
   LWC: true
+  #If you have BKCommonLib, QSRR will load fast utils to improve performance
+  BKCommonLib: true
   #Should QuickShop support for plugin BlockHub to use BlockHub to check region access for players?
   BlockHub:
     enable: true
