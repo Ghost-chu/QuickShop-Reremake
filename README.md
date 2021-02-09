@@ -60,22 +60,6 @@ If you're a developer, you can contribute to the QuickShop code! Just make a for
 ```XML
 <repository>
     <id>quickshop-repo</id>
-    <url>https://repo.codemc.io/</url>
-</repository>
-
-<dependency>
-    <groupId>org.maxgamer</groupId>
-    <artifactId>QuickShop</artifactId>
-    <version>{VERSION}</version>
-    <scope>provided</scope>
-</dependency>
-```
-
-if the repository doesn't work, try this one:
-
-```XML
-<repository>
-    <id>quickshop-repo</id>
     <url>https://repo.codemc.io/repository/maven-public/</url>
 </repository>
 
