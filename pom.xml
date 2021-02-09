@@ -92,11 +92,17 @@
                         <filter>
                             <artifact>*:*</artifact>
                             <excludes>
-                                <exclude>META-INF/*.SF</exclude>
-                                <exclude>META-INF/*.DSA</exclude>
-                                <exclude>META-INF/*.RSA</exclude>
-                                <exclude>META-INF/MANIFEST.MF</exclude>
+                                <exclude>META-INF/**</exclude>
+                                <exclude>LICENSE</exclude>
+                                <exclude>LICENSE.txt</exclude>
                             </excludes>
+                        </filter>
+                        <filter>
+                            <artifact>com.github.ben-manes.caffeine:caffeine</artifact>
+                            <includes>
+                                <include>com/github/benmanes/caffeine/**</include>
+                            </includes>
+                            <excludeDefaults>false</excludeDefaults>
                         </filter>
                     </filters>
                     <relocations>
@@ -139,7 +145,7 @@
                         </relocation>
                         <relocation>
                             <pattern>org.apache.commons.codec.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.shade. org.apache.commons.codec.</shadedPattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.org.apache.commons.codec.</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.esotericsoftware.reflectasm.</pattern>
@@ -457,6 +463,12 @@
             <artifactId>placeholderapi</artifactId>
             <version>2.10.9</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>annotations</artifactId>
+                    <groupId>org.jetbrains</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.github.angeschossen</groupId>
@@ -492,6 +504,10 @@
                 <exclusion>
                     <artifactId>spigot-api</artifactId>
                     <groupId>org.spigotmc</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>annotations</artifactId>
+                    <groupId>org.jetbrains</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -560,6 +576,18 @@
                 <exclusion>
                     <artifactId>spigot-api</artifactId>
                     <groupId>org.spigotmc</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>httpclient</artifactId>
+                    <groupId>org.apache.httpcomponents</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>truevfs-comp-zip</artifactId>
+                    <groupId>net.java.truevfs</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>truevfs-comp-tardriver</artifactId>
+                    <groupId>net.java.truevfs</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
