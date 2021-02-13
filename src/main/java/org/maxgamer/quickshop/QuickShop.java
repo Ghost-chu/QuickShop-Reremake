@@ -664,12 +664,6 @@ public class QuickShop extends JavaPlugin {
         }
         Timer enableTimer = new Timer(true);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableBegin);
-        /* PreInit for BootError feature */
-        commandManager = new CommandManager(this);
-        //noinspection ConstantConditions
-        getCommand("qs").setExecutor(commandManager);
-        //noinspection ConstantConditions
-        getCommand("qs").setTabCompleter(commandManager);
 
         getLogger().info("Quickshop " + getFork());
 
@@ -751,6 +745,14 @@ public class QuickShop extends JavaPlugin {
             //BUKKIT METHOD SHOULD ALWAYS EXECUTE ON THE SERVER MAIN THEAD
             this.displayAutoDespawnWatcher.runTaskTimer(this, 20, getConfig().getInt("shop.display-check-time")); // not worth async
         }
+
+        /* PreInit for BootError feature */
+        commandManager = new CommandManager(this);
+        //noinspection ConstantConditions
+        getCommand("qs").setExecutor(commandManager);
+        //noinspection ConstantConditions
+        getCommand("qs").setTabCompleter(commandManager);
+
         this.shopManager = new ShopManager(this);
 
         this.permissionChecker = new PermissionChecker(this);
