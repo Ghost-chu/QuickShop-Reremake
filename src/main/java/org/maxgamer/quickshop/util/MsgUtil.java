@@ -39,7 +39,6 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -758,16 +757,11 @@ public class MsgUtil {
      * @param message The message you want send
      */
     public static void sendMessageToOps(@NotNull String message) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.alerts")) {
-                        MsgUtil.sendMessage(player, message);
-                    }
-                }
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.alerts")) {
+                MsgUtil.sendMessage(player, message);
             }
-        }.runTaskAsynchronously(plugin);
+        }
     }
 
     /**

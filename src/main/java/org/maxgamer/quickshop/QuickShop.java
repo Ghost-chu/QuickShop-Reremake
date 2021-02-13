@@ -37,9 +37,10 @@ import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.builtinlistener.InternalListener;
@@ -260,6 +261,13 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private PerformanceUtil performanceUtil;
 
+    public QuickShop() {
+        super();
+    }
+
+    protected QuickShop(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+        super(loader, description, dataFolder, file);
+    }
 
     @NotNull
     public static QuickShop getInstance() {
@@ -818,12 +826,7 @@ public class QuickShop extends JavaPlugin {
         /* Delay the Ecoonomy system load, give a chance to let economy system regiser. */
         /* And we have a listener to listen the ServiceRegisterEvent :) */
         Util.debugLog("Loading economy system...");
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                loadEcon();
-            }
-        }.runTaskLater(this, 1);
+        getServer().getScheduler().runTaskLater(this, this::loadEcon, 1);
         Util.debugLog("Registering shop watcher...");
         // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
         signUpdateWatcher.runTaskTimer(this, 0, 10);
@@ -841,14 +844,10 @@ public class QuickShop extends JavaPlugin {
         }
         integrationHelper.searchAndRegisterPlugins();
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableAfter);
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                getLogger().info("Registering bStats metrics...");
-                submitMeritcs();
-            }
-        }.runTask(this);
+        getServer().getScheduler().runTask(this, () -> {
+            getLogger().info("Registering bStats metrics...");
+            submitMeritcs();
+        });
         if (loaded) {
             getServer().getPluginManager().callEvent(new QSReloadEvent(this));
         } else {

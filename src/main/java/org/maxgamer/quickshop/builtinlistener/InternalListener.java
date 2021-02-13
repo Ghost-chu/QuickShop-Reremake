@@ -59,7 +59,7 @@ public class InternalListener implements Listener {
             return;
         }
         if (loggingAction) {
-            Player creator = Bukkit.getPlayer(event.getCreator());
+            Player creator = plugin.getServer().getPlayer(event.getCreator());
             plugin.log(
                     "Player "
                             + (creator != null ? creator.getName() : event.getCreator())
@@ -115,7 +115,7 @@ public class InternalListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopPurchase(ShopSuccessPurchaseEvent event) {
-        Player creator = Bukkit.getPlayer(event.getPurchaser());
+        Player creator = plugin.getServer().getPlayer(event.getPurchaser());
         if (loggingAction) {
             if (event.getShop().getShopType() == ShopType.BUYING) {
                 plugin.log(

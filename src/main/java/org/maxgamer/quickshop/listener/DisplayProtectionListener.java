@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.listener;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
@@ -53,7 +52,7 @@ public class DisplayProtectionListener extends ProtectionListenerBase {
         super(plugin, cache);
         boolean useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-display-protect");
         if (useEnhanceProtection) {
-            Bukkit.getPluginManager().registerEvents(new EnhanceDisplayProtectionListener(plugin, cache), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new EnhanceDisplayProtectionListener(plugin, cache), plugin);
         }
     }
 

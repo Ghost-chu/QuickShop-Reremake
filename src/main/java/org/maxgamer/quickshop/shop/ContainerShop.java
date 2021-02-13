@@ -23,7 +23,6 @@ import com.lishid.openinv.OpenInv;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -231,7 +230,7 @@ public class ContainerShop implements Shop {
         boolean result = this.moderator.addStaff(player);
         update();
         if (result) {
-            Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
+            Util.mainThreadRun(() -> plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
         }
         return result;
     }
@@ -353,7 +352,7 @@ public class ContainerShop implements Shop {
     public void clearStaffs() {
         this.lastChangedAt = System.currentTimeMillis();
         this.moderator.clearStaffs();
-        Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
+        Util.mainThreadRun(() -> plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
         update();
     }
 
@@ -364,7 +363,7 @@ public class ContainerShop implements Shop {
         boolean result = this.moderator.delStaff(player);
         update();
         if (result) {
-            Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
+            Util.mainThreadRun(() -> plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
         }
         return result;
     }
@@ -468,12 +467,12 @@ public class ContainerShop implements Shop {
         this.isLoaded = false;
         plugin.getShopManager().getLoadedShops().remove(this);
         ShopUnloadEvent shopUnloadEvent = new ShopUnloadEvent(this);
-        Bukkit.getPluginManager().callEvent(shopUnloadEvent);
+        plugin.getServer().getPluginManager().callEvent(shopUnloadEvent);
     }
 
     @Override
     public @NotNull String ownerName(boolean forceUsername) {
-        OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
+        OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
         String name = player.getName();
         if (name == null || name.isEmpty()) {
             name = MsgUtil.getMessageOfflinePlayer(
@@ -581,7 +580,7 @@ public class ContainerShop implements Shop {
     public String[] getSignText() {
         Util.ensureThread(false);
         String[] lines = new String[4];
-        OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
+        OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
         lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(false));
         if (this.isSelling()) {
             if (this.getItem().getAmount() > 1) {
@@ -660,7 +659,7 @@ public class ContainerShop implements Shop {
                 sign.setLine(i, lines[i]);
             }
             sign.update(true);
-            Bukkit.getPluginManager().callEvent(new ShopSignUpdateEvent(this, sign));
+            plugin.getServer().getPluginManager().callEvent(new ShopSignUpdateEvent(this, sign));
         }
         //Update the recognize method after converted
         if (getShopVersion() == 0) {
@@ -803,7 +802,7 @@ public class ContainerShop implements Shop {
         this.lastChangedAt = System.currentTimeMillis();
         this.moderator = shopModerator;
         update();
-        Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
+        Util.mainThreadRun(() -> plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
     }
 
     /**
@@ -821,7 +820,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void setOwner(@NotNull UUID owner) {
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(owner);
+        OfflinePlayer offlinePlayer = plugin.getServer().getOfflinePlayer(owner);
         //Get the sign at first
         List<Sign> signs = this.getSigns();
         //then setOwner
@@ -834,7 +833,7 @@ public class ContainerShop implements Shop {
                 shopSign.update(true);
             }
             //Event
-            Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
+            plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
         });
         update();
     }
@@ -978,7 +977,7 @@ public class ContainerShop implements Shop {
                 signs.add(sign);
             } else {
                 String adminShopHeader = MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
-                        "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
+                        "admin-shop", plugin.getServer().getOfflinePlayer(this.getOwner())));
                 String signHeaderUsername =
                         MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
                 if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
@@ -1190,8 +1189,8 @@ public class ContainerShop implements Shop {
                 OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
                 return openInv.getSpecialEnderChest(
                         Objects.requireNonNull(
-                                openInv.loadPlayer(Bukkit.getOfflinePlayer(this.moderator.getOwner()))),
-                        Bukkit.getOfflinePlayer((this.moderator.getOwner())).isOnline())
+                                openInv.loadPlayer(plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
+                        plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
                         .getBukkitInventory();
             }
         } catch (Exception e) {

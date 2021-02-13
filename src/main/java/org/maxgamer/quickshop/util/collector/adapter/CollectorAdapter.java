@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.util.collector.adapter;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Item;
 import org.jetbrains.annotations.NotNull;
@@ -91,16 +90,16 @@ public class CollectorAdapter {
     @CollectResolver(field = CollectType.PLATFORM)
     public Map<?, ?> collectPlatform(@NotNull QuickShop plugin) {
         Map<Object, Object> data = new HashMap<>();
-        data.put("name", Bukkit.getName());
-        data.put("software", Bukkit.getServer().getVersion());
-        data.put("version", Bukkit.getVersion());
+        data.put("name", plugin.getServer().getName());
+        data.put("software", plugin.getServer().getVersion());
+        data.put("version", plugin.getServer().getVersion());
         data.put("version_internal", Util.getNMSVersion());
-        data.put("version_data", Bukkit.getUnsafe().getDataVersion());
-        data.put("online_mode", Bukkit.getOnlineMode());
-        data.put("view_distance", Bukkit.getViewDistance());
-        data.put("primary_thread_call", Bukkit.isPrimaryThread());
-        data.put("online", Bukkit.getOnlinePlayers().size());
-        data.put("total", Bukkit.getOfflinePlayers().length);
+        data.put("version_data", plugin.getServer().getUnsafe().getDataVersion());
+        data.put("online_mode", plugin.getServer().getOnlineMode());
+        data.put("view_distance", plugin.getServer().getViewDistance());
+        data.put("primary_thread_call", plugin.getServer().isPrimaryThread());
+        data.put("online", plugin.getServer().getOnlinePlayers().size());
+        data.put("total", plugin.getServer().getOfflinePlayers().length);
         return data;
     }
 
@@ -123,7 +122,7 @@ public class CollectorAdapter {
     public Map<?, ?> collectServices(@NotNull QuickShop plugin) {
         Map<Object, Object> data = new HashMap<>();
         List<Map<?, ?>> content = new ArrayList<>();
-        Bukkit.getServicesManager().getRegistrations(plugin).forEach(service -> {
+        plugin.getServer().getServicesManager().getRegistrations(plugin).forEach(service -> {
             Map<String, Object> map = new HashMap<>();
             map.put("plugin", service.getPlugin().getName());
             map.put("priority", service.getPriority());
@@ -138,7 +137,7 @@ public class CollectorAdapter {
     @CollectResolver(field = CollectType.SHOPS_IN_WORLD)
     public Map<?, ?> collectShopsInWorld(@NotNull QuickShop plugin) {
         Map<Object, Object> data = new HashMap<>();
-        Bukkit.getWorlds().forEach(world -> {
+        plugin.getServer().getWorlds().forEach(world -> {
             Map<String, Object> perWorld = new HashMap<>();
             perWorld.put("uid", world.getUID());
             perWorld.put("players", world.getPlayers().size());
@@ -160,7 +159,7 @@ public class CollectorAdapter {
     @CollectResolver(field = CollectType.PLUGINS)
     public Map<?, ?> collectPlugins(@NotNull QuickShop plugin) {
         Map<Object, Object> data = new HashMap<>();
-        Arrays.stream(Bukkit.getPluginManager().getPlugins()).forEach(pl -> {
+        Arrays.stream(plugin.getServer().getPluginManager().getPlugins()).forEach(pl -> {
             Map<String, Object> perPlugin = new HashMap<>();
             perPlugin.put("data_folder", pl.getDataFolder());
             perPlugin.put("api_version", pl.getDescription().getAPIVersion());
