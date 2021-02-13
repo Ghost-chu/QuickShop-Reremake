@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -211,7 +210,7 @@ public class ShopLoader {
             Util.debugLog("Shop Owner is null");
             return true;
         }
-        if (Bukkit.getOfflinePlayer(shop.getOwner()).getName() == null) {
+        if (plugin.getServer().getOfflinePlayer(shop.getOwner()).getName() == null) {
             Util.debugLog("Shop owner not exist on this server, did you have reset the playerdata?");
         }
         return false;
@@ -278,7 +277,7 @@ public class ShopLoader {
                     continue;
                 }
                 // Load to RAM
-                Bukkit.getScheduler().runTask(plugin, () -> {
+                plugin.getServer().getScheduler().runTask(plugin, () -> {
                     plugin.getDatabaseHelper().createShop(shop, null, null);
                     plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
                     shop.update();
@@ -324,14 +323,14 @@ public class ShopLoader {
 
         private int z;
 
-        private Map<String, Map<String, String>> extra;
+        private Map<String, Map<String, Object>> extra;
 
         ShopDatabaseInfo(ShopDatabaseInfoOrigin origin) {
             try {
                 this.x = origin.getX();
                 this.y = origin.getY();
                 this.z = origin.getZ();
-                this.world = Bukkit.getWorld(origin.getWorld());
+                this.world = plugin.getServer().getWorld(origin.getWorld());
                 this.location = new Location(world, x, y, z);
                 this.price = origin.getPrice();
                 this.unlimited = origin.isUnlimited();
@@ -369,7 +368,7 @@ public class ShopLoader {
                 } catch (JsonSyntaxException ex) {
                     Util.debugLog("Updating old shop data... for " + moderatorJson);
                     //noinspection deprecation
-                    moderatorJson = Bukkit.getOfflinePlayer(moderatorJson).getUniqueId().toString();
+                    moderatorJson = plugin.getServer().getOfflinePlayer(moderatorJson).getUniqueId().toString();
                     shopModerator = new ShopModerator(UUID.fromString(moderatorJson)); // New one
                 }
             }

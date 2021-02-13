@@ -24,7 +24,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -86,48 +85,42 @@ public class SubCommand_Convert implements CommandProcesser {
             String databaseStr = dbCfg.getString("database");
             boolean useSSL = dbCfg.getBoolean("usessl");
             running = true;
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    try {
-                        AbstractDatabaseCore dbCore = new MySQLCore(plugin, Objects.requireNonNull(host, "MySQL host can't be null"), Objects.requireNonNull(user, "MySQL username can't be null"), Objects.requireNonNull(pass, "MySQL password can't be null"), Objects.requireNonNull(databaseStr, "MySQL database name can't be null"), Objects.requireNonNull(port, "MySQL port can't be null"), useSSL);
-                        DatabaseManager databaseManager = new DatabaseManager(QuickShop.getInstance(), dbCore);
-                        sender.sendMessage(ChatColor.GREEN + "Converting...");
-                        transferShops(new DatabaseHelper(plugin, databaseManager), sender);
-                        databaseManager.unInit();
-                        sender.sendMessage(ChatColor.GREEN + "All done, please edit config.yml to mysql to apply changes.");
-                    } catch (Exception e) {
-                        sender.sendMessage(ChatColor.RED + "Error when converting database, Please check your console.");
-                        plugin.getServer().getLogger().log(Level.SEVERE, "Error when converting database", e);
-                    } finally {
-                        running = false;
-                    }
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+                try {
+                    AbstractDatabaseCore dbCore = new MySQLCore(plugin, Objects.requireNonNull(host, "MySQL host can't be null"), Objects.requireNonNull(user, "MySQL username can't be null"), Objects.requireNonNull(pass, "MySQL password can't be null"), Objects.requireNonNull(databaseStr, "MySQL database name can't be null"), Objects.requireNonNull(port, "MySQL port can't be null"), useSSL);
+                    DatabaseManager databaseManager = new DatabaseManager(QuickShop.getInstance(), dbCore);
+                    sender.sendMessage(ChatColor.GREEN + "Converting...");
+                    transferShops(new DatabaseHelper(plugin, databaseManager), sender);
+                    databaseManager.unInit();
+                    sender.sendMessage(ChatColor.GREEN + "All done, please edit config.yml to mysql to apply changes.");
+                } catch (Exception e) {
+                    sender.sendMessage(ChatColor.RED + "Error when converting database, Please check your console.");
+                    plugin.getServer().getLogger().log(Level.SEVERE, "Error when converting database", e);
+                } finally {
+                    running = false;
                 }
-            }.runTaskAsynchronously(plugin);
+            });
         } else if (cmdArg[0].equalsIgnoreCase("sqlite")) {
             if (plugin.getDatabaseManager().getDatabase() instanceof SQLiteCore) {
                 sender.sendMessage(ChatColor.GREEN + "Please switch to MySQL before converting to SQLite.");
                 return;
             }
             running = true;
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    try {
-                        AbstractDatabaseCore core = new SQLiteCore(plugin, new File(plugin.getDataFolder(), "shops.db"));
-                        DatabaseManager databaseManager = new DatabaseManager(QuickShop.getInstance(), core);
-                        sender.sendMessage(ChatColor.GREEN + "Converting...");
-                        transferShops(new DatabaseHelper(plugin, databaseManager), sender);
-                        databaseManager.unInit();
-                        sender.sendMessage(ChatColor.GREEN + "All done, please edit config.yml to sqlite to apply changes.");
-                    } catch (Exception e) {
-                        sender.sendMessage(ChatColor.RED + "Error when converting database, Please check your console.");
-                        plugin.getServer().getLogger().log(Level.SEVERE, "Error when converting database", e);
-                    } finally {
-                        running = false;
-                    }
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+                try {
+                    AbstractDatabaseCore core = new SQLiteCore(plugin, new File(plugin.getDataFolder(), "shops.db"));
+                    DatabaseManager databaseManager = new DatabaseManager(QuickShop.getInstance(), core);
+                    sender.sendMessage(ChatColor.GREEN + "Converting...");
+                    transferShops(new DatabaseHelper(plugin, databaseManager), sender);
+                    databaseManager.unInit();
+                    sender.sendMessage(ChatColor.GREEN + "All done, please edit config.yml to sqlite to apply changes.");
+                } catch (Exception e) {
+                    sender.sendMessage(ChatColor.RED + "Error when converting database, Please check your console.");
+                    plugin.getServer().getLogger().log(Level.SEVERE, "Error when converting database", e);
+                } finally {
+                    running = false;
                 }
-            }.runTaskAsynchronously(plugin);
+            });
 
         } else {
             sender.sendMessage(ChatColor.RED + "Wrong type! Only can be mysql or sqlite");

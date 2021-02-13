@@ -46,7 +46,7 @@ class BuiltInSolution {
      */
     static BootError econError() {
         // Check Vault is installed
-        if (Bukkit.getPluginManager().getPlugin("Vault") == null
+        if (QuickShop.getInstance().getServer().getPluginManager().getPlugin("Vault") == null
                 && Bukkit.getPluginManager().getPlugin("Reserve") == null) {
             // Vault not installed
             return new BootError(QuickShop.getInstance().getLogger(),
@@ -54,7 +54,7 @@ class BuiltInSolution {
                     "Make sure you installed Vault or Reserve.");
         }
         // Vault is installed
-        if (Bukkit.getPluginManager().getPlugin("CMI") != null) {
+        if (QuickShop.getInstance().getServer().getPluginManager().getPlugin("CMI") != null) {
             // Found may in-compatiable plugin
             return new BootError(QuickShop.getInstance().getLogger(),
                     "No Economy plugin detected, did you installed and loaded them? Make sure they loaded before QuickShop.",
