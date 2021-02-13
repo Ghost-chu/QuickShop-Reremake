@@ -151,7 +151,7 @@ public class ContainerShop implements Shop {
         initDisplayItem();
         this.lastChangedAt = System.currentTimeMillis();
         Map<String, Object> dataMap = extra.get(plugin.getName());
-        version = dataMap != null ? (int) dataMap.getOrDefault("version", 0) : 0;
+        version = dataMap != null ? Integer.parseInt(String.valueOf(dataMap.getOrDefault("version", 0))) : 0;
     }
 
     private void initDisplayItem() {

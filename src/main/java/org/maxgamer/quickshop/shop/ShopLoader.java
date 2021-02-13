@@ -324,7 +324,7 @@ public class ShopLoader {
 
         private int z;
 
-        private Map<String, Map<String, String>> extra;
+        private Map<String, Map<String, Object>> extra;
 
         ShopDatabaseInfo(ShopDatabaseInfoOrigin origin) {
             try {

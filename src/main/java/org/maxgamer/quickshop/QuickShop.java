@@ -675,12 +675,6 @@ public class QuickShop extends JavaPlugin {
         }
         Timer enableTimer = new Timer(true);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableBegin);
-        /* PreInit for BootError feature */
-        commandManager = new CommandManager(this);
-        //noinspection ConstantConditions
-        getCommand("qs").setExecutor(commandManager);
-        //noinspection ConstantConditions
-        getCommand("qs").setTabCompleter(commandManager);
 
         getLogger().info("Quickshop " + getFork());
 
@@ -737,6 +731,14 @@ public class QuickShop extends JavaPlugin {
         MsgUtil.loadItemi18n();
         MsgUtil.loadEnchi18n();
         MsgUtil.loadPotioni18n();
+
+        /* PreInit for BootError feature */
+        commandManager = new CommandManager(this);
+        //noinspection ConstantConditions
+        getCommand("qs").setExecutor(commandManager);
+        //noinspection ConstantConditions
+        getCommand("qs").setTabCompleter(commandManager);
+
         shopControlPanelManager = new ShopControlPanel(this);
         this.previewProtectionLore = MsgUtil.getMessageOfflinePlayer("quickshop-gui-preview", null);
         if (this.previewProtectionLore == null || this.previewProtectionLore.isEmpty()) {
