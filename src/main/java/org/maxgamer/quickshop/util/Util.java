@@ -41,7 +41,6 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -844,38 +843,35 @@ public class Util {
             Util.debugLog("Skipped plugin gui inventory check.");
             return;
         }
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                try {
-                    for (int i = 0; i < inv.getSize(); i++) {
-                        ItemStack itemStack = inv.getItem(i);
-                        if (itemStack == null) {
-                            continue;
-                        }
-                        if (DisplayItem.checkIsGuardItemStack(itemStack)) {
-                            // Found Item and remove it.
-                            Location location = inv.getLocation();
-                            if (location == null) {
-                                return; // Virtual GUI
-                            }
-                            plugin
-                                    .getSyncTaskWatcher()
-                                    .getInventoryEditQueue()
-                                    .offer(new InventoryEditContainer(inv, i, new ItemStack(Material.AIR)));
-                            Util.debugLog("Found a displayitem in an inventory, Scheduling to removal...");
-                            MsgUtil.sendGlobalAlert(
-                                    "[InventoryCheck] Found displayItem in inventory at "
-                                            + location
-                                            + ", Item is "
-                                            + itemStack.getType().name());
-                        }
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            try {
+                for (int i = 0; i < inv.getSize(); i++) {
+                    ItemStack itemStack = inv.getItem(i);
+                    if (itemStack == null) {
+                        continue;
                     }
-                } catch (Exception t) {
-                    // Ignore
+                    if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+                        // Found Item and remove it.
+                        Location location = inv.getLocation();
+                        if (location == null) {
+                            return; // Virtual GUI
+                        }
+                        plugin
+                                .getSyncTaskWatcher()
+                                .getInventoryEditQueue()
+                                .offer(new InventoryEditContainer(inv, i, new ItemStack(Material.AIR)));
+                        Util.debugLog("Found a displayitem in an inventory, Scheduling to removal...");
+                        MsgUtil.sendGlobalAlert(
+                                "[InventoryCheck] Found displayItem in inventory at "
+                                        + location
+                                        + ", Item is "
+                                        + itemStack.getType().name());
+                    }
                 }
+            } catch (Exception t) {
+                // Ignore
             }
-        }.runTaskAsynchronously(plugin);
+        });
     }
 
     /**

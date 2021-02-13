@@ -22,7 +22,6 @@ package org.maxgamer.quickshop.shop;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
@@ -183,7 +182,7 @@ public abstract class DisplayItem {
         //itemStack.setAmount(1);
         ItemMeta iMeta = itemStack.getItemMeta();
         if (iMeta == null) {
-            iMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
+            iMeta = plugin.getServer().getItemFactory().getItemMeta(itemStack.getType());
         }
         if (iMeta == null) {
             Util.debugLog("ItemStack " + itemStack + " cannot getting or creating ItemMeta, failed to create guarded ItemStack.");

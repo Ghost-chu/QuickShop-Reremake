@@ -22,7 +22,6 @@ package org.maxgamer.quickshop.util.paste;
 import com.github.benmanes.caffeine.cache.stats.CacheStats;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
@@ -64,7 +63,7 @@ public class Paste {
         finalReport.append("QuickShop-").append(QuickShop.getFork()).append(" Paste Result\n");
         finalReport.append("###############################\n");
         finalReport.append("\n");
-        if (Bukkit.getPluginManager().getPlugin("ConsoleSpamFix") != null) {
+        if (plugin.getServer().getPluginManager().getPlugin("ConsoleSpamFix") != null) {
             finalReport.append("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!").append("\n");
         }
         finalReport.append("\n");
@@ -113,12 +112,12 @@ public class Paste {
         finalReport.append("\tCores: ").append(Runtime.getRuntime().availableProcessors()).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Server:\n");
-        finalReport.append("\tName: ").append(Bukkit.getName()).append("\n");
-        finalReport.append("\tServer Name: ").append(Bukkit.getServer().getName()).append("\n");
-        finalReport.append("\tBuild: ").append(Bukkit.getServer().getVersion()).append("\n");
+        finalReport.append("\tName: ").append(plugin.getServer().getName()).append("\n");
+        finalReport.append("\tServer Name: ").append(plugin.getServer().getName()).append("\n");
+        finalReport.append("\tBuild: ").append(plugin.getServer().getVersion()).append("\n");
         finalReport.append("\tNMSV: ").append(Util.getNMSVersion()).append("\n");
         //noinspection deprecation
-        finalReport.append("\tData Version: ").append(Bukkit.getUnsafe().getDataVersion()).append("\n");
+        finalReport.append("\tData Version: ").append(plugin.getServer().getUnsafe().getDataVersion()).append("\n");
         if (plugin.getEnvironmentChecker().isFabricBasedServer() || plugin.getEnvironmentChecker().isForgeBasedServer()) {
             if (plugin.getEnvironmentChecker().isForgeBasedServer()) {
                 finalReport.append("Modded Server: Forge (No support offer on this platform)\n");
@@ -138,13 +137,13 @@ public class Paste {
         finalReport.append("\tSystem Properties: ").append(Util.list2String(sysData)).append("\n");
         finalReport
                 .append("\tPlayers: ")
-                .append(Bukkit.getOnlinePlayers().size())
+                .append(plugin.getServer().getOnlinePlayers().size())
                 .append("/")
-                .append(Bukkit.getMaxPlayers())
+                .append(plugin.getServer().getMaxPlayers())
                 .append("\n");
-        finalReport.append("\tOnlineMode: ").append(Bukkit.getOnlineMode()).append("\n");
-        finalReport.append("\tBukkitVersion: ").append(Bukkit.getVersion()).append("\n");
-        finalReport.append("\tWorldContainer: ").append(Bukkit.getWorldContainer()).append("\n");
+        finalReport.append("\tOnlineMode: ").append(plugin.getServer().getOnlineMode()).append("\n");
+        finalReport.append("\tBukkitVersion: ").append(plugin.getServer().getVersion()).append("\n");
+        finalReport.append("\tWorldContainer: ").append(plugin.getServer().getWorldContainer()).append("\n");
         List<String> modules = new ArrayList<>();
         plugin.getIntegrationHelper().getIntegrations().forEach(m -> modules.add(m.getName()));
         finalReport.append("\tLoaded Integrations: ").append(Util.list2String(modules)).append("\n");
@@ -161,8 +160,8 @@ public class Paste {
 
         finalReport.append("================================================\n");
         finalReport.append("Worlds:\n");
-        finalReport.append("\tTotal: ").append(Bukkit.getWorlds().size()).append("\n");
-        for (World world : Bukkit.getWorlds()) {
+        finalReport.append("\tTotal: ").append(plugin.getServer().getWorlds().size()).append("\n");
+        for (World world : plugin.getServer().getWorlds()) {
             finalReport.append("\t*********************************\n");
             finalReport.append("\t\tName: ").append(world.getName()).append("\n");
             finalReport.append("\t\tEnvironment: ").append(world.getEnvironment().name()).append("\n");
@@ -180,9 +179,9 @@ public class Paste {
         finalReport.append("Plugins:\n");
         finalReport
                 .append("\tTotal: ")
-                .append(Bukkit.getPluginManager().getPlugins().length)
+                .append(plugin.getServer().getPluginManager().getPlugins().length)
                 .append("\n");
-        for (Plugin bplugin : Bukkit.getPluginManager().getPlugins()) {
+        for (Plugin bplugin : plugin.getServer().getPluginManager().getPlugins()) {
             finalReport
                     .append("\t")
                     .append(bplugin.getName())

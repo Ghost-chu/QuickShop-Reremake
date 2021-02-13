@@ -21,7 +21,6 @@ package org.maxgamer.quickshop.shop;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -49,6 +48,7 @@ public class InventoryPreview implements Listener {
     private final Player player;
     @Nullable
     private Inventory inventory;
+    private final QuickShop plugin = QuickShop.getInstance();
 
     /**
      * Create a preview item GUI for a player.
@@ -66,7 +66,7 @@ public class InventoryPreview implements Listener {
         if (itemStack.hasItemMeta()) {
             itemMeta = this.itemStack.getItemMeta();
         } else {
-            itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
+            itemMeta = plugin.getServer().getItemFactory().getItemMeta(itemStack.getType());
         }
         if (itemMeta != null) {
             if (itemMeta.hasLore()) {
@@ -111,7 +111,7 @@ public class InventoryPreview implements Listener {
             return;
         }
         final int size = 9;
-        inventory = Bukkit.createInventory(new QuickShopPreviewInventoryHolder(), size, MsgUtil.getMessage("menu.preview", player));
+        inventory = plugin.getServer().createInventory(new QuickShopPreviewInventoryHolder(), size, MsgUtil.getMessage("menu.preview", player));
         for (int i = 0; i < size; i++) {
             inventory.setItem(i, itemStack);
         }
