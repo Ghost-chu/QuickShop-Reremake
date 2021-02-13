@@ -1,9 +1,10 @@
 # QuickShop-Reremake
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/8e9a5689cb3f4d6b8315a270a1252c2b)](https://www.codacy.com/gh/Ghost-chu/QuickShop-Reremake/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Ghost-chu/QuickShop-Reremake&amp;utm_campaign=Badge_Grade)
-![Contributors](https://img.shields.io/github/contributors/Ghost-chu/QuickShop-Reremake)
+[![CodeFactor](https://www.codefactor.io/repository/github/ghost-chu/quickshop-reremake/badge)](https://www.codefactor.io/repository/github/ghost-chu/quickshop-reremake)
 ![BuildStatus](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/21/badge/icon)
 ![TestsPassed](https://img.shields.io/jenkins/tests?compact_message&jobUrl=https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake)
+![Contributors](https://img.shields.io/github/contributors/Ghost-chu/QuickShop-Reremake)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Reremake.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Reremake?ref=badge_shield)
 ---
 [![JoinDiscord](https://img.shields.io/badge/join-discord-blue.svg) ![Chatting](https://img.shields.io/discord/471882534712639488)](https://discord.gg/bfefw2E)

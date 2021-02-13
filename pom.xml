@@ -269,6 +269,10 @@
             <url>https://maven.sk89q.com/repo/</url>
         </repository>
         <repository>
+            <id>CodeMC</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
             <id>fanciful-repo</id>
             <url>https://github.com/mkremins/fanciful/tree/mvn-repo</url>
         </repository>
