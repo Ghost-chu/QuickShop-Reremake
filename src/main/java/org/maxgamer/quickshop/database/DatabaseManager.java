@@ -21,7 +21,6 @@ package org.maxgamer.quickshop.database;
 
 import lombok.Getter;
 import org.bukkit.plugin.IllegalPluginAccessException;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -79,13 +78,7 @@ public class DatabaseManager {
 
         if (useQueue) {
             try {
-                task =
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                plugin.getDatabaseManager().runTask();
-                            }
-                        }.runTaskTimerAsynchronously(plugin, 1, plugin.getConfig().getLong("database.queue-commit-interval") * 20);
+                task = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> plugin.getDatabaseManager().runTask(), 1, plugin.getConfig().getLong("database.queue-commit-interval") * 20);
             } catch (IllegalPluginAccessException e) {
                 Util.debugLog("Plugin is disabled but trying create database task, move to Main Thread...");
                 plugin.getDatabaseManager().runTask();

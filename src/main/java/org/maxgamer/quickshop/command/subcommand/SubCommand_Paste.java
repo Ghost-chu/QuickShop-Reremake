@@ -20,9 +20,7 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
@@ -46,33 +44,29 @@ public class SubCommand_Paste implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         // do actions
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (Bukkit.getPluginManager().getPlugin("ConsoleSpamFix") != null) {
-                    if (cmdArg.length < 1) {
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            if (plugin.getServer().getPluginManager().getPlugin("ConsoleSpamFix") != null) {
+                if (cmdArg.length < 1) {
+                    sender.sendMessage("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!");
+                    return;
+                } else {
+                    if (Arrays.stream(cmdArg).noneMatch(str -> str.contains("--force"))) {
                         sender.sendMessage("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!");
                         return;
-                    } else {
-                        if (Arrays.stream(cmdArg).noneMatch(str -> str.contains("--force"))) {
-                            sender.sendMessage("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!");
-                            return;
-                        }
                     }
                 }
-
-                if (Arrays.stream(cmdArg).anyMatch(str -> str.contains("file"))) {
-                    pasteToLocalFile(sender);
-                    return;
-                }
-                MsgUtil.sendMessage(sender, "§aPlease wait, we're uploading the data to the pastebin...");
-                if (!pasteToPastebin(sender)) {
-                    MsgUtil.sendMessage(sender, "The paste failed, saving the paste at local location...");
-                    pasteToLocalFile(sender);
-                }
-
             }
-        }.runTaskAsynchronously(plugin);
+
+            if (Arrays.stream(cmdArg).anyMatch(str -> str.contains("file"))) {
+                pasteToLocalFile(sender);
+                return;
+            }
+            MsgUtil.sendMessage(sender, "§aPlease wait, we're uploading the data to the pastebin...");
+            if (!pasteToPastebin(sender)) {
+                MsgUtil.sendMessage(sender, "The paste failed, saving the paste at local location...");
+                pasteToLocalFile(sender);
+            }
+        });
     }
 
     private boolean pasteToPastebin(@NotNull CommandSender sender) {

@@ -71,8 +71,8 @@ public class Economy_Reserve implements EconomyCore {
     @Deprecated
     private void setup() {
         try {
-            if (((Reserve) Bukkit.getPluginManager().getPlugin("Reserve")).economyProvided()) {
-                reserve = ((Reserve) Bukkit.getPluginManager().getPlugin("Reserve")).economy();
+            if (((Reserve) plugin.getServer().getPluginManager().getPlugin("Reserve")).economyProvided()) {
+                reserve = ((Reserve) plugin.getServer().getPluginManager().getPlugin("Reserve")).economy();
             }
         } catch (Exception throwable) {
             reserve = null;

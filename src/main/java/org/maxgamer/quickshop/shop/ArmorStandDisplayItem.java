@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.shop;
 
 import lombok.ToString;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -139,7 +138,7 @@ public class ArmorStandDisplayItem extends DisplayItem {
         this.guardedIstack = null;
         ShopDisplayItemDespawnEvent shopDisplayItemDespawnEvent =
                 new ShopDisplayItemDespawnEvent(this.shop, this.originalItemStack, DisplayType.ARMORSTAND);
-        Bukkit.getPluginManager().callEvent(shopDisplayItemDespawnEvent);
+        plugin.getServer().getPluginManager().callEvent(shopDisplayItemDespawnEvent);
     }
 
     @Override
@@ -214,7 +213,7 @@ public class ArmorStandDisplayItem extends DisplayItem {
 
             ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent =
                     new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.ARMORSTAND);
-            Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
+            plugin.getServer().getPluginManager().callEvent(shopDisplayItemSpawnEvent);
             if (shopDisplayItemSpawnEvent.isCancelled()) {
                 Util.debugLog(
                         "Canceled the displayItem from spawning because a plugin setCancelled the spawning event, usually it is a QuickShop Add on");

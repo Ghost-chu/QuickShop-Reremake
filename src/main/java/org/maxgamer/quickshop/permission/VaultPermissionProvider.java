@@ -20,12 +20,12 @@
 package org.maxgamer.quickshop.permission;
 
 import net.milkbowl.vault.permission.Permission;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
 
 @Deprecated
 public class VaultPermissionProvider implements PermissionProvider {
@@ -34,7 +34,7 @@ public class VaultPermissionProvider implements PermissionProvider {
     @Deprecated
     public VaultPermissionProvider() {
         RegisteredServiceProvider<Permission> rsp =
-                Bukkit.getServer().getServicesManager().getRegistration(Permission.class);
+                QuickShop.getInstance().getServer().getServicesManager().getRegistration(Permission.class);
         if (rsp == null) {
             throw new ProviderIsEmptyException(getName());
         }

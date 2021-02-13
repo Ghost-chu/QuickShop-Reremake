@@ -19,11 +19,11 @@
 
 package org.maxgamer.quickshop.event;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
 
 import java.util.UUID;
@@ -54,7 +54,7 @@ public class ShopCreateEvent extends QSEvent implements Cancellable {
     public ShopCreateEvent(@NotNull Shop shop, @NotNull UUID creator) {
         this.shop = shop;
         this.creator = creator;
-        this.player = Bukkit.getPlayer(creator);
+        this.player = QuickShop.getInstance().getServer().getPlayer(creator);
     }
 
     @Override
