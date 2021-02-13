@@ -4,7 +4,7 @@
   "translation-version": "Support Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: English (en_US)",
-  "language-version": "49",
+  "language-version": "50",
   "not-looking-at-shop": "&cCould not find a QuickShop. You need to look at one.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cYou do not have permission to do that.",
@@ -170,7 +170,9 @@
       "transfer": "&eTransfer someone's ALL shops to other",
       "removeworld": "&eRemove ALL shops in a specified world",
       "currency": "&eSet or remove the currency settings of the shop"
-    }
+    },
+    "disabled": "&cThis command is disabled: &e{0}",
+    "feature-not-enabled": "The feature not enabled in config."
   },
   "signs": {
     "selling": "Selling {0}",
@@ -296,5 +298,9 @@
   "currency-set": "&aShop currency successfully set to {0}.",
   "currency-unset": "&aShop currency removed successfully. Using default settings now.",
   "currency-not-support": "&cThe economy plugin doesn't support the multi-economy feature.",
-  "item-not-exist": "&cThe item &e{0} &cdoes not exist, please check your spelling."
+  "item-not-exist": "&cThe item &e{0} &cdoes not exist, please check your spelling.",
+  "backup-success": "&aBackup successfully.",
+  "console-only": "&cThis command only can be executed by Console.",
+  "console-only-danger": "&cThis is a danger command so that only can be executed by Console.",
+  "clean-warning": "&eThis command will purge &call &e shops if the shop is damaged or created in disallowed worlds or selling/buying disallowed items and &c&lIN NOT LOADED WORLD SHOPS&e, make sure you have full backup of your shops data and use &b/qs cleanghost confirm &eto continue."
 }
