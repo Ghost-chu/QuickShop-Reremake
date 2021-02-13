@@ -42,7 +42,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.api.QuickShopAPI;
 import org.maxgamer.quickshop.builtinlistener.InternalListener;
 import org.maxgamer.quickshop.chat.QuickChat;
 import org.maxgamer.quickshop.chat.QuickChatType;
@@ -85,6 +84,7 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+
 public class QuickShop extends JavaPlugin {
 
     /**
@@ -228,7 +228,7 @@ public class QuickShop extends JavaPlugin {
     private @Deprecated
     DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
     @Getter
-    private BukkitAPIWrapper bukkitAPIWrapper;
+    private final BukkitAPIWrapper bukkitAPIWrapper = new SpigotWrapper();
     @Getter
     private boolean enabledAsyncDisplayDespawn;
     @Getter
@@ -519,6 +519,8 @@ public class QuickShop extends JavaPlugin {
         } else {
             this.performanceUtil = new BukkitPerformance();
         }
+        getLogger().info("MessageProcessor provider selected: " + this.quickChatType.name());
+        Util.debugLog("DisplayItem provider selected: " + DisplayItem.getNowUsing().name());
         getLogger().info("PerformanceUtils selected: " + this.performanceUtil.getName());
     }
 
@@ -528,21 +530,20 @@ public class QuickShop extends JavaPlugin {
     @Override
     public void onLoad() {
         this.onLoadCalled = true;
+        this.bootError = null;
         getLogger().info("QuickShop Reremake - Early boot step - Booting up...");
         //BEWARE THESE ONLY RUN ONCE
         instance = this;
         this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
         getLogger().info("Reading the configuration...");
-        this.initConfiguration();
-        QuickShopAPI.setupApi(this);
         //noinspection ResultOfMethodCallIgnored
         getDataFolder().mkdirs();
-//        replaceLogger();
-        if (getConfig().getBoolean("debug.adventure", false)) {
-            System.setProperty("net.kyori.adventure.debug", "true");
-            getLogger().warning("Adventure debug flag was set! You can disable this anytime in config by set `debug.adventure` to false.");
-        }
-        this.bootError = null;
+        initConfiguration();
+        initAdventure();
+        initErrorReporter();
+        initUtils();
+
+
         getLogger().info("Loading up integration modules.");
         this.integrationHelper = new IntegrationHelper(this);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadBegin);
@@ -557,6 +558,28 @@ public class QuickShop extends JavaPlugin {
 
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadAfter);
         getLogger().info("QuickShop Reremake - Early boot step - Booted up...");
+    }
+
+    private void initUtils() {
+        this.loadItemMatcher();
+        Util.initialize();
+        try {
+            MsgUtil.loadCfgMessages();
+        } catch (Exception e) {
+            getLogger().log(Level.WARNING, "Error when loading translation", e);
+        }
+        MsgUtil.loadItemi18n();
+        MsgUtil.loadEnchi18n();
+        MsgUtil.loadPotioni18n();
+        MsgUtil.loadTransactionMessages();
+        MsgUtil.clean();
+    }
+
+    private void initAdventure() {
+        if (getConfig().getBoolean("debug.adventure", false)) {
+            System.setProperty("net.kyori.adventure.debug", "true");
+            getLogger().warning("Adventure debug flag was set! You can disable this anytime in config by set `debug.adventure` to false.");
+        }
     }
 
     @Override
@@ -664,6 +687,37 @@ public class QuickShop extends JavaPlugin {
         updateConfig(getConfig().getInt("config-version"));
     }
 
+    private void initErrorReporter() {
+        try {
+            if (!getConfig().getBoolean("auto-report-errors")) {
+                Util.debugLog("Error reporter was disabled!");
+            } else {
+                sentryErrorReporter = new RollbarErrorReporter(this);
+            }
+        } catch (Throwable th) {
+            getLogger().warning("Cannot load the Sentry Error Reporter: " + th.getMessage());
+            getLogger().warning("Because our error reporter doesn't work, please report this error to developer, thank you!");
+        }
+    }
+
+    private boolean selfCheck() {
+        environmentChecker = new org.maxgamer.quickshop.util.envcheck.EnvironmentChecker(this);
+        ResultReport resultReport = environmentChecker.run();
+        if (resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
+            StringBuilder builder = new StringBuilder();
+            for (Entry<EnvCheckEntry, ResultContainer> result : resultReport.getResults().entrySet()) {
+                if (result.getValue().getResult().ordinal() > CheckResult.WARNING.ordinal()) {
+                    builder.append(String.format("- [%s/%s] %s", result.getKey().name(), result.getValue().getResult().getDisplay(), result.getValue().getResultMessage())).append("\n");
+                }
+            }
+            bootError = new BootError(this.getLogger(), builder.toString());
+            //noinspection ConstantConditions
+            getCommand("qs").setTabCompleter(this); //Disable tab completer
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public void onEnable() {
         if (!this.onLoadCalled) {
@@ -680,57 +734,17 @@ public class QuickShop extends JavaPlugin {
 
         /* Check the running envs is support or not. */
         getLogger().info("Starting plugin self-test, please wait...");
-        environmentChecker = new org.maxgamer.quickshop.util.envcheck.EnvironmentChecker(this);
-        ResultReport resultReport = environmentChecker.run();
-        if (resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
-            StringBuilder builder = new StringBuilder();
-            for (Entry<EnvCheckEntry, ResultContainer> result : resultReport.getResults().entrySet()) {
-                if (result.getValue().getResult().ordinal() > CheckResult.WARNING.ordinal()) {
-                    builder.append(String.format("- [%s/%s] %s", result.getKey().name(), result.getValue().getResult().getDisplay(), result.getValue().getResultMessage())).append("\n");
-                }
-            }
-            bootError = new BootError(this.getLogger(), builder.toString());
-            //noinspection ConstantConditions
-            getCommand("qs").setTabCompleter(this); //Disable tab completer
+
+        if (!selfCheck()) {
             return;
         }
 
-        QuickShopAPI.setupApi(this);
-
-        getLogger().info("Reading the configuration...");
-        this.initConfiguration();
         getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
         getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
         getLogger().info("Let's start loading the plugin");
 
-        getLogger().info("Chat processor selected: " + this.quickChatType.name());
-
         /* Process Metrics and Sentry error reporter. */
         metrics = new Metrics(this, 3320);
-
-        try {
-            if (!getConfig().getBoolean("auto-report-errors")) {
-                Util.debugLog("Error reporter was disabled!");
-            } else {
-                sentryErrorReporter = new RollbarErrorReporter(this);
-            }
-        } catch (Throwable th) {
-            getLogger().warning("Cannot load the Sentry Error Reporter: " + th.getMessage());
-            getLogger().warning("Because our error reporter doesn't work, please report this error to developer, thank you!");
-        }
-        bukkitAPIWrapper = new SpigotWrapper();
-
-        /* Initalize the Utils */
-        this.loadItemMatcher();
-        Util.initialize();
-        try {
-            MsgUtil.loadCfgMessages();
-        } catch (Exception e) {
-            getLogger().log(Level.WARNING, "Error when loading translation", e);
-        }
-        MsgUtil.loadItemi18n();
-        MsgUtil.loadEnchi18n();
-        MsgUtil.loadPotioni18n();
 
         /* PreInit for BootError feature */
         commandManager = new CommandManager(this);
@@ -748,11 +762,7 @@ public class QuickShop extends JavaPlugin {
         /* Load 3rd party supports */
         load3rdParty();
 
-        //Load the database
-        setupDBonEnableding = true;
-        setupDatabase();
-
-        setupDBonEnableding = false;
+        loadDatabase();
 
         /* Initalize the tools */
         // Create the shop manager.
@@ -776,9 +786,6 @@ public class QuickShop extends JavaPlugin {
                 limits.put(key, limitCfg.getInt(key));
             }
         }
-        if (getConfig().getInt("shop.finding.distance") > 100) {
-            getLogger().severe("Shop find distance is too high! It may cause lag! Pick a number under 100!");
-        }
 
         if (getConfig().getBoolean("use-caching")) {
             this.shopCache = new Cache(this);
@@ -799,35 +806,8 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Registering Listeners...");
         // Register events
         // Listeners (These don't)
-        new BlockListener(this, this.shopCache).register();
-        new PlayerListener(this).register();
-        new WorldListener(this).register();
-        // Listeners - We decide which one to use at runtime
-        new ChatListener(this).register();
-        new ChunkListener(this).register();
-        new CustomInventoryListener(this).register();
-        new ShopProtectionListener(this, this.shopCache).register();
-        new PluginListener(this).register();
+        loadListeners();
 
-        syncTaskWatcher = new SyncTaskWatcher(this);
-        // shopVaildWatcher = new ShopVaildWatcher(this);
-        ongoingFeeWatcher = new OngoingFeeWatcher(this);
-        InternalListener internalListener = new InternalListener(this);
-        Bukkit.getPluginManager().registerEvents(internalListener, this);
-        if (isDisplay() && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
-            displayWatcher = new DisplayWatcher(this);
-            new DisplayBugFixListener(this).register();
-            new DisplayProtectionListener(this, this.shopCache).register();
-            if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
-                new ClearLaggListener(this).register();
-            }
-        }
-        if (getConfig().getBoolean("shop.lock")) {
-            new LockListener(this, this.shopCache).register();
-        }
-        getLogger().info("Cleaning MsgUtils...");
-        MsgUtil.loadTransactionMessages();
-        MsgUtil.clean();
         if (this.getConfig().getBoolean("updater", true)) {
             getLogger().info("Registering UpdateWatcher...");
             updateWatcher = new UpdateWatcher();
@@ -861,6 +841,7 @@ public class QuickShop extends JavaPlugin {
         }
         integrationHelper.searchAndRegisterPlugins();
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableAfter);
+
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -874,8 +855,44 @@ public class QuickShop extends JavaPlugin {
             loaded = true;
         }
 
-        Util.debugLog("Now using display-type: " + DisplayItem.getNowUsing().name());
+
         // sentryErrorReporter.sendError(new IllegalAccessError("no fucking way"));
+    }
+
+    private void loadListeners() {
+        new BlockListener(this, this.shopCache).register();
+        new PlayerListener(this).register();
+        new WorldListener(this).register();
+        // Listeners - We decide which one to use at runtime
+        new ChatListener(this).register();
+        new ChunkListener(this).register();
+        new CustomInventoryListener(this).register();
+        new ShopProtectionListener(this, this.shopCache).register();
+        new PluginListener(this).register();
+
+        syncTaskWatcher = new SyncTaskWatcher(this);
+        // shopVaildWatcher = new ShopVaildWatcher(this);
+        ongoingFeeWatcher = new OngoingFeeWatcher(this);
+        InternalListener internalListener = new InternalListener(this);
+        Bukkit.getPluginManager().registerEvents(internalListener, this);
+        if (isDisplay() && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
+            displayWatcher = new DisplayWatcher(this);
+            new DisplayBugFixListener(this).register();
+            new DisplayProtectionListener(this, this.shopCache).register();
+            if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
+                new ClearLaggListener(this).register();
+            }
+        }
+        if (getConfig().getBoolean("shop.lock")) {
+            new LockListener(this, this.shopCache).register();
+        }
+    }
+
+    private void loadDatabase() {
+        //Load the database
+        setupDBonEnableding = true;
+        setupDatabase();
+        setupDBonEnableding = false;
     }
 
     private void loadItemMatcher() {
