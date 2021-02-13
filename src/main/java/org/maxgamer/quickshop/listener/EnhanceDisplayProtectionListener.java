@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.listener;
 
+import io.papermc.lib.PaperLib;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -179,10 +180,11 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
 //            return;
 //        }
         final ItemStack itemStack = event.getFuel();
-        BlockState state = plugin.getPerformanceUtil().getState(event.getBlock());
+
         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
             Block furnace = event.getBlock();
+            BlockState state = PaperLib.getBlockState(event.getBlock(), false).getState();
             if (state instanceof Furnace) {
                 Furnace furnace1 = (Furnace) furnace.getState();
                 sendAlert("[DisplayGuard] Block  " + event.getBlock().getLocation() + " trying burn with DisplayItem.");
@@ -197,7 +199,7 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
 //            return;
 //        }
         ItemStack itemStack = event.getSource();
-        BlockState furnace = plugin.getPerformanceUtil().getState(event.getBlock());
+        BlockState furnace = PaperLib.getBlockState(event.getBlock(), false).getState();
         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
             if (furnace instanceof Furnace) {

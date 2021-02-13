@@ -24,6 +24,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import org.bukkit.*;
 import org.bukkit.block.*;
@@ -223,7 +224,7 @@ public class ShopManager {
             if (Util.isAir(info.getSignBlock().getType())
                     || info.getSignBlock().getType() == Material.WATER) {
                 info.getSignBlock().setType(Util.getSignMaterial());
-                BlockState bs = plugin.getPerformanceUtil().getState(info.getSignBlock());
+                BlockState bs = info.getSignBlock().getState();
                 if (info.getSignBlock().getType() == Material.WATER
                         && (bs.getBlockData() instanceof Waterlogged)) {
                     Waterlogged waterable = (Waterlogged) bs.getBlockData();
@@ -315,7 +316,7 @@ public class ShopManager {
      * @return The shop at that location
      */
     public @Nullable Shop getShop(@NotNull Location loc, boolean skipShopableChecking) {
-        if (!skipShopableChecking && !Util.isShoppables(plugin.getPerformanceUtil().getState(loc.getBlock()).getType())) {
+        if (!skipShopableChecking && !Util.isShoppables(loc.getBlock().getType())) {
             return null;
         }
         final Map<Location, Shop> inChunk = getShops(loc.getChunk());
@@ -375,7 +376,7 @@ public class ShopManager {
             }
             // Ooops, not founded that shop in this chunk.
         }
-        @Nullable Block secondHalfShop = Util.getSecondHalf(loc.getBlock());
+        @Nullable Block secondHalfShop = Util.getSecondHalf(PaperLib.getBlockState(loc.getBlock(), false).getState());
         if (secondHalfShop != null) {
             inChunk = getShops(secondHalfShop.getChunk());
             if (inChunk != null) {
@@ -389,10 +390,11 @@ public class ShopManager {
         }
 
         // only check if is sign
-        BlockState state = plugin.getPerformanceUtil().getState(loc.getBlock());
+        Block block = loc.getBlock();
+        BlockState state = PaperLib.getBlockState(loc.getBlock(), false).getState();
         if (state instanceof Sign) {
             // If that chunk nothing we founded, we should check it is attached.
-            @Nullable Block attachedBlock = plugin.getPerformanceUtil().getAttached(loc.getBlock());
+            @Nullable Block attachedBlock = Util.getAttached(block);
             // Check is attached on some block.
             if (attachedBlock == null) {
                 // Nope
@@ -808,7 +810,7 @@ public class ShopManager {
             MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-already-owned", p));
             return;
         }
-        if (Util.getSecondHalf(info.getLocation().getBlock()) != null
+        if (Util.getSecondHalf(PaperLib.getBlockState(info.getLocation().getBlock(), false).getState()) != null
                 && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
             MsgUtil.sendMessage(p, MsgUtil.getMessage("no-double-chests", p));
             return;
@@ -1352,24 +1354,26 @@ public class ShopManager {
 
         // failed, get attached shop
         if (shop == null) {
-            if (!Util.isShoppables(plugin.getPerformanceUtil().getState(loc.getBlock()).getType())) {
+            Block block = loc.getBlock();
+            if (!Util.isShoppables(block.getType())) {
                 return null;
             }
             final Block currentBlock = loc.getBlock();
             if (!fromAttach) {
                 // sign
                 if (Util.isWallSign(currentBlock.getType())) {
-                    final Block attached = plugin.getPerformanceUtil().getAttached(currentBlock);
+                    final Block attached = Util.getAttached(currentBlock);
                     if (attached != null) {
                         shop = this.getShopIncludeAttached_Fast(attached.getLocation(), true, useCache);
                     }
                     // double chest
                 } else {
                     // optimize for performance
-                    if (!(plugin.getPerformanceUtil().getState(currentBlock) instanceof Container)) {
+                    BlockState state = PaperLib.getBlockState(currentBlock, false).getState();
+                    if (!(state instanceof Container)) {
                         return null;
                     }
-                    @Nullable final Block half = Util.getSecondHalf(currentBlock);
+                    @Nullable final Block half = Util.getSecondHalf(state);
                     if (half != null) {
                         shop = getShop(half.getLocation());
                     }

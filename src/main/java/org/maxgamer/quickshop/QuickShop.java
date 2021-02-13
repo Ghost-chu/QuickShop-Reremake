@@ -69,9 +69,6 @@ import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import org.maxgamer.quickshop.util.reporter.error.RollbarErrorReporter;
 import org.maxgamer.quickshop.util.wrapper.bukkit.BukkitAPIWrapper;
 import org.maxgamer.quickshop.util.wrapper.bukkit.SpigotWrapper;
-import org.maxgamer.quickshop.util.wrapper.performance.BKCommonLibPerformance;
-import org.maxgamer.quickshop.util.wrapper.performance.BukkitPerformance;
-import org.maxgamer.quickshop.util.wrapper.performance.PerformanceUtil;
 import org.maxgamer.quickshop.watcher.*;
 
 import java.io.BufferedInputStream;
@@ -257,8 +254,6 @@ public class QuickShop extends JavaPlugin {
     private String currency = null;
     @Getter
     private ShopControlPanel shopControlPanelManager;
-    @Getter
-    private PerformanceUtil performanceUtil;
 
 
     @NotNull
@@ -514,12 +509,6 @@ public class QuickShop extends JavaPlugin {
         } else {
             logWatcher = null;
         }
-        if (this.getConfig().getBoolean("plugin.BKCommonLib", false) && Bukkit.getPluginManager().getPlugin("BKCommonLib").isEnabled()) {
-            this.performanceUtil = new BKCommonLibPerformance();
-        } else {
-            this.performanceUtil = new BukkitPerformance();
-        }
-        getLogger().info("PerformanceUtils selected: " + this.performanceUtil.getName());
     }
 
     /**

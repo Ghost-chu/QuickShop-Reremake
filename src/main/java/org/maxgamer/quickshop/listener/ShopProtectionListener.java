@@ -151,7 +151,7 @@ public class ShopProtectionListener extends ProtectionListenerBase {
      */
     @Nullable
     private Shop getShopNextTo(@NotNull Location loc) {
-        final Block b = plugin.getPerformanceUtil().getAttached(loc.getBlock());
+        final Block b = Util.getAttached(loc.getBlock());
         // Util.getAttached(b)
         if (b == null) {
             return null;

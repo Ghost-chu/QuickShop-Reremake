@@ -173,6 +173,10 @@
                             <pattern>de.themoep.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.de.themoep.minedown.</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>io.papermc.lib.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.io.papermc.lib.</shadedPattern>
+                        </relocation>
                         <!--                        <relocation>-->
                         <!--                            <pattern>com.github.ben-manes.caffeine.</pattern>-->
                         <!--                            <shadedPattern>org.maxgamer.quickshop.shade.com.github.ben-manes.caffeine.</shadedPattern>-->
@@ -328,8 +332,8 @@
             <url>https://repo.songoda.com/repository/public/</url>
         </repository>
         <repository>
-            <id>MG-Dev Jenkins CI Maven Repository</id>
-            <url>https://ci.mg-dev.eu/plugin/repository/everything/</url>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
     </repositories>
 
@@ -836,10 +840,10 @@
             <version>2.8.4</version>
         </dependency>
         <dependency>
-            <groupId>com.bergerkiller.bukkit</groupId>
-            <artifactId>BKCommonLib</artifactId>
-            <version>1.16.5-v2</version>
-            <scope>provided</scope>
+            <groupId>io.papermc</groupId>
+            <artifactId>paperlib</artifactId>
+            <version>1.0.6</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

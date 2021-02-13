@@ -246,10 +246,6 @@ public class Paste {
             finalReport.append("\t\tRequest      Count: ").append(stats.requestCount()).append("\n");
             finalReport.append("\t\tTotal Loading Time: ").append(stats.totalLoadTime()).append("\n");
         }
-        finalReport.append("\n");
-        finalReport.append("\tPerformance Util: ").append("\n");
-        finalReport.append("\t\tSelected: ").append(plugin.getPerformanceUtil().getName()).append("\n");
-
 
         finalReport.append("================================================\n");
         finalReport.append("Configurations:\n");

@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.util;
 
+import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.NonNull;
 import org.apache.commons.lang.StringUtils;
@@ -155,7 +156,7 @@ public class Util {
      * @return True if it can be made into a shop, otherwise false.
      */
     public static boolean canBeShop(@NotNull Block b) {
-        final BlockState bs = plugin.getPerformanceUtil().getState(b);
+
 
         if (isBlacklistWorld(b.getWorld())) {
             return false;
@@ -165,7 +166,7 @@ public class Util {
         if (!isShoppables(b.getType())) {
             return false;
         }
-
+        final BlockState bs = PaperLib.getBlockState(b, false).getState();
         if (bs instanceof EnderChest) { // BlockState for Mod supporting
             return plugin.getOpenInvPlugin() != null;
         }
@@ -622,11 +623,7 @@ public class Util {
 //        return null;
 //    }
 
-    public static boolean isDoubleChest(@Nullable Block b) {
-        if (b == null) {
-            return false;
-        }
-        BlockState state = plugin.getPerformanceUtil().getState(b);
+    public static boolean isDoubleChest(@Nullable BlockState state) {
         if (!(state instanceof Container)) {
             return false;
         }
@@ -987,7 +984,7 @@ public class Util {
      * @return true if a nearby shop was found, false otherwise.
      */
     public static boolean isOtherShopWithinHopperReach(@NotNull Block b, @NotNull Player p) {
-        Block bshop = plugin.getPerformanceUtil().getAttached(b);
+        Block bshop = Util.getAttached(b);
         if (bshop == null) {
             return false;
         }
@@ -1001,11 +998,10 @@ public class Util {
     /**
      * Returns the chest attached to the given chest. The given block must be a chest.
      *
-     * @param b The chest to check.
+     * @param state The chest to check.
      * @return the block which is also a chest and connected to b.
      */
-    public static Block getSecondHalf(@NotNull Block b) {
-        BlockState state = b.getState();
+    public static Block getSecondHalf(@NotNull BlockState state) {
         if (!(state instanceof Chest)) {
             return null;
         }
@@ -1017,8 +1013,7 @@ public class Util {
             Chest rightC = (Chest) doubleChest.getRightSide();
             if (equalsBlockStateLocation(oneSideOfChest.getLocation(), Objects.requireNonNull(rightC).getLocation())) {
                 return leftC.getBlock();
-            }
-            if (equalsBlockStateLocation(oneSideOfChest.getLocation(), Objects.requireNonNull(leftC).getLocation())) {
+            } else {
                 return rightC.getBlock();
             }
         }

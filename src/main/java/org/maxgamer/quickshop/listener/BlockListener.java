@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.listener;
 
+import io.papermc.lib.PaperLib;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -114,7 +115,7 @@ public class BlockListener extends ProtectionListenerBase {
             shop.delete();
             MsgUtil.sendMessage(p, MsgUtil.getMessage("success-removed-shop", p));
         } else if (Util.isWallSign(b.getType())) {
-            BlockState state = plugin.getPerformanceUtil().getState(b);
+            BlockState state = PaperLib.getBlockState(b, false).getState();
             if (state instanceof Sign) {
                 Sign sign = (Sign) state;
                 if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
@@ -167,7 +168,7 @@ public class BlockListener extends ProtectionListenerBase {
      */
     @Nullable
     private Shop getShopNextTo(@NotNull Location loc) {
-        final Block b = plugin.getPerformanceUtil().getAttached(loc.getBlock());
+        final Block b = Util.getAttached(loc.getBlock());
         // Util.getAttached(b)
         if (b == null) {
             return null;
@@ -215,23 +216,24 @@ public class BlockListener extends ProtectionListenerBase {
         //Chest combine mechanic based checking
         if (player.isSneaking()) {
             Block blockAgainst = e.getBlockAgainst();
-            if (blockAgainst.getType() == Material.CHEST && placingBlock.getFace(blockAgainst) != BlockFace.UP && placingBlock.getFace(blockAgainst) != BlockFace.DOWN && !Util.isDoubleChest(blockAgainst)) {
+            if (blockAgainst.getType() == Material.CHEST && placingBlock.getFace(blockAgainst) != BlockFace.UP && placingBlock.getFace(blockAgainst) != BlockFace.DOWN && !Util.isDoubleChest(PaperLib.getBlockState(blockAgainst, false).getState())) {
                 chest = e.getBlockAgainst();
             } else {
                 return;
             }
         } else {
             //Get all chest in vertical Location
-            BlockFace placingChestFacing = ((Directional) (plugin.getPerformanceUtil().getState(placingBlock).getBlockData())).getFacing();
+            BlockFace placingChestFacing = ((Directional) (placingBlock.getBlockData())).getFacing();
             for (BlockFace face : Util.getVerticalFacing()) {
                 //just check the right side and left side
                 if (!face.equals(placingChestFacing) && !face.equals(placingChestFacing.getOppositeFace())) {
                     Block nearByBlock = placingBlock.getRelative(face);
+                    BlockState nearByBlockState = PaperLib.getBlockState(nearByBlock, false).getState();
                     if (nearByBlock.getType() == Material.CHEST
                             //non double chest
-                            && !Util.isDoubleChest(nearByBlock)
+                            && !Util.isDoubleChest(nearByBlockState)
                             //same facing
-                            && placingChestFacing == ((Directional) plugin.getPerformanceUtil().getState(nearByBlock).getBlockData()).getFacing()) {
+                            && placingChestFacing == ((Directional) nearByBlockState.getBlockData()).getFacing()) {
                         if (chest == null) {
                             chest = nearByBlock;
                         } else {
