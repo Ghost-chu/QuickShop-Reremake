@@ -23,7 +23,7 @@ QuickShop-Reremake makes by PotatoCraft Studio from https://github.com/KaiKikuch
 
 Open a new issue here: https://github.com/Ghost-chu/QuickShop-Reremake/issues
 
-## Features
+## Features``
 
 - Easy to use
 - Togglable Display Item on top of the chest

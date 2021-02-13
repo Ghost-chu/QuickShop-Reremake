@@ -1467,6 +1467,15 @@ public class MsgUtil {
             setAndUpdate("item-not-exist", "&cThe item &e{0} &cnot exists, please check your spelling.");
             setAndUpdate("language-version", ++selectedVersion);
         }
+        if (selectedVersion == 49) {
+            setAndUpdate("backup-success", "&aBackup successfully.");
+            setAndUpdate("console-only", "&cThis command only can be executed by Console.");
+            setAndUpdate("console-only-danger", "&cThis is a danger command so that only can be executed by Console.");
+            setAndUpdate("clean-warning", "&eThis command will purge &call &e shops if the shop is damaged or created in disallowed worlds or selling/buying disallowed items and &c&lIN NOT LOADED WORLD SHOPS&e, make sure you have full backup of your shops data and use &b/qs cleanghost confirm &eto continue.");
+            setAndUpdate("command.disabled", "&cThis command is disabled: &e{0}");
+            setAndUpdate("command.feature-not-enabled", "The feature not enabled in config.");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
 
         messagei18n.save();

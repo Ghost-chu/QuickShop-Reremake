@@ -283,14 +283,14 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                         .permission("quickshop.convert")
                         .executor(new SubCommand_Convert(plugin))
                         .build());
-        if (plugin.isAllowStack()) {
-            registerCmd(CommandContainer.builder()
-                    .prefix("size")
-                    .permission("quickshop.create.stacks")
-                    .permission("quickshop.create.changeamount")
-                    .executor(new SubCommand_Size(plugin))
-                    .build());
-        }
+        registerCmd(CommandContainer.builder()
+                .prefix("size")
+                .permission("quickshop.create.stacks")
+                .permission("quickshop.create.changeamount")
+                .executor(new SubCommand_Size(plugin))
+                .disabled(!plugin.isAllowStack())
+                .disablePlaceholder(MsgUtil.getMessage("command.feature-not-enabled", null))
+                .build());
         registerCmd(CommandContainer.builder()
                 .prefix("item")
                 .permission("quickshop.create.changeitem")
@@ -392,6 +392,10 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         for (CommandContainer container : cmds) {
             if (!container.getPrefix().equalsIgnoreCase(cmdArg[0])) {
                 continue;
+            }
+            if (container.isDisabled()) {
+                MsgUtil.sendMessage(sender, container.getDisableText(sender));
+                return true;
             }
             List<String> requirePermissions = container.getPermissions();
             if (container.getPermissions() != null) {
