@@ -54,6 +54,7 @@ public class SubCommand_Currency implements CommandProcesser {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
 
+
             if (shop != null) {
                 if (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.currency")) {
                     //shop.setShopType(ShopType.BUYING);
