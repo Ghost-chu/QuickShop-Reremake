@@ -31,6 +31,7 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.UUID;
 
@@ -60,6 +61,8 @@ public class SubCommand_Export implements CommandProcesser {
                     .forEach((shop -> finalReport.append(shop).append("\n")));
             try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
                 outputStream.write(finalReport.toString());
+            } catch (IOException ignored) {
+
             }
             MsgUtil.sendMessage(sender, "Done.");
         });
