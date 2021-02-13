@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.shop;
 
 import com.lishid.openinv.OpenInv;
+import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -418,7 +419,7 @@ public class ContainerShop implements Shop {
     @Override
     public boolean isAttached(@NotNull Block b) {
         Util.ensureThread(false);
-        return this.getLocation().getBlock().equals(plugin.getPerformanceUtil().getAttached(b));
+        return this.getLocation().getBlock().equals(Util.getAttached(b));
     }
 
     /**
@@ -959,7 +960,7 @@ public class ContainerShop implements Shop {
                 continue;
             }
 
-            BlockState state = plugin.getPerformanceUtil().getState(b);
+            BlockState state = PaperLib.getBlockState(b, false).getState();
             if (!(state instanceof Sign)) {
                 continue;
             }
@@ -1183,8 +1184,8 @@ public class ContainerShop implements Shop {
 
     public @Nullable Inventory getInventory() {
         Util.ensureThread(false);
+        BlockState state = PaperLib.getBlockState(location.getBlock(), false).getState();
         try {
-            BlockState state = plugin.getPerformanceUtil().getState(location.getBlock());
             if (state.getType() == Material.ENDER_CHEST
                     && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
                 OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
@@ -1200,7 +1201,7 @@ public class ContainerShop implements Shop {
         }
         InventoryHolder container;
         try {
-            container = (InventoryHolder) plugin.getPerformanceUtil().getState(this.location.getBlock());
+            container = (InventoryHolder) state;
             return container.getInventory();
         } catch (Exception e) {
             if (!createBackup) {
@@ -1251,7 +1252,7 @@ public class ContainerShop implements Shop {
      */
     public @Nullable ContainerShop getAttachedShop() {
         Util.ensureThread(false);
-        Block c = Util.getSecondHalf(this.getLocation().getBlock());
+        Block c = Util.getSecondHalf(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
         if (c == null) {
             return null;
         }
@@ -1266,7 +1267,7 @@ public class ContainerShop implements Shop {
      */
     public boolean isDoubleChestShop() {
         Util.ensureThread(false);
-        return Util.isDoubleChest(this.getLocation().getBlock());
+        return Util.isDoubleChest(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
     }
 
     /**
