@@ -79,7 +79,6 @@ public class ContainerShop implements Shop {
     private boolean unlimited;
     @EqualsAndHashCode.Exclude
     private long lastChangedAt;
-    private int version;
 
 
     private ContainerShop(@NotNull ContainerShop s) {
@@ -95,7 +94,6 @@ public class ContainerShop implements Shop {
         this.isDeleted = s.isDeleted;
         this.createBackup = s.createBackup;
         this.extra = s.extra;
-        this.version = s.version;
         this.lastChangedAt = System.currentTimeMillis();
         initDisplayItem();
     }
@@ -151,7 +149,7 @@ public class ContainerShop implements Shop {
         initDisplayItem();
         this.lastChangedAt = System.currentTimeMillis();
         Map<String, Object> dataMap = extra.get(plugin.getName());
-        version = dataMap != null ? Integer.parseInt(String.valueOf(dataMap.getOrDefault("version", 0))) : 0;
+        //version = dataMap != null ? Integer.parseInt(String.valueOf(dataMap.getOrDefault("version", 0))) : 0;
     }
 
     private void initDisplayItem() {
@@ -662,10 +660,6 @@ public class ContainerShop implements Shop {
             sign.update(true);
             plugin.getServer().getPluginManager().callEvent(new ShopSignUpdateEvent(this, sign));
         }
-        //Update the recognize method after converted
-        if (getShopVersion() == 0) {
-            setShopVersion(1);
-        }
     }
 
     /**
@@ -920,24 +914,6 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * Return the shop version
-     * Mostly is internal use
-     *
-     * @return shop version
-     */
-    public int getShopVersion() {
-        return version;
-    }
-
-    public void setShopVersion(int ver) {
-        version = ver;
-        Map<String, Object> extraMap = getExtra(plugin);
-        extraMap.put("version", ver);
-        extra.put(plugin.getName(), extraMap);
-        this.update();
-    }
-
-    /**
      * Returns a list of signs that are attached to this shop (QuickShop and blank signs only)
      *
      * @return a list of signs that are attached to this shop (QuickShop and blank signs only)
@@ -987,69 +963,8 @@ public class ContainerShop implements Shop {
                     //continue
                 }
             }
-
-
-//            if (getShopVersion() == 0) {
-//                String adminShopHeader = MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
-//                                "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
-//                String signHeaderUsername =
-//                        MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
-//                if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
-//                    signs.add(sign);
-//                    Util.debugLog("The ShopInfoSign at " + b.getLocation() + " has been detected (legacy).");
-//                    //TEXT SIGN
-//                    //continue
-//                } else {
-//                    Util.debugLog("The Sign at " + b.getLocation() + " missed matching (legacy).");
-//                    for (String line : sign.getLines()) {
-//                        Util.debugLog("[" + line + "]");
-//                    }
-//                }
-//            } else {
-//                if (lines[1].startsWith(shopSignPattern)) {
-//                    signs.add(sign);
-//                    Util.debugLog("The Sign at " + b.getLocation() + " has been detected (modern).");
-//                } else {
-//                    Util.debugLog("The Sign at " + b.getLocation() + " missed matching (modern).");
-//                    for (String line : sign.getLines()) {
-//                        Util.debugLog("[" + line + "]");
-//                    }
-//                    String adminShopHeader = MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
-//                            "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
-//                    String signHeaderUsername =
-//                            MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
-//                    if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
-//                        signs.add(sign);
-//                        Util.debugLog("The ShopInfoSign at " + b.getLocation() + " has been detected (legacy).");
-//                        //TEXT SIGN
-//                        //continue
-//                    } else {
-//                        Util.debugLog("The Sign at " + b.getLocation() + " missed matching (legacy).");
-//                        for (String line : sign.getLines()) {
-//                            Util.debugLog("[" + line + "]");
-//                        }
-//                    }
-//                }
-//
-//            }
-            //Empty or matching the header
         }
 
-        //            if (currentLine.contains(signHeader) || currentLine.isEmpty()) {
-        //                signs.add(sign);
-        //            } else {
-        //                boolean text = false;
-        //                for (String s : sign.getLines()) {
-        //                    if (!s.isEmpty()) {
-        //                        text = true;
-        //                        break;
-        //                    }
-        //                }
-        //                if (!text) {
-        //                    signs.add(sign);
-        //                }
-        //            }
-        //        }
         return signs;
     }
 
