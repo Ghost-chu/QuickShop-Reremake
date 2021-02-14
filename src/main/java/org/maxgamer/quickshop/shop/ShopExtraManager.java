@@ -75,7 +75,6 @@ public class ShopExtraManager {
     }
 
     @Nullable
-
     public String getString(@NotNull String path, @Nullable String def) {
         return (String) extra.getOrDefault(path, def);
     }
