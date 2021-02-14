@@ -85,7 +85,7 @@ public class QSEventManager implements QuickEventManager, Listener {
 
     public void callEvent(Event event) {
         if (event.isAsynchronous()) {
-            if (Thread.holdsLock(Bukkit.getPluginManager())) {
+            if (Thread.holdsLock(plugin.getServer().getPluginManager())) {
                 throw new IllegalStateException(
                         event.getEventName()
                                 + " cannot be triggered asynchronously from inside synchronized code.");
