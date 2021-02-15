@@ -34,9 +34,13 @@ import java.util.Set;
 @SuppressWarnings("unchecked")
 public class ShopExtraManager {
     private final @NotNull Map<String, Object> extra;
+    private final @NotNull Shop shop;
+    private final @NotNull Plugin namespace;
 
     public ShopExtraManager(@NotNull Shop shop, @NotNull Plugin namespace) {
         this.extra = shop.getExtra(namespace);
+        this.shop = shop;
+        this.namespace = namespace;
     }
 
     @NotNull
@@ -67,6 +71,7 @@ public class ShopExtraManager {
 
     public void set(@NotNull String path, @Nullable Object value) {
         extra.put(path, value);
+        save();
     }
 
     @Nullable
@@ -236,5 +241,9 @@ public class ShopExtraManager {
         if (t == null)
             return def;
         return t;
+    }
+
+    public void save() {
+        shop.setExtra(namespace, extra);
     }
 }
