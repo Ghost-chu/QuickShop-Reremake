@@ -78,7 +78,7 @@ public class ContainerShop implements Shop {
     private ShopType shopType;
     private boolean unlimited;
     @EqualsAndHashCode.Exclude
-    private long lastChangedAt;
+    private boolean dirty;
 
 
     private ContainerShop(@NotNull ContainerShop s) {
@@ -94,7 +94,7 @@ public class ContainerShop implements Shop {
         this.isDeleted = s.isDeleted;
         this.createBackup = s.createBackup;
         this.extra = s.extra;
-        this.lastChangedAt = System.currentTimeMillis();
+        this.dirty = true;
         initDisplayItem();
     }
 
@@ -147,9 +147,10 @@ public class ContainerShop implements Shop {
         this.unlimited = unlimited;
         this.extra = extra;
         initDisplayItem();
-        this.lastChangedAt = System.currentTimeMillis();
-        Map<String, Object> dataMap = extra.get(plugin.getName());
+        this.dirty = false;
         //version = dataMap != null ? Integer.parseInt(String.valueOf(dataMap.getOrDefault("version", 0))) : 0;
+        getExtraManager(plugin).set("woo", "foo");
+        plugin.getLogger().warning("woo:" + getExtraManager(plugin).getString("woo"));
     }
 
     private void initDisplayItem() {
@@ -225,7 +226,7 @@ public class ContainerShop implements Shop {
     @Override
     public boolean addStaff(@NotNull UUID player) {
         Util.ensureThread(false);
-        this.lastChangedAt = System.currentTimeMillis();
+        setDirty();
         boolean result = this.moderator.addStaff(player);
         update();
         if (result) {
@@ -349,7 +350,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public void clearStaffs() {
-        this.lastChangedAt = System.currentTimeMillis();
+        setDirty();
         this.moderator.clearStaffs();
         Util.mainThreadRun(() -> plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
         update();
@@ -358,7 +359,7 @@ public class ContainerShop implements Shop {
     @Override
     public boolean delStaff(@NotNull UUID player) {
         Util.ensureThread(false);
-        this.lastChangedAt = System.currentTimeMillis();
+        setDirty();
         boolean result = this.moderator.delStaff(player);
         update();
         if (result) {
@@ -384,7 +385,7 @@ public class ContainerShop implements Shop {
     @Override
     public void delete(boolean memoryOnly) {
         Util.ensureThread(false);
-        this.lastChangedAt = System.currentTimeMillis();
+        setDirty();
         ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(this, memoryOnly);
         if (Util.fireCancellableEvent(shopDeleteEvent)) {
             Util.debugLog("Shop deletion was canceled because a plugin canceled it.");
@@ -699,6 +700,7 @@ public class ContainerShop implements Shop {
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING, "Could not update a shop in the database! Changes will revert after a reboot!", e);
         }
+        this.dirty = false;
     }
 
     /**
@@ -766,11 +768,11 @@ public class ContainerShop implements Shop {
             Entry<Double, Double> priceRestriction = Util.getPriceRestriction(this.getMaterial()); //TODO Adapt priceLimiter, also improve priceLimiter return a container
             if (priceRestriction != null) {
                 if (price < priceRestriction.getKey()) {
-                    this.lastChangedAt = System.currentTimeMillis();
+                    setDirty();
                     price = priceRestriction.getKey();
                     this.update();
                 } else if (price > priceRestriction.getValue()) {
-                    this.lastChangedAt = System.currentTimeMillis();
+                    setDirty();
                     price = priceRestriction.getValue();
                     this.update();
                 }
@@ -794,7 +796,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public void setModerator(@NotNull ShopModerator shopModerator) {
-        this.lastChangedAt = System.currentTimeMillis();
+        setDirty();
         this.moderator = shopModerator;
         update();
         Util.mainThreadRun(() -> plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
@@ -853,7 +855,7 @@ public class ContainerShop implements Shop {
             Util.debugLog("A plugin cancelled the price change event.");
             return;
         }
-        this.lastChangedAt = System.currentTimeMillis();
+        setDirty();
         this.price = price;
         setSignText();
         update();
@@ -903,7 +905,7 @@ public class ContainerShop implements Shop {
         if (this.shopType == newShopType) {
             return; //Ignore if there actually no changes
         }
-        this.lastChangedAt = System.currentTimeMillis();
+        setDirty();
         if (Util.fireCancellableEvent(new ShopTypeChangeEvent(this, this.shopType, newShopType))) {
             Util.debugLog("Some addon cancelled shop type changes, target shop: " + this.toString());
             return;
@@ -1029,14 +1031,19 @@ public class ContainerShop implements Shop {
         return this.displayItem;
     }
 
-    /**
-     * Gets the shop last changes timestamp
-     *
-     * @return The time stamp
-     */
     @Override
-    public long getLastChangedAt() {
-        return this.lastChangedAt;
+    public void setDirty() {
+        this.dirty = true;
+    }
+
+    @Override
+    public boolean isDirty() {
+        return this.dirty;
+    }
+
+    @Override
+    public void setDirty(boolean isDirty) {
+        this.dirty = isDirty;
     }
 
     /**
@@ -1254,9 +1261,9 @@ public class ContainerShop implements Shop {
      * @deprecated Extra Map doen't need set to save it.
      */
     @Override
-    @Deprecated
     public void setExtra(@NotNull Plugin plugin, @NotNull Map<String, Object> data) {
-        //DONOTHING
+        setDirty();
+        update();
     }
 
     /**
@@ -1306,7 +1313,7 @@ public class ContainerShop implements Shop {
         }
         extra.put(plugin.getName(), extraMap);
 
-        this.lastChangedAt = System.currentTimeMillis();
+        setDirty();
         this.update();
     }
 

@@ -35,7 +35,7 @@ import org.jetbrains.annotations.Nullable;
 public class Info {
     private final Block last;
     private final Location loc;
-    private final long lastChangedAt;
+    private final boolean dirty;
     private ShopAction action;
     private ItemStack item;
     private Shop shop;
@@ -51,7 +51,7 @@ public class Info {
         if (item != null) {
             this.item = item.clone();
         }
-        this.lastChangedAt = System.currentTimeMillis();
+        this.dirty = true;
     }
 
     public Info(
@@ -68,9 +68,9 @@ public class Info {
         }
         if (shop != null) {
             this.shop = shop.clone();
-            this.lastChangedAt = shop.getLastChangedAt();
+            this.dirty = shop.isDirty();
         } else {
-            this.lastChangedAt = System.currentTimeMillis();
+            this.dirty = true;
         }
     }
 
@@ -133,7 +133,7 @@ public class Info {
         if (!this.shop.getLocation().equals(shop.getLocation())) {
             return true;
         }
-        if (this.lastChangedAt != shop.getLastChangedAt()) {
+        if (this.dirty != shop.isDirty()) {
             return false;
         }
         return !this.shop.matches(shop.getItem());
