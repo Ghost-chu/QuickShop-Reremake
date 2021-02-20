@@ -250,7 +250,7 @@
       "博士，QuickShop 有新的更新 {0}！您應該更新~",
       "Ko~ko~da~yo~（在這裡哦）QuickShop 有新的更新 {0} ~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop is marked disabled by remote server, meaning this version may have serious problem, get details from our Spigot plugin page: {0}. This warning will continue to appear untill you switch to a stable version, but it will not affect your server's performence.",
+    "remote-disable-warning": "&c該版本的 QuickShop 已被遠程服務器標記為停用，這意味著該版本可能存在嚴重問題，請從我們的 Spigot 插件頁面獲取詳細訊息 ： {0}。在你切換到穩定版本之前，該警告將繼續出現，但不會影響伺服器的性能。 ",
     "label": {
       "unstable": "[不穩定 Unstable]",
       "stable": "[穩定 Stable]",
@@ -294,13 +294,13 @@
     "qa-issues": "&e品質認證問題：&b{0}%",
     "help-us": "&a[幫助我們提升翻譯品質]"
   },
-  "currency-not-exists": "&cCannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.",
-  "currency-set": "&aShop currency successfully set to {0}.",
-  "currency-unset": "&aShop currency removed successfully. Using default settings now.",
-  "currency-not-support": "&cThe economy plugin doesn't support the multi-economy feature.",
-  "item-not-exist": "&cThe item &e{0} &cdoes not exist, please check your spelling.",
-  "backup-success": "&aBackup successfully.",
-  "console-only": "&cThis command only can be executed by Console.",
-  "console-only-danger": "&cThis is a danger command so that only can be executed by Console.",
-  "clean-warning": "&eThis command will purge &call &e shops if the shop is damaged or created in disallowed worlds or selling/buying disallowed items and &c&lIN NOT LOADED WORLD SHOPS&e, make sure you have full backup of your shops data and use &b/qs cleanghost confirm &eto continue."
+  "currency-not-exists": "&c找不到你要設置的貨幣。可能拼寫錯誤或該貨幣在這個世界上無法使用。",
+  "currency-set": "&a商店貨幣成功設置為 {0}。 ",
+  "currency-unset": "&a已成功刪除商店貨幣。現在使用預設設置。 ",
+  "currency-not-support": "&c該經濟插件不支援多經濟（ multi-economy ） 功能。",
+  "item-not-exist": "&c物品&e {0}&c不存在，請檢查你的拼寫。 ",
+  "backup-success": "&a備份成功。",
+  "console-only": "&c該指令只能在控制台執行。",
+  "console-only-danger": "&c這是一個危險的指令，因此只能由控制台執行。 ",
+  "clean-warning": "&e如果商店在不允許的世界中損壞或創建或出售/購買不允許的物品並且＆c＆lIN未裝載的世界商店&e，此指令將清除&c所有的&e商店，請確保你已完全備份商店數據並使用 &b/qs cleanghost cleanghost confirm &e繼續。 "
 }
