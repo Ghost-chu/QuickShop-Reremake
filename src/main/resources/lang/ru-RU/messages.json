@@ -1,5 +1,5 @@
 {
-  "file-test": "Это тестовый тексто-файл. Мы используем его для тестирования сломанный messages.json. Вы можете заполнить его любым пасхальными яйцами, которые вам нравятся здесь :)",
+  "file-test": "Это тестовый файл. Мы используем его для тестирования сломанный messages.json. Вы можете заполнить его любым пасхальными яйцами, которые вам нравятся здесь :)",
   "translation-author": "Переводчик: Ghost_chu, Andre_601",
   "translation-version": "Поддерживаемая версия: Reremake",
   "translation-contributors": "Участники: Тимбашня, пеноматериалы Нидерландов, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
@@ -250,7 +250,7 @@
       "Доктор, QuickShop имеет новое обновление {0}! Вы должны обновить ~",
       "У Ko~ko~da~yo~ QuickShop новое обновление {0}~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop is marked disabled by remote server, meaning this version may have serious problem, get details from our Spigot plugin page: {0}. This warning will continue to appear untill you switch to a stable version, but it will not affect your server's performence.",
+    "remote-disable-warning": "&cЭта версия QuickShop отмечена как отключенная удалённым сервером, означая, что эта версия может иметь серьезные проблемы, получить подробную информацию с нашей страницы плагина Spigot: {0}. Это предупреждение будет отображаться до тех пор, пока вы не переключитесь на стабильную версию, но это не повлияет на перфорирование вашего сервера.",
     "label": {
       "unstable": "[Не стабильный]",
       "stable": "[Стабильный]",
@@ -297,10 +297,10 @@
   "currency-not-exists": "&cНе удается найти валюту, которую вы хотите установить. Возможно, орфография неправильная или эта валюта недоступна в этом мире.",
   "currency-set": "&aМагазин валюты успешно установлен на {0}.",
   "currency-unset": "&aМагазин успешно удалён. Использование настроек теперь по умолчанию.",
-  "currency-not-support": "&cПлагин экономики не поддерживает функцию мультиэкономики.",
-  "item-not-exist": "&cThe item &e{0} &cdoes not exist, please check your spelling.",
-  "backup-success": "&aBackup successfully.",
-  "console-only": "&cThis command only can be executed by Console.",
-  "console-only-danger": "&cThis is a danger command so that only can be executed by Console.",
-  "clean-warning": "&eThis command will purge &call &e shops if the shop is damaged or created in disallowed worlds or selling/buying disallowed items and &c&lIN NOT LOADED WORLD SHOPS&e, make sure you have full backup of your shops data and use &b/qs cleanghost confirm &eto continue."
+  "currency-not-support": "&cПлагин экономики не поддерживает функцию несколько экономики.",
+  "item-not-exist": "&cПредмет &e{0} &cне существует, проверьте правильность написания.",
+  "backup-success": "&aРезервное копирование успешно.",
+  "console-only": "&cЭта команда может быть выполнена только консолью.",
+  "console-only-danger": "&cЭто опасная команда, так что может быть выполнена только консолью.",
+  "clean-warning": "&eЭта команда очистит &cвсех &eмагазинов, если магазин повреждён или создан в запрещённых мирах или продажах/покупке запрещенных товаров и &c&lНЕ ЗАГРУЖЕН МИРА МАГАЗИНОВ&e, убедитесь, что у вас есть полная резервная копия данных ваших магазинов и используйте &b/qs cleanghost confirm &eдля продолжение."
 }
