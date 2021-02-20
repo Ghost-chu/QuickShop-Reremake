@@ -1,5 +1,5 @@
 {
-  "file-test": "This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)",
+  "file-test": "這是個測試的文件檔案。我們使用他來測試 messages.json 是否損壞。你可以在這裡填入任何喜歡的彩蛋。:)",
   "translation-author": "翻譯人員：Ghost_chu、Andre_601、Flandre_tw（主翻譯）、Terence#3062（主翻譯）",
   "translation-version": "支援版本：Reremake（重製版）",
   "translation-contributors": "貢獻人員：Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
@@ -32,7 +32,7 @@
   "you-cant-afford-to-buy": "&c商品價格是 {0} 元，但是您只有 {1} 元。",
   "negative-amount": "&c我的天啊，沒想到居然有人想要交易負數的數量。",
   "not-a-number": "&c輸入內容只能是數字，但您輸入了 {0}。",
-  "exceeded-maximum": "&cThe value exceeded the maximum value in Java.",
+  "exceeded-maximum": "&c該值超出了 Java 中的最大值。 ",
   "not-a-integer": "&c輸入一定是數字，但您輸入了 {0}。",
   "player-bought-from-your-store": "&c{0} 從你的商店購買了 {1} {2}，你總共賺了 {3}。",
   "shop-out-of-stock": "&5您在 {0}，{1}，{2} 出售 {3} 的商店已經售罄一空。",
@@ -44,7 +44,7 @@
   "fee-charged-for-price-change": "&a您付了 &c{0}&a 元修改商店定價。",
   "price-is-now": "&a現在您的商店定價是 &e{0} 元。",
   "thats-not-a-number": "&c無效的數字",
-  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consistent with vanilla behavior",
+  "forbidden-vanilla-behavior": "&c該操作不符合原版行為，因此被禁止。",
   "no-price-given": "&c請提供一個有效的價格。",
   "average-price-nearby": "&a附近商店的平均價格為：&e{0} 元。",
   "shop-has-changed": "&c您嘗試交易的商店在點擊後已經有變動！",
@@ -81,7 +81,7 @@
   "no-pending-action": "&c您沒有待處理的操作",
   "permission-denied-3rd-party": "&c存取被拒：第三方插件 [{0}]。",
   "shops-removed-in-world": "&e世界 &b{1} &e總共有 &b{0} &e個商店被刪除",
-  "world-not-exists": "&cThe world &e{0}&c doesn't exist",
+  "world-not-exists": "&c世界 &e{0}&c 不存在",
   "menu": {
     "successful-purchase": "&a成功購買：",
     "successfully-sold": "&a成功出售：",
@@ -138,7 +138,7 @@
     "no-amount-given": "&c沒有提供數量。請使用：&a/qs refill <數量>&c",
     "now-debuging": "&a成功開啟開發者模式，插件重新載入中...",
     "now-nolonger-debuging": "&a成功關閉開發者模式，插件重新載入中...",
-    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto see a list of commands.",
+    "wrong-args": "&c無效的參數。使用 &l/ qs help &c查看指令列表。 ",
     "description": {
       "title": "&aQuickShop 幫助",
       "unlimited": "&e設置商店為無限空間。",
@@ -169,10 +169,10 @@
       "removeall": "&e刪除該玩家的所有商店",
       "transfer": "&e我們將某人的所有商店轉移給其他人",
       "removeworld": "&e指定世界的商店已經全部刪除",
-      "currency": "&eSet or remove the currency settings of the shop"
+      "currency": "&e設置或移除目前商店的貨幣"
     },
-    "disabled": "&cThis command is disabled: &e{0}",
-    "feature-not-enabled": "The feature not enabled in config."
+    "disabled": "&c這個指令被停用 ： &e{0}",
+    "feature-not-enabled": "該功能沒有在 config 中啟用。"
   },
   "signs": {
     "selling": "出售 {0} 個",
@@ -207,8 +207,8 @@
     "stack-hover": "&e點擊設置每份的物品數量。設置為 1 以恢復為普通單物品商店。",
     "item": "&a商店物品：{0} &e[&d&l修改&e]",
     "item-hover": "&e點擊修改商店物品",
-    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
-    "currency-hover": "&eClick to set or remove the currency that this shop is using"
+    "currency": "&a目前 ： &b{0} &e[&d&l設定&e]",
+    "currency-hover": "&e點擊設置或移除目前正在使用的商店貨幣"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -224,8 +224,8 @@
     "price": "[價格]",
     "range": "[範圍]",
     "amount": "[數量]",
-    "currency": "[currency name]",
-    "item": "[item]"
+    "currency": "[貨幣名稱]",
+    "item": "[物品]"
   },
   "updatenotify": {
     "buttontitle": "[現在更新]",
