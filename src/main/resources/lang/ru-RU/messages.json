@@ -39,7 +39,7 @@
   "shop-has-no-space": "&cМагазин может вместить ещё  {0} {1}.",
   "you-dont-have-that-many-items": "&cУ вас только {0} {1}.",
   "the-owner-cant-afford-to-buy-from-you": "&cЭто стоит {0}, но у владельца магазина только {1}",
-  "player-sold-to-your-store": "&{0} продал {1} {2} в ваш магазин.",
+  "player-sold-to-your-store": "&a{0} продал {1}x {2} в ваш магазин.",
   "shop-out-of-space": "&5Ваш магазин в {0}, {1}, {2} переполнен.",
   "fee-charged-for-price-change": "&aВы оплатили &c{0}&a для изменения цены.",
   "price-is-now": "&aНовая цена магазина &e{0}",
@@ -138,7 +138,7 @@
     "no-amount-given": "&cНе предоставлено. Используйте &a/qs пополнить <amount>&c",
     "now-debuging": "&aРежим разработчика. Перезагрузка Быстрого Магазина...",
     "now-nolonger-debuging": "&aУспешно выключен режим разработчика. Перезагрузка Быстрого магазина...",
-    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto see a list of commands.",
+    "wrong-args": "&cНедопустимые аргументы. Используйте &l/qs help &rto для того чтобы узнать список командов.",
     "description": {
       "title": "&aQuickShop справка",
       "unlimited": "&eПредоставляет неограниченный запас магазина.",
@@ -168,11 +168,11 @@
       "language": "&eИзменить используемый язык",
       "removeall": "&eУдалить все магазины указанного игрока",
       "transfer": "&eПередайте кого-нибудь ВСЕ магазины в другие",
-      "removeworld": "&eRemove ALL shops in a specified world",
-      "currency": "&eSet or remove the currency settings of the shop"
+      "removeworld": "&eУдалить ВСЕ магазины в указанном мире",
+      "currency": "&eУстановить или удалить настройки валюты магазина"
     },
-    "disabled": "&cThis command is disabled: &e{0}",
-    "feature-not-enabled": "The feature not enabled in config."
+    "disabled": "&cДанная команда недоступна: &e{0}",
+    "feature-not-enabled": "Функция не включена в конфигурации."
   },
   "signs": {
     "selling": "Продаёт {0}",
