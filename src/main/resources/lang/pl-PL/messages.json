@@ -1,10 +1,10 @@
 {
-  "file-test": "To jest testowy plik tekstowy, używamy go do testowania, jeśli plik messages.json jest uszkodzony. Możesz wypełnić dowolnymi easter egg'ami to miejsce :)",
+  "file-test": "To jest testowy plik tekstowy. Używamy go do testowania jeśli messages.json jest zepsuty. Możesz wypełnić go dowolnymi easter egg'ami, które lubisz :)",
   "translation-author": "Tłumacz: Ghost_chu, Andre_601",
   "translation-version": "Wspierana wersja: Reremake",
   "translation-contributors": "Współtwórcy: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken i Andre_601",
   "translation-country": "Język: Polski (pl_PL)",
-  "language-version": "49",
+  "language-version": "50",
   "not-looking-at-shop": "&cNie można znaleźć QuickShop. Musisz na niego patrzeć.",
   "no-anythings-in-your-hand": "&cW twojej ręce nic nie ma.",
   "no-permission": "&cNie masz uprawnień, aby to zrobić.",
@@ -32,7 +32,7 @@
   "you-cant-afford-to-buy": "&cTo kosztuje {0}, ale masz tylko {1}",
   "negative-amount": "&cNie możesz handlować ujemnymi kwotami",
   "not-a-number": "Możesz wpisać tylko liczbę, ty wpisałeś {0}.",
-  "exceeded-maximum": "&cWartość przekroczyła maksymalną wartość javy.",
+  "exceeded-maximum": "&cWartość przekroczyła maksymalną wartość w Java.",
   "not-a-integer": "Musisz wprowadzić liczbę, ty wpisałeś {0}.",
   "player-bought-from-your-store": "&c{0} zakupił {1} {2} w Twoim sklepie, i zarobiłeś {3}.",
   "shop-out-of-stock": "&5W twoim sklepie na {0}, {1}, {2}, zabrakło {3}!",
@@ -44,7 +44,7 @@
   "fee-charged-for-price-change": "&aZapłaciłeś &c{0}&a, aby zmienić cenę.",
   "price-is-now": "&aNowa cena sklepu to &e{0}",
   "thats-not-a-number": "&cNieprawidłowa liczba",
-  "forbidden-vanilla-behavior": "&cOperacja jest zabroniona ze względu na nie składa się z zachowań waniliowych",
+  "forbidden-vanilla-behavior": "&cOperacja jest zabroniona, ponieważ nie jest zgodna z zachowaniem waniliowym",
   "no-price-given": "&cPodaj poprawną cenę.",
   "average-price-nearby": "&aCena w pobliżu: &e{0}",
   "shop-has-changed": "&cSklep, z którego próbowałeś skorzystać, zmienił się od momentu kliknięcia!",
@@ -138,7 +138,7 @@
     "no-amount-given": "&cNie podano ilości. Użyj &a/qs refill <amount>&c",
     "now-debuging": "&aPomyślnie przełączono się do trybu developerskiego. Przeładuj QuickShop...",
     "now-nolonger-debuging": "&aPomyślnie przełączono się do trybu developerskiego. Przeładuj QuickShop...",
-    "wrong-args": "&cNieprawidłowe argumenty. Użyj &l/qs help &cdo podglądu listy poleceń.",
+    "wrong-args": "&cNieprawidłowe argumenty. Użyj &l/qs help &caby zobaczyć listę poleceń.",
     "description": {
       "title": "&aPomoc Sklepu",
       "unlimited": "&eDaje sklepowi nieograniczone zapasy.",
@@ -169,8 +169,10 @@
       "removeall": "&eUsuń WSZYSTKIE sklepy określonego gracza",
       "transfer": "&ePrzenieś czyjeś WSZYSTKIE sklepy do innych",
       "removeworld": "&eUsuń WSZYSTKIE sklepy w określonym świecie",
-      "currency": "&eUstaw lub usuń ustawienia waluty w sklepie"
-    }
+      "currency": "&eUstaw lub usuń ustawienia waluty sklepu"
+    },
+    "disabled": "&cTa komenda jest wyłączona: &e{0}",
+    "feature-not-enabled": "Funkcja nie jest włączona w konfiguracji."
   },
   "signs": {
     "selling": "Kup {0}",
@@ -206,7 +208,7 @@
     "item": "&aPrzedmiot sklepu: {0} &e[&d&lZmień&e]",
     "item-hover": "&eKliknij, aby zmienić przedmiot sklepu",
     "currency": "&aWaluta: &b{0} &e[&d&lUstaw&e]",
-    "currency-hover": "&eKliknij, aby ustawić lub usunąć walutę używaną w sklepie"
+    "currency-hover": "&eKliknij, aby ustawić lub usunąć walutę, której używa ten sklep"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -248,7 +250,7 @@
       "Lekarz, QuickShop ma nową aktualizację {0}! Powinieneś zaktualizować~",
       "Ko~ko~da~yo~ QuickShop ma nową aktualizację {0}~"
     ],
-    "remote-disable-warning": "&cTa wersja QuickShop została oznaczona jako wyłączona przez zdalny serwer. Oznacza to, że ta wersja może mieć poważne problemy. Uzyskaj informacje na naszej stronie SpigotMC: {0}. To ostrzeżenie będzie się wyświetlać i spamować konsolę, dopóki nie przełączysz się na nie wyłączoną wersję. Nie wpłynie to jednak na twój serwer.",
+    "remote-disable-warning": "&cTa wersja pluginu QuickShop jest oznaczona jako wyłączona przez serwer zdalny, co oznacza, że ta wersja może mieć poważny problem. Szczegółowe informacje można znaleźć na naszej stronie pluginu Spigot: {0}. To ostrzeżenie będzie się pojawiać, dopóki nie przełączysz się na wersję stabilną, ale nie wpłynie to na wydajność serwera.",
     "label": {
       "unstable": "[Niestabilny]",
       "stable": "[Stabilny]",
@@ -292,9 +294,13 @@
     "qa-issues": "&eProblemy z zapewnieniem jakości: &b{0}",
     "help-us": "&a[Pomóż nam poprawić jakość tłumaczenia]"
   },
-  "currency-not-exists": "&cNie można znaleźć waluty, którą chcesz ustawić, może jest to błędna pisownia lub ta waluta nie jest dostępna w tym świecie.",
-  "currency-set": "&aPomyślnie ustawiono walutę sklepu na {0}.",
-  "currency-unset": "&aPomyślnie usunięto konfigurację waluty sklepu, zostanie użyta domyślna.",
-  "currency-not-support": "&cWtyczka ekonomiczna nie obsługuje funkcji wielowalutowej.",
-  "item-not-exist": "&cElement &e{0} &cnie istnieje, sprawdź swoją pisownię."
+  "currency-not-exists": "&cNie można znaleźć waluty, którą chcesz ustawić. Może pisownia jest błędna lub ta waluta nie jest dostępna w tym świecie.",
+  "currency-set": "&aWaluta sklepu została ustawiona na {0}.",
+  "currency-unset": "&aWaluta sklepu usunięta pomyślnie. Używasz teraz ustawień domyślnych.",
+  "currency-not-support": "&cWtyczka ekonomiczna nie obsługuje funkcji wieloekonomicznej.",
+  "item-not-exist": "&cElement &e{0} &cnie istnieje, sprawdź swoją pisownię.",
+  "backup-success": "&aKopia zapasowa powiodła się.",
+  "console-only": "&cTa komenda może być wykonana tylko przez Konsolę.",
+  "console-only-danger": "&cTo jest polecenie niebezpieczne, więc może być wykonane tylko przez Konsolę.",
+  "clean-warning": "&eTa komenda wyczyści &cwszystkie &e sklepy, jeśli sklep jest uszkodzony lub stworzony w niedozwolonych światach lub sprzedaje/kupuje niedozwolone przedmioty i &c&lNIE JEST ZAŁADOWANY W SKLEPIE ŚWIATOWYM&e, upewnij się, że masz pełną kopię zapasową danych sklepów i użyj &b/qs cleanghost confirm &eaby kontynuować."
 }

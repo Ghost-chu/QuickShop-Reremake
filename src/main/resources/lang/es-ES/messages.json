@@ -1,10 +1,10 @@
 {
-  "file-test": "This is file test text, We use this for testing if messages.json is broken. You can fill any easter egg you like in there :)",
+  "file-test": "This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)",
   "translation-author": "Traductor: Ghost_chu, Andre_601, MarcosTheFasdox",
   "translation-version": "&c&lVersión soportada: &b&lReremake",
   "translation-contributors": "Contribuidores: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken y Andre_601",
   "translation-country": "&c&lZona de idioma: &b&lEspañol (es_ES)",
-  "language-version": "49",
+  "language-version": "50",
   "not-looking-at-shop": "&cNo se pudo encontrar ninguna QuickShop. Tienes que mirar hacia una.",
   "no-anythings-in-your-hand": "&cNo hay nada en tu mano.",
   "no-permission": "&cNo tienes permiso para hacer eso.",
@@ -32,7 +32,7 @@
   "you-cant-afford-to-buy": "&cCuesta {0} pero sólo tienes {1}",
   "negative-amount": "&cNo puedes comerciar con valores negativos",
   "not-a-number": "&cSolo puedes introducir un número, tu entrada era {0}.",
-  "exceeded-maximum": "&cThe value has exceeded the maximum java value.",
+  "exceeded-maximum": "&cThe value exceeded the maximum value in Java.",
   "not-a-integer": "&cSolo puedes introducir un número, tu entrada era {0}.",
   "player-bought-from-your-store": "&c{0} ha comprado {1} {2} en tu tienda, y has pagado {3} en impuestos.",
   "shop-out-of-stock": "&5Tu tienda en {0}, {1}, {2} se ha quedado sin {3}!",
@@ -44,7 +44,7 @@
   "fee-charged-for-price-change": "&aHas pagado &c{0}&a para cambiar de precio.",
   "price-is-now": "&aEl nuevo precio de la tienda es &e{0}",
   "thats-not-a-number": "&cNúmero inválido.",
-  "forbidden-vanilla-behavior": "&cLa operación está prohibida debido a que no consiste con el comportamiento vanilla",
+  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consistent with vanilla behavior",
   "no-price-given": "&cPor favor ingresa un precio válido.",
   "average-price-nearby": "&aPrecio medio en esta zona: &e{0}",
   "shop-has-changed": "&c¡La tienda que trataste de usar ha cambiado desde que hiciste clic!",
@@ -81,7 +81,7 @@
   "no-pending-action": "&cNo tienes ninguna acción pendiente",
   "permission-denied-3rd-party": "&cPermiso denegado: Plugin de terceros [{0}].",
   "shops-removed-in-world": "&eTotal &b{0}&e tiendas han sido eliminadas en el mundo &b{1}&e.",
-  "world-not-exists": "&cEl mundo &e{0}&c no existe",
+  "world-not-exists": "&cThe world &e{0}&c doesn't exist",
   "menu": {
     "successful-purchase": "&aComprado con éxito:",
     "successfully-sold": "&aVendido con éxito:",
@@ -138,7 +138,7 @@
     "no-amount-given": "&cNo se especificó cantidad. Usa &a/qs refill <amount>&c",
     "now-debuging": "&aModo desarrollador habilitado. Recargando QuickShop...",
     "now-nolonger-debuging": "&aModo desarrollador deshabilitado. Recargando QuickShop...",
-    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto preview the list of commands.",
+    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto see a list of commands.",
     "description": {
       "title": "&aAyuda de QuickShop",
       "unlimited": "&eDa un stock ilimitado a una tienda.",
@@ -169,8 +169,10 @@
       "removeall": "&eElimina todas las tiendas de un jugador especificado",
       "transfer": "&eTransferir TODAS las tiendas de alguien a otros",
       "removeworld": "&ese removieron ALL tiendas en el mundo",
-      "currency": "&eEstablecer o quitar la configuración de moneda en la tienda"
-    }
+      "currency": "&eSet or remove the currency settings of the shop"
+    },
+    "disabled": "&cThis command is disabled: &e{0}",
+    "feature-not-enabled": "The feature not enabled in config."
   },
   "signs": {
     "selling": "Vendo {0}",
@@ -206,7 +208,7 @@
     "item": "&aObjeto de Tienda: {0} &e[&d&lCambiar&e]",
     "item-hover": "&eClic para cambiar el artículo de la tienda",
     "currency": "&aMoneda: &b{0} &e[&d&lSet&e]",
-    "currency-hover": "&eClic para establecer o quitar la moneda que utiliza la tienda"
+    "currency-hover": "&eClick to set or remove the currency that this shop is using"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -248,7 +250,7 @@
       "¡Doctor, QuickShop tiene una nueva actualización {0}! Debería actualizar~",
       "Ko~ko~da~yo~ QuickShop tiene una nueva actualización {0} ~"
     ],
-    "remote-disable-warning": "&cEsta versión de QuickShop ha sido marcada como deshabilitada por el servidor remoto. Esto significa que esta versión puede tener serios problemas. Más detalles en nuestra página de SpigotMC: {0}. Este aviso aparecerá y espameará tu consola hasta que cambies a una versión aceptada. Sin embargo, esto no tiene por qué afectar a tu servidor.",
+    "remote-disable-warning": "&cThis version of QuickShop is marked disabled by remote server, meaning this version may have serious problem, get details from our Spigot plugin page: {0}. This warning will continue to appear untill you switch to a stable version, but it will not affect your server's performence.",
     "label": {
       "unstable": "[Inestable]",
       "stable": "[Estable]",
@@ -292,9 +294,13 @@
     "qa-issues": "&eProblemas de garantía de calidad: &b{0}%",
     "help-us": "&a[Ayúdanos a mejorar la calidad de la traducción]"
   },
-  "currency-not-exists": "&cNo se puede encontrar la moneda a la que quieres establecer, tal vez sea mala ortografía o esa moneda no está disponible en este mundo.",
-  "currency-set": "&Asignado con éxito la moneda de la tienda a {0}.",
-  "currency-unset": "&Eliminado correctamente la configuración de moneda de la tienda, se usará el valor predeterminado ahora.",
-  "currency-not-support": "&cEl plugin de economía no soporta funciones multidivisas.",
-  "item-not-exist": "&cThe item &e{0} &cnot exists, please check your spelling."
+  "currency-not-exists": "&cCannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.",
+  "currency-set": "&aShop currency successfully set to {0}.",
+  "currency-unset": "&aShop currency removed successfully. Using default settings now.",
+  "currency-not-support": "&cThe economy plugin doesn't support the multi-economy feature.",
+  "item-not-exist": "&cThe item &e{0} &cdoes not exist, please check your spelling.",
+  "backup-success": "&aBackup successfully.",
+  "console-only": "&cThis command only can be executed by Console.",
+  "console-only-danger": "&cThis is a danger command so that only can be executed by Console.",
+  "clean-warning": "&eThis command will purge &call &e shops if the shop is damaged or created in disallowed worlds or selling/buying disallowed items and &c&lIN NOT LOADED WORLD SHOPS&e, make sure you have full backup of your shops data and use &b/qs cleanghost confirm &eto continue."
 }
