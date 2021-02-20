@@ -1,10 +1,10 @@
 {
-  "file-test": "This is file test text, We use this for testing if messages.json is broken. You can fill any easter egg you like in there :)",
+  "file-test": "Detta är en testtextfil. Vi använder den för att testa om messages.json är trasig. Du kan fylla den med valfria påskägg som du gillar här :)",
   "translation-author": "Översättare: Ghost_chu, Andre_601",
   "translation-version": "Supportversion: Reremake",
   "translation-contributors": "Medhjälpare: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken och Andre_601",
   "translation-country": "Språkområde: Engelska (en_US)",
-  "language-version": "49",
+  "language-version": "50",
   "not-looking-at-shop": "&cKunde inte hitta en QuickShop. Du måste titta på en.",
   "no-anythings-in-your-hand": "&cDet finns inget i din hand.",
   "no-permission": "&cDu har inte tillåtelse till att göra detta.",
@@ -32,7 +32,7 @@
   "you-cant-afford-to-buy": "&cDet kostar {0} men du har bara {1}",
   "negative-amount": "&cYou kan inte handla med negativa belopp",
   "not-a-number": "&cDu kan bara ange ett nummer, din inmatning var {0}.",
-  "exceeded-maximum": "&cVärdet har överskridit maximalt java-värde.",
+  "exceeded-maximum": "&cVärdet överskred det maximala värdet i Java.",
   "not-a-integer": "&cDu kan ange ett nummer, din inmatning var {0}.",
   "player-bought-from-your-store": "&c{0} köpte {1} {2} från din butik, och du tjänade {3}.",
   "shop-out-of-stock": "&5Din butik vid {0}, {1}, {2} har fått slut på {3}!",
@@ -44,7 +44,7 @@
   "fee-charged-for-price-change": "&aDu betalade &c{0}&a för att ändra priset.",
   "price-is-now": "&aDet nya priset för butiken är &e{0}",
   "thats-not-a-number": "&cOgiltig siffra",
-  "forbidden-vanilla-behavior": "&cOperationen är förbjuden på grund av att den inte är konsekvent med standardbeteendet.",
+  "forbidden-vanilla-behavior": "&cOperationen är förbjuden på grund av att den inte är konsekvent med vanilla-beteendet",
   "no-price-given": "&cVar god ange ett giltigt pris.",
   "average-price-nearby": "&aNärliggande genomsnittspris: &e{0}",
   "shop-has-changed": "&cButiken du försökte använda har ändrats sedan du klickade på den!",
@@ -138,7 +138,7 @@
     "no-amount-given": "&cInget belopp angivet. Använd &a/qs refill <antal>&c",
     "now-debuging": "&Framgångsrikt aktiverat utvecklarläge. Laddar om QuickShop...",
     "now-nolonger-debuging": "&aFramgångsrikt inaktiverat utvecklarläge. Laddar om QuickShop...",
-    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto preview the list of commands.",
+    "wrong-args": "&cOgiltiga argument. Använd &l/qs help &rför att förhandsgranska en lista över kommandon.",
     "description": {
       "title": "&aQuickShop-hjälp",
       "unlimited": "&eGer en butik obegränsat lager.",
@@ -169,8 +169,10 @@
       "removeall": "&eTa bort alla butiker från en angiven spelare",
       "transfer": "&eÖverför alla butiker från en spelare till en annan",
       "removeworld": "&eTa bort ALLA butiker i angiven värld",
-      "currency": "&eSet or remove the currency setting on shop"
-    }
+      "currency": "&eSet eller ta bort valutainställningarna i butiken"
+    },
+    "disabled": "&cDetta kommando är inaktiverat: &e{0}",
+    "feature-not-enabled": "Funktionen är inte aktiverad i konfigurationen."
   },
   "signs": {
     "selling": "Säljer {0}",
@@ -205,8 +207,8 @@
     "stack-hover": "&eKlicka för att ställa in mängden föremål per paket. Ange 1 för normalt beteende.",
     "item": "&aButikens produkt: {0} &e[&d&lÄndra&e]",
     "item-hover": "&eKlicka för att ändra butiksprodukten",
-    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
-    "currency-hover": "&eClick to set or remove the currency that shop using"
+    "currency": "&aValuta: &b{0} &e[&d&lÄndra&e]",
+    "currency-hover": "&eKlicka för att ändra eller ta bort den valuta som denna butik använder"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -248,7 +250,7 @@
       "Läkare, QuickShop har en ny uppdatering {0}! Du bör uppdatera~",
       "Ko~ko~da~yo~ QuickShop har en ny uppdatering {0}~"
     ],
-    "remote-disable-warning": "&cDenna version av QuickShop har markerats som inaktiverad av fjärrservern. Det innebär att denna version kan ha allvarliga problem. Få information från vår SpigotMC-sida: {0}. Denna varning kommer att visas och spamm i din konsol tills du växlar till en icke inaktiverad version. Detta kommer dock inte att påverka din server.",
+    "remote-disable-warning": "&cDenna version av QuickShop har markerats som inaktiverad av fjärrservern. Det innebär att denna version kan ha allvarliga problem. Få information från vår SpigotMC-sida: {0}. Denna varning kommer att visas och spammas i din konsol tills du växlar till en icke inaktiverad version. Detta kommer dock inte att påverka din server.",
     "label": {
       "unstable": "[Ostabil]",
       "stable": "[Stabil]",
@@ -292,9 +294,13 @@
     "qa-issues": "&eKvalitetsförsäkringsfrågor: &b{0}%",
     "help-us": "&a[Hjälp oss att förbättra översättningens kvalitet]"
   },
-  "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
-  "currency-set": "&aSuccessfully set shop currency to {0}.",
-  "currency-unset": "&aSuccessfully remove shop currency setup, will use default now.",
+  "currency-not-exists": "&cKan inte hitta den valuta som du vill ställa in. Stavningen är kanske fel eller att valutan inte är tillgänglig i denna värld.",
+  "currency-set": "&aButikens valuta har angetts till {0}.",
+  "currency-unset": "&aButikens valuta har tagits bort. Använder standardinställningar nu.",
   "currency-not-support": "&cEkonomi-pluginet stöder inte flervaluta-funktionen.",
-  "item-not-exist": "&cObjektet &e{0} &cexisterar inte, kontrollera din stavning."
+  "item-not-exist": "&cObjektet &e{0} &cexisterar inte, kontrollera din stavning.",
+  "backup-success": "&aBackup framgångsrik.",
+  "console-only": "&cDetta kommando kan endast köras av Konsolen.",
+  "console-only-danger": "&cDetta är ett farligt kommando så att endast kan utföras av Konsolen.",
+  "clean-warning": "&eDetta kommando kommer att rensa &ebutiker om butiken är skadad eller skapad i otillåtna världar eller sälja/köpa otillåtna föremål och &c&lIN INTE LADDA ORLD SHOPS&e, se till att du har full säkerhetskopiering av dina butikers data och använd &b/qs cleanghost confirm &eför att fortsätta."
 }
