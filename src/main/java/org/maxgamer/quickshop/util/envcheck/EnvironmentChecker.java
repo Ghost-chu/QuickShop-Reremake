@@ -29,14 +29,19 @@ import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.GameVersion;
+import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.security.JarVerifyTool;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.logging.Level;
 
 public class EnvironmentChecker {
@@ -151,10 +156,50 @@ public class EnvironmentChecker {
         }
     }
 
+    @EnvCheckEntry(name = "Signature Verify", priority = 0)
+    public ResultContainer securityVerify() {
+        JarVerifyTool tool = new JarVerifyTool();
+        try {
+            ClassLoader loader = this.getClass().getClassLoader();
+            if (loader.getResourceAsStream("META-INF/MANIFEST.MF") == null
+                    || loader.getResourceAsStream("META-INF/SELFSIGN.DSA") == null
+                    || loader.getResourceAsStream("META-INF/SELFSIGN.SF") == null) {
+                plugin.getLogger().warning("The signature not exists in QuickShop jar. The jar has been modified or you're running custom build.");
+                return new ResultContainer(CheckResult.STOP_WORKING, "Security risk detected, QuickShop jar has been modified.");
+            }
+
+            String jarPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+            Util.debugLog("JarPath selected: " + jarPath);
+            JarFile jarFile = new JarFile(jarPath);
+            List<JarEntry> modifiedEntry = tool.verify(jarFile);
+            if (modifiedEntry.isEmpty()) {
+                return new ResultContainer(CheckResult.PASSED, "The jar is valid. No issues detected");
+            } else {
+                modifiedEntry.forEach(jarEntry -> {
+                    plugin.getLogger().warning(">> Modified Class Detected <<");
+                    plugin.getLogger().warning("Name: " + jarEntry.getName());
+                    plugin.getLogger().warning("CRC: " + jarEntry.getCrc());
+                    plugin.getLogger().warning(JsonUtil.getGson().toJson(jarEntry));
+                });
+                plugin.getLogger().severe("QuickShop detected the jar has been modified. This usually caused by the file downloaded damaged or virus infected. You should run virus scanning to prevent virus infected.");
+                plugin.getLogger().severe("To prevent serve server fail, QuickShop has been disabled.");
+                return new ResultContainer(CheckResult.STOP_WORKING, "Security risk detected, QuickShop jar has been modified.");
+            }
+        } catch (IOException ioException) {
+            plugin.getLogger().log(Level.WARNING, "ALERT: QuickShop cannot validate itself. This may caused by your have deleted QuickShop's jar while server running.", ioException);
+            return new ResultContainer(CheckResult.WARNING, "Failed to validate file digital signature, Security ");
+        }
+
+        //tool.verify()
+
+
+    }
+
     @EnvCheckEntry(name = "EnvChecker SelfTest", priority = 1)
     public ResultContainer selfTest() {
         return new ResultContainer(CheckResult.PASSED, "I'm fine :)");
     }
+
 
     @SneakyThrows
     @EnvCheckEntry(name = "Java Runtime Environment Version Test", priority = 1)
