@@ -672,13 +672,13 @@ public class QuickShop extends JavaPlugin {
         environmentChecker = new org.maxgamer.quickshop.util.envcheck.EnvironmentChecker(this);
         ResultReport resultReport = environmentChecker.run();
         if (resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
-            StringBuilder builder = new StringBuilder();
+            StringJoiner joiner = new StringJoiner("\n", "", "");
             for (Entry<EnvCheckEntry, ResultContainer> result : resultReport.getResults().entrySet()) {
                 if (result.getValue().getResult().ordinal() > CheckResult.WARNING.ordinal()) {
-                    builder.append(String.format("- [%s/%s] %s", result.getKey().name(), result.getValue().getResult().getDisplay(), result.getValue().getResultMessage())).append("\n");
+                    joiner.add(String.format("- [%s/%s] %s", result.getValue().getResult().getDisplay(), result.getKey().name(), result.getValue().getResultMessage()));
                 }
             }
-            bootError = new BootError(this.getLogger(), builder.toString());
+            bootError = new BootError(this.getLogger(), joiner.toString());
             //noinspection ConstantConditions
             getCommand("qs").setTabCompleter(this); //Disable tab completer
             return;
