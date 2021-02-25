@@ -339,7 +339,7 @@ public class Util {
             lock.writeLock().unlock();
             return;
         }
-        final StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[1];
+        final StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[2];
         final String className = stackTraceElement.getClassName();
         final String methodName = stackTraceElement.getMethodName();
         final int codeLine = stackTraceElement.getLineNumber();
