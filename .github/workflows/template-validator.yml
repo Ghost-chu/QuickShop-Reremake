@@ -10,8 +10,6 @@ jobs:
     name: Template Validator
     steps:
     - name: All Checks
-      uses: flowdify/contribution-inspector@main
+      uses: flowdify/contribution-inspector@v1.0
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        issue--greeting-message: 'Thanks for your contribution! :)'
-        pull-request--greeting-message: 'Thanks for your contribution! :)'
