@@ -149,8 +149,6 @@ public class ContainerShop implements Shop {
         initDisplayItem();
         this.dirty = false;
         //version = dataMap != null ? Integer.parseInt(String.valueOf(dataMap.getOrDefault("version", 0))) : 0;
-        getExtraManager(plugin).set("woo", "foo");
-        plugin.getLogger().warning("woo:" + getExtraManager(plugin).getString("woo"));
     }
 
     private void initDisplayItem() {
