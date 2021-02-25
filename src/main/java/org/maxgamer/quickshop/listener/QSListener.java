@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.listener;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.maxgamer.quickshop.QuickShop;
 
@@ -31,6 +30,6 @@ public abstract class QSListener implements Listener {
     }
 
     public void register() {
-        Bukkit.getPluginManager().registerEvents(this, plugin);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 }

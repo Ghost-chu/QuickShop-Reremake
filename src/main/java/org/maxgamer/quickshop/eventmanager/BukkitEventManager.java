@@ -19,11 +19,11 @@
 
 package org.maxgamer.quickshop.eventmanager;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
+import org.maxgamer.quickshop.QuickShop;
 
 public class BukkitEventManager implements QuickEventManager {
     public void callEvent(Event event) {
-        Bukkit.getPluginManager().callEvent(event);
+        QuickShop.getInstance().getServer().getPluginManager().callEvent(event);
     }
 }

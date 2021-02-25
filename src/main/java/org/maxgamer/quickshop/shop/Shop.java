@@ -376,11 +376,25 @@ public interface Shop {
     DisplayItem getDisplay();
 
     /**
-     * Gets the shop last changes timestamp
+     * Gets if shop is dirty
+     * (so shop will be save)
      *
-     * @return The time stamp
+     * @return Is dirty
      */
-    long getLastChangedAt();
+    boolean isDirty();
+
+    /**
+     * Sets dirty status
+     *
+     * @param isDirty Shop is dirty
+     */
+    void setDirty(boolean isDirty);
+
+    /**
+     * Sets shop is dirty
+     */
+    void setDirty();
+
 
     /**
      * Save the plugin extra data to Json format
@@ -399,7 +413,7 @@ public interface Shop {
      * @return The data table
      */
     @NotNull
-    Map<String, String> getExtra(@NotNull Plugin plugin);
+    Map<String, Object> getExtra(@NotNull Plugin plugin);
 
     /**
      * Gets ExtraManager to quick access extra data
@@ -416,7 +430,7 @@ public interface Shop {
      * @param plugin Plugin instace
      * @param data   The data table
      */
-    void setExtra(@NotNull Plugin plugin, @NotNull Map<String, String> data);
+    void setExtra(@NotNull Plugin plugin, @NotNull Map<String, Object> data);
 
     /**
      * Gets shop status is stacking shop
