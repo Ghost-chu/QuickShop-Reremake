@@ -29,6 +29,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -651,6 +652,12 @@ public class QuickShop extends JavaPlugin {
         /* It will generate a new UUID above updateConfig */
         this.serverUniqueID = UUID.fromString(Objects.requireNonNull(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID()))));
         updateConfig(getConfig().getInt("config-version"));
+        try {
+            MsgUtil.loadCfgMessages();
+        } catch (InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
