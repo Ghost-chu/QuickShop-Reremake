@@ -650,9 +650,10 @@ public class ContainerShop implements Shop {
     @Override
     public void setSignText(@NotNull String[] lines) {
         Util.ensureThread(false);
-        for (Sign sign : this.getSigns()) {
+        List<Sign> signs = this.getSigns();
+        for (Sign sign : signs) {
             if (Arrays.equals(sign.getLines(), lines)) {
-                //Util.debugLog("Skipped new sign text setup: Same content");
+                Util.debugLog("Skipped new sign text setup: Same content");
                 continue;
             }
             for (int i = 0; i < lines.length; i++) {
