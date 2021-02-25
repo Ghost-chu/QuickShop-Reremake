@@ -44,7 +44,7 @@ public class QSEventManager implements QuickEventManager, Listener {
 
     public QSEventManager(QuickShop plugin) {
         this.plugin = plugin;
-        Bukkit.getPluginManager().registerEvents(this, plugin);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -85,7 +85,7 @@ public class QSEventManager implements QuickEventManager, Listener {
 
     public void callEvent(Event event) {
         if (event.isAsynchronous()) {
-            if (Thread.holdsLock(Bukkit.getPluginManager())) {
+            if (Thread.holdsLock(plugin.getServer().getPluginManager())) {
                 throw new IllegalStateException(
                         event.getEventName()
                                 + " cannot be triggered asynchronously from inside synchronized code.");
@@ -141,7 +141,7 @@ public class QSEventManager implements QuickEventManager, Listener {
                 if (plugin.isNaggable()) {
                     plugin.setNaggable(false);
 
-                    Bukkit.getServer()
+                    plugin.getServer()
                             .getLogger()
                             .log(
                                     Level.SEVERE,
@@ -152,7 +152,7 @@ public class QSEventManager implements QuickEventManager, Listener {
                                             ex.getMessage()));
                 }
             } catch (Throwable ex) {
-                Bukkit.getServer()
+                plugin.getServer()
                         .getLogger()
                         .log(
                                 Level.SEVERE,

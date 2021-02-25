@@ -165,3 +165,7 @@ permissions:
   quickshop.other.currency:
     description: Permission to us /qs currency but use for others shop
     default: op
+  quickshop.showdisabled:
+    description: Permission to see commands in help list if commands are disabled
+    default: op
+

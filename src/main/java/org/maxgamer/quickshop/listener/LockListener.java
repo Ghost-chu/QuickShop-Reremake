@@ -19,8 +19,10 @@
 
 package org.maxgamer.quickshop.listener;
 
+import io.papermc.lib.PaperLib;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -49,10 +51,9 @@ public class LockListener extends ProtectionListenerBase {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onBreak(BlockBreakEvent e) {
         Block b = e.getBlock();
-
-        if (b.getState() instanceof Sign) {
-            final Sign sign = (Sign) b.getState();
-
+        BlockState state = PaperLib.getBlockState(b, false).getState();
+        if (state instanceof Sign) {
+            final Sign sign = (Sign) state;
             if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
                     || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
                 // Ignore break lockette sign

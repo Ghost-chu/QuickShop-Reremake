@@ -32,5 +32,5 @@ import java.util.Map;
 @Data
 public class ShopExtra {
     private @NotNull String namespace;
-    private @NotNull Map<String, String> data;
+    private @NotNull Map<String, Object> data;
 }

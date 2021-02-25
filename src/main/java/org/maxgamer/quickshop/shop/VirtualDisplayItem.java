@@ -28,14 +28,12 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.injector.server.TemporaryPlayer;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -236,7 +234,7 @@ public class VirtualDisplayItem extends DisplayItem {
     private void sendPacketToAll(@NotNull PacketContainer packet) {
         Iterator<UUID> iterator = packetSenders.iterator();
         while (iterator.hasNext()) {
-            Player nextPlayer = Bukkit.getPlayer(iterator.next());
+            Player nextPlayer = plugin.getServer().getPlayer(iterator.next());
             if (nextPlayer == null) {
                 iterator.remove();
             } else {
@@ -293,7 +291,7 @@ public class VirtualDisplayItem extends DisplayItem {
             return;
         }
         ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.VIRTUALITEM);
-        Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
+        plugin.getServer().getPluginManager().callEvent(shopDisplayItemSpawnEvent);
         if (shopDisplayItemSpawnEvent.isCancelled()) {
             Util.debugLog(
                     "Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
@@ -338,7 +336,7 @@ public class VirtualDisplayItem extends DisplayItem {
                             Chunk chunk = null;
                             try {
                                 //sync getting chunk
-                                chunk = Bukkit.getScheduler().callSyncMethod(plugin, () -> shop.getLocation().getChunk()).get();
+                                chunk = plugin.getServer().getScheduler().callSyncMethod(plugin, () -> shop.getLocation().getChunk()).get();
                             } catch (InterruptedException | ExecutionException e) {
                                 throw new RuntimeException("An error occurred when getting chunk from the world", e);
                             }
@@ -372,16 +370,13 @@ public class VirtualDisplayItem extends DisplayItem {
             };
         }
         protocolManager.addPacketListener(packetAdapter); //TODO: This may affects performance
-        asyncSendingTask = new BukkitRunnable() {
-            @Override
-            public void run() {
-                Runnable runnable = asyncPacketSendQueue.poll();
-                while (runnable != null) {
-                    runnable.run();
-                    runnable = asyncPacketSendQueue.poll();
-                }
+        asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+            Runnable runnable = asyncPacketSendQueue.poll();
+            while (runnable != null) {
+                runnable.run();
+                runnable = asyncPacketSendQueue.poll();
             }
-        }.runTaskTimerAsynchronously(plugin, 0, 1);
+        }, 0, 1);
     }
 
     public void sendFakeItem(@NotNull Player player) {

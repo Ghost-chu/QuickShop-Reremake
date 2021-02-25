@@ -39,7 +39,6 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -709,6 +708,7 @@ public class MsgUtil {
             }
             return filled;
         } catch (Throwable th) {
+            th.printStackTrace();
             plugin.getSentryErrorReporter().ignoreThrow();
             plugin.getLogger().log(Level.WARNING, "Failed to load language key", th);
             return "Cannot load language key: " + loc + " because something not right, check the console for details.";
@@ -757,16 +757,11 @@ public class MsgUtil {
      * @param message The message you want send
      */
     public static void sendMessageToOps(@NotNull String message) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.alerts")) {
-                        MsgUtil.sendMessage(player, message);
-                    }
-                }
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.alerts")) {
+                MsgUtil.sendMessage(player, message);
             }
-        }.runTaskAsynchronously(plugin);
+        }
     }
 
     /**
@@ -975,7 +970,7 @@ public class MsgUtil {
     private static void updateMessages(int selectedVersion) {
         String languageName = plugin.getConfig().getString("language", "en");
         if (!messagei18n.getString("language-name").isPresent()) {
-            setAndUpdate("language-name", languageName);
+            setAndUpdate("language-name");
         }
         if (!messagei18n.getString("language-name").get().equals(languageName)) {
             Util.debugLog("Language name " + messagei18n.getString("language-name").get() + " not matched with " + languageName);
@@ -996,419 +991,357 @@ public class MsgUtil {
             selectedVersion = 1;
         }
         if (selectedVersion == 1) {
-            setAndUpdate("shop-not-exist", "&cThere had no shop.");
-            setAndUpdate("controlpanel.infomation", "&aShop Control Panel:");
-            setAndUpdate("controlpanel.setowner", "&aOwner: &b{0} &e[&d&lChange&e]");
-            setAndUpdate(
-                    "controlpanel.setowner-hover",
-                    "&eLooking you want changing shop and click to switch owner.");
-            setAndUpdate("controlpanel.unlimited", "&aUnlimited: {0} &e[&d&lSwitch&e]");
-            messagei18n.set(
-                    "controlpanel.unlimited-hover",
-                    "&eLooking you want changing shop and click to switch enabled or disabled.");
-            setAndUpdate("controlpanel.mode-selling", "&aShop mode: &bSelling &e[&d&lSwitch&e]");
-            messagei18n.set(
-                    "controlpanel.mode-selling-hover",
-                    "&eLooking you want changing shop and click to switch enabled or disabled.");
-            setAndUpdate("controlpanel.mode-buying", "&aShop mode: &bBuying &e[&d&lSwitch&e]");
-            messagei18n.set(
-                    "controlpanel.mode-buying-hover",
-                    "&eLooking you want changing shop and click to switch enabled or disabled.");
-            setAndUpdate("controlpanel.price", "&aPrice: &b{0} &e[&d&lSet&e]");
-            setAndUpdate(
-                    "controlpanel.price-hover",
-                    "&eLooking you want changing shop and click to set new price.");
-            setAndUpdate("controlpanel.refill", "&aRefill: Refill the shop items &e[&d&lOK&e]");
-            setAndUpdate(
-                    "controlpanel.refill-hover", "&eLooking you want changing shop and click to refill.");
-            setAndUpdate("controlpanel.empty", "&aEmpty: Remove shop all items &e[&d&lOK&e]");
-            setAndUpdate(
-                    "controlpanel.empty-hover", "&eLooking you want changing shop and click to clear.");
-            setAndUpdate("controlpanel.remove", "&c&l[Remove Shop]");
-            setAndUpdate("controlpanel.remove-hover", "&eClick to remove this shop.");
+            setAndUpdate("shop-not-exist");
+            setAndUpdate("controlpanel.infomation");
+            setAndUpdate("controlpanel.setowner");
+            setAndUpdate("controlpanel.setowner-hover");
+            setAndUpdate("controlpanel.unlimited");
+            setAndUpdate("controlpanel.unlimited-hover");
+            setAndUpdate("controlpanel.mode-selling");
+            setAndUpdate("controlpanel.mode-selling-hover");
+            setAndUpdate("controlpanel.mode-buying");
+            setAndUpdate("controlpanel.mode-buying-hover");
+            setAndUpdate("controlpanel.price");
+            setAndUpdate("controlpanel.price-hover");
+            setAndUpdate("controlpanel.refill");
+            setAndUpdate("controlpanel.refill-hover");
+            setAndUpdate("controlpanel.empty");
+            setAndUpdate("controlpanel.empty-hover");
+            setAndUpdate("controlpanel.remove");
+            setAndUpdate("controlpanel.remove-hover");
             setAndUpdate("language-version", 2);
             selectedVersion = 2;
         }
         if (selectedVersion == 2) {
-            setAndUpdate("command.no-target-given", "&cUsage: /qs export mysql|sqlite");
-            setAndUpdate("command.description.debug", "&ePrint debug infomation");
-            messagei18n.set(
-                    "no-permission-remove-shop",
-                    "&cYou do not have permission to use that command. Try break the shop instead?");
+            setAndUpdate("command.no-target-given");
+            setAndUpdate("command.description.debug");
+            setAndUpdate("no-permission-remove-shop");
             setAndUpdate("language-version", 3);
             selectedVersion = 3;
         }
         if (selectedVersion == 3) {
-            setAndUpdate("signs.unlimited", "Unlimited");
-            setAndUpdate("controlpanel.sign.owner.line1", "");
-            setAndUpdate("controlpanel.sign.owner.line2", "Enter");
-            setAndUpdate("controlpanel.sign.owner.line3", "new owner name");
-            setAndUpdate("controlpanel.sign.owner.line4", "at first line");
-            setAndUpdate("controlpanel.sign.price.line1", "");
-            setAndUpdate("controlpanel.sign.price.line2", "Enter");
-            setAndUpdate("controlpanel.sign.price.line3", "new shop price");
-            setAndUpdate("controlpanel.sign.price.line4", "at first line");
-            setAndUpdate("controlpanel.sign.refill.line1", "");
-            setAndUpdate("controlpanel.sign.refill.line2", "Enter amount");
-            setAndUpdate("controlpanel.sign.refill.line3", "you want fill");
-            setAndUpdate("controlpanel.sign.refill.line4", "at first line");
+            setAndUpdate("signs.unlimited");
+            setAndUpdate("controlpanel.sign.owner.line1");
+            setAndUpdate("controlpanel.sign.owner.line2");
+            setAndUpdate("controlpanel.sign.owner.line3");
+            setAndUpdate("controlpanel.sign.owner.line4");
+            setAndUpdate("controlpanel.sign.price.line1");
+            setAndUpdate("controlpanel.sign.price.line2");
+            setAndUpdate("controlpanel.sign.price.line3");
+            setAndUpdate("controlpanel.sign.price.line4");
+            setAndUpdate("controlpanel.sign.refill.line1");
+            setAndUpdate("controlpanel.sign.refill.line2");
+            setAndUpdate("controlpanel.sign.refill.line3");
+            setAndUpdate("controlpanel.sign.refill.line4");
             setAndUpdate("language-version", 4);
             selectedVersion = 4;
         }
         if (selectedVersion == 4) {
-            setAndUpdate("signs.unlimited", "Unlimited");
+            setAndUpdate("signs.unlimited");
             setAndUpdate("controlpanel.sign", null);
             setAndUpdate("language-version", 5);
             selectedVersion = 5;
         }
         if (selectedVersion == 5) {
-            setAndUpdate("command.description.fetchmessage", "&eFetch unread shop message");
-            setAndUpdate("nothing-to-flush", "&aYou had no new shop message.");
+            setAndUpdate("command.description.fetchmessage");
+            setAndUpdate("nothing-to-flush");
             setAndUpdate("language-version", 6);
             selectedVersion = 6;
         }
         if (selectedVersion == 6) {
-            setAndUpdate("command.description.info", "&eShow QuickShop Statistics");
-            setAndUpdate("command.description.debug", "&eSwitch to developer mode");
-            setAndUpdate("break-shop-use-supertool", "&eYou break the shop by use SuperTool.");
-            messagei18n.set(
-                    "no-creative-break",
-                    "&cYou cannot break other players shops in creative mode.  Use survival instead or use SuperTool ({0}).");
-            setAndUpdate(
-                    "command.now-debuging",
-                    "&aSuccessfully switch to developer mode, Reloading QuickShop...");
-            setAndUpdate(
-                    "command.now-nolonger-debuging",
-                    "&aSuccessfully switch to production mode, Reloading QuickShop...");
+            setAndUpdate("command.description.info");
+            setAndUpdate("command.description.debug");
+            setAndUpdate("break-shop-use-supertool");
+            setAndUpdate("no-creative-break");
+            setAndUpdate("command.now-debuging");
+            setAndUpdate("command.now-nolonger-debuging");
             setAndUpdate("language-version", 7);
             selectedVersion = 7;
         }
         if (selectedVersion == 7) {
-            setAndUpdate(
-                    "failed-to-put-sign", "&cNo enough space around the shop to place infomation sign.");
+            setAndUpdate("failed-to-put-sign");
             setAndUpdate("language-version", 8);
             selectedVersion = 8;
         }
         if (selectedVersion == 8) {
-            messagei18n.set(
-                    "failed-to-paste",
-                    "&cFailed upload data to Pastebin, Check the internet and try again. (See console for details)");
-            messagei18n.set(
-                    "warn-to-paste",
-                    "&eCollecting data and upload to Pastebin, this may need a while. &c&lWarning&c, The data is keep public one week, it may leak your server configuration, make sure you only send it to your &ltrusted staff/developer.");
-            setAndUpdate("command.description.paste", "&eAuto upload server data to Pastebin");
+            setAndUpdate("failed-to-paste");
+            setAndUpdate("warn-to-paste");
+            setAndUpdate("command.description.paste");
             setAndUpdate("language-version", 9);
             selectedVersion = 9;
         }
         if (selectedVersion == 9) {
-            setAndUpdate("controlpanel.commands.setowner", "/qs owner [Player]");
-            setAndUpdate("controlpanel.commands.unlimited", "/qs slientunlimited {0} {1} {2} {3}");
-            setAndUpdate("controlpanel.commands.buy", "/qs silentbuy {0} {1} {2} {3}");
-            setAndUpdate("controlpanel.commands.sell", "/qs silentsell {0} {1} {2} {3}");
-            setAndUpdate("controlpanel.commands.price", "/qs price [New Price]");
-            setAndUpdate("controlpanel.commands.refill", "/qs refill [Amount]");
-            setAndUpdate("controlpanel.commands.empty", "/qs silentempty {0} {1} {2} {3}");
-            setAndUpdate("controlpanel.commands.remove", "/qs silentremove {0} {1} {2} {3}");
-            setAndUpdate(
-                    "tableformat.full_line", "+---------------------------------------------------+");
-            setAndUpdate("tableformat.left_half_line", "+--------------------");
-            setAndUpdate("tableformat.right_half_line", "--------------------+");
-            setAndUpdate("tableformat.left_begin", "| ");
-            setAndUpdate("booleanformat.success", "&a✔");
-            setAndUpdate("booleanformat.failed", "&c✘");
+            setAndUpdate("controlpanel.commands.setowner");
+            setAndUpdate("controlpanel.commands.unlimited");
+            setAndUpdate("controlpanel.commands.buy");
+            setAndUpdate("controlpanel.commands.sell");
+            setAndUpdate("controlpanel.commands.price");
+            setAndUpdate("controlpanel.commands.refill");
+            setAndUpdate("controlpanel.commands.empty");
+            setAndUpdate("controlpanel.commands.remove");
+            setAndUpdate("tableformat.full_line");
+            setAndUpdate("tableformat.left_half_line");
+            setAndUpdate("tableformat.right_half_line");
+            setAndUpdate("tableformat.left_begin");
+            setAndUpdate("booleanformat.success");
+            setAndUpdate("booleanformat.failed");
             setAndUpdate("language-version", 10);
             selectedVersion = 10;
         }
         if (selectedVersion == 10) {
-            setAndUpdate(
-                    "price-too-high", "&cShop price too high! You can't create price higher than {0} shop.");
+            setAndUpdate("price-too-high");
             setAndUpdate("language-version", 11);
             selectedVersion = 11;
         }
         if (selectedVersion == 11) {
-            setAndUpdate(
-                    "unknown-player", "&cTarget player not exist, please check username your typed.");
-            setAndUpdate("shop-staff-cleared", "&aSuccessfully remove all staff for your shop.");
-            setAndUpdate("shop-staff-added", "&aSuccessfully add {0} to your shop staffs.");
-            setAndUpdate("shop-staff-deleted", "&aSuccessfully remove {0} to your shop staffs.");
-            setAndUpdate("command.wrong-args", "&cParameters not matched, use /qs help to check help");
-            setAndUpdate("command.description.staff", "&eManage your shop staffs.");
-            setAndUpdate(
-                    "unknown-player", "&cTarget player not exist, please check username your typed.");
+            setAndUpdate("unknown-player");
+            setAndUpdate("shop-staff-cleared");
+            setAndUpdate("shop-staff-added");
+            setAndUpdate("shop-staff-deleted");
+            setAndUpdate("command.wrong-args");
+            setAndUpdate("command.description.staff");
+            setAndUpdate("unknown-player");
             setAndUpdate("language-version", 12);
             selectedVersion = 12;
         }
         if (selectedVersion == 12) {
-            setAndUpdate("menu.commands.preview", "/qs silentpreview {0} {1} {2} {3}");
-            setAndUpdate("shop-staff-cleared", "&aSuccessfully remove all staff for your shop.");
-            setAndUpdate("shop-staff-added", "&aSuccessfully add {0} to your shop staffs.");
-            setAndUpdate("shop-staff-deleted", "&aSuccessfully remove {0} to your shop staffs.");
-            setAndUpdate("command.wrong-args", "&cParameters not matched, use /qs help to check help");
-            setAndUpdate("command.description.staff", "&eManage your shop staffs.");
-            setAndUpdate(
-                    "unknown-player", "&cTarget player not exist, please check username your typed.");
+            setAndUpdate("menu.commands.preview");
+            setAndUpdate("shop-staff-cleared");
+            setAndUpdate("shop-staff-added");
+            setAndUpdate("shop-staff-deleted");
+            setAndUpdate("command.wrong-args");
+            setAndUpdate("command.description.staff");
+            setAndUpdate("unknown-player");
             setAndUpdate("language-version", 13);
             selectedVersion = 13;
         }
         if (selectedVersion == 13) {
-            setAndUpdate("no-permission-build", "&cYou can't build shop here.");
-            setAndUpdate("success-change-owner-to-server", "&aSuccessfully set shop owner to Server.");
-            setAndUpdate("updatenotify.buttontitle", "[Update Now]");
-            List<String> notifylist = new ArrayList<>();
-            notifylist.add("{0} is released, You still using {1}!");
-            notifylist.add("Boom! New update {0} incoming, Update!");
-            notifylist.add("Surprise! {0} come out, you are on {1}");
-            notifylist.add("Looks you need update, {0} is updated!");
-            notifylist.add("Ooops! {0} new released, you are {1}!");
-            notifylist.add("I promise, QS updated {0}, why not update?");
-            notifylist.add("Fixing and re... Sorry {0} is updated!");
-            notifylist.add("Err! Nope, not error, just {0} updated!");
-            notifylist.add("OMG! {0} come out! Why you still use {1}?");
-            notifylist.add("Today News: QuickShop updated {0}!");
-            notifylist.add("Plugin K.I.A, You should update {0}!");
-            notifylist.add("Fuze is fuzeing update {0}, save update!");
-            notifylist.add("You are update commander, told u {0} come out!");
-            notifylist.add("Look me style---{0} updated, you still {1}");
-            notifylist.add("Ahhhhhhh! New update {0}! Update!");
-            notifylist.add("What U thinking? {0} released! Update!");
-            setAndUpdate("updatenotify.list", notifylist);
+            setAndUpdate("no-permission-build");
+            setAndUpdate("success-change-owner-to-server");
+            setAndUpdate("updatenotify.buttontitle");
+            setAndUpdate("updatenotify.list");
             setAndUpdate("language-version", 14);
             selectedVersion = 14;
         }
         if (selectedVersion == 14) {
-            setAndUpdate("flush-finished", "&aSuccessfully flushed the messages.");
+            setAndUpdate("flush-finished");
             setAndUpdate("language-version", 15);
             selectedVersion = 15;
         }
         if (selectedVersion == 15) {
-            setAndUpdate(
-                    "purchase-failed",
-                    "&cPurchase failed: Internal Error, please contact the server administrator..");
+            setAndUpdate("purchase-failed");
             setAndUpdate("language-version", 16);
             selectedVersion = 16;
         }
         if (selectedVersion == 16) {
-            setAndUpdate("command.description.owner", "&eChanges who owns a shop");
-            setAndUpdate("command.description.remove", "&eRemove your looking the shop");
-            setAndUpdate(
-                    "command.description.amount",
-                    "&eExecute for your actions with amount(For chat plugin issue)");
-            setAndUpdate("command.description.about", "&eShow QuickShop abouts");
-            setAndUpdate("command.description.help", "&eShow QuickShop helps");
-            setAndUpdate("no-pending-action", "&cYou do not have any pending action");
+            setAndUpdate("command.description.owner");
+            setAndUpdate("command.description.remove");
+            setAndUpdate("command.description.amount");
+            setAndUpdate("command.description.about");
+            setAndUpdate("command.description.help");
+            setAndUpdate("no-pending-action");
             setAndUpdate("language-version", 17);
             selectedVersion = 17;
         }
         if (selectedVersion == 17) {
-            setAndUpdate("updatenotify.onekeybuttontitle", "[OneKey Update]");
+            setAndUpdate("updatenotify.onekeybuttontitle");
             setAndUpdate("language-version", 18);
             selectedVersion = 18;
         }
         if (selectedVersion == 18) {
-            setAndUpdate(
-                    "command.description.supercreate", "&eCreate a shop bypass all protection checks");
+            setAndUpdate("command.description.supercreate");
             setAndUpdate("language-version", 19);
             selectedVersion = 19;
         }
         if (selectedVersion == 19) {
-            setAndUpdate("permission-denied-3rd-party", "&cPermission denied: 3rd party plugin [{0}].");
-            setAndUpdate(
-                    "updatenotify.remote-disable-warning",
-                    "&cThis version of QuickShop is marked disabled by remote server, that mean this version may have serious problem, get details from our SpigotMC page: {0}. This warning will appear and spam your console until you use other not disabled version to replace this one, doesn't effect your server running.");
+            setAndUpdate("permission-denied-3rd-party");
+            setAndUpdate("updatenotify.remote-disable-warning");
             setAndUpdate("language-version", 20);
             selectedVersion = 20;
         }
         if (selectedVersion == 20) {
-            setAndUpdate(
-                    "how-many-buy",
-                    "&aEnter how many you wish to &bBUY&a in chat. Enter &ball&a to buy them all.");
-            setAndUpdate(
-                    "how-many-sell",
-                    "&aEnter how many you wish to &dSELL&a in chat. You have &e{0}&a available. Enter &ball&a to sell them all.");
-            setAndUpdate("updatenotify.label.unstable", "[Unstable]");
-            setAndUpdate("updatenotify.label.stable", "[Stable]");
-            setAndUpdate("updatenotify.label.lts", "[LTS]");
-            setAndUpdate("updatenotify.label.qualityverifyed", "[Quality]");
-            setAndUpdate("updatenotify.label.github", "[Github]");
-            setAndUpdate("updatenotify.label.spigotmc", "[SpigotMC]");
-            setAndUpdate("updatenotify.label.bukkitdev", "[BukkitDev]");
+            setAndUpdate("how-many-buy");
+            setAndUpdate("how-many-sell");
+            setAndUpdate("updatenotify.label.unstable");
+            setAndUpdate("updatenotify.label.stable");
+            setAndUpdate("updatenotify.label.lts");
+            setAndUpdate("updatenotify.label.qualityverifyed");
+            setAndUpdate("updatenotify.label.github");
+            setAndUpdate("updatenotify.label.spigotmc");
+            setAndUpdate("updatenotify.label.bukkitdev");
             setAndUpdate("language-version", 21);
             selectedVersion = 21;
         }
         if (selectedVersion == 21) {
-            setAndUpdate(
-                    "shop-removed-cause-ongoing-fee",
-                    "&cYou shop at {0} was removed cause you had no enough money to keep it!");
+            setAndUpdate("shop-removed-cause-ongoing-fee");
             setAndUpdate("language-version", 22);
             selectedVersion = 22;
         }
         if (selectedVersion == 22) {
-            setAndUpdate("not-a-number", "&cThere can only be number, but you input {0}");
-            setAndUpdate("not-a-integer", "&cThere can only be integer, but you input {0}");
+            setAndUpdate("not-a-number");
+            setAndUpdate("not-a-integer");
             setAndUpdate("language-version", 23);
             selectedVersion = 23;
         }
         if (selectedVersion == 23) {
-            setAndUpdate("command.toggle-unlimited.unlimited", "&aShop is now unlimited}");
-            setAndUpdate("command.toggle-unlimited.limited", "&aShop is now limited");
+            setAndUpdate("command.toggle-unlimited.unlimited");
+            setAndUpdate("command.toggle-unlimited.limited");
             setAndUpdate("language-version", 24);
             selectedVersion = 24;
         }
         if (selectedVersion == 24) {
-            setAndUpdate(
-                    "digits-reach-the-limit",
-                    "&cYou have reach the limit of the digits after the dot in price.");
+            setAndUpdate("digits-reach-the-limit");
             setAndUpdate("language-version", 25);
             selectedVersion = 25;
         }
         if (selectedVersion == 25) {
-            setAndUpdate("complete", "&aComplete!");
+            setAndUpdate("complete");
             setAndUpdate("language-version", 26);
             selectedVersion = 26;
         }
         if (selectedVersion == 26) {
-            setAndUpdate("updatenotify.label.master", "[Master]");
+            setAndUpdate("updatenotify.label.master");
             setAndUpdate("language-version", 27);
             selectedVersion = 27;
         }
         if (selectedVersion == 27) {
-            setAndUpdate("quickshop-gui-preview", "QuickShop GUI Preview Item");
-            setAndUpdate("shops-recovering", "Recovering shops from backup...");
-            setAndUpdate("shops-backingup", "Backing up the shops from database...");
-            setAndUpdate("saved-to-path", "The backup file was saved to {0} .");
-            setAndUpdate("backup-failed", "Cannot backup the database, check the console for details.");
-            setAndUpdate("translate-not-completed-yet-click", "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Click Here!");
-            setAndUpdate("translate-not-completed-yet-url", "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Browse: {2}");
-            setAndUpdate("language-info-panel.name", "Language: ");
-            setAndUpdate("language-info-panel.code", "Code: ");
-            setAndUpdate("language-info-panel.progress", "Progress: ");
-            setAndUpdate("language-info-panel.help", "Help Us: ");
-            setAndUpdate("language-info-panel.translate-on-crowdin", "[Translate on Crowdin]");
-            setAndUpdate("not-managed-shop", "You isn't the owner or moderator of the shop");
+            setAndUpdate("quickshop-gui-preview");
+            setAndUpdate("shops-recovering");
+            setAndUpdate("shops-backingup");
+            setAndUpdate("saved-to-path");
+            setAndUpdate("backup-failed");
+            setAndUpdate("translate-not-completed-yet-click");
+            setAndUpdate("translate-not-completed-yet-url");
+            setAndUpdate("language-info-panel.name");
+            setAndUpdate("language-info-panel.code");
+            setAndUpdate("language-info-panel.progress");
+            setAndUpdate("language-info-panel.help");
+            setAndUpdate("language-info-panel.translate-on-crowdin");
+            setAndUpdate("not-managed-shop");
             setAndUpdate("language-version", 28);
             selectedVersion = 28;
         }
         if (selectedVersion == 28) {
-            setAndUpdate("quickshop-gui-preview", "QuickShop GUI Preview Item");
-            setAndUpdate("shops-recovering", "Recovering shops from backup...");
-            setAndUpdate("shops-backingup", "Backing up the shops from database...");
-            setAndUpdate("saved-to-path", "The backup file was saved to {0} .");
-            setAndUpdate("backup-failed", "Cannot backup the database, check the console for details.");
-            setAndUpdate("translate-not-completed-yet-click", "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Click Here!");
-            setAndUpdate("translate-not-completed-yet-url", "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Browse: {2}");
-            setAndUpdate("language-info-panel.name", "Language: ");
-            setAndUpdate("language-info-panel.code", "Code: ");
-            setAndUpdate("language-info-panel.progress", "Progress: ");
-            setAndUpdate("language-info-panel.help", "Help Us: ");
-            setAndUpdate("language-info-panel.translate-on-crowdin", "[Translate on Crowdin]");
-            setAndUpdate("not-managed-shop", "You isn't the owner or moderator of the shop");
+            setAndUpdate("quickshop-gui-preview");
+            setAndUpdate("shops-recovering");
+            setAndUpdate("shops-backingup");
+            setAndUpdate("saved-to-path");
+            setAndUpdate("backup-failed");
+            setAndUpdate("translate-not-completed-yet-click");
+            setAndUpdate("translate-not-completed-yet-url");
+            setAndUpdate("language-info-panel.name");
+            setAndUpdate("language-info-panel.code");
+            setAndUpdate("language-info-panel.progress");
+            setAndUpdate("language-info-panel.help");
+            setAndUpdate("language-info-panel.translate-on-crowdin");
+            setAndUpdate("not-managed-shop");
             setAndUpdate("language-version", 29);
             selectedVersion = 29;
         }
         if (selectedVersion == 29) {
-            setAndUpdate("3rd-plugin-build-check-failed", "Some 3rd party plugin denied the permission checks, did you have permission built in there?");
+            setAndUpdate("3rd-plugin-build-check-failed");
             setAndUpdate("language-version", 30);
             selectedVersion = 30;
         }
         if (selectedVersion == 30) {
-            setAndUpdate("no-creative-break", "&cYou cannot break other players shops in the creative mode, switch to survival mode or try to use supertool {0} instead.");
-            setAndUpdate("trading-in-creative-mode-is-disabled", "&cYou cannot trade with shop in the creative mode.");
-            setAndUpdate("supertool-is-disabled", "&cSupertool is disabled, cannot break any shop.");
+            setAndUpdate("no-creative-break");
+            setAndUpdate("trading-in-creative-mode-is-disabled");
+            setAndUpdate("supertool-is-disabled");
             setAndUpdate("language-version", 31);
             selectedVersion = 31;
         }
         if (selectedVersion == 31) {
-            setAndUpdate("menu.shop-stack", "&aStack Amount: &e{0}");
-            setAndUpdate("command.description.language", "&eSwitch the language that quickshop using");
-            setAndUpdate("signs.stack-price", "{0} stack");
-            setAndUpdate("controlpanel.commands.stack", "/qs silentstack [Amount]");
-            setAndUpdate("controlpanel.stack", "&aStack: &b{0} &e[&d&lSet&e]");
-            setAndUpdate("controlpanel.stack-hover", "&eClick to set the item amounts each stack. Set to 1 for normal behavior.");
-            setAndUpdate("shop-now-freezed", "&aYou are frozen the shop, and nobody can trade with this shop now!");
-            setAndUpdate("shop-nolonger-freezed", "&aYou are unfrozen the shop, it back to normal now!");
-            setAndUpdate("shop-freezed-at-location", "&eYour shop {0} at {1} got frozen!");
-            setAndUpdate("shop-cannot-trade-when-freezing", "&cYou cannot trade with this shop cause it under freezing.");
-            setAndUpdate("denied-put-in-item", "&cThis item cannot put in this shop!");
-            setAndUpdate("how-many-buy-stack", "&aEnter how many bulks you wish to &bBUY&a in chat. There have &e{0}&a items in each bulk and You can buy &e{1}&a bulks. Enter &ball&a to buy them all.");
-            setAndUpdate("how-many-sell-stack", "&aEnter how many bulks you wish to &dSELL&a in chat. There have &e{0}&a items in each bulk and You have &e{1}&a bulks available. Enter &ball&a to sell them all.");
-            setAndUpdate("lang.name", "&eName: &6{0}");
-            setAndUpdate("lang.code", "&eCode: &6{0}");
-            setAndUpdate("lang.translate-progress", "&eTranslate Progress: &b{0}%");
-            setAndUpdate("lang.approval-progress", "&eApproval Progress: &b{0}%");
-            setAndUpdate("lang.qa-issues", "&eQuality Assurance Issues: &b{0}%");
-            setAndUpdate("lang.help-us", "&a[Help Us Improve Translation Quality]");
+            setAndUpdate("menu.shop-stack");
+            setAndUpdate("command.description.language");
+            setAndUpdate("signs.stack-price");
+            setAndUpdate("controlpanel.commands.stack");
+            setAndUpdate("controlpanel.stack");
+            setAndUpdate("controlpanel.stack-hover");
+            setAndUpdate("shop-now-freezed");
+            setAndUpdate("shop-nolonger-freezed");
+            setAndUpdate("shop-freezed-at-location");
+            setAndUpdate("shop-cannot-trade-when-freezing");
+            setAndUpdate("denied-put-in-item");
+            setAndUpdate("how-many-buy-stack");
+            setAndUpdate("how-many-sell-stack");
+            setAndUpdate("lang.name");
+            setAndUpdate("lang.code");
+            setAndUpdate("lang.translate-progress");
+            setAndUpdate("lang.approval-progress");
+            setAndUpdate("lang.qa-issues");
+            setAndUpdate("lang.help-us");
             setAndUpdate("language-version", 32);
             selectedVersion = 32;
         }
         if (selectedVersion == 32) {
-            setAndUpdate("signs.stack-selling", "Selling {0}");
-            setAndUpdate("signs.stack-buying", "Buying {0}");
-            setAndUpdate("menu.price-per-stack", "&aPrice per &e {3}x {0} - {1}");
-            setAndUpdate("menu.shop-stack", "&aStack Amount: &e{0}");
+            setAndUpdate("signs.stack-selling");
+            setAndUpdate("signs.stack-buying");
+            setAndUpdate("menu.price-per-stack");
+            setAndUpdate("menu.shop-stack");
             setAndUpdate("language-version", 33);
             selectedVersion = 33;
         }
         if (selectedVersion == 33) {
-            setAndUpdate("integrations-check-failed-create", "Integrations denied the shop creation");
-            setAndUpdate("integrations-check-failed-trade", "Integrations denied the shop trade");
+            setAndUpdate("integrations-check-failed-create");
+            setAndUpdate("integrations-check-failed-trade");
             setAndUpdate("language-version", 34);
             selectedVersion = 34;
         }
         if (selectedVersion == 34) {
-            setAndUpdate("how-many-buy-stack", "&aEnter how many bulks you wish to &bBUY&a in chat. There have &e{0}&a items in each bulk and You can buy &e{1}&a bulks. Enter &ball&a to buy them all.");
-            setAndUpdate("how-many-sell-stack", "&aEnter how many bulks you wish to &dSELL&a in chat. There have &e{0}&a items in each bulk and You have &e{1}&a bulks available. Enter &ball&a to sell them all.");
+            setAndUpdate("how-many-buy-stack");
+            setAndUpdate("how-many-sell-stack");
             setAndUpdate("language-version", 35);
             selectedVersion = 35;
         }
         if (selectedVersion == 35) {
-            setAndUpdate("menu.price-per-stack", "&aPrice per &e {3}x {0} - {1}");
-            setAndUpdate("signs.stack-price", "{0} per bulk");
-            setAndUpdate("controlpanel.stack", "&aPer bulk amount: &b{0} &e[&d&lChange&e]");
-            setAndUpdate("controlpanel.stack-hover", "&eClick to set the amount of item per bulk. Set to 1 for normal behaviour.");
-            setAndUpdate("controlpanel.commands.stack", "/qs size [Amount]");
-            setAndUpdate("controlpanel.item", "&aShop Item: {0} &e[&d&lChange&e]");
-            setAndUpdate("controlpanel.item-hover", "&eClick to change shop Item");
-            setAndUpdate("controlpanel.commands.item", "/qs item");
-            setAndUpdate("how-much-to-trade-for", "&aEnter in chat, how much you wish to trade {1}x &e{0}&a for.");
-            setAndUpdate("command.bulk-size-not-set", "&cUsage: /qs size <amount>");
-            setAndUpdate("command.bulk-size-now", "&aNow trading {0}x {1}");
-            setAndUpdate("command.invalid-bulk-amount", "&cThe given value {0} larger than max stack size or lower than one");
-            setAndUpdate("command.description.size", "&eChange per bulk amount of a shop");
-            setAndUpdate("command.no-trade-item", "&aPlease hold a trade item to change in main hand");
-            setAndUpdate("command.trade-item-now", "&aNow trading {0}x {1}");
-            setAndUpdate("command.description.item", "&eChange shop item of a shop");
-            setAndUpdate("item-holochat-error", "&c[Error]");
-            setAndUpdate("shop-stack", "&aAmount of bulk: &e{0}");
+            setAndUpdate("menu.price-per-stack");
+            setAndUpdate("signs.stack-price");
+            setAndUpdate("controlpanel.stack");
+            setAndUpdate("controlpanel.stack-hover");
+            setAndUpdate("controlpanel.commands.stack");
+            setAndUpdate("controlpanel.item");
+            setAndUpdate("controlpanel.item-hover");
+            setAndUpdate("controlpanel.commands.item");
+            setAndUpdate("how-much-to-trade-for");
+            setAndUpdate("command.bulk-size-not-set");
+            setAndUpdate("command.bulk-size-now");
+            setAndUpdate("command.invalid-bulk-amount");
+            setAndUpdate("command.description.size");
+            setAndUpdate("command.no-trade-item");
+            setAndUpdate("command.trade-item-now");
+            setAndUpdate("command.description.item");
+            setAndUpdate("item-holochat-error");
+            setAndUpdate("shop-stack");
             setAndUpdate("language-version", 36);
             selectedVersion = 36;
         }
         if (selectedVersion == 36) {
-            setAndUpdate("menu.price-per-stack", "&aPrice per &e{2}x {0} - {1}");
-            setAndUpdate("command.trade-item-now", "&aNow trading &e{0}x {1}");
-            setAndUpdate("command.bulk-size-now", "&aNow trading &e{0}x {1}");
-            setAndUpdate("how-much-to-trade-for", "&aEnter in chat, how much you wish to trade &e{1}x {0}&a for.");
+            setAndUpdate("menu.price-per-stack");
+            setAndUpdate("command.trade-item-now");
+            setAndUpdate("command.bulk-size-now");
+            setAndUpdate("how-much-to-trade-for");
             setAndUpdate("language-version", 37);
             selectedVersion = 37;
         }
         if (selectedVersion == 37) {
-            setAndUpdate("signs.stack-price", "{0} per {1}x {2}");
-            setAndUpdate("command.some-shops-removed", "&e{0} &ashop removed");
-            setAndUpdate("command.description.removeall", "&eRemove ALL shops of a specified player");
-            setAndUpdate("command.no-owner-given", "&cNo owner provided");
+            setAndUpdate("signs.stack-price");
+            setAndUpdate("command.some-shops-removed");
+            setAndUpdate("command.description.removeall");
+            setAndUpdate("command.no-owner-given");
             setAndUpdate("language-version", 38);
             selectedVersion = 38;
         }
         if (selectedVersion == 38) {
-            setAndUpdate("integrations-check-failed-create", "&cIntegration {0} denied the shop-creation");
-            setAndUpdate("integrations-check-failed-trade", "&cIntegration {0} denied the Shop trading");
-            setAndUpdate("3rd-plugin-build-check-failed", "&c3rd party plugin &l{0}&r&c denied the permission checks, did you have permission setup in there?");
+            setAndUpdate("integrations-check-failed-create");
+            setAndUpdate("integrations-check-failed-trade");
+            setAndUpdate("3rd-plugin-build-check-failed");
             setAndUpdate("language-version", 39);
             selectedVersion = 39;
         }
         if (selectedVersion == 39) {
-            setAndUpdate("command.transfer-success", "&aTransferred &e{0} &ashop(s) to &e{1}");
-            setAndUpdate("command.transfer-success-other", "&aTransferred &e{0} {1}&a's shop(s) to &e{2}");
-            setAndUpdate("command.description.transfer", "&eTransfer someone's ALL shops to other");
+            setAndUpdate("command.transfer-success");
+            setAndUpdate("command.transfer-success-other");
+            setAndUpdate("command.description.transfer");
             setAndUpdate("language-version", 40);
             selectedVersion = 40;
         }
@@ -1420,55 +1353,63 @@ public class MsgUtil {
         }
 
         if (selectedVersion == 41) {
-            setAndUpdate("shops-removed-in-world", "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.");
-            setAndUpdate("command.description.removeworld", "&eRemove ALL shops in a specified world");
-            setAndUpdate("command.no-world-given", "&cPlease specify a world name");
-            setAndUpdate("world-not-exists", "&cThe world &e{0}&c not exists");
+            setAndUpdate("shops-removed-in-world");
+            setAndUpdate("command.description.removeworld");
+            setAndUpdate("command.no-world-given");
+            setAndUpdate("world-not-exists");
             setAndUpdate("language-version", 42);
             selectedVersion = 42;
         }
         if (selectedVersion == 42) {
-            setAndUpdate("player-bought-from-your-store-tax", "&c{0} purchased {1} {2} from your shop, and you earned {3} ({4} in taxes).");
-            setAndUpdate("player-bought-from-your-store", "&c{0} purchased {1} {2} from your shop, and you earned {3}.");
+            setAndUpdate("player-bought-from-your-store-tax");
+            setAndUpdate("player-bought-from-your-store");
             setAndUpdate("language-version", 43);
             selectedVersion = 43;
         }
         if (selectedVersion == 43) {
             setAndUpdate("nearby-shop-this-way", null);
-            setAndUpdate("nearby-shop-header", "&aNearby Shop matching &b{0}&a:");
-            setAndUpdate("nearby-shop-entry", "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)");
+            setAndUpdate("nearby-shop-header");
+            setAndUpdate("nearby-shop-entry");
             setAndUpdate("language-version", ++selectedVersion);
         }
         if (selectedVersion == 44) {
-            setAndUpdate("nearby-shop-this-way", "&aShop is {0} blocks away from you.");
+            setAndUpdate("nearby-shop-this-way");
             setAndUpdate("language-version", ++selectedVersion);
         }
         if (selectedVersion == 45) {
-            setAndUpdate("exceeded-maximum", "&cThe value has exceeded the maximum java value.");
+            setAndUpdate("exceeded-maximum");
             setAndUpdate("language-version", ++selectedVersion);
         }
         if (selectedVersion == 46) {
-            setAndUpdate("currency-not-exists", "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.");
-            setAndUpdate("currency-set", "&aSuccessfully set shop currency to {0}.");
-            setAndUpdate("currency-unset", "&aSuccessfully remove shop currency setup, will use default now.");
-            setAndUpdate("command.description.currency", "&eSet or remove the currency setting on shop");
-            setAndUpdate("controlpanel.currency", "&aCurrency: &b{0} &e[&d&lSet&e]");
-            setAndUpdate("controlpanel.currency-hover", "&eClick to set or remove the currency that shop using");
-            setAndUpdate("currency-not-support", "&cThe economy plugin doesn't support multi-currency feature.");
+            setAndUpdate("currency-not-exists");
+            setAndUpdate("currency-set");
+            setAndUpdate("currency-unset");
+            setAndUpdate("command.description.currency");
+            setAndUpdate("controlpanel.currency");
+            setAndUpdate("controlpanel.currency-hover");
+            setAndUpdate("currency-not-support");
             setAndUpdate("language-version", ++selectedVersion);
         }
         if (selectedVersion == 47) {
-            setAndUpdate("forbidden-vanilla-behavior", "&cThe operation is forbidden due to is not consist with vanilla behavior");
+            setAndUpdate("forbidden-vanilla-behavior");
             setAndUpdate("language-version", ++selectedVersion);
         }
         if (selectedVersion == 48) {
-            setAndUpdate("tabcomplete.currency", "[currency name]");
-            setAndUpdate("tabcomplete.item", "[item]");
-            setAndUpdate("item-not-exist", "&cThe item &e{0} &cnot exists, please check your spelling.");
+            setAndUpdate("tabcomplete.currency");
+            setAndUpdate("tabcomplete.item");
+            setAndUpdate("item-not-exist");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
+        if (selectedVersion == 49) {
+            setAndUpdate("backup-success");
+            setAndUpdate("console-only");
+            setAndUpdate("console-only-danger");
+            setAndUpdate("clean-warning");
+            setAndUpdate("command.disabled");
+            setAndUpdate("command.feature-not-enabled");
             setAndUpdate("language-version", ++selectedVersion);
         }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
-
         messagei18n.save();
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
     }
@@ -1483,8 +1424,21 @@ public class MsgUtil {
         if (builtInLang != null) {
             alt = builtInLang.get(path, object);
         }
+        Util.debugLog("Alt text: " + alt);
         if (alt == null) {
             messagei18n.set(path, object);
+        } else {
+            messagei18n.set(path, alt);
+        }
+    }
+
+    private static void setAndUpdate(@NotNull String path) {
+        Object alt = null;
+        if (builtInLang != null) {
+            alt = builtInLang.get(path);
+        }
+        if (alt == null) {
+            messagei18n.set(path, "Missing no: " + path);
         } else {
             messagei18n.set(path, alt);
         }

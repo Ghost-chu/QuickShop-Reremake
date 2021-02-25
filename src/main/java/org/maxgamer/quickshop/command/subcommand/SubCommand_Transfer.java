@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -52,7 +51,7 @@ public class SubCommand_Transfer implements CommandProcesser {
                 return;
             }
             //noinspection deprecation
-            final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(cmdArg[0]);
+            final OfflinePlayer targetPlayer = plugin.getServer().getOfflinePlayer(cmdArg[0]);
             String targetPlayerName = targetPlayer.getName();
             if (targetPlayerName == null) {
                 targetPlayerName = "null";
@@ -69,14 +68,14 @@ public class SubCommand_Transfer implements CommandProcesser {
                 return;
             }
             //noinspection deprecation
-            final OfflinePlayer fromPlayer = Bukkit.getServer().getOfflinePlayer(cmdArg[0]);
+            final OfflinePlayer fromPlayer = plugin.getServer().getOfflinePlayer(cmdArg[0]);
             String fromPlayerName = fromPlayer.getName();
             if (fromPlayerName == null) {
                 fromPlayerName = "null";
             }
             //FIXME: Update this when drop 1.15 supports
             //noinspection deprecation
-            final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(cmdArg[1]);
+            final OfflinePlayer targetPlayer = plugin.getServer().getOfflinePlayer(cmdArg[1]);
             String targetPlayerName = targetPlayer.getName();
             if (targetPlayerName == null) {
                 targetPlayerName = "null";

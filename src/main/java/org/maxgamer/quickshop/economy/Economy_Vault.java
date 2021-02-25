@@ -22,7 +22,6 @@ package org.maxgamer.quickshop.economy;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
@@ -65,7 +64,7 @@ public class Economy_Vault implements EconomyCore, Listener {
         }
         RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> economyProvider;
         try {
-            economyProvider = Bukkit.getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+            economyProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
         } catch (Exception e) {
             return false;
         }
@@ -91,7 +90,7 @@ public class Economy_Vault implements EconomyCore, Listener {
         } else {
             plugin.getLogger().info("Using economy system: " + this.vault.getName());
         }
-        Bukkit.getPluginManager().registerEvents(this, plugin);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
         Util.debugLog("Economy service listener was registered.");
         return true;
     }
@@ -117,7 +116,7 @@ public class Economy_Vault implements EconomyCore, Listener {
         if (!isValid()) {
             return false;
         }
-        return deposit(Bukkit.getOfflinePlayer(name), amount, world, currency);
+        return deposit(plugin.getServer().getOfflinePlayer(name), amount, world, currency);
 
     }
 
@@ -161,7 +160,7 @@ public class Economy_Vault implements EconomyCore, Listener {
             return "Error";
         }
 
-        return Util.format(balance, true, Bukkit.getWorlds().get(0), (String) null);
+        return Util.format(balance, true, plugin.getServer().getWorlds().get(0), (String) null);
     }
 
     @Override
@@ -170,7 +169,7 @@ public class Economy_Vault implements EconomyCore, Listener {
             return 0.0;
         }
 
-        return getBalance(Bukkit.getOfflinePlayer(name), world, currency);
+        return getBalance(plugin.getServer().getOfflinePlayer(name), world, currency);
 
     }
 
@@ -196,7 +195,7 @@ public class Economy_Vault implements EconomyCore, Listener {
         if (!isValid()) {
             return false;
         }
-        return withdraw(Bukkit.getOfflinePlayer(name), amount, world, currency);
+        return withdraw(plugin.getServer().getOfflinePlayer(name), amount, world, currency);
     }
 
     @Override

@@ -19,11 +19,13 @@
 
 package org.maxgamer.quickshop.listener;
 
+import io.papermc.lib.PaperLib;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
@@ -95,6 +97,7 @@ public class PlayerListener extends QSListener {
         // Get the shop
         Shop shop = plugin.getShopManager().getShop(loc);
         // If that wasn't a shop, search nearby shops
+        BlockState state = PaperLib.getBlockState(b, false).getState();
         if (shop == null) {
             final Block attached;
             if (Util.isWallSign(b.getType())) {
@@ -102,8 +105,8 @@ public class PlayerListener extends QSListener {
                 if (attached != null) {
                     shop = plugin.getShopManager().getShop(attached.getLocation());
                 }
-            } else if (Util.isDoubleChest(b)) {
-                attached = Util.getSecondHalf(b);
+            } else if (Util.isDoubleChest(state)) {
+                attached = Util.getSecondHalf(state);
                 if (attached != null) {
                     Shop secondHalfShop = plugin.getShopManager().getShop(attached.getLocation());
                     if (secondHalfShop != null && !p.getUniqueId().equals(secondHalfShop.getOwner())) {
@@ -189,7 +192,7 @@ public class PlayerListener extends QSListener {
                 // So telling them a message would cause spam etc.
                 return;
             }
-            if (Util.getSecondHalf(b) != null
+            if (Util.getSecondHalf(PaperLib.getBlockState(b, false).getState()) != null
                     && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("no-double-chests", p));
                 return;

@@ -1,9 +1,10 @@
 # QuickShop-Reremake
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/8e9a5689cb3f4d6b8315a270a1252c2b)](https://www.codacy.com/gh/Ghost-chu/QuickShop-Reremake/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Ghost-chu/QuickShop-Reremake&amp;utm_campaign=Badge_Grade)
-![Contributors](https://img.shields.io/github/contributors/Ghost-chu/QuickShop-Reremake)
+[![CodeFactor](https://www.codefactor.io/repository/github/ghost-chu/quickshop-reremake/badge)](https://www.codefactor.io/repository/github/ghost-chu/quickshop-reremake)
 ![BuildStatus](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/21/badge/icon)
 ![TestsPassed](https://img.shields.io/jenkins/tests?compact_message&jobUrl=https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake)
+![Contributors](https://img.shields.io/github/contributors/Ghost-chu/QuickShop-Reremake)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Reremake.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Reremake?ref=badge_shield)
 ---
 [![JoinDiscord](https://img.shields.io/badge/join-discord-blue.svg) ![Chatting](https://img.shields.io/discord/471882534712639488)](https://discord.gg/bfefw2E)
@@ -22,7 +23,7 @@ QuickShop-Reremake makes by PotatoCraft Studio from https://github.com/KaiKikuch
 
 Open a new issue here: https://github.com/Ghost-chu/QuickShop-Reremake/issues
 
-## Features
+## Features``
 
 - Easy to use
 - Togglable Display Item on top of the chest
@@ -57,22 +58,6 @@ Or use our [CodeMC.io Jenkins](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-
 If you're a developer, you can contribute to the QuickShop code! Just make a fork and install Lombok plugin, then make a pull request when you're done! Please try to follow [Google Java Style](https://google.github.io/styleguide/javaguide.html). Also do not increase the plugin version number. Thank you very much!
 
 ## Maven
-```XML
-<repository>
-    <id>quickshop-repo</id>
-    <url>https://repo.codemc.io/</url>
-</repository>
-
-<dependency>
-    <groupId>org.maxgamer</groupId>
-    <artifactId>QuickShop</artifactId>
-    <version>{VERSION}</version>
-    <scope>provided</scope>
-</dependency>
-```
-
-if the repository doesn't work, try this one:
-
 ```XML
 <repository>
     <id>quickshop-repo</id>

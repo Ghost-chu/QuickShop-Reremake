@@ -19,10 +19,10 @@
 
 package org.maxgamer.quickshop.event;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
 
 public abstract class QSEvent extends Event {
 
@@ -39,7 +39,7 @@ public abstract class QSEvent extends Event {
     }
 
     public void callEvent() {
-        Bukkit.getPluginManager().callEvent(this);
+        QuickShop.getInstance().getServer().getPluginManager().callEvent(this);
     }
 
 }

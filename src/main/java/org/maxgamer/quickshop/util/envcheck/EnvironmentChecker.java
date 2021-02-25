@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.util.envcheck;
 
 import lombok.SneakyThrows;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -266,7 +265,7 @@ public class EnvironmentChecker {
             }
             return success;
         } catch (Exception e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to check Spigot API, the server " + Bukkit.getBukkitVersion() + " may not Spigot or Spigot's forks");
+            plugin.getLogger().log(Level.WARNING, "Failed to check Spigot API, the server " + plugin.getServer().getBukkitVersion() + " may not Spigot or Spigot's forks");
             return failed;
         }
 
@@ -313,7 +312,7 @@ public class EnvironmentChecker {
     }
 
     public boolean checkJulySafe() {
-        Plugin julySafe = Bukkit.getPluginManager().getPlugin("JulySafe");
+        Plugin julySafe = plugin.getServer().getPluginManager().getPlugin("JulySafe");
         boolean triggered = false;
         if (julySafe != null) {
             for (RegisteredListener registeredListener : BlockPlaceEvent.getHandlerList().getRegisteredListeners()) {
