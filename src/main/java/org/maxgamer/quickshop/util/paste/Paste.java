@@ -465,13 +465,15 @@ public class Paste {
             // EngineHub Pastebin
             paster = new PastebinPaster();
             return paster.pasteTheText(content);
-        } catch (Exception ignore) {
+        } catch (Exception ex) {
+            Util.debugLog(ex.getMessage());
         }
         try {
             // Ubuntu Pastebin
             paster = new UbuntuPaster();
             return paster.pasteTheText(content);
-        } catch (Exception ignore) {
+        } catch (Exception ex) {
+            Util.debugLog(ex.getMessage());
         }
         return null;
     }
