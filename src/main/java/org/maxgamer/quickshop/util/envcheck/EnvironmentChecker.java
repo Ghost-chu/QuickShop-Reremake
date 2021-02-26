@@ -33,9 +33,9 @@ import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.security.JarVerifyTool;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -169,9 +169,9 @@ public class EnvironmentChecker {
             }
 
             String jarPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-            File jarPathFile = new File(jarPath);
-            Util.debugLog("JarPath selected: " + jarPathFile.getAbsolutePath());
-            JarFile jarFile = new JarFile(jarPathFile.getAbsolutePath());
+            jarPath = URLDecoder.decode(jarPath, "UTF-8");
+            Util.debugLog("JarPath selected: " + jarPath);
+            JarFile jarFile = new JarFile(jarPath);
             List<JarEntry> modifiedEntry = tool.verify(jarFile);
             if (modifiedEntry.isEmpty()) {
                 return new ResultContainer(CheckResult.PASSED, "The jar is valid. No issues detected");
