@@ -46,7 +46,7 @@ public class PastebinPaster implements PasteInterface {
             request.expectResponseCode(200);
         } catch (Exception ex) {
             Util.debugLog(str);
-            return null;
+            throw ex;
         }
         return str;
 
