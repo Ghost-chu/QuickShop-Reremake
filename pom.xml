@@ -90,7 +90,7 @@
                     <createTestSourcesJar>false</createTestSourcesJar>
                     <filters>
                         <filter>
-                            <artifact>com.github.ben-manes:caffeine</artifact>
+                            <artifact>com.github.ben-manes.caffeine:caffeine</artifact>
                             <includes>
                                 <include>**</include>
                             </includes>
