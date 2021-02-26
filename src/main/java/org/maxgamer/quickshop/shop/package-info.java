@@ -19,5 +19,12 @@
 
 /**
  * The QuickShop API package
+ * <p>
+ * The most important things obout QuickShop in there
+ * APIs included
  */
-package org.maxgamer.quickshop.api;
+/**
+ * The most important things obout QuickShop in there
+ * APIs included
+ */
+package org.maxgamer.quickshop.shop;
