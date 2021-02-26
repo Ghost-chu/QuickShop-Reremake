@@ -41,13 +41,14 @@ public class PastebinPaster implements PasteInterface {
                         .add("api_paste_code", text)
                 )
                 .execute();
+        String str = request.returnContent().asString("UTF-8");
         try {
             request.expectResponseCode(200);
         } catch (Exception ex) {
-            Util.debugLog(request.returnContent().asString("UTF-8"));
+            Util.debugLog(str);
             return null;
         }
-        return request.returnContent().asString("UTF-8");
+        return str;
 
     }
 }
