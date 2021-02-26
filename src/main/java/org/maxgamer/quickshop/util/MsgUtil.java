@@ -1434,7 +1434,6 @@ public class MsgUtil {
         if (builtInLang != null) {
             alt = builtInLang.get(path, object);
         }
-        Util.debugLog("Alt text: " + alt);
         if (alt == null) {
             messagei18n.set(path, object);
         } else {
