@@ -186,12 +186,12 @@
     "unlimited": "無限"
   },
   "controlpanel": {
-    "setowner": "&a店主：&b{0} &e[&d&l修改&e]",
-    "infomation": "&a商店控制面板：",
+    "setowner": "&a店主 ： &b{0} &e[&d&l修改&e]",
+    "infomation": "&a商店控制面板 ： ",
     "setowner-hover": "&e點擊修改店主。",
-    "unlimited": "&a無限：{0} &e[&d&l修改&e]",
+    "unlimited": "&a無限 ： {0} &e[&d&l修改&e]",
     "unlimited-hover": "&e點擊修改商店模式為無限。",
-    "mode-selling": "&a商店模式：&b出售 &e[&d&l修改&e]",
+    "mode-selling": "&a商店模式 ： &b出售 &e[&d&l修改&e]",
     "mode-selling-hover": "&e點擊商店修改為收購模式。",
     "mode-buying": "&a商店模式：&b收購 &e[&d&l修改&e]",
     "mode-buying-hover": "&e點擊商店修改為出售模式。",
