@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.util.envcheck;
 
-import lombok.Cleanup;
 import lombok.SneakyThrows;
 import org.bukkit.ChatColor;
 import org.bukkit.event.HandlerList;
@@ -163,16 +162,14 @@ public class EnvironmentChecker {
         JarVerifyTool tool = new JarVerifyTool();
         try {
             ClassLoader loader = this.getClass().getClassLoader();
-            @Cleanup
-            InputStream stream1 = loader.getResourceAsStream("META-INF/MANIFEST.MF");
-            @Cleanup
-            InputStream stream2 = loader.getResourceAsStream("META-INF/SELFSIGN.DSA");
-            @Cleanup
-            InputStream stream3 = loader.getResourceAsStream("META-INF/SELFSIGN.SF");
 
-            if (stream1 == null || stream2 == null || stream3 == null) {
-                plugin.getLogger().warning("The signature not exists in QuickShop jar. The jar has been modified or you're running custom build.");
-                return new ResultContainer(CheckResult.STOP_WORKING, "Security risk detected, QuickShop jar has been modified.");
+            try (InputStream stream1 = loader.getResourceAsStream("META-INF/MANIFEST.MF");
+                 InputStream stream2 = loader.getResourceAsStream("META-INF/SELFSIGN.DSA");
+                 InputStream stream3 = loader.getResourceAsStream("META-INF/SELFSIGN.SF")) {
+                if (stream1 == null || stream2 == null || stream3 == null) {
+                    plugin.getLogger().warning("The signature not exists in QuickShop jar. The jar has been modified or you're running custom build.");
+                    return new ResultContainer(CheckResult.STOP_WORKING, "Security risk detected, QuickShop jar has been modified.");
+                }
             }
 
             String jarPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
