@@ -91,9 +91,9 @@
                     <filters>
                         <filter>
                             <artifact>com.github.ben-manes:caffeine</artifact>
-                            <include>
-                                **
-                            </include>
+                            <includes>
+                                <include>**</include>
+                            </includes>
                             <excludeDefaults>false</excludeDefaults>
                         </filter>
                     </filters>
