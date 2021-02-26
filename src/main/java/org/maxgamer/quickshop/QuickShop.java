@@ -29,7 +29,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -654,8 +653,8 @@ public class QuickShop extends JavaPlugin {
         updateConfig(getConfig().getInt("config-version"));
         try {
             MsgUtil.loadCfgMessages();
-        } catch (InvalidConfigurationException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            getLogger().log(Level.WARNING, "Error when loading translation", e);
         }
 
     }
