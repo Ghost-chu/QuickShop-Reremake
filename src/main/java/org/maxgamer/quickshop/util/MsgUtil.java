@@ -290,6 +290,16 @@ public class MsgUtil {
         } else {
             messagei18n.set("language-version", versi);
         }
+        int i18nCfgVer = messagei18n.getInt("language-version");
+        if (i18nCfgVer == 0) {
+            File msgs = new File(plugin.getDataFolder(), "messages.json");
+            msgs.delete();
+            try {
+                loadCfgMessages();
+                return;
+            } catch (StackOverflowError ignored) {
+            }
+        }
         updateMessages(messagei18n.getInt("language-version"));
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
         /* Print to console this language file's author, contributors, and region*/
