@@ -36,9 +36,8 @@ public class JarVerifyTool {
         Enumeration<JarEntry> entries = jar.entries();
         while (entries.hasMoreElements()) {
             JarEntry entry = entries.nextElement();
-            try {
+            try (InputStream is = jar.getInputStream(entry)) {
                 byte[] buffer = new byte[8192];
-                InputStream is = jar.getInputStream(entry);
                 //noinspection StatementWithEmptyBody
                 while ((is.read(buffer, 0, buffer.length)) != -1) {
                     // We just read. This will throw a SecurityException
