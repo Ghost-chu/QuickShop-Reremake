@@ -73,7 +73,7 @@ public class SubCommand_ROOT implements CommandProcesser {
                 }
             }
 
-            if (!container.isHidden()) {
+            if (!container.isHidden() && !container.isDisabled()) {
                 candidate.add(container.getPrefix());
             }
         }

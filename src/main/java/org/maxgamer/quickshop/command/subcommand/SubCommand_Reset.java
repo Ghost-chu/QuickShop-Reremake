@@ -21,7 +21,6 @@ package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -72,8 +71,8 @@ public class SubCommand_Reset implements CommandProcesser {
                 config.delete();
                 plugin.saveDefaultConfig();
                 plugin.reloadConfig();
-                Bukkit.getPluginManager().disablePlugin(plugin);
-                Bukkit.getPluginManager().enablePlugin(plugin);
+                plugin.getServer().getPluginManager().disablePlugin(plugin);
+                plugin.getServer().getPluginManager().enablePlugin(plugin);
                 MsgUtil.sendMessage(sender, MsgUtil.getMessage("complete", sender));
                 break;
             case "messages":

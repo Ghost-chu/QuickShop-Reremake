@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.listener;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -78,7 +77,7 @@ public class ShopProtectionListener extends ProtectionListenerBase {
         }
 
         Util.debugLog("QuickShop is scanning all worlds settings about disableHopperMoveEvents disabled worlds");
-        Bukkit.getWorlds().forEach(world -> {
+        plugin.getServer().getWorlds().forEach(world -> {
 
             if (plugin.getShopManager().getShopsInWorld(world).isEmpty()) {
                 return;

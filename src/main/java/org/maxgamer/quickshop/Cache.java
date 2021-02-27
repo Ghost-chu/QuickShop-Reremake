@@ -19,24 +19,32 @@
 
 package org.maxgamer.quickshop;
 
-import com.google.common.cache.CacheBuilder;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.stats.CacheStats;
 import org.bukkit.Location;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.shop.Shop;
 
+import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 
 public class Cache {
     private final QuickShop plugin;
-    private final com.google.common.cache.Cache<Location, CacheContainer> accessCaching = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.SECONDS).initialCapacity(500).build();
+    private final com.github.benmanes.caffeine.cache.Cache<Location, WeakReference<Shop>> accessCaching = Caffeine
+            .newBuilder()
+            .initialCapacity(10000)
+            .expireAfterAccess(120, TimeUnit.MINUTES)
+            .recordStats()
+            .build();
 
     public Cache(QuickShop plugin) {
         this.plugin = plugin;
     }
 
-    public long getCachingSize() {
-        return accessCaching.size();
+    public @NonNull CacheStats getStats() {
+        return accessCaching.stats();
     }
 
 
@@ -49,16 +57,24 @@ public class Cache {
      */
     @Nullable
     public Shop getCaching(@NotNull Location location, boolean includeAttached) {
-        CacheContainer container;
-        container = accessCaching.getIfPresent(location);
-        if (container == null) {
+        WeakReference<Shop> result = accessCaching.get(location, update -> {
+            Shop shop; //Because we need the data from Caffeine, so we cannot direct return WeakReference directly
+            //Cause we will see 100% load success data :(
             if (includeAttached) {
-                return plugin.getShopManager().getShopIncludeAttached(location);
+                shop = plugin.getShopManager().getShopIncludeAttached(update, false);
             } else {
-                return plugin.getShopManager().getShop(location);
+                shop = plugin.getShopManager().getShop(update);
             }
+            if (shop == null) {
+                return null;
+            } else {
+                return new WeakReference<>(shop);
+            }
+        });
+        if (result == null) {
+            return null;
         } else {
-            return container.getShop();
+            return result.get();
         }
     }
 
@@ -73,38 +89,6 @@ public class Cache {
             accessCaching.invalidate(location);
             return;
         }
-        accessCaching.put(location, new CacheContainer(shop, System.currentTimeMillis()));
+        accessCaching.put(location, new WeakReference<>(shop));
     }
 }
-
-class CacheContainer {
-    @NotNull
-    private final Shop shop;
-
-    private final long time;
-
-    public CacheContainer(@NotNull Shop shop, long time) {
-        this.shop = shop;
-        this.time = time;
-    }
-
-    /**
-     * Gets container created at.
-     *
-     * @return The timestamp
-     */
-    public long getTime() {
-        return time;
-    }
-
-    /**
-     * Gets container shop
-     *
-     * @return The shop
-     */
-    @NotNull
-    public Shop getShop() {
-        return shop;
-    }
-}
-

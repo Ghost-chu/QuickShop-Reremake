@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.util;
 
+import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.NonNull;
 import org.apache.commons.lang.StringUtils;
@@ -41,7 +42,6 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -155,7 +155,7 @@ public class Util {
      * @return True if it can be made into a shop, otherwise false.
      */
     public static boolean canBeShop(@NotNull Block b) {
-        final BlockState bs = b.getState();
+
 
         if (isBlacklistWorld(b.getWorld())) {
             return false;
@@ -165,7 +165,7 @@ public class Util {
         if (!isShoppables(b.getType())) {
             return false;
         }
-
+        final BlockState bs = PaperLib.getBlockState(b, false).getState();
         if (bs instanceof EnderChest) { // BlockState for Mod supporting
             return plugin.getOpenInvPlugin() != null;
         }
@@ -339,7 +339,7 @@ public class Util {
             lock.writeLock().unlock();
             return;
         }
-        final StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[1];
+        final StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[2];
         final String className = stackTraceElement.getClassName();
         final String methodName = stackTraceElement.getMethodName();
         final int codeLine = stackTraceElement.getLineNumber();
@@ -622,14 +622,11 @@ public class Util {
 //        return null;
 //    }
 
-    public static boolean isDoubleChest(@Nullable Block b) {
-        if (b == null) {
+    public static boolean isDoubleChest(@Nullable BlockState state) {
+        if (!(state instanceof Container)) {
             return false;
         }
-        if (!(b.getState() instanceof Container)) {
-            return false;
-        }
-        final Container container = (Container) b.getState();
+        final Container container = (Container) state;
         return (container.getInventory() instanceof DoubleChestInventory);
     }
 
@@ -843,38 +840,35 @@ public class Util {
             Util.debugLog("Skipped plugin gui inventory check.");
             return;
         }
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                try {
-                    for (int i = 0; i < inv.getSize(); i++) {
-                        ItemStack itemStack = inv.getItem(i);
-                        if (itemStack == null) {
-                            continue;
-                        }
-                        if (DisplayItem.checkIsGuardItemStack(itemStack)) {
-                            // Found Item and remove it.
-                            Location location = inv.getLocation();
-                            if (location == null) {
-                                return; // Virtual GUI
-                            }
-                            plugin
-                                    .getSyncTaskWatcher()
-                                    .getInventoryEditQueue()
-                                    .offer(new InventoryEditContainer(inv, i, new ItemStack(Material.AIR)));
-                            Util.debugLog("Found a displayitem in an inventory, Scheduling to removal...");
-                            MsgUtil.sendGlobalAlert(
-                                    "[InventoryCheck] Found displayItem in inventory at "
-                                            + location
-                                            + ", Item is "
-                                            + itemStack.getType().name());
-                        }
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            try {
+                for (int i = 0; i < inv.getSize(); i++) {
+                    ItemStack itemStack = inv.getItem(i);
+                    if (itemStack == null) {
+                        continue;
                     }
-                } catch (Exception t) {
-                    // Ignore
+                    if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+                        // Found Item and remove it.
+                        Location location = inv.getLocation();
+                        if (location == null) {
+                            return; // Virtual GUI
+                        }
+                        plugin
+                                .getSyncTaskWatcher()
+                                .getInventoryEditQueue()
+                                .offer(new InventoryEditContainer(inv, i, new ItemStack(Material.AIR)));
+                        Util.debugLog("Found a displayitem in an inventory, Scheduling to removal...");
+                        MsgUtil.sendGlobalAlert(
+                                "[InventoryCheck] Found displayItem in inventory at "
+                                        + location
+                                        + ", Item is "
+                                        + itemStack.getType().name());
+                    }
                 }
+            } catch (Exception t) {
+                // Ignore
             }
-        }.runTaskAsynchronously(plugin);
+        });
     }
 
     /**
@@ -986,7 +980,7 @@ public class Util {
      * @return true if a nearby shop was found, false otherwise.
      */
     public static boolean isOtherShopWithinHopperReach(@NotNull Block b, @NotNull Player p) {
-        Block bshop = getAttached(b);
+        Block bshop = Util.getAttached(b);
         if (bshop == null) {
             return false;
         }
@@ -1000,12 +994,10 @@ public class Util {
     /**
      * Returns the chest attached to the given chest. The given block must be a chest.
      *
-     * @param b The chest to check.
+     * @param state The chest to check.
      * @return the block which is also a chest and connected to b.
      */
-    @Nullable
-    public static Block getSecondHalf(@NotNull Block b) {
-        BlockState state = b.getState();
+    public static Block getSecondHalf(@NotNull BlockState state) {
         if (!(state instanceof Chest)) {
             return null;
         }
@@ -1013,14 +1005,11 @@ public class Util {
         InventoryHolder chestHolder = oneSideOfChest.getInventory().getHolder();
         if (chestHolder instanceof DoubleChest) {
             DoubleChest doubleChest = (DoubleChest) chestHolder;
-            InventoryHolder left = doubleChest.getLeftSide();
-            InventoryHolder right = doubleChest.getRightSide();
-            Chest leftC = (Chest) left;
-            Chest rightC = (Chest) right;
+            Chest leftC = (Chest) doubleChest.getLeftSide();
+            Chest rightC = (Chest) doubleChest.getRightSide();
             if (equalsBlockStateLocation(oneSideOfChest.getLocation(), Objects.requireNonNull(rightC).getLocation())) {
-                return Objects.requireNonNull(leftC).getBlock();
-            }
-            if (equalsBlockStateLocation(oneSideOfChest.getLocation(), Objects.requireNonNull(leftC).getLocation())) {
+                return leftC.getBlock();
+            } else {
                 return rightC.getBlock();
             }
         }

@@ -24,12 +24,10 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Sign;
+import org.bukkit.block.*;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
@@ -86,7 +84,7 @@ public class ShopManager {
         Util.debugLog("Loading caching tax account...");
         String taxAccount = plugin.getConfig().getString("tax-account", "tax");
         if (!(taxAccount == null || taxAccount.isEmpty())) {
-            this.cacheTaxAccount = new Trader(taxAccount, Bukkit.getOfflinePlayer(taxAccount));
+            this.cacheTaxAccount = new Trader(taxAccount, plugin.getServer().getOfflinePlayer(taxAccount));
         } else {
             // disable tax account
             cacheTaxAccount = null;
@@ -160,7 +158,7 @@ public class ShopManager {
     public void clear() {
         Util.ensureThread(false);
         if (plugin.isDisplay()) {
-            for (World world : Bukkit.getWorlds()) {
+            for (World world : plugin.getServer().getWorlds()) {
                 for (Chunk chunk : world.getLoadedChunks()) {
                     Map<Location, Shop> inChunk = this.getShops(chunk);
                     if (inChunk == null || inChunk.isEmpty()) {
@@ -218,7 +216,7 @@ public class ShopManager {
      */
     public void createShop(@NotNull Shop shop, @NotNull Info info) {
         Util.ensureThread(false);
-        Player player = Bukkit.getPlayer(shop.getOwner());
+        Player player = plugin.getServer().getPlayer(shop.getOwner());
         if (player == null) {
             throw new IllegalStateException("The owner creating the shop is offline or not exist");
         }
@@ -269,7 +267,7 @@ public class ShopManager {
                         shop,
                         null,
                         e ->
-                                Bukkit.getScheduler()
+                                plugin.getServer().getScheduler()
                                         .runTask(
                                                 plugin,
                                                 () -> {
@@ -378,7 +376,7 @@ public class ShopManager {
             }
             // Ooops, not founded that shop in this chunk.
         }
-        @Nullable Block secondHalfShop = Util.getSecondHalf(loc.getBlock());
+        @Nullable Block secondHalfShop = Util.getSecondHalf(PaperLib.getBlockState(loc.getBlock(), false).getState());
         if (secondHalfShop != null) {
             inChunk = getShops(secondHalfShop.getChunk());
             if (inChunk != null) {
@@ -392,9 +390,11 @@ public class ShopManager {
         }
 
         // only check if is sign
-        if (loc.getBlock().getState() instanceof Sign) {
+        Block block = loc.getBlock();
+        BlockState state = PaperLib.getBlockState(loc.getBlock(), false).getState();
+        if (state instanceof Sign) {
             // If that chunk nothing we founded, we should check it is attached.
-            @Nullable Block attachedBlock = Util.getAttached(loc.getBlock());
+            @Nullable Block attachedBlock = Util.getAttached(block);
             // Check is attached on some block.
             if (attachedBlock == null) {
                 // Nope
@@ -455,7 +455,7 @@ public class ShopManager {
         }
         final String message = ChatColor.stripColor(msg);
         // Use from the main thread, because Bukkit hates life
-        Bukkit.getScheduler()
+        plugin.getServer().getScheduler()
                 .runTask(plugin, () -> {
                     Map<UUID, Info> actions = getActions();
                     // They wanted to do something.
@@ -707,7 +707,7 @@ public class ShopManager {
         }
 
         // Notify the owner of the purchase. //TODO: move to a standalone method
-        Player player = Bukkit.getPlayer(buyer);
+        Player player = plugin.getServer().getPlayer(buyer);
 
         String msg =
                 MsgUtil.getMessage(
@@ -738,7 +738,7 @@ public class ShopManager {
         MsgUtil.sendSellSuccess(buyer, shop, amount);
         ShopSuccessPurchaseEvent se =
                 new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, taxModifier);
-        Bukkit.getPluginManager().callEvent(se);
+        plugin.getServer().getPluginManager().callEvent(se);
         shop.setSignText(); // Update the signs count
     }
 
@@ -757,7 +757,7 @@ public class ShopManager {
     public double getTax(@NotNull Shop shop, @NotNull UUID p) {
         Util.ensureThread(false);
         double tax = plugin.getConfig().getDouble("tax");
-        Player player = Bukkit.getPlayer(p);
+        Player player = plugin.getServer().getPlayer(p);
         if (player != null) {
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.tax")) {
                 tax = 0;
@@ -810,7 +810,7 @@ public class ShopManager {
             MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-already-owned", p));
             return;
         }
-        if (Util.getSecondHalf(info.getLocation().getBlock()) != null
+        if (Util.getSecondHalf(PaperLib.getBlockState(info.getLocation().getBlock(), false).getState()) != null
                 && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
             MsgUtil.sendMessage(p, MsgUtil.getMessage("no-double-chests", p));
             return;
@@ -1110,7 +1110,7 @@ public class ShopManager {
 
         String msg;
         // Notify the shop owner //TODO: move to a standalone method
-        Player player = Bukkit.getPlayer(seller);
+        Player player = plugin.getServer().getPlayer(seller);
         if (plugin.getConfig().getBoolean("show-tax")) {
             msg =
                     MsgUtil.getMessage(
@@ -1158,11 +1158,11 @@ public class ShopManager {
         MsgUtil.sendPurchaseSuccess(seller, shop, amount);
         ShopSuccessPurchaseEvent se =
                 new ShopSuccessPurchaseEvent(shop, seller, sellerInventory, amount, total, taxModifier);
-        Bukkit.getPluginManager().callEvent(se);
+        plugin.getServer().getPluginManager().callEvent(se);
     }
 
     public boolean shopIsNotValid(@NotNull UUID uuid, @NotNull Info info, @NotNull Shop shop) {
-        Player player = Bukkit.getPlayer(uuid);
+        Player player = plugin.getServer().getPlayer(uuid);
         return shopIsNotValid(player, info, shop);
     }
 
@@ -1354,6 +1354,10 @@ public class ShopManager {
 
         // failed, get attached shop
         if (shop == null) {
+            Block block = loc.getBlock();
+            if (!Util.isShoppables(block.getType())) {
+                return null;
+            }
             final Block currentBlock = loc.getBlock();
             if (!fromAttach) {
                 // sign
@@ -1364,7 +1368,12 @@ public class ShopManager {
                     }
                     // double chest
                 } else {
-                    @Nullable final Block half = Util.getSecondHalf(currentBlock);
+                    // optimize for performance
+                    BlockState state = PaperLib.getBlockState(currentBlock, false).getState();
+                    if (!(state instanceof Container)) {
+                        return null;
+                    }
+                    @Nullable final Block half = Util.getSecondHalf(state);
                     if (half != null) {
                         shop = getShop(half.getLocation());
                     }

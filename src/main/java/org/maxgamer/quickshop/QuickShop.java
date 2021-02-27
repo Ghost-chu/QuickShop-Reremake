@@ -59,8 +59,6 @@ import org.maxgamer.quickshop.permission.PermissionManager;
 import org.maxgamer.quickshop.shop.*;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.*;
-import org.maxgamer.quickshop.util.bukkitwrapper.BukkitAPIWrapper;
-import org.maxgamer.quickshop.util.bukkitwrapper.SpigotWrapper;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.util.config.ConfigProvider;
 import org.maxgamer.quickshop.util.envcheck.*;
@@ -69,6 +67,8 @@ import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import org.maxgamer.quickshop.util.reporter.error.RollbarErrorReporter;
+import org.maxgamer.quickshop.util.wrapper.bukkit.BukkitAPIWrapper;
+import org.maxgamer.quickshop.util.wrapper.bukkit.SpigotWrapper;
 import org.maxgamer.quickshop.watcher.*;
 
 import java.io.BufferedInputStream;
@@ -651,6 +651,12 @@ public class QuickShop extends JavaPlugin {
         /* It will generate a new UUID above updateConfig */
         this.serverUniqueID = UUID.fromString(Objects.requireNonNull(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID()))));
         updateConfig(getConfig().getInt("config-version"));
+        try {
+            MsgUtil.loadCfgMessages();
+        } catch (Exception e) {
+            getLogger().log(Level.WARNING, "Error when loading translation", e);
+        }
+
     }
 
     @Override
@@ -664,12 +670,6 @@ public class QuickShop extends JavaPlugin {
         }
         Timer enableTimer = new Timer(true);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableBegin);
-        /* PreInit for BootError feature */
-        commandManager = new CommandManager(this);
-        //noinspection ConstantConditions
-        getCommand("qs").setExecutor(commandManager);
-        //noinspection ConstantConditions
-        getCommand("qs").setTabCompleter(commandManager);
 
         getLogger().info("Quickshop " + getFork());
 
@@ -678,13 +678,13 @@ public class QuickShop extends JavaPlugin {
         environmentChecker = new org.maxgamer.quickshop.util.envcheck.EnvironmentChecker(this);
         ResultReport resultReport = environmentChecker.run();
         if (resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
-            StringBuilder builder = new StringBuilder();
+            StringJoiner joiner = new StringJoiner("\n", "", "");
             for (Entry<EnvCheckEntry, ResultContainer> result : resultReport.getResults().entrySet()) {
                 if (result.getValue().getResult().ordinal() > CheckResult.WARNING.ordinal()) {
-                    builder.append(String.format("- [%s/%s] %s", result.getKey().name(), result.getValue().getResult().getDisplay(), result.getValue().getResultMessage())).append("\n");
+                    joiner.add(String.format("- [%s/%s] %s", result.getValue().getResult().getDisplay(), result.getKey().name(), result.getValue().getResultMessage()));
                 }
             }
-            bootError = new BootError(this.getLogger(), builder.toString());
+            bootError = new BootError(this.getLogger(), joiner.toString());
             //noinspection ConstantConditions
             getCommand("qs").setTabCompleter(this); //Disable tab completer
             return;
@@ -751,6 +751,14 @@ public class QuickShop extends JavaPlugin {
             //BUKKIT METHOD SHOULD ALWAYS EXECUTE ON THE SERVER MAIN THEAD
             this.displayAutoDespawnWatcher.runTaskTimer(this, 20, getConfig().getInt("shop.display-check-time")); // not worth async
         }
+
+        /* PreInit for BootError feature */
+        commandManager = new CommandManager(this);
+        //noinspection ConstantConditions
+        getCommand("qs").setExecutor(commandManager);
+        //noinspection ConstantConditions
+        getCommand("qs").setTabCompleter(commandManager);
+
         this.shopManager = new ShopManager(this);
 
         this.permissionChecker = new PermissionChecker(this);
@@ -1714,6 +1722,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.fabledskyblock.whitelist-mode", false);
             getConfig().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 124) {
+            getConfig().set("plugin.BKCommonLib", true);
+            getConfig().set("config-version", ++selectedVersion);
+        }
+
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");

@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.integration.plotsquared;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +34,7 @@ public class PlotSquaredIntegrationProxy extends QSIntegratedPlugin {
     public PlotSquaredIntegrationProxy(QuickShop instance) {
         super(instance);
         if (plotSquared == null) {
-            if (Bukkit.getPluginManager().getPlugin("PlotSquared").getClass().getPackage().getName().contains("intellectualsite")) {
+            if (plugin.getServer().getPluginManager().getPlugin("PlotSquared").getClass().getPackage().getName().contains("intellectualsite")) {
                 plotSquared = new PlotSquaredIntegrationV4(instance);
             } else {
                 plotSquared = new PlotSquaredIntegrationV5(instance);

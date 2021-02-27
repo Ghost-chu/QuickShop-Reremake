@@ -19,9 +19,9 @@
 
 package org.maxgamer.quickshop.util.paste;
 
+import com.github.benmanes.caffeine.cache.stats.CacheStats;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
@@ -63,7 +63,7 @@ public class Paste {
         finalReport.append("QuickShop-").append(QuickShop.getFork()).append(" Paste Result\n");
         finalReport.append("###############################\n");
         finalReport.append("\n");
-        if (Bukkit.getPluginManager().getPlugin("ConsoleSpamFix") != null) {
+        if (plugin.getServer().getPluginManager().getPlugin("ConsoleSpamFix") != null) {
             finalReport.append("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!").append("\n");
         }
         finalReport.append("\n");
@@ -112,12 +112,12 @@ public class Paste {
         finalReport.append("\tCores: ").append(Runtime.getRuntime().availableProcessors()).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Server:\n");
-        finalReport.append("\tName: ").append(Bukkit.getName()).append("\n");
-        finalReport.append("\tServer Name: ").append(Bukkit.getServer().getName()).append("\n");
-        finalReport.append("\tBuild: ").append(Bukkit.getServer().getVersion()).append("\n");
+        finalReport.append("\tName: ").append(plugin.getServer().getName()).append("\n");
+        finalReport.append("\tServer Name: ").append(plugin.getServer().getName()).append("\n");
+        finalReport.append("\tBuild: ").append(plugin.getServer().getVersion()).append("\n");
         finalReport.append("\tNMSV: ").append(Util.getNMSVersion()).append("\n");
         //noinspection deprecation
-        finalReport.append("\tData Version: ").append(Bukkit.getUnsafe().getDataVersion()).append("\n");
+        finalReport.append("\tData Version: ").append(plugin.getServer().getUnsafe().getDataVersion()).append("\n");
         if (plugin.getEnvironmentChecker().isFabricBasedServer() || plugin.getEnvironmentChecker().isForgeBasedServer()) {
             if (plugin.getEnvironmentChecker().isForgeBasedServer()) {
                 finalReport.append("Modded Server: Forge (No support offer on this platform)\n");
@@ -137,13 +137,13 @@ public class Paste {
         finalReport.append("\tSystem Properties: ").append(Util.list2String(sysData)).append("\n");
         finalReport
                 .append("\tPlayers: ")
-                .append(Bukkit.getOnlinePlayers().size())
+                .append(plugin.getServer().getOnlinePlayers().size())
                 .append("/")
-                .append(Bukkit.getMaxPlayers())
+                .append(plugin.getServer().getMaxPlayers())
                 .append("\n");
-        finalReport.append("\tOnlineMode: ").append(Bukkit.getOnlineMode()).append("\n");
-        finalReport.append("\tBukkitVersion: ").append(Bukkit.getVersion()).append("\n");
-        finalReport.append("\tWorldContainer: ").append(Bukkit.getWorldContainer()).append("\n");
+        finalReport.append("\tOnlineMode: ").append(plugin.getServer().getOnlineMode()).append("\n");
+        finalReport.append("\tBukkitVersion: ").append(plugin.getServer().getVersion()).append("\n");
+        finalReport.append("\tWorldContainer: ").append(plugin.getServer().getWorldContainer()).append("\n");
         List<String> modules = new ArrayList<>();
         plugin.getIntegrationHelper().getIntegrations().forEach(m -> modules.add(m.getName()));
         finalReport.append("\tLoaded Integrations: ").append(Util.list2String(modules)).append("\n");
@@ -157,10 +157,11 @@ public class Paste {
         }
         finalReport.append("\tDatabaseCore: ").append(plugin.getDatabaseManager().getDatabase().getName()).append("@").append(plugin.getDatabaseManager().getDatabase().getPlugin().getName()).append("\n");
         finalReport.append("\tGameLanguage Processor: ").append(MsgUtil.gameLanguage.getName()).append("@").append(MsgUtil.gameLanguage.getPlugin().getName()).append("\n");
+
         finalReport.append("================================================\n");
         finalReport.append("Worlds:\n");
-        finalReport.append("\tTotal: ").append(Bukkit.getWorlds().size()).append("\n");
-        for (World world : Bukkit.getWorlds()) {
+        finalReport.append("\tTotal: ").append(plugin.getServer().getWorlds().size()).append("\n");
+        for (World world : plugin.getServer().getWorlds()) {
             finalReport.append("\t*********************************\n");
             finalReport.append("\t\tName: ").append(world.getName()).append("\n");
             finalReport.append("\t\tEnvironment: ").append(world.getEnvironment().name()).append("\n");
@@ -172,13 +173,15 @@ public class Paste {
                     .append("\n");
         }
         finalReport.append("\t*********************************\n"); // Add a line after last world
+
+
         finalReport.append("================================================\n");
         finalReport.append("Plugins:\n");
         finalReport
                 .append("\tTotal: ")
-                .append(Bukkit.getPluginManager().getPlugins().length)
+                .append(plugin.getServer().getPluginManager().getPlugins().length)
                 .append("\n");
-        for (Plugin bplugin : Bukkit.getPluginManager().getPlugins()) {
+        for (Plugin bplugin : plugin.getServer().getPluginManager().getPlugins()) {
             finalReport
                     .append("\t")
                     .append(bplugin.getName())
@@ -213,12 +216,36 @@ public class Paste {
             }
             finalReport.append("\n");
         }
+
+
         finalReport.append("================================================\n");
-        finalReport.append("Internal Data:\n");
-        finalReport.append("Caching Pool Enabled: ").append(plugin.getShopCache() != null).append("\n");
+        finalReport.append("Performance:\n");
+        finalReport.append("\tCache:\n");
+        finalReport.append("\t\tCache      Enabled: ").append(plugin.getShopCache() != null).append("\n");
         if (plugin.getShopCache() != null) {
-            finalReport.append("Caching Contents: ").append(plugin.getShopCache().getCachingSize()).append("\n");
+            CacheStats stats = plugin.getShopCache().getStats();
+            finalReport.append("\t\t--------------------------").append("\n");
+            finalReport.append("\t\tAvg  Load  Penalty: ").append(stats.averageLoadPenalty()).append("\n");
+            finalReport.append("\t\tHit           Rate: ").append(stats.hitRate()).append("\n");
+            finalReport.append("\t\tMiss          Rate: ").append(stats.missRate()).append("\n");
+            finalReport.append("\t\t--------------------------").append("\n");
+            finalReport.append("\t\tHit          Count: ").append(stats.hitCount()).append("\n");
+            finalReport.append("\t\tMiss         Count: ").append(stats.missCount()).append("\n");
+            finalReport.append("\t\tLoad         Count: ").append(stats.loadCount()).append("\n");
+            finalReport.append("\t\tLoad Success Count: ").append(stats.loadSuccessCount()).append("\n");
+            finalReport.append("\t\t--------------------------").append("\n");
+            finalReport.append("\t\tLoad Failure Rate : ").append(stats.loadFailureRate()).append("\n");
+            finalReport.append("\t\tLoad Failure Count: ").append(stats.loadFailureCount()).append("\n");
+            finalReport.append("\t\tLoad Success Count: ").append(stats.loadSuccessCount()).append("\n");
+            finalReport.append("\t\t--------------------------").append("\n");
+            finalReport.append("\t\tEviction     Count: ").append(stats.evictionCount()).append("\n");
+            finalReport.append("\t\tEviction    Weight: ").append(stats.evictionWeight()).append("\n");
+            finalReport.append("\t\tEviction     Count: ").append(stats.evictionCount()).append("\n");
+            finalReport.append("\t\t--------------------------").append("\n");
+            finalReport.append("\t\tRequest      Count: ").append(stats.requestCount()).append("\n");
+            finalReport.append("\t\tTotal Loading Time: ").append(stats.totalLoadTime()).append("\n");
         }
+
         finalReport.append("================================================\n");
         finalReport.append("Configurations:\n");
         try {
@@ -265,7 +292,7 @@ public class Paste {
                                             Util.inputStream2ByteArray(plugin.getDataFolder() + "/messages.json")),
                                     StandardCharsets.UTF_8))
                     .append("\n");
-            finalReport.append("\t*********************************\n");
+
             finalReport.append("\t*********************************\n");
             finalReport.append("\titemi18n.yml:\n");
             finalReport
@@ -277,7 +304,7 @@ public class Paste {
                                                     new File(plugin.getDataFolder(), "itemi18n.yml").getPath())),
                                     StandardCharsets.UTF_8))
                     .append("\n");
-            finalReport.append("\t*********************************\n");
+
             finalReport.append("\t*********************************\n");
             finalReport.append("\tenchi18n.yml:\n");
             finalReport
@@ -289,7 +316,7 @@ public class Paste {
                                                     new File(plugin.getDataFolder(), "enchi18n.yml").getPath())),
                                     StandardCharsets.UTF_8))
                     .append("\n");
-            finalReport.append("\t*********************************\n");
+
             finalReport.append("\t*********************************\n");
             finalReport.append("\tpotioni18n.yml:\n");
             finalReport
@@ -301,14 +328,14 @@ public class Paste {
                                                     new File(plugin.getDataFolder(), "potioni18n.yml").getPath())),
                                     StandardCharsets.UTF_8))
                     .append("\n");
-            finalReport.append("\t*********************************\n");
+
             finalReport.append("\t*********************************\n");
             finalReport.append("\tInternal Debug Log:\n");
             finalReport
                     .append("\t\t\n")
                     .append(Util.list2String(Util.getDebugLogs()).replaceAll(",", "\n"))
                     .append("\n");
-            finalReport.append("\t*********************************\n");
+
             //            try {
             //                finalReport.append("\t*********************************\n");
             //                finalReport.append("\tlatest.log:\n");
@@ -334,12 +361,12 @@ public class Paste {
                                                         new File(new File("."), "bukkit.yml").getPath())),
                                         StandardCharsets.UTF_8))
                         .append("\n");
-                finalReport.append("\t*********************************\n");
+
             } catch (Exception th) {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tbukkit.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
-                finalReport.append("\t*********************************\n");
+
             }
             try {
                 finalReport.append("\t*********************************\n");
@@ -353,12 +380,10 @@ public class Paste {
                                                         new File(new File("."), "spigot.yml").getPath())),
                                         StandardCharsets.UTF_8))
                         .append("\n");
-                finalReport.append("\t*********************************\n");
             } catch (Exception th) {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tspigot.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
-                finalReport.append("\t*********************************\n");
             }
             try {
                 finalReport.append("\t*********************************\n");
@@ -371,12 +396,10 @@ public class Paste {
                                                 Util.inputStream2ByteArray(new File(new File("."), "paper.yml").getPath())),
                                         StandardCharsets.UTF_8))
                         .append("\n");
-                finalReport.append("\t*********************************\n");
             } catch (Exception th) {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tpaper.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
-                finalReport.append("\t*********************************\n");
             }
             try {
                 finalReport.append("\t*********************************\n");
@@ -389,12 +412,10 @@ public class Paste {
                                                 Util.inputStream2ByteArray(new File(new File("."), "tuinity.yml").getPath())),
                                         StandardCharsets.UTF_8))
                         .append("\n");
-                finalReport.append("\t*********************************\n");
             } catch (Exception th) {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\ttuinity.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
-                finalReport.append("\t*********************************\n");
             }
         } catch (Exception ignored) {
             finalReport.append("\tFailed to get data\n");
@@ -444,13 +465,15 @@ public class Paste {
             // EngineHub Pastebin
             paster = new PastebinPaster();
             return paster.pasteTheText(content);
-        } catch (Exception ignore) {
+        } catch (Exception ex) {
+            Util.debugLog(ex.getMessage());
         }
         try {
             // Ubuntu Pastebin
             paster = new UbuntuPaster();
             return paster.pasteTheText(content);
-        } catch (Exception ignore) {
+        } catch (Exception ex) {
+            Util.debugLog(ex.getMessage());
         }
         return null;
     }

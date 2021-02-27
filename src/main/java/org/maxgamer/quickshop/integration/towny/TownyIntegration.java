@@ -172,7 +172,7 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
 
     @Override
     public void load() {
-        Bukkit.getPluginManager().registerEvents(this, plugin);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override

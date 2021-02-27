@@ -20,15 +20,16 @@
 package org.maxgamer.quickshop.shop;
 
 import com.lishid.openinv.OpenInv;
+import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
@@ -59,7 +60,7 @@ public class ContainerShop implements Shop {
     private final Location location;
     @EqualsAndHashCode.Exclude
     private final QuickShop plugin;
-    private final Map<String, Map<String, String>> extra;
+    private final Map<String, Map<String, Object>> extra;
     @EqualsAndHashCode.Exclude
     private final UUID runtimeRandomUniqueId = UUID.randomUUID();
     @NotNull
@@ -77,8 +78,7 @@ public class ContainerShop implements Shop {
     private ShopType shopType;
     private boolean unlimited;
     @EqualsAndHashCode.Exclude
-    private long lastChangedAt;
-    private int version;
+    private boolean dirty;
 
 
     private ContainerShop(@NotNull ContainerShop s) {
@@ -94,8 +94,7 @@ public class ContainerShop implements Shop {
         this.isDeleted = s.isDeleted;
         this.createBackup = s.createBackup;
         this.extra = s.extra;
-        this.version = s.version;
-        this.lastChangedAt = System.currentTimeMillis();
+        this.dirty = true;
         initDisplayItem();
     }
 
@@ -121,7 +120,7 @@ public class ContainerShop implements Shop {
             @NotNull ShopModerator moderator,
             boolean unlimited,
             @NotNull ShopType type,
-            @NotNull Map<String, Map<String, String>> extra) {
+            @NotNull Map<String, Map<String, Object>> extra) {
         Util.ensureThread(false);
         this.location = location;
         this.price = price;
@@ -148,9 +147,8 @@ public class ContainerShop implements Shop {
         this.unlimited = unlimited;
         this.extra = extra;
         initDisplayItem();
-        this.lastChangedAt = System.currentTimeMillis();
-        Map<String, String> dataMap = extra.get(plugin.getName());
-        version = Integer.parseInt(dataMap != null ? dataMap.getOrDefault("version", "0") : "0");
+        this.dirty = false;
+        //version = dataMap != null ? Integer.parseInt(String.valueOf(dataMap.getOrDefault("version", 0))) : 0;
     }
 
     private void initDisplayItem() {
@@ -226,11 +224,11 @@ public class ContainerShop implements Shop {
     @Override
     public boolean addStaff(@NotNull UUID player) {
         Util.ensureThread(false);
-        this.lastChangedAt = System.currentTimeMillis();
+        setDirty();
         boolean result = this.moderator.addStaff(player);
         update();
         if (result) {
-            Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
+            Util.mainThreadRun(() -> plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
         }
         return result;
     }
@@ -350,20 +348,20 @@ public class ContainerShop implements Shop {
 
     @Override
     public void clearStaffs() {
-        this.lastChangedAt = System.currentTimeMillis();
+        setDirty();
         this.moderator.clearStaffs();
-        Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
+        Util.mainThreadRun(() -> plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
         update();
     }
 
     @Override
     public boolean delStaff(@NotNull UUID player) {
         Util.ensureThread(false);
-        this.lastChangedAt = System.currentTimeMillis();
+        setDirty();
         boolean result = this.moderator.delStaff(player);
         update();
         if (result) {
-            Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
+            Util.mainThreadRun(() -> plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
         }
         return result;
     }
@@ -385,7 +383,7 @@ public class ContainerShop implements Shop {
     @Override
     public void delete(boolean memoryOnly) {
         Util.ensureThread(false);
-        this.lastChangedAt = System.currentTimeMillis();
+        setDirty();
         ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(this, memoryOnly);
         if (Util.fireCancellableEvent(shopDeleteEvent)) {
             Util.debugLog("Shop deletion was canceled because a plugin canceled it.");
@@ -467,12 +465,12 @@ public class ContainerShop implements Shop {
         this.isLoaded = false;
         plugin.getShopManager().getLoadedShops().remove(this);
         ShopUnloadEvent shopUnloadEvent = new ShopUnloadEvent(this);
-        Bukkit.getPluginManager().callEvent(shopUnloadEvent);
+        plugin.getServer().getPluginManager().callEvent(shopUnloadEvent);
     }
 
     @Override
     public @NotNull String ownerName(boolean forceUsername) {
-        OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
+        OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
         String name = player.getName();
         if (name == null || name.isEmpty()) {
             name = MsgUtil.getMessageOfflinePlayer(
@@ -580,7 +578,7 @@ public class ContainerShop implements Shop {
     public String[] getSignText() {
         Util.ensureThread(false);
         String[] lines = new String[4];
-        OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
+        OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
         lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(false));
         if (this.isSelling()) {
             if (this.getItem().getAmount() > 1) {
@@ -650,20 +648,17 @@ public class ContainerShop implements Shop {
     @Override
     public void setSignText(@NotNull String[] lines) {
         Util.ensureThread(false);
-        for (Sign sign : this.getSigns()) {
+        List<Sign> signs = this.getSigns();
+        for (Sign sign : signs) {
             if (Arrays.equals(sign.getLines(), lines)) {
-                //Util.debugLog("Skipped new sign text setup: Same content");
+                Util.debugLog("Skipped new sign text setup: Same content");
                 continue;
             }
             for (int i = 0; i < lines.length; i++) {
                 sign.setLine(i, lines[i]);
             }
             sign.update(true);
-            Bukkit.getPluginManager().callEvent(new ShopSignUpdateEvent(this, sign));
-        }
-        //Update the recognize method after converted
-        if (getShopVersion() == 0) {
-            setShopVersion(1);
+            plugin.getServer().getPluginManager().callEvent(new ShopSignUpdateEvent(this, sign));
         }
     }
 
@@ -704,6 +699,7 @@ public class ContainerShop implements Shop {
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING, "Could not update a shop in the database! Changes will revert after a reboot!", e);
         }
+        this.dirty = false;
     }
 
     /**
@@ -771,11 +767,11 @@ public class ContainerShop implements Shop {
             Entry<Double, Double> priceRestriction = Util.getPriceRestriction(this.getMaterial()); //TODO Adapt priceLimiter, also improve priceLimiter return a container
             if (priceRestriction != null) {
                 if (price < priceRestriction.getKey()) {
-                    this.lastChangedAt = System.currentTimeMillis();
+                    setDirty();
                     price = priceRestriction.getKey();
                     this.update();
                 } else if (price > priceRestriction.getValue()) {
-                    this.lastChangedAt = System.currentTimeMillis();
+                    setDirty();
                     price = priceRestriction.getValue();
                     this.update();
                 }
@@ -799,10 +795,10 @@ public class ContainerShop implements Shop {
 
     @Override
     public void setModerator(@NotNull ShopModerator shopModerator) {
-        this.lastChangedAt = System.currentTimeMillis();
+        setDirty();
         this.moderator = shopModerator;
         update();
-        Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
+        Util.mainThreadRun(() -> plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
     }
 
     /**
@@ -820,7 +816,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void setOwner(@NotNull UUID owner) {
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(owner);
+        OfflinePlayer offlinePlayer = plugin.getServer().getOfflinePlayer(owner);
         //Get the sign at first
         List<Sign> signs = this.getSigns();
         //then setOwner
@@ -833,7 +829,7 @@ public class ContainerShop implements Shop {
                 shopSign.update(true);
             }
             //Event
-            Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
+            plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
         });
         update();
     }
@@ -858,7 +854,7 @@ public class ContainerShop implements Shop {
             Util.debugLog("A plugin cancelled the price change event.");
             return;
         }
-        this.lastChangedAt = System.currentTimeMillis();
+        setDirty();
         this.price = price;
         setSignText();
         update();
@@ -898,7 +894,7 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * Changes a shop type to Buying or Selling. Also updates the signs nearby.
+     * Changes a shop type to Bu ying or Selling. Also updates the signs nearby.
      *
      * @param newShopType The new type (ShopType.BUYING or ShopType.SELLING)
      */
@@ -908,7 +904,7 @@ public class ContainerShop implements Shop {
         if (this.shopType == newShopType) {
             return; //Ignore if there actually no changes
         }
-        this.lastChangedAt = System.currentTimeMillis();
+        setDirty();
         if (Util.fireCancellableEvent(new ShopTypeChangeEvent(this, this.shopType, newShopType))) {
             Util.debugLog("Some addon cancelled shop type changes, target shop: " + this.toString());
             return;
@@ -916,24 +912,6 @@ public class ContainerShop implements Shop {
         this.shopType = newShopType;
         this.setSignText();
         update();
-    }
-
-    /**
-     * Return the shop version
-     * Mostly is internal use
-     *
-     * @return shop version
-     */
-    public int getShopVersion() {
-        return version;
-    }
-
-    public void setShopVersion(int ver) {
-        version = ver;
-        Map<String, String> extraMap = extra.getOrDefault(plugin.getName(), new ConcurrentHashMap<>());
-        extraMap.put("version", Integer.toString(ver));
-        extra.put(plugin.getName(), extraMap);
-        this.update();
     }
 
     /**
@@ -958,13 +936,14 @@ public class ContainerShop implements Shop {
                 continue;
             }
 
-            if (!(b.getState() instanceof Sign)) {
+            BlockState state = PaperLib.getBlockState(b, false).getState();
+            if (!(state instanceof Sign)) {
                 continue;
             }
             if (!isAttached(b)) {
                 continue;
             }
-            Sign sign = (Sign) b.getState();
+            Sign sign = (Sign) state;
             String[] lines = sign.getLines();
             if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3].isEmpty()) {
                 signs.add(sign); //NEW SIGN
@@ -976,7 +955,7 @@ public class ContainerShop implements Shop {
                 signs.add(sign);
             } else {
                 String adminShopHeader = MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
-                        "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
+                        "admin-shop", plugin.getServer().getOfflinePlayer(this.getOwner())));
                 String signHeaderUsername =
                         MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
                 if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
@@ -985,69 +964,8 @@ public class ContainerShop implements Shop {
                     //continue
                 }
             }
-
-
-//            if (getShopVersion() == 0) {
-//                String adminShopHeader = MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
-//                                "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
-//                String signHeaderUsername =
-//                        MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
-//                if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
-//                    signs.add(sign);
-//                    Util.debugLog("The ShopInfoSign at " + b.getLocation() + " has been detected (legacy).");
-//                    //TEXT SIGN
-//                    //continue
-//                } else {
-//                    Util.debugLog("The Sign at " + b.getLocation() + " missed matching (legacy).");
-//                    for (String line : sign.getLines()) {
-//                        Util.debugLog("[" + line + "]");
-//                    }
-//                }
-//            } else {
-//                if (lines[1].startsWith(shopSignPattern)) {
-//                    signs.add(sign);
-//                    Util.debugLog("The Sign at " + b.getLocation() + " has been detected (modern).");
-//                } else {
-//                    Util.debugLog("The Sign at " + b.getLocation() + " missed matching (modern).");
-//                    for (String line : sign.getLines()) {
-//                        Util.debugLog("[" + line + "]");
-//                    }
-//                    String adminShopHeader = MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
-//                            "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
-//                    String signHeaderUsername =
-//                            MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
-//                    if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
-//                        signs.add(sign);
-//                        Util.debugLog("The ShopInfoSign at " + b.getLocation() + " has been detected (legacy).");
-//                        //TEXT SIGN
-//                        //continue
-//                    } else {
-//                        Util.debugLog("The Sign at " + b.getLocation() + " missed matching (legacy).");
-//                        for (String line : sign.getLines()) {
-//                            Util.debugLog("[" + line + "]");
-//                        }
-//                    }
-//                }
-//
-//            }
-            //Empty or matching the header
         }
 
-        //            if (currentLine.contains(signHeader) || currentLine.isEmpty()) {
-        //                signs.add(sign);
-        //            } else {
-        //                boolean text = false;
-        //                for (String s : sign.getLines()) {
-        //                    if (!s.isEmpty()) {
-        //                        text = true;
-        //                        break;
-        //                    }
-        //                }
-        //                if (!text) {
-        //                    signs.add(sign);
-        //                }
-        //            }
-        //        }
         return signs;
     }
 
@@ -1112,14 +1030,19 @@ public class ContainerShop implements Shop {
         return this.displayItem;
     }
 
-    /**
-     * Gets the shop last changes timestamp
-     *
-     * @return The time stamp
-     */
     @Override
-    public long getLastChangedAt() {
-        return this.lastChangedAt;
+    public void setDirty() {
+        this.dirty = true;
+    }
+
+    @Override
+    public boolean isDirty() {
+        return this.dirty;
+    }
+
+    @Override
+    public void setDirty(boolean isDirty) {
+        this.dirty = isDirty;
     }
 
     /**
@@ -1181,14 +1104,15 @@ public class ContainerShop implements Shop {
 
     public @Nullable Inventory getInventory() {
         Util.ensureThread(false);
+        BlockState state = PaperLib.getBlockState(location.getBlock(), false).getState();
         try {
-            if (location.getBlock().getState().getType() == Material.ENDER_CHEST
+            if (state.getType() == Material.ENDER_CHEST
                     && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
                 OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
                 return openInv.getSpecialEnderChest(
                         Objects.requireNonNull(
-                                openInv.loadPlayer(Bukkit.getOfflinePlayer(this.moderator.getOwner()))),
-                        Bukkit.getOfflinePlayer((this.moderator.getOwner())).isOnline())
+                                openInv.loadPlayer(plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
+                        plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
                         .getBukkitInventory();
             }
         } catch (Exception e) {
@@ -1197,7 +1121,7 @@ public class ContainerShop implements Shop {
         }
         InventoryHolder container;
         try {
-            container = (InventoryHolder) this.location.getBlock().getState();
+            container = (InventoryHolder) state;
             return container.getInventory();
         } catch (Exception e) {
             if (!createBackup) {
@@ -1248,7 +1172,7 @@ public class ContainerShop implements Shop {
      */
     public @Nullable ContainerShop getAttachedShop() {
         Util.ensureThread(false);
-        Block c = Util.getSecondHalf(this.getLocation().getBlock());
+        Block c = Util.getSecondHalf(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
         if (c == null) {
             return null;
         }
@@ -1263,7 +1187,7 @@ public class ContainerShop implements Shop {
      */
     public boolean isDoubleChestShop() {
         Util.ensureThread(false);
-        return Util.isDoubleChest(this.getLocation().getBlock());
+        return Util.isDoubleChest(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
     }
 
     /**
@@ -1307,8 +1231,14 @@ public class ContainerShop implements Shop {
      * @return The data table
      */
     @Override
-    public @NotNull Map<String, String> getExtra(@NotNull Plugin plugin) {
-        return this.extra.getOrDefault(plugin.getName(), new ConcurrentHashMap<>());
+    public @NotNull Map<String, Object> getExtra(@NotNull Plugin plugin) {
+        Map<String, Object> extraMap = this.extra.get(plugin.getName());
+        if (extraMap == null) {
+            extraMap = new ConcurrentHashMap<>();
+            this.extra.put(plugin.getName(), extraMap);
+        }
+
+        return extraMap;
     }
 
     /**
@@ -1327,12 +1257,12 @@ public class ContainerShop implements Shop {
      *
      * @param plugin Plugin instace
      * @param data   The data table
+     * @deprecated Extra Map doen't need set to save it.
      */
     @Override
-    public void setExtra(@NotNull Plugin plugin, @NotNull Map<String, String> data) {
-        this.extra.put(plugin.getName(), data);
-        this.lastChangedAt = System.currentTimeMillis();
-        this.update();
+    public void setExtra(@NotNull Plugin plugin, @NotNull Map<String, Object> data) {
+        setDirty();
+        update();
     }
 
     /**
@@ -1363,8 +1293,8 @@ public class ContainerShop implements Shop {
      */
     @Override
     public @Nullable String getCurrency() {
-        Map<String, String> extraMap = extra.getOrDefault(plugin.getName(), new ConcurrentHashMap<>());
-        return extraMap.get("currency");
+        Map<String, Object> extraMap = getExtra(plugin);
+        return (String) extraMap.get("currency");
     }
 
     /**
@@ -1374,7 +1304,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void setCurrency(@Nullable String currency) {
-        Map<String, String> extraMap = extra.getOrDefault(plugin.getName(), new ConcurrentHashMap<>());
+        Map<String, Object> extraMap = getExtra(plugin);
         if (currency == null) {
             extraMap.remove("currency");
         } else {
@@ -1382,7 +1312,7 @@ public class ContainerShop implements Shop {
         }
         extra.put(plugin.getName(), extraMap);
 
-        this.lastChangedAt = System.currentTimeMillis();
+        setDirty();
         this.update();
     }
 
