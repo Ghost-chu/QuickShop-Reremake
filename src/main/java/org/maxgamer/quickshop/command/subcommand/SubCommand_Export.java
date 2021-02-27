@@ -23,7 +23,6 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
@@ -32,6 +31,7 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.UUID;
 
@@ -53,21 +53,19 @@ public class SubCommand_Export implements CommandProcesser {
         }
         file.createNewFile();
 
-        new BukkitRunnable() {
-            @SneakyThrows
-            @Override
-            public void run() {
-                StringBuilder finalReport = new StringBuilder();
-                plugin
-                        .getShopLoader()
-                        .getOriginShopsInDatabase()
-                        .forEach((shop -> finalReport.append(shop).append("\n")));
-                try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
-                    outputStream.write(finalReport.toString());
-                }
-                MsgUtil.sendMessage(sender, "Done.");
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            StringBuilder finalReport = new StringBuilder();
+            plugin
+                    .getShopLoader()
+                    .getOriginShopsInDatabase()
+                    .forEach((shop -> finalReport.append(shop).append("\n")));
+            try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
+                outputStream.write(finalReport.toString());
+            } catch (IOException ignored) {
+
             }
-        }.runTaskAsynchronously(plugin);
+            MsgUtil.sendMessage(sender, "Done.");
+        });
 
 
     }

@@ -24,7 +24,6 @@ import com.rollbar.notifier.Rollbar;
 import com.rollbar.notifier.config.Config;
 import com.rollbar.notifier.config.ConfigBuilder;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -64,14 +63,14 @@ public class RollbarErrorReporter {
         this.plugin = plugin;
         Config config = ConfigBuilder.withAccessToken("4846d9b99e5d4d238f9135ea9c744c28")
                 .environment(Util.isDevEdition() ? "development" : "production")
-                .platform(Bukkit.getVersion())
+                .platform(plugin.getServer().getVersion())
                 .codeVersion(QuickShop.getVersion())
                 .handleUncaughtErrors(false)
                 .build();
         this.rollbar = Rollbar.init(config);
         plugin.getLogger().setFilter(new QuickShopExceptionFilter()); // Redirect log request passthrough our error catcher.
-        Bukkit.getLogger().setFilter(new GlobalExceptionFilter());
-        Bukkit.getServer().getLogger().setFilter(new GlobalExceptionFilter());
+        plugin.getServer().getLogger().setFilter(new GlobalExceptionFilter());
+        plugin.getServer().getLogger().setFilter(new GlobalExceptionFilter());
         Logger.getGlobal().setFilter(new GlobalExceptionFilter());
         Util.debugLog("Rollbar error reporter success loaded.");
 //        if (bootPaste == null) {
@@ -99,11 +98,11 @@ public class RollbarErrorReporter {
         dataMapping.put("system_arch", System.getProperty("os.arch"));
         dataMapping.put("system_version", System.getProperty("os.version"));
         dataMapping.put("system_cores", String.valueOf(Runtime.getRuntime().availableProcessors()));
-        dataMapping.put("server_build", Bukkit.getServer().getVersion());
+        dataMapping.put("server_build", plugin.getServer().getVersion());
         dataMapping.put("server_java", String.valueOf(System.getProperty("java.version")));
-        dataMapping.put("server_players", Bukkit.getOnlinePlayers().size() + "/" + Bukkit.getMaxPlayers());
-        dataMapping.put("server_onlinemode", String.valueOf(Bukkit.getOnlineMode()));
-        dataMapping.put("server_bukkitversion", Bukkit.getVersion());
+        dataMapping.put("server_players", plugin.getServer().getOnlinePlayers().size() + "/" + plugin.getServer().getMaxPlayers());
+        dataMapping.put("server_onlinemode", String.valueOf(plugin.getServer().getOnlineMode()));
+        dataMapping.put("server_bukkitversion", plugin.getServer().getVersion());
 
 //        dataMapping.put("server_plugins", getPluginInfo());
         dataMapping.put("user", QuickShop.getInstance().getServerUniqueID().toString());
@@ -284,7 +283,7 @@ public class RollbarErrorReporter {
 
     private String getPluginInfo() {
         StringBuilder buffer = new StringBuilder();
-        for (Plugin bPlugin : Bukkit.getPluginManager().getPlugins()) {
+        for (Plugin bPlugin : plugin.getServer().getPluginManager().getPlugins()) {
             buffer
                     .append("\t")
                     .append(bPlugin.getName())

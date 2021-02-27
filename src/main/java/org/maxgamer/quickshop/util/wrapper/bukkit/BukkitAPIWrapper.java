@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is SpigotWrapper.java
+ * This file is a part of project QuickShop, the name is BukkitAPIWrapper.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,7 +17,7 @@
  *
  */
 
-package org.maxgamer.quickshop.util.bukkitwrapper;
+package org.maxgamer.quickshop.util.wrapper.bukkit;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -30,37 +30,20 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
-public class SpigotWrapper implements BukkitAPIWrapper {
-    @Override
-    public void teleportEntity(
+public interface BukkitAPIWrapper {
+    void teleportEntity(
             @NotNull Entity entity,
             @NotNull Location location,
-            @Nullable PlayerTeleportEvent.TeleportCause cause) {
-        if (cause == null) {
-            entity.teleport(location);
-        } else {
-            entity.teleport(location, cause);
-        }
-    }
+            @Nullable PlayerTeleportEvent.TeleportCause cause);
 
-    @Override
-    public void getChunkAt(
+    void getChunkAt(
             @NotNull World world,
             @NotNull Location location,
-            @NotNull CompletableFuture<Chunk> futureTask) {
-        futureTask.complete(world.getChunkAt(location));
-    }
+            @NotNull CompletableFuture<Chunk> futureTask);
 
-    @Override
-    public void getChunkAt(
-            @NotNull World world, int x, int z, @NotNull CompletableFuture<Chunk> futureTask) {
-        futureTask.complete(world.getChunkAt(x, z));
-    }
+    void getChunkAt(@NotNull World world, int x, int z, @NotNull CompletableFuture<Chunk> futureTask);
 
-    @Override
-    public void getChunkAt(
-            @NotNull World world, @NotNull Block block, @NotNull CompletableFuture<Chunk> futureTask) {
-        futureTask.complete(world.getChunkAt(block));
-    }
+    void getChunkAt(
+            @NotNull World world, @NotNull Block block, @NotNull CompletableFuture<Chunk> futureTask);
 
 }

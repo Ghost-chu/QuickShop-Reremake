@@ -23,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.maxgamer</groupId>
     <artifactId>QuickShop</artifactId>
-    <version>4.0.7.3</version>
+    <version>4.0.7.4</version>
 
     <licenses>
         <license>
@@ -90,13 +90,11 @@
                     <createTestSourcesJar>false</createTestSourcesJar>
                     <filters>
                         <filter>
-                            <artifact>*:*</artifact>
-                            <excludes>
-                                <exclude>META-INF/*.SF</exclude>
-                                <exclude>META-INF/*.DSA</exclude>
-                                <exclude>META-INF/*.RSA</exclude>
-                                <exclude>META-INF/MANIFEST.MF</exclude>
-                            </excludes>
+                            <artifact>com.github.ben-manes.caffeine:caffeine</artifact>
+                            <includes>
+                                <include>**</include>
+                            </includes>
+                            <excludeDefaults>false</excludeDefaults>
                         </filter>
                     </filters>
                     <relocations>
@@ -139,7 +137,7 @@
                         </relocation>
                         <relocation>
                             <pattern>org.apache.commons.codec.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.shade. org.apache.commons.codec.</shadedPattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.org.apache.commons.codec.</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.esotericsoftware.reflectasm.</pattern>
@@ -167,6 +165,15 @@
                             <pattern>de.themoep.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.de.themoep.minedown.</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>io.papermc.lib.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.io.papermc.lib.</shadedPattern>
+                        </relocation>
+                        <!--                        <relocation>-->
+                        <!--                            <pattern>com.github.ben-manes.caffeine.</pattern>-->
+                        <!--                            <shadedPattern>org.maxgamer.quickshop.shade.com.github.ben-manes.caffeine.</shadedPattern>-->
+                        <!--                        </relocation>-->
+
                         <!--                        <relocation>-->
                         <!--                            <pattern>de.leonhard</pattern>-->
                         <!--                            <shadedPattern>org.maxgamer.quickshop.shade.de.leonhard.storage</shadedPattern>-->
@@ -178,7 +185,6 @@
                                 implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <mainClass>org.maxgamer.quickshop.javaw.bootstrap.Bootstrap</mainClass>
                         </transformer>
-
                     </transformers>
                 </configuration>
                 <executions>
@@ -214,6 +220,29 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jarsigner-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <id>sign</id>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <archive>${project.basedir}/target/${artifactId}.jar</archive>
+                    <keystore>${project.basedir}/keystore.jks</keystore>
+                    <alias>selfsigned</alias>
+                    <storepass>${env.quickshop-signer-pwd}</storepass>
+                    <keypass>${env.quickshop-signer-pwd}</keypass>
+                </configuration>
+            </plugin>
+
         </plugins>
         <resources>
             <resource>
@@ -258,13 +287,17 @@
             <url>https://maven.sk89q.com/repo/</url>
         </repository>
         <repository>
+            <id>CodeMC</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
             <id>fanciful-repo</id>
             <url>https://github.com/mkremins/fanciful/tree/mvn-repo</url>
         </repository>
-        <repository>
-            <id>dmulloy2-repo</id>
-            <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
-        </repository>
+        <!--        <repository>-->
+        <!--            <id>dmulloy2-repo</id>-->
+        <!--            <url>https://repo.dmulloy2.net/nexus/repository/public/</url>-->
+        <!--        </repository>-->
         <repository>
             <id>Sonatype-public</id>
             <name>SnakeYAML repository</name>
@@ -316,6 +349,10 @@
             <id>songoda-repo</id>
             <url>https://repo.songoda.com/repository/public/</url>
         </repository>
+        <repository>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -363,7 +400,7 @@
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
-            <version>4.5.1</version>
+            <version>4.6.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -452,11 +489,17 @@
             <artifactId>placeholderapi</artifactId>
             <version>2.10.9</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>annotations</artifactId>
+                    <groupId>org.jetbrains</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.github.angeschossen</groupId>
             <artifactId>LandsAPI</artifactId>
-            <version>5.0.5</version>
+            <version>5.1.13</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -465,18 +508,6 @@
             <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>com.github.seeseemelk</groupId>-->
-        <!--            <artifactId>MockBukkit-v1.14</artifactId>-->
-        <!--            <version>0.2.2</version>-->
-        <!--            <scope>test</scope>-->
-        <!--            <exclusions>-->
-        <!--                <exclusion>-->
-        <!--                    <artifactId>bukkit</artifactId>-->
-        <!--                    <groupId>org.bukkit</groupId>-->
-        <!--                </exclusion>-->
-        <!--            </exclusions>-->
-        <!--        </dependency>-->
         <!-- Documentation of MockBukkit: https://github.com/seeseemelk/MockBukkit -->
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
@@ -487,6 +518,10 @@
                 <exclusion>
                     <artifactId>spigot-api</artifactId>
                     <groupId>org.spigotmc</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>annotations</artifactId>
+                    <groupId>org.jetbrains</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -555,6 +590,18 @@
                 <exclusion>
                     <artifactId>spigot-api</artifactId>
                     <groupId>org.spigotmc</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>httpclient</artifactId>
+                    <groupId>org.apache.httpcomponents</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>truevfs-comp-zip</artifactId>
+                    <groupId>net.java.truevfs</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>truevfs-comp-tardriver</artifactId>
+                    <groupId>net.java.truevfs</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -793,5 +840,16 @@
         <!--            <version>3.1.9</version>-->
         <!--            <scope>provided</scope>-->
         <!--        </dependency>-->
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>2.8.8</version>
+        </dependency>
+        <dependency>
+            <groupId>io.papermc</groupId>
+            <artifactId>paperlib</artifactId>
+            <version>1.0.6</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>

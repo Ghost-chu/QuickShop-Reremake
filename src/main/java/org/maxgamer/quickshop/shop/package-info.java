@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is BukkitEventManager.java
+ * This file is a part of project QuickShop, the name is package-info.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,13 +17,14 @@
  *
  */
 
-package org.maxgamer.quickshop.eventmanager;
-
-import org.bukkit.event.Event;
-import org.maxgamer.quickshop.QuickShop;
-
-public class BukkitEventManager implements QuickEventManager {
-    public void callEvent(Event event) {
-        QuickShop.getInstance().getServer().getPluginManager().callEvent(event);
-    }
-}
+/**
+ * The QuickShop API package
+ * <p>
+ * The most important things obout QuickShop in there
+ * APIs included
+ */
+/**
+ * The most important things obout QuickShop in there
+ * APIs included
+ */
+package org.maxgamer.quickshop.shop;

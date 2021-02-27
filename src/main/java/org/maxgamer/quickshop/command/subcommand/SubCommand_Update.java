@@ -22,7 +22,6 @@ package org.maxgamer.quickshop.command.subcommand;
 import lombok.AllArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
@@ -38,33 +37,31 @@ public class SubCommand_Update implements CommandProcesser {
     @Override
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Checking for updates...");
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Checking for updates...");
 
-                if (plugin.getUpdateWatcher() == null) {
-                    MsgUtil.sendMessage(sender, ChatColor.RED + "Updater seems has been disabled");
-                    return;
-                }
+            if (plugin.getUpdateWatcher() == null) {
+                MsgUtil.sendMessage(sender, ChatColor.RED + "Updater seems has been disabled");
+                return;
+            }
 
-                if (plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) {
-                    MsgUtil.sendMessage(sender, ChatColor.GREEN + "No updates can update now.");
-                    return;
-                }
+            if (plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) {
+                MsgUtil.sendMessage(sender, ChatColor.GREEN + "No updates can update now.");
+                return;
+            }
 
-                MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Downloading update, this may need a while...");
+            MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Downloading update, this may need a while...");
 
-                //final byte[] pluginBin;
+            //final byte[] pluginBin;
 
-                try {
-                    plugin.getUpdateWatcher().getUpdater().install(plugin.getUpdateWatcher().getUpdater().update(plugin.getUpdateWatcher().getUpdater().getCurrentRunning()));
-                } catch (Exception e) {
-                    MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed, get details to look the console.");
-                    plugin.getSentryErrorReporter().ignoreThrow();
-                    plugin.getLogger().log(Level.WARNING, "Failed to update QuickShop cause something going wrong", e);
-                    return;
-                }
+            try {
+                plugin.getUpdateWatcher().getUpdater().install(plugin.getUpdateWatcher().getUpdater().update(plugin.getUpdateWatcher().getUpdater().getCurrentRunning()));
+            } catch (Exception e) {
+                MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed, get details to look the console.");
+                plugin.getSentryErrorReporter().ignoreThrow();
+                plugin.getLogger().log(Level.WARNING, "Failed to update QuickShop cause something going wrong", e);
+                return;
+            }
 
 //                MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Installing update...");
 //
@@ -80,10 +77,9 @@ public class SubCommand_Update implements CommandProcesser {
 //                    return;
 //                }
 
-                MsgUtil.sendMessage(sender,
-                        ChatColor.GREEN + "Successfully, restart your server to apply the changes!");
-            }
-        }.runTaskAsynchronously(plugin);
+            MsgUtil.sendMessage(sender,
+                    ChatColor.GREEN + "Successfully, restart your server to apply the changes!");
+        });
     }
 
 }

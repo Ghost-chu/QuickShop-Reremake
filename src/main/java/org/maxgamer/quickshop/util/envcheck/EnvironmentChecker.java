@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.util.envcheck;
 
 import lombok.SneakyThrows;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -29,14 +28,21 @@ import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.GameVersion;
+import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.security.JarVerifyTool;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.logging.Level;
 
 public class EnvironmentChecker {
@@ -151,10 +157,54 @@ public class EnvironmentChecker {
         }
     }
 
+    @EnvCheckEntry(name = "Signature Verify", priority = 0)
+    public ResultContainer securityVerify() {
+        JarVerifyTool tool = new JarVerifyTool();
+        try {
+            ClassLoader loader = this.getClass().getClassLoader();
+
+            try (InputStream stream1 = loader.getResourceAsStream("META-INF/MANIFEST.MF");
+                 InputStream stream2 = loader.getResourceAsStream("META-INF/SELFSIGN.DSA");
+                 InputStream stream3 = loader.getResourceAsStream("META-INF/SELFSIGN.SF")) {
+                if (stream1 == null || stream2 == null || stream3 == null) {
+                    plugin.getLogger().warning("The signature not exists in QuickShop jar. The jar has been modified or you're running custom build.");
+                    return new ResultContainer(CheckResult.STOP_WORKING, "Security risk detected, QuickShop jar has been modified.");
+                }
+            }
+
+            String jarPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+            jarPath = URLDecoder.decode(jarPath, "UTF-8");
+            Util.debugLog("JarPath selected: " + jarPath);
+            JarFile jarFile = new JarFile(jarPath);
+            List<JarEntry> modifiedEntry = tool.verify(jarFile);
+            if (modifiedEntry.isEmpty()) {
+                return new ResultContainer(CheckResult.PASSED, "The jar is valid. No issues detected");
+            } else {
+                modifiedEntry.forEach(jarEntry -> {
+                    plugin.getLogger().warning(">> Modified Class Detected <<");
+                    plugin.getLogger().warning("Name: " + jarEntry.getName());
+                    plugin.getLogger().warning("CRC: " + jarEntry.getCrc());
+                    plugin.getLogger().warning(JsonUtil.getGson().toJson(jarEntry));
+                });
+                plugin.getLogger().severe("QuickShop detected the jar has been modified. This usually caused by the file downloaded damaged or virus infected. You should run virus scanning to prevent virus infected.");
+                plugin.getLogger().severe("To prevent serve server fail, QuickShop has been disabled.");
+                return new ResultContainer(CheckResult.STOP_WORKING, "Security risk detected, QuickShop jar has been modified.");
+            }
+        } catch (IOException ioException) {
+            plugin.getLogger().log(Level.WARNING, "ALERT: QuickShop cannot validate itself. This may caused by your have deleted QuickShop's jar while server running.", ioException);
+            return new ResultContainer(CheckResult.WARNING, "Failed to validate file digital signature, Security ");
+        }
+
+        //tool.verify()
+
+
+    }
+
     @EnvCheckEntry(name = "EnvChecker SelfTest", priority = 1)
     public ResultContainer selfTest() {
         return new ResultContainer(CheckResult.PASSED, "I'm fine :)");
     }
+
 
     @SneakyThrows
     @EnvCheckEntry(name = "Java Runtime Environment Version Test", priority = 1)
@@ -221,7 +271,7 @@ public class EnvironmentChecker {
             }
             return success;
         } catch (Exception e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to check Spigot API, the server " + Bukkit.getBukkitVersion() + " may not Spigot or Spigot's forks");
+            plugin.getLogger().log(Level.WARNING, "Failed to check Spigot API, the server " + plugin.getServer().getBukkitVersion() + " may not Spigot or Spigot's forks");
             return failed;
         }
 
@@ -268,7 +318,7 @@ public class EnvironmentChecker {
     }
 
     public boolean checkJulySafe() {
-        Plugin julySafe = Bukkit.getPluginManager().getPlugin("JulySafe");
+        Plugin julySafe = plugin.getServer().getPluginManager().getPlugin("JulySafe");
         boolean triggered = false;
         if (julySafe != null) {
             for (RegisteredListener registeredListener : BlockPlaceEvent.getHandlerList().getRegisteredListeners()) {

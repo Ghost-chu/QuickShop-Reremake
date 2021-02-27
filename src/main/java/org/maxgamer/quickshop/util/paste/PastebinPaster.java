@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.util.paste;
 
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
+import org.maxgamer.quickshop.util.Util;
 
 import java.net.URL;
 
@@ -29,7 +30,7 @@ public class PastebinPaster implements PasteInterface {
 
     @Override
     public String pasteTheText(@NotNull String text) throws Exception {
-        return HttpRequest.post(new URL("https://pastebin.com/api/api_post.php"))
+        HttpRequest request = HttpRequest.post(new URL("https://pastebin.com/api/api_post.php"))
                 .bodyUrlEncodedForm(HttpRequest.Form.create()
                         .add("api_option", "paste")
                         .add("api_dev_key", developerKey)
@@ -39,9 +40,15 @@ public class PastebinPaster implements PasteInterface {
                         //.add("api_user_key", "")
                         .add("api_paste_code", text)
                 )
-                .execute()
-                .expectResponseCode(200)
-                .returnContent()
-                .asString("UTF-8");
+                .execute();
+        String str = request.returnContent().asString("UTF-8");
+        try {
+            request.expectResponseCode(200);
+        } catch (Exception ex) {
+            Util.debugLog(str);
+            throw ex;
+        }
+        return str;
+
     }
 }

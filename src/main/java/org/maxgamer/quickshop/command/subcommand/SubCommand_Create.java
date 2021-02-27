@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
+import io.papermc.lib.PaperLib;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -136,7 +137,7 @@ public class SubCommand_Create implements CommandProcesser {
                 return;
             }
 
-            if (Util.getSecondHalf(b) != null
+            if (Util.getSecondHalf(PaperLib.getBlockState(b, false).getState()) != null
                     && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("no-double-chests", sender));
                 return;

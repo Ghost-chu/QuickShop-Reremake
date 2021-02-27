@@ -50,14 +50,15 @@ public class ProtectionListenerBase extends QSListener {
     @SuppressWarnings("SpellCheckingInspection")
     @Nullable
     public Shop getShopRedstone(@NotNull Location location, boolean includeAttached) {
-        if (cache == null) {
+        if (cache != null) {
+            return cache.getCaching(location, includeAttached);
+        } else {
             if (includeAttached) {
                 return plugin.getShopManager().getShopIncludeAttached(location);
             } else {
                 return plugin.getShopManager().getShop(location);
             }
         }
-        return cache.getCaching(location, includeAttached);
     }
 
     /**

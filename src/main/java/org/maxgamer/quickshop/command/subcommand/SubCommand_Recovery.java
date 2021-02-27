@@ -22,7 +22,6 @@ package org.maxgamer.quickshop.command.subcommand;
 import lombok.AllArgsConstructor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
@@ -48,17 +47,14 @@ public class SubCommand_Recovery implements CommandProcesser {
             MsgUtil.sendMessage(sender, "recovery.txt not exist, do not execute this command unless you know what are you doing.");
             return;
         }
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                try {
-                    Util.backupDatabase();
-                    plugin.getShopLoader().recoverFromFile(Util.readToString(file));
-                } catch (Exception e) {
-                    plugin.getLogger().log(Level.WARNING, "Failed to recovery data cause something going wrong", e);
-                }
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            try {
+                Util.backupDatabase();
+                plugin.getShopLoader().recoverFromFile(Util.readToString(file));
+            } catch (Exception e) {
+                plugin.getLogger().log(Level.WARNING, "Failed to recovery data cause something going wrong", e);
             }
-        }.runTaskAsynchronously(plugin);
+        });
 
     }
 

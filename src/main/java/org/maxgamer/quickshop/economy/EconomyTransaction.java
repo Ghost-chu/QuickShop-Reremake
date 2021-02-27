@@ -56,6 +56,7 @@ public class EconomyTransaction {
     private final World world;
     @Getter
     private final String currency;
+    private final QuickShop plugin = QuickShop.getInstance();
 
 
     /**
