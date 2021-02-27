@@ -1,5 +1,5 @@
 {
-  "file-test": "This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)",
+  "file-test": "Dies ist eine Test Textdatei. Wir verwenden sie um zu testen ob die messages.json Datei kaputt ist. Du kannst sie mit jeder Art von Easter Eggs füllen wie du willst :)",
   "translation-author": "Übersetzer: Ghost_chu, Andre_601",
   "translation-version": "Unterstütze Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
@@ -32,7 +32,7 @@
   "you-cant-afford-to-buy": "&cEs kostet {0}, aber du hast nur {1}",
   "negative-amount": "&cDu kannst keine negative Anzahl handeln",
   "not-a-number": "&cDu kannst nur eine Zahl eingeben, Deine Eingabe war {0}.",
-  "exceeded-maximum": "&cThe value exceeded the maximum value in Java.",
+  "exceeded-maximum": "&cDer Wert hat den Maximalwert in Java überschritten.",
   "not-a-integer": "&cDu kannst nur eine Zahl eingeben, Deine Eingabe war {0}.",
   "player-bought-from-your-store": "&c{0} hat {1} {2} von deinem Shop gekauft und du hast {3} verdient.",
   "shop-out-of-stock": "&5Dein Shop bei den Koordinaten {0}, {1}, {2}, verfügt über keine {3} mehr!",
@@ -44,7 +44,7 @@
   "fee-charged-for-price-change": "&aDu hast &c{0}&a bezahlt, um den Preis zu ändern.",
   "price-is-now": "&aDer neue Preis des Shops ist &e{0}",
   "thats-not-a-number": "&cUngültige Zahl",
-  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consistent with vanilla behavior",
+  "forbidden-vanilla-behavior": "&cDie Operation ist verboten da Sie nicht mit dem Vanillaverhalten übereinstimmt",
   "no-price-given": "&cBitte gebe einen gültigen Preis ein.",
   "average-price-nearby": "&aDurchschnittspreis in der Umgebung: &e{0}",
   "shop-has-changed": "&cDer Shop, den du gerade benutzt wolltest, wurde verändert seit dem du drauf geklickt hast!",
@@ -81,7 +81,7 @@
   "no-pending-action": "&cDu hast keine ausstehenden Aktionen",
   "permission-denied-3rd-party": "&cBerechtigung verweigert: Drittanbieterplugin [{0}].",
   "shops-removed-in-world": "&eEin total von &b{0}&e Shops wurden in der Welt &b{1}&e gelöscht.",
-  "world-not-exists": "&cThe world &e{0}&c doesn't exist",
+  "world-not-exists": "&cDie Welt &e{0}&c existiert nicht",
   "menu": {
     "successful-purchase": "&aErfolgreich gekauft:",
     "successfully-sold": "&aErfolgreich verkauft:",
@@ -138,7 +138,7 @@
     "no-amount-given": "&cKeine Menge angegeben. Verwende &a/qs refill <Menge>&c",
     "now-debuging": "&aEntwicklermodus erfolgreich aktiviert. Lade QuickShop neu...",
     "now-nolonger-debuging": "&aEntwicklermodus erfolgreich deaktiviert. Lade QuickShop neu...",
-    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto see a list of commands.",
+    "wrong-args": "&cUngültige Argumente. Verwende &l/qs help &cum eine Liste aller Befehle zu sehen.",
     "description": {
       "title": "&aQuickShop Hilfe",
       "unlimited": "&eGibt einen Shop einen unbegrenzten Vorrat.",
@@ -169,10 +169,10 @@
       "removeall": "&eEntferne ALLE Shops eines bestimmten Spielers",
       "transfer": "&eTransfer someone's ALL shops to other",
       "removeworld": "&eEntferne ALLE Shops in einer bestimmten Welt",
-      "currency": "&eSet or remove the currency settings of the shop"
+      "currency": "&eSetze oder entferne die Währungseinstellungen des Shops"
     },
-    "disabled": "&cThis command is disabled: &e{0}",
-    "feature-not-enabled": "The feature not enabled in config."
+    "disabled": "&cDieser Befehl ist deaktiviert: &e{0}",
+    "feature-not-enabled": "Dieses Feature ist nicht in der Config aktiviert."
   },
   "signs": {
     "selling": "Verkauft {0}",
@@ -208,7 +208,7 @@
     "item": "&aShopitem: {0} &e[&d&lÄndern&e]",
     "item-hover": "&eKlicke, um das Shopitem zu ändern",
     "currency": "&aWährung: &b{0} &e[&d&lÄndern&e]",
-    "currency-hover": "&eClick to set or remove the currency that this shop is using"
+    "currency-hover": "&eKlicke um die Währung zu setzen oder zu entfernen, welcher dieser Shop verwendet"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
