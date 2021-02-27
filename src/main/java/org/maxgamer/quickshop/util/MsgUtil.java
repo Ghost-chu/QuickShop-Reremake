@@ -989,10 +989,10 @@ public class MsgUtil {
                 Files.move(pending.toPath(), new File(plugin.getDataFolder(), "messages-bak-" + UUID.randomUUID().toString() + ".json").toPath());
             } catch (IOException ignored) {
             }
-            try {
-                loadCfgMessages();
-            } catch (Exception ignore) {
-            }
+//            try {
+//                loadCfgMessages();
+//            } catch (Exception ignore) {
+//            }
             return;
         }
 
