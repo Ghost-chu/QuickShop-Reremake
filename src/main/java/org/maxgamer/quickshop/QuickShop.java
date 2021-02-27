@@ -34,8 +34,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.ItemSpawnEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -62,7 +60,6 @@ import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.util.config.ConfigProvider;
 import org.maxgamer.quickshop.util.envcheck.*;
-import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
@@ -559,15 +556,15 @@ public class QuickShop extends JavaPlugin {
 //                log("Plugin unloaded, the server paste was created for debugging, reporting errors and data-recovery: " + lastPaste);
 //            }
 //        }
-        Util.debugLog("Closing all GUIs...");
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            InventoryView view = player.getOpenInventory();
-            Inventory topInventory = view.getTopInventory();
-            Inventory bottomInventory = view.getBottomInventory();
-            if (topInventory.getHolder() instanceof QuickShopPreviewInventoryHolder || bottomInventory.getHolder() instanceof QuickShopPreviewInventoryHolder) {
-                player.closeInventory();
-            }
-        }
+//        Util.debugLog("Closing all GUIs...");
+//        for (Player player : Bukkit.getOnlinePlayers()) {
+//            InventoryView view = player.getOpenInventory();
+//            Inventory topInventory = view.getTopInventory();
+//            Inventory bottomInventory = view.getBottomInventory();
+//            if (topInventory.getHolder() instanceof QuickShopPreviewInventoryHolder || bottomInventory.getHolder() instanceof QuickShopPreviewInventoryHolder) {
+//                player.closeInventory();
+//            }
+//        }
         Util.debugLog("Unloading all shops...");
         try {
             for (Shop shop : Objects.requireNonNull(this.getShopManager().getLoadedShops())) {
