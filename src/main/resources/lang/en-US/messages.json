@@ -250,7 +250,7 @@
       "Doctor, QuickShop has a new update {0}! You should update~",
       "Ko~ko~da~yo~ QuickShop has a new update {0} ~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop is marked disabled by remote server, meaning this version may have serious problem, get details from our Spigot plugin page: {0}. This warning will continue to appear untill you switch to a stable version, but it will not affect your server's performence.",
+    "remote-disable-warning": "&cThis version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server's performance.",
     "label": {
       "unstable": "[Unstable]",
       "stable": "[Stable]",
@@ -299,8 +299,8 @@
   "currency-unset": "&aShop currency removed successfully. Using default settings now.",
   "currency-not-support": "&cThe economy plugin doesn't support the multi-economy feature.",
   "item-not-exist": "&cThe item &e{0} &cdoes not exist, please check your spelling.",
-  "backup-success": "&aBackup successfully.",
-  "console-only": "&cThis command only can be executed by Console.",
-  "console-only-danger": "&cThis is a danger command so that only can be executed by Console.",
+  "backup-success": "&aBackup successfull.",
+  "console-only": "&cThis command can only be executed by Console.",
+  "console-only-danger": "&cThis is a dangerous command, so that only the Console can execute it.",
   "clean-warning": "&eThis command will purge &call &e shops if the shop is damaged or created in disallowed worlds or selling/buying disallowed items and &c&lIN NOT LOADED WORLD SHOPS&e, make sure you have full backup of your shops data and use &b/qs cleanghost confirm &eto continue."
 }
