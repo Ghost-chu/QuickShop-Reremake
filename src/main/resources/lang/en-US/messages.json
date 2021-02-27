@@ -44,7 +44,7 @@
   "fee-charged-for-price-change": "&aYou paid &c{0}&a to change the price.",
   "price-is-now": "&aThe new price of the shop is &e{0}",
   "thats-not-a-number": "&cInvalid number",
-  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consistent with vanilla behavior",
+  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consisten with vanilla behaviour",
   "no-price-given": "&cPlease give a valid price.",
   "average-price-nearby": "&aNearby average price: &e{0}",
   "shop-has-changed": "&cThe shop you tried to use has changed since you clicked it!",
@@ -138,7 +138,7 @@
     "no-amount-given": "&cNo amount provided. Use &a/qs refill <amount>&c",
     "now-debuging": "&aSuccessfully enabled developer mode. Reloading QuickShop...",
     "now-nolonger-debuging": "&aSuccessfully disabled Developer mode. Reloading QuickShop...",
-    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto see a list of commands.",
+    "wrong-args": "&cInvalid argument. Use &l/qs help &cto see a list of commands.",
     "description": {
       "title": "&aQuickShop help",
       "unlimited": "&eGives a shop unlimited stock.",
@@ -169,10 +169,10 @@
       "removeall": "&eRemove ALL shops of a specified player",
       "transfer": "&eTransfer someone's ALL shops to other",
       "removeworld": "&eRemove ALL shops in a specified world",
-      "currency": "&eSet or remove the currency settings of the shop"
+      "currency": "&eSet or remove the currency setting of the shop"
     },
     "disabled": "&cThis command is disabled: &e{0}",
-    "feature-not-enabled": "The feature not enabled in config."
+    "feature-not-enabled": "This feature is not enabled in the config file."
   },
   "signs": {
     "selling": "Selling {0}",
