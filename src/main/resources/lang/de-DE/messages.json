@@ -34,7 +34,7 @@
   "not-a-number": "&cDu kannst nur eine Zahl eingeben, Deine Eingabe war {0}.",
   "exceeded-maximum": "&cDer Wert hat den Maximalwert in Java überschritten.",
   "not-a-integer": "&cDu kannst nur eine Zahl eingeben, Deine Eingabe war {0}.",
-  "player-bought-from-your-store": "&c{0} hat {1} {2} von deinem Shop gekauft und du hast {3} verdient.",
+  "player-bought-from-your-store": "&c{0} hat {1} {2} von deinem Shop gekauft und du hast {3} ( Steuern) verdient.",
   "shop-out-of-stock": "&5Dein Shop bei den Koordinaten {0}, {1}, {2}, verfügt über keine {3} mehr!",
   "shop-has-no-space": "&cDer Shop hat nur noch Platz für {0} weitere {1}.",
   "you-dont-have-that-many-items": "&cDu hast nur {0} {1}.",
