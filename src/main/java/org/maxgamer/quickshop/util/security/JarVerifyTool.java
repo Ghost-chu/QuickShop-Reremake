@@ -60,7 +60,7 @@ import java.util.jar.JarFile;
 
 /**
 
- * <p>Taken form the jarsigner utility.
+ * <p>Taken from the jarsigner utility.
 
  * see https://hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d/src/share/classes/sun/security/tools/jarsigner/Main.java#l570
 
