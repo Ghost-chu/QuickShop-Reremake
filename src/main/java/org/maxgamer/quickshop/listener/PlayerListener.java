@@ -192,7 +192,7 @@ public class PlayerListener extends QSListener {
                 // So telling them a message would cause spam etc.
                 return;
             }
-            if (Util.getSecondHalf(PaperLib.getBlockState(b, false).getState()) != null
+            if (Util.isDoubleChest(PaperLib.getBlockState(b, false).getState())
                     && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("no-double-chests", p));
                 return;

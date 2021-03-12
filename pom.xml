@@ -23,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.maxgamer</groupId>
     <artifactId>QuickShop</artifactId>
-    <version>4.0.7.5</version>
+    <version>4.0.7.6</version>
 
     <licenses>
         <license>
@@ -499,7 +499,7 @@
         <dependency>
             <groupId>com.github.angeschossen</groupId>
             <artifactId>LandsAPI</artifactId>
-            <version>5.1.13</version>
+            <version>5.2.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

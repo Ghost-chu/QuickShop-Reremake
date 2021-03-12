@@ -32,6 +32,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -73,6 +74,8 @@ public class ContainerShop implements Shop {
     private volatile boolean isDeleted = false;
     @EqualsAndHashCode.Exclude
     private volatile boolean createBackup = false;
+    @EqualsAndHashCode.Exclude
+    private InventoryPreview inventoryPreview = null;
     private ShopModerator moderator;
     private double price;
     private ShopType shopType;
@@ -95,6 +98,7 @@ public class ContainerShop implements Shop {
         this.createBackup = s.createBackup;
         this.extra = s.extra;
         this.dirty = true;
+        this.inventoryPreview = null;
         initDisplayItem();
     }
 
@@ -458,6 +462,9 @@ public class ContainerShop implements Shop {
             Util.debugLog("Dupe unload request, canceled.");
             return;
         }
+        if (inventoryPreview != null) {
+            inventoryPreview.close();
+        }
         if (this.getDisplayItem() != null) {
             this.getDisplayItem().remove();
         }
@@ -734,6 +741,10 @@ public class ContainerShop implements Shop {
     @Override
     public void refresh() {
         Util.ensureThread(false);
+        if (inventoryPreview != null) {
+            inventoryPreview.close();
+            inventoryPreview = null;
+        }
         if (displayItem != null) {
             displayItem.remove();
             initDisplayItem();
@@ -1314,6 +1325,14 @@ public class ContainerShop implements Shop {
 
         setDirty();
         this.update();
+    }
+
+    @Override
+    public void openPreview(@NotNull Player player) {
+        if (inventoryPreview == null) {
+            inventoryPreview = new InventoryPreview(plugin, getItem(), player);
+        }
+        inventoryPreview.show();
     }
 
 

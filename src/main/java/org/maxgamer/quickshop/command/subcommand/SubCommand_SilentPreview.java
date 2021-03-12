@@ -26,7 +26,6 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.ContainerShop;
-import org.maxgamer.quickshop.shop.InventoryPreview;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -72,8 +71,8 @@ public class SubCommand_SilentPreview implements CommandProcesser {
             MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
+        shop.openPreview(((Player) sender));
 
-        new InventoryPreview(plugin, shop.getItem(), (Player) sender).show();
     }
 
 }
