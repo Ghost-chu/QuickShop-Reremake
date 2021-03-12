@@ -649,7 +649,7 @@ public class QuickShop extends JavaPlugin {
         this.serverUniqueID = UUID.fromString(Objects.requireNonNull(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID()))));
         updateConfig(getConfig().getInt("config-version"));
         try {
-            MsgUtil.loadCfgMessages();
+            MsgUtil.Loadi18nFile();
         } catch (Exception e) {
             getLogger().log(Level.WARNING, "Error when loading translation", e);
         }
@@ -716,7 +716,7 @@ public class QuickShop extends JavaPlugin {
         this.loadItemMatcher();
         Util.initialize();
         try {
-            MsgUtil.loadCfgMessages();
+            MsgUtil.Loadi18nFile();
         } catch (Exception e) {
             getLogger().log(Level.WARNING, "Error when loading translation", e);
         }
