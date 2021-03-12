@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.shop;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -461,5 +462,12 @@ public interface Shop {
      * @param currency The currency name; null to use default currency
      */
     void setCurrency(@Nullable String currency);
+
+    /**
+     * open a preview for shop item
+     *
+     * @param player The viewer
+     */
+    void openPreview(@NotNull Player player);
 
 }
