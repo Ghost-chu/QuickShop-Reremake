@@ -810,7 +810,7 @@ public class ShopManager {
             MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-already-owned", p));
             return;
         }
-        if (Util.getSecondHalf(PaperLib.getBlockState(info.getLocation().getBlock(), false).getState()) != null
+        if (Util.isDoubleChest(PaperLib.getBlockState(info.getLocation().getBlock(), false).getState())
                 && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
             MsgUtil.sendMessage(p, MsgUtil.getMessage("no-double-chests", p));
             return;

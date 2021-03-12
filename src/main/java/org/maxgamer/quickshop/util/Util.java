@@ -33,7 +33,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
-import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -623,11 +622,15 @@ public class Util {
 //    }
 
     public static boolean isDoubleChest(@Nullable BlockState state) {
-        if (!(state instanceof Container)) {
+        if (!(state instanceof Chest)) {
             return false;
         }
-        final Container container = (Container) state;
-        return (container.getInventory() instanceof DoubleChestInventory);
+        String blockDataStr = state.getBlockData().getAsString();
+        //Black magic for detect double chest
+        //minecraft:chest[facing=north,type=right,waterlogged=false]
+        //minecraft:chest[facing=north,type=left,waterlogged=false]
+        //minecraft:chest[facing=north,type=single,waterlogged=false]
+        return !blockDataStr.contains("type=single");
     }
 
     /**
