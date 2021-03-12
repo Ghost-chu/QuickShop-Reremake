@@ -294,9 +294,9 @@
     "qa-issues": "&eProblèmes d'assurance qualité : &b{0}%",
     "help-us": "&a[Aidez-nous à améliorer la qualité de la traduction]"
   },
-  "currency-not-exists": "&cCannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.",
-  "currency-set": "&aShop currency successfully set to {0}.",
-  "currency-unset": "&aShop currency removed successfully. Using default settings now.",
+  "currency-not-exists": "&cImpossible de trouver le mode actuel que vous voulez définir, cela est peut-être dû à une mauvaise orthographe ou ce mode n'est pas disponible dans ce monde.",
+  "currency-set": "&aLe mode de la boutique a été définie avec succès à {0}.",
+  "currency-unset": "&aLa boutique a été supprimée avec succès. Utiliser les paramètres par défaut maintenant.",
   "currency-not-support": "&cThe economy plugin doesn't support the multi-economy feature.",
   "item-not-exist": "&cThe item &e{0} &cdoes not exist, please check your spelling.",
   "backup-success": "&aBackup successfully.",
