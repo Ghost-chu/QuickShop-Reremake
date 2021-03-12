@@ -54,10 +54,8 @@ public class Language {
             }
         }
 
-        try {
-            InputStream is = getFile(language, type);
+        try (InputStream is = getFile(language, type)) {
             new Copied(targetFile).accept(is);
-            is.close();
         } catch (Exception err) {
             plugin.getLogger().log(Level.WARNING, "Failed to save translation files.", err);
         }

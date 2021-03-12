@@ -214,48 +214,41 @@ public class MsgUtil {
         gameLanguage = ServiceInjector.getGameLanguage(new MojangGameLanguageImpl(plugin, languageCode));
     }
 
-    public static void loadCfgMessages() throws InvalidConfigurationException {
+    public static void Loadi18nFile() throws InvalidConfigurationException {
         //Update instance
         plugin = QuickShop.getInstance();
         plugin.getLogger().info("Loading plugin translations files...");
+
+        //Load game language i18n
+        loadGameLanguage(plugin.getConfig().getString("game-language", "default"));
+
         /* Check & Load & Create default messages.yml */
         // Use try block to hook any possible exception, make sure not effect our cfgMessnages code.
-        String languageCode = plugin.getConfig().getString("language", "en-US");
-        languageCode = languageCode.replace("_", "-");
-        //noinspection ConstantConditions
+        //en-US
+        String languageCode = plugin.getConfig().getString("language", "en-US").replace("_", "-");
 
-        loadGameLanguage(plugin.getConfig().getString("game-language", "default"));
-        // Init nJson
-        IFile nJson;
-        if (plugin.getResource("lang/" + languageCode + "/messages.json") == null) {
-            nJson =
-                    new JSONFile(
-                            plugin, new File(plugin.getDataFolder(), "messages.json"), "lang-original/messages.json", true);
-        } else {
-            if (!new File(plugin.getDataFolder(), "messages.json").exists()) {
-                Util.debugLog("Creating the built-in language file to drive....");
-                plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
-            }
-            Util.debugLog("Loading up the language file from plugin i18n resources and local drive.");
-
-            nJson =
-                    new JSONFile(
-                            plugin,
-                            new File(plugin.getDataFolder(), "messages.json"),
-                            "lang/" + languageCode + "/messages.json",
-                            true);
+        // Init message file instance
+        IFile messageFile;
+        File extractedMessageFile = new File(plugin.getDataFolder(), "messages.json");
+        String buildInMessageFilePath = "lang/" + languageCode + "/messages.json";
+        if (plugin.getResource(buildInMessageFilePath) == null) {
+            //Use default
+            buildInMessageFilePath = "lang-original/messages.json";
         }
-        nJson.create();
+        messageFile = new JSONFile(plugin, extractedMessageFile, buildInMessageFilePath, true);
+        messageFile.create();
 
+        //Handle old message file and load it up
         File oldMsgFile = new File(plugin.getDataFolder(), "messages.yml");
-        if (oldMsgFile.exists()) { // Old messages file convert.
+        if (oldMsgFile.exists()) {
+            // Old messages file convert.
             plugin.getLogger().info("Converting the old format message.yml to message.json...");
             plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
             YamlConfiguration oldMsgI18n = YamlConfiguration.loadConfiguration(oldMsgFile);
             for (String key : oldMsgI18n.getKeys(true)) {
-                nJson.set(key, oldMsgI18n.get(key));
+                messageFile.set(key, oldMsgI18n.get(key));
             }
-            nJson.save();
+            messageFile.save();
             try {
                 Files.move(
                         oldMsgFile.toPath(), new File(plugin.getDataFolder(), "messages.yml.bak").toPath());
@@ -266,41 +259,59 @@ public class MsgUtil {
             }
             plugin.getLogger().info("Successfully converted, Continue loading...");
         } else {
+            //Load the new files If not exists
             Util.debugLog("Loading language file from exist file...");
-            if (!new File(plugin.getDataFolder(), "messages.json").exists()) {
+            if (!extractedMessageFile.exists()) {
                 plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
-                nJson.loadFromString(Util.readToString(new File(plugin.getDataFolder(), "messages.json").getAbsolutePath()));
-                nJson.set("language-name", languageCode);
+                messageFile.loadFromString(Util.readToString(new File(plugin.getDataFolder(), "messages.json").getAbsolutePath()));
+                messageFile.set("language-name", languageCode);
             }
         }
-        messagei18n = nJson;
-        /* Set default language vesion and update messages.yml */
-        Optional<String> ver = messagei18n.getString("language-version");
-        int versi = 0;
-        if (ver.isPresent()) {
-            String vers = ver.get();
-            try {
-                versi = Integer.parseInt(vers);
-            } catch (NumberFormatException ignore) {
 
+        //Init global instance
+        messagei18n = messageFile;
+        builtInLang = new JSONFile(plugin, buildInMessageFilePath);
+
+
+        //Check the i18n language name and backup
+        if (!messagei18n.getString("language-name").isPresent()) {
+            setAndUpdate("language-name");
+        }
+        String messageCodeInFile = messagei18n.getString("language-name").get();
+        if (!messageCodeInFile.equals(languageCode)) {
+            String backupFileName = "messages-bak-" + UUID.randomUUID().toString() + ".json";
+            Util.debugLog("Language name " + messageCodeInFile + " not matched with " + languageCode + ", replacing with build-in files and renaming current file to " + backupFileName);
+            plugin.getLogger().warning("Language name " + messageCodeInFile + " not matched with " + languageCode + ", replacing with build-in files and renaming current file to " + backupFileName);
+            File pending = new File(plugin.getDataFolder(), "messages.json");
+            try {
+                Files.move(pending.toPath(), new File(plugin.getDataFolder(), backupFileName).toPath());
+                plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
+                messagei18n.loadFromString(Util.readToString(new File(plugin.getDataFolder(), "messages.json").getAbsolutePath()));
+                messagei18n.set("language-name", languageCode);
+            } catch (IOException e) {
+                plugin.getLogger().log(Level.SEVERE, "Failed to backup and save language file", e);
             }
         }
-        if (messagei18n.getInt("language-version") == 0 && versi == 0) {
+
+
+        /* Set default language vesion and update messages.yml */
+        int ver = 0;
+        Optional<String> strVer = messagei18n.getString("language-version");
+        if (strVer.isPresent()) {
+            try {
+                ver = Integer.parseInt(strVer.get());
+            } catch (NumberFormatException ignore) {
+            }
+        }
+        if (ver == 0) {
             messagei18n.set("language-version", 1);
         } else {
-            messagei18n.set("language-version", versi);
+            messagei18n.set("language-version", ver);
         }
-        int i18nCfgVer = messagei18n.getInt("language-version");
-        if (i18nCfgVer == 0) {
-            File msgs = new File(plugin.getDataFolder(), "messages.json");
-            msgs.delete();
-            try {
-                loadCfgMessages();
-                return;
-            } catch (StackOverflowError ignored) {
-            }
-        }
+
         updateMessages(messagei18n.getInt("language-version"));
+
+        //Update colors
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
         /* Print to console this language file's author, contributors, and region*/
         if (!inited) {
@@ -310,7 +321,9 @@ public class MsgUtil {
             // plugin.getLogger().info(getMessage("translation-version"));
             inited = true;
         }
+
         /* Save the upgraded messages.yml */
+        messagei18n.save();
         plugin.getLogger().info("Completed to load plugin translations files.");
     }
 
@@ -978,25 +991,6 @@ public class MsgUtil {
 
     @SneakyThrows
     private static void updateMessages(int selectedVersion) {
-        String languageName = plugin.getConfig().getString("language", "en");
-        if (!messagei18n.getString("language-name").isPresent()) {
-            setAndUpdate("language-name");
-        }
-        if (!messagei18n.getString("language-name").get().equals(languageName)) {
-            Util.debugLog("Language name " + messagei18n.getString("language-name").get() + " not matched with " + languageName);
-            File pending = new File(plugin.getDataFolder(), "messages.json");
-            try {
-                Files.move(pending.toPath(), new File(plugin.getDataFolder(), "messages-bak-" + UUID.randomUUID().toString() + ".json").toPath());
-            } catch (IOException ignored) {
-            }
-//            try {
-//                loadCfgMessages();
-//            } catch (Exception ignore) {
-//            }
-            return;
-        }
-
-        builtInLang = new JSONFile(plugin, "lang/" + languageName + "/messages.json");
         if (selectedVersion == 0) {
             selectedVersion = 1;
         }
@@ -1420,8 +1414,6 @@ public class MsgUtil {
             setAndUpdate("language-version", ++selectedVersion);
         }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
-        messagei18n.save();
-        messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
     }
 
 
