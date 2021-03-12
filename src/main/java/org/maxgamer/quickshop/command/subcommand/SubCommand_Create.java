@@ -137,7 +137,7 @@ public class SubCommand_Create implements CommandProcesser {
                 return;
             }
 
-            if (Util.getSecondHalf(PaperLib.getBlockState(b, false).getState()) != null
+            if (Util.isDoubleChest(PaperLib.getBlockState(b, false).getState())
                     && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("no-double-chests", sender));
                 return;
