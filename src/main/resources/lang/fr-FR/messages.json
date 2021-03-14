@@ -175,11 +175,11 @@
     "feature-not-enabled": "La fonctionnalité n'est pas activée dans la configuration."
   },
   "signs": {
-    "selling": "En vente : {0}",
-    "stack-selling": "En vente : {0}",
+    "selling": "Vendre : {0}",
+    "stack-selling": "Vendre : {0}",
     "header": "&c{0}",
-    "buying": "Achat {0}",
-    "stack-buying": "Achat de {0}",
+    "buying": "Achater {0}",
+    "stack-buying": "Achater {0}",
     "item": "{0}",
     "price": "{0} l'unité",
     "stack-price": "{0} par {1} x {2}",
