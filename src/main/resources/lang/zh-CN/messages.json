@@ -169,10 +169,10 @@
       "removeall": "&e删除指定玩家的&b所有&r&e商店",
       "transfer": "&e将某人的所有商店转移给其他人",
       "removeworld": "&e删除指定世界中的所有商店",
-      "currency": "&eSet or remove the currency settings of the shop"
+      "currency": "&e配置或禁用货币选项"
     },
     "disabled": "&cThis command is disabled: &e{0}",
-    "feature-not-enabled": "The feature not enabled in config."
+    "feature-not-enabled": "配置中未启用此功能。"
   },
   "signs": {
     "selling": "出售 {0}",
@@ -208,7 +208,7 @@
     "item": "&a无限模式: {0} &e[&d&l切换&e]",
     "item-hover": "&e点击以更改商店物品",
     "currency": "&a货币: &b{0} &e[&d&l设置&e]",
-    "currency-hover": "&eClick to set or remove the currency that this shop is using"
+    "currency-hover": "&e点击以设置或移除商店使用的交易货币"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -224,7 +224,7 @@
     "price": "[价格]",
     "range": "[范围]",
     "amount": "[数量]",
-    "currency": "[currency name]",
+    "currency": "货币名称",
     "item": "[item]"
   },
   "updatenotify": {
@@ -294,13 +294,13 @@
     "qa-issues": "&e质量问题：&b{0}%",
     "help-us": "&a[帮助我们提高翻译质量]"
   },
-  "currency-not-exists": "&cCannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.",
-  "currency-set": "&aShop currency successfully set to {0}.",
-  "currency-unset": "&aShop currency removed successfully. Using default settings now.",
-  "currency-not-support": "&cThe economy plugin doesn't support the multi-economy feature.",
-  "item-not-exist": "&cThe item &e{0} &cdoes not exist, please check your spelling.",
-  "backup-success": "&aBackup successfully.",
-  "console-only": "&cThis command only can be executed by Console.",
-  "console-only-danger": "&cThis is a danger command so that only can be executed by Console.",
-  "clean-warning": "&eThis command will purge &call &e shops if the shop is damaged or created in disallowed worlds or selling/buying disallowed items and &c&lIN NOT LOADED WORLD SHOPS&e, make sure you have full backup of your shops data and use &b/qs cleanghost confirm &eto continue."
+  "currency-not-exists": "&c无法找到您想要设置的货币，也许是拼写错误或该货币在这个世界不可用。",
+  "currency-set": "&aShop货币成功设置为 {0}。",
+  "currency-unset": "&aShop货币已成功删除。现在使用默认设置。",
+  "currency-not-support": "&c此经济插件不支持多货币功能。",
+  "item-not-exist": "&c项目 &e{0} &cdo不存在，请检查您的拼写。",
+  "backup-success": "&a备份成功。",
+  "console-only": "&c此命令只能由控制台执行。",
+  "console-only-danger": "&c这是一个危险命令，只能由控制台执行。",
+  "clean-warning": "&eThis 命令将清理&e 商店，如果商店在不允许的世界上被损坏或创建，或出售/购买不允许的项目，以及 &c&lIN不要加载世界商品， 请确保您的商店数据备份完整，并使用 &b/qs 清除主机确认 &eto 继续。"
 }
