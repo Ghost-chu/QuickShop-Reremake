@@ -61,7 +61,7 @@ public class RealDisplayItem extends DisplayItem {
         if (this.item == null) {
             return false;
         }
-        if (shop.isRealDouble() && shop.isLeftShop()) {
+        if (shop.isLeftShop()) {
             return false;
         }
         // return !this.item.getLocation().equals(getDisplayLocation());
@@ -111,7 +111,7 @@ public class RealDisplayItem extends DisplayItem {
             }
             Item eItem = (Item) entity;
             if (eItem.getUniqueId().equals(Objects.requireNonNull(this.item).getUniqueId())) {
-                if (shop.isRealDouble() && shop.isLeftShop()) {
+                if (shop.isLeftShop()) {
                     return;
                 }
                 Util.debugLog(
@@ -150,6 +150,9 @@ public class RealDisplayItem extends DisplayItem {
     @Override
     public boolean removeDupe() {
         Util.ensureThread(false);
+        if (shop.isLeftShop()) {
+            return false;
+        }
         if (this.item == null) {
             Util.debugLog("Warning: Trying to removeDupe for a null display shop.");
             return false;
@@ -220,7 +223,7 @@ public class RealDisplayItem extends DisplayItem {
     @Override
     public void spawn() {
         Util.ensureThread(false);
-        if (shop.isRealDouble() && shop.isLeftShop()) {
+        if (shop.isLeftShop()) {
             return;
         }
         if (shop.isDeleted() || !shop.isLoaded()) {

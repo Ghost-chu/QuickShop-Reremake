@@ -164,7 +164,7 @@ public class ContainerShop implements Shop {
                 displayItem.remove();
             }
             // Don't make an item for this chest if it's a left shop.
-            if (isRealDouble() && isLeftShop()
+            if (isLeftShop()
                 && Objects.requireNonNull(getAttachedShop()).getDisplayItem() != null) {
                 getAttachedShop().refresh();
                 return;
@@ -1260,6 +1260,9 @@ public class ContainerShop implements Shop {
     @Override
     public boolean isLeftShop() {
         if (getAttachedShop() == null) {
+            return false;
+        }
+        if (!isRealDouble()) {
             return false;
         }
 
