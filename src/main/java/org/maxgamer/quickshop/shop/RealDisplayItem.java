@@ -324,9 +324,11 @@ public class RealDisplayItem extends DisplayItem {
             return false;
         }
         // If it's a left shop, check the attached shop's item instead.
-        if (shop.isLeftShop() && shop.getAttachedShop().getDisplayItem() != null
-            && shop.getAttachedShop().getDisplayItem().isSpawned()) {
-            return true;
+        if (shop.isLeftShop()) {
+            if (shop.getAttachedShop().getDisplayItem() == null) {
+                return false;
+            }
+            return shop.getAttachedShop().getDisplayItem().isSpawned();
         }
         return this.item.isValid();
     }
