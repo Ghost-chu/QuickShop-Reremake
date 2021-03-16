@@ -31,6 +31,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.type.Chest;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -1266,19 +1267,19 @@ public class ContainerShop implements Shop {
             return false;
         }
 
-        float yaw = getLocation().getYaw();
-        if (yaw == 0) {
-            // left block has a smaller x value
-            return getLocation().getX() < getAttachedShop().getLocation().getX();
-        } else if (yaw == 180) {
-            // left block has greater x value
-            return getLocation().getX() > getAttachedShop().getLocation().getX();
-        } else if (yaw > 45 && yaw < 135) {
-            // left block has a smaller z value
-            return getLocation().getZ() < getAttachedShop().getLocation().getZ();
-        } else if (yaw > 225 && yaw < 315) {
-            // left block has a greater z value
-            return getLocation().getZ() > getAttachedShop().getLocation().getZ();
+        switch (((Chest) getLocation().getBlock().getBlockData()).getFacing()) {
+            case WEST:
+                // left block has a smaller z value
+                return getLocation().getZ() < getAttachedShop().getLocation().getZ();
+            case EAST:
+                // left block has a greater z value
+                return getLocation().getZ() > getAttachedShop().getLocation().getZ();
+            case NORTH:
+                // left block has greater x value
+                return getLocation().getX() > getAttachedShop().getLocation().getX();
+            case SOUTH:
+                // left block has a smaller x value
+                return getLocation().getX() < getAttachedShop().getLocation().getX();
         }
         return false;
     }
