@@ -136,6 +136,7 @@ public abstract class DisplayItem {
         }
         String defaultMark = ShopProtectionFlag.getDefaultMark();
         String shopLocation = shop.getLocation().toString();
+        String attachedShopLocation = (shop.getAttachedShop() == null ? "null" : shop.getAttachedShop().getLocation().toString());
         //noinspection ConstantConditions
         for (String lore : iMeta.getLore()) {
             try {
@@ -149,7 +150,8 @@ public abstract class DisplayItem {
                 if (!ShopProtectionFlag.getMark().equals(defaultMark)) {
                     continue;
                 }
-                if (shopProtectionFlag.getShopLocation().equals(shopLocation)) {
+                if (shopProtectionFlag.getShopLocation().equals(shopLocation)
+                || shopProtectionFlag.getShopLocation().equals(attachedShopLocation)) {
                     return true;
                 }
             } catch (JsonSyntaxException e) {
