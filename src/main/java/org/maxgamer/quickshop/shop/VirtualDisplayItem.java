@@ -93,6 +93,10 @@ public class VirtualDisplayItem extends DisplayItem {
 
     private void initFakeDropItemPacket() {
 
+        if (shop.isLeftShop()) {
+            shop.getAttachedShop().refresh();
+            return;
+        }
         //First, create a new packet to spawn item
         fakeItemPacket = protocolManager.createPacket(PacketType.Play.Server.SPAWN_ENTITY);
 
@@ -269,8 +273,8 @@ public class VirtualDisplayItem extends DisplayItem {
     @Override
     public void respawn() {
         Util.ensureThread(false);
-        sendPacketToAll(fakeItemDestroyPacket);
-        sendFakeItemToAll();
+        remove();
+        spawn();
     }
 
     public void sendFakeItemToAll() {
@@ -287,7 +291,8 @@ public class VirtualDisplayItem extends DisplayItem {
     @Override
     public void spawn() {
         Util.ensureThread(false);
-        if (shop.isRealDouble() && shop.isLeftShop()) {
+        if (shop.isLeftShop()) {
+            shop.getAttachedShop().refresh();
             return;
         }
         if (shop.isDeleted() || !shop.isLoaded()) {
@@ -325,7 +330,7 @@ public class VirtualDisplayItem extends DisplayItem {
                 public void onPacketSending(@NotNull PacketEvent event) {
                     //is really full chunk data
                     boolean isFull = event.getPacket().getBooleans().read(0);
-                    if (!shop.isLoaded() || !isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
+                    if (!shop.isLoaded() || !isDisplay || !isFull || !Util.isLoaded(shop.getLocation()) || shop.isLeftShop()) {
                         return;
                     }
                     //chunk x
@@ -410,6 +415,9 @@ public class VirtualDisplayItem extends DisplayItem {
 
     @Override
     public boolean isSpawned() {
+        if (shop.isLeftShop()) {
+            return (Objects.requireNonNull(shop.getAttachedShop().getDisplayItem())).isSpawned();
+        }
         return isDisplay;
     }
 
