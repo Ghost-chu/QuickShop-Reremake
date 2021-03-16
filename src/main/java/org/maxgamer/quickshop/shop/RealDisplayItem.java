@@ -134,7 +134,7 @@ public class RealDisplayItem extends DisplayItem {
     @Override
     public void remove() {
         Util.ensureThread(false);
-        if (this.item == null || shop.isLeftShop()) {
+        if (this.item == null) {
             Util.debugLog(
                 "Ignore the Item removing because the Item is already gone or it's a left shop.");
             return;
