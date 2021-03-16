@@ -287,6 +287,9 @@ public class VirtualDisplayItem extends DisplayItem {
     @Override
     public void spawn() {
         Util.ensureThread(false);
+        if (shop.isRealDouble() && shop.isLeftShop()) {
+            return;
+        }
         if (shop.isDeleted() || !shop.isLoaded()) {
             return;
         }
@@ -391,8 +394,18 @@ public class VirtualDisplayItem extends DisplayItem {
     }
 
     @Override
-    public @NotNull Location getDisplayLocation() {
-        return shop.getLocation().clone().add(0.5, 1.2, 0.5);
+    public Location getDisplayLocation() {
+        Util.ensureThread(false);
+        if (shop.isRealDouble()) {
+            if (shop.isLeftShop()) {
+                return null;
+            }
+            double avgX = (shop.getLocation().getX() + shop.getAttachedShop().getLocation().getX()) / 2;
+            double avgZ = (shop.getLocation().getZ() + shop.getAttachedShop().getLocation().getZ()) / 2;
+            Location newloc = new Location(shop.getLocation().getWorld(), avgX, shop.getLocation().getY(), avgZ, shop.getLocation().getYaw(), shop.getLocation().getPitch());
+            return newloc.add(0.5, 1.2, 0.5);
+        }
+        return this.shop.getLocation().clone().add(0.5, 1.2, 0.5);
     }
 
     @Override

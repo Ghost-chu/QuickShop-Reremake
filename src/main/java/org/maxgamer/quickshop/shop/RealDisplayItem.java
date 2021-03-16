@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.shop;
 
+import java.util.ArrayList;
 import lombok.ToString;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -60,10 +61,13 @@ public class RealDisplayItem extends DisplayItem {
         if (this.item == null) {
             return false;
         }
+        if (shop.isRealDouble() && shop.isLeftShop()) {
+            return false;
+        }
         // return !this.item.getLocation().equals(getDisplayLocation());
         /* We give 0.6 block to allow item drop on the chest, not floating on the air. */
         if (!Objects.requireNonNull(this.item.getLocation().getWorld())
-                .equals(Objects.requireNonNull(getDisplayLocation()).getWorld())) {
+            .equals(Objects.requireNonNull(getDisplayLocation()).getWorld())) {
             return true;
         }
         return this.item.getLocation().distance(getDisplayLocation()) > 0.6;
@@ -100,14 +104,22 @@ public class RealDisplayItem extends DisplayItem {
 
     public void fixDisplayMovedOld() {
         Util.ensureThread(false);
-        for (Entity entity : Objects.requireNonNull(this.shop.getLocation().getWorld()).getEntities()) {
+        for (Entity entity : Objects.requireNonNull(this.shop.getLocation().getWorld())
+            .getEntities()) {
             if (!(entity instanceof Item)) {
                 continue;
             }
             Item eItem = (Item) entity;
             if (eItem.getUniqueId().equals(Objects.requireNonNull(this.item).getUniqueId())) {
-                Util.debugLog("Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem.getLocation());
-                plugin.getBukkitAPIWrapper().teleportEntity(eItem, Objects.requireNonNull(getDisplayLocation()), PlayerTeleportEvent.TeleportCause.UNKNOWN);
+                if (shop.isRealDouble() && shop.isLeftShop()) {
+                    return;
+                }
+                Util.debugLog(
+                    "Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem
+                        .getLocation());
+                plugin.getBukkitAPIWrapper()
+                    .teleportEntity(eItem, Objects.requireNonNull(getDisplayLocation()),
+                        PlayerTeleportEvent.TeleportCause.UNKNOWN);
                 return;
             }
         }
@@ -122,15 +134,16 @@ public class RealDisplayItem extends DisplayItem {
     @Override
     public void remove() {
         Util.ensureThread(false);
-        if (this.item == null) {
-            Util.debugLog("Ignore the Item removing because the Item is already gone.");
+        if (this.item == null || shop.isLeftShop()) {
+            Util.debugLog(
+                "Ignore the Item removing because the Item is already gone or it's a left shop.");
             return;
         }
         this.item.remove();
         this.item = null;
         this.guardedIstack = null;
-        ShopDisplayItemDespawnEvent shopDisplayItemDespawnEvent =
-                new ShopDisplayItemDespawnEvent(shop, originalItemStack, DisplayType.REALITEM);
+        ShopDisplayItemDespawnEvent shopDisplayItemDespawnEvent = new ShopDisplayItemDespawnEvent(
+            shop, originalItemStack, DisplayType.REALITEM);
         plugin.getServer().getPluginManager().callEvent(shopDisplayItemDespawnEvent);
     }
 
@@ -144,7 +157,18 @@ public class RealDisplayItem extends DisplayItem {
 
         boolean removed = false;
         // Chunk chunk = shop.getLocation().getChunk();
-        for (Entity entity : item.getNearbyEntities(1.5, 1.5, 1.5)) {
+
+        ArrayList<Entity> elist = new ArrayList<>(item.getNearbyEntities(1.5, 1.5, 1.5));
+        if (shop.isRealDouble()) {
+            elist.addAll(item.getWorld()
+                .getNearbyEntities(Objects.requireNonNull(getDoubleShopDisplayLocations(true)), 1.5,
+                    1.5, 1.5));
+            elist.addAll(item.getWorld()
+                .getNearbyEntities(Objects.requireNonNull(getDoubleShopDisplayLocations(false)),
+                    1.5, 1.5, 1.5));
+        }
+
+        for (Entity entity : elist) {
             if (entity.getType() != EntityType.DROPPED_ITEM) {
                 continue;
             }
@@ -152,7 +176,9 @@ public class RealDisplayItem extends DisplayItem {
             UUID displayUUID = this.item.getUniqueId();
             if (!eItem.getUniqueId().equals(displayUUID)) {
                 if (DisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
-                    Util.debugLog("Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem.getLocation());
+                    Util.debugLog(
+                        "Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem
+                            .getLocation());
                     entity.remove();
                     removed = true;
                 }
@@ -172,7 +198,8 @@ public class RealDisplayItem extends DisplayItem {
     public void safeGuard(@NotNull Entity entity) {
         Util.ensureThread(false);
         if (!(entity instanceof Item)) {
-            Util.debugLog("Failed to safeGuard " + entity.getLocation() + ", cause target not a Item");
+            Util.debugLog(
+                "Failed to safeGuard " + entity.getLocation() + ", cause target not a Item");
             return;
         }
         Item item = (Item) entity;
@@ -193,11 +220,15 @@ public class RealDisplayItem extends DisplayItem {
     @Override
     public void spawn() {
         Util.ensureThread(false);
+        if (shop.isRealDouble() && shop.isLeftShop()) {
+            return;
+        }
         if (shop.isDeleted() || !shop.isLoaded()) {
             return;
         }
         if (shop.getLocation().getWorld() == null) {
-            Util.debugLog("Canceled the displayItem spawning because the location in the world is null.");
+            Util.debugLog(
+                "Canceled the displayItem spawning because the location in the world is null.");
             return;
         }
 
@@ -207,27 +238,28 @@ public class RealDisplayItem extends DisplayItem {
         }
         if (item != null && item.isValid()) {
             Util.debugLog(
-                    "Warning: Spawning the Dropped Item for DisplayItem when there is already an existing Dropped Item, May cause a duplicated Dropped Item!");
+                "Warning: Spawning the Dropped Item for DisplayItem when there is already an existing Dropped Item, May cause a duplicated Dropped Item!");
             MsgUtil.debugStackTrace(Thread.currentThread().getStackTrace());
         }
         if (!Util.isDisplayAllowBlock(
-                Objects.requireNonNull(getDisplayLocation()).getBlock().getType())) {
+            Objects.requireNonNull(getDisplayLocation()).getBlock().getType())) {
             Util.debugLog(
-                    "Can't spawn the displayItem because there is not an AIR block above the shopblock.");
+                "Can't spawn the displayItem because there is not an AIR block above the shopblock.");
             return;
         }
 
-        ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent =
-                new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.REALITEM);
+        ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop,
+            originalItemStack, DisplayType.REALITEM);
         plugin.getServer().getPluginManager().callEvent(shopDisplayItemSpawnEvent);
+
         if (shopDisplayItemSpawnEvent.isCancelled()) {
             Util.debugLog(
-                    "Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
+                "Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
             return;
         }
         this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
-        this.item =
-                this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack);
+        this.item = this.shop.getLocation().getWorld()
+            .dropItem(getDisplayLocation(), this.guardedIstack);
         this.item.setItemStack(this.guardedIstack);
         safeGuard(this.item);
     }
@@ -237,15 +269,61 @@ public class RealDisplayItem extends DisplayItem {
         return this.item;
     }
 
+    /**
+     * Gets the display location for an item. If it is a double shop and it is not the left shop,
+     * it will average the locations of the two chests comprising it to be perfectly in the middle.
+     * If it is the left shop, it will return null since the left shop does not spawn an item.
+     * Otherwise, it will give you the middle of the single chest.
+     *
+     * @return Location to spawn the DisplayItem.
+     */
     @Override
     public @Nullable Location getDisplayLocation() {
+        Util.ensureThread(false);
+        if (shop.isRealDouble()) {
+            if (shop.isLeftShop()) {
+                return null;
+            }
+            double avgX =
+                (shop.getLocation().getX() + shop.getAttachedShop().getLocation().getX()) / 2;
+            double avgZ =
+                (shop.getLocation().getZ() + shop.getAttachedShop().getLocation().getZ()) / 2;
+            Location newloc = new Location(shop.getLocation().getWorld(), avgX,
+                shop.getLocation().getY(), avgZ,
+                shop.getLocation().getYaw(), shop.getLocation().getPitch());
+            return newloc.add(0.5, 1.2, 0.5);
+        }
         return this.shop.getLocation().clone().add(0.5, 1.2, 0.5);
+    }
+
+    /**
+     * Gets either the item spawn location of this item's chest, or the attached chest.
+     * Used for checking for duplicates.
+     *
+     * @param thisItem Whether to check this item's spawn location or the attached chest's.
+     * @return The display location of the item.
+     */
+    public @Nullable Location getDoubleShopDisplayLocations(boolean thisItem) {
+        Util.ensureThread(false);
+        if (!shop.isRealDouble()) {
+            return null;
+        }
+        if (thisItem) {
+            return shop.getLocation().clone().add(0.5, 1.2, 0.5);
+        } else {
+            return shop.getAttachedShop().getLocation().clone().add(0.5, 1.2, 0.5);
+        }
     }
 
     @Override
     public boolean isSpawned() {
         if (this.item == null) {
             return false;
+        }
+        // If it's a left shop, check the attached shop's item instead.
+        if (shop.isLeftShop() && shop.getAttachedShop().getDisplayItem() != null
+            && shop.getAttachedShop().getDisplayItem().isSpawned()) {
+            return true;
         }
         return this.item.isValid();
     }

@@ -55,6 +55,7 @@ import java.util.logging.Level;
  */
 @EqualsAndHashCode
 public class ContainerShop implements Shop {
+
     private static final String shopSignPrefix = "§d§o §r";
     private static final String shopSignPattern = "§d§o ";
     @NotNull
@@ -103,13 +104,13 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * Adds a new shop.
-     * You need call ShopManager#loadShop if you create from outside of ShopLoader.
+     * Adds a new shop. You need call ShopManager#loadShop if you create from outside of
+     * ShopLoader.
      *
      * @param location  The location of the chest block
      * @param price     The cost per item
-     * @param item      The itemstack with the properties we want. This is .cloned, no need to worry about
-     *                  references
+     * @param item      The itemstack with the properties we want. This is .cloned, no need to worry
+     *                  about references
      * @param moderator The modertators
      * @param type      The shop type
      * @param unlimited The unlimited
@@ -117,14 +118,14 @@ public class ContainerShop implements Shop {
      * @param extra     The extra data saved by addon
      */
     public ContainerShop(
-            @NotNull QuickShop plugin,
-            @NotNull Location location,
-            double price,
-            @NotNull ItemStack item,
-            @NotNull ShopModerator moderator,
-            boolean unlimited,
-            @NotNull ShopType type,
-            @NotNull Map<String, Map<String, Object>> extra) {
+        @NotNull QuickShop plugin,
+        @NotNull Location location,
+        double price,
+        @NotNull ItemStack item,
+        @NotNull ShopModerator moderator,
+        boolean unlimited,
+        @NotNull ShopType type,
+        @NotNull Map<String, Map<String, Object>> extra) {
         Util.ensureThread(false);
         this.location = location;
         this.price = price;
@@ -140,7 +141,8 @@ public class ContainerShop implements Shop {
                 Util.debugLog("Shop item display is: " + meta.getDisplayName());
                 //https://hub.spigotmc.org/jira/browse/SPIGOT-5964
                 if (meta.getDisplayName().matches("\\{.*\\}")) {
-                    meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(GsonComponentSerializer.gson().deserialize(meta.getDisplayName())));
+                    meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(
+                        GsonComponentSerializer.gson().deserialize(meta.getDisplayName())));
                     //Correct both items
                     item.setItemMeta(meta);
                     this.item.setItemMeta(meta);
@@ -158,10 +160,20 @@ public class ContainerShop implements Shop {
     private void initDisplayItem() {
         Util.ensureThread(false);
         if (plugin.isDisplay()) {
+            if (displayItem != null) {
+                displayItem.remove();
+            }
+            // Don't make an item for this chest if it's a left shop.
+            if (isRealDouble() && isLeftShop()
+                && Objects.requireNonNull(getAttachedShop()).getDisplayItem() != null) {
+                getAttachedShop().refresh();
+                return;
+            }
+
             switch (DisplayItem.getNowUsing()) {
                 case UNKNOWN:
                     Util.debugLog(
-                            "Failed to create a ContainerShop displayItem, the type is unknown, fallback to RealDisplayItem");
+                        "Failed to create a ContainerShop displayItem, the type is unknown, fallback to RealDisplayItem");
                     this.displayItem = new RealDisplayItem(this);
                     break;
                 case REALITEM:
@@ -172,8 +184,10 @@ public class ContainerShop implements Shop {
                     break;
                 case VIRTUALITEM:
                     try {
-                        if (!GameVersion.get(ReflectFactory.getServerVersion()).isVirtualDisplaySupports()) {
-                            throw new IllegalStateException("Version not supports Virtual DisplayItem.");
+                        if (!GameVersion.get(ReflectFactory.getServerVersion())
+                            .isVirtualDisplaySupports()) {
+                            throw new IllegalStateException(
+                                "Version not supports Virtual DisplayItem.");
                         }
                         this.displayItem = new VirtualDisplayItem(this);
 
@@ -185,12 +199,14 @@ public class ContainerShop implements Shop {
                         plugin.saveConfig();
                         this.displayItem = new RealDisplayItem(this);
                         //do not throw
-                        plugin.getLogger().log(Level.SEVERE, "Failed to initialize VirtualDisplayItem, fallback to RealDisplayItem, are you using the latest version of ProtocolLib?", e);
+                        plugin.getLogger().log(Level.SEVERE,
+                            "Failed to initialize VirtualDisplayItem, fallback to RealDisplayItem, are you using the latest version of ProtocolLib?",
+                            e);
                     }
                     break;
                 default:
                     Util.debugLog(
-                            "Warning: Failed to create a ContainerShop displayItem, the type we didn't know, fallback to RealDisplayItem");
+                        "Warning: Failed to create a ContainerShop displayItem, the type we didn't know, fallback to RealDisplayItem");
                     this.displayItem = new RealDisplayItem(this);
                     break;
             }
@@ -232,7 +248,8 @@ public class ContainerShop implements Shop {
         boolean result = this.moderator.addStaff(player);
         update();
         if (result) {
-            Util.mainThreadRun(() -> plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
+            Util.mainThreadRun(() -> plugin.getServer().getPluginManager()
+                .callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
         }
         return result;
     }
@@ -246,7 +263,8 @@ public class ContainerShop implements Shop {
      * @param amount         The amount to buy
      */
     @Override
-    public void buy(@NotNull UUID buyer, @NotNull Inventory buyerInventory, @NotNull Location loc2Drop, int amount) {
+    public void buy(@NotNull UUID buyer, @NotNull Inventory buyerInventory,
+        @NotNull Location loc2Drop, int amount) {
         Util.ensureThread(false);
         amount = amount * item.getAmount();
         if (amount < 0) {
@@ -271,16 +289,16 @@ public class ContainerShop implements Shop {
             // This should not happen.
             if (amount > 0) {
                 plugin
-                        .getLogger()
-                        .log(
-                                Level.WARNING,
-                                "Could not take all items from a players inventory on purchase! "
-                                        + buyer
-                                        + ", missing: "
-                                        + amount
-                                        + ", item: "
-                                        + Util.getItemStackName(this.getItem())
-                                        + "!");
+                    .getLogger()
+                    .log(
+                        Level.WARNING,
+                        "Could not take all items from a players inventory on purchase! "
+                            + buyer
+                            + ", missing: "
+                            + amount
+                            + ", item: "
+                            + Util.getItemStackName(this.getItem())
+                            + "!");
             }
         } else {
             Inventory chestInv = this.getInventory();
@@ -312,7 +330,8 @@ public class ContainerShop implements Shop {
     @Override
     public void checkDisplay() {
         Util.ensureThread(false);
-        if (!plugin.isDisplay() || !this.isLoaded || this.isDeleted()) { // FIXME: Reinit scheduler on reloading config
+        if (!plugin.isDisplay() || !this.isLoaded || this
+            .isDeleted()) { // FIXME: Reinit scheduler on reloading config
             return;
         }
 
@@ -320,19 +339,19 @@ public class ContainerShop implements Shop {
             Util.debugLog("Warning: DisplayItem is null, this shouldn't happened...");
             StackTraceElement traceElements = Thread.currentThread().getStackTrace()[2];
             Util.debugLog(
-                    "Call from: "
-                            + traceElements.getClassName()
-                            + "#"
-                            + traceElements.getMethodName()
-                            + "%"
-                            + traceElements.getLineNumber());
+                "Call from: "
+                    + traceElements.getClassName()
+                    + "#"
+                    + traceElements.getMethodName()
+                    + "%"
+                    + traceElements.getLineNumber());
             return;
         }
 
         if (!this.displayItem.isSpawned()) {
             /* Not spawned yet. */
             //Util.debugLog("Target item not spawned, spawning for shop " + this.getLocation());
-            this.displayItem.spawn();
+            displayItem.spawn();
         } else {
             /* If not spawned, we didn't need check these, only check them when we need. */
             if (this.displayItem.checkDisplayNeedRegen()) {
@@ -354,7 +373,8 @@ public class ContainerShop implements Shop {
     public void clearStaffs() {
         setDirty();
         this.moderator.clearStaffs();
-        Util.mainThreadRun(() -> plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
+        Util.mainThreadRun(() -> plugin.getServer().getPluginManager()
+            .callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
         update();
     }
 
@@ -365,7 +385,8 @@ public class ContainerShop implements Shop {
         boolean result = this.moderator.delStaff(player);
         update();
         if (result) {
-            Util.mainThreadRun(() -> plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
+            Util.mainThreadRun(() -> plugin.getServer().getPluginManager()
+                .callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
         }
         return result;
     }
@@ -387,6 +408,7 @@ public class ContainerShop implements Shop {
     @Override
     public void delete(boolean memoryOnly) {
         Util.ensureThread(false);
+        ContainerShop neighbor = getAttachedShop();
         setDirty();
         ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(this, memoryOnly);
         if (Util.fireCancellableEvent(shopDeleteEvent)) {
@@ -401,18 +423,29 @@ public class ContainerShop implements Shop {
         if (memoryOnly) {
             // Delete it from memory
             plugin.getShopManager().removeShop(this);
+            onUnload();
         } else {
             // Delete the signs around it
             for (Sign s : this.getSigns()) {
                 s.getBlock().setType(Material.AIR);
             }
+            if (displayItem != null) {
+                displayItem.remove();
+            }
             // Delete it from the database
             // Refund if necessary
             if (plugin.getConfig().getBoolean("shop.refund")) {
-                plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"), getLocation().getWorld(), getCurrency());
+                plugin.getEconomy()
+                    .deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"),
+                        Objects.requireNonNull(getLocation().getWorld()), getCurrency());
             }
             plugin.getShopManager().removeShop(this);
+            onUnload();
             plugin.getDatabaseHelper().removeShop(this);
+        }
+        // Makes sure deleting a shop will fix the item position.
+        if (neighbor != null) {
+            neighbor.refresh();
         }
     }
 
@@ -481,7 +514,7 @@ public class ContainerShop implements Shop {
         String name = player.getName();
         if (name == null || name.isEmpty()) {
             name = MsgUtil.getMessageOfflinePlayer(
-                    "unknown-owner", player);
+                "unknown-owner", player);
         }
         if (forceUsername) {
             return name;
@@ -531,7 +564,8 @@ public class ContainerShop implements Shop {
      * @param amount          The amount to sell
      */
     @Override
-    public void sell(@NotNull UUID seller, @NotNull Inventory sellerInventory, @NotNull Location loc2Drop, int amount) {
+    public void sell(@NotNull UUID seller, @NotNull Inventory sellerInventory,
+        @NotNull Location loc2Drop, int amount) {
         Util.ensureThread(false);
         amount = item.getAmount() * amount;
         if (amount < 0) {
@@ -590,17 +624,21 @@ public class ContainerShop implements Shop {
         if (this.isSelling()) {
             if (this.getItem().getAmount() > 1) {
                 if (this.getRemainingStock() == -1) {
-                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.stack-selling", player, MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
+                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.stack-selling", player,
+                        MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
                 } else {
                     lines[1] =
-                            MsgUtil.getMessageOfflinePlayer("signs.stack-selling", player, Integer.toString(getRemainingStock()));
+                        MsgUtil.getMessageOfflinePlayer("signs.stack-selling", player,
+                            Integer.toString(getRemainingStock()));
                 }
             } else {
                 if (this.getRemainingStock() == -1) {
-                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.selling", player, MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
+                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.selling", player,
+                        MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
                 } else {
                     lines[1] =
-                            MsgUtil.getMessageOfflinePlayer("signs.selling", player, Integer.toString(this.getRemainingStock()));
+                        MsgUtil.getMessageOfflinePlayer("signs.selling", player,
+                            Integer.toString(this.getRemainingStock()));
                 }
             }
 
@@ -608,17 +646,21 @@ public class ContainerShop implements Shop {
         } else if (this.isBuying()) {
             if (this.getItem().getAmount() > 1) {
                 if (this.getRemainingSpace() == -1) {
-                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.stack-buying", player, MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
+                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.stack-buying", player,
+                        MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
                 } else {
                     lines[1] =
-                            MsgUtil.getMessageOfflinePlayer("signs.stack-buying", player, Integer.toString(getRemainingSpace()));
+                        MsgUtil.getMessageOfflinePlayer("signs.stack-buying", player,
+                            Integer.toString(getRemainingSpace()));
                 }
             } else {
                 if (this.getRemainingSpace() == -1) {
-                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.buying", player, MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
+                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.buying", player,
+                        MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
                 } else {
                     lines[1] =
-                            MsgUtil.getMessageOfflinePlayer("signs.buying", player, Integer.toString(this.getRemainingSpace()));
+                        MsgUtil.getMessageOfflinePlayer("signs.buying", player,
+                            Integer.toString(this.getRemainingSpace()));
                 }
             }
 //            if (this.getRemainingSpace() == -1) {
@@ -633,12 +675,15 @@ public class ContainerShop implements Shop {
 //            }
         }
         lines[2] =
-                MsgUtil.getMessageOfflinePlayer(
-                        "signs.item", player, Util.getItemStackName(this.getItem()));
+            MsgUtil.getMessageOfflinePlayer(
+                "signs.item", player, Util.getItemStackName(this.getItem()));
         if (this.isStackingShop()) {
-            lines[3] = MsgUtil.getMessageOfflinePlayer("signs.stack-price", player, Util.format(this.getPrice(), this), Integer.toString(item.getAmount()), Util.getItemStackName(item));
+            lines[3] = MsgUtil.getMessageOfflinePlayer("signs.stack-price", player,
+                Util.format(this.getPrice(), this), Integer.toString(item.getAmount()),
+                Util.getItemStackName(item));
         } else {
-            lines[3] = MsgUtil.getMessageOfflinePlayer("signs.price", player, Util.format(this.getPrice(), this));
+            lines[3] = MsgUtil
+                .getMessageOfflinePlayer("signs.price", player, Util.format(this.getPrice(), this));
 
         }
         //new pattern
@@ -702,9 +747,13 @@ public class ContainerShop implements Shop {
         String world = Objects.requireNonNull(this.getLocation().getWorld()).getName();
         int unlimited = this.isUnlimited() ? 1 : 0;
         try {
-            plugin.getDatabaseHelper().updateShop(ShopModerator.serialize(this.moderator.clone()), this.getItem(), unlimited, shopType.toID(), this.getPrice(), x, y, z, world, this.saveExtraToJson());
+            plugin.getDatabaseHelper()
+                .updateShop(ShopModerator.serialize(this.moderator.clone()), this.getItem(),
+                    unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
+                    this.saveExtraToJson());
         } catch (Exception e) {
-            plugin.getLogger().log(Level.WARNING, "Could not update a shop in the database! Changes will revert after a reboot!", e);
+            plugin.getLogger().log(Level.WARNING,
+                "Could not update a shop in the database! Changes will revert after a reboot!", e);
         }
         this.dirty = false;
     }
@@ -747,9 +796,10 @@ public class ContainerShop implements Shop {
         }
         if (displayItem != null) {
             displayItem.remove();
-            initDisplayItem();
-            displayItem.spawn();
         }
+        initDisplayItem();
+        displayItem.spawn();
+
         setSignText();
     }
 
@@ -771,11 +821,12 @@ public class ContainerShop implements Shop {
         plugin.getShopManager().loadShop(this.getLocation().getWorld().getName(), this);
         plugin.getShopManager().getLoadedShops().add(this);
         plugin.getShopContainerWatcher().scheduleCheck(this);
+
         // check price restriction
-
-
-        if (plugin.getShopManager().getPriceLimiter().check(item, price) != PriceLimiter.Status.PASS) {
-            Entry<Double, Double> priceRestriction = Util.getPriceRestriction(this.getMaterial()); //TODO Adapt priceLimiter, also improve priceLimiter return a container
+        if (plugin.getShopManager().getPriceLimiter().check(item, price)
+            != PriceLimiter.Status.PASS) {
+            Entry<Double, Double> priceRestriction = Util.getPriceRestriction(
+                this.getMaterial()); //TODO Adapt priceLimiter, also improve priceLimiter return a container
             if (priceRestriction != null) {
                 if (price < priceRestriction.getKey()) {
                     setDirty();
@@ -788,7 +839,6 @@ public class ContainerShop implements Shop {
                 }
             }
         }
-        this.checkDisplay();
     }
 
     /**
@@ -809,7 +859,8 @@ public class ContainerShop implements Shop {
         setDirty();
         this.moderator = shopModerator;
         update();
-        Util.mainThreadRun(() -> plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
+        Util.mainThreadRun(() -> plugin.getServer().getPluginManager()
+            .callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
     }
 
     /**
@@ -835,12 +886,14 @@ public class ContainerShop implements Shop {
         //then change the sign
         Util.mainThreadRun(() -> {
             for (Sign shopSign : signs) {
-                shopSign.setLine(0, MsgUtil.getMessageOfflinePlayer("signs.header", offlinePlayer, ownerName(false)));
+                shopSign.setLine(0, MsgUtil
+                    .getMessageOfflinePlayer("signs.header", offlinePlayer, ownerName(false)));
                 //Don't forgot update it
                 shopSign.update(true);
             }
             //Event
-            plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
+            plugin.getServer().getPluginManager()
+                .callEvent(new ShopModeratorChangedEvent(this, this.moderator));
         });
         update();
     }
@@ -917,7 +970,8 @@ public class ContainerShop implements Shop {
         }
         setDirty();
         if (Util.fireCancellableEvent(new ShopTypeChangeEvent(this, this.shopType, newShopType))) {
-            Util.debugLog("Some addon cancelled shop type changes, target shop: " + this.toString());
+            Util.debugLog(
+                "Some addon cancelled shop type changes, target shop: " + this.toString());
             return;
         }
         this.shopType = newShopType;
@@ -956,7 +1010,8 @@ public class ContainerShop implements Shop {
             }
             Sign sign = (Sign) state;
             String[] lines = sign.getLines();
-            if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3].isEmpty()) {
+            if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3]
+                .isEmpty()) {
                 signs.add(sign); //NEW SIGN
                 continue;
             }
@@ -965,10 +1020,11 @@ public class ContainerShop implements Shop {
             if (lines[1].startsWith(shopSignPattern)) {
                 signs.add(sign);
             } else {
-                String adminShopHeader = MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
+                String adminShopHeader = MsgUtil
+                    .getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
                         "admin-shop", plugin.getServer().getOfflinePlayer(this.getOwner())));
                 String signHeaderUsername =
-                        MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
+                    MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
                 if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
                     signs.add(sign);
                     //TEXT SIGN
@@ -986,7 +1042,8 @@ public class ContainerShop implements Shop {
     @NotNull
     @Override
     public List<UUID> getStaffs() {
-        return new ArrayList<>(this.moderator.getStaffs()); //Clone only, so make sure external calling will use addStaff
+        return new ArrayList<>(this.moderator
+            .getStaffs()); //Clone only, so make sure external calling will use addStaff
     }
 
     @Override
@@ -1070,16 +1127,17 @@ public class ContainerShop implements Shop {
     @Override
     public String toString() {
         StringBuilder sb =
-                new StringBuilder(
-                        "Shop "
-                                + (location.getWorld() == null ? "unloaded world" : location.getWorld().getName())
-                                + "("
-                                + location.getBlockX()
-                                + ", "
-                                + location.getBlockY()
-                                + ", "
-                                + location.getBlockZ()
-                                + ")");
+            new StringBuilder(
+                "Shop "
+                    + (location.getWorld() == null ? "unloaded world"
+                    : location.getWorld().getName())
+                    + "("
+                    + location.getBlockX()
+                    + ", "
+                    + location.getBlockY()
+                    + ", "
+                    + location.getBlockZ()
+                    + ")");
         sb.append(" Owner: ").append(this.ownerName(false)).append(" - ").append(getOwner());
         if (isUnlimited()) {
             sb.append(" Unlimited: true");
@@ -1112,19 +1170,19 @@ public class ContainerShop implements Shop {
     /**
      * @return The chest this shop is based on.
      */
-
     public @Nullable Inventory getInventory() {
         Util.ensureThread(false);
         BlockState state = PaperLib.getBlockState(location.getBlock(), false).getState();
         try {
             if (state.getType() == Material.ENDER_CHEST
-                    && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
+                && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
                 OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
                 return openInv.getSpecialEnderChest(
-                        Objects.requireNonNull(
-                                openInv.loadPlayer(plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
-                        plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
-                        .getBukkitInventory();
+                    Objects.requireNonNull(
+                        openInv.loadPlayer(
+                            plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
+                    plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
+                    .getBukkitInventory();
             }
         } catch (Exception e) {
             Util.debugLog(e.getMessage());
@@ -1140,7 +1198,8 @@ public class ContainerShop implements Shop {
                 if (createBackup) {
                     plugin.log("Deleting shop " + this + " request by invalid inventory.");
                     this.delete();
-                    Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was removed.");
+                    Util.debugLog(
+                        "Inventory doesn't exist anymore: " + this + " shop was removed.");
                 }
             } else {
                 plugin.log("Deleting shop " + this + " request by invalid inventory.");
@@ -1176,14 +1235,61 @@ public class ContainerShop implements Shop {
     }
 
     /**
+     * Returns true if this shop is a double chest and the other shop has the same item.
+     * This was needed since DisplayItems should be shared even if they're both selling or buying.
+     *
+     * @return true if this shop is a double chest and the other shop has the same item.
+     */
+    @Override
+    public boolean isRealDouble() {
+        Util.ensureThread(false);
+        ContainerShop nextTo = this.getAttachedShop();
+        if (nextTo == null) {
+            return false;
+        }
+        return nextTo.matches(this.getItem());
+    }
+
+    /**
+     * This function calculates which block of a double chest is the left block,
+     * relative to the direction the chest is facing. Left shops don't spawn items since
+     * they merge items with the right shop.
+     *
+     * @return Whether or not this shop is the left half of a double chest shop.
+     */
+    @Override
+    public boolean isLeftShop() {
+        if (getAttachedShop() == null) {
+            return false;
+        }
+
+        float yaw = getLocation().getYaw();
+        if (yaw == 0) {
+            // left block has a smaller x value
+            return getLocation().getX() < getAttachedShop().getLocation().getX();
+        } else if (yaw == 180) {
+            // left block has greater x value
+            return getLocation().getX() > getAttachedShop().getLocation().getX();
+        } else if (yaw > 45 && yaw < 135) {
+            // left block has a smaller z value
+            return getLocation().getZ() < getAttachedShop().getLocation().getZ();
+        } else if (yaw > 225 && yaw < 315) {
+            // left block has a greater z value
+            return getLocation().getZ() > getAttachedShop().getLocation().getZ();
+        }
+        return false;
+    }
+
+    /**
      * Returns the shop that shares it's inventory with this one.
      *
-     * @return the shop that shares it's inventory with this one. Will return null if this shop is not
-     * attached to another.
+     * @return the shop that shares it's inventory with this one. Will return null if this shop is
+     * not attached to another.
      */
     public @Nullable ContainerShop getAttachedShop() {
         Util.ensureThread(false);
-        Block c = Util.getSecondHalf(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
+        Block c = Util
+            .getSecondHalf(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
         if (c == null) {
             return null;
         }
@@ -1198,7 +1304,8 @@ public class ContainerShop implements Shop {
      */
     public boolean isDoubleChestShop() {
         Util.ensureThread(false);
-        return Util.isDoubleChest(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
+        return Util
+            .isDoubleChest(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
     }
 
     /**
@@ -1213,7 +1320,8 @@ public class ContainerShop implements Shop {
             return;
         }
         if (!Util.canBeShop(this.getLocation().getBlock())) {
-            Util.debugLog("Shop at " + this.getLocation() + "@" + this.getLocation().getBlock() + " container was missing, unload from memory...");
+            Util.debugLog("Shop at " + this.getLocation() + "@" + this.getLocation().getBlock()
+                + " container was missing, unload from memory...");
             this.onUnload();
             this.delete(true);
 //            if (!createBackup) {
@@ -1234,9 +1342,9 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * Gets the plugin's k-v map to storage the data.
-     * It is spilt by plugin name, different name have different map, the data won't conflict.
-     * But if you plugin name is too common, add a prefix will be a good idea.
+     * Gets the plugin's k-v map to storage the data. It is spilt by plugin name, different name
+     * have different map, the data won't conflict. But if you plugin name is too common, add a
+     * prefix will be a good idea.
      *
      * @param plugin Plugin instance
      * @return The data table
@@ -1287,8 +1395,8 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * WARNING: This UUID will changed after plugin reload, shop reload or server restart
-     * DO NOT USE IT TO STORE DATA!
+     * WARNING: This UUID will changed after plugin reload, shop reload or server restart DO NOT USE
+     * IT TO STORE DATA!
      *
      * @return Random UUID
      */
