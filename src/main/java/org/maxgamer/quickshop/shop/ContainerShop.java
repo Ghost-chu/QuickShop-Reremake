@@ -336,6 +336,10 @@ public class ContainerShop implements Shop {
             return;
         }
 
+        if (isLeftShop()) {
+            return;
+        }
+
         if (this.displayItem == null) {
             Util.debugLog("Warning: DisplayItem is null, this shouldn't happened...");
             StackTraceElement traceElements = Thread.currentThread().getStackTrace()[2];
