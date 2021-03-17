@@ -1,5 +1,5 @@
 {
-  "file-test": "This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)",
+  "file-test": "这是个测试文件.我们使用它来测试messages.json是否损坏.你可以在这里填入任何喜欢的彩蛋:)",
   "translation-author": "翻译人员： Ghost_chu, Andre_601",
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
@@ -138,7 +138,7 @@
     "no-amount-given": "&c未指定数量。使用方式为 &a/qs refill <数量>&c",
     "now-debuging": "&a成功切换到了开发者模式，插件重载中...",
     "now-nolonger-debuging": "&a成功切换到了生产模式，插件重载中...",
-    "wrong-args": "&c无效参数。使用 &l/qs 帮助 &c查看命令列表。",
+    "wrong-args": "&c无效参数。使用 &l/qs help &c查看命令列表。",
     "description": {
       "title": "&aQuickShop 帮助",
       "unlimited": "&e将商店设置为无限库存。",
