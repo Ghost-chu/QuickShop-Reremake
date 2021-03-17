@@ -225,7 +225,7 @@
     "range": "[范围]",
     "amount": "[数量]",
     "currency": "货币名称",
-    "item": "[item]"
+    "item": "[物品]"
   },
   "updatenotify": {
     "buttontitle": "[立即更新]",
