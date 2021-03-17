@@ -297,10 +297,10 @@
   "currency-not-exists": "&cImpossible de trouver le mode actuel que vous voulez définir, cela est peut-être dû à une mauvaise orthographe ou ce mode n'est pas disponible dans ce monde.",
   "currency-set": "&aLe mode de la boutique a été définie avec succès à {0}.",
   "currency-unset": "&aLa boutique a été supprimée avec succès. Utiliser les paramètres par défaut maintenant.",
-  "currency-not-support": "&cThe economy plugin doesn't support the multi-economy feature.",
-  "item-not-exist": "&cThe item &e{0} &cdoes not exist, please check your spelling.",
-  "backup-success": "&aBackup successfully.",
-  "console-only": "&cThis command only can be executed by Console.",
-  "console-only-danger": "&cThis is a danger command so that only can be executed by Console.",
-  "clean-warning": "&eThis command will purge &call &e shops if the shop is damaged or created in disallowed worlds or selling/buying disallowed items and &c&lIN NOT LOADED WORLD SHOPS&e, make sure you have full backup of your shops data and use &b/qs cleanghost confirm &eto continue."
+  "currency-not-support": "&cLe plugin d'économie ne supporte pas la fonction de multi-économie.",
+  "item-not-exist": "&cL'objet &e{0} &cn'existe pas, veuillez vérifier votre orthographe.",
+  "backup-success": "&aSauvegarde réussie.",
+  "console-only": "&cCette commande ne peut être exécutée que par la Console.",
+  "console-only-danger": "&cIl s'agit d'une commande dangereuse qui ne peut être exécutée que par la Console.",
+  "clean-warning": "&eCette commande purgera &ctoutes &eles boutiques si la boutique est endommagée ou créée dans des mondes non autorisés ou vendant/achetant des objets non autorisés et &c&lDANS DES BOUTIQUES DE MONDES NON CHARGÉS&e, assurez-vous d'avoir une sauvegarde complète des données de vos boutiques et utilisez la commande &b/qs cleanghost confirm &epour continuer."
 }
