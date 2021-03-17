@@ -81,7 +81,7 @@
   "no-pending-action": "&c你没有任何进行中的操作",
   "permission-denied-3rd-party": "&c没有权限：第三方插件 [{0}]。",
   "shops-removed-in-world": "&e共计 &b{0}&e 个商店已在世界 &b{1}&e 中删除.",
-  "world-not-exists": "&cThe world &e{0}&c doesn't exist",
+  "world-not-exists": "&c世界 &e{0}&c 不存在",
   "menu": {
     "successful-purchase": "&a支付成功：",
     "successfully-sold": "&a出售成功：",
@@ -171,7 +171,7 @@
       "removeworld": "&e删除指定世界中的所有商店",
       "currency": "&e配置或禁用货币选项"
     },
-    "disabled": "&cThis command is disabled: &e{0}",
+    "disabled": "&c此命令已禁用",
     "feature-not-enabled": "配置中未启用此功能。"
   },
   "signs": {
@@ -250,7 +250,7 @@
       "博士，QuickShop有一个新的更新 {0}！你应该考虑一下更新了~",
       "Ko~ko~da~yo~QuickShop有一个新的更新 {0}~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop is marked disabled by remote server, meaning this version may have serious problem, get details from our Spigot plugin page: {0}. This warning will continue to appear untill you switch to a stable version, but it will not affect your server's performence.",
+    "remote-disable-warning": "&c这个版本的QuickShop被远程服务器标记为禁用，意味着这个版本可能存在严重的问题，可以在我们的SpigotMC插件页面获取详细信息。{0}. 此警告将继续出现，直到您切换到一个稳定的版本，但它不会影响您的服务器的性能。",
     "label": {
       "unstable": "[不稳定]",
       "stable": "[稳定]",
