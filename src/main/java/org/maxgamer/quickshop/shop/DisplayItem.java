@@ -299,11 +299,27 @@ public abstract class DisplayItem {
     public abstract Entity getDisplay();
 
     /**
-     * Get display should at location. Not display current location.
+     * Gets the display location for an item. If it is a double shop and it is not the left shop,
+     * it will average the locations of the two chests comprising it to be perfectly in the middle.
+     * If it is the left shop, it will return null since the left shop does not spawn an item.
+     * Otherwise, it will give you the middle of the single chest.
      *
-     * @return Should at
+     * @return The Location that the item *should* be displaying at.
      */
-    public abstract Location getDisplayLocation();
+    public @Nullable Location getDisplayLocation() {
+        Util.ensureThread(false);
+        if (shop.isRealDouble()) {
+            if (shop.isLeftShop()) {
+                Util.debugLog("Shop is left shop, so location is null.");
+                return null;
+            }
+            double avgX = (shop.getLocation().getX() + shop.getAttachedShop().getLocation().getX()) / 2;
+            double avgZ = (shop.getLocation().getZ() + shop.getAttachedShop().getLocation().getZ()) / 2;
+            Location newloc = new Location(shop.getLocation().getWorld(), avgX, shop.getLocation().getY(), avgZ, shop.getLocation().getYaw(), shop.getLocation().getPitch());
+            return newloc.add(0.5, 1.2, 0.5);
+        }
+        return this.shop.getLocation().clone().add(0.5, 1.2, 0.5);
+    }
 
     /**
      * Check the display is or not already spawned

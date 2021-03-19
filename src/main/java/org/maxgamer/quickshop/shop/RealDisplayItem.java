@@ -273,33 +273,6 @@ public class RealDisplayItem extends DisplayItem {
     }
 
     /**
-     * Gets the display location for an item. If it is a double shop and it is not the left shop,
-     * it will average the locations of the two chests comprising it to be perfectly in the middle.
-     * If it is the left shop, it will return null since the left shop does not spawn an item.
-     * Otherwise, it will give you the middle of the single chest.
-     *
-     * @return Location to spawn the DisplayItem.
-     */
-    @Override
-    public @Nullable Location getDisplayLocation() {
-        Util.ensureThread(false);
-        if (shop.isRealDouble()) {
-            if (shop.isLeftShop()) {
-                return null;
-            }
-            double avgX =
-                (shop.getLocation().getX() + shop.getAttachedShop().getLocation().getX()) / 2;
-            double avgZ =
-                (shop.getLocation().getZ() + shop.getAttachedShop().getLocation().getZ()) / 2;
-            Location newloc = new Location(shop.getLocation().getWorld(), avgX,
-                shop.getLocation().getY(), avgZ,
-                shop.getLocation().getYaw(), shop.getLocation().getPitch());
-            return newloc.add(0.5, 1.2, 0.5);
-        }
-        return this.shop.getLocation().clone().add(0.5, 1.2, 0.5);
-    }
-
-    /**
      * Gets either the item spawn location of this item's chest, or the attached chest.
      * Used for checking for duplicates.
      *
