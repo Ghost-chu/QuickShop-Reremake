@@ -773,7 +773,7 @@ public class Util {
         disableVaultFormat = plugin.getConfig().getBoolean("shop.disable-vault-format", false);
         useDecimalFormat = plugin.getConfig().getBoolean("use-decimal-format", false);
 
-        List<String> symbols = plugin.getConfig().getStringList("alternate-currency-symbol-list");
+        List<String> symbols = plugin.getConfig().getStringList("shop.alternate-currency-symbol-list");
 
 
         symbols.forEach(entry -> {
