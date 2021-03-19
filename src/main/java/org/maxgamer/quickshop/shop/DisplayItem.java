@@ -136,7 +136,10 @@ public abstract class DisplayItem {
         }
         String defaultMark = ShopProtectionFlag.getDefaultMark();
         String shopLocation = shop.getLocation().toString();
-        String attachedShopLocation = (!shop.isRealDouble()) ? "null" : (shop.getAttachedShop() == null ? "null" : shop.getAttachedShop().getLocation().toString());
+        String attachedShopLocation = null;
+        if (shop.isRealDouble()) {
+            attachedShopLocation = shop.getAttachedShop().getLocation().toString();
+        }
         //noinspection ConstantConditions
         for (String lore : iMeta.getLore()) {
             try {
