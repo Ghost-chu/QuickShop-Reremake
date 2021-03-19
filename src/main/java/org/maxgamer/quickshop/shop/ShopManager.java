@@ -999,13 +999,12 @@ public class ShopManager {
             }
         }
 
-        // If this is a left shop, update the attached shop to fix the displayitem location.
-        if (shop.isRealDouble() && shop.isLeftShop()) {
-            Shop nextTo = shop.getAttachedShop();
-            Objects.requireNonNull(nextTo).refresh();
+        // If this is one of two double chests, update its partner too
+        if (shop.isRealDouble()) {
+            shop.getAttachedShop().refresh();
         }
-
-        shop.checkDisplay();
+        // One last refresh to ensure the item shows up
+        shop.refresh();
     }
 
     @Deprecated
