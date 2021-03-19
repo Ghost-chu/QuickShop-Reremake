@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.shop;
 
 import com.lishid.openinv.OpenInv;
 import io.papermc.lib.PaperLib;
+import jdk.internal.net.http.common.Utils;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -75,6 +76,8 @@ public class ContainerShop implements Shop {
     @EqualsAndHashCode.Exclude
     private volatile boolean isDeleted = false;
     @EqualsAndHashCode.Exclude
+    private boolean isLeftShop = false;
+    @EqualsAndHashCode.Exclude
     private volatile boolean createBackup = false;
     @EqualsAndHashCode.Exclude
     private InventoryPreview inventoryPreview = null;
@@ -82,6 +85,8 @@ public class ContainerShop implements Shop {
     private double price;
     private ShopType shopType;
     private boolean unlimited;
+    @EqualsAndHashCode.Exclude
+    private ContainerShop attachedShop;
     @EqualsAndHashCode.Exclude
     private boolean dirty;
 
@@ -164,10 +169,17 @@ public class ContainerShop implements Shop {
             if (displayItem != null) {
                 displayItem.remove();
             }
+            // Update double shop status, is left status, and the attachedShop
+            updateAttachedShop();
             // Don't make an item for this chest if it's a left shop.
-            if (isLeftShop()
-                && Objects.requireNonNull(getAttachedShop()).getDisplayItem() != null) {
-                getAttachedShop().refresh();
+            if (isLeftShop) {
+                if (displayItem != null) {
+                    displayItem.remove();
+                }
+
+                if (attachedShop != null && attachedShop.getDisplayItem() != null) {
+                    attachedShop.refresh();
+                }
                 return;
             }
 
@@ -336,7 +348,15 @@ public class ContainerShop implements Shop {
             return;
         }
 
-        if (isLeftShop()) {
+        updateAttachedShop();
+
+        if (isLeftShop) {
+            if (displayItem != null) {
+                displayItem.remove();
+            }
+            if (attachedShop != null) {
+                attachedShop.refresh();
+            }
             return;
         }
 
@@ -428,14 +448,10 @@ public class ContainerShop implements Shop {
         if (memoryOnly) {
             // Delete it from memory
             plugin.getShopManager().removeShop(this);
-            onUnload();
         } else {
             // Delete the signs around it
             for (Sign s : this.getSigns()) {
                 s.getBlock().setType(Material.AIR);
-            }
-            if (displayItem != null) {
-                displayItem.remove();
             }
             // Delete it from the database
             // Refund if necessary
@@ -445,7 +461,6 @@ public class ContainerShop implements Shop {
                         Objects.requireNonNull(getLocation().getWorld()), getCurrency());
             }
             plugin.getShopManager().removeShop(this);
-            onUnload();
             plugin.getDatabaseHelper().removeShop(this);
         }
         // Makes sure deleting a shop will fix the item position.
@@ -479,8 +494,8 @@ public class ContainerShop implements Shop {
             Util.debugLog("Ignore shop click, because some plugin cancel it.");
             return;
         }
-        this.setSignText();
-        this.checkDisplay();
+        refresh();
+        setSignText();
     }
 
     /**
@@ -802,8 +817,14 @@ public class ContainerShop implements Shop {
         if (displayItem != null) {
             displayItem.remove();
         }
-        initDisplayItem();
-        displayItem.spawn();
+
+        checkDisplay();
+
+        if (!isLeftShop) {
+            initDisplayItem();
+            displayItem.spawn();
+            Util.debugLog("Not left shop, respawning item!");
+        }
 
         setSignText();
     }
@@ -1224,85 +1245,93 @@ public class ContainerShop implements Shop {
      */
     public boolean isDoubleShop() {
         Util.ensureThread(false);
-        ContainerShop nextTo = this.getAttachedShop();
-        if (nextTo == null) {
+        if (attachedShop == null) {
             return false;
         }
-        if (nextTo.matches(this.getItem())) {
+        if (attachedShop.matches(this.getItem())) {
             // They're both trading the same item
             // They're both buying or both selling => Not a double shop,
             // just two shops.
             // One is buying, one is selling.
-            return this.getShopType() != nextTo.getShopType();
+            return this.getShopType() != attachedShop.getShopType();
         } else {
             return false;
         }
     }
 
     /**
-     * Returns true if this shop is a double chest and the other shop has the same item.
-     * This was needed since DisplayItems should be shared even if they're both selling or buying.
-     *
-     * @return true if this shop is a double chest and the other shop has the same item.
+     * Updates the attachedShop variable to reflect the currently attached shop, if any.
+     * Also updates the left shop status.
      */
-    @Override
-    public boolean isRealDouble() {
+    public void updateAttachedShop() {
         Util.ensureThread(false);
-        ContainerShop nextTo = this.getAttachedShop();
-        if (nextTo == null) {
-            return false;
+        Block c = Util
+            .getSecondHalf(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
+        if (c == null) {
+            return;
         }
-        return nextTo.matches(this.getItem());
+        Shop shop = plugin.getShopManager().getShop(c.getLocation());
+        attachedShop = shop == null ? null : (ContainerShop) shop;
+
+        if (attachedShop != null && attachedShop.matches(this.getItem())) {
+            updateLeftShop();
+        } else {
+            attachedShop = null;
+            isLeftShop = false;
+        }
     }
 
     /**
      * This function calculates which block of a double chest is the left block,
      * relative to the direction the chest is facing. Left shops don't spawn items since
      * they merge items with the right shop.
-     *
-     * @return Whether or not this shop is the left half of a double chest shop.
+     * It also updates the isLeftShop status of this class to reflect the changes.
      */
-    @Override
-    public boolean isLeftShop() {
-        if (getAttachedShop() == null) {
-            return false;
-        }
-        if (!isRealDouble()) {
-            return false;
+    private void updateLeftShop() {
+        if (attachedShop == null) {
+            return;
         }
 
         switch (((Chest) getLocation().getBlock().getBlockData()).getFacing()) {
             case WEST:
                 // left block has a smaller z value
-                return getLocation().getZ() < getAttachedShop().getLocation().getZ();
+                isLeftShop = getLocation().getZ() < attachedShop.getLocation().getZ();
+                break;
             case EAST:
                 // left block has a greater z value
-                return getLocation().getZ() > getAttachedShop().getLocation().getZ();
+                isLeftShop = getLocation().getZ() > attachedShop.getLocation().getZ();
+                break;
             case NORTH:
                 // left block has greater x value
-                return getLocation().getX() > getAttachedShop().getLocation().getX();
+                isLeftShop = getLocation().getX() > attachedShop.getLocation().getX();
+                break;
             case SOUTH:
                 // left block has a smaller x value
-                return getLocation().getX() < getAttachedShop().getLocation().getX();
+                isLeftShop = getLocation().getX() < attachedShop.getLocation().getX();
+                break;
         }
-        return false;
     }
 
     /**
-     * Returns the shop that shares it's inventory with this one.
-     *
-     * @return the shop that shares it's inventory with this one. Will return null if this shop is
-     * not attached to another.
+     * Checks to see if it is a real double without updating anything.
+     * @return If the chest is a real double chest, as in it is a double and it has the same item.
      */
-    public @Nullable ContainerShop getAttachedShop() {
+    public boolean isRealDouble() {
         Util.ensureThread(false);
-        Block c = Util
-            .getSecondHalf(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
-        if (c == null) {
-            return null;
+        if (attachedShop == null) {
+            return false;
         }
-        Shop shop = plugin.getShopManager().getShop(c.getLocation());
-        return shop == null ? null : (ContainerShop) shop;
+        return attachedShop.matches(this.getItem());
+    }
+
+    @Override
+    public boolean isLeftShop() {
+        return isLeftShop;
+    }
+
+    @Override
+    public ContainerShop getAttachedShop() {
+        return attachedShop;
     }
 
     /**

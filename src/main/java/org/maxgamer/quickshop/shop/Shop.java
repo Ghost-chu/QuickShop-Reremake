@@ -470,15 +470,12 @@ public interface Shop {
      */
     void openPreview(@NotNull Player player);
 
-    /**
-     * Gets the shop attached to this one.
-     *
-     * @return The shop attached to this shop.
-     */
-    ContainerShop getAttachedShop();
-
     boolean isLeftShop();
 
     boolean isRealDouble();
+
+    void updateAttachedShop();
+
+    ContainerShop getAttachedShop();
 
 }
