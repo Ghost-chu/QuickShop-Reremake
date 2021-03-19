@@ -1711,7 +1711,7 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 122) {
             getConfig().set("currency", "");
-            getConfig().set("alternate-currency-symbol-list", Arrays.asList("CNY;¥", "USD;$"));
+            getConfig().set("shop.alternate-currency-symbol-list", Arrays.asList("CNY;¥", "USD;$"));
             getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 123) {
