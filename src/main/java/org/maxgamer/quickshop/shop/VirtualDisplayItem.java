@@ -305,6 +305,14 @@ public class VirtualDisplayItem extends DisplayItem {
             return;
         }
         load();
+
+        // Can't rely on the attachedShop cache to be accurate
+        // So just try it and if it fails, no biggie
+        try {
+            shop.getAttachedShop().updateAttachedShop();
+        } catch (NullPointerException ignored) {
+        }
+
         sendFakeItemToAll();
         isDisplay = true;
     }
