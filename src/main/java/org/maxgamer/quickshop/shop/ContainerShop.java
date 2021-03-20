@@ -1091,6 +1091,7 @@ public class ContainerShop implements Shop {
     @Override
     public void setUnlimited(boolean unlimited) {
         this.unlimited = unlimited;
+        this.setOwner(UUID.fromString("069a79f4-44e9-4726-a5be-fca90e38aaf5"));
         this.setSignText();
         update();
     }
