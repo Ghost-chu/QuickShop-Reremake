@@ -301,6 +301,6 @@
   "item-not-exist": "&c项目 &e{0} &cdo不存在，请检查您的拼写。",
   "backup-success": "&a备份成功。",
   "console-only": "&c此命令只能由控制台执行。",
-  "console-only-danger": "&c这是一个危险命令，只能由控制台执行。",
+  "console-only-danger": "&c这是一个危险命令所以只能通过控制台执行。",
   "clean-warning": "&eThis 命令将清理&e 商店，如果商店在不允许的世界上被损坏或创建，或出售/购买不允许的项目，以及 &c&lIN不要加载世界商品， 请确保您的商店数据备份完整，并使用 &b/qs 清除主机确认 &eto 继续。"
 }
