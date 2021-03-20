@@ -1,5 +1,5 @@
 {
-  "file-test": "这是个测试文件.我们使用它来测试messages.json是否损坏.你可以在这里填入任何喜欢的彩蛋:)",
+  "file-test": "这是个测试文件，我们使用它来测试messages.json是否损坏。你可以在这里填入任何喜欢的彩蛋 :)",
   "translation-author": "翻译人员： Ghost_chu, Andre_601",
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
@@ -80,7 +80,7 @@
   "purchase-failed": "&c支付失败：内部错误，请联系服务器管理员",
   "no-pending-action": "&c你没有任何进行中的操作",
   "permission-denied-3rd-party": "&c没有权限：第三方插件 [{0}]。",
-  "shops-removed-in-world": "&e共计 &b{0}&e 个商店已在世界 &b{1}&e 中删除.",
+  "shops-removed-in-world": "&e已删除世界 &b{1}&e 中的 &b{0}&e 个商店。",
   "world-not-exists": "&c世界 &e{0}&c 不存在",
   "menu": {
     "successful-purchase": "&a支付成功：",
@@ -302,5 +302,5 @@
   "backup-success": "&a备份成功。",
   "console-only": "&c此命令只能由控制台执行。",
   "console-only-danger": "&c这是一个危险命令所以只能通过控制台执行。",
-  "clean-warning": "&eThis 命令将清理&e 商店，如果商店在不允许的世界上被损坏或创建，或出售/购买不允许的项目，以及 &c&lIN不要加载世界商品， 请确保您的商店数据备份完整，并使用 &b/qs 清除主机确认 &eto 继续。"
+  "clean-warning": "&e这个命令将清理&e 商店，如果商店在不允许的世界上被损坏或创建，或出售/购买不允许的项目，以及 &c&lIN不要加载世界商品， 请确保您的商店数据备份完整，并使用 &b/qs 清除主机确认 &eto 继续。"
 }
