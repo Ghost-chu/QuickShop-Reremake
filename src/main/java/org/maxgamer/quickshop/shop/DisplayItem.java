@@ -136,7 +136,7 @@ public abstract class DisplayItem {
         }
         String defaultMark = ShopProtectionFlag.getDefaultMark();
         String shopLocation = shop.getLocation().toString();
-        String attachedShopLocation = null;
+        String attachedShopLocation = "null";
         if (shop.isRealDouble()) {
             attachedShopLocation = shop.getAttachedShop().getLocation().toString();
         }
