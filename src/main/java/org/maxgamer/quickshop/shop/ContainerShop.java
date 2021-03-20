@@ -21,7 +21,6 @@ package org.maxgamer.quickshop.shop;
 
 import com.lishid.openinv.OpenInv;
 import io.papermc.lib.PaperLib;
-import jdk.internal.net.http.common.Utils;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -173,10 +172,6 @@ public class ContainerShop implements Shop {
             updateAttachedShop();
             // Don't make an item for this chest if it's a left shop.
             if (isLeftShop) {
-                if (displayItem != null) {
-                    displayItem.remove();
-                }
-
                 if (attachedShop != null && attachedShop.getDisplayItem() != null) {
                     attachedShop.refresh();
                 }
@@ -433,6 +428,7 @@ public class ContainerShop implements Shop {
     @Override
     public void delete(boolean memoryOnly) {
         Util.ensureThread(false);
+        // Get a copy of the attached shop to save it from deletion
         ContainerShop neighbor = getAttachedShop();
         setDirty();
         ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(this, memoryOnly);
@@ -463,7 +459,7 @@ public class ContainerShop implements Shop {
             plugin.getShopManager().removeShop(this);
             plugin.getDatabaseHelper().removeShop(this);
         }
-        // Makes sure deleting a shop will fix the item position.
+        // Use that copy we saved earlier (which is now deleted) to refresh it's now alone neighbor
         if (neighbor != null) {
             neighbor.refresh();
         }
@@ -823,7 +819,6 @@ public class ContainerShop implements Shop {
         if (!isLeftShop) {
             initDisplayItem();
             displayItem.spawn();
-            Util.debugLog("Not left shop, respawning item!");
         }
 
         setSignText();
@@ -865,6 +860,7 @@ public class ContainerShop implements Shop {
                 }
             }
         }
+        checkDisplay();
     }
 
     /**
@@ -1265,12 +1261,12 @@ public class ContainerShop implements Shop {
      */
     public void updateAttachedShop() {
         Util.ensureThread(false);
-        Block c = Util
+        Block attachedChest = Util
             .getSecondHalf(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
-        if (c == null) {
+        if (attachedChest == null) {
             return;
         }
-        Shop shop = plugin.getShopManager().getShop(c.getLocation());
+        Shop shop = plugin.getShopManager().getShop(attachedChest.getLocation());
         attachedShop = shop == null ? null : (ContainerShop) shop;
 
         if (attachedShop != null && attachedShop.matches(this.getItem())) {
