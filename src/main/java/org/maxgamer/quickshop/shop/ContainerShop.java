@@ -1305,6 +1305,8 @@ public class ContainerShop implements Shop {
                 // left block has a smaller x value
                 isLeftShop = getLocation().getX() < attachedShop.getLocation().getX();
                 break;
+            default:
+                isLeftShop = false;
         }
     }
 
