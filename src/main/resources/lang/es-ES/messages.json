@@ -301,6 +301,6 @@
   "item-not-exist": "&cEl objeto &e{0} &cno existe, por favor comprueba tu ortografía.",
   "backup-success": "&aCopia de seguridad exitosa.",
   "console-only": "&cEste comando solo puede ser ejecutado por Consola.",
-  "console-only-danger": "&cThis is a danger command so that only can be executed by Console.",
-  "clean-warning": "&eThis command will purge &call &e shops if the shop is damaged or created in disallowed worlds or selling/buying disallowed items and &c&lIN NOT LOADED WORLD SHOPS&e, make sure you have full backup of your shops data and use &b/qs cleanghost confirm &eto continue."
+  "console-only-danger": "&cPor seguridad, este comando solo puede ser ejecutado por Consola.",
+  "clean-warning": "&eEste comando purgará &e las tiendas si la tienda está dañada o creada en mundos no permitidos o compras/objetos no permitidos y &c&LEN MUNDOS DE TIENDAS NO CARGADOS, asegúrate de tener una copia de seguridad completa de los datos de tu tienda y usa &b/qs confirmar &eo continuar."
 }
