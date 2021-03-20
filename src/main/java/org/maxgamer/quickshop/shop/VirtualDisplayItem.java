@@ -94,7 +94,6 @@ public class VirtualDisplayItem extends DisplayItem {
     private void initFakeDropItemPacket() {
 
         if (shop.isLeftShop()) {
-            shop.getAttachedShop().refresh();
             return;
         }
         //First, create a new packet to spawn item
