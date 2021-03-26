@@ -32,7 +32,7 @@
   "you-cant-afford-to-buy": "&c余额不足！购买该商店物品需要 {0}，但是你只有 {1}。",
   "negative-amount": "&c你输入的数字是负数。",
   "not-a-number": "&c您只能输入一个数字，但您的输入是 {0}。",
-  "exceeded-maximum": "&c值超过了Java 中的最大值。",
+  "exceeded-maximum": "&c该值超过了Java 中的最大值。",
   "not-a-integer": "&c您只能输入一个数字，您的输入是 {0}。",
   "player-bought-from-your-store": "&c{0} 从你的商店里购买了 {1} {2}，你因此赚得了 {3}",
   "shop-out-of-stock": "&5你位于 {0}, {1}, {2}, 的商店的 {3} 脱销了。",
