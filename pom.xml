@@ -454,7 +454,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.18</version>
+            <version>1.18.20</version>
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
@@ -499,7 +499,7 @@
         <dependency>
             <groupId>com.github.angeschossen</groupId>
             <artifactId>LandsAPI</artifactId>
-            <version>5.2.4</version>
+            <version>5.4.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -512,7 +512,7 @@
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
             <artifactId>MockBukkit-v1.16</artifactId>
-            <version>0.24.0</version>
+            <version>0.33.0</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -609,7 +609,7 @@
         <dependency>
             <groupId>com.plotsquared</groupId>
             <artifactId>PlotSquared-Core</artifactId>
-            <version>5.13.3</version>
+            <version>5.13.11</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

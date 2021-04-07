@@ -93,6 +93,9 @@ public class VirtualDisplayItem extends DisplayItem {
 
     private void initFakeDropItemPacket() {
 
+        if (shop.isLeftShop()) {
+            return;
+        }
         //First, create a new packet to spawn item
         fakeItemPacket = protocolManager.createPacket(PacketType.Play.Server.SPAWN_ENTITY);
 
@@ -269,8 +272,8 @@ public class VirtualDisplayItem extends DisplayItem {
     @Override
     public void respawn() {
         Util.ensureThread(false);
-        sendPacketToAll(fakeItemDestroyPacket);
-        sendFakeItemToAll();
+        remove();
+        spawn();
     }
 
     public void sendFakeItemToAll() {
@@ -287,6 +290,9 @@ public class VirtualDisplayItem extends DisplayItem {
     @Override
     public void spawn() {
         Util.ensureThread(false);
+        if (shop.isLeftShop()) {
+            return;
+        }
         if (shop.isDeleted() || !shop.isLoaded()) {
             return;
         }
@@ -298,6 +304,14 @@ public class VirtualDisplayItem extends DisplayItem {
             return;
         }
         load();
+
+        // Can't rely on the attachedShop cache to be accurate
+        // So just try it and if it fails, no biggie
+        try {
+            shop.getAttachedShop().updateAttachedShop();
+        } catch (NullPointerException ignored) {
+        }
+
         sendFakeItemToAll();
         isDisplay = true;
     }
@@ -322,7 +336,7 @@ public class VirtualDisplayItem extends DisplayItem {
                 public void onPacketSending(@NotNull PacketEvent event) {
                     //is really full chunk data
                     boolean isFull = event.getPacket().getBooleans().read(0);
-                    if (!shop.isLoaded() || !isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
+                    if (!shop.isLoaded() || !isDisplay || !isFull || !Util.isLoaded(shop.getLocation()) || shop.isLeftShop()) {
                         return;
                     }
                     //chunk x
@@ -391,12 +405,10 @@ public class VirtualDisplayItem extends DisplayItem {
     }
 
     @Override
-    public @NotNull Location getDisplayLocation() {
-        return shop.getLocation().clone().add(0.5, 1.2, 0.5);
-    }
-
-    @Override
     public boolean isSpawned() {
+        if (shop.isLeftShop()) {
+            return (Objects.requireNonNull(shop.getAttachedShop().getDisplayItem())).isSpawned();
+        }
         return isDisplay;
     }
 
