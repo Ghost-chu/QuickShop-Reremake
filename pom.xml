@@ -494,10 +494,6 @@
                     <artifactId>annotations</artifactId>
                     <groupId>org.jetbrains</groupId>
                 </exclusion>
-                <exclusion>
-                    <artifactId>MVdWPlaceholderAPI</artifactId>
-                    <groupId>be.maximvdw</groupId>
-                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -806,6 +802,12 @@
             <artifactId>skyblock</artifactId>
             <version>2.2.13</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>MVdWPlaceholderAPI</artifactId>
+                    <groupId>be.maximvdw</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--        <dependency>-->
         <!--            <groupId>team.aura_dev.lib.slf4j-plugin.spigot</groupId>-->
