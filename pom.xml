@@ -494,6 +494,10 @@
                     <artifactId>annotations</artifactId>
                     <groupId>org.jetbrains</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>MVdWPlaceholderAPI</artifactId>
+                    <groupId>be.maximvdw</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
