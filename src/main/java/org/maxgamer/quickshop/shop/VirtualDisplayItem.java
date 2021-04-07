@@ -369,7 +369,7 @@ public class VirtualDisplayItem extends DisplayItem {
                 }
             };
         }
-        protocolManager.addPacketListener(packetAdapter); //TODO: This may affects performance
+        protocolManager.getAsynchronousManager().registerAsyncHandler(packetAdapter); //TODO: This may affects performance
         asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
             Runnable runnable = asyncPacketSendQueue.poll();
             while (runnable != null) {
