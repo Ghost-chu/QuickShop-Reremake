@@ -67,31 +67,32 @@ public class PlayerListener extends QSListener {
         if (e.getHand() != EquipmentSlot.HAND) {
             return;
         }
-        if (!e.getAction().equals(Action.LEFT_CLICK_BLOCK) && e.getClickedBlock() != null) {
-            if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Util.isWallSign(e.getClickedBlock().getType())) {
+        final Block b = e.getClickedBlock();
+        final Player p = e.getPlayer();
+        if (!e.getAction().equals(Action.LEFT_CLICK_BLOCK) && b != null) {
+            if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Util.isWallSign(b.getType())) {
                 final Block block;
-                if (Util.isWallSign(e.getClickedBlock().getType())) {
-                    block = Util.getAttached(e.getClickedBlock());
+                if (Util.isWallSign(b.getType())) {
+                    block = Util.getAttached(b);
                 } else {
                     block = e.getClickedBlock();
                 }
                 Shop controlPanelShop = plugin.getShopManager().getShop(Objects.requireNonNull(block).getLocation());
-                if (controlPanelShop != null && (controlPanelShop.getOwner().equals(e.getPlayer().getUniqueId()) || QuickShop.getPermissionManager().hasPermission(e.getPlayer(), "quickshop.other.control"))) {
-                    MsgUtil.sendControlPanelInfo(e.getPlayer(), Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())));
+                if (controlPanelShop != null && (controlPanelShop.getOwner().equals(p.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.control"))) {
+                    MsgUtil.sendControlPanelInfo(p, Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())));
                     this.playClickSound(e.getPlayer());
                     Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())).setSignText();
                 }
             }
             return;
         }
-        final Block b = e.getClickedBlock();
         if (b == null) {
             return;
         }
         if (!Util.canBeShop(b) && !Util.isWallSign(b.getType())) {
             return;
         }
-        final Player p = e.getPlayer();
+
         final Location loc = b.getLocation();
         final ItemStack item = e.getItem();
         // Get the shop
