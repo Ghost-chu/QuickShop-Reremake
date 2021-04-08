@@ -4,7 +4,7 @@
 
 
 #Do not touch if you not clear know about this
-config-version: 125
+config-version: 126
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -660,6 +660,13 @@ integration:
         warzone: false
         #Player must have flags in the faction:
       flags: [ ]
+  #Superior Skyblock Integration
+  superiorskyblock:
+    enable: false
+    #Does only island owner can create shops on island?
+    owner-create-only: false
+    #Delete shop when the shop owner kicked/quited from island
+    delete-shop-on-member-leave: true
 #the protection that shop should check
 protect:
   explode: true
