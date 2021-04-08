@@ -21,7 +21,6 @@ package org.maxgamer.quickshop.shop;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.async.AsyncListenerHandler;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
@@ -36,7 +35,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.event.ShopDisplayItemSpawnEvent;
@@ -82,10 +80,6 @@ public class VirtualDisplayItem extends DisplayItem {
     //cache chunk x and z
     private ShopChunk chunkLocation;
 
-    @Nullable
-    private BukkitTask asyncSendingTask;
-
-    private AsyncListenerHandler asyncHandler;
 
 
     public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
@@ -384,9 +378,6 @@ public class VirtualDisplayItem extends DisplayItem {
         packetSenders.clear();
         if (packetAdapter != null) {
             protocolManager.removePacketListener(packetAdapter);
-        }
-        if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {
-            asyncSendingTask.cancel();
         }
     }
 
