@@ -31,7 +31,7 @@ public enum DisplayType {
      * */
     UNKNOWN(-1),
     REALITEM(0),
-    ARMORSTAND(1),
+  //  ARMORSTAND(1),
     VIRTUALITEM(2);
 
     private final int id;
@@ -57,9 +57,9 @@ public enum DisplayType {
         if (displayItem instanceof RealDisplayItem) {
             return REALITEM;
         }
-        if (displayItem instanceof ArmorStandDisplayItem) {
-            return ARMORSTAND;
-        }
+//        if (displayItem instanceof ArmorStandDisplayItem) {
+//            return ARMORSTAND;
+//        }
         if (displayItem instanceof VirtualDisplayItem) {
             return VIRTUALITEM;
         }
