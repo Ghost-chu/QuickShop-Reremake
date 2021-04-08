@@ -813,7 +813,7 @@ public class ContainerShop implements Shop {
 
         checkDisplay();
 
-        if (!isLeftShop) {
+        if (!isLeftShop && plugin.isDisplay()) {
             initDisplayItem();
             displayItem.spawn();
         }
