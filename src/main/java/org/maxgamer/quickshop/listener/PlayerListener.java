@@ -52,6 +52,8 @@ import java.util.UUID;
 
 public class PlayerListener extends QSListener {
 
+    boolean actionSwapping = false;
+
     public PlayerListener(QuickShop plugin) {
         super(plugin);
     }
@@ -69,6 +71,8 @@ public class PlayerListener extends QSListener {
         }
         final Block b = e.getClickedBlock();
         final Player p = e.getPlayer();
+
+
         if (!e.getAction().equals(Action.LEFT_CLICK_BLOCK) && b != null) {
             if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Util.isWallSign(b.getType())) {
                 final Block block;

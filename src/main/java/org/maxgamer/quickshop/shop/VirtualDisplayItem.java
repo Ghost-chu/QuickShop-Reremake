@@ -45,7 +45,6 @@ import org.maxgamer.quickshop.util.Util;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualDisplayItem extends DisplayItem {
@@ -343,13 +342,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
                     if (chunkLocation == null) {
                         World world = shop.getLocation().getWorld();
-                        Chunk chunk;
-                        try {
-                            //sync getting chunk
-                            chunk = plugin.getServer().getScheduler().callSyncMethod(plugin, () -> shop.getLocation().getChunk()).get();
-                        } catch (InterruptedException | ExecutionException e) {
-                            throw new RuntimeException("An error occurred when getting chunk from the world", e);
-                        }
+                        Chunk chunk = shop.getLocation().getChunk();
                         chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
                     }
                     Player player = event.getPlayer();
