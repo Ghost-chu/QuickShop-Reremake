@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is PermissionInfomationContainer.java
+ * This file is a part of project QuickShop, the name is PermissionInformationContainer.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 @Data
 @AllArgsConstructor
-public class PermissionInfomationContainer {
+public class PermissionInformationContainer {
     @NotNull
     private CommandSender sender;
 
