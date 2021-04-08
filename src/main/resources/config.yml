@@ -135,7 +135,7 @@ use-caching: true
 
 #Control which one chat system QuickShop should to use.
 #0=BungeeChat (Spigot Defaults)
-#1=Adventure
+#1=Adventure (Removed In Current Version)
 chat-type: 0
 
 #MySQL database settings.
@@ -248,7 +248,6 @@ shop:
   display-check-time: 40
 
   #Allow display show stacks effect when stack creation turned on
-  #!WIP, DON'T TURN ON IT BEFORE WE FINISH IT!
   display-allow-stacks: false
 
   #Use enhance display protect
@@ -417,8 +416,6 @@ shop:
   remove-protection-trigger: true
   #Allow quickshop selling/buying multi items in once transaction.
   allow-stacks: false
-  #Disallow player put items into shop container if that item not the shop item. WIP
-  #deny-non-shop-items-to-shop-container: false
 #List of items that can't be sold in shops.  Anyone with quickshop.bypass.<itemID> can bypass it
 blacklist:
   - Bedrock
