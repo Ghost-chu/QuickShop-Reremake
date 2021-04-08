@@ -27,16 +27,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.shop.Shop;
 
-import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 
 public class Cache {
     private final QuickShop plugin;
-    private final com.github.benmanes.caffeine.cache.Cache<Location, WeakReference<Shop>> accessCaching = Caffeine
+    private final com.github.benmanes.caffeine.cache.Cache<Location, Shop> accessCaching = Caffeine
             .newBuilder()
             .initialCapacity(10000)
             .expireAfterAccess(120, TimeUnit.MINUTES)
             .recordStats()
+            .weakValues()
             .build();
 
     public Cache(QuickShop plugin) {
@@ -57,7 +57,7 @@ public class Cache {
      */
     @Nullable
     public Shop getCaching(@NotNull Location location, boolean includeAttached) {
-        WeakReference<Shop> result = accessCaching.get(location, update -> {
+        Shop result = accessCaching.get(location, update -> {
             Shop shop; //Because we need the data from Caffeine, so we cannot direct return WeakReference directly
             //Cause we will see 100% load success data :(
             if (includeAttached) {
@@ -65,17 +65,9 @@ public class Cache {
             } else {
                 shop = plugin.getShopManager().getShop(update);
             }
-            if (shop == null) {
-                return null;
-            } else {
-                return new WeakReference<>(shop);
-            }
+            return shop;
         });
-        if (result == null) {
-            return null;
-        } else {
-            return result.get();
-        }
+        return result;
     }
 
     /**
@@ -89,6 +81,6 @@ public class Cache {
             accessCaching.invalidate(location);
             return;
         }
-        accessCaching.put(location, new WeakReference<>(shop));
+        accessCaching.put(location, shop);
     }
 }
