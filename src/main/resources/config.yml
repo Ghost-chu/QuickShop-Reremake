@@ -239,6 +239,8 @@ shop:
     sneak-to-create: false
     sneak-to-trade: false
     sneak-to-control: false
+    #Swap left and right click behavior
+    swap-click-behavior: false
 
   #Should we automatically create the sign for the chest?
   auto-sign: true
