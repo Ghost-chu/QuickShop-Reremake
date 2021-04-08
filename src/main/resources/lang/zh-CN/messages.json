@@ -1,5 +1,5 @@
 {
-  "file-test": "This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)",
+  "file-test": "这是个测试文件，我们使用它来测试messages.json是否损坏。你可以在这里填入任何喜欢的彩蛋 :)",
   "translation-author": "翻译人员： Ghost_chu, Andre_601",
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
@@ -32,7 +32,7 @@
   "you-cant-afford-to-buy": "&c余额不足！购买该商店物品需要 {0}，但是你只有 {1}。",
   "negative-amount": "&c你输入的数字是负数。",
   "not-a-number": "&c您只能输入一个数字，但您的输入是 {0}。",
-  "exceeded-maximum": "&cThe value exceeded the maximum value in Java.",
+  "exceeded-maximum": "&c该值超过了Java 中的最大值。",
   "not-a-integer": "&c您只能输入一个数字，您的输入是 {0}。",
   "player-bought-from-your-store": "&c{0} 从你的商店里购买了 {1} {2}，你因此赚得了 {3}",
   "shop-out-of-stock": "&5你位于 {0}, {1}, {2}, 的商店的 {3} 脱销了。",
@@ -44,7 +44,7 @@
   "fee-charged-for-price-change": "&a你花了 &c{0}&a 修改了价格。",
   "price-is-now": "&a商店的新价格是 &e{0}",
   "thats-not-a-number": "&c输入的内容不是数字",
-  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consistent with vanilla behavior",
+  "forbidden-vanilla-behavior": "&c禁止操作，因为它不符合原版行为",
   "no-price-given": "&c请输入一个有效的价格。",
   "average-price-nearby": "&a附近的平均价格： &e{0}",
   "shop-has-changed": "&c在你点击此商店之后此商店被修改了，为了避免恶意修改，您的操作已被取消！",
@@ -80,8 +80,8 @@
   "purchase-failed": "&c支付失败：内部错误，请联系服务器管理员",
   "no-pending-action": "&c你没有任何进行中的操作",
   "permission-denied-3rd-party": "&c没有权限：第三方插件 [{0}]。",
-  "shops-removed-in-world": "&e共计 &b{0}&e 个商店已在世界 &b{1}&e 中删除.",
-  "world-not-exists": "&cThe world &e{0}&c doesn't exist",
+  "shops-removed-in-world": "&e已删除世界 &b{1}&e 中的 &b{0}&e 个商店。",
+  "world-not-exists": "&c世界 &e{0}&c 不存在",
   "menu": {
     "successful-purchase": "&a支付成功：",
     "successfully-sold": "&a出售成功：",
@@ -138,7 +138,7 @@
     "no-amount-given": "&c未指定数量。使用方式为 &a/qs refill <数量>&c",
     "now-debuging": "&a成功切换到了开发者模式，插件重载中...",
     "now-nolonger-debuging": "&a成功切换到了生产模式，插件重载中...",
-    "wrong-args": "&cInvalid arguments. Use &l/qs help &cto see a list of commands.",
+    "wrong-args": "&c无效参数。使用 &l/qs help &c查看命令列表。",
     "description": {
       "title": "&aQuickShop 帮助",
       "unlimited": "&e将商店设置为无限库存。",
@@ -169,10 +169,10 @@
       "removeall": "&e删除指定玩家的&b所有&r&e商店",
       "transfer": "&e将某人的所有商店转移给其他人",
       "removeworld": "&e删除指定世界中的所有商店",
-      "currency": "&eSet or remove the currency settings of the shop"
+      "currency": "&e配置或禁用货币选项"
     },
-    "disabled": "&cThis command is disabled: &e{0}",
-    "feature-not-enabled": "The feature not enabled in config."
+    "disabled": "&c此命令已禁用",
+    "feature-not-enabled": "配置中未启用此功能。"
   },
   "signs": {
     "selling": "出售 {0}",
@@ -208,7 +208,7 @@
     "item": "&a无限模式: {0} &e[&d&l切换&e]",
     "item-hover": "&e点击以更改商店物品",
     "currency": "&a货币: &b{0} &e[&d&l设置&e]",
-    "currency-hover": "&eClick to set or remove the currency that this shop is using"
+    "currency-hover": "&e点击以设置或移除商店使用的交易货币"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -224,8 +224,8 @@
     "price": "[价格]",
     "range": "[范围]",
     "amount": "[数量]",
-    "currency": "[currency name]",
-    "item": "[item]"
+    "currency": "货币名称",
+    "item": "[物品]"
   },
   "updatenotify": {
     "buttontitle": "[立即更新]",
@@ -250,7 +250,7 @@
       "博士，QuickShop有一个新的更新 {0}！你应该考虑一下更新了~",
       "Ko~ko~da~yo~QuickShop有一个新的更新 {0}~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop is marked disabled by remote server, meaning this version may have serious problem, get details from our Spigot plugin page: {0}. This warning will continue to appear untill you switch to a stable version, but it will not affect your server's performence.",
+    "remote-disable-warning": "&c这个版本的QuickShop被远程服务器标记为禁用，意味着这个版本可能存在严重的问题，可以在我们的SpigotMC插件页面获取详细信息。{0}. 此警告将继续出现，直到您切换到一个稳定的版本，但它不会影响您的服务器的性能。",
     "label": {
       "unstable": "[不稳定]",
       "stable": "[稳定]",
@@ -294,13 +294,13 @@
     "qa-issues": "&e质量问题：&b{0}%",
     "help-us": "&a[帮助我们提高翻译质量]"
   },
-  "currency-not-exists": "&cCannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.",
-  "currency-set": "&aShop currency successfully set to {0}.",
-  "currency-unset": "&aShop currency removed successfully. Using default settings now.",
-  "currency-not-support": "&cThe economy plugin doesn't support the multi-economy feature.",
-  "item-not-exist": "&cThe item &e{0} &cdoes not exist, please check your spelling.",
-  "backup-success": "&aBackup successfully.",
-  "console-only": "&cThis command only can be executed by Console.",
-  "console-only-danger": "&cThis is a danger command so that only can be executed by Console.",
-  "clean-warning": "&eThis command will purge &call &e shops if the shop is damaged or created in disallowed worlds or selling/buying disallowed items and &c&lIN NOT LOADED WORLD SHOPS&e, make sure you have full backup of your shops data and use &b/qs cleanghost confirm &eto continue."
+  "currency-not-exists": "&c无法找到您想要设置的货币，也许是拼写错误或该货币在这个世界不可用。",
+  "currency-set": "&aShop货币成功设置为 {0}。",
+  "currency-unset": "&aShop货币已成功删除。现在使用默认设置。",
+  "currency-not-support": "&c此经济插件不支持多货币功能。",
+  "item-not-exist": "&c项目 &e{0} &cdo不存在，请检查您的拼写。",
+  "backup-success": "&a备份成功。",
+  "console-only": "&c此命令只能由控制台执行。",
+  "console-only-danger": "&c这是一个危险命令所以只能通过控制台执行。",
+  "clean-warning": "&e这个命令将清理&e 商店，如果商店在不允许的世界上被损坏或创建，或出售/购买不允许的项目，以及 &c&lIN不要加载世界商品， 请确保您的商店数据备份完整，并使用 &b/qs 清除主机确认 &eto 继续。"
 }

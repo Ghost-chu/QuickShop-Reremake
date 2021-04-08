@@ -100,7 +100,16 @@ public class SubCommand_Create implements CommandProcesser {
                 MsgUtil.sendMessage(sender, MsgUtil.getMessage("item-not-exist", sender, cmdArg[1]));
                 return;
             }
-            item = new ItemStack(material, 1);
+            if (cmdArg.length > 2 && QuickShop.getPermissionManager().hasPermission(sender, "quicshop.create.stack") && plugin.isAllowStack()) {
+                try {
+                    int amount = Integer.parseInt(cmdArg[2]);
+                    item = new ItemStack(material, amount);
+                } catch (NumberFormatException e) {
+                    item = new ItemStack(material, 1);
+                }
+            } else {
+                item = new ItemStack(material, 1);
+            }
         }
         Util.debugLog("Pending task for material: " + item.toString());
 
@@ -168,6 +177,9 @@ public class SubCommand_Create implements CommandProcesser {
         }
         if (cmdArg.length == 2) {
             return Collections.singletonList(MsgUtil.getMessage("tabcomplete.item", sender));
+        }
+        if (cmdArg.length == 3) {
+            return Collections.singletonList(MsgUtil.getMessage("tabcomplete.amount", sender));
         }
         return Collections.emptyList();
     }

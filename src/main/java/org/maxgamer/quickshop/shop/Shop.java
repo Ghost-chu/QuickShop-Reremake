@@ -470,4 +470,28 @@ public interface Shop {
      */
     void openPreview(@NotNull Player player);
 
+    /**
+     * Returns the current cached isLeftShop state of the Shop
+     * @return if the shop is a left shop
+     */
+    boolean isLeftShop();
+
+    /**
+     * Returns the current cached isRealDouble state of the Shop
+     * @return if the shop is a RealDouble
+     */
+    boolean isRealDouble();
+
+    /**
+     * Updates the attachedShop variable to reflect the currently attached shop, if any.
+     * Also updates the left shop status.
+     */
+    void updateAttachedShop();
+
+    /**
+     * Returns the attached shop object if any, otherwise null.
+     * @return Shop or null
+     */
+    ContainerShop getAttachedShop();
+
 }

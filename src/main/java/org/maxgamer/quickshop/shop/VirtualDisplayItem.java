@@ -26,6 +26,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.injector.server.TemporaryPlayer;
+import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import org.bukkit.Chunk;
@@ -34,7 +35,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.event.ShopDisplayItemSpawnEvent;
@@ -42,9 +42,7 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualDisplayItem extends DisplayItem {
@@ -63,7 +61,7 @@ public class VirtualDisplayItem extends DisplayItem {
     //The List which store packet sender
     private final Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
 
-    private final Queue<Runnable> asyncPacketSendQueue = new ConcurrentLinkedQueue<>();
+    // private final Queue<Runnable> asyncPacketSendQueue = new ConcurrentLinkedQueue<>();
 
     private volatile boolean isDisplay;
 
@@ -82,8 +80,6 @@ public class VirtualDisplayItem extends DisplayItem {
     //cache chunk x and z
     private ShopChunk chunkLocation;
 
-    @Nullable
-    private BukkitTask asyncSendingTask;
 
 
     public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
@@ -93,6 +89,9 @@ public class VirtualDisplayItem extends DisplayItem {
 
     private void initFakeDropItemPacket() {
 
+        if (shop.isLeftShop()) {
+            return;
+        }
         //First, create a new packet to spawn item
         fakeItemPacket = protocolManager.createPacket(PacketType.Play.Server.SPAWN_ENTITY);
 
@@ -118,9 +117,10 @@ public class VirtualDisplayItem extends DisplayItem {
         switch (version) {
             case "v1_13_R1":
             case "v1_13_R2":
-                fakeItemPacket.getIntegers().write(6, 2);
-                //int data to mark
-                fakeItemPacket.getIntegers().write(7, 1);
+                fakeItemPacket.getIntegers()
+                        .write(6, 2)
+                        //int data to mark
+                        .write(7, 1);
                 break;
             //int data to mark
             default:
@@ -243,15 +243,6 @@ public class VirtualDisplayItem extends DisplayItem {
         }
     }
 
-    private void unload() {
-        packetSenders.clear();
-        if (packetAdapter != null) {
-            protocolManager.removePacketListener(packetAdapter);
-        }
-        if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {
-            asyncSendingTask.cancel();
-        }
-    }
 
     private void sendPacket(@NotNull Player player, @NotNull PacketContainer packet) {
         try {
@@ -269,8 +260,8 @@ public class VirtualDisplayItem extends DisplayItem {
     @Override
     public void respawn() {
         Util.ensureThread(false);
-        sendPacketToAll(fakeItemDestroyPacket);
-        sendFakeItemToAll();
+        remove();
+        spawn();
     }
 
     public void sendFakeItemToAll() {
@@ -287,6 +278,9 @@ public class VirtualDisplayItem extends DisplayItem {
     @Override
     public void spawn() {
         Util.ensureThread(false);
+        if (shop.isLeftShop()) {
+            return;
+        }
         if (shop.isDeleted() || !shop.isLoaded()) {
             return;
         }
@@ -298,6 +292,14 @@ public class VirtualDisplayItem extends DisplayItem {
             return;
         }
         load();
+
+        // Can't rely on the attachedShop cache to be accurate
+        // So just try it and if it fails, no biggie
+        try {
+            shop.getAttachedShop().updateAttachedShop();
+        } catch (NullPointerException ignored) {
+        }
+
         sendFakeItemToAll();
         isDisplay = true;
     }
@@ -316,45 +318,38 @@ public class VirtualDisplayItem extends DisplayItem {
                 }
             }
         }
+
         if (packetAdapter == null) {
             packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
                 @Override
                 public void onPacketSending(@NotNull PacketEvent event) {
                     //is really full chunk data
                     boolean isFull = event.getPacket().getBooleans().read(0);
-                    if (!shop.isLoaded() || !isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
+                    if (!shop.isLoaded() || !isDisplay || !isFull || shop.isLeftShop()) {
                         return;
                     }
+                    StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
                     //chunk x
-                    int x = event.getPacket().getIntegers().read(0);
+                    int x = integerStructureModifier.read(0);
                     //chunk z
-                    int z = event.getPacket().getIntegers().read(1);
-                    asyncPacketSendQueue.offer(() -> {
-                        //lazy initialize
-                        if (chunkLocation == null) {
-                            World world = shop.getLocation().getWorld();
-                            Chunk chunk = null;
-                            try {
-                                //sync getting chunk
-                                chunk = plugin.getServer().getScheduler().callSyncMethod(plugin, () -> shop.getLocation().getChunk()).get();
-                            } catch (InterruptedException | ExecutionException e) {
-                                throw new RuntimeException("An error occurred when getting chunk from the world", e);
-                            }
-                            chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
-                        }
-                        Player player = event.getPlayer();
-                        if (player instanceof TemporaryPlayer) {
-                            return;
-                        }
-                        if (player == null || !player.isOnline()) {
-                            Util.debugLog("Cancelled packet sending cause player logged out when sending packets.");
-                            return;
-                        }
-                        if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
-                            packetSenders.add(player.getUniqueId());
-                            sendFakeItem(player);
-                        }
-                    });
+                    int z = integerStructureModifier.read(1);
+
+                    if (chunkLocation == null) {
+                        World world = shop.getLocation().getWorld();
+                        Chunk chunk = shop.getLocation().getChunk();
+                        chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
+                    }
+                    Player player = event.getPlayer();
+                    if (player instanceof TemporaryPlayer) {
+                        return;
+                    }
+                    if (player == null || !player.isOnline()) {
+                        return;
+                    }
+                    if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
+                        packetSenders.add(player.getUniqueId());
+                        sendFakeItem(player);
+                    }
 //                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
 //                        if (chunkLocation == null) {
 //                            World world = shop.getLocation().getWorld();
@@ -370,14 +365,22 @@ public class VirtualDisplayItem extends DisplayItem {
             };
         }
         protocolManager.addPacketListener(packetAdapter); //TODO: This may affects performance
-        asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-            Runnable runnable = asyncPacketSendQueue.poll();
-            while (runnable != null) {
-                runnable.run();
-                runnable = asyncPacketSendQueue.poll();
-            }
-        }, 0, 1);
+//        asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+//            Runnable runnable = asyncPacketSendQueue.poll();
+//            while (runnable != null) {
+//                runnable.run();
+//                runnable = asyncPacketSendQueue.poll();
+//            }
+//        }, 0, 1);
     }
+
+    private void unload() {
+        packetSenders.clear();
+        if (packetAdapter != null) {
+            protocolManager.removePacketListener(packetAdapter);
+        }
+    }
+
 
     public void sendFakeItem(@NotNull Player player) {
         sendPacket(player, fakeItemPacket);
@@ -391,12 +394,10 @@ public class VirtualDisplayItem extends DisplayItem {
     }
 
     @Override
-    public @NotNull Location getDisplayLocation() {
-        return shop.getLocation().clone().add(0.5, 1.2, 0.5);
-    }
-
-    @Override
     public boolean isSpawned() {
+        if (shop.isLeftShop()) {
+            return (Objects.requireNonNull(shop.getAttachedShop().getDisplayItem())).isSpawned();
+        }
         return isDisplay;
     }
 
