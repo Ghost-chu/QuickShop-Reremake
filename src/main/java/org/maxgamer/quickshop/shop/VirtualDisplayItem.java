@@ -124,9 +124,10 @@ public class VirtualDisplayItem extends DisplayItem {
         switch (version) {
             case "v1_13_R1":
             case "v1_13_R2":
-                fakeItemPacket.getIntegers().write(6, 2);
-                //int data to mark
-                fakeItemPacket.getIntegers().write(7, 1);
+                fakeItemPacket.getIntegers()
+                        .write(6, 2)
+                        //int data to mark
+                        .write(7, 1);
                 break;
             //int data to mark
             default:
