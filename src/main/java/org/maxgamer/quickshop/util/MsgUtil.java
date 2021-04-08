@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.util;
 
+import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -45,8 +46,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.ServiceInjector;
 import org.maxgamer.quickshop.database.WarpedResultSet;
 import org.maxgamer.quickshop.event.ShopControlPanelOpenEvent;
-import org.maxgamer.quickshop.fileportlek.old.IFile;
-import org.maxgamer.quickshop.fileportlek.old.JSONFile;
+import org.maxgamer.quickshop.fileportlek.old.HumanReadableJsonConfiguration;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.language.game.GameLanguage;
 import org.maxgamer.quickshop.util.language.game.MojangGameLanguageImpl;
@@ -75,10 +75,10 @@ public class MsgUtil {
     private static boolean inited;
     @Getter
     private static YamlConfiguration itemi18n;
-    private static IFile messagei18n;
+    private static JsonConfiguration messagei18n;
     @Getter
     private static YamlConfiguration potioni18n;
-    private static IFile builtInLang;
+    private static JsonConfiguration builtInLang;
 
     private static DecimalFormat processFormat() {
         try {
@@ -172,11 +172,11 @@ public class MsgUtil {
     public static String getMessageOfflinePlayer(
             @NotNull String loc, @Nullable OfflinePlayer player, @NotNull String... args) {
         try {
-            Optional<String> raw = messagei18n.getString(loc);
-            if (!raw.isPresent()) {
+            String raw = messagei18n.getString(loc);
+            if (raw == null) {
                 return invaildMsg + ": " + loc;
             }
-            String filled = fillArgs(raw.get(), args);
+            String filled = fillArgs(raw, args);
             if (player != null) {
                 if (plugin.getConfig().getBoolean("plugin.PlaceHolderAPI") && plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
                     filled = PlaceholderAPI.setPlaceholders(player, filled);
@@ -228,16 +228,21 @@ public class MsgUtil {
         String languageCode = plugin.getConfig().getString("language", "en-US").replace("_", "-");
 
         // Init message file instance
-        IFile messageFile;
+        JsonConfiguration messageFile;
         File extractedMessageFile = new File(plugin.getDataFolder(), "messages.json");
         String buildInMessageFilePath = "lang/" + languageCode + "/messages.json";
         if (plugin.getResource(buildInMessageFilePath) == null) {
             //Use default
             buildInMessageFilePath = "lang-original/messages.json";
         }
-        messageFile = new JSONFile(plugin, extractedMessageFile, buildInMessageFilePath, true);
-        messageFile.create();
-
+        if (!extractedMessageFile.exists()) {
+            try {
+                Files.copy(Objects.requireNonNull(plugin.getResource(buildInMessageFilePath)), extractedMessageFile.toPath());
+            } catch (IOException ioException) {
+                plugin.getLogger().log(Level.WARNING, "Cannot extract the messages.json file", ioException);
+            }
+        }
+        messageFile = HumanReadableJsonConfiguration.loadConfiguration(extractedMessageFile);
         //Handle old message file and load it up
         File oldMsgFile = new File(plugin.getDataFolder(), "messages.yml");
         if (oldMsgFile.exists()) {
@@ -248,7 +253,11 @@ public class MsgUtil {
             for (String key : oldMsgI18n.getKeys(true)) {
                 messageFile.set(key, oldMsgI18n.get(key));
             }
-            messageFile.save();
+            try {
+                messageFile.save(extractedMessageFile);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
             try {
                 Files.move(
                         oldMsgFile.toPath(), new File(plugin.getDataFolder(), "messages.yml.bak").toPath());
@@ -269,16 +278,20 @@ public class MsgUtil {
         }
 
         //Init global instance
+        File buildInLangFile = new File(Util.getCacheFolder(), "bulitin-messages.json");
         messagei18n = messageFile;
-        builtInLang = new JSONFile(plugin, buildInMessageFilePath);
-
-
+        try {
+            Files.copy(Objects.requireNonNull(plugin.getResource(buildInMessageFilePath)), buildInLangFile.toPath());
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+        builtInLang = HumanReadableJsonConfiguration.loadConfiguration(buildInLangFile);
         //Check the i18n language name and backup
-        if (!messagei18n.getString("language-name").isPresent()) {
+        if (StringUtils.isEmpty(messagei18n.getString("language-name"))) {
             setAndUpdate("language-name");
         }
-        String messageCodeInFile = messagei18n.getString("language-name").get();
-        if (!messageCodeInFile.equals(languageCode)) {
+        String messageCodeInFile = messagei18n.getString("language-name");
+        if (!Objects.equals(messageCodeInFile, languageCode)) {
             String backupFileName = "messages-bak-" + UUID.randomUUID().toString() + ".json";
             Util.debugLog("Language name " + messageCodeInFile + " not matched with " + languageCode + ", replacing with build-in files and renaming current file to " + backupFileName);
             plugin.getLogger().warning("Language name " + messageCodeInFile + " not matched with " + languageCode + ", replacing with build-in files and renaming current file to " + backupFileName);
@@ -296,10 +309,10 @@ public class MsgUtil {
 
         /* Set default language vesion and update messages.yml */
         int ver = 0;
-        Optional<String> strVer = messagei18n.getString("language-version");
-        if (strVer.isPresent()) {
+        String strVer = messagei18n.getString("language-version");
+        if (StringUtils.isNumeric(strVer)) {
             try {
-                ver = Integer.parseInt(strVer.get());
+                ver = Integer.parseInt(strVer);
             } catch (NumberFormatException ignore) {
             }
         }
@@ -323,7 +336,11 @@ public class MsgUtil {
         }
 
         /* Save the upgraded messages.yml */
-        messagei18n.save();
+        try {
+            messagei18n.save(extractedMessageFile);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
         plugin.getLogger().info("Completed to load plugin translations files.");
     }
 
@@ -708,13 +725,13 @@ public class MsgUtil {
     public static String getMessage(
             @NotNull String loc, @Nullable CommandSender player, @NotNull String... args) {
         try {
-            final Optional<String> raw = messagei18n.getString(loc);
-            if (!raw.isPresent()) {
+            final String raw = messagei18n.getString(loc);
+            if (raw == null) {
                 Util.debugLog("ERR: MsgUtil cannot find the the phrase at " + loc + ", printing the all readed datas: " + messagei18n);
 
                 return invaildMsg + ": " + loc;
             }
-            String filled = fillArgs(raw.get(), args);
+            String filled = fillArgs(raw, args);
             if (player instanceof OfflinePlayer) {
                 if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled() && plugin.getConfig().getBoolean("plugin.PlaceHolderAPI")) {
                     try {
@@ -972,7 +989,7 @@ public class MsgUtil {
         return Util.prettifyText(potionString);
     }
 
-    public static IFile getI18nFile() {
+    public static JsonConfiguration getI18nFile() {
         return messagei18n;
     }
 
@@ -1451,7 +1468,7 @@ public class MsgUtil {
         }
         for (String msg : messages) {
             try {
-                if (msg == null || msg.isEmpty()) {
+                if (StringUtils.isEmpty(msg)) {
                     continue;
                 }
                 plugin.getQuickChat().send(sender, chatColor + msg);
