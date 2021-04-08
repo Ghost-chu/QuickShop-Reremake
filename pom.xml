@@ -758,24 +758,6 @@
             <systemPath>${project.basedir}/lib/BlocksHub-3.1.1.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.0.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-text-serializer-gson</artifactId>
-            <version>4.2.0</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.code.gson</groupId>
-                    <artifactId>gson</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>com.rollbar</groupId>
             <version>[1.0,)</version>
             <artifactId>rollbar-java</artifactId>
@@ -872,5 +854,37 @@
             <version>1.0.6</version>
             <scope>compile</scope>
         </dependency>
+        <!--        &lt;!&ndash; Use Paper Adventure Lib Start&ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>net.kyori</groupId>-->
+        <!--            <artifactId>adventure-api</artifactId>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>net.kyori</groupId>-->
+        <!--            <artifactId>adventure-text-serializer-gson</artifactId>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>net.kyori</groupId>-->
+        <!--            <artifactId>adventure-text-serializer-legacy</artifactId>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>net.kyori</groupId>-->
+        <!--            <artifactId>adventure-text-serializer-plain</artifactId>-->
+        <!--        </dependency>-->
+        <!--        &lt;!&ndash; Use Paper Adventure Lib End&ndash;&gt;-->
     </dependencies>
+
+    <!--    &lt;!&ndash; Use Paper Adventure Lib Start&ndash;&gt;-->
+    <!--    <dependencyManagement>-->
+    <!--        <dependencies>-->
+    <!--            <dependency>-->
+    <!--                <groupId>net.kyori</groupId>-->
+    <!--                <artifactId>adventure-bom</artifactId>-->
+    <!--                <version>4.7.0</version> &lt;!&ndash; keep this version in synch with javadoc section below! &ndash;&gt;-->
+    <!--                <type>pom</type>-->
+    <!--                <scope>provided</scope>-->
+    <!--            </dependency>-->
+    <!--        </dependencies>-->
+    <!--    </dependencyManagement>-->
+    <!--    &lt;!&ndash; Use Paper Adventure Lib End&ndash;&gt;-->
 </project>
