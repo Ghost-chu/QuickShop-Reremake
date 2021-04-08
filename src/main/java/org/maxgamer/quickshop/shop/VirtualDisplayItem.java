@@ -86,7 +86,7 @@ public class VirtualDisplayItem extends DisplayItem {
     @Nullable
     private BukkitTask asyncSendingTask;
 
-    private AsyncListenerHandler handler;
+    private AsyncListenerHandler asyncHandler;
 
 
     public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
@@ -252,8 +252,8 @@ public class VirtualDisplayItem extends DisplayItem {
     private void unload() {
         packetSenders.clear();
         if (packetAdapter != null) {
-            handler.stop();
-            protocolManager.getAsynchronousManager().unregisterAsyncHandler(handler);
+            asyncHandler.stop();
+            protocolManager.getAsynchronousManager().unregisterAsyncHandler(asyncHandler);
             //protocolManager.getAsynchronousManager().unregisterAsyncHandler(packetAdapter);
         }
         if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {
@@ -388,8 +388,8 @@ public class VirtualDisplayItem extends DisplayItem {
                 }
             };
         }
-        AsyncListenerHandler handler = protocolManager.getAsynchronousManager().registerAsyncHandler(packetAdapter); //TODO: This may affects performance
-        handler.start();
+        asyncHandler = protocolManager.getAsynchronousManager().registerAsyncHandler(packetAdapter); //TODO: This may affects performance
+        asyncHandler.start();
         asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
             Runnable runnable = asyncPacketSendQueue.poll();
             while (runnable != null) {
