@@ -20,6 +20,9 @@
 package org.maxgamer.quickshop.integration.superiorskyblock;
 
 import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
+import com.bgsoftware.superiorskyblock.api.events.IslandChunkResetEvent;
+import com.bgsoftware.superiorskyblock.api.events.IslandKickEvent;
+import com.bgsoftware.superiorskyblock.api.events.IslandQuitEvent;
 import com.bgsoftware.superiorskyblock.api.island.Island;
 import com.bgsoftware.superiorskyblock.api.wrappers.SuperiorPlayer;
 import org.bukkit.Bukkit;
@@ -45,9 +48,7 @@ public class SuperiorSkyblock2Integration extends QSIntegratedPlugin implements 
         super(plugin);
         onlyOwnerCanCreateShop = plugin.getConfig().getBoolean("integration.superiorskyblock.owner-create-only");
         deleteShopOnMemberLeave = plugin.getConfig().getBoolean("integration.superiorskyblock.delete-shop-on-member-leave");
-        if (plugin.getConfig().getBoolean("integration.superiorskyblock.delete-shop-on-member-leave")) {
-            Bukkit.getPluginManager().registerEvents(this, plugin);
-        }
+
     }
 
     /**
@@ -102,7 +103,9 @@ public class SuperiorSkyblock2Integration extends QSIntegratedPlugin implements 
      */
     @Override
     public void load() {
-
+        if (plugin.getConfig().getBoolean("integration.superiorskyblock.delete-shop-on-member-leave")) {
+            Bukkit.getPluginManager().registerEvents(this, plugin);
+        }
     }
 
     /**
@@ -111,7 +114,9 @@ public class SuperiorSkyblock2Integration extends QSIntegratedPlugin implements 
      */
     @Override
     public void unload() {
-
+        IslandQuitEvent.getHandlerList().unregister(this);
+        IslandKickEvent.getHandlerList().unregister(this);
+        IslandChunkResetEvent.getHandlerList().unregister(this);
     }
 
     @EventHandler
