@@ -43,7 +43,6 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -64,7 +63,7 @@ public class VirtualDisplayItem extends DisplayItem {
     //The List which store packet sender
     private final Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
 
-    private final Queue<Runnable> asyncPacketSendQueue = new ConcurrentLinkedQueue<>();
+    // private final Queue<Runnable> asyncPacketSendQueue = new ConcurrentLinkedQueue<>();
 
     private volatile boolean isDisplay;
 
@@ -335,6 +334,10 @@ public class VirtualDisplayItem extends DisplayItem {
                 }
             }
         }
+
+        asyncHandler = protocolManager.getAsynchronousManager().registerAsyncHandler(packetAdapter); //TODO: This may affects performance
+        asyncHandler.start();
+
         if (packetAdapter == null) {
             packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
                 @Override
@@ -348,32 +351,29 @@ public class VirtualDisplayItem extends DisplayItem {
                     int x = event.getPacket().getIntegers().read(0);
                     //chunk z
                     int z = event.getPacket().getIntegers().read(1);
-                    asyncPacketSendQueue.offer(() -> {
-                        //lazy initialize
-                        if (chunkLocation == null) {
-                            World world = shop.getLocation().getWorld();
-                            Chunk chunk = null;
-                            try {
-                                //sync getting chunk
-                                chunk = plugin.getServer().getScheduler().callSyncMethod(plugin, () -> shop.getLocation().getChunk()).get();
-                            } catch (InterruptedException | ExecutionException e) {
-                                throw new RuntimeException("An error occurred when getting chunk from the world", e);
-                            }
-                            chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
+
+                    if (chunkLocation == null) {
+                        World world = shop.getLocation().getWorld();
+                        Chunk chunk;
+                        try {
+                            //sync getting chunk
+                            chunk = plugin.getServer().getScheduler().callSyncMethod(plugin, () -> shop.getLocation().getChunk()).get();
+                        } catch (InterruptedException | ExecutionException e) {
+                            throw new RuntimeException("An error occurred when getting chunk from the world", e);
                         }
-                        Player player = event.getPlayer();
-                        if (player instanceof TemporaryPlayer) {
-                            return;
-                        }
-                        if (player == null || !player.isOnline()) {
-                            Util.debugLog("Cancelled packet sending cause player logged out when sending packets.");
-                            return;
-                        }
-                        if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
-                            packetSenders.add(player.getUniqueId());
-                            sendFakeItem(player);
-                        }
-                    });
+                        chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
+                    }
+                    Player player = event.getPlayer();
+                    if (player instanceof TemporaryPlayer) {
+                        return;
+                    }
+                    if (player == null || !player.isOnline()) {
+                        return;
+                    }
+                    if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
+                        packetSenders.add(player.getUniqueId());
+                        sendFakeItem(player);
+                    }
 //                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
 //                        if (chunkLocation == null) {
 //                            World world = shop.getLocation().getWorld();
@@ -388,15 +388,14 @@ public class VirtualDisplayItem extends DisplayItem {
                 }
             };
         }
-        asyncHandler = protocolManager.getAsynchronousManager().registerAsyncHandler(packetAdapter); //TODO: This may affects performance
-        asyncHandler.start();
-        asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-            Runnable runnable = asyncPacketSendQueue.poll();
-            while (runnable != null) {
-                runnable.run();
-                runnable = asyncPacketSendQueue.poll();
-            }
-        }, 0, 1);
+
+//        asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+//            Runnable runnable = asyncPacketSendQueue.poll();
+//            while (runnable != null) {
+//                runnable.run();
+//                runnable = asyncPacketSendQueue.poll();
+//            }
+//        }, 0, 1);
     }
 
     public void sendFakeItem(@NotNull Player player) {
