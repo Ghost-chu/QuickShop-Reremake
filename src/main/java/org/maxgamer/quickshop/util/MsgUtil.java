@@ -286,7 +286,7 @@ public class MsgUtil {
             }
             Files.copy(Objects.requireNonNull(plugin.getResource(buildInMessageFilePath)), buildInLangFile.toPath());
         } catch (IOException ioException) {
-            Util.debugLog("Cannow load default built-in language file: " + ioException.getMessage());
+            Util.debugLog("Cannot load default built-in language file: " + ioException.getMessage());
         }
         builtInLang = HumanReadableJsonConfiguration.loadConfiguration(buildInLangFile);
         //Check the i18n language name and backup
