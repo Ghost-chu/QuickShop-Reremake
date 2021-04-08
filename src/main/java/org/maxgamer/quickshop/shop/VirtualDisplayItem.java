@@ -250,17 +250,6 @@ public class VirtualDisplayItem extends DisplayItem {
         }
     }
 
-    private void unload() {
-        packetSenders.clear();
-        if (packetAdapter != null) {
-            asyncHandler.stop();
-            protocolManager.getAsynchronousManager().unregisterAsyncHandler(asyncHandler);
-            //protocolManager.getAsynchronousManager().unregisterAsyncHandler(packetAdapter);
-        }
-        if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {
-            asyncSendingTask.cancel();
-        }
-    }
 
     private void sendPacket(@NotNull Player player, @NotNull PacketContainer packet) {
         try {
@@ -400,6 +389,20 @@ public class VirtualDisplayItem extends DisplayItem {
 //            }
 //        }, 0, 1);
     }
+
+    private void unload() {
+        packetSenders.clear();
+        if (packetAdapter != null) {
+            protocolManager.getAsynchronousManager().unregisterAsyncHandler(asyncHandler);
+            asyncHandler.stop();
+
+            //protocolManager.getAsynchronousManager().unregisterAsyncHandler(packetAdapter);
+        }
+        if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {
+            asyncSendingTask.cancel();
+        }
+    }
+
 
     public void sendFakeItem(@NotNull Player player) {
         sendPacket(player, fakeItemPacket);
