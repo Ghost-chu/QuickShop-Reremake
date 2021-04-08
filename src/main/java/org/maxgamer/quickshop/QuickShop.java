@@ -808,7 +808,7 @@ public class QuickShop extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(internalListener, this);
         if (isDisplay() && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayWatcher = new DisplayWatcher(this);
-            new DisplayBugFixListener(this).register();
+//            new DisplayBugFixListener(this).register();
             new DisplayProtectionListener(this, this.shopCache).register();
             if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
                 new ClearLaggListener(this).register();
