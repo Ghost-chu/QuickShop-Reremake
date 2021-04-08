@@ -75,7 +75,7 @@ public class ShopTaxEvent extends QSEvent {
     /**
      * Sets the new tax in purchase
      *
-     * @return new tax
+     * @param tax New tax
      */
     public void setTax(double tax) {
         this.tax = tax;
