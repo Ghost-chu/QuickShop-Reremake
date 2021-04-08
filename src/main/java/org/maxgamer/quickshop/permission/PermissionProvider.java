@@ -48,7 +48,7 @@ public interface PermissionProvider {
      * @return Debug Infos
      */
     @NotNull
-    PermissionInfomationContainer getDebugInfo(
+    PermissionInformationContainer getDebugInfo(
             @NotNull CommandSender sender, @NotNull String permission);
 
 }
