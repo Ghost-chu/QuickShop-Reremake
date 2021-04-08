@@ -416,7 +416,7 @@ public class QuickShop extends JavaPlugin {
                         }
                     }
                     break;
-                case RESERVE: //TODO: Remove Reserve supporting
+                case RESERVE:
                     core = new Economy_Reserve(this);
                     Util.debugLog("Now using the Reserve economy system.");
                     break;
@@ -425,7 +425,7 @@ public class QuickShop extends JavaPlugin {
                     Util.debugLog("Now using the GemsEconomy economy system.");
                     break;
                 case TNE:
-                    core = new Economy_TNE(this); //TODO: Unstable
+                    core = new Economy_TNE(this);
                     Util.debugLog("Now using the TNE economy system.");
                     break;
 //                case MIXED:

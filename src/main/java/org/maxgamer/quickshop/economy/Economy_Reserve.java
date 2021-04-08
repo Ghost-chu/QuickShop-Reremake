@@ -39,9 +39,7 @@ import java.util.logging.Level;
 
 /**
  * @author creatorfromhell
- * @deprecated Reserve no-longer active after Minecraft 1.14.
  */
-@Deprecated
 public class Economy_Reserve implements EconomyCore {
 
     private static final String errorMsg =
