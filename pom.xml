@@ -353,6 +353,10 @@
             <id>papermc</id>
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
+        <repository>
+            <id>bg-repo</id>
+            <url>https://repo.bg-software.com/repository/api/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -853,6 +857,11 @@
             <artifactId>paperlib</artifactId>
             <version>1.0.6</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.bgsoftware</groupId>
+            <artifactId>SuperiorSkyblockAPI</artifactId>
+            <version>latest</version>
         </dependency>
         <!--        &lt;!&ndash; Use Paper Adventure Lib Start&ndash;&gt;-->
         <!--        <dependency>-->
