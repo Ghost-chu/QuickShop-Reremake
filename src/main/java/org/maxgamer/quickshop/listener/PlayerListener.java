@@ -62,24 +62,48 @@ public class PlayerListener extends QSListener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
-        if (e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
-            plugin.getLogger().info(e.getHand().name());
-            plugin.getLogger().info(e.getAction().name());
-            plugin.getLogger().info(e.getClickedBlock().toString());
-        }
         if (e.getHand() != EquipmentSlot.HAND) {
             return;
         }
         final Block b = e.getClickedBlock();
-
+        plugin.getLogger().info("CLICK");
         if (!e.getAction().equals(Action.LEFT_CLICK_BLOCK) && b != null) {
             if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-                postControlPanel(e);
+                if (!swapBehavior) {
+                    postControlPanel(e);
+                } else {
+                    postTrade(e);
+                }
                 return;
             }
         }
+        if (!swapBehavior) {
+            postTrade(e);
+        } else {
+            postControlPanel(e);
+        }
+    }
 
-        postTrade(e);
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onAdventureClick(PlayerAnimationEvent event) {
+        if (event.getPlayer().getGameMode() != GameMode.ADVENTURE) {
+            return;
+        }
+        plugin.getLogger().info("ANIMATION");
+        Block focused = event.getPlayer().getTargetBlock(null, 5);
+        PlayerInteractEvent interactEvent
+                = new PlayerInteractEvent(event.getPlayer(),
+                focused.getType() == Material.AIR ? Action.LEFT_CLICK_AIR : Action.LEFT_CLICK_BLOCK,
+                event.getPlayer().getInventory().getItemInMainHand(),
+                focused,
+                event.getPlayer().getFacing().getOppositeFace());
+
+        if (!swapBehavior) {
+            postTrade(interactEvent);
+        } else {
+            postControlPanel(interactEvent);
+        }
+
     }
 
     private void playClickSound(@NotNull Player player) {
