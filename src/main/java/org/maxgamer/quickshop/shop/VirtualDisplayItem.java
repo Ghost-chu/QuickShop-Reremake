@@ -326,8 +326,6 @@ public class VirtualDisplayItem extends DisplayItem {
             }
         }
 
-
-
         if (packetAdapter == null) {
             packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
                 @Override
@@ -379,8 +377,7 @@ public class VirtualDisplayItem extends DisplayItem {
                 }
             };
         }
-        asyncHandler = protocolManager.getAsynchronousManager().registerAsyncHandler(packetAdapter); //TODO: This may affects performance
-        asyncHandler.start();
+        protocolManager.addPacketListener(packetAdapter); //TODO: This may affects performance
 //        asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
 //            Runnable runnable = asyncPacketSendQueue.poll();
 //            while (runnable != null) {
@@ -393,10 +390,7 @@ public class VirtualDisplayItem extends DisplayItem {
     private void unload() {
         packetSenders.clear();
         if (packetAdapter != null) {
-            protocolManager.getAsynchronousManager().unregisterAsyncHandler(asyncHandler);
-            asyncHandler.stop();
-
-            //protocolManager.getAsynchronousManager().unregisterAsyncHandler(packetAdapter);
+            protocolManager.removePacketListener(packetAdapter);
         }
         if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {
             asyncSendingTask.cancel();
