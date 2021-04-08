@@ -281,9 +281,12 @@ public class MsgUtil {
         File buildInLangFile = new File(Util.getCacheFolder(), "bulitin-messages.json");
         messagei18n = messageFile;
         try {
+            if (buildInLangFile.exists()) {
+                buildInLangFile.delete();
+            }
             Files.copy(Objects.requireNonNull(plugin.getResource(buildInMessageFilePath)), buildInLangFile.toPath());
         } catch (IOException ioException) {
-            ioException.printStackTrace();
+            Util.debugLog("Cannow load default built-in language file: " + ioException.getMessage());
         }
         builtInLang = HumanReadableJsonConfiguration.loadConfiguration(buildInLangFile);
         //Check the i18n language name and backup
