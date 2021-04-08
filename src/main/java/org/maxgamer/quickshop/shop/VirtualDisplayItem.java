@@ -27,6 +27,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.injector.server.TemporaryPlayer;
+import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import org.bukkit.Chunk;
@@ -344,13 +345,14 @@ public class VirtualDisplayItem extends DisplayItem {
                 public void onPacketSending(@NotNull PacketEvent event) {
                     //is really full chunk data
                     boolean isFull = event.getPacket().getBooleans().read(0);
-                    if (!shop.isLoaded() || !isDisplay || !isFull || !Util.isLoaded(shop.getLocation()) || shop.isLeftShop()) {
+                    if (!shop.isLoaded() || !isDisplay || !isFull || shop.isLeftShop()) {
                         return;
                     }
+                    StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
                     //chunk x
-                    int x = event.getPacket().getIntegers().read(0);
+                    int x = integerStructureModifier.read(0);
                     //chunk z
-                    int z = event.getPacket().getIntegers().read(1);
+                    int z = integerStructureModifier.read(1);
 
                     if (chunkLocation == null) {
                         World world = shop.getLocation().getWorld();
