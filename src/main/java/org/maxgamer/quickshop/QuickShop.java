@@ -524,10 +524,10 @@ public class QuickShop extends JavaPlugin {
         //noinspection ResultOfMethodCallIgnored
         getDataFolder().mkdirs();
 //        replaceLogger();
-        if (getConfig().getBoolean("debug.adventure", false)) {
-            System.setProperty("net.kyori.adventure.debug", "true");
-            getLogger().warning("Adventure debug flag was set! You can disable this anytime in config by set `debug.adventure` to false.");
-        }
+//        if (getConfig().getBoolean("debug.adventure", false)) {
+//            System.setProperty("net.kyori.adventure.debug", "true");
+//            getLogger().warning("Adventure debug flag was set! You can disable this anytime in config by set `debug.adventure` to false.");
+//        }
         this.bootError = null;
         getLogger().info("Loading up integration modules.");
         this.integrationHelper = new IntegrationHelper(this);

@@ -1,7 +1,25 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
-
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+# READ ABOVE READ ABOVE READ ABOVE READ ABOVE READ ABOVE READ ABOVE READ ABOVE READ ABOVE READ ABOVE READ ABOVE
+# IF YOU WANT EDIT CONFIGURATION, THE FILE "config.yml" IS THE CORRECT FILE
 
 #Do not touch if you not clear know about this
 config-version: 126
@@ -688,8 +706,6 @@ debug:
   disable-debuglogger: false
   #logging stacktrace when deleting shop
   shop-deletion: false
-  #Enable adventure debug flag
-  adventure: false
 
 
 
