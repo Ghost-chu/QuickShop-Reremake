@@ -1727,6 +1727,7 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.superiorskyblock.enable", false);
             getConfig().set("integration.superiorskyblock.owner-create-only", false);
             getConfig().set("integration.superiorskyblock.delete-shop-on-member-leave", true);
+            getConfig().set("shop.interact.swap-click-behavior", false);
             getConfig().set("config-version", ++selectedVersion);
         }
 
