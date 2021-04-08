@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.shop;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.async.AsyncListenerHandler;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
@@ -84,6 +85,8 @@ public class VirtualDisplayItem extends DisplayItem {
 
     @Nullable
     private BukkitTask asyncSendingTask;
+
+    private AsyncListenerHandler handler;
 
 
     public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
@@ -249,7 +252,9 @@ public class VirtualDisplayItem extends DisplayItem {
     private void unload() {
         packetSenders.clear();
         if (packetAdapter != null) {
-            protocolManager.getAsynchronousManager().unregisterAsyncHandler(packetAdapter);
+            handler.stop();
+            protocolManager.getAsynchronousManager().unregisterAsyncHandler(handler);
+            //protocolManager.getAsynchronousManager().unregisterAsyncHandler(packetAdapter);
         }
         if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {
             asyncSendingTask.cancel();
@@ -383,7 +388,8 @@ public class VirtualDisplayItem extends DisplayItem {
                 }
             };
         }
-        protocolManager.getAsynchronousManager().registerAsyncHandler(packetAdapter); //TODO: This may affects performance
+        AsyncListenerHandler handler = protocolManager.getAsynchronousManager().registerAsyncHandler(packetAdapter); //TODO: This may affects performance
+        handler.start();
         asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
             Runnable runnable = asyncPacketSendQueue.poll();
             while (runnable != null) {
