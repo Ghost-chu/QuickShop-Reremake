@@ -178,21 +178,21 @@ public class ContainerShop implements Shop {
             switch (DisplayItem.getNowUsing()) {
                 case UNKNOWN:
                     Util.debugLog(
-                        "Failed to create a ContainerShop displayItem, the type is unknown, fallback to RealDisplayItem");
+                            "Failed to create a ContainerShop displayItem, the type is unknown, fallback to RealDisplayItem");
                     this.displayItem = new RealDisplayItem(this);
                     break;
                 case REALITEM:
                     this.displayItem = new RealDisplayItem(this);
                     break;
-                case ARMORSTAND:
-                    this.displayItem = new ArmorStandDisplayItem(this);
-                    break;
+//                case ARMORSTAND:
+//                    this.displayItem = new ArmorStandDisplayItem(this);
+//                    break;
                 case VIRTUALITEM:
                     try {
                         if (!GameVersion.get(ReflectFactory.getServerVersion())
-                            .isVirtualDisplaySupports()) {
+                                .isVirtualDisplaySupports()) {
                             throw new IllegalStateException(
-                                "Version not supports Virtual DisplayItem.");
+                                    "Version not supports Virtual DisplayItem.");
                         }
                         this.displayItem = new VirtualDisplayItem(this);
 

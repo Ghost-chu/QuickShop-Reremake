@@ -20,12 +20,10 @@
 package org.maxgamer.quickshop.listener;
 
 import org.bukkit.Location;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -81,20 +79,20 @@ public class DisplayProtectionListener extends ProtectionListenerBase {
                             + " , QuickShop already cancel it.");
         }
     }
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void entity(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof ArmorStand)) {
-            return;
-        }
-        if (DisplayItem.getNowUsing() != DisplayType.ARMORSTAND) {
-            return;
-        }
-        if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand())) { //FIXME: Update this when drop 1.13 supports
-            return;
-        }
-        event.setCancelled(true);
-    }
+//
+//    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+//    public void entity(EntityDamageEvent event) {
+//        if (!(event.getEntity() instanceof ArmorStand)) {
+//            return;
+//        }
+//        if (DisplayItem.getNowUsing() != DisplayType.ARMORSTAND) {
+//            return;
+//        }
+//        if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand())) { //FIXME: Update this when drop 1.13 supports
+//            return;
+//        }
+//        event.setCancelled(true);
+//    }
 
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
