@@ -337,8 +337,7 @@ public class VirtualDisplayItem extends DisplayItem {
             }
         }
 
-        asyncHandler = protocolManager.getAsynchronousManager().registerAsyncHandler(packetAdapter); //TODO: This may affects performance
-        asyncHandler.start();
+
 
         if (packetAdapter == null) {
             packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
@@ -391,7 +390,8 @@ public class VirtualDisplayItem extends DisplayItem {
                 }
             };
         }
-
+        asyncHandler = protocolManager.getAsynchronousManager().registerAsyncHandler(packetAdapter); //TODO: This may affects performance
+        asyncHandler.start();
 //        asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
 //            Runnable runnable = asyncPacketSendQueue.poll();
 //            while (runnable != null) {
