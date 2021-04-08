@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.listener;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import io.papermc.lib.PaperLib;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -49,11 +51,16 @@ import org.maxgamer.quickshop.util.Util;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class PlayerListener extends QSListener {
-
-
-    boolean swapBehavior = false;
+    private final Cache<Player, Long> dupeClickPrevent = Caffeine
+            .newBuilder()
+            .initialCapacity(10)
+            .expireAfterAccess(1, TimeUnit.SECONDS)
+            .weakKeys()
+            .build();
+    private boolean swapBehavior = false;
 
     public PlayerListener(QuickShop plugin) {
         super(plugin);
@@ -66,7 +73,12 @@ public class PlayerListener extends QSListener {
             return;
         }
         final Block b = e.getClickedBlock();
-        plugin.getLogger().info("CLICK");
+
+        // ----Adventure dupe click workaround start----
+        if (e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
+            dupeClickPrevent.put(e.getPlayer(), System.currentTimeMillis());
+        }
+        // ----Adventure dupe click workaround end----
         if (!e.getAction().equals(Action.LEFT_CLICK_BLOCK) && b != null) {
             if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
                 if (!swapBehavior) {
@@ -82,6 +94,7 @@ public class PlayerListener extends QSListener {
         } else {
             postControlPanel(e);
         }
+
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -89,7 +102,14 @@ public class PlayerListener extends QSListener {
         if (event.getPlayer().getGameMode() != GameMode.ADVENTURE) {
             return;
         }
-        plugin.getLogger().info("ANIMATION");
+        // ----Adventure dupe click workaround start----
+        Long dupeTime = dupeClickPrevent.getIfPresent(event.getPlayer());
+        if (dupeTime != null && dupeTime > System.currentTimeMillis() - 1000) {
+            return;
+        } else if (dupeTime != null) {
+            dupeClickPrevent.invalidate(event.getPlayer());
+        }
+        // ----Adventure dupe click workaround end----
         Block focused = event.getPlayer().getTargetBlock(null, 5);
         PlayerInteractEvent interactEvent
                 = new PlayerInteractEvent(event.getPlayer(),
