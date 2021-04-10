@@ -165,18 +165,6 @@ public class ContainerShop implements Shop {
     private void initDisplayItem() {
         Util.ensureThread(false);
         if (plugin.isDisplay()) {
-            if (displayItem != null) {
-                displayItem.remove();
-            }
-            // Update double shop status, is left status, and the attachedShop
-            updateAttachedShop();
-            // Don't make an item for this chest if it's a left shop.
-            if (isLeftShop) {
-                if (attachedShop != null && attachedShop.getDisplayItem() != null) {
-                    attachedShop.refresh();
-                }
-                return;
-            }
 
             switch (DisplayItem.getNowUsing()) {
                 case UNKNOWN:
@@ -817,7 +805,18 @@ public class ContainerShop implements Shop {
         checkDisplay();
 
         if (!isLeftShop) {
-            initDisplayItem();
+            if (displayItem != null) {
+                displayItem.remove();
+            }
+            // Update double shop status, is left status, and the attachedShop
+            updateAttachedShop();
+            // Don't make an item for this chest if it's a left shop.
+            if (isLeftShop) {
+                if (attachedShop != null && attachedShop.getDisplayItem() != null) {
+                    attachedShop.refresh();
+                }
+                return;
+            }
             displayItem.spawn();
         }
 
