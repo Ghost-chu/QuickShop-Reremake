@@ -42,9 +42,9 @@ public class BukkitPermsProvider implements PermissionProvider {
      * @return Debug Infos
      */
     @Override
-    public @NotNull PermissionInfomationContainer getDebugInfo(
+    public @NotNull PermissionInformationContainer getDebugInfo(
             @NotNull CommandSender sender, @NotNull String permission) {
-        return new PermissionInfomationContainer(sender, permission, null, null);
+        return new PermissionInformationContainer(sender, permission, null, null);
     }
 
 }

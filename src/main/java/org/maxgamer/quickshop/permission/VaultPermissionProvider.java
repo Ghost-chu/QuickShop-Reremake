@@ -71,13 +71,13 @@ public class VaultPermissionProvider implements PermissionProvider {
      * @return Debug Infos
      */
     @Override
-    public @NotNull PermissionInfomationContainer getDebugInfo(
+    public @NotNull PermissionInformationContainer getDebugInfo(
             @NotNull CommandSender sender, @NotNull String permission) {
         if (sender instanceof Server) {
-            return new PermissionInfomationContainer(sender, permission, null, "User is Console");
+            return new PermissionInformationContainer(sender, permission, null, "User is Console");
         }
         OfflinePlayer offlinePlayer = (OfflinePlayer) sender;
-        return new PermissionInfomationContainer(
+        return new PermissionInformationContainer(
                 sender, permission, api.getPrimaryGroup(null, offlinePlayer), null);
     }
 

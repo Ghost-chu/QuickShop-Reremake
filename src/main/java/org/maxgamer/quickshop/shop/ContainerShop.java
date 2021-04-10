@@ -22,8 +22,6 @@ package org.maxgamer.quickshop.shop;
 import com.lishid.openinv.OpenInv;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -146,8 +144,7 @@ public class ContainerShop implements Shop {
                 Util.debugLog("Shop item display is: " + meta.getDisplayName());
                 //https://hub.spigotmc.org/jira/browse/SPIGOT-5964
                 if (meta.getDisplayName().matches("\\{.*\\}")) {
-                    meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(
-                        GsonComponentSerializer.gson().deserialize(meta.getDisplayName())));
+                    meta.setDisplayName(meta.getDisplayName());
                     //Correct both items
                     item.setItemMeta(meta);
                     this.item.setItemMeta(meta);
@@ -169,21 +166,21 @@ public class ContainerShop implements Shop {
             switch (DisplayItem.getNowUsing()) {
                 case UNKNOWN:
                     Util.debugLog(
-                        "Failed to create a ContainerShop displayItem, the type is unknown, fallback to RealDisplayItem");
+                            "Failed to create a ContainerShop displayItem, the type is unknown, fallback to RealDisplayItem");
                     this.displayItem = new RealDisplayItem(this);
                     break;
                 case REALITEM:
                     this.displayItem = new RealDisplayItem(this);
                     break;
-                case ARMORSTAND:
-                    this.displayItem = new ArmorStandDisplayItem(this);
-                    break;
+//                case ARMORSTAND:
+//                    this.displayItem = new ArmorStandDisplayItem(this);
+//                    break;
                 case VIRTUALITEM:
                     try {
                         if (!GameVersion.get(ReflectFactory.getServerVersion())
-                            .isVirtualDisplaySupports()) {
+                                .isVirtualDisplaySupports()) {
                             throw new IllegalStateException(
-                                "Version not supports Virtual DisplayItem.");
+                                    "Version not supports Virtual DisplayItem.");
                         }
                         this.displayItem = new VirtualDisplayItem(this);
 
@@ -804,7 +801,7 @@ public class ContainerShop implements Shop {
 
         checkDisplay();
 
-        if (!isLeftShop) {
+        if (!isLeftShop && plugin.isDisplay()) {
             if (displayItem != null) {
                 displayItem.remove();
             }

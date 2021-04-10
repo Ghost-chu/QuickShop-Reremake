@@ -25,7 +25,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Furnace;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -34,8 +33,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
@@ -46,7 +43,6 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Cache;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.DisplayItem;
-import org.maxgamer.quickshop.shop.DisplayType;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -251,44 +247,44 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
         }
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void entity(EntityDeathEvent event) {
-        if (DisplayItem.getNowUsing() != DisplayType.ARMORSTAND) {
-            return;
-        }
-        if (!(event.getEntity() instanceof ArmorStand)) {
-            return;
-        }
-        if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand())) { //FIXME: Update this when drop 1.13 supports
-            return;
-        }
-        event.setDroppedExp(0);
-        event.getDrops().clear();
-    }
+//    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+//    public void entity(EntityDeathEvent event) {
+//        if (DisplayItem.getNowUsing() != DisplayType.ARMORSTAND) {
+//            return;
+//        }
+//        if (!(event.getEntity() instanceof ArmorStand)) {
+//            return;
+//        }
+//        if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand())) { //FIXME: Update this when drop 1.13 supports
+//            return;
+//        }
+//        event.setDroppedExp(0);
+//        event.getDrops().clear();
+//    }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void entity(EntityInteractEvent event) {
-        if (DisplayItem.getNowUsing() != DisplayType.ARMORSTAND) {
-            return;
-        }
-        if (!(event.getEntity() instanceof ArmorStand)) {
-            return;
-        }
-        if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand())) { //FIXME: Update this when drop 1.13 supports
-            return;
-        }
-        event.setCancelled(true);
-        final Entity entity = event.getEntity();
-        if (entity instanceof InventoryHolder) {
-            Util.inventoryCheck(((InventoryHolder) entity).getInventory());
-        }
-        sendAlert(
-                "[DisplayGuard] Entity  "
-                        + event.getEntityType().name()
-                        + " # "
-                        + event.getEntity().getLocation()
-                        + " trying interact the hold displayItem's entity.");
-    }
+//    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+//    public void entity(EntityInteractEvent event) {
+//        if (DisplayItem.getNowUsing() != DisplayType.ARMORSTAND) {
+//            return;
+//        }
+//        if (!(event.getEntity() instanceof ArmorStand)) {
+//            return;
+//        }
+//        if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand())) { //FIXME: Update this when drop 1.13 supports
+//            return;
+//        }
+//        event.setCancelled(true);
+//        final Entity entity = event.getEntity();
+//        if (entity instanceof InventoryHolder) {
+//            Util.inventoryCheck(((InventoryHolder) entity).getInventory());
+//        }
+//        sendAlert(
+//                "[DisplayGuard] Entity  "
+//                        + event.getEntityType().name()
+//                        + " # "
+//                        + event.getEntity().getLocation()
+//                        + " trying interact the hold displayItem's entity.");
+//    }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryClickEvent event) {

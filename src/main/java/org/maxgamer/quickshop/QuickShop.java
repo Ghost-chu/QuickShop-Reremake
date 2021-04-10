@@ -416,7 +416,7 @@ public class QuickShop extends JavaPlugin {
                         }
                     }
                     break;
-                case RESERVE: //TODO: Remove Reserve supporting
+                case RESERVE:
                     core = new Economy_Reserve(this);
                     Util.debugLog("Now using the Reserve economy system.");
                     break;
@@ -425,7 +425,7 @@ public class QuickShop extends JavaPlugin {
                     Util.debugLog("Now using the GemsEconomy economy system.");
                     break;
                 case TNE:
-                    core = new Economy_TNE(this); //TODO: Unstable
+                    core = new Economy_TNE(this);
                     Util.debugLog("Now using the TNE economy system.");
                     break;
 //                case MIXED:
@@ -524,10 +524,10 @@ public class QuickShop extends JavaPlugin {
         //noinspection ResultOfMethodCallIgnored
         getDataFolder().mkdirs();
 //        replaceLogger();
-        if (getConfig().getBoolean("debug.adventure", false)) {
-            System.setProperty("net.kyori.adventure.debug", "true");
-            getLogger().warning("Adventure debug flag was set! You can disable this anytime in config by set `debug.adventure` to false.");
-        }
+//        if (getConfig().getBoolean("debug.adventure", false)) {
+//            System.setProperty("net.kyori.adventure.debug", "true");
+//            getLogger().warning("Adventure debug flag was set! You can disable this anytime in config by set `debug.adventure` to false.");
+//        }
         this.bootError = null;
         getLogger().info("Loading up integration modules.");
         this.integrationHelper = new IntegrationHelper(this);
@@ -808,7 +808,7 @@ public class QuickShop extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(internalListener, this);
         if (isDisplay() && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayWatcher = new DisplayWatcher(this);
-            new DisplayBugFixListener(this).register();
+//            new DisplayBugFixListener(this).register();
             new DisplayProtectionListener(this, this.shopCache).register();
             if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
                 new ClearLaggListener(this).register();
@@ -1723,7 +1723,13 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("plugin.BKCommonLib", true);
             getConfig().set("config-version", ++selectedVersion);
         }
-
+        if (selectedVersion == 125) {
+            getConfig().set("integration.superiorskyblock.enable", false);
+            getConfig().set("integration.superiorskyblock.owner-create-only", false);
+            getConfig().set("integration.superiorskyblock.delete-shop-on-member-leave", true);
+            getConfig().set("shop.interact.swap-click-behavior", false);
+            getConfig().set("config-version", ++selectedVersion);
+        }
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
