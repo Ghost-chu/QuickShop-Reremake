@@ -27,4 +27,6 @@ public class ShopControlPanelImpl {
     public ShopControlPanelImpl(QuickShop plugin) {
         this.plugin = plugin;
     }
+
+
 }

@@ -57,7 +57,7 @@ public class PermissionManager {
             boolean result = provider.hasPermission(sender, permission);
             if (Util.isDevMode()) {
                 try {
-                    PermissionInfomationContainer container = provider.getDebugInfo(sender, permission);
+                    PermissionInformationContainer container = provider.getDebugInfo(sender, permission);
                     Util.debugLog("Permission Node: " + container.getPermission() + "; Result: " + result + "; Sender: " + container.getSender().getName());
 //                    Util.debugLog("Result: " + result);
 //                    Util.debugLog("Sender: " + container.getSender().getName());

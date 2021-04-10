@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.util.envcheck;
 
 import lombok.SneakyThrows;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -27,6 +28,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.shop.DisplayItem;
+import org.maxgamer.quickshop.shop.DisplayType;
 import org.maxgamer.quickshop.util.GameVersion;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.ReflectFactory;
@@ -401,6 +404,14 @@ public class EnvironmentChecker {
         GameVersion gameVersion = GameVersion.get(nmsVersion);
         if (!gameVersion.isPersistentStorageApiSupports()) {
             return new ResultContainer(CheckResult.WARNING, "PersistentStorageApi seems won't working on this Minecraft server, You may hit exploit risk. Make sure you have up-to-date server at least higher than 1.13.2");
+        }
+        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+    }
+
+    @EnvCheckEntry(name = "PacketListenerAPI conflict Test", priority = 9)
+    public ResultContainer plapiConflictTest() {
+        if (plugin.isDisplay() && DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && Bukkit.getPluginManager().isPluginEnabled("ProtocolLib") && Bukkit.getPluginManager().isPluginEnabled("PacketListenerAPI")) {
+            return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem may stop working on your server. We already know plugin [PacketListenerAPI] conflict with plugin [ProtocolLib] (that we required to sending fake items). If you display not showing, please uninstall [PacketListenerAPI]. And it's fine to keep them if nothing wrong.");
         }
         return new ResultContainer(CheckResult.PASSED, "Passed checks");
     }

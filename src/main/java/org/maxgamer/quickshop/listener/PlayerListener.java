@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.listener;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import io.papermc.lib.PaperLib;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -27,7 +29,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Result;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
@@ -49,11 +51,79 @@ import org.maxgamer.quickshop.util.Util;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class PlayerListener extends QSListener {
+    private final Cache<Player, Long> dupeClickPrevent = Caffeine
+            .newBuilder()
+            .initialCapacity(10)
+            .expireAfterAccess(1, TimeUnit.SECONDS)
+            .weakKeys()
+            .build();
+    private boolean swapBehavior = false;
 
     public PlayerListener(QuickShop plugin) {
         super(plugin);
+        swapBehavior = plugin.getConfig().getBoolean("shop.interact.swap-click-behavior");
+    }
+
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onClick(PlayerInteractEvent e) {
+        if (e.getHand() != EquipmentSlot.HAND) {
+            return;
+        }
+        final Block b = e.getClickedBlock();
+
+        // ----Adventure dupe click workaround start----
+        if (e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
+            dupeClickPrevent.put(e.getPlayer(), System.currentTimeMillis());
+        }
+        // ----Adventure dupe click workaround end----
+        if (!e.getAction().equals(Action.LEFT_CLICK_BLOCK) && b != null) {
+            if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+                if (!swapBehavior) {
+                    postControlPanel(e);
+                } else {
+                    postTrade(e);
+                }
+                return;
+            }
+        }
+        if (!swapBehavior) {
+            postTrade(e);
+        } else {
+            postControlPanel(e);
+        }
+
+    }
+
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onAdventureClick(PlayerAnimationEvent event) {
+        if (event.getPlayer().getGameMode() != GameMode.ADVENTURE) {
+            return;
+        }
+        // ----Adventure dupe click workaround start----
+        Long dupeTime = dupeClickPrevent.getIfPresent(event.getPlayer());
+        if (dupeTime != null && dupeTime > System.currentTimeMillis() - 1000) {
+            return;
+        } else if (dupeTime != null) {
+            dupeClickPrevent.invalidate(event.getPlayer());
+        }
+        // ----Adventure dupe click workaround end----
+        Block focused = event.getPlayer().getTargetBlock(null, 5);
+        PlayerInteractEvent interactEvent
+                = new PlayerInteractEvent(event.getPlayer(),
+                focused.getType() == Material.AIR ? Action.LEFT_CLICK_AIR : Action.LEFT_CLICK_BLOCK,
+                event.getPlayer().getInventory().getItemInMainHand(),
+                focused,
+                event.getPlayer().getFacing().getOppositeFace());
+
+        if (!swapBehavior) {
+            postTrade(interactEvent);
+        } else {
+            postControlPanel(interactEvent);
+        }
+
     }
 
     private void playClickSound(@NotNull Player player) {
@@ -62,36 +132,36 @@ public class PlayerListener extends QSListener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    public void onClick(PlayerInteractEvent e) {
-        if (e.getHand() != EquipmentSlot.HAND) {
-            return;
-        }
-        if (!e.getAction().equals(Action.LEFT_CLICK_BLOCK) && e.getClickedBlock() != null) {
-            if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Util.isWallSign(e.getClickedBlock().getType())) {
-                final Block block;
-                if (Util.isWallSign(e.getClickedBlock().getType())) {
-                    block = Util.getAttached(e.getClickedBlock());
-                } else {
-                    block = e.getClickedBlock();
-                }
-                Shop controlPanelShop = plugin.getShopManager().getShop(Objects.requireNonNull(block).getLocation());
-                if (controlPanelShop != null && (controlPanelShop.getOwner().equals(e.getPlayer().getUniqueId()) || QuickShop.getPermissionManager().hasPermission(e.getPlayer(), "quickshop.other.control"))) {
-                    MsgUtil.sendControlPanelInfo(e.getPlayer(), Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())));
-                    this.playClickSound(e.getPlayer());
-                    Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())).setSignText();
-                }
-            }
-            return;
-        }
+    private void postControlPanel(PlayerInteractEvent e) {
         final Block b = e.getClickedBlock();
+        final Player p = e.getPlayer();
+        if (Util.isWallSign(b.getType())) {
+            final Block block;
+            if (Util.isWallSign(b.getType())) {
+                block = Util.getAttached(b);
+            } else {
+                block = e.getClickedBlock();
+            }
+            Shop controlPanelShop = plugin.getShopManager().getShop(Objects.requireNonNull(block).getLocation());
+            if (controlPanelShop != null && (controlPanelShop.getOwner().equals(p.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.control"))) {
+                MsgUtil.sendControlPanelInfo(p, Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())));
+                this.playClickSound(e.getPlayer());
+                Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())).setSignText();
+            }
+        }
+        return;
+    }
+
+    private void postTrade(PlayerInteractEvent e) {
+        final Block b = e.getClickedBlock();
+        final Player p = e.getPlayer();
         if (b == null) {
             return;
         }
         if (!Util.canBeShop(b) && !Util.isWallSign(b.getType())) {
             return;
         }
-        final Player p = e.getPlayer();
+
         final Location loc = b.getLocation();
         final ItemStack item = e.getItem();
         // Get the shop
@@ -177,13 +247,13 @@ public class PlayerListener extends QSListener {
             actions.put(p.getUniqueId(), info);
         }
         // Handles creating shops
-        else if (e.useInteractedBlock() == Result.ALLOW
+        else if (e.useInteractedBlock() == Event.Result.ALLOW
                 && shop == null
                 && item != null
                 && item.getType() != Material.AIR
                 && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.sell")
                 && p.getGameMode() != GameMode.CREATIVE) {
-            if (e.useInteractedBlock() == Result.DENY
+            if (e.useInteractedBlock() == Event.Result.DENY
                     || !InteractUtil.check(InteractUtil.Action.CREATE, p.isSneaking())
                     || plugin.getConfig().getBoolean("shop.disable-quick-create")
                     || !plugin.getShopManager().canBuildShop(p, b, e.getBlockFace())) {
@@ -235,6 +305,11 @@ public class PlayerListener extends QSListener {
                             p,
                             Util.getItemStackName(Objects.requireNonNull(e.getItem())), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1)));
         }
+    }
+
+    enum InteractAction {
+        TRADE,
+        CONTROL_PANEL
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
