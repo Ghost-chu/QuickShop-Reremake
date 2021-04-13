@@ -520,7 +520,7 @@ public class QuickShop extends JavaPlugin {
     @Override
     public void onLoad() {
         this.onLoadCalled = true;
-        getLogger().info("QuickShop Reremake - Early boot step - Booting up...");
+        getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up...");
         //BEWARE THESE ONLY RUN ONCE
         instance = this;
         this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
@@ -543,7 +543,7 @@ public class QuickShop extends JavaPlugin {
         }
 
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadAfter);
-        getLogger().info("QuickShop Reremake - Early boot step - Booted up...");
+        getLogger().info("QuickShop " + getFork() + " - Early boot step - Booted up...");
     }
 
     @Override
