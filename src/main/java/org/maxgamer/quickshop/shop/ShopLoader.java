@@ -282,7 +282,7 @@ public class ShopLoader {
                     continue;
                 }
                 // Load to RAM
-                plugin.getServer().getScheduler().runTask(plugin, () -> {
+                Util.mainThreadRun(() -> {
                     plugin.getDatabaseHelper().createShop(shop, null, null);
                     plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
                     shop.update();

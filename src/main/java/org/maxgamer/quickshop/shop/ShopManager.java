@@ -263,18 +263,17 @@ public class ShopManager {
         addShop(shop.getLocation().getWorld().getName(), shop);
         // save to database
         plugin.getDatabaseHelper().createShop(shop, null, e ->
-            plugin.getServer().getScheduler().runTask(
-                plugin, () -> {
-                    // also remove from memory when failed
-                    shop.delete(true);
-                    plugin.getLogger()
-                        .warning("Shop create failed, trying to auto fix the database...");
-                    boolean backupSuccess = Util.backupDatabase();
-                    if (backupSuccess) {
-                        plugin.getDatabaseHelper().removeShop(shop);
-                    } else {
-                        plugin.getLogger().warning(
-                            "Failed to backup the database, all changes will revert after a reboot.");
+           Util.mainThreadRun(() -> {
+               // also remove from memory when failed
+               shop.delete(true);
+               plugin.getLogger()
+                       .warning("Shop create failed, trying to auto fix the database...");
+               boolean backupSuccess = Util.backupDatabase();
+               if (backupSuccess) {
+                   plugin.getDatabaseHelper().removeShop(shop);
+               } else {
+                   plugin.getLogger().warning(
+                           "Failed to backup the database, all changes will revert after a reboot.");
                     }
                 }));
     }
@@ -447,18 +446,17 @@ public class ShopManager {
         }
         final String message = ChatColor.stripColor(msg);
         // Use from the main thread, because Bukkit hates life
-        plugin.getServer().getScheduler()
-            .runTask(plugin, () -> {
-                Map<UUID, Info> actions = getActions();
-                // They wanted to do something.
-                Info info = actions.remove(p.getUniqueId());
-                if (info == null) {
-                    return; // multithreaded means this can happen
-                }
-                if (info.getLocation().getWorld() != p.getLocation().getWorld()
+        Util.mainThreadRun(() -> {
+            Map<UUID, Info> actions = getActions();
+            // They wanted to do something.
+            Info info = actions.remove(p.getUniqueId());
+            if (info == null) {
+                return; // multithreaded means this can happen
+            }
+            if (info.getLocation().getWorld() != p.getLocation().getWorld()
                     || info.getLocation().distanceSquared(p.getLocation()) > 25) {
-                    MsgUtil.sendMessage(p, MsgUtil.getMessage("not-looking-at-shop", p));
-                    return;
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("not-looking-at-shop", p));
+                return;
                 }
                 if (info.getAction() == ShopAction.CREATE) {
                     actionCreate(p, info, message, bypassProtectionChecks);
