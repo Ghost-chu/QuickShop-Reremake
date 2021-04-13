@@ -169,10 +169,10 @@
                             <pattern>io.papermc.lib.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.io.papermc.lib.</shadedPattern>
                         </relocation>
-                        <!--                        <relocation>-->
-                        <!--                            <pattern>com.github.ben-manes.caffeine.</pattern>-->
-                        <!--                            <shadedPattern>org.maxgamer.quickshop.shade.com.github.ben-manes.caffeine.</shadedPattern>-->
-                        <!--                        </relocation>-->
+                        <relocation>
+                            <pattern>com.github.ben-manes.caffeine.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.com.github.ben-manes.caffeine.</shadedPattern>
+                        </relocation>
 
                         <!--                        <relocation>-->
                         <!--                            <pattern>de.leonhard</pattern>-->
