@@ -662,7 +662,7 @@ public class QuickShop extends JavaPlugin {
         Timer enableTimer = new Timer(true);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableBegin);
 
-        getLogger().info("Quickshop " + getFork());
+        getLogger().info("QuickShop " + getFork());
 
         /* Check the running envs is support or not. */
         getLogger().info("Starting plugin self-test, please wait...");

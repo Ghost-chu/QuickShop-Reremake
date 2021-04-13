@@ -64,14 +64,13 @@ public abstract class DisplayItem {
      * @return Contains protect flag.
      */
     public static boolean checkIsGuardItemStack(@Nullable final ItemStack itemStack) {
-        Util.ensureThread(false);
         if (!plugin.isDisplay()) {
             return false;
         }
         if (getNowUsing() == DisplayType.VIRTUALITEM) {
             return false;
         }
-
+        Util.ensureThread(false);
         if (itemStack == null) {
             return false;
         }

@@ -39,8 +39,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -326,11 +324,10 @@ public class Util {
         if (disableDebugLogger) {
             return;
         }
-        lock.writeLock().lock(); //TODO MOVE IT
+        lock.writeLock().lock();
         if (debugLogs.size() >= 2000) {
             debugLogs.clear();
         }
-        //TODO <- MOVE TO THERE SHOULD BE FINE
         if (!devMode) {
             for (String log : logs) {
                 debugLogs.add("[DEBUG] " + log);
@@ -531,58 +528,6 @@ public class Util {
     }
 
     /**
-     * @param iStack itemstack
-     * @return potion data, readable
-     */
-    @Nullable
-    public static String getPotiondata(@NotNull ItemStack iStack) {
-        if ((iStack.getType() != Material.POTION)
-                && (iStack.getType() != Material.LINGERING_POTION)
-                && (iStack.getType() != Material.SPLASH_POTION)) {
-            return null;
-        }
-        if (!(iStack.getItemMeta() instanceof PotionMeta)) {
-            return null;
-        }
-        List<String> pEffects = new ArrayList<>();
-        PotionMeta pMeta = (PotionMeta) iStack.getItemMeta();
-        // if (pMeta.getBasePotionData().getType() != null) {
-        if (!(pMeta.getBasePotionData().isUpgraded())) {
-            pEffects.add(
-                    ChatColor.BLUE
-                            + MsgUtil.getPotioni18n(
-                            Objects.requireNonNull(pMeta.getBasePotionData().getType().getEffectType())));
-        } else {
-            pEffects.add(
-                    ChatColor.BLUE
-                            + MsgUtil.getPotioni18n(
-                            Objects.requireNonNull(pMeta.getBasePotionData().getType().getEffectType()))
-                            + " II");
-        }
-
-        // }
-        if (pMeta.hasCustomEffects()) {
-            List<PotionEffect> cEffects = pMeta.getCustomEffects();
-            for (PotionEffect potionEffect : cEffects) {
-                pEffects.add(
-                        MsgUtil.getPotioni18n(potionEffect.getType())
-                                + " "
-                                + RomanNumber.toRoman(potionEffect.getAmplifier()));
-            }
-        }
-        if (!pEffects.isEmpty()) {
-            StringBuilder result = new StringBuilder();
-            for (String effectString : pEffects) {
-                result.append(effectString);
-                result.append("\n");
-            }
-            return result.toString();
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * Return an entry with min and max prices, but null if there isn't a price restriction
      *
      * @param material mat
@@ -593,33 +538,6 @@ public class Util {
         return restrictedPrices.get(material);
     }
 
-//    /**
-//     * Returns the chest attached to the given chest. The given block must be a chest.
-//     *
-//     * @param b he chest to check.
-//     * @return the block which is also a chest and connected to b.
-//     * @deprecated
-//     */
-//    @Nullable
-//    @Deprecated
-//    public static Block getSecondHalf_old(@NotNull Block b) {
-//        // if (b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST)
-//        //         //     return null;
-//        if (!isDoubleChest(b)) {
-//            return null;
-//        }
-//        Block[] blocks = new Block[4];
-//        blocks[0] = b.getRelative(1, 0, 0);
-//        blocks[1] = b.getRelative(-1, 0, 0);
-//        blocks[2] = b.getRelative(0, 0, 1);
-//        blocks[3] = b.getRelative(0, 0, -1);
-//        for (Block c : blocks) {
-//            if (c.getType() == b.getType()) {
-//                return c;
-//            }
-//        }
-//        return null;
-//    }
 
     public static boolean isDoubleChest(@Nullable BlockState state) {
         if (!(state instanceof Chest)) {
@@ -859,8 +777,8 @@ public class Util {
                         plugin
                                 .getSyncTaskWatcher()
                                 .getInventoryEditQueue()
-                                .offer(new InventoryEditContainer(inv, i, new ItemStack(Material.AIR)));
-                        Util.debugLog("Found a displayitem in an inventory, Scheduling to removal...");
+                                .offer(new InventoryEditContainer(inv, i, itemStack, new ItemStack(Material.AIR)));
+                        Util.debugLog("Found shop display item in an inventory, Scheduling to removal...");
                         MsgUtil.sendGlobalAlert(
                                 "[InventoryCheck] Found displayItem in inventory at "
                                         + location
