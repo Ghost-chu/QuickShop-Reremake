@@ -112,8 +112,13 @@ public class ShopLoader {
                 shopsInDatabase.add(shop);
                 this.costCalc(singleShopLoadTimer);
                 if (shopNullCheck(shop)) {
-                    Util.debugLog("Trouble database loading debug: " + data.toString());
-                    Util.debugLog("Somethings gone wrong, skipping the loading...");
+                    if (plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false)) {
+                        plugin.getLogger().warning("Deleting shop " + shop + " caused by corrupted.");
+                        plugin.getDatabaseHelper().removeShop(origin.getWorld(), origin.getX(), origin.getY(), origin.getZ());
+                    } else {
+                        Util.debugLog("Trouble database loading debug: " + data.toString());
+                        Util.debugLog("Somethings gone wrong, skipping the loading...");
+                    }
                     loadAfterWorldLoaded++;
                     singleShopLoaded(singleShopLoadTimer);
                     continue;
