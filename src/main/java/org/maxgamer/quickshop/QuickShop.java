@@ -330,7 +330,7 @@ public class QuickShop extends JavaPlugin {
                 getLogger().info("Successfully loaded BlockHub support!");
             }
         }
-        if (getConfig().getBoolean("plugin.LWC")) {
+        if (getConfig().getBoolean("plugin.LWC") && Util.isClassAvailable("com.griefcraft.lwc.LWC")) {
             this.lwcPlugin = Bukkit.getPluginManager().getPlugin("LWC");
             if (this.lwcPlugin != null) {
                 getLogger().info("Successfully loaded LWC support!");
