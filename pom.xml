@@ -847,6 +847,7 @@
             <groupId>com.bgsoftware</groupId>
             <artifactId>SuperiorSkyblockAPI</artifactId>
             <version>latest</version>
+            <scope>provided</scope>
         </dependency>
         <!--        &lt;!&ndash; Use Paper Adventure Lib Start&ndash;&gt;-->
         <!--        <dependency>-->
