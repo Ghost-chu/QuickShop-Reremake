@@ -252,6 +252,10 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private ShopControlPanel shopControlPanelManager;
 
+    public QuickShop() {
+        runtimeCheck(EnvCheckEntry.Stage.CONSTRUCTOR);
+    }
+
 
     @NotNull
     public static QuickShop getInstance() {
@@ -518,6 +522,9 @@ public class QuickShop extends JavaPlugin {
         //BEWARE THESE ONLY RUN ONCE
         instance = this;
         this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
+
+        runtimeCheck(EnvCheckEntry.Stage.ON_LOAD);
+
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
         QuickShopAPI.setupApi(this);
@@ -656,6 +663,22 @@ public class QuickShop extends JavaPlugin {
 
     }
 
+    private void runtimeCheck(@NotNull EnvCheckEntry.Stage stage) {
+        environmentChecker = new org.maxgamer.quickshop.util.envcheck.EnvironmentChecker(this);
+        ResultReport resultReport = environmentChecker.run();
+        if (resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
+            StringJoiner joiner = new StringJoiner("\n", "", "");
+            for (Entry<EnvCheckEntry, ResultContainer> result : resultReport.getResults().entrySet()) {
+                if (result.getValue().getResult().ordinal() > CheckResult.WARNING.ordinal()) {
+                    joiner.add(String.format("- [%s/%s] %s", result.getValue().getResult().getDisplay(), result.getKey().name(), result.getValue().getResultMessage()));
+                }
+            }
+            bootError = new BootError(this.getLogger(), joiner.toString());
+            //noinspection ConstantConditions
+            getCommand("qs").setTabCompleter(this); //Disable tab completer
+        }
+    }
+
     @Override
     public void onEnable() {
         if (!this.onLoadCalled) {
@@ -672,20 +695,7 @@ public class QuickShop extends JavaPlugin {
 
         /* Check the running envs is support or not. */
         getLogger().info("Starting plugin self-test, please wait...");
-        environmentChecker = new org.maxgamer.quickshop.util.envcheck.EnvironmentChecker(this);
-        ResultReport resultReport = environmentChecker.run();
-        if (resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
-            StringJoiner joiner = new StringJoiner("\n", "", "");
-            for (Entry<EnvCheckEntry, ResultContainer> result : resultReport.getResults().entrySet()) {
-                if (result.getValue().getResult().ordinal() > CheckResult.WARNING.ordinal()) {
-                    joiner.add(String.format("- [%s/%s] %s", result.getValue().getResult().getDisplay(), result.getKey().name(), result.getValue().getResultMessage()));
-                }
-            }
-            bootError = new BootError(this.getLogger(), joiner.toString());
-            //noinspection ConstantConditions
-            getCommand("qs").setTabCompleter(this); //Disable tab completer
-            return;
-        }
+        runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
 
         QuickShopAPI.setupApi(this);
 
