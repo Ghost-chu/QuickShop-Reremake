@@ -443,10 +443,7 @@ public class QuickShop extends JavaPlugin {
                 return false;
             }
             if (!core.isValid()) {
-                // getLogger().severe("Economy is not valid!");
                 bootError = BuiltInSolution.econError();
-                // if(econ.equals("Vault"))
-                // getLogger().severe("(Does Vault have an Economy to hook into?!)");
                 return false;
             } else {
                 this.economy = new Economy(this, ServiceInjector.getEconomyCore(core));
@@ -522,29 +519,21 @@ public class QuickShop extends JavaPlugin {
         //BEWARE THESE ONLY RUN ONCE
         instance = this;
         this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
-
         runtimeCheck(EnvCheckEntry.Stage.ON_LOAD);
-
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
         QuickShopAPI.setupApi(this);
         //noinspection ResultOfMethodCallIgnored
         getDataFolder().mkdirs();
-//        replaceLogger();
-//        if (getConfig().getBoolean("debug.adventure", false)) {
-//            System.setProperty("net.kyori.adventure.debug", "true");
-//            getLogger().warning("Adventure debug flag was set! You can disable this anytime in config by set `debug.adventure` to false.");
-//        }
         this.bootError = null;
         getLogger().info("Loading up integration modules.");
         this.integrationHelper = new IntegrationHelper(this);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadBegin);
         if (getConfig().getBoolean("integration.worldguard.enable")) {
             Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
-            Util.debugLog("Check WG plugin...");
+            // WG require register flags when onLoad called.
             if (wg != null) {
-                Util.debugLog("Loading WG modules.");
-                this.integrationHelper.register(new WorldGuardIntegration(this)); // WG require register flags when onLoad called.
+                this.integrationHelper.register(new WorldGuardIntegration(this));
             }
         }
 
@@ -556,32 +545,17 @@ public class QuickShop extends JavaPlugin {
     public void onDisable() {
         this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
-//        if (sentryErrorReporter != null && sentryErrorReporter.isEnabled()) {
-//            Paste paste = new Paste(this);
-//            String lastPaste = paste.paste(paste.genNewPaste(), 1);
-//            if (lastPaste != null) {
-//                log("Plugin unloaded, the server paste was created for debugging, reporting errors and data-recovery: " + lastPaste);
-//            }
-//        }
-//        Util.debugLog("Closing all GUIs...");
-//        for (Player player : Bukkit.getOnlinePlayers()) {
-//            InventoryView view = player.getOpenInventory();
-//            Inventory topInventory = view.getTopInventory();
-//            Inventory bottomInventory = view.getBottomInventory();
-//            if (topInventory.getHolder() instanceof QuickShopPreviewInventoryHolder || bottomInventory.getHolder() instanceof QuickShopPreviewInventoryHolder) {
-//                player.closeInventory();
-//            }
-//        }
         Util.debugLog("Unloading all shops...");
         try {
-            for (Shop shop : Objects.requireNonNull(this.getShopManager().getLoadedShops())) {
-                if (shop.isLoaded()) {
-                    shop.onUnload();
-                }
-            }
-        } catch (Exception th) {
-            // ignore, we didn't care that
+            this.getShopManager().getLoadedShops().forEach(Shop::onUnload);
+        } catch (Exception ignored) {
         }
+
+        // this.reloadConfig();
+        Util.debugLog("Calling integrations...");
+        integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
+        compatibilityTool.unregisterAll();
+        integrationHelper.unregisterAll();
 
         Util.debugLog("Cleaning up resources and unloading all shops...");
         /* Remove all display items, and any dupes we can find */
@@ -594,17 +568,9 @@ public class QuickShop extends JavaPlugin {
             this.getDatabaseManager().unInit();
         }
 
-        // this.reloadConfig();
-        Util.debugLog("Calling integrations...");
-        integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
-        compatibilityTool.unregisterAll();
-        integrationHelper.unregisterAll();
-
         Util.debugLog("Unregistering tasks...");
-        // if (itemWatcherTask != null)
-        //    itemWatcherTask.cancel();
         if (logWatcher != null) {
-            logWatcher.close(); // Closes the file
+            logWatcher.close();
         }
         /* Unload UpdateWatcher */
         if (this.updateWatcher != null) {
