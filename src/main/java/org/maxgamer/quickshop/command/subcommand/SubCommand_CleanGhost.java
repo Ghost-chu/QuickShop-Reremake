@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -79,7 +80,7 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                     MsgUtil.sendMessage(sender,
                             ChatColor.YELLOW + "Shop " + shop + " removing cause item data is damaged.");
                     plugin.log("Deleting shop " + shop + " request by /qs cleanghost command.");
-                    shop.delete();
+                    Bukkit.getScheduler().runTask(plugin, (Runnable) shop::delete);
                     continue;
                 }
           /*
@@ -92,7 +93,7 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                 if (shop.getLocation().getWorld() == null) {
                     MsgUtil.sendMessage(sender,
                             ChatColor.YELLOW + "Shop " + shop + " removing cause target world not loaded.");
-                    shop.delete();
+                    Bukkit.getScheduler().runTask(plugin, (Runnable) shop::delete);
                     plugin.log("Deleting shop " + shop + " request by /qs cleanghost command.");
                     continue;
                 }
@@ -100,7 +101,7 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                 if (shop.getOwner() == null) {
                     MsgUtil.sendMessage(sender,
                             ChatColor.YELLOW + "Shop " + shop + " removing cause owner data is damaged.");
-                    shop.delete();
+                    Bukkit.getScheduler().runTask(plugin, (Runnable) shop::delete);
                     plugin.log("Deleting shop " + shop + " request by /qs cleanghost command.");
                     continue;
                 }
@@ -124,7 +125,7 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                                     }
                                 }); // Post to server main thread to check.
                 try {
-                    Thread.sleep(50); // Have a rest, don't blow up the main server thread.
+                    Thread.sleep(20); // Have a rest, don't blow up the main server thread.
                 } catch (InterruptedException e) {
                     Thread.interrupted();
                 }
