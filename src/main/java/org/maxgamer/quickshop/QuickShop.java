@@ -64,8 +64,6 @@ import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import org.maxgamer.quickshop.util.reporter.error.RollbarErrorReporter;
-import org.maxgamer.quickshop.util.wrapper.bukkit.BukkitAPIWrapper;
-import org.maxgamer.quickshop.util.wrapper.bukkit.SpigotWrapper;
 import org.maxgamer.quickshop.watcher.*;
 
 import java.io.BufferedInputStream;
@@ -221,8 +219,6 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private @Deprecated
     DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
-    @Getter
-    private BukkitAPIWrapper bukkitAPIWrapper;
     @Getter
     private boolean enabledAsyncDisplayDespawn;
     @Getter
@@ -691,7 +687,6 @@ public class QuickShop extends JavaPlugin {
             getLogger().warning("Cannot load the Sentry Error Reporter: " + th.getMessage());
             getLogger().warning("Because our error reporter doesn't work, please report this error to developer, thank you!");
         }
-        bukkitAPIWrapper = new SpigotWrapper();
 
         /* Initalize the Utils */
         this.loadItemMatcher();
