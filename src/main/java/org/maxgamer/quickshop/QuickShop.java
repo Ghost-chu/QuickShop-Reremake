@@ -397,7 +397,12 @@ public class QuickShop extends JavaPlugin {
                         try {
                             String taxAccount = getConfig().getString("tax-account", "tax");
                             if (!(taxAccount == null || taxAccount.isEmpty())) {
-                                OfflinePlayer tax = Bukkit.getOfflinePlayer(Objects.requireNonNull(taxAccount)); //FIXME: Should we use player UUID?
+                                OfflinePlayer tax;
+                                if (Util.isUUID(taxAccount)) {
+                                    tax = Bukkit.getOfflinePlayer(UUID.fromString(taxAccount));
+                                } else {
+                                    tax = Bukkit.getOfflinePlayer(Objects.requireNonNull(taxAccount));
+                                }
                                 if (!tax.hasPlayedBefore()) {
                                     Economy_Vault vault = (Economy_Vault) core;
                                     if (vault.isValid()) {
