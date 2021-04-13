@@ -1706,6 +1706,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.interact.swap-click-behavior", false);
             getConfig().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 126) {
+            getConfig().set("debug.delete-corrupt-shops", false);
+            getConfig().set("config-version", ++selectedVersion);
+        }
+
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");

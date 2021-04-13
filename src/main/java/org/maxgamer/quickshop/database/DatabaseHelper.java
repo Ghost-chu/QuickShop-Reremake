@@ -223,6 +223,31 @@ public class DatabaseHelper {
 
     }
 
+    public void removeShop(String world, int x, int y, int z) {
+        plugin.log("[DATABASE HELPER] Removing shop in the database: " + world + "/" + x + "/" + y + "z" + z);
+        if (plugin.getConfig().getBoolean("debug.shop-deletion")) {
+            for (StackTraceElement stackTraceElement : new Exception().getStackTrace()) {
+                plugin.log("at [" + stackTraceElement.getClassName() + "] [" + stackTraceElement.getMethodName() + "] (" + stackTraceElement.getLineNumber() + ") - " + stackTraceElement.getFileName());
+            }
+        }
+        //TODO: Trace the delete from
+//		db.getConnection().createStatement()
+//				.executeUpdate("DELETE FROM " + plugin.getDbPrefix() + "shops WHERE x = " + x + " AND y = " + y
+//						+ " AND z = " + z + " AND world = \"" + worldName + "\""
+//						+ (db.getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+        String sqlString = "DELETE FROM "
+                + plugin.getDbPrefix()
+                + "shops WHERE x = ? AND y = ? AND z = ? AND world = ?"
+                + (manager.getDatabase() instanceof MySQLCore ? " LIMIT 1" : "");
+        manager.addDelayTask(new DatabaseTask(sqlString, (ps) -> {
+            ps.setInt(1, x);
+            ps.setInt(2, y);
+            ps.setInt(3, z);
+            ps.setString(4, world);
+        }));
+
+    }
+
     public WarpedResultSet selectAllMessages() throws SQLException {
         return selectTable("messages");
     }
