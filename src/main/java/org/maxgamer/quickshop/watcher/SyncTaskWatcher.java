@@ -24,6 +24,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.Util;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -72,6 +73,10 @@ public class SyncTaskWatcher {
             }
             InventoryEditContainer container = inventoryEditQueue.poll();
             while (container != null) {
+                if (!container.getOldItemStack().equals(container.getInventory().getItem(container.getSlot()))) {
+                    Util.debugLog("Warning: Failed to take away target item: The item has been changed during scheduling deleting.");
+                    continue;
+                }
                 container.getInventory().setItem(container.getSlot(), container.getNewItemStack());
                 container = inventoryEditQueue.poll();
             }
