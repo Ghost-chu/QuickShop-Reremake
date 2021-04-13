@@ -1029,39 +1029,39 @@ public class Util {
         return loc;
     }
 
-    /**
-     * Match the both map1 and map2
-     *
-     * @param map1 Map1
-     * @param map2 Map2
-     * @return Map1 match Map2 and Map2 match Map1
-     */
-    @Deprecated
-    public static boolean mapDuoMatches(@NotNull Map<?, ?> map1, @NotNull Map<?, ?> map2) {
-        boolean result = mapMatches(map1, map2);
-        if (!result) {
-            return false;
-        }
-        return mapMatches(map2, map1);
-    }
-
-    /**
-     * Match the map1 and map2
-     *
-     * @param map1 Map1
-     * @param map2 Map2
-     * @return Map1 match Map2
-     */
-    @Deprecated
-    public static boolean mapMatches(@NotNull Map<?, ?> map1, @NotNull Map<?, ?> map2) {
-        Set<? extends Entry<?, ?>> objectSet = map2.entrySet();
-        for (Object obj : map1.keySet()) {
-            if (!objectSet.contains(obj)) {
-                return false;
-            }
-        }
-        return true;
-    }
+//    /**
+//     * Match the both map1 and map2
+//     *
+//     * @param map1 Map1
+//     * @param map2 Map2
+//     * @return Map1 match Map2 and Map2 match Map1
+//     */
+//    @Deprecated
+//    public static boolean mapDuoMatches(@NotNull Map<?, ?> map1, @NotNull Map<?, ?> map2) {
+//        boolean result = mapMatches(map1, map2);
+//        if (!result) {
+//            return false;
+//        }
+//        return mapMatches(map2, map1);
+//    }
+//
+//    /**
+//     * Match the map1 and map2
+//     *
+//     * @param map1 Map1
+//     * @param map2 Map2
+//     * @return Map1 match Map2
+//     */
+//    @Deprecated
+//    public static boolean mapMatches(@NotNull Map<?, ?> map1, @NotNull Map<?, ?> map2) {
+//        Set<? extends Entry<?, ?>> objectSet = map2.entrySet();
+//        for (Object obj : map1.keySet()) {
+//            if (!objectSet.contains(obj)) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
 
     /**
      * Match the list1 and list2
@@ -1225,17 +1225,17 @@ public class Util {
         return new String(filecontent, StandardCharsets.UTF_8);
     }
 
-    /**
-     * Send warning message when some plugin calling deprecated method... With the trace.
-     */
-    @Deprecated
-    public static void sendDeprecatedMethodWarn() {
-        QuickShop.instance
-                .getLogger()
-                .warning(
-                        "Some plugin is calling a Deprecated method, Please contact the author to tell them to use the new api!");
-        MsgUtil.debugStackTrace(Thread.currentThread().getStackTrace());
-    }
+//    /**
+//     * Send warning message when some plugin calling deprecated method... With the trace.
+//     */
+//    @Deprecated
+//    public static void sendDeprecatedMethodWarn() {
+//        QuickShop.instance
+//                .getLogger()
+//                .warning(
+//                        "Some plugin is calling a Deprecated method, Please contact the author to tell them to use the new api!");
+//        MsgUtil.debugStackTrace(Thread.currentThread().getStackTrace());
+//    }
 
     /**
      * Covert ItemStack to YAML string.

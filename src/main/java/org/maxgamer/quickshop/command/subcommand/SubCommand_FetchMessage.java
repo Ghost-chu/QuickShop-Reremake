@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
 public class SubCommand_FetchMessage implements CommandProcesser {
@@ -42,10 +43,7 @@ public class SubCommand_FetchMessage implements CommandProcesser {
             return;
         }
 
-        plugin
-                .getServer()
-                .getScheduler()
-                .runTask(plugin, () -> MsgUtil.flush((Player) sender));
+        Util.mainThreadRun(() -> MsgUtil.flush((Player) sender));
     }
 
 
