@@ -35,6 +35,7 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -43,11 +44,11 @@ public class CommandManager implements TabCompleter, CommandExecutor {
     private final Set<CommandContainer> cmds = Sets.newCopyOnWriteArraySet(); //Because we open to allow register, so this should be thread-safe
     private final QuickShop plugin;
     private final CommandContainer rootContainer;
+    private static final String[] EMPTY_ARGS = new String[0];
 
     public CommandManager(QuickShop plugin) {
         this.plugin = plugin;
         this.rootContainer = CommandContainer.builder()
-                .prefix(null)
                 .permission(null)
                 .executor(new SubCommand_ROOT(plugin))
                 .build();
@@ -188,7 +189,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("about")
-                        .permission(null)
+                        .permission("quickshop.about")
                         .executor(new SubCommand_About(plugin))
                         .build());
         registerCmd(
@@ -298,7 +299,8 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .build());
         registerCmd(CommandContainer.builder()
                 .prefix("removeall")
-                .permission(null)
+                .selectivePermission("quickshop.removeall.other")
+                .selectivePermission("quickshop.removeall.self")
                 .executor(new SubCommand_RemoveAll(plugin))
                 .build());
         registerCmd(CommandContainer.builder()
@@ -360,12 +362,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             @NotNull String commandLabel,
             @NotNull String[] cmdArg) {
         if (plugin.getBootError() != null) {
-            if (cmdArg.length != 1) {
-                plugin.getBootError().printErrors(sender);
-                return true;
-
-            }
-            if (!cmdArg[0].equalsIgnoreCase("paste")) {
+            if (cmdArg.length != 1 && !cmdArg[0].equalsIgnoreCase("paste")) {
                 plugin.getBootError().printErrors(sender);
                 return true;
             }
@@ -377,54 +374,84 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                     .playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
         }
 
-        String[] passthroughArgs;
-        if (cmdArg.length > 0) {
-            passthroughArgs = new String[cmdArg.length - 1];
-            System.arraycopy(cmdArg, 1, passthroughArgs, 0, passthroughArgs.length);
-        } else {
-            passthroughArgs = new String[0];
+        if (cmdArg.length == 0) {
+            //Handle main command
             Util.debugLog("Print help cause no args (/qs)");
-            rootContainer.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
-            return true;
-        }
-        // if (cmdArg.length == 0)
-        //     return rootContainer.getExecutor().onCommand(sender, commandLabel, temp);
-        for (CommandContainer container : cmds) {
-            if (!container.getPrefix().equalsIgnoreCase(cmdArg[0])) {
-                continue;
-            }
-            if (container.isDisabled()) {
-                MsgUtil.sendMessage(sender, container.getDisableText(sender));
+            rootContainer.getExecutor().onCommand(sender, commandLabel, EMPTY_ARGS);
+        } else {
+            //Handle subcommand
+            String[] passThroughArgs = new String[cmdArg.length - 1];
+            System.arraycopy(cmdArg, 1, passThroughArgs, 0, passThroughArgs.length);
+            for (CommandContainer container : cmds) {
+                if (!container.getPrefix().equalsIgnoreCase(cmdArg[0])) {
+                    continue;
+                }
+                if (container.isDisabled()) {
+                    MsgUtil.sendMessage(sender, container.getDisableText(sender));
+                    return true;
+                }
+                List<String> requirePermissions = container.getPermissions();
+                List<String> selectivePermissions = container.getSelectivePermissions();
+                if (!checkPermissions(sender, commandLabel, passThroughArgs, requirePermissions, PermissionType.REQUIRE, Action.EXECUTE)) {
+                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-permission", sender));
+                    return true;
+                }
+                if (!checkPermissions(sender, commandLabel, passThroughArgs, selectivePermissions, PermissionType.SELECTIVE, Action.EXECUTE)) {
+                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-permission", sender));
+                    return true;
+                }
+
+                Util.debugLog("Execute container: " + container.getPrefix() + " - " + cmdArg[0]);
+                container.getExecutor().onCommand(sender, commandLabel, passThroughArgs);
                 return true;
             }
-            List<String> requirePermissions = container.getPermissions();
-            if (container.getPermissions() != null) {
-                for (String requirePermission : requirePermissions) {
+            Util.debugLog("All checks failed, print helps");
+            rootContainer.getExecutor().onCommand(sender, commandLabel, passThroughArgs);
+        }
+        return true;
+    }
 
-                    if (requirePermission != null
-                            && !requirePermission.isEmpty()
-                            && !QuickShop.getPermissionManager().hasPermission(sender, requirePermission)) {
-                        Util.debugLog(
-                                "Sender "
-                                        + sender.getName()
-                                        + " trying execute the command: "
-                                        + commandLabel
-                                        + " "
-                                        + Util.array2String(cmdArg)
-                                        + ", but no permission "
-                                        + requirePermission);
-                        MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-permission", sender));
+    private boolean checkPermissions(CommandSender sender, String commandLabel, String[] cmdArg, List<String> permissionList, PermissionType permissionType, Action action) {
+        if (permissionList == null || permissionList.isEmpty()) {
+            return true;
+        }
+        if (permissionType == PermissionType.REQUIRE) {
+            for (String requirePermission : permissionList) {
+                if (requirePermission != null
+                        && !requirePermission.isEmpty()
+                        && !QuickShop.getPermissionManager().hasPermission(sender, requirePermission)) {
+                    Util.debugLog(
+                            "Sender "
+                                    + sender.getName()
+                                    + " trying " + action.name + " the command: "
+                                    + commandLabel
+                                    + " "
+                                    + Util.array2String(cmdArg)
+                                    + ", but no permission "
+                                    + requirePermission);
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            for (String selectivePermission : permissionList) {
+                if (selectivePermission != null && !selectivePermission.isEmpty()) {
+                    if (QuickShop.getPermissionManager().hasPermission(sender, selectivePermission)) {
                         return true;
                     }
                 }
             }
-            Util.debugLog("Execute container: " + container.getPrefix() + " - " + cmdArg[0]);
-            container.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
-            return true;
+            Util.debugLog(
+                    "Sender "
+                            + sender.getName()
+                            + " trying " + action.name + " the command: "
+                            + commandLabel
+                            + " "
+                            + Util.array2String(cmdArg)
+                            + ", but does no have one of those permissions: "
+                            + permissionList);
+            return false;
         }
-        Util.debugLog("All checks failed, print helps");
-        rootContainer.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
-        return true;
     }
 
     @Override
@@ -433,50 +460,54 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             @NotNull Command command,
             @NotNull String commandLabel,
             @NotNull String[] cmdArg) {
-        // No args, it shouldn't happend
+        // No args, it shouldn't happened
         if (plugin.getBootError() != null) {
-            return null;
+            return Collections.emptyList();
         }
         if (sender instanceof Player && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
             Player player = (Player) sender;
             ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
         }
-        if (cmdArg.length == 0 || cmdArg.length == 1) {
-            // No args
+        if (cmdArg.length <= 1) {
+            // Tab-complete subcommand
             return getRootContainer().getExecutor().onTabComplete(sender, commandLabel, cmdArg);
-        }
-        // Main args/more args
-        String[] passthroughArgs;
-        passthroughArgs = new String[cmdArg.length - 1];
-        System.arraycopy(cmdArg, 1, passthroughArgs, 0, passthroughArgs.length);
-        for (CommandContainer container : cmds) {
-            if (!container.getPrefix().toLowerCase().startsWith(cmdArg[0])) {
-                continue;
-            }
-            List<String> requirePermissions = container.getPermissions();
-            if (container.getPermissions() != null) {
-                for (String requirePermission : requirePermissions) {
-                    if (requirePermission != null
-                            && !requirePermission.isEmpty()
-                            && !QuickShop.getPermissionManager().hasPermission(sender, requirePermission)) {
-                        Util.debugLog(
-                                "Sender "
-                                        + sender.getName()
-                                        + " trying tab-complete the command: "
-                                        + commandLabel
-                                        + " "
-                                        + Util.array2String(cmdArg)
-                                        + ", but no permission "
-                                        + requirePermission);
-                        return null;
-                    }
+        } else {
+            // Tab-complete subcommand args
+            String[] passThroughArgs = new String[cmdArg.length - 1];
+            System.arraycopy(cmdArg, 1, passThroughArgs, 0, passThroughArgs.length);
+            for (CommandContainer container : cmds) {
+                if (!container.getPrefix().toLowerCase().startsWith(cmdArg[0])) {
+                    continue;
                 }
+                List<String> requirePermissions = container.getPermissions();
+                List<String> selectivePermissions = container.getSelectivePermissions();
+                if (!checkPermissions(sender, commandLabel, passThroughArgs, requirePermissions, PermissionType.REQUIRE, Action.TAB_COMPLETE)) {
+                    return Collections.emptyList();
+                }
+                if (!checkPermissions(sender, commandLabel, passThroughArgs, selectivePermissions, PermissionType.SELECTIVE, Action.TAB_COMPLETE)) {
+                    return Collections.emptyList();
+                }
+                Util.debugLog("Tab-complete container: " + container.getPrefix());
+                return container.getExecutor().onTabComplete(sender, commandLabel, passThroughArgs);
             }
-            Util.debugLog("Execute container: " + container.getPrefix());
-            return container.getExecutor().onTabComplete(sender, commandLabel, passthroughArgs);
-        }
 
-        return null;
+            return Collections.emptyList();
+        }
+    }
+
+    private enum Action {
+        EXECUTE("execute"),
+        TAB_COMPLETE("tab-complete");
+        String name;
+
+        Action(String name) {
+            this.name = name;
+        }
+    }
+
+    private enum PermissionType {
+        REQUIRE,
+        SELECTIVE
     }
 
 }
