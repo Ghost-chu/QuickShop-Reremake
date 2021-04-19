@@ -96,14 +96,11 @@ public class Util {
      */
     @NotNull
     public static String array2String(@NotNull String[] strArray) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < strArray.length; i++) {
-            builder.append(strArray[i]);
-            if (i + 1 != strArray.length) {
-                builder.append(", ");
-            }
+        StringJoiner joiner = new StringJoiner(", ");
+        for (String str : strArray) {
+            joiner.add(str);
         }
-        return builder.toString();
+        return joiner.toString();
     }
 
     /**
