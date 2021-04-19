@@ -64,8 +64,6 @@ import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import org.maxgamer.quickshop.util.reporter.error.RollbarErrorReporter;
-import org.maxgamer.quickshop.util.wrapper.bukkit.BukkitAPIWrapper;
-import org.maxgamer.quickshop.util.wrapper.bukkit.SpigotWrapper;
 import org.maxgamer.quickshop.watcher.*;
 
 import java.io.BufferedInputStream;
@@ -222,8 +220,6 @@ public class QuickShop extends JavaPlugin {
     private @Deprecated
     DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
     @Getter
-    private BukkitAPIWrapper bukkitAPIWrapper;
-    @Getter
     private boolean enabledAsyncDisplayDespawn;
     @Getter
     private String previewProtectionLore;
@@ -251,6 +247,10 @@ public class QuickShop extends JavaPlugin {
     private String currency = null;
     @Getter
     private ShopControlPanel shopControlPanelManager;
+
+    public QuickShop() {
+        runtimeCheck(EnvCheckEntry.Stage.CONSTRUCTOR);
+    }
 
 
     @NotNull
@@ -326,7 +326,7 @@ public class QuickShop extends JavaPlugin {
                 getLogger().info("Successfully loaded BlockHub support!");
             }
         }
-        if (getConfig().getBoolean("plugin.LWC")) {
+        if (getConfig().getBoolean("plugin.LWC") && Util.isClassAvailable("com.griefcraft.lwc.LWC")) {
             this.lwcPlugin = Bukkit.getPluginManager().getPlugin("LWC");
             if (this.lwcPlugin != null) {
                 getLogger().info("Successfully loaded LWC support!");
@@ -393,7 +393,12 @@ public class QuickShop extends JavaPlugin {
                         try {
                             String taxAccount = getConfig().getString("tax-account", "tax");
                             if (!(taxAccount == null || taxAccount.isEmpty())) {
-                                OfflinePlayer tax = Bukkit.getOfflinePlayer(Objects.requireNonNull(taxAccount)); //FIXME: Should we use player UUID?
+                                OfflinePlayer tax;
+                                if (Util.isUUID(taxAccount)) {
+                                    tax = Bukkit.getOfflinePlayer(UUID.fromString(taxAccount));
+                                } else {
+                                    tax = Bukkit.getOfflinePlayer(Objects.requireNonNull(taxAccount));
+                                }
                                 if (!tax.hasPlayedBefore()) {
                                     Economy_Vault vault = (Economy_Vault) core;
                                     if (vault.isValid()) {
@@ -439,10 +444,7 @@ public class QuickShop extends JavaPlugin {
                 return false;
             }
             if (!core.isValid()) {
-                // getLogger().severe("Economy is not valid!");
                 bootError = BuiltInSolution.econError();
-                // if(econ.equals("Vault"))
-                // getLogger().severe("(Does Vault have an Economy to hook into?!)");
                 return false;
             } else {
                 this.economy = new Economy(this, ServiceInjector.getEconomyCore(core));
@@ -514,67 +516,47 @@ public class QuickShop extends JavaPlugin {
     @Override
     public void onLoad() {
         this.onLoadCalled = true;
-        getLogger().info("QuickShop Reremake - Early boot step - Booting up...");
+        getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up...");
         //BEWARE THESE ONLY RUN ONCE
         instance = this;
         this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
+        runtimeCheck(EnvCheckEntry.Stage.ON_LOAD);
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
         QuickShopAPI.setupApi(this);
         //noinspection ResultOfMethodCallIgnored
         getDataFolder().mkdirs();
-//        replaceLogger();
-//        if (getConfig().getBoolean("debug.adventure", false)) {
-//            System.setProperty("net.kyori.adventure.debug", "true");
-//            getLogger().warning("Adventure debug flag was set! You can disable this anytime in config by set `debug.adventure` to false.");
-//        }
         this.bootError = null;
         getLogger().info("Loading up integration modules.");
         this.integrationHelper = new IntegrationHelper(this);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadBegin);
         if (getConfig().getBoolean("integration.worldguard.enable")) {
             Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
-            Util.debugLog("Check WG plugin...");
+            // WG require register flags when onLoad called.
             if (wg != null) {
-                Util.debugLog("Loading WG modules.");
-                this.integrationHelper.register(new WorldGuardIntegration(this)); // WG require register flags when onLoad called.
+                this.integrationHelper.register(new WorldGuardIntegration(this));
             }
         }
 
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadAfter);
-        getLogger().info("QuickShop Reremake - Early boot step - Booted up...");
+        getLogger().info("QuickShop " + getFork() + " - Early boot step - Booted up...");
     }
 
     @Override
     public void onDisable() {
         this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
-//        if (sentryErrorReporter != null && sentryErrorReporter.isEnabled()) {
-//            Paste paste = new Paste(this);
-//            String lastPaste = paste.paste(paste.genNewPaste(), 1);
-//            if (lastPaste != null) {
-//                log("Plugin unloaded, the server paste was created for debugging, reporting errors and data-recovery: " + lastPaste);
-//            }
-//        }
-//        Util.debugLog("Closing all GUIs...");
-//        for (Player player : Bukkit.getOnlinePlayers()) {
-//            InventoryView view = player.getOpenInventory();
-//            Inventory topInventory = view.getTopInventory();
-//            Inventory bottomInventory = view.getBottomInventory();
-//            if (topInventory.getHolder() instanceof QuickShopPreviewInventoryHolder || bottomInventory.getHolder() instanceof QuickShopPreviewInventoryHolder) {
-//                player.closeInventory();
-//            }
-//        }
         Util.debugLog("Unloading all shops...");
         try {
-            for (Shop shop : Objects.requireNonNull(this.getShopManager().getLoadedShops())) {
-                if (shop.isLoaded()) {
-                    shop.onUnload();
-                }
-            }
-        } catch (Exception th) {
-            // ignore, we didn't care that
+            this.getShopManager().getLoadedShops().forEach(Shop::onUnload);
+        } catch (Exception ignored) {
         }
+
+        // this.reloadConfig();
+        Util.debugLog("Calling integrations...");
+        integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
+        compatibilityTool.unregisterAll();
+        integrationHelper.unregisterAll();
 
         Util.debugLog("Cleaning up resources and unloading all shops...");
         /* Remove all display items, and any dupes we can find */
@@ -587,17 +569,9 @@ public class QuickShop extends JavaPlugin {
             this.getDatabaseManager().unInit();
         }
 
-        // this.reloadConfig();
-        Util.debugLog("Calling integrations...");
-        integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
-        compatibilityTool.unregisterAll();
-        integrationHelper.unregisterAll();
-
         Util.debugLog("Unregistering tasks...");
-        // if (itemWatcherTask != null)
-        //    itemWatcherTask.cancel();
         if (logWatcher != null) {
-            logWatcher.close(); // Closes the file
+            logWatcher.close();
         }
         /* Unload UpdateWatcher */
         if (this.updateWatcher != null) {
@@ -656,22 +630,7 @@ public class QuickShop extends JavaPlugin {
 
     }
 
-    @Override
-    public void onEnable() {
-        if (!this.onLoadCalled) {
-            getLogger().severe("FATAL: onLoad not called and QuickShop trying patching them... Some Integrations will won't work or work incorrectly!");
-            try {
-                onLoad();
-            } catch (Throwable ignored) {
-            }
-        }
-        Timer enableTimer = new Timer(true);
-        this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableBegin);
-
-        getLogger().info("Quickshop " + getFork());
-
-        /* Check the running envs is support or not. */
-        getLogger().info("Starting plugin self-test, please wait...");
+    private void runtimeCheck(@NotNull EnvCheckEntry.Stage stage) {
         environmentChecker = new org.maxgamer.quickshop.util.envcheck.EnvironmentChecker(this);
         ResultReport resultReport = environmentChecker.run();
         if (resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
@@ -684,8 +643,26 @@ public class QuickShop extends JavaPlugin {
             bootError = new BootError(this.getLogger(), joiner.toString());
             //noinspection ConstantConditions
             getCommand("qs").setTabCompleter(this); //Disable tab completer
-            return;
         }
+    }
+
+    @Override
+    public void onEnable() {
+        if (!this.onLoadCalled) {
+            getLogger().severe("FATAL: onLoad not called and QuickShop trying patching them... Some Integrations will won't work or work incorrectly!");
+            try {
+                onLoad();
+            } catch (Throwable ignored) {
+            }
+        }
+        Timer enableTimer = new Timer(true);
+        this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableBegin);
+
+        getLogger().info("QuickShop " + getFork());
+
+        /* Check the running envs is support or not. */
+        getLogger().info("Starting plugin self-test, please wait...");
+        runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
 
         QuickShopAPI.setupApi(this);
 
@@ -710,7 +687,6 @@ public class QuickShop extends JavaPlugin {
             getLogger().warning("Cannot load the Sentry Error Reporter: " + th.getMessage());
             getLogger().warning("Because our error reporter doesn't work, please report this error to developer, thank you!");
         }
-        bukkitAPIWrapper = new SpigotWrapper();
 
         /* Initalize the Utils */
         this.loadItemMatcher();
@@ -1730,6 +1706,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.interact.swap-click-behavior", false);
             getConfig().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 126) {
+            getConfig().set("debug.delete-corrupt-shops", false);
+            getConfig().set("config-version", ++selectedVersion);
+        }
+
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
