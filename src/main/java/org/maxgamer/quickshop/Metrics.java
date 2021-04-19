@@ -28,6 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
+import org.maxgamer.quickshop.util.Util;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
@@ -265,7 +266,7 @@ public class Metrics {
                         // Bukkit scheduler
                         // Don't be afraid! The connection to the bStats server is still async, only the stats
                         // collection is sync ;)
-                        plugin.getServer().getScheduler().runTask(plugin, () -> submitData());
+                        Util.mainThreadRun(() -> submitData());
                     }
                 },
                 1000 * 60 * 5,

@@ -55,7 +55,7 @@ public class BootError {
         sender.sendMessage(ChatColor.RED + "#####################################################");
         sender.sendMessage(ChatColor.RED + " QuickShop is disabled, Please fix any errors and restart");
         for (String issue : errors) {
-            sender.sendMessage(ChatColor.YELLOW + " " + issue);
+            sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + issue);
         }
         sender.sendMessage(ChatColor.RED + "#####################################################");
     }

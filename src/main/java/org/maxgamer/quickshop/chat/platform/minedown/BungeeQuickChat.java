@@ -33,8 +33,8 @@ import org.maxgamer.quickshop.chat.QuickChat;
 import org.maxgamer.quickshop.chat.QuickComponent;
 import org.maxgamer.quickshop.chat.QuickComponentImpl;
 import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.util.ItemNMS;
 import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 
 import java.lang.reflect.InvocationTargetException;
@@ -72,7 +72,7 @@ public class BungeeQuickChat implements QuickChat {
     public void sendItemHologramChat(@NotNull Player player, @NotNull String left, @NotNull ItemStack itemStack, @NotNull String right) {
         TextComponent errorComponent = new TextComponent(MsgUtil.getMessage("menu.item-holochat-error", player));
         try {
-            String json = ItemNMS.saveJsonfromNMS(itemStack);
+            String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
             TextComponent centerItem = new TextComponent(left + Util.getItemStackName(itemStack) + right);
             ComponentBuilder cBuilder = new ComponentBuilder(json);
             centerItem.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
@@ -88,7 +88,7 @@ public class BungeeQuickChat implements QuickChat {
         TextComponent errorComponent = new TextComponent(MsgUtil.getMessage("menu.item-holochat-error", player));
         try {
 
-            String json = ItemNMS.saveJsonfromNMS(itemStack);
+            String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
             if (json == null) {
                 return new QuickComponentImpl(errorComponent);
             }
@@ -115,7 +115,7 @@ public class BungeeQuickChat implements QuickChat {
 
         String json;
         try {
-            json = ItemNMS.saveJsonfromNMS(itemStack);
+            json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
         } catch (Throwable throwable) {
             plugin.getLogger().log(Level.SEVERE, "Failed to saving item to json for holochat", throwable);
             return new QuickComponentImpl(errorComponent);

@@ -33,6 +33,8 @@ public class InventoryEditContainer {
 
     private int slot;
 
+    private ItemStack oldItemStack;
+
     private ItemStack newItemStack;
 
 }
