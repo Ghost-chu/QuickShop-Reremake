@@ -248,11 +248,6 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private ShopControlPanel shopControlPanelManager;
 
-    public QuickShop() {
-        runtimeCheck(EnvCheckEntry.Stage.CONSTRUCTOR);
-    }
-
-
     @NotNull
     public static QuickShop getInstance() {
         return instance;
