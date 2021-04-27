@@ -73,7 +73,7 @@ public class ContainerShop implements Shop {
     @EqualsAndHashCode.Exclude
     private volatile boolean isDeleted = false;
     @EqualsAndHashCode.Exclude
-    private boolean isLeftShop = false;
+    private volatile boolean isLeftShop = false;
     @EqualsAndHashCode.Exclude
     private volatile boolean createBackup = false;
     @EqualsAndHashCode.Exclude
@@ -83,9 +83,9 @@ public class ContainerShop implements Shop {
     private ShopType shopType;
     private boolean unlimited;
     @EqualsAndHashCode.Exclude
-    private ContainerShop attachedShop;
+    private volatile ContainerShop attachedShop;
     @EqualsAndHashCode.Exclude
-    private boolean dirty;
+    private volatile boolean dirty;
 
 
     private ContainerShop(@NotNull ContainerShop s) {
