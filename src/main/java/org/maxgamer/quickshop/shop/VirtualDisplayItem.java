@@ -65,6 +65,9 @@ public class VirtualDisplayItem extends DisplayItem {
 
     private volatile boolean isDisplay;
 
+    //If packet initialized
+    private volatile boolean initialized = false;
+
     //packets
     private PacketContainer fakeItemPacket;
 
@@ -84,14 +87,9 @@ public class VirtualDisplayItem extends DisplayItem {
 
     public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
         super(shop);
-        initFakeDropItemPacket();
     }
 
     private void initFakeDropItemPacket() {
-
-        if (shop.isLeftShop()) {
-            return;
-        }
         //First, create a new packet to spawn item
         fakeItemPacket = protocolManager.createPacket(PacketType.Play.Server.SPAWN_ENTITY);
 
@@ -197,6 +195,7 @@ public class VirtualDisplayItem extends DisplayItem {
         fakeItemDestroyPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_DESTROY);
         //Entity to remove
         fakeItemDestroyPacket.getIntegerArrays().write(0, new int[]{entityID});
+        initialized = true;
     }
 
     @Override
@@ -280,6 +279,10 @@ public class VirtualDisplayItem extends DisplayItem {
         Util.ensureThread(false);
         if (shop.isLeftShop()) {
             return;
+        }
+        //lazy initialize
+        if (!initialized) {
+            initFakeDropItemPacket();
         }
         if (shop.isDeleted() || !shop.isLoaded()) {
             return;
