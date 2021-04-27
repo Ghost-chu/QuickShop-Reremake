@@ -85,6 +85,8 @@ public class ContainerShop implements Shop {
     @EqualsAndHashCode.Exclude
     private volatile ContainerShop attachedShop;
     @EqualsAndHashCode.Exclude
+    private volatile boolean isDisplayItemChanged = false;
+    @EqualsAndHashCode.Exclude
     private volatile boolean dirty;
 
 
@@ -784,6 +786,7 @@ public class ContainerShop implements Shop {
             return;
         }
         this.item = item;
+        isDisplayItemChanged = true;
         update();
         refresh();
     }
@@ -798,7 +801,6 @@ public class ContainerShop implements Shop {
         if (displayItem != null) {
             displayItem.remove();
         }
-
         checkDisplay();
 
         if (!isLeftShop && plugin.isDisplay()) {
@@ -813,6 +815,10 @@ public class ContainerShop implements Shop {
                     attachedShop.refresh();
                 }
                 return;
+            }
+            if (isDisplayItemChanged) {
+                initDisplayItem();
+                isDisplayItemChanged = false;
             }
             displayItem.spawn();
         }
@@ -1256,12 +1262,14 @@ public class ContainerShop implements Shop {
      * Also updates the left shop status.
      */
     public void updateAttachedShop() {
+        //TODO: Rewrite centering item feature, currently implement is buggy and mess
         Util.ensureThread(false);
         Block attachedChest = Util
             .getSecondHalf(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
         if (attachedChest == null) {
             return;
         }
+        Shop preValue = attachedShop;
         Shop shop = plugin.getShopManager().getShop(attachedChest.getLocation());
         attachedShop = shop == null ? null : (ContainerShop) shop;
 
@@ -1270,6 +1278,9 @@ public class ContainerShop implements Shop {
         } else {
             attachedShop = null;
             isLeftShop = false;
+        }
+        if (!Objects.equals(attachedShop, preValue)) {
+            isDisplayItemChanged = true;
         }
     }
 
@@ -1280,9 +1291,11 @@ public class ContainerShop implements Shop {
      * It also updates the isLeftShop status of this class to reflect the changes.
      */
     private void updateLeftShop() {
+        //TODO: Rewrite centering item feature, currently implement is buggy and mess
         if (attachedShop == null) {
             return;
         }
+        boolean previousValue = isLeftShop;
 
         switch (((Chest) getLocation().getBlock().getBlockData()).getFacing()) {
             case WEST:
@@ -1303,6 +1316,9 @@ public class ContainerShop implements Shop {
                 break;
             default:
                 isLeftShop = false;
+        }
+        if (isLeftShop != previousValue) {
+            isDisplayItemChanged = true;
         }
     }
 

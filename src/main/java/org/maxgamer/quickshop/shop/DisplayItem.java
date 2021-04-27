@@ -316,6 +316,7 @@ public abstract class DisplayItem {
      * @return The Location that the item *should* be displaying at.
      */
     public @Nullable Location getDisplayLocation() {
+        //TODO: Rewrite centering item feature, currently implement is buggy and mess
         Util.ensureThread(false);
         if (shop.isRealDouble()) {
             if (shop.isLeftShop()) {
