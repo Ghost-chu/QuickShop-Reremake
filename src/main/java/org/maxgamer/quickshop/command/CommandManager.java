@@ -49,6 +49,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
     public CommandManager(QuickShop plugin) {
         this.plugin = plugin;
         this.rootContainer = CommandContainer.builder()
+                .prefix("")
                 .permission(null)
                 .executor(new SubCommand_ROOT(plugin))
                 .build();
