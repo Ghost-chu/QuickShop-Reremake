@@ -718,7 +718,7 @@
         <dependency>
             <groupId>com.massivecraft</groupId>
             <artifactId>Factions</artifactId>
-            <version>1.6.9.5-U0.5.7</version>
+            <version>1.6.9.5-U0.5.20</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
