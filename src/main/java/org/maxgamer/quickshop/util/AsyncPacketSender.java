@@ -18,26 +18,21 @@
  */
 package org.maxgamer.quickshop.util;
 
-import lombok.Getter;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.util.holder.QuickShopInstanceHolder;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public final class AsyncPacketSender extends QuickShopInstanceHolder {
+public final class AsyncPacketSender {
 
     private static final Queue<Runnable> asyncPacketSendQueue = new ConcurrentLinkedQueue<>();
-    @Getter
-    private static final AsyncPacketSender instance = new AsyncPacketSender(QuickShop.getInstance());
     private static BukkitTask asyncSendingTask;
 
-    private AsyncPacketSender(QuickShop plugin) {
-        super(plugin);
+    private AsyncPacketSender() {
     }
 
-    public void offer(Runnable runnable) {
+    public static void start(QuickShop plugin) {
         //lazy initialize
         if (asyncSendingTask == null || asyncSendingTask.isCancelled()) {
             asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
@@ -48,10 +43,13 @@ public final class AsyncPacketSender extends QuickShopInstanceHolder {
                 }
             }, 0, 1);
         }
+    }
+
+    public static void offer(Runnable runnable) {
         asyncPacketSendQueue.offer(runnable);
     }
 
-    public void stop() {
+    public static void stop() {
         if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {
             asyncSendingTask.cancel();
         }

@@ -336,7 +336,7 @@ public class VirtualDisplayItem extends DisplayItem {
                     int x = integerStructureModifier.read(0);
                     //chunk z
                     int z = integerStructureModifier.read(1);
-                    AsyncPacketSender.getInstance().offer(() -> {
+                    AsyncPacketSender.offer(() -> {
                         if (chunkLocation == null) {
                             World world = shop.getLocation().getWorld();
                             Chunk chunk;
