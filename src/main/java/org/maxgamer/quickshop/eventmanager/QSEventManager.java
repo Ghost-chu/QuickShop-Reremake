@@ -76,7 +76,7 @@ public class QSEventManager implements QuickEventManager, Listener {
                                 Class<?> clazz = Class.forName(input);
                                 this.ignoredListener.add(new ListenerContainer(clazz, input));
                                 Util.debugLog("Successfully added blacklist: [CLAZZ] " + clazz.getName());
-                            } catch (ClassNotFoundException ignored) {
+                            } catch (Exception ignored) {
                                 this.ignoredListener.add(new ListenerContainer(null, input));
                                 Util.debugLog("Successfully added blacklist: [DYNAMIC] " + input);
                             }
