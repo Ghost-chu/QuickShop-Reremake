@@ -637,7 +637,7 @@ public class QuickShop extends JavaPlugin {
             }
             bootError = new BootError(this.getLogger(), joiner.toString());
             //noinspection ConstantConditions
-            getCommand("qs").setTabCompleter(this); //Disable tab completer
+            Util.mainThreadRun(() -> getCommand("qs").setTabCompleter(this)); //Disable tab completer
         }
     }
 
