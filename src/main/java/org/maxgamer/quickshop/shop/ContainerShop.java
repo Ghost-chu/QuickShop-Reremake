@@ -737,6 +737,13 @@ public class ContainerShop implements Shop {
         Util.mainThreadRun(this::update0);
     }
 
+    private void notifyDisplayItemChange() {
+        isDisplayItemChanged = true;
+        if (attachedShop != null && !attachedShop.isDisplayItemChanged) {
+            attachedShop.notifyDisplayItemChange();
+        }
+    }
+
     public synchronized void update0() {
         Util.ensureThread(false);
         ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
@@ -786,7 +793,7 @@ public class ContainerShop implements Shop {
             return;
         }
         this.item = item;
-        isDisplayItemChanged = true;
+        notifyDisplayItemChange();
         update();
         refresh();
     }
@@ -801,28 +808,27 @@ public class ContainerShop implements Shop {
         if (displayItem != null) {
             displayItem.remove();
         }
-        checkDisplay();
 
-        if (!isLeftShop && plugin.isDisplay()) {
+        if (plugin.isDisplay()) {
             if (displayItem != null) {
                 displayItem.remove();
             }
             // Update double shop status, is left status, and the attachedShop
             updateAttachedShop();
-            // Don't make an item for this chest if it's a left shop.
-            if (isLeftShop) {
-                if (attachedShop != null && attachedShop.getDisplayItem() != null) {
-                    attachedShop.refresh();
-                }
-                return;
-            }
+            // Update displayItem
             if (isDisplayItemChanged) {
                 initDisplayItem();
                 isDisplayItemChanged = false;
             }
-            displayItem.spawn();
+            //Update attachedShop DisplayItem
+            if (attachedShop != null && attachedShop.isDisplayItemChanged) {
+                attachedShop.refresh();
+            }
+            // Don't make an item for this chest if it's a left shop.
+            if (!isLeftShop) {
+                displayItem.spawn();
+            }
         }
-
         setSignText();
     }
 
@@ -1265,22 +1271,24 @@ public class ContainerShop implements Shop {
         //TODO: Rewrite centering item feature, currently implement is buggy and mess
         Util.ensureThread(false);
         Block attachedChest = Util
-            .getSecondHalf(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
-        if (attachedChest == null) {
-            return;
-        }
+                .getSecondHalf(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
+
         Shop preValue = attachedShop;
-        Shop shop = plugin.getShopManager().getShop(attachedChest.getLocation());
-        attachedShop = shop == null ? null : (ContainerShop) shop;
+
+        if (attachedChest == null) {
+            attachedShop = null;
+        } else {
+            attachedShop = (ContainerShop) plugin.getShopManager().getShop(attachedChest.getLocation());
+        }
 
         if (attachedShop != null && attachedShop.matches(this.getItem())) {
             updateLeftShop();
         } else {
-            attachedShop = null;
             isLeftShop = false;
         }
+
         if (!Objects.equals(attachedShop, preValue)) {
-            isDisplayItemChanged = true;
+            notifyDisplayItemChange();
         }
     }
 
@@ -1318,7 +1326,7 @@ public class ContainerShop implements Shop {
                 isLeftShop = false;
         }
         if (isLeftShop != previousValue) {
-            isDisplayItemChanged = true;
+            notifyDisplayItemChange();
         }
     }
 
