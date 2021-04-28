@@ -47,11 +47,11 @@ public class CommandContainer {
     private List<String> permissions; // E.g quickshop.unlimited
     @NotNull
     private String prefix; // E.g /qs <prefix>
-    @NotNull
+    @Nullable
     private String description; // Will show in the /qs help
 
     private boolean disabled; //Set command is disabled or not.
-    @NotNull
+    @Nullable
     private String disablePlaceholder; //Set the text shown if command disabled
     @Nullable
     private Function<@Nullable CommandSender, @NotNull String> disableCallback; //Set the callback that should return a text to shown
