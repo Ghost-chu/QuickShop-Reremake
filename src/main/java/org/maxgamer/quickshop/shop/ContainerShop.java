@@ -318,7 +318,12 @@ public class ContainerShop implements Shop {
             }
             // Now update the players inventory.
             buyerInventory.setContents(contents);
+
+            //Update sign
             this.setSignText();
+            if (attachedShop != null) {
+                attachedShop.setSignText();
+            }
         }
     }
 
@@ -609,7 +614,11 @@ public class ContainerShop implements Shop {
             }
             // We now have to update the chests inventory manually.
             this.getInventory().setContents(chestContents);
+            //Update sign
             this.setSignText();
+            if (attachedShop != null) {
+                attachedShop.setSignText();
+            }
         }
         if (loc2Drop != null) {
             for (ItemStack stack : floor) {
