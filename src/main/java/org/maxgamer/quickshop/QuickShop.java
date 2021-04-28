@@ -247,6 +247,8 @@ public class QuickShop extends JavaPlugin {
     private String currency = null;
     @Getter
     private ShopControlPanel shopControlPanelManager;
+    @Nullable
+    private AsyncPacketSender asyncPacketSender;
 
     @NotNull
     public static QuickShop getInstance() {
@@ -574,6 +576,9 @@ public class QuickShop extends JavaPlugin {
         }
 
         Util.debugLog("Cleanup tasks...");
+        if (asyncPacketSender != null) {
+            asyncPacketSender.stop();
+        }
         try {
             Bukkit.getScheduler().cancelTasks(this);
         } catch (Throwable ignored) {
@@ -813,6 +818,9 @@ public class QuickShop extends JavaPlugin {
         shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
         if (display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayDupeRemoverWatcher.runTaskTimerAsynchronously(this, 0, 1);
+        }
+        if (display && DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+            asyncPacketSender = AsyncPacketSender.getInstance();
         }
         if (logWatcher != null) {
             logWatcher.runTaskTimerAsynchronously(this, 10, 10);
