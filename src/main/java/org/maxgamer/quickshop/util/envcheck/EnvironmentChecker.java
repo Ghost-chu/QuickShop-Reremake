@@ -160,7 +160,7 @@ public class EnvironmentChecker {
         }
     }
 
-    @EnvCheckEntry(name = "Signature Verify", priority = 0)
+    @EnvCheckEntry(name = "Signature Verify", priority = 0, stage = {EnvCheckEntry.Stage.ON_LOAD, EnvCheckEntry.Stage.ON_ENABLE})
     public ResultContainer securityVerify() {
         JarVerifyTool tool = new JarVerifyTool();
         try {

@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
+import io.papermc.lib.PaperLib;
 import lombok.AllArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -129,8 +130,7 @@ public class SubCommand_Find implements CommandProcesser {
         if (usingOldLogic) {
             Map.Entry<Shop, Double> closest = sortedShops.get(0);
             Location lookAt = closest.getKey().getLocation().clone().add(0.5, 0.5, 0.5);
-            plugin.getBukkitAPIWrapper().teleportEntity(p,
-                    Util.lookAt(p.getEyeLocation(), lookAt).add(0, -1.62, 0),
+            PaperLib.teleportAsync(p, Util.lookAt(p.getEyeLocation(), lookAt).add(0, -1.62, 0),
                     PlayerTeleportEvent.TeleportCause.UNKNOWN);
             MsgUtil.sendMessage(p, MsgUtil.getMessage("nearby-shop-this-way", sender, closest.getValue().intValue()));
         } else {

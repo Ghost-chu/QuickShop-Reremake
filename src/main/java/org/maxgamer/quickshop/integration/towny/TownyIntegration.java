@@ -128,7 +128,7 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
         if (Bukkit.isPrimaryThread()) {
             processEvent(event);
         } else {
-            Bukkit.getScheduler().runTask(plugin, () -> processEvent(event));
+           Util.mainThreadRun(() -> processEvent(event));
         }
     }
 

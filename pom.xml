@@ -23,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.maxgamer</groupId>
     <artifactId>QuickShop</artifactId>
-    <version>4.0.7.10</version>
+    <version>4.0.7.11</version>
 
     <licenses>
         <license>
@@ -111,10 +111,10 @@
                             <shadedPattern>org.maxgamer.quickshop.shade.com.fasterxml.jackson.jackson.core.
                             </shadedPattern>
                         </relocation>
-                        <relocation>
-                            <pattern>net.kyori.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.</shadedPattern>
-                        </relocation>
+                        <!--                        <relocation>-->
+                        <!--                            <pattern>net.kyori.</pattern>-->
+                        <!--                            <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.</shadedPattern>-->
+                        <!--                        </relocation>-->
                         <relocation>
                             <pattern>me.lucko.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.me.lucko.</shadedPattern>
@@ -127,10 +127,10 @@
                             <pattern>com.dumptruckman.bukkit.configuration.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.fileportlek.newest.json.</shadedPattern>
                         </relocation>
-                        <relocation>
-                            <pattern>com.offbytwo.jenkins.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.shade.com.offbytwo.jenkins.</shadedPattern>
-                        </relocation>
+                        <!--                        <relocation>-->
+                        <!--                            <pattern>com.offbytwo.jenkins.</pattern>-->
+                        <!--                            <shadedPattern>org.maxgamer.quickshop.shade.com.offbytwo.jenkins.</shadedPattern>-->
+                        <!--                        </relocation>-->
                         <relocation>
                             <pattern>org.apache.commons.compress.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.org.apache.commons.compress.</shadedPattern>
@@ -156,11 +156,11 @@
                             <pattern>com.github.SparklingComet.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.com.github.SparklingComet.</shadedPattern>
                         </relocation>
-                        <relocation>
-                            <pattern>com.offbytwo.jenkins.jenkins-client.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.shade.com.offbytwo.jenkins.jenkins-client.
-                            </shadedPattern>
-                        </relocation>
+                        <!--                        <relocation>-->
+                        <!--                            <pattern>com.offbytwo.jenkins.jenkins-client.</pattern>-->
+                        <!--                            <shadedPattern>org.maxgamer.quickshop.shade.com.offbytwo.jenkins.jenkins-client.-->
+                        <!--                            </shadedPattern>-->
+                        <!--                        </relocation>-->
                         <relocation>
                             <pattern>de.themoep.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.de.themoep.minedown.</shadedPattern>
@@ -169,10 +169,10 @@
                             <pattern>io.papermc.lib.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.io.papermc.lib.</shadedPattern>
                         </relocation>
-                        <!--                        <relocation>-->
-                        <!--                            <pattern>com.github.ben-manes.caffeine.</pattern>-->
-                        <!--                            <shadedPattern>org.maxgamer.quickshop.shade.com.github.ben-manes.caffeine.</shadedPattern>-->
-                        <!--                        </relocation>-->
+                        <relocation>
+                            <pattern>com.github.ben-manes.caffeine.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.com.github.ben-manes.caffeine.</shadedPattern>
+                        </relocation>
 
                         <!--                        <relocation>-->
                         <!--                            <pattern>de.leonhard</pattern>-->
@@ -503,7 +503,7 @@
         <dependency>
             <groupId>com.github.angeschossen</groupId>
             <artifactId>LandsAPI</artifactId>
-            <version>5.4.0</version>
+            <version>5.6.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -516,7 +516,7 @@
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
             <artifactId>MockBukkit-v1.16</artifactId>
-            <version>0.33.0</version>
+            <version>0.34.1</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -718,7 +718,7 @@
         <dependency>
             <groupId>com.massivecraft</groupId>
             <artifactId>Factions</artifactId>
-            <version>1.6.9.5-U0.5.7</version>
+            <version>1.6.9.5-U0.5.20</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -847,6 +847,7 @@
             <groupId>com.bgsoftware</groupId>
             <artifactId>SuperiorSkyblockAPI</artifactId>
             <version>latest</version>
+            <scope>provided</scope>
         </dependency>
         <!--        &lt;!&ndash; Use Paper Adventure Lib Start&ndash;&gt;-->
         <!--        <dependency>-->

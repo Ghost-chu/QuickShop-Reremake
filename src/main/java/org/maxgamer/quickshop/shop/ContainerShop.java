@@ -73,7 +73,7 @@ public class ContainerShop implements Shop {
     @EqualsAndHashCode.Exclude
     private volatile boolean isDeleted = false;
     @EqualsAndHashCode.Exclude
-    private boolean isLeftShop = false;
+    private volatile boolean isLeftShop = false;
     @EqualsAndHashCode.Exclude
     private volatile boolean createBackup = false;
     @EqualsAndHashCode.Exclude
@@ -83,9 +83,11 @@ public class ContainerShop implements Shop {
     private ShopType shopType;
     private boolean unlimited;
     @EqualsAndHashCode.Exclude
-    private ContainerShop attachedShop;
+    private volatile ContainerShop attachedShop;
     @EqualsAndHashCode.Exclude
-    private boolean dirty;
+    private volatile boolean isDisplayItemChanged = false;
+    @EqualsAndHashCode.Exclude
+    private volatile boolean dirty;
 
 
     private ContainerShop(@NotNull ContainerShop s) {
@@ -316,7 +318,12 @@ public class ContainerShop implements Shop {
             }
             // Now update the players inventory.
             buyerInventory.setContents(contents);
+
+            //Update sign
             this.setSignText();
+            if (attachedShop != null) {
+                attachedShop.setSignText();
+            }
         }
     }
 
@@ -607,7 +614,11 @@ public class ContainerShop implements Shop {
             }
             // We now have to update the chests inventory manually.
             this.getInventory().setContents(chestContents);
+            //Update sign
             this.setSignText();
+            if (attachedShop != null) {
+                attachedShop.setSignText();
+            }
         }
         if (loc2Drop != null) {
             for (ItemStack stack : floor) {
@@ -735,6 +746,13 @@ public class ContainerShop implements Shop {
         Util.mainThreadRun(this::update0);
     }
 
+    private void notifyDisplayItemChange() {
+        isDisplayItemChanged = true;
+        if (attachedShop != null && !attachedShop.isDisplayItemChanged) {
+            attachedShop.notifyDisplayItemChange();
+        }
+    }
+
     public synchronized void update0() {
         Util.ensureThread(false);
         ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
@@ -784,6 +802,7 @@ public class ContainerShop implements Shop {
             return;
         }
         this.item = item;
+        notifyDisplayItemChange();
         update();
         refresh();
     }
@@ -799,24 +818,26 @@ public class ContainerShop implements Shop {
             displayItem.remove();
         }
 
-        checkDisplay();
-
-        if (!isLeftShop && plugin.isDisplay()) {
+        if (plugin.isDisplay()) {
             if (displayItem != null) {
                 displayItem.remove();
             }
             // Update double shop status, is left status, and the attachedShop
             updateAttachedShop();
-            // Don't make an item for this chest if it's a left shop.
-            if (isLeftShop) {
-                if (attachedShop != null && attachedShop.getDisplayItem() != null) {
-                    attachedShop.refresh();
-                }
-                return;
+            // Update displayItem
+            if (isDisplayItemChanged) {
+                initDisplayItem();
+                isDisplayItemChanged = false;
             }
-            displayItem.spawn();
+            //Update attachedShop DisplayItem
+            if (attachedShop != null && attachedShop.isDisplayItemChanged) {
+                attachedShop.refresh();
+            }
+            // Don't make an item for this chest if it's a left shop.
+            if (!isLeftShop) {
+                displayItem.spawn();
+            }
         }
-
         setSignText();
     }
 
@@ -1256,20 +1277,27 @@ public class ContainerShop implements Shop {
      * Also updates the left shop status.
      */
     public void updateAttachedShop() {
+        //TODO: Rewrite centering item feature, currently implement is buggy and mess
         Util.ensureThread(false);
         Block attachedChest = Util
-            .getSecondHalf(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
+                .getSecondHalf(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
+
+        Shop preValue = attachedShop;
+
         if (attachedChest == null) {
-            return;
+            attachedShop = null;
+        } else {
+            attachedShop = (ContainerShop) plugin.getShopManager().getShop(attachedChest.getLocation());
         }
-        Shop shop = plugin.getShopManager().getShop(attachedChest.getLocation());
-        attachedShop = shop == null ? null : (ContainerShop) shop;
 
         if (attachedShop != null && attachedShop.matches(this.getItem())) {
             updateLeftShop();
         } else {
-            attachedShop = null;
             isLeftShop = false;
+        }
+
+        if (!Objects.equals(attachedShop, preValue)) {
+            notifyDisplayItemChange();
         }
     }
 
@@ -1280,9 +1308,11 @@ public class ContainerShop implements Shop {
      * It also updates the isLeftShop status of this class to reflect the changes.
      */
     private void updateLeftShop() {
+        //TODO: Rewrite centering item feature, currently implement is buggy and mess
         if (attachedShop == null) {
             return;
         }
+        boolean previousValue = isLeftShop;
 
         switch (((Chest) getLocation().getBlock().getBlockData()).getFacing()) {
             case WEST:
@@ -1303,6 +1333,9 @@ public class ContainerShop implements Shop {
                 break;
             default:
                 isLeftShop = false;
+        }
+        if (isLeftShop != previousValue) {
+            notifyDisplayItemChange();
         }
     }
 

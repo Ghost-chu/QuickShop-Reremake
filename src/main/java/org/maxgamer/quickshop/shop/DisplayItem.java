@@ -51,10 +51,17 @@ public abstract class DisplayItem {
 
     private boolean pendingRemoval;
 
+    private static final boolean displayAllowStacks = plugin.getConfig().getBoolean("shop.display-allow-stacks");
+
     protected DisplayItem(Shop shop) {
         this.shop = shop;
         this.originalItemStack = shop.getItem().clone();
-        //this.originalItemStack.setAmount(1);
+        if (displayAllowStacks) {
+            //Prevent stack over the normal size
+            originalItemStack.setAmount(Math.min(originalItemStack.getAmount(), originalItemStack.getMaxStackSize()));
+        } else {
+            this.originalItemStack.setAmount(1);
+        }
     }
 
     /**
@@ -64,14 +71,13 @@ public abstract class DisplayItem {
      * @return Contains protect flag.
      */
     public static boolean checkIsGuardItemStack(@Nullable final ItemStack itemStack) {
-        Util.ensureThread(false);
         if (!plugin.isDisplay()) {
             return false;
         }
         if (getNowUsing() == DisplayType.VIRTUALITEM) {
             return false;
         }
-
+        Util.ensureThread(false);
         if (itemStack == null) {
             return false;
         }
@@ -310,6 +316,7 @@ public abstract class DisplayItem {
      * @return The Location that the item *should* be displaying at.
      */
     public @Nullable Location getDisplayLocation() {
+        //TODO: Rewrite centering item feature, currently implement is buggy and mess
         Util.ensureThread(false);
         if (shop.isRealDouble()) {
             if (shop.isLeftShop()) {
