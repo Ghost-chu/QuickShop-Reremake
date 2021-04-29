@@ -35,6 +35,7 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 /**
@@ -122,7 +123,8 @@ public class InventoryPreview implements Listener {
         if (inventory == null) {
             return;
         }
-        for (HumanEntity player : inventory.getViewers()) {
+
+        for (HumanEntity player : new ArrayList<>(inventory.getViewers())) {
             player.closeInventory();
         }
         inventory = null; // Destroy

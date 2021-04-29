@@ -34,14 +34,18 @@ import java.util.function.Function;
 @Data
 @Builder
 public class CommandContainer {
-    @Nullable
+    @NotNull
     private CommandProcesser executor;
 
     private boolean hidden; // Hide from help, tabcomplete
-
+    /*
+      E.g you can use the command when having quickshop.removeall.self or quickshop.removeall.others permission
+    */
+    @Singular
+    private List<String> selectivePermissions;
     @Singular
     private List<String> permissions; // E.g quickshop.unlimited
-    @Nullable
+    @NotNull
     private String prefix; // E.g /qs <prefix>
     @Nullable
     private String description; // Will show in the /qs help

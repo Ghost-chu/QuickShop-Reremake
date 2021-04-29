@@ -19,7 +19,7 @@
 
 package org.maxgamer.quickshop.shop;
 
-import java.util.ArrayList;
+import io.papermc.lib.PaperLib;
 import lombok.ToString;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -34,6 +34,7 @@ import org.maxgamer.quickshop.event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -115,11 +116,9 @@ public class RealDisplayItem extends DisplayItem {
                     return;
                 }
                 Util.debugLog(
-                    "Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem
-                        .getLocation());
-                plugin.getBukkitAPIWrapper()
-                    .teleportEntity(eItem, Objects.requireNonNull(getDisplayLocation()),
-                        PlayerTeleportEvent.TeleportCause.UNKNOWN);
+                        "Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem
+                                .getLocation());
+                PaperLib.teleportAsync(entity, Objects.requireNonNull(getDisplayLocation()), PlayerTeleportEvent.TeleportCause.UNKNOWN);
                 return;
             }
         }

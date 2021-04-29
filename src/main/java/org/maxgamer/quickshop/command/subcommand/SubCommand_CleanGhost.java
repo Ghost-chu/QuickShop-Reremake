@@ -79,7 +79,7 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                     MsgUtil.sendMessage(sender,
                             ChatColor.YELLOW + "Shop " + shop + " removing cause item data is damaged.");
                     plugin.log("Deleting shop " + shop + " request by /qs cleanghost command.");
-                    shop.delete();
+                    Util.mainThreadRun(shop::delete);
                     continue;
                 }
           /*
@@ -92,7 +92,7 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                 if (shop.getLocation().getWorld() == null) {
                     MsgUtil.sendMessage(sender,
                             ChatColor.YELLOW + "Shop " + shop + " removing cause target world not loaded.");
-                    shop.delete();
+                    Util.mainThreadRun(shop::delete);
                     plugin.log("Deleting shop " + shop + " request by /qs cleanghost command.");
                     continue;
                 }
@@ -100,31 +100,26 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                 if (shop.getOwner() == null) {
                     MsgUtil.sendMessage(sender,
                             ChatColor.YELLOW + "Shop " + shop + " removing cause owner data is damaged.");
-                    shop.delete();
+                    Util.mainThreadRun(shop::delete);
                     plugin.log("Deleting shop " + shop + " request by /qs cleanghost command.");
                     continue;
                 }
                 // Shop exist check
-                plugin
-                        .getServer()
-                        .getScheduler()
-                        .runTask(
-                                plugin,
-                                () -> {
-                                    Util.debugLog(
-                                            "Posted to main server thread to continue access Bukkit API for shop "
-                                                    + shop);
-                                    if (!Util.canBeShop(shop.getLocation().getBlock())) {
-                                        MsgUtil.sendMessage(sender,
-                                                ChatColor.YELLOW
-                                                        + "Shop "
-                                                        + shop
-                                                        + " removing cause target location nolonger is a shop or disallow create the shop.");
-                                        shop.delete();
+                Util.mainThreadRun(() -> {
+                    Util.debugLog(
+                            "Posted to main server thread to continue access Bukkit API for shop "
+                                    + shop);
+                    if (!Util.canBeShop(shop.getLocation().getBlock())) {
+                        MsgUtil.sendMessage(sender,
+                                ChatColor.YELLOW
+                                        + "Shop "
+                                        + shop
+                                        + " removing cause target location nolonger is a shop or disallow create the shop.");
+                        shop.delete();
                                     }
                                 }); // Post to server main thread to check.
                 try {
-                    Thread.sleep(50); // Have a rest, don't blow up the main server thread.
+                    Thread.sleep(20); // Have a rest, don't blow up the main server thread.
                 } catch (InterruptedException e) {
                     Thread.interrupted();
                 }

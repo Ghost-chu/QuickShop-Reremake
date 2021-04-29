@@ -38,11 +38,13 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.event.ShopDisplayItemSpawnEvent;
+import org.maxgamer.quickshop.util.AsyncPacketSender;
 import org.maxgamer.quickshop.util.Util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualDisplayItem extends DisplayItem {
@@ -61,9 +63,10 @@ public class VirtualDisplayItem extends DisplayItem {
     //The List which store packet sender
     private final Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
 
-    // private final Queue<Runnable> asyncPacketSendQueue = new ConcurrentLinkedQueue<>();
-
     private volatile boolean isDisplay;
+
+    //If packet initialized
+    private volatile boolean initialized = false;
 
     //packets
     private PacketContainer fakeItemPacket;
@@ -84,14 +87,9 @@ public class VirtualDisplayItem extends DisplayItem {
 
     public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
         super(shop);
-        initFakeDropItemPacket();
     }
 
     private void initFakeDropItemPacket() {
-
-        if (shop.isLeftShop()) {
-            return;
-        }
         //First, create a new packet to spawn item
         fakeItemPacket = protocolManager.createPacket(PacketType.Play.Server.SPAWN_ENTITY);
 
@@ -197,6 +195,7 @@ public class VirtualDisplayItem extends DisplayItem {
         fakeItemDestroyPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_DESTROY);
         //Entity to remove
         fakeItemDestroyPacket.getIntegerArrays().write(0, new int[]{entityID});
+        initialized = true;
     }
 
     @Override
@@ -281,6 +280,10 @@ public class VirtualDisplayItem extends DisplayItem {
         if (shop.isLeftShop()) {
             return;
         }
+        //lazy initialize
+        if (!initialized) {
+            initFakeDropItemPacket();
+        }
         if (shop.isDeleted() || !shop.isLoaded()) {
             return;
         }
@@ -295,10 +298,10 @@ public class VirtualDisplayItem extends DisplayItem {
 
         // Can't rely on the attachedShop cache to be accurate
         // So just try it and if it fails, no biggie
-        try {
+        /*try {
             shop.getAttachedShop().updateAttachedShop();
         } catch (NullPointerException ignored) {
-        }
+        }*/
 
         sendFakeItemToAll();
         isDisplay = true;
@@ -333,23 +336,29 @@ public class VirtualDisplayItem extends DisplayItem {
                     int x = integerStructureModifier.read(0);
                     //chunk z
                     int z = integerStructureModifier.read(1);
-
-                    if (chunkLocation == null) {
-                        World world = shop.getLocation().getWorld();
-                        Chunk chunk = shop.getLocation().getChunk();
-                        chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
-                    }
-                    Player player = event.getPlayer();
-                    if (player instanceof TemporaryPlayer) {
-                        return;
-                    }
-                    if (player == null || !player.isOnline()) {
-                        return;
-                    }
-                    if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
-                        packetSenders.add(player.getUniqueId());
-                        sendFakeItem(player);
-                    }
+                    AsyncPacketSender.offer(() -> {
+                        if (chunkLocation == null) {
+                            World world = shop.getLocation().getWorld();
+                            Chunk chunk;
+                            try {
+                                //sync getting chunk
+                                chunk = plugin.getServer().getScheduler().callSyncMethod(plugin, () -> shop.getLocation().getChunk()).get();
+                            } catch (InterruptedException | ExecutionException e) {
+                                throw new RuntimeException("An error occurred when getting chunk from the world", e);
+                            }
+                            chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
+                        }
+                        Player player = event.getPlayer();
+                        if (player instanceof TemporaryPlayer) {
+                            return;
+                        }
+                        if (player == null || !player.isOnline()) {
+                            return;
+                        }
+                        if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
+                            packetSenders.add(player.getUniqueId());
+                            sendFakeItem(player);
+                        }
 //                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
 //                        if (chunkLocation == null) {
 //                            World world = shop.getLocation().getWorld();
@@ -361,10 +370,10 @@ public class VirtualDisplayItem extends DisplayItem {
 //                            sendFakeItem(event.getPlayer());
 //                        }
 //                    }, 1);
+                    });
                 }
             };
-        }
-        protocolManager.addPacketListener(packetAdapter); //TODO: This may affects performance
+            protocolManager.addPacketListener(packetAdapter); //TODO: This may affects performance
 //        asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
 //            Runnable runnable = asyncPacketSendQueue.poll();
 //            while (runnable != null) {
@@ -372,6 +381,7 @@ public class VirtualDisplayItem extends DisplayItem {
 //                runnable = asyncPacketSendQueue.poll();
 //            }
 //        }, 0, 1);
+        }
     }
 
     private void unload() {

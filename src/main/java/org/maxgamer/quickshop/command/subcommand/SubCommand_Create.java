@@ -103,6 +103,9 @@ public class SubCommand_Create implements CommandProcesser {
             if (cmdArg.length > 2 && QuickShop.getPermissionManager().hasPermission(sender, "quicshop.create.stack") && plugin.isAllowStack()) {
                 try {
                     int amount = Integer.parseInt(cmdArg[2]);
+                    if (amount < 1) {
+                        amount = 1;
+                    }
                     item = new ItemStack(material, amount);
                 } catch (NumberFormatException e) {
                     item = new ItemStack(material, 1);
