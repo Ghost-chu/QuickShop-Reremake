@@ -394,7 +394,7 @@ public class Paste {
                                 new String(
                                         Objects.requireNonNull(
                                                 Util.inputStream2ByteArray(new File(new File("."), "paper.yml").getPath())),
-                                        StandardCharsets.UTF_8))
+                                        StandardCharsets.UTF_8).replaceAll("secret:.*", "secret: [PROTECTED]"))
                         .append("\n");
             } catch (Exception th) {
                 finalReport.append("\t*********************************\n");
