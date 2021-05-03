@@ -1,5 +1,5 @@
 {
-  "file-test": "Это тестовый файл. Мы используем его для тестирования сломанный messages.json. Вы можете заполнить его любым пасхальными яйцами, которые вам нравятся здесь :)",
+  "file-test": "Это тестовый файл. Мы используем его, если файл messages.json поломан. Вы тут можете заполнить любым пасхальными яйцами, которые вам нравятся здесь :)",
   "translation-author": "Переводчик: Ghost_chu, Andre_601",
   "translation-version": "Поддерживаемая версия: Reremake",
   "translation-contributors": "Участники: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken и Andre_601",
