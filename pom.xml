@@ -503,7 +503,7 @@
         <dependency>
             <groupId>com.github.angeschossen</groupId>
             <artifactId>LandsAPI</artifactId>
-            <version>5.6.0</version>
+            <version>5.7.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
