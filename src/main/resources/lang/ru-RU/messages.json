@@ -177,13 +177,15 @@
   "signs": {
     "selling": "Продаёт {0}",
     "stack-selling": "Продажа {0}",
-    "header": "&c{0}",
+    "header": "{1}{0}",
     "buying": "Покупает {0}",
     "stack-buying": "Покупка {0}",
     "item": "{0}",
     "price": "{0}",
     "stack-price": "{0} за {1}x {2}",
-    "unlimited": "∞"
+    "unlimited": "∞",
+    "status-available": "&2",
+    "status-unavailable": "&c"
   },
   "controlpanel": {
     "setowner": "&aВладелец: &b{0} &e[&d&lИзменить&e]",

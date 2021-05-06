@@ -17,12 +17,12 @@
   "no-double-chests": "&cNo puedes crear tiendas de cofres dobles.",
   "not-managed-shop": "&cNo eres el dueño o el moderador de esta tienda",
   "shop-already-owned": "&cEsto ya es una tienda.",
-  "chest-was-removed": "&cEl cofre ha sido eliminado.",
+  "chest-was-removed": "&cEl cofre ha sido removido.",
   "price-too-cheap": "&cEl precio debe ser mayor a &e${0}",
   "no-price-change": "&c¡Esto no cambiaría el precio!",
   "you-cant-afford-a-new-shop": "&cCuesta {0} crear una tienda.",
   "player-bought-from-your-store-tax": "&c{0} ha comprado {1} {2} en tu tienda, y has pagado {3} en impuestos).",
-  "you-cant-afford-to-change-price": "&cCuesta {0} para cambiar el precio en tu tienda.",
+  "you-cant-afford-to-change-price": "&cCuesta {0} cambiar el precio en tu tienda.",
   "success-created-shop": "&cTienda creada.",
   "success-removed-shop": "&aLa tienda ha sido eliminada.",
   "shops-arent-locked": "&c¡Recuerda, las tiendas NO están protegidas contra el robo! ¡Si quieres detener a los ladrones, protege tu cofre con LWC, Lockette, BlockLocker, etc!",
@@ -177,13 +177,15 @@
   "signs": {
     "selling": "Vendo {0}",
     "stack-selling": "Vendo {0}",
-    "header": "&c{0}",
+    "header": "{1}{0}",
     "buying": "Compro {0}",
     "stack-buying": "Compro {0}",
     "item": "{0}",
     "price": "{0} la unidad",
     "stack-price": "{0} por {1}x {2}",
-    "unlimited": "Ilimitado"
+    "unlimited": "Ilimitado",
+    "status-available": "&2",
+    "status-unavailable": "&c"
   },
   "controlpanel": {
     "setowner": "&aPropietario: &b{0} &e[&d&lCambiar&e]",
