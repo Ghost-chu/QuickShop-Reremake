@@ -371,7 +371,7 @@ shop:
 
   #Protection check
   #Note: This will send a FAKE BlockBreakEvent to check if you can break block
-  #It may conflict with some proctction or game plugin, if you don't want this, please disable and using integration below instead
+  #It may conflict with some protection or game plugin, if you don't want this, please disable and using integration below instead
   protection-checking: true
 
   #Disallow executing protection checking in worlds.
@@ -471,7 +471,7 @@ effect:
 #Item matcher, don't touch it if you didn't know how to use it.
 matcher:
   # Matcher type
-  #0= QuickShop iftem matcher with configurable options below.
+  #0= QuickShop item matcher with configurable options below.
   #1= Bukkit item matcher, can be more accurate.
   #2= More strict matcher by Bukkit equals method
   work-type: 0
@@ -636,7 +636,7 @@ integration:
     #
     #Avaliable field:
     #FLAG = Region must set quickshop.create flag available for players.
-    #<OTHER> = Other avaliable flags in Residence plugin or Residence addons registered flags.
+    #<OTHER> = Other available flags in Residence plugin or Residence addons registered flags.
     create:
       - FLAG
       - interact
