@@ -30,6 +30,7 @@ import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +48,6 @@ import org.maxgamer.quickshop.util.holder.Result;
 
 import java.text.DecimalFormat;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -919,14 +919,14 @@ public class ShopManager {
 
         // Create the sample shop
         ContainerShop shop = new ContainerShop(
-            plugin,
-            info.getLocation(),
-            price,
-            info.getItem(),
-            new ShopModerator(p.getUniqueId()),
-            false,
-            ShopType.SELLING,
-            new ConcurrentHashMap<>());
+                plugin,
+                info.getLocation(),
+                price,
+                info.getItem(),
+                new ShopModerator(p.getUniqueId()),
+                false,
+                ShopType.SELLING,
+                new YamlConfiguration());
         if (!bypassProtectionChecks) {
             Result result = plugin.getIntegrationHelper()
                 .callIntegrationsCanCreate(p, info.getLocation());
