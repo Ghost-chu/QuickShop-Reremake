@@ -25,7 +25,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.integration.fabledskyblock.FabledIntegration;
 import org.maxgamer.quickshop.integration.factionsuuid.FactionsUUIDIntegration;
 import org.maxgamer.quickshop.integration.griefprevention.GriefPreventionIntegration;
 import org.maxgamer.quickshop.integration.lands.LandsIntegration;
@@ -54,7 +53,7 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
         integratedPluginNameMap.put("Residence", ResidenceIntegration.class);
         integratedPluginNameMap.put("Towny", TownyIntegration.class);
         integratedPluginNameMap.put("WorldGuard", WorldGuardIntegration.class);
-        integratedPluginNameMap.put("FabledSkyblock", FabledIntegration.class);
+        //integratedPluginNameMap.put("FabledSkyblock", FabledIntegration.class);
         integratedPluginNameMap.put("SuperiorSkyblock", SuperiorSkyblock2Integration.class);
     }
 
