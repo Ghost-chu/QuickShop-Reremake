@@ -1342,16 +1342,21 @@ public class Util {
         }
     }
 
-    //TODO: Need caching
+    @Nullable
+    private static Class<?> cachedNMSClass = null;
     @NotNull
     public static Class<?> getNMSClass(@Nullable String className) {
+        if (cachedNMSClass != null) {
+            return cachedNMSClass;
+        }
         if (className == null) {
             className = "MinecraftServer";
         }
         String name = Bukkit.getServer().getClass().getPackage().getName();
         String version = name.substring(name.lastIndexOf('.') + 1);
         try {
-            return Class.forName("net.minecraft.server." + version + "." + className);
+            cachedNMSClass = Class.forName("net.minecraft.server." + version + "." + className);
+            return cachedNMSClass;
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
