@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.shop;
 
+import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
@@ -27,19 +28,23 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.database.WarpedResultSet;
+import org.maxgamer.quickshop.util.Copied;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.Util;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -232,6 +237,22 @@ public class ShopLoader {
         return sum / m.length;
     }
 
+    private @Nullable YamlConfiguration deserializeExtra(@NotNull String extraString) {
+        YamlConfiguration yamlConfiguration = new YamlConfiguration();
+        try {
+            yamlConfiguration.loadFromString(extraString);
+        } catch (InvalidConfigurationException e) {
+            Util.debugLog("Updating old shop extra data... for " + extraString);
+            File tempFile = new File(Util.getCacheFolder(), "upgrading.json.tmp");
+            new Copied(tempFile).accept(new ByteArrayInputStream(extraString.getBytes(StandardCharsets.UTF_8)));
+            JsonConfiguration jsonConfiguration = JsonConfiguration.loadConfiguration(tempFile);
+            for (String key : jsonConfiguration.getKeys(true)) {
+                yamlConfiguration.set(key, jsonConfiguration.get(key));
+            }
+        }
+        return yamlConfiguration;
+    }
+
     private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {
         errors++;
         Logger logger = plugin.getLogger();
@@ -328,7 +349,7 @@ public class ShopLoader {
 
         private int z;
 
-        private Map<String, Map<String, Object>> extra;
+        private YamlConfiguration extra;
 
         ShopDatabaseInfo(ShopDatabaseInfoOrigin origin) {
             try {
@@ -342,11 +363,7 @@ public class ShopLoader {
                 this.moderators = deserializeModerator(origin.getModerators());
                 this.type = ShopType.fromID(origin.getType());
                 this.item = deserializeItem(origin.getItem());
-                //noinspection unchecked
-                this.extra = JsonUtil.getGson().fromJson(origin.getExtra(), Map.class);
-                if (this.extra == null) {
-                    this.extra = new ConcurrentHashMap<>();
-                }
+                this.extra = deserializeExtra(origin.getExtra());
             } catch (Exception ex) {
                 exceptionHandler(ex, this.location);
             }
