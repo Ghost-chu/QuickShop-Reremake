@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.util;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.*;
@@ -1342,8 +1343,38 @@ public class Util {
         }
     }
 
+    @SneakyThrows
+    public static void makeExportBackup(@Nullable String backupName) {
+        File file;
+        if (StringUtils.isEmpty(backupName)) {
+            file = new File(plugin.getDataFolder(), "export.txt");
+        } else {
+            file = new File(plugin.getDataFolder(), backupName + ".txt");
+        }
+        if (file.exists()) {
+            Files.move(file.toPath(), new File(file.getParentFile(), file.getName() + UUID.randomUUID().toString().replace("-", "")).toPath());
+        }
+        file.createNewFile();
+
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            StringBuilder finalReport = new StringBuilder();
+            plugin
+                    .getShopLoader()
+                    .getOriginShopsInDatabase()
+                    .forEach((shop -> finalReport.append(shop).append("\n")));
+            try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
+                outputStream.write(finalReport.toString());
+            } catch (IOException ignored) {
+
+            }
+
+        });
+    }
+
+
     @Nullable
     private static Class<?> cachedNMSClass = null;
+
     @NotNull
     public static Class<?> getNMSClass(@Nullable String className) {
         if (cachedNMSClass != null) {
