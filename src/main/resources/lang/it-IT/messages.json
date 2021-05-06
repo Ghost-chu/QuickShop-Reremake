@@ -4,7 +4,7 @@
   "translation-version": "Versione di Supporto: Reremake",
   "translation-contributors": "Collaboratori: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: English (it_US)",
-  "language-version": "50",
+  "language-version": "51",
   "not-looking-at-shop": "&cImpossibile trovare un negozio. È necessario guardarne uno.",
   "no-anythings-in-your-hand": "&cNon hai nulla in mano.",
   "no-permission": "&cNon hai il permesso per farlo.",
@@ -184,7 +184,7 @@
     "price": "{0} ciascuno",
     "stack-price": "{0} per {1}x {2}",
     "unlimited": "Illimitato",
-    "status-available": "&2",
+    "status-available": "&a",
     "status-unavailable": "&c"
   },
   "controlpanel": {
