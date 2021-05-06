@@ -23,7 +23,15 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.maxgamer</groupId>
     <artifactId>QuickShop</artifactId>
-    <version>4.0.7.12</version>
+
+    <properties>
+        <pluginver>4.0.7.11</pluginver>
+        <package>org.maxgamer.quickshop</package>
+        <developer>Ghost-chu</developer>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <version>${mvn.build.ver}</version>
 
     <licenses>
         <license>
@@ -32,11 +40,7 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-    <properties>
-        <package>org.maxgamer.quickshop</package>
-        <developer>Ghost-chu</developer>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+
     <issueManagement>
         <url>https://github.com/${developer}/${name}/issues</url>
         <system>GitHub Issues</system>
@@ -44,17 +48,20 @@
 
     <distributionManagement>
         <repository>
-            <id>${repo.id}</id>
-            <url>${repo.url}</url>
+            <id>codemc-releases</id>
+            <url>https://repo.codemc.io/repository/maven-releases/</url>
         </repository>
+        <snapshotRepository>
+            <id>codemc-snapshots</id>
+            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <profiles>
         <profile>
             <id>master</id>
             <properties>
-                <repo.id>codemc-snapshots</repo.id>
-                <repo.url>https://repo.codemc.io/repository/maven-snapshots/</repo.url>
+                <mvn.build.ver>${pluginver}-SNAPSHOT</mvn.build.ver>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -63,8 +70,7 @@
         <profile>
             <id>release</id>
             <properties>
-                <repository.id>codemc-releases</repository.id>
-                <repository.url>https://repo.codemc.io/repository/maven-releases/</repository.url>
+                <mvn.build.ver>${pluginver}</mvn.build.ver>
             </properties>
         </profile>
     </profiles>
