@@ -109,6 +109,7 @@ public class PlotSquaredIntegrationV4 extends QSIntegratedPlugin implements List
 
     @Override
     public void unload() {
+        this.unregisterListener();
     }
 
     private List<Shop> getShops(Plot plot) {
