@@ -457,7 +457,7 @@ public class ShopLoader {
                 this.extra = rs.getString("extra");
                 //handle old shops
                 if (extra == null) {
-                    extra = "{}";
+                    extra = "";
                 }
             } catch (SQLException sqlex) {
                 exceptionHandler(sqlex, null);
