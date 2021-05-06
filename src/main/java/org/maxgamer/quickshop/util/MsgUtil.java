@@ -174,6 +174,7 @@ public class MsgUtil {
         try {
             String raw = messagei18n.getString(loc);
             if (raw == null) {
+                Util.debugLog("Missing language key: " + loc);
                 return invaildMsg + ": " + loc;
             }
             String filled = fillArgs(raw, args);
