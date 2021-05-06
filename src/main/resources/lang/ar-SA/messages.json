@@ -177,13 +177,15 @@
   "signs": {
     "selling": "Selling {0}",
     "stack-selling": "Selling {0}",
-    "header": "&c{0}",
+    "header": "{1}{0}",
     "buying": "Buying {0}",
     "stack-buying": "Buying {0}",
     "item": "{0}",
     "price": "{0} each",
     "stack-price": "{0} per {1}x {2}",
-    "unlimited": "غير محدود"
+    "unlimited": "غير محدود",
+    "status-available": "&2",
+    "status-unavailable": "&c"
   },
   "controlpanel": {
     "setowner": "&aOwner: &b{0} &e[&d&lChange&e]",

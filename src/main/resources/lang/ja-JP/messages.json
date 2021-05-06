@@ -177,13 +177,15 @@
   "signs": {
     "selling": "販売 {0}",
     "stack-selling": "販売 {0}",
-    "header": "&c{0}",
+    "header": "{1}{0}",
     "buying": "買取 {0}",
     "stack-buying": "買取 {0}",
     "item": "{0}",
     "price": "{0} / 1個",
     "stack-price": "{0} / {1}個 {2}",
-    "unlimited": "無制限"
+    "unlimited": "無制限",
+    "status-available": "&2",
+    "status-unavailable": "&c"
   },
   "controlpanel": {
     "setowner": "&aオーナー: &b{0} &e[&d&l変更&e]",

@@ -177,13 +177,15 @@
   "signs": {
     "selling": "Eladás {0}",
     "stack-selling": "Eladsz: {0}",
-    "header": "&c{0}",
+    "header": "{1}{0}",
     "buying": "Vétel {0}",
     "stack-buying": "Veszel: {0}",
     "item": "{0}",
     "price": "{0} egy darab",
     "stack-price": "{0} per x{1} {2}",
-    "unlimited": "Korlátlan"
+    "unlimited": "Korlátlan",
+    "status-available": "&2",
+    "status-unavailable": "&c"
   },
   "controlpanel": {
     "setowner": "&aTulajdonos: &b{0} &e[&d&lMegváltoztatás&e]",
