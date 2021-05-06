@@ -97,8 +97,9 @@ logging:
   log-balance: true
   #The target size to split large files (MB) to Plugins\QuickShop\logs folder
   file-size: 10.0
-#Some eco plugin will caching player balance, sometime will cause insufficient balance
-#This workaround using getBalance to refresh it, but is time
+#Some eco plugins will caching player balance, sometime will cause insufficient balance
+#This workaround using getBalance to refresh it, but is time-costing
+#So turn on this ONLY when you have this problem
 trying-fix-banlance-insuffient: false
 
 #For item-item based economies that don't use virtual coins.
