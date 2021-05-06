@@ -177,13 +177,15 @@
   "signs": {
     "selling": "Verkopen {0}",
     "stack-selling": "Verkopen {0}",
-    "header": "&c{0}",
+    "header": "{1}{0}",
     "buying": "{0} kopen",
     "stack-buying": "{0} kopen",
     "item": "{0}",
     "price": "{0} per stuk",
     "stack-price": "{0} per {1}x {2}",
-    "unlimited": "Onbeperkt"
+    "unlimited": "Onbeperkt",
+    "status-available": "&2",
+    "status-unavailable": "&c"
   },
   "controlpanel": {
     "setowner": "&aEigenaar: &b{0} &e[&d&lChange&e]",
