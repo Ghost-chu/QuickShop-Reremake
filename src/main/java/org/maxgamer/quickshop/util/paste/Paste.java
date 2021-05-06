@@ -444,10 +444,10 @@ public class Paste {
         finalReport.append("Shops in DB(RealTime): ").append(totalDB).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Shops in Mem:\n");
-        plugin
-                .getShopLoader()
-                .getShopsInDatabase()
-                .forEach((shop -> finalReport.append(shop).append("\n")));
+//        plugin
+//                .getShopLoader()
+//                .getShopsInDatabase()
+//                .forEach((shop -> finalReport.append(shop).append("\n")));
         finalReport
                 .append("Total: ")
                 .append(plugin.getShopLoader().getShopsInDatabase().size())
