@@ -46,6 +46,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -114,6 +115,9 @@ public class ShopLoader {
                                 data.isUnlimited(),
                                 data.getType(),
                                 data.getExtra());
+                if (data.isNeedUpdate()) {
+                    shop.setDirty();
+                }
                 shopsInDatabase.add(shop);
                 this.costCalc(singleShopLoadTimer);
                 if (shopNullCheck(shop)) {
@@ -249,16 +253,19 @@ public class ShopLoader {
         return yamlConfiguration;
     }
 
-    private @NotNull YamlConfiguration deserializeExtra(@NotNull String extraString) {
+    private @NotNull YamlConfiguration deserializeExtra(@NotNull String extraString, @NotNull AtomicBoolean needUpdate) {
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
+        Util.debugLog(extraString);
         try {
             if (extraString.startsWith("{")) {
                 yamlConfiguration = extraUpgrade(extraString);
+                needUpdate.set(true);
             } else {
                 yamlConfiguration.loadFromString(extraString);
             }
         } catch (InvalidConfigurationException e) {
             yamlConfiguration = extraUpgrade(extraString);
+            needUpdate.set(true);
         }
         return yamlConfiguration;
     }
@@ -361,6 +368,8 @@ public class ShopLoader {
 
         private YamlConfiguration extra;
 
+        private boolean needUpdate = false;
+
         ShopDatabaseInfo(ShopDatabaseInfoOrigin origin) {
             try {
                 this.x = origin.getX();
@@ -370,10 +379,10 @@ public class ShopLoader {
                 this.location = new Location(world, x, y, z);
                 this.price = origin.getPrice();
                 this.unlimited = origin.isUnlimited();
-                this.moderators = deserializeModerator(origin.getModerators());
+                this.moderators = deserializeModerator(origin.getModerators(), new AtomicBoolean(false));
                 this.type = ShopType.fromID(origin.getType());
                 this.item = deserializeItem(origin.getItem());
-                this.extra = deserializeExtra(origin.getExtra());
+                this.extra = deserializeExtra(origin.getExtra(), new AtomicBoolean(false));
             } catch (Exception ex) {
                 exceptionHandler(ex, this.location);
             }
@@ -389,11 +398,12 @@ public class ShopLoader {
             }
         }
 
-        private @Nullable ShopModerator deserializeModerator(@NotNull String moderatorJson) {
+        private @Nullable ShopModerator deserializeModerator(@NotNull String moderatorJson, @NotNull AtomicBoolean needUpdate) {
             ShopModerator shopModerator;
             if (Util.isUUID(moderatorJson)) {
                 Util.debugLog("Updating old shop data... for " + moderatorJson);
                 shopModerator = new ShopModerator(UUID.fromString(moderatorJson)); // New one
+                needUpdate.set(true);
             } else {
                 try {
                     shopModerator = ShopModerator.deserialize(moderatorJson);
@@ -402,6 +412,7 @@ public class ShopLoader {
                     //noinspection deprecation
                     moderatorJson = plugin.getServer().getOfflinePlayer(moderatorJson).getUniqueId().toString();
                     shopModerator = new ShopModerator(UUID.fromString(moderatorJson)); // New one
+                    needUpdate.set(true);
                 }
             }
             return shopModerator;
