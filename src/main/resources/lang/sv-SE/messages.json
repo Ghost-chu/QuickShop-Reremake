@@ -177,13 +177,15 @@
   "signs": {
     "selling": "Säljer {0}",
     "stack-selling": "Säljer {0}",
-    "header": "&c{0}",
+    "header": "{1}{0}",
     "buying": "Köper {0}",
     "stack-buying": "Köper {0}",
     "item": "{0}",
     "price": "{0} st",
     "stack-price": "{0} per {1}x {2}",
-    "unlimited": "Obegränsad"
+    "unlimited": "Obegränsad",
+    "status-available": "&2",
+    "status-unavailable": "&c"
   },
   "controlpanel": {
     "setowner": "&aÄgare: &b{0} &e[&d&lÄndra&e]",
