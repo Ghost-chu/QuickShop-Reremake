@@ -30,6 +30,6 @@ public class CalendarEvent extends QSEvent {
     private CalendarTriggerType calendarTriggerType;
 
     public enum CalendarTriggerType {
-        SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, YEAR, NOTHING_CHANGED
+        NOTHING_CHANGED, SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, YEAR
     }
 }
