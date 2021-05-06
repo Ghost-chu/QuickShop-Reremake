@@ -627,12 +627,25 @@ public class ContainerShop implements Shop {
         }
     }
 
+    public boolean inventoryAvailable() {
+        if (isUnlimited()) {
+            return true;
+        }
+        if (isSelling()) {
+            return getRemainingStock() > 0;
+        }
+        if (isBuying()) {
+            return getRemainingSpace() > 0;
+        }
+        return true;
+    }
+
     @Override
     public String[] getSignText() {
         Util.ensureThread(false);
         String[] lines = new String[4];
         OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
-        lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(false));
+        lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(false), inventoryAvailable() ? MsgUtil.getMessageOfflinePlayer("sign.status-available", null) : MsgUtil.getMessageOfflinePlayer("sign.status-unavailable", null));
         if (this.isSelling()) {
             if (this.getItem().getAmount() > 1) {
                 if (this.getRemainingStock() == -1) {

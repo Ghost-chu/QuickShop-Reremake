@@ -1433,6 +1433,12 @@ public class MsgUtil {
             setAndUpdate("command.feature-not-enabled");
             setAndUpdate("language-version", ++selectedVersion);
         }
+        if (selectedVersion == 50) {
+            setAndUpdate("sign.header");
+            setAndUpdate("sign.status-available");
+            setAndUpdate("sign.status-unavailable");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
     }
 
