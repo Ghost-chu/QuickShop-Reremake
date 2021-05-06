@@ -27,13 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.util.MsgUtil;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.UUID;
+import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
 public class SubCommand_Export implements CommandProcesser {
@@ -47,27 +41,9 @@ public class SubCommand_Export implements CommandProcesser {
         if (!(sender instanceof ConsoleCommandSender)) {
             return;
         }
-        File file = new File(plugin.getDataFolder(), "export.txt");
-        if (file.exists()) {
-            Files.move(file.toPath(), new File(file.getParentFile(), file.getName() + UUID.randomUUID().toString().replace("-", "")).toPath());
-        }
-        file.createNewFile();
-
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            StringBuilder finalReport = new StringBuilder();
-            plugin
-                    .getShopLoader()
-                    .getOriginShopsInDatabase()
-                    .forEach((shop -> finalReport.append(shop).append("\n")));
-            try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
-                outputStream.write(finalReport.toString());
-            } catch (IOException ignored) {
-
-            }
-            MsgUtil.sendMessage(sender, "Done.");
-        });
-
-
+        Util.makeExportBackup(null);
+        MsgUtil.sendMessage(sender, "Done.");
     }
+
 
 }
