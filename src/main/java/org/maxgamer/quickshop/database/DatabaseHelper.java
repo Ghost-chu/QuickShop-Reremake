@@ -176,7 +176,7 @@ public class DatabaseHelper {
                 ps.setString(7, worldName);
                 ps.setInt(8, shop.isUnlimited() ? 1 : 0);
                 ps.setInt(9, shop.getShopType().toID());
-                ps.setString(10, shop.saveExtraToJson());
+                ps.setString(10, shop.saveExtraToYaml());
             }
 
             @Override
