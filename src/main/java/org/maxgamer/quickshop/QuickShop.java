@@ -247,6 +247,8 @@ public class QuickShop extends JavaPlugin {
     private String currency = null;
     @Getter
     private ShopControlPanel shopControlPanelManager;
+    @Getter
+    private CalendarWatcher calendarWatcher;
 
     @NotNull
     public static QuickShop getInstance() {
@@ -541,6 +543,7 @@ public class QuickShop extends JavaPlugin {
     public void onDisable() {
         this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
+        calendarWatcher.stop();
         Util.debugLog("Unloading all shops...");
         try {
             this.getShopManager().getLoadedShops().forEach(Shop::onUnload);
@@ -808,7 +811,8 @@ public class QuickShop extends JavaPlugin {
                 loadEcon();
             }
         }.runTaskLater(this, 1);
-        Util.debugLog("Registering shop watcher...");
+        Util.debugLog("Registering watchers...");
+        calendarWatcher = new CalendarWatcher(this);
         // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
         signUpdateWatcher.runTaskTimer(this, 0, 10);
         shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
@@ -826,6 +830,8 @@ public class QuickShop extends JavaPlugin {
             getLogger().info("Ongoing fee feature is enabled.");
             ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks"));
         }
+
+
         integrationHelper.searchAndRegisterPlugins();
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableAfter);
         new BukkitRunnable() {
@@ -840,7 +846,7 @@ public class QuickShop extends JavaPlugin {
         } else {
             loaded = true;
         }
-
+        calendarWatcher.start();
         Util.debugLog("Now using display-type: " + DisplayItem.getNowUsing().name());
         // sentryErrorReporter.sendError(new IllegalAccessError("no fucking way"));
     }
