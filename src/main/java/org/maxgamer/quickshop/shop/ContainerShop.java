@@ -646,7 +646,7 @@ public class ContainerShop implements Shop {
         Util.ensureThread(false);
         String[] lines = new String[4];
         OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
-        lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(false), inventoryAvailable() ? MsgUtil.getMessageOfflinePlayer("sign.status-available", null) : MsgUtil.getMessageOfflinePlayer("sign.status-unavailable", null));
+        lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(false), inventoryAvailable() ? MsgUtil.getMessageOfflinePlayer("signs.status-available", null) : MsgUtil.getMessageOfflinePlayer("signs.status-unavailable", null));
         if (this.isSelling()) {
             if (this.getItem().getAmount() > 1) {
                 if (this.getRemainingStock() == -1) {
