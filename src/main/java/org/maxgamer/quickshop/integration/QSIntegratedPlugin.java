@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.integration;
 
 import org.bukkit.Bukkit;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.holder.QuickShopInstanceHolder;
@@ -36,5 +37,8 @@ public abstract class QSIntegratedPlugin extends QuickShopInstanceHolder impleme
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
+    public void unregisterListener() {
+        HandlerList.unregisterAll(this);
+    }
 
 }
