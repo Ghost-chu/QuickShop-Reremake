@@ -237,18 +237,28 @@ public class ShopLoader {
         return sum / m.length;
     }
 
-    private @Nullable YamlConfiguration deserializeExtra(@NotNull String extraString) {
+    @NotNull
+    private YamlConfiguration extraUpgrade(@NotNull String extraString) {
+        YamlConfiguration yamlConfiguration = new YamlConfiguration();
+        File tempFile = new File(Util.getCacheFolder(), "upgrading.json.tmp");
+        new Copied(tempFile).accept(new ByteArrayInputStream(extraString.getBytes(StandardCharsets.UTF_8)));
+        JsonConfiguration jsonConfiguration = JsonConfiguration.loadConfiguration(tempFile);
+        for (String key : jsonConfiguration.getKeys(true)) {
+            yamlConfiguration.set(key, jsonConfiguration.get(key));
+        }
+        return yamlConfiguration;
+    }
+
+    private @NotNull YamlConfiguration deserializeExtra(@NotNull String extraString) {
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
         try {
-            yamlConfiguration.loadFromString(extraString);
-        } catch (InvalidConfigurationException e) {
-            Util.debugLog("Updating old shop extra data... for " + extraString);
-            File tempFile = new File(Util.getCacheFolder(), "upgrading.json.tmp");
-            new Copied(tempFile).accept(new ByteArrayInputStream(extraString.getBytes(StandardCharsets.UTF_8)));
-            JsonConfiguration jsonConfiguration = JsonConfiguration.loadConfiguration(tempFile);
-            for (String key : jsonConfiguration.getKeys(true)) {
-                yamlConfiguration.set(key, jsonConfiguration.get(key));
+            if (extraString.startsWith("{")) {
+                yamlConfiguration = extraUpgrade(extraString);
+            } else {
+                yamlConfiguration.loadFromString(extraString);
             }
+        } catch (InvalidConfigurationException e) {
+            yamlConfiguration = extraUpgrade(extraString);
         }
         return yamlConfiguration;
     }
