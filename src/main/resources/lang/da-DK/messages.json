@@ -4,7 +4,7 @@
   "translation-version": "Supportversion: Reremake",
   "translation-contributors": "Bidragydere: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken og Andre_601",
   "translation-country": "Sprogzone: dansk (da_DA)",
-  "language-version": "50",
+  "language-version": "51",
   "not-looking-at-shop": "&cKunne ikke finde en QuickShop. Du skal kigge på en.",
   "no-anythings-in-your-hand": "&cDer er intet i din hånd.",
   "no-permission": "&cDu har ikke rettighederne til at gøre dette.",
@@ -184,7 +184,7 @@
     "price": "{0} each",
     "stack-price": "{0} per {1}x {2}",
     "unlimited": "Unlimited",
-    "status-available": "&2",
+    "status-available": "&a",
     "status-unavailable": "&c"
   },
   "controlpanel": {
