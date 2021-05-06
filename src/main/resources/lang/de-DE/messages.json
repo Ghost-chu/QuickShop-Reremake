@@ -4,7 +4,7 @@
   "translation-version": "Unterstütze Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Sprache: Deutsch (de_DE)",
-  "language-version": "50",
+  "language-version": "51",
   "not-looking-at-shop": "&cKonnte keinen QuickShop finden. Du musst auf einen schauen.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cYou do not have permission to do that.",
@@ -184,7 +184,7 @@
     "price": "{0} p. St.",
     "stack-price": "{0} pro {1}x {2}",
     "unlimited": "Unlimitiert ",
-    "status-available": "&2",
+    "status-available": "&a",
     "status-unavailable": "&c"
   },
   "controlpanel": {
