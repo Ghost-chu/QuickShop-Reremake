@@ -61,6 +61,7 @@ public class CalendarWatcher extends TimerTask {
 
     public void stop() {
         this.timer.cancel();
+        save();
     }
 
     public CalendarEvent.CalendarTriggerType getAndUpdate() {
