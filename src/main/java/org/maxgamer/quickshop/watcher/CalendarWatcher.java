@@ -56,7 +56,7 @@ public class CalendarWatcher extends TimerTask {
     }
 
     public void start() {
-        timer.schedule(this, 60 * 1000);
+        timer.schedule(this, 1000);
     }
 
     public void stop() {
