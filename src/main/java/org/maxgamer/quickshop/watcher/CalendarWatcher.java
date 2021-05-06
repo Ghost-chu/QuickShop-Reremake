@@ -128,6 +128,6 @@ public class CalendarWatcher extends TimerTask {
      */
     @Override
     public void run() {
-        Bukkit.getPluginManager().callEvent(new CalendarEvent(getAndUpdate()));
+        Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new CalendarEvent(getAndUpdate())));
     }
 }
