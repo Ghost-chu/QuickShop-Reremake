@@ -1435,9 +1435,9 @@ public class MsgUtil {
             setAndUpdate("language-version", ++selectedVersion);
         }
         if (selectedVersion == 50) {
-            setAndUpdate("sign.header");
-            setAndUpdate("sign.status-available");
-            setAndUpdate("sign.status-unavailable");
+            setAndUpdate("signs.header");
+            setAndUpdate("signs.status-available");
+            setAndUpdate("signs.status-unavailable");
             setAndUpdate("language-version", ++selectedVersion);
         }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
