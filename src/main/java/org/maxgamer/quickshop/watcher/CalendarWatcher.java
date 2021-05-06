@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.watcher;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.CalendarEvent;
 import org.maxgamer.quickshop.util.Util;
@@ -30,10 +31,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.logging.Level;
 
-public class CalendarWatcher extends TimerTask {
+public class CalendarWatcher extends BukkitRunnable {
     @Getter
     private final File calendarFile = new File(Util.getCacheFolder(), "calendar.cache");
     @Getter
@@ -56,11 +56,9 @@ public class CalendarWatcher extends TimerTask {
     }
 
     public void start() {
-        timer.schedule(this, 1000);
     }
 
     public void stop() {
-        this.timer.cancel();
         save();
     }
 
@@ -128,6 +126,7 @@ public class CalendarWatcher extends TimerTask {
      */
     @Override
     public void run() {
-        Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new CalendarEvent(getAndUpdate())));
+        CalendarEvent.CalendarTriggerType type = getAndUpdate();
+        Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new CalendarEvent(type)));
     }
 }
