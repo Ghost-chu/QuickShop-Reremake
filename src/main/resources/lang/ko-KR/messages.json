@@ -209,7 +209,7 @@
     "stack-hover": "묶음당 항목 양을 설정하려면 클릭하십시오. 보통 동작의 경우 1로 설정하십시오.",
     "item": "&a상점 아이템: {0} &e[&d&l변경&e]",
     "item-hover": "&e클릭하여 상점의 아이템을 변경합니다",
-    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
+    "currency": "&c통화 : &b{0} &e[&d&l설정&e]",
     "currency-hover": "&eClick to set or remove the currency that this shop is using"
   },
   "tableformat": {
