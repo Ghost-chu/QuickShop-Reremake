@@ -210,7 +210,7 @@
     "item": "&a상점 아이템: {0} &e[&d&l변경&e]",
     "item-hover": "&e클릭하여 상점의 아이템을 변경합니다",
     "currency": "&c통화 : &b{0} &e[&d&l설정&e]",
-    "currency-hover": "&eClick to set or remove the currency that this shop is using"
+    "currency-hover": "&e클릭하여 이 상점이 사용중인 통화를 설정하거나 제거합니다."
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -226,7 +226,7 @@
     "price": "[가격]",
     "range": "[범위]",
     "amount": "[수량]",
-    "currency": "[currency name]",
+    "currency": "[통화명]",
     "item": "[item]"
   },
   "updatenotify": {
@@ -252,7 +252,7 @@
       "닥터, QuickShop에 새로운 업데이트 {0} 이(가) 있어! 업데이트 해야죠~",
       "Ko~ko~da~yo~ QuickShop에 새로운 업데이트 {0} ~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop is marked disabled by remote server, meaning this version may have serious problem, get details from our Spigot plugin page: {0}. This warning will continue to appear untill you switch to a stable version, but it will not affect your server's performence.",
+    "remote-disable-warning": "이 버전의 QuickShop은 원격 서버에 의해 비활성화되어 있습니다. 이 버전에는 심각한 문제가 있을 수 있습니다. SpigotMC 페이지에서 자세한 내용을 확인하십시오 : {0}.이 경고는 당신의 콘솔에 허가된 버전을 사용할 때까지 뜰 것입니다. 서버 구동에는 영향을 주지 않습니다.",
     "label": {
       "unstable": "[불안정함]",
       "stable": "[안정됨]",
