@@ -4,7 +4,7 @@
   "translation-version": "Verze: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: Czech (cs_CZ)",
-  "language-version": "50",
+  "language-version": "51",
   "not-looking-at-shop": "&cNelze najít QuickShop. Musíš se na něj podívat.",
   "no-anythings-in-your-hand": "&cNemáš v ruce žádný předmět.",
   "no-permission": "&cNa tuto akci nemáš práva.",
@@ -184,7 +184,7 @@
     "price": "{0} každý",
     "stack-price": "{0} za {1}x {2}",
     "unlimited": "Neomezené",
-    "status-available": "&2",
+    "status-available": "&a",
     "status-unavailable": "&c"
   },
   "controlpanel": {
