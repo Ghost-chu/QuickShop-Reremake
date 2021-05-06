@@ -172,7 +172,7 @@
       "currency": "&a상점의 통화 설정을 설정하거나 제거합니다."
     },
     "disabled": "&c이 명령어는 비활성화 되어있습니다: &e{0}",
-    "feature-not-enabled": "The feature not enabled in config."
+    "feature-not-enabled": "이옵션은 컨피그에서 비활성 상태입니다"
   },
   "signs": {
     "selling": "판매 {0}",
