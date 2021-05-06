@@ -22,7 +22,7 @@
 # IF YOU WANT EDIT CONFIGURATION, THE FILE "config.yml" IS THE CORRECT FILE
 
 #Do not touch if you not clear know about this
-config-version: 127
+config-version: 128
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -583,6 +583,8 @@ integration:
     enable: false
     #Should we prevent create a shop or trade with shop outside this plugin area
     whitelist-mode: true
+    #Should we delete shops that created by players but untrusted
+    delete-when-user-untrusted: true
   lands:
     #If a player want to create a shop, player must have be trusted or is owner
     #Player can always trade with a shop.

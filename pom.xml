@@ -641,10 +641,6 @@
                     <groupId>org.jetbrains.kotlin</groupId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
-                <exclusion>
                     <artifactId>text-serializer-gson</artifactId>
                     <groupId>net.kyori</groupId>
                 </exclusion>
@@ -689,10 +685,6 @@
                 <exclusion>
                     <artifactId>kotlin-stdlib</artifactId>
                     <groupId>org.jetbrains.kotlin</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
                 </exclusion>
                 <exclusion>
                     <artifactId>text-serializer-gson</artifactId>
