@@ -23,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.maxgamer</groupId>
     <artifactId>QuickShop</artifactId>
-    <version>4.0.7.11</version>
+    <version>4.0.7.12</version>
 
     <licenses>
         <license>
@@ -44,14 +44,30 @@
 
     <distributionManagement>
         <repository>
-            <id>codemc-releases</id>
-            <url>https://repo.codemc.io/repository/maven-releases/</url>
+            <id>${repo.id}</id>
+            <url>${repo.url}</url>
         </repository>
-        <snapshotRepository>
-            <id>codemc-snapshots</id>
-            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
-        </snapshotRepository>
     </distributionManagement>
+
+    <profiles>
+        <profile>
+            <id>master</id>
+            <properties>
+                <repo.id>codemc-snapshots</repo.id>
+                <repo.url>https://repo.codemc.io/repository/maven-snapshots/</repo.url>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>release</id>
+            <properties>
+                <repository.id>codemc-releases</repository.id>
+                <repository.url>https://repo.codemc.io/repository/maven-releases/</repository.url>
+            </properties>
+        </profile>
+    </profiles>
 
     <scm>
         <url>https://github.com/${developer}/${project.version}</url>
