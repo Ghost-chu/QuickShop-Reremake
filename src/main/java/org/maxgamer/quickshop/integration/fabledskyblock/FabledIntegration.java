@@ -40,6 +40,7 @@ public class FabledIntegration extends QSIntegratedPlugin {
         super(plugin);
         ignoreDisabledWorlds = plugin.getConfig().getBoolean("integration.fabledskyblock.ignore-disabled-worlds");
         whitelist = plugin.getConfig().getBoolean("integration.fabledskyblock.whitelist-mode");
+        this.registerListener();
     }
 
     /**
