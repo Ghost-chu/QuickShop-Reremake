@@ -4,7 +4,7 @@
   "translation-version": "Versão de suporte: Remake",
   "translation-contributors": "Contribuidores: Torre de Timor, Netherfoam, KaiNoMood, Mgazul, JackTheChicken e Andre_601",
   "translation-country": "Zona do idioma: Português Brasileiro (pt_BR)",
-  "language-version": "-> idioma",
+  "language-version": "51",
   "not-looking-at-shop": "Não conseguimos encontrar uma QuickShop. Você precisa estar olhando para uma.",
   "no-anythings-in-your-hand": "&cNão há nada na sua mão.",
   "no-permission": "&cVocê não tem permissão para fazer isso.",
@@ -184,7 +184,7 @@
     "price": "{0} cada",
     "stack-price": "{0} por {1}x {2}",
     "unlimited": "Ilimitado",
-    "status-available": "&2",
+    "status-available": "&a",
     "status-unavailable": "&c"
   },
   "controlpanel": {
