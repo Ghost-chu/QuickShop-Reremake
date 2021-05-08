@@ -4,7 +4,7 @@
   "translation-version": "Поддерживаемая версия: Reremake",
   "translation-contributors": "Участники: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken и Andre_601",
   "translation-country": "Языковой регион: Русский (ru_RU)",
-  "language-version": "50",
+  "language-version": "51",
   "not-looking-at-shop": "&cНе удалось найти игрока, который использует магазина. Возможно игрок не зарегистрирован.",
   "no-anythings-in-your-hand": "&cУ вас нет товаров в руках.",
   "no-permission": "У вас недостаточно прав.",
@@ -184,7 +184,7 @@
     "price": "{0}",
     "stack-price": "{0} за {1}x {2}",
     "unlimited": "∞",
-    "status-available": "&2",
+    "status-available": "&a",
     "status-unavailable": "&c"
   },
   "controlpanel": {

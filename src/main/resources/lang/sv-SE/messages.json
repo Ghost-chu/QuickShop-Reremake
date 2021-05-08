@@ -4,7 +4,7 @@
   "translation-version": "Supportversion: Reremake",
   "translation-contributors": "Medhjälpare: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken och Andre_601",
   "translation-country": "Språkområde: Engelska (en_US)",
-  "language-version": "50",
+  "language-version": "51",
   "not-looking-at-shop": "&cKunde inte hitta en QuickShop. Du måste titta på en.",
   "no-anythings-in-your-hand": "&cDet finns inget i din hand.",
   "no-permission": "&cDu har inte tillåtelse till att göra detta.",
@@ -184,7 +184,7 @@
     "price": "{0} st",
     "stack-price": "{0} per {1}x {2}",
     "unlimited": "Obegränsad",
-    "status-available": "&2",
+    "status-available": "&a",
     "status-unavailable": "&c"
   },
   "controlpanel": {

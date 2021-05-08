@@ -4,7 +4,7 @@
   "translation-version": "지원 버전: Reremake",
   "translation-contributors": "기여자: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "언어 지역: 한국어 (Ko)",
-  "language-version": "50",
+  "language-version": "51",
   "not-looking-at-shop": "&c퀵샵을 찾을수 없습니다. 상점을 보고있어야만합니다!",
   "no-anythings-in-your-hand": "&c당신의 손에 아무것도 없습니다.",
   "no-permission": "&c이것을 하기위해선 권한이 필요합니다.",
@@ -184,7 +184,7 @@
     "price": "개당 {0}",
     "stack-price": "아이템 {2}, {1} 개당 {0}원",
     "unlimited": "무제한",
-    "status-available": "&2",
+    "status-available": "&a",
     "status-unavailable": "&c"
   },
   "controlpanel": {
@@ -296,13 +296,13 @@
     "qa-issues": "&e품질 보증문제: &b{0}%",
     "help-us": "&a[번역 품질을 향상시킬 수 있도록 도와주세요.]"
   },
-  "currency-not-exists": "&cCannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.",
-  "currency-set": "&aShop currency successfully set to {0}.",
-  "currency-unset": "&aShop currency removed successfully. Using default settings now.",
-  "currency-not-support": "&cThe economy plugin doesn't support the multi-economy feature.",
-  "item-not-exist": "&cThe item &e{0} &cdoes not exist, please check your spelling.",
-  "backup-success": "&aBackup successfully.",
-  "console-only": "&cThis command only can be executed by Console.",
-  "console-only-danger": "&cThis is a danger command so that only can be executed by Console.",
-  "clean-warning": "&eThis command will purge &call &e shops if the shop is damaged or created in disallowed worlds or selling/buying disallowed items and &c&lIN NOT LOADED WORLD SHOPS&e, make sure you have full backup of your shops data and use &b/qs cleanghost confirm &eto continue."
+  "currency-not-exists": "&c설정할 통화를 찾을 수 없습니다. 아마 철자가 틀렸거나 그 화폐는 이 세상에서 구할 수 없을 거예요.",
+  "currency-set": "&a상점의 통화를 {0}으로 설정하셨습니다.",
+  "currency-unset": "&a통화 설정을 삭제했습니다 기본설정으로 돌아갑니다",
+  "currency-not-support": "&c이 이코노미 플러그인은 다중 통화 기능을 지원하지 않습니다.",
+  "item-not-exist": "&e{0} &c이란 아이템을 찾을수 없습니다. 스펠링을 확인하세요.",
+  "backup-success": "&a백업 완료.",
+  "console-only": "&c이 명령어는 콘솔에서만 사용할 수 있습니다.",
+  "console-only-danger": "&c이 명령어는 위험하기 때문에 콘솔에서만 실행할수 있습니다. ",
+  "clean-warning": "이 명령어은 허용되지 않는 월드 또는 허용되지 않는 아이템을 판매/구매하거나 구입하거나 로드되지 않은 월드 샵에서 모든 샵을 삭제합니다 샵 데이터를 전체 백업하고 /qs cleanhost를 사용하여 계속 진행하십시오."
 }
