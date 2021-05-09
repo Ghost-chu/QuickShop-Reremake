@@ -78,7 +78,7 @@ public class SubCommand_Reset implements CommandProcesser {
             case "messages":
                 File msgs = new File(plugin.getDataFolder(), "messages.json");
                 msgs.delete();
-                MsgUtil.Loadi18nFile();
+                MsgUtil.loadI18nFile();
                 MsgUtil.sendMessage(sender, MsgUtil.getMessage("complete", sender));
                 break;
         }

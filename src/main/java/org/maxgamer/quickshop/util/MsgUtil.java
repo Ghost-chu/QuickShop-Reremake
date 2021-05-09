@@ -215,7 +215,7 @@ public class MsgUtil {
         gameLanguage = ServiceInjector.getGameLanguage(new MojangGameLanguageImpl(plugin, languageCode));
     }
 
-    public static void Loadi18nFile() throws InvalidConfigurationException {
+    public static void loadI18nFile() throws InvalidConfigurationException {
         //Update instance
         plugin = QuickShop.getInstance();
         plugin.getLogger().info("Loading plugin translations files...");
