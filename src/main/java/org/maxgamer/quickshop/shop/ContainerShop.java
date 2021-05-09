@@ -47,7 +47,6 @@ import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.util.*;
 
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 
 /**
@@ -875,20 +874,16 @@ public class ContainerShop implements Shop {
         plugin.getShopContainerWatcher().scheduleCheck(this);
 
         // check price restriction
-        if (plugin.getShopManager().getPriceLimiter().check(item, price)
-            != PriceLimiter.Status.PASS) {
-            Entry<Double, Double> priceRestriction = Util.getPriceRestriction(
-                this.getMaterial()); //TODO Adapt priceLimiter, also improve priceLimiter return a container
-            if (priceRestriction != null) {
-                if (price < priceRestriction.getKey()) {
-                    setDirty();
-                    price = priceRestriction.getKey();
-                    this.update();
-                } else if (price > priceRestriction.getValue()) {
-                    setDirty();
-                    price = priceRestriction.getValue();
-                    this.update();
-                }
+        PriceLimiter.CheckResult priceRestriction = plugin.getShopManager().getPriceLimiter().check(item, price);
+        if (priceRestriction.getStatus() != PriceLimiter.Status.PASS) {
+            if (price < priceRestriction.getMin()) {
+                setDirty();
+                price = priceRestriction.getMin();
+                this.update();
+            } else if (price > priceRestriction.getMax()) {
+                setDirty();
+                price = priceRestriction.getMax();
+                this.update();
             }
         }
         checkDisplay();
