@@ -1733,7 +1733,10 @@ public class QuickShop extends JavaPlugin {
         saveConfig();
         reloadConfig();
 
-        Path exampleConfigFile = new File(getDataFolder(), "example.config.yml").toPath();
+        //Delete old example.config.yml
+        new File(getDataFolder(), "example.config.yml").delete();
+
+        Path exampleConfigFile = new File(getDataFolder(), "example-configuration.txt").toPath();
         try {
             Files.copy(Objects.requireNonNull(getResource("config.yml")), exampleConfigFile, REPLACE_EXISTING);
         } catch (IOException ioe) {

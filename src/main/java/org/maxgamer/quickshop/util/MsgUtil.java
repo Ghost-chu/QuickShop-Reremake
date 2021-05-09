@@ -46,7 +46,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.ServiceInjector;
 import org.maxgamer.quickshop.database.WarpedResultSet;
 import org.maxgamer.quickshop.event.ShopControlPanelOpenEvent;
-import org.maxgamer.quickshop.fileportlek.old.HumanReadableJsonConfiguration;
+import org.maxgamer.quickshop.file.HumanReadableJsonConfiguration;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.language.game.GameLanguage;
 import org.maxgamer.quickshop.util.language.game.MojangGameLanguageImpl;
