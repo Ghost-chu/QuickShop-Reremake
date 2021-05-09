@@ -205,8 +205,6 @@ public class QuickShop extends JavaPlugin {
      */
     @Getter
     private ShopManager shopManager;
-    @Getter
-    private SyncTaskWatcher syncTaskWatcher;
     // private ShopVaildWatcher shopVaildWatcher;
     @Getter
     private DisplayAutoDespawnWatcher displayAutoDespawnWatcher;
@@ -775,8 +773,6 @@ public class QuickShop extends JavaPlugin {
         new CustomInventoryListener(this).register();
         new ShopProtectionListener(this, this.shopCache).register();
         new PluginListener(this).register();
-
-        syncTaskWatcher = new SyncTaskWatcher(this);
         // shopVaildWatcher = new ShopVaildWatcher(this);
         ongoingFeeWatcher = new OngoingFeeWatcher(this);
         InternalListener internalListener = new InternalListener(this);
