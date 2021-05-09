@@ -891,16 +891,19 @@ public class ShopManager {
 
         // Price limit checking
         boolean decFormat = plugin.getConfig().getBoolean("use-decimal-format");
-        switch (this.priceLimiter.check(info.getItem(), price)) {
+
+        PriceLimiter.CheckResult priceCheckResult = this.priceLimiter.check(info.getItem(), price);
+
+        switch (priceCheckResult.getStatus()) {
             case REACHED_PRICE_MIN_LIMIT:
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("price-too-cheap", p,
-                    (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
-                        : Double.toString(this.priceLimiter.getMinPrice())));
+                        (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
+                                : Double.toString(this.priceLimiter.getMinPrice())));
                 return;
             case REACHED_PRICE_MAX_LIMIT:
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("price-too-high", p,
-                    (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
-                        : Double.toString(this.priceLimiter.getMinPrice())));
+                        (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
+                                : Double.toString(this.priceLimiter.getMinPrice())));
                 return;
             case PRICE_RESTRICTED:
                 Map.Entry<Double, Double> materialLimit = Util
@@ -1372,7 +1375,7 @@ public class ShopManager {
     }
 
     private @Nullable Shop getShopIncludeAttached_Fast(
-        @NotNull Location loc, boolean fromAttach, boolean useCache) {
+            @NotNull Location loc, boolean fromAttach, boolean writeCache) {
         Shop shop = getShop(loc);
 
         // failed, get attached shop
@@ -1388,7 +1391,7 @@ public class ShopManager {
                     final Block attached = Util.getAttached(currentBlock);
                     if (attached != null) {
                         shop = this
-                            .getShopIncludeAttached_Fast(attached.getLocation(), true, useCache);
+                                .getShopIncludeAttached_Fast(attached.getLocation(), true, writeCache);
                     }
                     // double chest
                 } else {
@@ -1405,7 +1408,7 @@ public class ShopManager {
             }
         }
         // add cache if using
-        if (plugin.getShopCache() != null && useCache) {
+        if (plugin.getShopCache() != null && writeCache) {
             plugin.getShopCache().setCache(loc, shop);
         }
 

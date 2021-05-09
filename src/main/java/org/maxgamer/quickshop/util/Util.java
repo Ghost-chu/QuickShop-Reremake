@@ -46,7 +46,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.database.MySQLCore;
 import org.maxgamer.quickshop.shop.DisplayItem;
 import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.watcher.InventoryEditContainer;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -691,7 +690,6 @@ public class Util {
 
         List<String> symbols = plugin.getConfig().getStringList("shop.alternate-currency-symbol-list");
 
-
         symbols.forEach(entry -> {
             String[] splits = entry.split(";", 2);
             if (splits.length < 2) {
@@ -735,7 +733,6 @@ public class Util {
      * @param inputStream Target stream
      * @return Byte array
      */
-    @Nullable
     public static byte[] inputStream2ByteArray(@NotNull InputStream inputStream) {
         try {
             byte[] data = toByteArray(inputStream);
@@ -759,35 +756,31 @@ public class Util {
             Util.debugLog("Skipped plugin gui inventory check.");
             return;
         }
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            try {
-                for (int i = 0; i < inv.getSize(); i++) {
-                    ItemStack itemStack = inv.getItem(i);
-                    if (itemStack == null) {
-                        continue;
-                    }
-                    if (DisplayItem.checkIsGuardItemStack(itemStack)) {
-                        // Found Item and remove it.
-                        Location location = inv.getLocation();
-                        if (location == null) {
-                            return; // Virtual GUI
-                        }
-                        plugin
-                                .getSyncTaskWatcher()
-                                .getInventoryEditQueue()
-                                .offer(new InventoryEditContainer(inv, i, itemStack, new ItemStack(Material.AIR)));
-                        Util.debugLog("Found shop display item in an inventory, Scheduling to removal...");
-                        MsgUtil.sendGlobalAlert(
-                                "[InventoryCheck] Found displayItem in inventory at "
-                                        + location
-                                        + ", Item is "
-                                        + itemStack.getType().name());
-                    }
+        try {
+            for (int i = 0; i < inv.getSize(); i++) {
+                ItemStack itemStack = inv.getItem(i);
+                if (itemStack == null) {
+                    continue;
                 }
-            } catch (Exception t) {
-                // Ignore
+                if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+                    // Found Item and remove it.
+                    Location location = inv.getLocation();
+                    if (location == null) {
+                        return; // Virtual GUI
+                    }
+
+                    inv.setItem(i, new ItemStack(Material.AIR));
+                    Util.debugLog("Found shop display item in an inventory, Removing...");
+                    MsgUtil.sendGlobalAlert(
+                            "[InventoryCheck] Found displayItem in inventory at "
+                                    + location
+                                    + ", Item is "
+                                    + itemStack.getType().name());
+                }
             }
-        });
+        } catch (Exception t) {
+            // Ignore
+        }
     }
 
     /**
