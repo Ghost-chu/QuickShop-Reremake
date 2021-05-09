@@ -401,7 +401,7 @@ shop:
 
   #Update the signs when Hopper or somethings trigged InventoryMoveItemEvent.
   #Disable it if you feel it damage your server performance.
-  update-sign-when-inventory-moving: true
+  update-sign-when-inventory-moving: false
 
   #Allow player loan (Require economy plugin support)
   allow-economy-loan: false
