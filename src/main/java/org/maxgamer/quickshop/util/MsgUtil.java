@@ -1439,6 +1439,14 @@ public class MsgUtil {
         if (selectedVersion == 51) {
             setAndUpdate("signs.out-of-stock");
             setAndUpdate("signs.out-of-space");
+            setAndUpdate("command.description.ban");
+            setAndUpdate("command.description.unban");
+            setAndUpdate("command.description.freeze");
+            setAndUpdate("command.description.lock");
+            setAndUpdate("controlpanel.lock");
+            setAndUpdate("controlpanel.lock-hover");
+            setAndUpdate("controlpanel.freeze");
+            setAndUpdate("controlpanel.freeze-hover");
             setAndUpdate("language-version", ++selectedVersion);
         }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
