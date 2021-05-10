@@ -545,6 +545,7 @@ integration:
     #SHOPTYPE = Player must create the shop on SHOP type plot.
     trade: []
     delete-shop-on-resident-leave: false
+    delete-shop-on-plot-clear: true
   #WorldGuard Integration Component
   #CHANGE NEEDS RESTART THE SERVER
   #CHANGE NEEDS RESTART THE SERVER
