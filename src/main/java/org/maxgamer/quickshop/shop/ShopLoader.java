@@ -116,7 +116,7 @@ public class ShopLoader {
                                 data.isUnlimited(),
                                 data.getType(),
                                 data.getExtra());
-                if (data.isNeedUpdate()) {
+                if (data.needUpdate.get()) {
                     shop.setDirty();
                 }
                 shopsInDatabase.add(shop);
@@ -237,6 +237,7 @@ public class ShopLoader {
         if (!StringUtils.isEmpty(extraString) && !extraString.equalsIgnoreCase("QuickShop: {}")) {
             Util.debugLog("Extra API -> Upgrading -> " + extraString.replaceAll("\n", ""));
         }
+
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
         File tempFile = new File(Util.getCacheFolder(), "upgrading.json.tmp");
         new Copied(tempFile).accept(new ByteArrayInputStream(extraString.getBytes(StandardCharsets.UTF_8)));
@@ -361,7 +362,7 @@ public class ShopLoader {
 
         private YamlConfiguration extra;
 
-        private boolean needUpdate = false;
+        private AtomicBoolean needUpdate = new AtomicBoolean(false);
 
         ShopDatabaseInfo(ShopDatabaseInfoOrigin origin) {
             try {
@@ -372,10 +373,10 @@ public class ShopLoader {
                 this.location = new Location(world, x, y, z);
                 this.price = origin.getPrice();
                 this.unlimited = origin.isUnlimited();
-                this.moderators = deserializeModerator(origin.getModerators(), new AtomicBoolean(false));
+                this.moderators = deserializeModerator(origin.getModerators(), needUpdate);
                 this.type = ShopType.fromID(origin.getType());
                 this.item = deserializeItem(origin.getItem());
-                this.extra = deserializeExtra(origin.getExtra(), new AtomicBoolean(false));
+                this.extra = deserializeExtra(origin.getExtra(), needUpdate);
             } catch (Exception ex) {
                 exceptionHandler(ex, this.location);
             }
@@ -391,7 +392,7 @@ public class ShopLoader {
             }
         }
 
-        private @Nullable ShopModerator deserializeModerator(@NotNull String moderatorJson, @NotNull AtomicBoolean needUpdate) {
+        private @Nullable ShopModerator deserializeModerator(@NotNull String moderatorJson, AtomicBoolean needUpdate) {
             ShopModerator shopModerator;
             if (Util.isUUID(moderatorJson)) {
                 Util.debugLog("Updating old shop data... for " + moderatorJson);
