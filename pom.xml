@@ -341,10 +341,10 @@
             <id>EnderZone</id>
             <url>https://ci.ender.zone/plugin/repository/everything/</url>
         </repository>
-        <repository>
-            <id>reserve-repo</id>
-            <url>https://dl.bintray.com/theneweconomy/java/</url>
-        </repository>
+        <!--        <repository>-->
+        <!--            <id>reserve-repo</id>-->
+        <!--            <url>https://dl.bintray.com/theneweconomy/java/</url>-->
+        <!--        </repository>-->
         <!-- PlotSquared -->
         <repository>
             <id>IntellectualSites</id>
@@ -458,18 +458,18 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>net.tnemc</groupId>
-            <artifactId>Reserve</artifactId>
-            <version>0.1.3.0</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.github</groupId>
-                    <artifactId>TNELib</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>net.tnemc</groupId>-->
+        <!--            <artifactId>Reserve</artifactId>-->
+        <!--            <version>0.1.3.0</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--            <exclusions>-->
+        <!--                <exclusion>-->
+        <!--                    <groupId>com.github</groupId>-->
+        <!--                    <artifactId>TNELib</artifactId>-->
+        <!--                </exclusion>-->
+        <!--            </exclusions>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.lishid</groupId>
             <artifactId>OpenInv</artifactId>
@@ -863,37 +863,5 @@
             <version>latest</version>
             <scope>provided</scope>
         </dependency>
-        <!--        &lt;!&ndash; Use Paper Adventure Lib Start&ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>net.kyori</groupId>-->
-        <!--            <artifactId>adventure-api</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>net.kyori</groupId>-->
-        <!--            <artifactId>adventure-text-serializer-gson</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>net.kyori</groupId>-->
-        <!--            <artifactId>adventure-text-serializer-legacy</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>net.kyori</groupId>-->
-        <!--            <artifactId>adventure-text-serializer-plain</artifactId>-->
-        <!--        </dependency>-->
-        <!--        &lt;!&ndash; Use Paper Adventure Lib End&ndash;&gt;-->
     </dependencies>
-
-    <!--    &lt;!&ndash; Use Paper Adventure Lib Start&ndash;&gt;-->
-    <!--    <dependencyManagement>-->
-    <!--        <dependencies>-->
-    <!--            <dependency>-->
-    <!--                <groupId>net.kyori</groupId>-->
-    <!--                <artifactId>adventure-bom</artifactId>-->
-    <!--                <version>4.7.0</version> &lt;!&ndash; keep this version in synch with javadoc section below! &ndash;&gt;-->
-    <!--                <type>pom</type>-->
-    <!--                <scope>provided</scope>-->
-    <!--            </dependency>-->
-    <!--        </dependencies>-->
-    <!--    </dependencyManagement>-->
-    <!--    &lt;!&ndash; Use Paper Adventure Lib End&ndash;&gt;-->
 </project>

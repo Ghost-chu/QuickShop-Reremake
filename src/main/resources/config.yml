@@ -125,7 +125,6 @@ include-offlineplayer-list: false
 
 #What economy provider you want let QuickShop use?
 #0=Vault
-#1=Reserve
 #3=GemsEconomy with Multi-Currency on
 #4=TNE with Multi-Currency on
 #DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
