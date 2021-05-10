@@ -186,8 +186,8 @@
     "unlimited": "Unlimitiert ",
     "status-available": "&a",
     "status-unavailable": "&c",
-    "out-of-stock": "Out of Stock",
-    "out-of-space": "Out of Space"
+    "out-of-stock": "Ausverkauft",
+    "out-of-space": "Kein Platz"
   },
   "controlpanel": {
     "setowner": "&aBesitzer: &b{0} &e[&d&lÄndern&e]",
