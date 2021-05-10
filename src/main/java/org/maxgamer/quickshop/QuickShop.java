@@ -1712,9 +1712,8 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.plotsquared.delete-when-user-untrusted", true);
             getConfig().set("integration.towny.delete-shop-on-plot-clear", true);
             getConfig().set("config-version", ++selectedVersion);
-            getLogger().warning("Backup shops! QuickShop updating the database, the shops will export to exported text file to prevent update failed to destory the shops...");
             //Util.makeExportBackup("update-autobackup-" + UUID.randomUUID());
-            Util.backupDatabase();
+            //Util.backupDatabase();
         }
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
