@@ -20,119 +20,98 @@
 package org.maxgamer.quickshop.api;
 
 import lombok.AllArgsConstructor;
+import org.apache.commons.compress.utils.Lists;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.bukkit.block.Block;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class ShopAPI {
     private final QuickShop plugin;
 
     /**
-     * Gets shop from location
+     * Gets the shops on this server
      *
-     * @param location The location
-     * @return The shop in that location, may be null
+     * @return All shops included unloaded and loaded
      */
-    public @Nullable Shop getShop(@NotNull Location location) {
-        return plugin.getShopManager().getShop(location, false);
+    public List<Shop> getAllShops() {
+        return plugin.getShopManager().getAllShops();
     }
 
     /**
-     * Gets shop from location with caching
+     * Gets the shops that loaded
      *
-     * @param location The location
-     * @return The shop in that location, may be null
+     * @return The loaded shops
      */
-    public @Nullable Shop getShopWithCaching(@NotNull Location location) {
-        if (plugin.getShopCache() == null) {
-            return getShop(location);
-        }
-        return plugin.getShopCache().getCaching(location, false);
-    }
-
-    /**
-     * Gets shops in chunk
-     *
-     * @param chunk The chunk
-     * @return The shops in chunk, may be null
-     */
-    public @Nullable Map<Location, Shop> getShop(@NotNull Chunk chunk) {
-        return plugin.getShopManager().getShops(chunk);
-    }
-
-    /**
-     * Gets shop from location
-     *
-     * @param location The location
-     * @return The shop in that location, may be null
-     */
-    public @Nullable Shop getShopIncludeAttached(@NotNull Location location) {
-        return plugin.getShopManager().getShopIncludeAttached(location);
-    }
-
-    /**
-     * Gets shop from location and use caching
-     *
-     * @param location The location
-     * @return The shop in that location, may be null
-     */
-    public @Nullable Shop getShopIncludeAttachedWithCaching(@NotNull Location location) {
-        if (plugin.getShopCache() == null) {
-            return getShopIncludeAttached(location);
-        }
-        return plugin.getShopCache().getCaching(location, true);
-    }
-
-    /**
-     * Gets a list of copy for loaded shops
-     *
-     * @return The copy of loaded shops
-     */
-    public @NotNull List<Shop> getLoadedShops() {
+    public List<Shop> getLoadedShops() {
         return new ArrayList<>(plugin.getShopManager().getLoadedShops());
     }
 
     /**
-     * Gets a list of copy a player's all shops
-     * This is a expensive action, please caching the result
+     * Gets shops in specific world
      *
-     * @param uuid Player UUID
-     * @return The list of player's all shops
+     * @param world world
+     * @return The shops in specific world
      */
-    public @NotNull List<Shop> getPlayerAllShops(@NotNull UUID uuid) {
-        return new ArrayList<>(plugin.getShopManager().getPlayerAllShops(uuid));
+    public List<Shop> getShops(World world) {
+        return plugin.getShopManager().getShopsInWorld(world);
     }
 
     /**
-     * Gets a list of copy all shops on this server
-     * This is a expensive action, please caching the result
+     * Gets shops owned by specific player
      *
-     * @return The list of all shops on server
+     * @param player shop owner
+     * @return The shops owned by specific player
      */
-    public @NotNull List<Shop> getAllShops() {
-        return new ArrayList<>(plugin.getShopManager().getAllShops());
+    public List<Shop> getShops(UUID player) {
+        return plugin.getShopManager().getPlayerAllShops(player);
     }
 
     /**
-     * Gets a list of copy all shops in world
-     * This is a expensive action, please caching the result
+     * Gets shops owned by specific player and in specific world
      *
-     * @param world The world that you want get shops
-     * @return The list of all shops in world
+     * @param world  world
+     * @param player shop owner
+     * @return shop collection
      */
-    public @NotNull List<Shop> getShopsInWorld(@NotNull World world) {
-        return new ArrayList<>(plugin.getShopManager().getShopsInWorld(world));
+    public List<Shop> getShops(World world, UUID player) {
+        return plugin.getShopManager().getPlayerAllShops(player).stream().filter(shop -> Objects.requireNonNull(shop.getLocation().getWorld()).equals(world)).collect(Collectors.toList());
     }
 
+    /**
+     * Gets shops in specific chunk
+     *
+     * @param chunk the chunk
+     * @return chunk
+     */
+    public List<Shop> getShops(Chunk chunk) {
+        Map<Location, Shop> mapping = plugin.getShopManager().getShops(chunk);
+        return mapping == null ? Lists.newArrayList() : new ArrayList<>(mapping.values());
+    }
 
+    /**
+     * Check if block is a shop and get it
+     *
+     * @param block The block
+     * @return Shop object if target is a shop otherwise null
+     */
+    public Optional<Shop> getShop(Block block) {
+        return Optional.ofNullable(plugin.getShopManager().getShopIncludeAttached(block.getLocation()));
+    }
+
+    /**
+     * Check if location block is a shop and get it
+     *
+     * @param location The block location
+     * @return Shop object if target is a shop otherwise null
+     */
+    public Optional<Shop> getShop(Location location) {
+        return Optional.ofNullable(plugin.getShopManager().getShopIncludeAttached(location));
+    }
 }
