@@ -30,7 +30,6 @@ import org.maxgamer.quickshop.util.Util;
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Timer;
 import java.util.logging.Level;
 
 public class CalendarWatcher extends BukkitRunnable {
@@ -39,8 +38,6 @@ public class CalendarWatcher extends BukkitRunnable {
     @Getter
     private final YamlConfiguration configuration;
     private final QuickShop plugin;
-    @Getter
-    private final Timer timer = new Timer("QuickShop Calendar Watcher");
 
     public CalendarWatcher(QuickShop plugin) {
         this.plugin = plugin;
@@ -56,10 +53,15 @@ public class CalendarWatcher extends BukkitRunnable {
     }
 
     public void start() {
+        this.runTaskTimerAsynchronously(plugin, 20, 20);
     }
 
     public void stop() {
         save();
+        try {
+            this.cancel();
+        } catch (IllegalStateException ignored) {
+        }
     }
 
     public CalendarEvent.CalendarTriggerType getAndUpdate() {

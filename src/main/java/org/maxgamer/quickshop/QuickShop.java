@@ -837,7 +837,8 @@ public class QuickShop extends JavaPlugin {
         } else {
             loaded = true;
         }
-        calendarWatcher.runTaskTimerAsynchronously(this, 20, 20);
+        calendarWatcher = new CalendarWatcher(this);
+        calendarWatcher.start();
         Util.debugLog("Now using display-type: " + DisplayItem.getNowUsing().name());
         // sentryErrorReporter.sendError(new IllegalAccessError("no fucking way"));
     }
