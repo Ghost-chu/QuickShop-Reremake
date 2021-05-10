@@ -23,7 +23,7 @@ QuickShop-Reremake makes by PotatoCraft Studio from https://github.com/KaiKikuch
 
 Open a new issue here: https://github.com/Ghost-chu/QuickShop-Reremake/issues
 
-## Features``
+## Features
 
 - Easy to use
 - Togglable Display Item on top of the chest
@@ -44,8 +44,9 @@ Open a new issue here: https://github.com/Ghost-chu/QuickShop-Reremake/issues
 
 
 ## Builds
-Github projects have a "releases" link on their home page. If you still don't see it, [click here](https://github.com/Ghost-chu/QuickShop-Reremake/releases) for QuickShop-Reremake stable release.  
-Or use our [CodeMC.io Jenkins](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/) for snapshot builds.
+
+Stable: [CodeMC.io Jenkins](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/)  
+Snapshot: [CodeMC.io Jenkins](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake-SNAPSHOT/)
 
 ## Links
 - [SpigotMC](https://www.spigotmc.org/resources/62575/)  
