@@ -4,7 +4,7 @@
   "translation-version": "Tuettu versio: Reremake",
   "translation-contributors": "Avustajat: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Kielialue: Suomi (fi_FI)",
-  "language-version": "51",
+  "language-version": "52",
   "not-looking-at-shop": "&cQuickShoppia ei löytynyt. Sinun täytyy katsoa yhtä.",
   "no-anythings-in-your-hand": "&cKädessäsi ei ole mitään.",
   "no-permission": "&cSinulla ei ole oikeutta tehdä noin.",
@@ -185,7 +185,9 @@
     "stack-price": "{0} per {1}x {2}",
     "unlimited": "Rajaton",
     "status-available": "&a",
-    "status-unavailable": "&c"
+    "status-unavailable": "&c",
+    "out-of-stock": "Out of Stock",
+    "out-of-space": "Out of Space"
   },
   "controlpanel": {
     "setowner": "&aOmistaja: &b{0} &e[&dvaihda&e]",

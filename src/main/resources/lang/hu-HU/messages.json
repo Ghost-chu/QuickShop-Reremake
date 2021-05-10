@@ -4,7 +4,7 @@
   "translation-version": "Támogatott Verzió: Reremake",
   "translation-contributors": "Közreműködők: Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "Nyelv Zóna: Magyar (hu_HU)",
-  "language-version": "51",
+  "language-version": "52",
   "not-looking-at-shop": "&cEz nem egy bolt amire nézel.",
   "no-anythings-in-your-hand": "&cNincs semmi a kezedben.",
   "no-permission": "&cNincs jogod ehhez!",
@@ -185,7 +185,9 @@
     "stack-price": "{0} per x{1} {2}",
     "unlimited": "Korlátlan",
     "status-available": "&a",
-    "status-unavailable": "&c"
+    "status-unavailable": "&c",
+    "out-of-stock": "Out of Stock",
+    "out-of-space": "Out of Space"
   },
   "controlpanel": {
     "setowner": "&aTulajdonos: &b{0} &e[&d&lMegváltoztatás&e]",

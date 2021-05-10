@@ -4,7 +4,7 @@
   "translation-version": "&c&lVersión soportada: &b&lReremake",
   "translation-contributors": "Contribuidores: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken y Andre_601",
   "translation-country": "&c&lZona de idioma: &b&lEspañol (es_ES)",
-  "language-version": "51",
+  "language-version": "52",
   "not-looking-at-shop": "&cNo se pudo encontrar ninguna QuickShop. Tienes que mirar hacia una.",
   "no-anythings-in-your-hand": "&cNo hay nada en tu mano.",
   "no-permission": "&cNo tienes permiso para hacer eso.",
@@ -185,7 +185,9 @@
     "stack-price": "{0} por {1}x {2}",
     "unlimited": "Ilimitado",
     "status-available": "&a",
-    "status-unavailable": "&c"
+    "status-unavailable": "&c",
+    "out-of-stock": "Out of Stock",
+    "out-of-space": "Out of Space"
   },
   "controlpanel": {
     "setowner": "&aPropietario: &b{0} &e[&d&lCambiar&e]",
