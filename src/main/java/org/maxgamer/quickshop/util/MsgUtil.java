@@ -1436,6 +1436,11 @@ public class MsgUtil {
             setAndUpdate("signs.status-unavailable");
             setAndUpdate("language-version", ++selectedVersion);
         }
+        if (selectedVersion == 51) {
+            setAndUpdate("signs.out-of-stock");
+            setAndUpdate("signs.out-of-space");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
     }
 
