@@ -416,10 +416,6 @@ public class QuickShop extends JavaPlugin {
                         }
                     }
                     break;
-                case RESERVE:
-                    core = new Economy_Reserve(this);
-                    Util.debugLog("Now using the Reserve economy system.");
-                    break;
                 case GEMS_ECONOMY:
                     core = new Economy_GemsEconomy(this);
                     Util.debugLog("Now using the GemsEconomy economy system.");
