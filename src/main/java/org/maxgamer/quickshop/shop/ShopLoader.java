@@ -35,14 +35,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.database.WarpedResultSet;
-import org.maxgamer.quickshop.util.Copied;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.Util;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -237,11 +233,13 @@ public class ShopLoader {
         if (!StringUtils.isEmpty(extraString) && !extraString.equalsIgnoreCase("QuickShop: {}")) {
             Util.debugLog("Extra API -> Upgrading -> " + extraString.replaceAll("\n", ""));
         }
-
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
-        File tempFile = new File(Util.getCacheFolder(), "upgrading.json.tmp");
-        new Copied(tempFile).accept(new ByteArrayInputStream(extraString.getBytes(StandardCharsets.UTF_8)));
-        JsonConfiguration jsonConfiguration = JsonConfiguration.loadConfiguration(tempFile);
+        JsonConfiguration jsonConfiguration = new JsonConfiguration();
+        try {
+            jsonConfiguration.loadFromString(extraString);
+        } catch (InvalidConfigurationException e) {
+            plugin.getLogger().log(Level.WARNING, "Cannot upgrade extra data: " + extraString, e);
+        }
         for (String key : jsonConfiguration.getKeys(true)) {
             yamlConfiguration.set(key, jsonConfiguration.get(key));
         }
