@@ -92,9 +92,9 @@ public class Paste {
                             .append("%")
                             .append(((Economy_Vault) economyCore).getProviderName());
                     break;
-                case RESERVE:
-                    finalReport.append("Reserve").append("%").append("No details");
-                    break;
+//                case RESERVE:
+//                    finalReport.append("Reserve").append("%").append("No details");
+//                    break;
                 case UNKNOWN:
                     finalReport.append("Unknown").append("%").append("Unknown error");
                     break;
