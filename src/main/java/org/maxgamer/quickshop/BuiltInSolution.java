@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 /**
@@ -46,26 +45,25 @@ class BuiltInSolution {
      */
     static BootError econError() {
         // Check Vault is installed
-        if (QuickShop.getInstance().getServer().getPluginManager().getPlugin("Vault") == null
-                && Bukkit.getPluginManager().getPlugin("Reserve") == null) {
+        if (QuickShop.getInstance().getServer().getPluginManager().getPlugin("Vault") == null) {
             // Vault not installed
             return new BootError(QuickShop.getInstance().getLogger(),
-                    "Vault or Reserve is not installed or loaded!",
-                    "Make sure you installed Vault or Reserve.");
+                    "Vault is not installed or loaded!",
+                    "Make sure you installed Vault.");
         }
         // Vault is installed
         if (QuickShop.getInstance().getServer().getPluginManager().getPlugin("CMI") != null) {
             // Found may in-compatiable plugin
             return new BootError(QuickShop.getInstance().getLogger(),
                     "No Economy plugin detected, did you installed and loaded them? Make sure they loaded before QuickShop.",
-                    "Make sure you have an economy plugin hooked into Vault or Reserve.",
+                    "Make sure you have an economy plugin hooked into Vault.",
                     ChatColor.YELLOW + "Incompatibility detected: CMI Installed",
                     "Download CMI Edition of Vault might fix this.");
         }
 
         return new BootError(QuickShop.getInstance().getLogger(),
                 "No Economy plugin detected, did you installed and loaded them? Make sure they loaded before QuickShop.",
-                "Install an economy plugin to get Vault or Reserve working.");
+                "Install an economy plugin to get Vault working.");
     }
 
 }

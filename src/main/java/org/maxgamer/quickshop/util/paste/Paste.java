@@ -92,9 +92,9 @@ public class Paste {
                             .append("%")
                             .append(((Economy_Vault) economyCore).getProviderName());
                     break;
-                case RESERVE:
-                    finalReport.append("Reserve").append("%").append("No details");
-                    break;
+//                case RESERVE:
+//                    finalReport.append("Reserve").append("%").append("No details");
+//                    break;
                 case UNKNOWN:
                     finalReport.append("Unknown").append("%").append("Unknown error");
                     break;
@@ -394,7 +394,7 @@ public class Paste {
                                 new String(
                                         Objects.requireNonNull(
                                                 Util.inputStream2ByteArray(new File(new File("."), "paper.yml").getPath())),
-                                        StandardCharsets.UTF_8))
+                                        StandardCharsets.UTF_8).replaceAll("secret:.*", "secret: [PROTECTED]"))
                         .append("\n");
             } catch (Exception th) {
                 finalReport.append("\t*********************************\n");
@@ -444,10 +444,10 @@ public class Paste {
         finalReport.append("Shops in DB(RealTime): ").append(totalDB).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Shops in Mem:\n");
-        plugin
-                .getShopLoader()
-                .getShopsInDatabase()
-                .forEach((shop -> finalReport.append(shop).append("\n")));
+//        plugin
+//                .getShopLoader()
+//                .getShopsInDatabase()
+//                .forEach((shop -> finalReport.append(shop).append("\n")));
         finalReport
                 .append("Total: ")
                 .append(plugin.getShopLoader().getShopsInDatabase().size())

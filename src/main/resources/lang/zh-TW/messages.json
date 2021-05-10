@@ -4,7 +4,7 @@
   "translation-version": "支援版本：Reremake（重製版）",
   "translation-contributors": "貢獻人員 ： Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
   "translation-country": "語言：&b&l繁體中文 Chinese Traditional（zh_TW）",
-  "language-version": "50",
+  "language-version": "51",
   "not-looking-at-shop": "&c無法找到儲物箱商店。你需要注視著儲物箱。",
   "no-anythings-in-your-hand": "&c手上沒有任何東西。",
   "no-permission": "&4你沒有使用該指令的許可權。",
@@ -177,13 +177,15 @@
   "signs": {
     "selling": "出售 {0} 個",
     "stack-selling": "出售 {0}",
-    "header": "&c{0}",
+    "header": "{1}{0}",
     "buying": "收購 {0} 個",
     "stack-buying": "收購 {0}",
     "item": "{0}",
     "price": "每個 {0}",
     "stack-price": "{0} {1} 個 {2} 元",
-    "unlimited": "無限"
+    "unlimited": "無限",
+    "status-available": "&a",
+    "status-unavailable": "&c"
   },
   "controlpanel": {
     "setowner": "&a店主 ： &b{0} &e[&d&l修改&e]",

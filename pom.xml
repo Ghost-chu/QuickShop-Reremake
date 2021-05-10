@@ -23,20 +23,24 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.maxgamer</groupId>
     <artifactId>QuickShop</artifactId>
-    <version>4.0.7.11</version>
 
-    <licenses>
-        <license>
-            <name>GPL v3 License</name>
-            <url>http://www.gnu.org/licenses/</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
     <properties>
+        <pluginver>4.0.8.0</pluginver>
         <package>org.maxgamer.quickshop</package>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <version>${mvn.build.ver}</version>
+
+    <licenses>
+        <license>
+            <name>GPL v3 License</name>
+            <url>https://www.gnu.org/licenses/</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <issueManagement>
         <url>https://github.com/${developer}/${name}/issues</url>
         <system>GitHub Issues</system>
@@ -52,6 +56,24 @@
             <url>https://repo.codemc.io/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <profiles>
+        <profile>
+            <id>master</id>
+            <properties>
+                <mvn.build.ver>${pluginver}-SNAPSHOT</mvn.build.ver>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>release</id>
+            <properties>
+                <mvn.build.ver>${pluginver}</mvn.build.ver>
+            </properties>
+        </profile>
+    </profiles>
 
     <scm>
         <url>https://github.com/${developer}/${project.version}</url>
@@ -125,7 +147,7 @@
                         </relocation>
                         <relocation>
                             <pattern>com.dumptruckman.bukkit.configuration.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.fileportlek.newest.json.</shadedPattern>
+                            <shadedPattern>org.maxgamer.quickshop.file.newest.json.</shadedPattern>
                         </relocation>
                         <!--                        <relocation>-->
                         <!--                            <pattern>com.offbytwo.jenkins.</pattern>-->
@@ -319,10 +341,10 @@
             <id>EnderZone</id>
             <url>https://ci.ender.zone/plugin/repository/everything/</url>
         </repository>
-        <repository>
-            <id>reserve-repo</id>
-            <url>https://dl.bintray.com/theneweconomy/java/</url>
-        </repository>
+        <!--        <repository>-->
+        <!--            <id>reserve-repo</id>-->
+        <!--            <url>https://dl.bintray.com/theneweconomy/java/</url>-->
+        <!--        </repository>-->
         <!-- PlotSquared -->
         <repository>
             <id>IntellectualSites</id>
@@ -436,18 +458,18 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>net.tnemc</groupId>
-            <artifactId>Reserve</artifactId>
-            <version>0.1.3.0</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.github</groupId>
-                    <artifactId>TNELib</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>net.tnemc</groupId>-->
+        <!--            <artifactId>Reserve</artifactId>-->
+        <!--            <version>0.1.3.0</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--            <exclusions>-->
+        <!--                <exclusion>-->
+        <!--                    <groupId>com.github</groupId>-->
+        <!--                    <artifactId>TNELib</artifactId>-->
+        <!--                </exclusion>-->
+        <!--            </exclusions>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.lishid</groupId>
             <artifactId>OpenInv</artifactId>
@@ -503,7 +525,7 @@
         <dependency>
             <groupId>com.github.angeschossen</groupId>
             <artifactId>LandsAPI</artifactId>
-            <version>5.6.0</version>
+            <version>5.7.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -516,7 +538,7 @@
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
             <artifactId>MockBukkit-v1.16</artifactId>
-            <version>0.34.1</version>
+            <version>0.34.2</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -641,10 +663,6 @@
                     <groupId>org.jetbrains.kotlin</groupId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
-                <exclusion>
                     <artifactId>text-serializer-gson</artifactId>
                     <groupId>net.kyori</groupId>
                 </exclusion>
@@ -689,10 +707,6 @@
                 <exclusion>
                     <artifactId>kotlin-stdlib</artifactId>
                     <groupId>org.jetbrains.kotlin</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
                 </exclusion>
                 <exclusion>
                     <artifactId>text-serializer-gson</artifactId>
@@ -764,12 +778,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>me.lucko</groupId>
-            <artifactId>helper</artifactId>
-            <version>5.6.5</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>me.xanium</groupId>
             <artifactId>GemsEconomy</artifactId>
             <scope>system</scope>
@@ -783,18 +791,18 @@
             <version>4.9.2</version>
             <systemPath>${project.basedir}/lib/TNE.jar</systemPath>
         </dependency>
-        <dependency>
-            <groupId>com.songoda</groupId>
-            <artifactId>skyblock</artifactId>
-            <version>2.2.13</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>MVdWPlaceholderAPI</artifactId>
-                    <groupId>be.maximvdw</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.songoda</groupId>-->
+        <!--            <artifactId>skyblock</artifactId>-->
+        <!--            <version>2.2.13</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--            <exclusions>-->
+        <!--                <exclusion>-->
+        <!--                    <artifactId>MVdWPlaceholderAPI</artifactId>-->
+        <!--                    <groupId>be.maximvdw</groupId>-->
+        <!--                </exclusion>-->
+        <!--            </exclusions>-->
+        <!--        </dependency>-->
         <!--        <dependency>-->
         <!--            <groupId>team.aura_dev.lib.slf4j-plugin.spigot</groupId>-->
         <!--            <artifactId>slf4j-plugin-spigot</artifactId>-->
@@ -849,37 +857,5 @@
             <version>latest</version>
             <scope>provided</scope>
         </dependency>
-        <!--        &lt;!&ndash; Use Paper Adventure Lib Start&ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>net.kyori</groupId>-->
-        <!--            <artifactId>adventure-api</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>net.kyori</groupId>-->
-        <!--            <artifactId>adventure-text-serializer-gson</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>net.kyori</groupId>-->
-        <!--            <artifactId>adventure-text-serializer-legacy</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>net.kyori</groupId>-->
-        <!--            <artifactId>adventure-text-serializer-plain</artifactId>-->
-        <!--        </dependency>-->
-        <!--        &lt;!&ndash; Use Paper Adventure Lib End&ndash;&gt;-->
     </dependencies>
-
-    <!--    &lt;!&ndash; Use Paper Adventure Lib Start&ndash;&gt;-->
-    <!--    <dependencyManagement>-->
-    <!--        <dependencies>-->
-    <!--            <dependency>-->
-    <!--                <groupId>net.kyori</groupId>-->
-    <!--                <artifactId>adventure-bom</artifactId>-->
-    <!--                <version>4.7.0</version> &lt;!&ndash; keep this version in synch with javadoc section below! &ndash;&gt;-->
-    <!--                <type>pom</type>-->
-    <!--                <scope>provided</scope>-->
-    <!--            </dependency>-->
-    <!--        </dependencies>-->
-    <!--    </dependencyManagement>-->
-    <!--    &lt;!&ndash; Use Paper Adventure Lib End&ndash;&gt;-->
 </project>

@@ -24,6 +24,7 @@ import com.rollbar.notifier.Rollbar;
 import com.rollbar.notifier.config.Config;
 import com.rollbar.notifier.config.ConfigBuilder;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -37,6 +38,7 @@ import org.maxgamer.quickshop.util.paste.Paste;
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -109,14 +111,7 @@ public class RollbarErrorReporter {
         return dataMapping;
     }
 
-    /**
-     * Send a error to Sentry
-     *
-     * @param throwable Throws
-     * @param context   BreadCrumb
-     * @return Event Uniqud ID
-     */
-    public @Nullable UUID sendError(@NotNull Throwable throwable, @NotNull String... context) {
+    private UUID sendError0(@NotNull Throwable throwable, @NotNull String... context) {
         try {
             if (plugin.getBootError() != null) {
                 return null; // Don't report any errors if boot failed.
@@ -155,27 +150,43 @@ public class RollbarErrorReporter {
                     pasteURL = this.lastPaste;
                 }
             }
-            new Thread(() -> {
-                this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
-                plugin
-                        .getLogger()
-                        .warning(
-                                "A exception was thrown, QuickShop already caught this exception and reported it, switch to debug mode to see the full errors.");
-                plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
-                plugin.getLogger().warning("Description: " + throwable.getMessage());
-                plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID());
-                plugin.getLogger().warning("====QuickShop Error Report E N D===");
-                Util.debugLog(throwable.getMessage());
-                Arrays.stream(throwable.getStackTrace()).forEach(a -> Util.debugLog(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
-                if (Util.isDevMode()) {
-                    throwable.printStackTrace();
-                }
-            }).start();
+            this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
+            plugin
+                    .getLogger()
+                    .warning(
+                            "A exception was thrown, QuickShop already caught this exception and reported it, switch to debug mode to see the full errors.");
+            plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
+            plugin.getLogger().warning("Description: " + throwable.getMessage());
+            plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID());
+            plugin.getLogger().warning("====QuickShop Error Report E N D===");
+            Util.debugLog(throwable.getMessage());
+            Arrays.stream(throwable.getStackTrace()).forEach(a -> Util.debugLog(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
+            if (Util.isDevMode()) {
+                throwable.printStackTrace();
+            }
             return null;
         } catch (Exception th) {
             ignoreThrow();
             plugin.getLogger().log(Level.WARNING, "Something going wrong when automatic report errors, please submit this error on Issue Tracker", th);
             return null;
+        }
+    }
+
+    /**
+     * Send a error to Sentry
+     *
+     * @param throwable Throws
+     * @param context   BreadCrumb
+     * @return Event Uniqud ID
+     */
+    public @Nullable UUID sendError(@NotNull Throwable throwable, @NotNull String... context) {
+        AtomicReference<UUID> uuid = new AtomicReference<>();
+        if (Bukkit.isPrimaryThread()) {
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> uuid.set(sendError0(throwable, context)));
+            //ignore async response
+            return null;
+        } else {
+            return sendError0(throwable, context);
         }
     }
 

@@ -499,7 +499,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
     private enum Action {
         EXECUTE("execute"),
         TAB_COMPLETE("tab-complete");
-        String name;
+        final String name;
 
         Action(String name) {
             this.name = name;

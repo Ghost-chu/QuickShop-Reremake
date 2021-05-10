@@ -30,6 +30,7 @@ import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +48,6 @@ import org.maxgamer.quickshop.util.holder.Result;
 
 import java.text.DecimalFormat;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -70,10 +70,10 @@ public class ShopManager {
     private final boolean autoSign;
     private final Cache<UUID, Shop> shopRuntimeUUIDCaching =
         CacheBuilder.newBuilder()
-            .expireAfterAccess(120, TimeUnit.SECONDS)
-            .maximumSize(50)
-            .weakValues()
-            .initialCapacity(5)
+                .expireAfterAccess(10, TimeUnit.MINUTES)
+                .maximumSize(50)
+                .weakValues()
+                .initialCapacity(50)
             .build();
 
     public ShopManager(@NotNull QuickShop plugin) {
@@ -83,9 +83,9 @@ public class ShopManager {
             plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
         Util.debugLog("Loading caching tax account...");
         String taxAccount = plugin.getConfig().getString("tax-account", "tax");
-        if (!(taxAccount == null || taxAccount.isEmpty())) {
+        if (!taxAccount.isEmpty()) {
             this.cacheTaxAccount = new Trader(taxAccount,
-                plugin.getServer().getOfflinePlayer(taxAccount));
+                    plugin.getServer().getOfflinePlayer(taxAccount));
         } else {
             // disable tax account
             cacheTaxAccount = null;
@@ -367,7 +367,7 @@ public class ShopManager {
             // Ooops, not founded that shop in this chunk.
         }
         @Nullable Block secondHalfShop = Util
-            .getSecondHalf(PaperLib.getBlockState(loc.getBlock(), false).getState());
+                .getSecondHalf(loc.getBlock());
         if (secondHalfShop != null) {
             inChunk = getShops(secondHalfShop.getChunk());
             if (inChunk != null) {
@@ -817,9 +817,8 @@ public class ShopManager {
             MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-already-owned", p));
             return;
         }
-        if (Util
-            .isDoubleChest(PaperLib.getBlockState(info.getLocation().getBlock(), false).getState())
-            && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
+        if (Util.isDoubleChest(info.getLocation().getBlock().getBlockData())
+                && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
             MsgUtil.sendMessage(p, MsgUtil.getMessage("no-double-chests", p));
             return;
         }
@@ -891,16 +890,19 @@ public class ShopManager {
 
         // Price limit checking
         boolean decFormat = plugin.getConfig().getBoolean("use-decimal-format");
-        switch (this.priceLimiter.check(info.getItem(), price)) {
+
+        PriceLimiter.CheckResult priceCheckResult = this.priceLimiter.check(info.getItem(), price);
+
+        switch (priceCheckResult.getStatus()) {
             case REACHED_PRICE_MIN_LIMIT:
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("price-too-cheap", p,
-                    (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
-                        : Double.toString(this.priceLimiter.getMinPrice())));
+                        (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
+                                : Double.toString(this.priceLimiter.getMinPrice())));
                 return;
             case REACHED_PRICE_MAX_LIMIT:
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("price-too-high", p,
-                    (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
-                        : Double.toString(this.priceLimiter.getMinPrice())));
+                        (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
+                                : Double.toString(this.priceLimiter.getMinPrice())));
                 return;
             case PRICE_RESTRICTED:
                 Map.Entry<Double, Double> materialLimit = Util
@@ -919,14 +921,14 @@ public class ShopManager {
 
         // Create the sample shop
         ContainerShop shop = new ContainerShop(
-            plugin,
-            info.getLocation(),
-            price,
-            info.getItem(),
-            new ShopModerator(p.getUniqueId()),
-            false,
-            ShopType.SELLING,
-            new ConcurrentHashMap<>());
+                plugin,
+                info.getLocation(),
+                price,
+                info.getItem(),
+                new ShopModerator(p.getUniqueId()),
+                false,
+                ShopType.SELLING,
+                new YamlConfiguration());
         if (!bypassProtectionChecks) {
             Result result = plugin.getIntegrationHelper()
                 .callIntegrationsCanCreate(p, info.getLocation());
@@ -1372,7 +1374,7 @@ public class ShopManager {
     }
 
     private @Nullable Shop getShopIncludeAttached_Fast(
-        @NotNull Location loc, boolean fromAttach, boolean useCache) {
+            @NotNull Location loc, boolean fromAttach, boolean writeCache) {
         Shop shop = getShop(loc);
 
         // failed, get attached shop
@@ -1388,7 +1390,7 @@ public class ShopManager {
                     final Block attached = Util.getAttached(currentBlock);
                     if (attached != null) {
                         shop = this
-                            .getShopIncludeAttached_Fast(attached.getLocation(), true, useCache);
+                                .getShopIncludeAttached_Fast(attached.getLocation(), true, writeCache);
                     }
                     // double chest
                 } else {
@@ -1397,7 +1399,7 @@ public class ShopManager {
                     if (!(state instanceof Container)) {
                         return null;
                     }
-                    @Nullable final Block half = Util.getSecondHalf(state);
+                    @Nullable final Block half = Util.getSecondHalf(currentBlock);
                     if (half != null) {
                         shop = getShop(half.getLocation());
                     }
@@ -1405,7 +1407,7 @@ public class ShopManager {
             }
         }
         // add cache if using
-        if (plugin.getShopCache() != null && useCache) {
+        if (plugin.getShopCache() != null && writeCache) {
             plugin.getShopCache().setCache(loc, shop);
         }
 

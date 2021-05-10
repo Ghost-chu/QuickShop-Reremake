@@ -17,7 +17,7 @@
  *
  */
 
-package org.maxgamer.quickshop.fileportlek.old;
+package org.maxgamer.quickshop.file;
 
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import com.dumptruckman.bukkit.configuration.util.SerializationHelper;

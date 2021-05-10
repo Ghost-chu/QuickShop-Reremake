@@ -1,10 +1,10 @@
 {
-  "file-test": "Это тестовый файл. Мы используем его для тестирования сломанный messages.json. Вы можете заполнить его любым пасхальными яйцами, которые вам нравятся здесь :)",
+  "file-test": "Это тестовый файл. Мы используем его, если файл messages.json поломан. Вы тут можете заполнить любым пасхальными яйцами, которые вам нравятся здесь :)",
   "translation-author": "Переводчик: Ghost_chu, Andre_601",
   "translation-version": "Поддерживаемая версия: Reremake",
   "translation-contributors": "Участники: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken и Andre_601",
   "translation-country": "Языковой регион: Русский (ru_RU)",
-  "language-version": "50",
+  "language-version": "51",
   "not-looking-at-shop": "&cНе удалось найти игрока, который использует магазина. Возможно игрок не зарегистрирован.",
   "no-anythings-in-your-hand": "&cУ вас нет товаров в руках.",
   "no-permission": "У вас недостаточно прав.",
@@ -177,13 +177,15 @@
   "signs": {
     "selling": "Продаёт {0}",
     "stack-selling": "Продажа {0}",
-    "header": "&c{0}",
+    "header": "{1}{0}",
     "buying": "Покупает {0}",
     "stack-buying": "Покупка {0}",
     "item": "{0}",
     "price": "{0}",
     "stack-price": "{0} за {1}x {2}",
-    "unlimited": "∞"
+    "unlimited": "∞",
+    "status-available": "&a",
+    "status-unavailable": "&c"
   },
   "controlpanel": {
     "setowner": "&aВладелец: &b{0} &e[&d&lИзменить&e]",

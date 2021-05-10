@@ -205,8 +205,6 @@ public class QuickShop extends JavaPlugin {
      */
     @Getter
     private ShopManager shopManager;
-    @Getter
-    private SyncTaskWatcher syncTaskWatcher;
     // private ShopVaildWatcher shopVaildWatcher;
     @Getter
     private DisplayAutoDespawnWatcher displayAutoDespawnWatcher;
@@ -247,6 +245,8 @@ public class QuickShop extends JavaPlugin {
     private String currency = null;
     @Getter
     private ShopControlPanel shopControlPanelManager;
+    @Getter
+    private CalendarWatcher calendarWatcher;
 
     @NotNull
     public static QuickShop getInstance() {
@@ -331,7 +331,7 @@ public class QuickShop extends JavaPlugin {
         if (this.display) {
             //VirtualItem support
             if (DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
-                getLogger().info("Using Virtual item Display, loading ProtocolLib support...");
+                getLogger().info("Using Virtual Item display, loading ProtocolLib support...");
                 Plugin protocolLibPlugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
                 if (protocolLibPlugin != null && protocolLibPlugin.isEnabled()) {
                     getLogger().info("Successfully loaded ProtocolLib support!");
@@ -415,10 +415,6 @@ public class QuickShop extends JavaPlugin {
                             Util.debugLog("Failed to fix account issue.");
                         }
                     }
-                    break;
-                case RESERVE:
-                    core = new Economy_Reserve(this);
-                    Util.debugLog("Now using the Reserve economy system.");
                     break;
                 case GEMS_ECONOMY:
                     core = new Economy_GemsEconomy(this);
@@ -541,6 +537,7 @@ public class QuickShop extends JavaPlugin {
     public void onDisable() {
         this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
+        calendarWatcher.stop();
         Util.debugLog("Unloading all shops...");
         try {
             this.getShopManager().getLoadedShops().forEach(Shop::onUnload);
@@ -619,7 +616,7 @@ public class QuickShop extends JavaPlugin {
         this.serverUniqueID = UUID.fromString(Objects.requireNonNull(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID()))));
         updateConfig(getConfig().getInt("config-version"));
         try {
-            MsgUtil.Loadi18nFile();
+            MsgUtil.loadI18nFile();
         } catch (Exception e) {
             getLogger().log(Level.WARNING, "Error when loading translation", e);
         }
@@ -688,7 +685,7 @@ public class QuickShop extends JavaPlugin {
         this.loadItemMatcher();
         Util.initialize();
         try {
-            MsgUtil.Loadi18nFile();
+            MsgUtil.loadI18nFile();
         } catch (Exception e) {
             getLogger().log(Level.WARNING, "Error when loading translation", e);
         }
@@ -760,7 +757,7 @@ public class QuickShop extends JavaPlugin {
         shopLoader = new ShopLoader(this);
         shopLoader.loadShops();
 
-        getLogger().info("Registering Listeners...");
+        getLogger().info("Registering listeners...");
         // Register events
         // Listeners (These don't)
         new BlockListener(this, this.shopCache).register();
@@ -772,8 +769,6 @@ public class QuickShop extends JavaPlugin {
         new CustomInventoryListener(this).register();
         new ShopProtectionListener(this, this.shopCache).register();
         new PluginListener(this).register();
-
-        syncTaskWatcher = new SyncTaskWatcher(this);
         // shopVaildWatcher = new ShopVaildWatcher(this);
         ongoingFeeWatcher = new OngoingFeeWatcher(this);
         InternalListener internalListener = new InternalListener(this);
@@ -793,7 +788,6 @@ public class QuickShop extends JavaPlugin {
         MsgUtil.loadTransactionMessages();
         MsgUtil.clean();
         if (this.getConfig().getBoolean("updater", true)) {
-            getLogger().info("Registering UpdateWatcher...");
             updateWatcher = new UpdateWatcher();
             updateWatcher.init();
         }
@@ -808,7 +802,8 @@ public class QuickShop extends JavaPlugin {
                 loadEcon();
             }
         }.runTaskLater(this, 1);
-        Util.debugLog("Registering shop watcher...");
+        Util.debugLog("Registering watchers...");
+        calendarWatcher = new CalendarWatcher(this);
         // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
         signUpdateWatcher.runTaskTimer(this, 0, 10);
         shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
@@ -826,6 +821,8 @@ public class QuickShop extends JavaPlugin {
             getLogger().info("Ongoing fee feature is enabled.");
             ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks"));
         }
+
+
         integrationHelper.searchAndRegisterPlugins();
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableAfter);
         new BukkitRunnable() {
@@ -840,7 +837,8 @@ public class QuickShop extends JavaPlugin {
         } else {
             loaded = true;
         }
-
+        calendarWatcher = new CalendarWatcher(this);
+        calendarWatcher.start();
         Util.debugLog("Now using display-type: " + DisplayItem.getNowUsing().name());
         // sentryErrorReporter.sendError(new IllegalAccessError("no fucking way"));
     }
@@ -1710,6 +1708,13 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", ++selectedVersion);
         }
 
+        if (selectedVersion == 127) {
+            getConfig().set("integration.plotsquared.delete-when-user-untrusted", true);
+            getConfig().set("integration.towny.delete-shop-on-plot-clear", true);
+            getConfig().set("config-version", ++selectedVersion);
+            getLogger().warning("Backup shops! QuickShop updating the database, the shops will export to exported text file to prevent update failed to destory the shops...");
+            Util.makeExportBackup("update-autobackup-" + UUID.randomUUID());
+        }
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
@@ -1721,7 +1726,10 @@ public class QuickShop extends JavaPlugin {
         saveConfig();
         reloadConfig();
 
-        Path exampleConfigFile = new File(getDataFolder(), "example.config.yml").toPath();
+        //Delete old example.config.yml
+        new File(getDataFolder(), "example.config.yml").delete();
+
+        Path exampleConfigFile = new File(getDataFolder(), "example-configuration.txt").toPath();
         try {
             Files.copy(Objects.requireNonNull(getResource("config.yml")), exampleConfigFile, REPLACE_EXISTING);
         } catch (IOException ioe) {

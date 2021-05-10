@@ -22,7 +22,7 @@
 # IF YOU WANT EDIT CONFIGURATION, THE FILE "config.yml" IS THE CORRECT FILE
 
 #Do not touch if you not clear know about this
-config-version: 127
+config-version: 128
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -97,8 +97,9 @@ logging:
   log-balance: true
   #The target size to split large files (MB) to Plugins\QuickShop\logs folder
   file-size: 10.0
-#Some eco plugin will caching player balance, sometime will cause insufficient balance
-#This workaround using getBalance to refresh it, but is time
+#Some eco plugins will caching player balance, sometime will cause insufficient balance
+#This workaround using getBalance to refresh it, but is time-costing
+#So turn on this ONLY when you have this problem
 trying-fix-banlance-insuffient: false
 
 #For item-item based economies that don't use virtual coins.
@@ -124,7 +125,6 @@ include-offlineplayer-list: false
 
 #What economy provider you want let QuickShop use?
 #0=Vault
-#1=Reserve
 #3=GemsEconomy with Multi-Currency on
 #4=TNE with Multi-Currency on
 #DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
@@ -370,7 +370,7 @@ shop:
 
   #Protection check
   #Note: This will send a FAKE BlockBreakEvent to check if you can break block
-  #It may conflict with some proctction or game plugin, if you don't want this, please disable and using integration below instead
+  #It may conflict with some protection or game plugin, if you don't want this, please disable and using integration below instead
   protection-checking: true
 
   #Disallow executing protection checking in worlds.
@@ -400,7 +400,7 @@ shop:
 
   #Update the signs when Hopper or somethings trigged InventoryMoveItemEvent.
   #Disable it if you feel it damage your server performance.
-  update-sign-when-inventory-moving: true
+  update-sign-when-inventory-moving: false
 
   #Allow player loan (Require economy plugin support)
   allow-economy-loan: false
@@ -470,7 +470,7 @@ effect:
 #Item matcher, don't touch it if you didn't know how to use it.
 matcher:
   # Matcher type
-  #0= QuickShop iftem matcher with configurable options below.
+  #0= QuickShop item matcher with configurable options below.
   #1= Bukkit item matcher, can be more accurate.
   #2= More strict matcher by Bukkit equals method
   work-type: 0
@@ -544,6 +544,7 @@ integration:
     #SHOPTYPE = Player must create the shop on SHOP type plot.
     trade: []
     delete-shop-on-resident-leave: false
+    delete-shop-on-plot-clear: true
   #WorldGuard Integration Component
   #CHANGE NEEDS RESTART THE SERVER
   #CHANGE NEEDS RESTART THE SERVER
@@ -583,6 +584,8 @@ integration:
     enable: false
     #Should we prevent create a shop or trade with shop outside this plugin area
     whitelist-mode: true
+    #Should we delete shops that created by players but untrusted
+    delete-when-user-untrusted: true
   lands:
     #If a player want to create a shop, player must have be trusted or is owner
     #Player can always trade with a shop.
@@ -633,7 +636,7 @@ integration:
     #
     #Avaliable field:
     #FLAG = Region must set quickshop.create flag available for players.
-    #<OTHER> = Other avaliable flags in Residence plugin or Residence addons registered flags.
+    #<OTHER> = Other available flags in Residence plugin or Residence addons registered flags.
     create:
       - FLAG
       - interact

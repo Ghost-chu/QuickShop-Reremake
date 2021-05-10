@@ -24,7 +24,6 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
-import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.paste.Paste;
 
@@ -61,9 +60,9 @@ public class SubCommand_Paste implements CommandProcesser {
                 pasteToLocalFile(sender);
                 return;
             }
-            MsgUtil.sendMessage(sender, "§aPlease wait, we're uploading the data to the pastebin...");
+            sender.sendMessage("§aPlease wait, we're uploading the data to the pastebin...");
             if (!pasteToPastebin(sender)) {
-                MsgUtil.sendMessage(sender, "The paste failed, saving the paste at local location...");
+                sender.sendMessage("The paste failed, saving the paste at local location...");
                 pasteToLocalFile(sender);
             }
         });
@@ -94,12 +93,12 @@ public class SubCommand_Paste implements CommandProcesser {
                 fwriter.write(pasteText);
                 fwriter.flush();
             }
-            MsgUtil.sendMessage(sender, "Paste was saved to your server at: " + file.getAbsolutePath());
+            sender.sendMessage("Paste was saved to your server at: " + file.getAbsolutePath());
             return true;
         } catch (IOException e) {
             plugin.getSentryErrorReporter().ignoreThrow();
             plugin.getLogger().log(Level.WARNING, "Failed to save paste to your local drive, the content will print to Console", e);
-            MsgUtil.sendMessage(sender, "Saving failed, output to console...");
+            sender.sendMessage("Saving failed, output to console...");
             plugin.getLogger().info(pasteText);
             return false;
         }

@@ -4,7 +4,7 @@
   "translation-version": "Destek Versiyonu: Reremake",
   "translation-contributors": "Katkıda Bulunanlar: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Dil Bölgesi: Türkçe (tr_TR)",
-  "language-version": "50",
+  "language-version": "51",
   "not-looking-at-shop": "&sHiç QuickShop bulunamadı. Birine bakman lazım.",
   "no-anythings-in-your-hand": "&cElinde hiçbir şey yok.",
   "no-permission": "&cBunu yapmaya iznin yok.",
@@ -177,13 +177,15 @@
   "signs": {
     "selling": "Satıyor: {0}",
     "stack-selling": "{0} Satıyor",
-    "header": "&c{0}",
+    "header": "{1}{0}",
     "buying": "Alıyor: {0}",
     "stack-buying": "{0} Alıyor",
     "item": "{0}",
     "price": "her biri {0}",
     "stack-price": "{1} tane {2} başına {0}",
-    "unlimited": "Sınırsız"
+    "unlimited": "Sınırsız",
+    "status-available": "&a",
+    "status-unavailable": "&c"
   },
   "controlpanel": {
     "setowner": "&aSahibi: &b{0} &e[&d&lDeğiştir&e]",

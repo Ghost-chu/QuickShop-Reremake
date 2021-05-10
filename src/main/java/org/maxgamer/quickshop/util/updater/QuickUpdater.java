@@ -32,7 +32,7 @@ public interface QuickUpdater {
 
     boolean isLatest(@NotNull VersionType versionType);
 
-    @NotNull byte[] update(@NotNull VersionType versionType) throws IOException;
+    byte[] update(@NotNull VersionType versionType) throws IOException;
 
     void install(byte[] bytes) throws IOException;
 }
