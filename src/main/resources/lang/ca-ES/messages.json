@@ -4,7 +4,7 @@
   "translation-version": "Versiò suportada: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Zona de l'idioma: Català (ca_ES)",
-  "language-version": "51",
+  "language-version": "52",
   "not-looking-at-shop": "No s'ha trobat cap QuickShop. Has de mirar a una.",
   "no-anythings-in-your-hand": "Ni hi ha res a la teva mà.",
   "no-permission": "No tens permisos per a fer això.",
@@ -185,7 +185,9 @@
     "stack-price": "{0} per {1}x {2}",
     "unlimited": "Unlimited",
     "status-available": "&a",
-    "status-unavailable": "&c"
+    "status-unavailable": "&c",
+    "out-of-stock": "Out of Stock",
+    "out-of-space": "Out of Space"
   },
   "controlpanel": {
     "setowner": "&aOwner: &b{0} &e[&d&lChange&e]",
