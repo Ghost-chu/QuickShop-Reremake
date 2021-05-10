@@ -130,10 +130,9 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
     }
 
     public void purgeShops(TownBlock townBlock) {
-        if (!deleteShopOnLeave) {
+        if (!deleteShopOnPlotClear) {
             return;
         }
-
         String worldName;
         worldName = townBlock.getWorld().getName();
         //Getting all shop with world-chunk-shop mapping
