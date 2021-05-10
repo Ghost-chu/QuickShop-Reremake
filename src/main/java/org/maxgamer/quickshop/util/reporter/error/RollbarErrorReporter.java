@@ -150,22 +150,20 @@ public class RollbarErrorReporter {
                     pasteURL = this.lastPaste;
                 }
             }
-            new Thread(() -> {
-                this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
-                plugin
-                        .getLogger()
-                        .warning(
-                                "A exception was thrown, QuickShop already caught this exception and reported it, switch to debug mode to see the full errors.");
-                plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
-                plugin.getLogger().warning("Description: " + throwable.getMessage());
-                plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID());
-                plugin.getLogger().warning("====QuickShop Error Report E N D===");
-                Util.debugLog(throwable.getMessage());
-                Arrays.stream(throwable.getStackTrace()).forEach(a -> Util.debugLog(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
-                if (Util.isDevMode()) {
-                    throwable.printStackTrace();
-                }
-            }).start();
+            this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
+            plugin
+                    .getLogger()
+                    .warning(
+                            "A exception was thrown, QuickShop already caught this exception and reported it, switch to debug mode to see the full errors.");
+            plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
+            plugin.getLogger().warning("Description: " + throwable.getMessage());
+            plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID());
+            plugin.getLogger().warning("====QuickShop Error Report E N D===");
+            Util.debugLog(throwable.getMessage());
+            Arrays.stream(throwable.getStackTrace()).forEach(a -> Util.debugLog(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
+            if (Util.isDevMode()) {
+                throwable.printStackTrace();
+            }
             return null;
         } catch (Exception th) {
             ignoreThrow();
