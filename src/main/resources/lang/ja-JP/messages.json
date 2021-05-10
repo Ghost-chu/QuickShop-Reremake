@@ -4,7 +4,7 @@
   "translation-version": "&c&lサポートバージョン: &b&lReremake",
   "translation-contributors": "貢献者: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken, Andre_601 and Namiu",
   "translation-country": "&c&l言語圏: &b&l日本語 (ja_JP)",
-  "language-version": "51",
+  "language-version": "52",
   "not-looking-at-shop": "&cQuickShopが見つかりませんでした。確認する必要があります。",
   "no-anythings-in-your-hand": "&cあなたは手に何も持っていません。",
   "no-permission": "&cあなたは権限を持っていないため実行できません。",
@@ -185,7 +185,9 @@
     "stack-price": "{0} / {1}個 {2}",
     "unlimited": "無制限",
     "status-available": "&a",
-    "status-unavailable": "&c"
+    "status-unavailable": "&c",
+    "out-of-stock": "Out of Stock",
+    "out-of-space": "Out of Space"
   },
   "controlpanel": {
     "setowner": "&aオーナー: &b{0} &e[&d&l変更&e]",
