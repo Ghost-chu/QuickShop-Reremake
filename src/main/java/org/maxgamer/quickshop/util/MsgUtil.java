@@ -314,11 +314,11 @@ public class MsgUtil {
         /* Set default language vesion and update messages.yml */
         int ver = 0;
         String strVer = messagei18n.getString("language-version");
-        if (StringUtils.isNumeric(strVer)) {
-            try {
-                ver = Integer.parseInt(strVer);
-            } catch (NumberFormatException ignore) {
-            }
+
+        if (StringUtils.isNumeric(strVer) && !StringUtils.isEmpty(strVer)) {
+            ver = Integer.parseInt(strVer);
+        } else {
+            ver = messagei18n.getInt("language-version");
         }
         if (ver == 0) {
             messagei18n.set("language-version", 1);
