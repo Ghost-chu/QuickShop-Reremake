@@ -1446,19 +1446,7 @@ public class MsgUtil {
 
 
     private static void setAndUpdate(@NotNull String path, @Nullable Object object) {
-        if (object == null) {
-            messagei18n.set(path, null); // Removal
-            return;
-        }
-        Object alt = null;
-        if (builtInLang != null) {
-            alt = builtInLang.get(path, object);
-        }
-        if (alt == null) {
-            messagei18n.set(path, object);
-        } else {
-            messagei18n.set(path, alt);
-        }
+        messagei18n.set(path, object);
     }
 
     private static void setAndUpdate(@NotNull String path) {
