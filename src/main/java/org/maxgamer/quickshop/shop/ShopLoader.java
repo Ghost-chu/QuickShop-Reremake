@@ -125,7 +125,7 @@ public class ShopLoader {
                         plugin.getLogger().warning("Deleting shop " + shop + " caused by corrupted.");
                         plugin.getDatabaseHelper().removeShop(origin.getWorld(), origin.getX(), origin.getY(), origin.getZ());
                     } else {
-                        Util.debugLog("Trouble database loading debug: " + data.toString());
+                        Util.debugLog("Trouble database loading debug: " + data);
                         Util.debugLog("Somethings gone wrong, skipping the loading...");
                     }
                     loadAfterWorldLoaded++;

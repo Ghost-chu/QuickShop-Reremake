@@ -147,7 +147,6 @@ public class PlayerListener extends QSListener {
                 Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())).setSignText();
             }
         }
-        return;
     }
 
     private void postTrade(PlayerInteractEvent e) {

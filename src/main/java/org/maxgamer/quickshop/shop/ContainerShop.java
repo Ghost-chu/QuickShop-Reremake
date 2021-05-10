@@ -53,7 +53,7 @@ import java.util.logging.Level;
  * ChestShop core
  */
 @EqualsAndHashCode
-public class ContainerShop implements Shop {
+public class ContainerShop implements Shop, Cloneable {
 
     private static final String shopSignPrefix = "§d§o §r";
     private static final String shopSignPattern = "§d§o ";
@@ -145,7 +145,7 @@ public class ContainerShop implements Shop {
             if (meta.hasDisplayName()) {
                 Util.debugLog("Shop item display is: " + meta.getDisplayName());
                 //https://hub.spigotmc.org/jira/browse/SPIGOT-5964
-                if (meta.getDisplayName().matches("\\{.*\\}")) {
+                if (meta.getDisplayName().matches("\\{.*}")) {
                     meta.setDisplayName(meta.getDisplayName());
                     //Correct both items
                     item.setItemMeta(meta);

@@ -50,9 +50,6 @@ public class BukkitGameLanguageImpl extends InternalGameLanguageImpl implements 
 
     @Override
     public @NotNull String getItem(@NotNull ItemStack itemStack) {
-        //if (itemStack.getItemMeta() == null) {
-        //   return super.getItem(itemStack);
-        //}
         return Objects.requireNonNull(itemStack.getItemMeta()).getLocalizedName();
     }
 

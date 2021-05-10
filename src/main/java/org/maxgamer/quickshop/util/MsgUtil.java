@@ -296,7 +296,7 @@ public class MsgUtil {
         }
         String messageCodeInFile = messagei18n.getString("language-name");
         if (!Objects.equals(messageCodeInFile, languageCode)) {
-            String backupFileName = "messages-bak-" + UUID.randomUUID().toString() + ".json";
+            String backupFileName = "messages-bak-" + UUID.randomUUID() + ".json";
             Util.debugLog("Language name " + messageCodeInFile + " not matched with " + languageCode + ", replacing with build-in files and renaming current file to " + backupFileName);
             plugin.getLogger().warning("Language name " + messageCodeInFile + " not matched with " + languageCode + ", replacing with build-in files and renaming current file to " + backupFileName);
             File pending = new File(plugin.getDataFolder(), "messages.json");

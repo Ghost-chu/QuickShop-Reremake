@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.chat.QuickComponent;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
@@ -140,7 +141,7 @@ public class ShopControlPanel {
         }
     }
 
-    public static class Comparator implements java.util.Comparator<Entry> {
+    public static class Comparator implements java.util.Comparator<Entry>, Serializable {
 
         /**
          * Compares its two arguments for order.  Returns a negative integer,

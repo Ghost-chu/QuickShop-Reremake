@@ -49,6 +49,7 @@ public class CollectorAdapter {
         Map<String, String> economy = new HashMap<>();
         try {
             EconomyCore economyCore = plugin.getEconomy().getCore();
+            //noinspection SwitchStatementWithTooFewBranches
             switch (Economy.getNowUsing()) {
                 case VAULT:
                     economy.put("core", "Vault");

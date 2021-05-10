@@ -168,13 +168,13 @@ public class EconomyTransaction {
         }
         steps = TransactionSteps.WITHDRAW;
         if (from != null && !core.withdraw(from, amount, world, currency)) {
-            this.lastError = "Failed to withdraw " + amount + " from player " + from.toString() + " account";
+            this.lastError = "Failed to withdraw " + amount + " from player " + from + " account";
             callback.onFailed(this);
             return false;
         }
         steps = TransactionSteps.DEPOSIT;
         if (to != null && !core.deposit(to, actualAmount, world, currency)) {
-            this.lastError = "Failed to deposit " + actualAmount + " to player " + to.toString() + " account";
+            this.lastError = "Failed to deposit " + actualAmount + " to player " + to + " account";
             callback.onFailed(this);
             return false;
         }
