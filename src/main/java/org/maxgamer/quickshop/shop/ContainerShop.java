@@ -53,7 +53,7 @@ import java.util.logging.Level;
  * ChestShop core
  */
 @EqualsAndHashCode
-public class ContainerShop implements Shop, Cloneable {
+public class ContainerShop implements Shop {
 
     private static final String shopSignPrefix = "§d§o §r";
     private static final String shopSignPattern = "§d§o ";
