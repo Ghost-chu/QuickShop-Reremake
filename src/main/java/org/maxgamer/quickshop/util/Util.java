@@ -938,7 +938,6 @@ public class Util {
         }
         BlockFace towardsLeft = turn90Degrees(chest.getFacing());
         BlockFace actuallyBlockFace = chest.getType() == org.bukkit.block.data.type.Chest.Type.LEFT ? towardsLeft : towardsLeft.getOppositeFace();
-        Util.debugLog("Another half is " + block.getRelative(actuallyBlockFace));
         return block.getRelative(actuallyBlockFace);
 
 //
