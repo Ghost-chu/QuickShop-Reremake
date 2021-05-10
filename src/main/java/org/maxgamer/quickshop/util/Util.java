@@ -905,6 +905,11 @@ public class Util {
         if (!(state instanceof Chest)) {
             return null;
         }
+        org.bukkit.block.data.type.Chest chestBlockData = (org.bukkit.block.data.type.Chest) state.getBlockData();
+        Util.debugLog("Facing to block: " + state.getBlock().getRelative(chestBlockData.getFacing()));
+        Util.debugLog("Facing op to block: " + state.getBlock().getRelative(chestBlockData.getFacing().getOppositeFace()));
+
+
         Chest oneSideOfChest = (Chest) state;
         InventoryHolder chestHolder = oneSideOfChest.getInventory().getHolder();
         if (chestHolder instanceof DoubleChest) {
