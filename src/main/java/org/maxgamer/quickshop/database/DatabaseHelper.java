@@ -191,7 +191,7 @@ public class DatabaseHelper {
                 if (onFailed != null) {
                     onFailed.accept(e);
                 } else {
-                    plugin.getLogger().log(Level.WARNING, "Warning: Shop " + shop.toString() + " failed save to database, the shop may disappear after plugin reload or server restart!", e);
+                    plugin.getLogger().log(Level.WARNING, "Warning: Shop " + shop + " failed save to database, the shop may disappear after plugin reload or server restart!", e);
                 }
             }
         }));

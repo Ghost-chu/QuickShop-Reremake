@@ -725,7 +725,6 @@ public class Util {
      * @param filePath Target file
      * @return Byte array
      */
-    @Nullable
     public static byte[] inputStream2ByteArray(@NotNull String filePath) {
         try (InputStream in = new FileInputStream(filePath)) {
             return toByteArray(in);

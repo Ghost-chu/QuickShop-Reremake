@@ -8,9 +8,9 @@ assignees: ''
 ---
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
 README BEFORE REPORTING:  
-Don't upload timings, we only accept Spark sampler result. If you issue not upload spark sampler result, you issue will closed without any reply.  
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
-
+Don't upload timings, we only accept Spark sampler result. If you issue not upload spark sampler result, your issue will
+be closed without any reply.  
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 **Describe the issue**
 A clear and concise description of what the bug is.

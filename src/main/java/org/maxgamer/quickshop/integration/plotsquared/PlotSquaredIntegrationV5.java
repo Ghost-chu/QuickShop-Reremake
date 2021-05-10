@@ -51,7 +51,6 @@ public class PlotSquaredIntegrationV5 extends QSIntegratedPlugin {
     private final boolean deleteUntrusted;
     private QuickshopCreateFlag createFlag;
     private QuickshopTradeFlag tradeFlag;
-    private PlotAPI plotAPI;
 
     public PlotSquaredIntegrationV5(QuickShop plugin) {
         super(plugin);
@@ -102,12 +101,10 @@ public class PlotSquaredIntegrationV5 extends QSIntegratedPlugin {
         GlobalFlagContainer.getInstance().addAll(Arrays.asList(createFlag, tradeFlag));
         plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
         Util.debugLog("Success register " + getName() + " flags.");
-        plotAPI = new PlotAPI();
     }
 
     @Override
     public void unload() {
-        plotAPI = null;
     }
 
     private List<Shop> getShops(Plot plot) {
