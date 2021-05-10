@@ -25,7 +25,10 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
-import org.bukkit.block.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.EnderChest;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -525,12 +528,35 @@ public class Util {
         return restrictedPrices.get(material);
     }
 
-    public static boolean isDoubleChest(@Nullable BlockState state) {
-        if (!(state instanceof Chest)) {
+    /**
+     * Turn 90 degrees
+     *
+     * @param face The block face
+     * @return The blockface that turned 90 degrees
+     * @author https://github.com/rutgerkok/BlockLocker/blob/65a83c001bc01d2967b184ac355b18fb7f1959e3/src/main/java/nl/rutgerkok/blocklocker/impl/blockfinder/BlockFinder.java#L183
+     */
+    @NotNull
+    public static BlockFace turn90Degrees(BlockFace face) {
+        switch (face) {
+            case NORTH:
+                return BlockFace.EAST;
+            case EAST:
+                return BlockFace.SOUTH;
+            case SOUTH:
+                return BlockFace.WEST;
+            case WEST:
+                return BlockFace.NORTH;
+            default:
+                throw new IllegalArgumentException("Cannot handle " + face);
+        }
+    }
+
+    public static boolean isDoubleChest(@Nullable BlockData blockData) {
+        if (!(blockData instanceof org.bukkit.block.data.type.Chest)) {
             return false;
         }
-        org.bukkit.block.data.type.Chest chestBlockData = (org.bukkit.block.data.type.Chest) state.getBlockData();
-        Util.debugLog("Chest at " + state.getLocation() + " type  is " + chestBlockData.getType().name());
+        org.bukkit.block.data.type.Chest chestBlockData = (org.bukkit.block.data.type.Chest) blockData;
+        //Util.debugLog("Chest at " + state.getLocation() + " type  is " + chestBlockData.getType().name());
         return chestBlockData.getType() != org.bukkit.block.data.type.Chest.Type.SINGLE;
         //String blockDataStr = state.getBlockData().getAsString();
         //Black magic for detect double chest
@@ -898,31 +924,37 @@ public class Util {
     /**
      * Returns the chest attached to the given chest. The given block must be a chest.
      *
-     * @param state The chest to check.
+     * @param block The chest block
      * @return the block which is also a chest and connected to b.
      */
-    public static Block getSecondHalf(@NotNull BlockState state) {
-        if (!(state instanceof Chest)) {
+    public static Block getSecondHalf(@NotNull Block block) {
+        BlockData blockData = block.getBlockData();
+        if (!(blockData instanceof org.bukkit.block.data.type.Chest)) {
             return null;
         }
-        org.bukkit.block.data.type.Chest chestBlockData = (org.bukkit.block.data.type.Chest) state.getBlockData();
-        Util.debugLog("Facing to block: " + state.getBlock().getRelative(chestBlockData.getFacing()));
-        Util.debugLog("Facing op to block: " + state.getBlock().getRelative(chestBlockData.getFacing().getOppositeFace()));
-
-
-        Chest oneSideOfChest = (Chest) state;
-        InventoryHolder chestHolder = oneSideOfChest.getInventory().getHolder();
-        if (chestHolder instanceof DoubleChest) {
-            DoubleChest doubleChest = (DoubleChest) chestHolder;
-            Chest leftC = (Chest) doubleChest.getLeftSide();
-            Chest rightC = (Chest) doubleChest.getRightSide();
-            if (equalsBlockStateLocation(oneSideOfChest.getLocation(), Objects.requireNonNull(rightC).getLocation())) {
-                return leftC.getBlock();
-            } else {
-                return rightC.getBlock();
-            }
+        org.bukkit.block.data.type.Chest chest = (org.bukkit.block.data.type.Chest) blockData;
+        if (!isDoubleChest(chest)) {
+            return null;
         }
-        return null;
+        BlockFace towardsLeft = turn90Degrees(chest.getFacing());
+        BlockFace actuallyBlockFace = chest.getType() == org.bukkit.block.data.type.Chest.Type.LEFT ? towardsLeft : towardsLeft.getOppositeFace();
+        Util.debugLog("Another half is " + block.getRelative(actuallyBlockFace));
+        return block.getRelative(actuallyBlockFace);
+
+//
+//        Chest oneSideOfChest = (Chest) state;
+//        InventoryHolder chestHolder = oneSideOfChest.getInventory().getHolder();
+//        if (chestHolder instanceof DoubleChest) {
+//            DoubleChest doubleChest = (DoubleChest) chestHolder;
+//            Chest leftC = (Chest) doubleChest.getLeftSide();
+//            Chest rightC = (Chest) doubleChest.getRightSide();
+//            if (equalsBlockStateLocation(oneSideOfChest.getLocation(), Objects.requireNonNull(rightC).getLocation())) {
+//                return leftC.getBlock();
+//            } else {
+//                return rightC.getBlock();
+//            }
+//        }
+//        return null;
     }
 
     /**

@@ -1019,7 +1019,7 @@ public class ContainerShop implements Shop {
         setDirty();
         if (Util.fireCancellableEvent(new ShopTypeChangeEvent(this, this.shopType, newShopType))) {
             Util.debugLog(
-                "Some addon cancelled shop type changes, target shop: " + this.toString());
+                    "Some addon cancelled shop type changes, target shop: " + this);
             return;
         }
         this.shopType = newShopType;
@@ -1289,7 +1289,7 @@ public class ContainerShop implements Shop {
         //TODO: Rewrite centering item feature, currently implement is buggy and mess
         Util.ensureThread(false);
         Block attachedChest = Util
-                .getSecondHalf(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
+                .getSecondHalf(this.getLocation().getBlock());
 
         Shop preValue = attachedShop;
 
@@ -1377,8 +1377,7 @@ public class ContainerShop implements Shop {
      */
     public boolean isDoubleChestShop() {
         Util.ensureThread(false);
-        return Util
-            .isDoubleChest(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
+        return Util.isDoubleChest(this.getLocation().getBlock().getBlockData());
     }
 
     /**
