@@ -1101,36 +1101,6 @@ public class Util {
         return text;
     }
 
-//    private static final ThreadLocalRandom random = ThreadLocalRandom.current();
-    //     ONLY FOR FUN ^ ^
-//    /**
-//     * Replace &g to random HEX color
-//     * @param text original message contains &g
-//     * @return Processed message
-//     */
-//    public static String parseRandomHexText(@NotNull String text){
-//        String newStr = text.replaceFirst("&g","&x"+randomHexGen());
-//        while (!newStr.equals(text)){
-//            text = newStr;
-//            newStr = newStr.replaceFirst("&g","&x"+randomHexGen());
-//        }
-//        return newStr;
-//    }
-//
-//    public static String randomHexGen(){
-//        StringBuilder hex = new StringBuilder();
-//        for (int i = 0; i < 6; i++) {
-//            if(random.nextBoolean()) {
-//                hex.append("&");
-//                hex.append((char)random.nextInt('0', '9'));
-//            }else{
-//                hex.append("&");
-//                hex.append((char)random.nextInt('a', 'f'));
-//            }
-//        }
-//        return hex.toString();
-//    }
-
     /**
      * Parse colors for the List.
      *
@@ -1215,18 +1185,6 @@ public class Util {
         }
         return new String(filecontent, StandardCharsets.UTF_8);
     }
-
-//    /**
-//     * Send warning message when some plugin calling deprecated method... With the trace.
-//     */
-//    @Deprecated
-//    public static void sendDeprecatedMethodWarn() {
-//        QuickShop.instance
-//                .getLogger()
-//                .warning(
-//                        "Some plugin is calling a Deprecated method, Please contact the author to tell them to use the new api!");
-//        MsgUtil.debugStackTrace(Thread.currentThread().getStackTrace());
-//    }
 
     /**
      * Covert ItemStack to YAML string.
