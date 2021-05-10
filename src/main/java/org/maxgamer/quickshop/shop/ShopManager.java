@@ -70,10 +70,10 @@ public class ShopManager {
     private final boolean autoSign;
     private final Cache<UUID, Shop> shopRuntimeUUIDCaching =
         CacheBuilder.newBuilder()
-            .expireAfterAccess(120, TimeUnit.SECONDS)
-            .maximumSize(50)
-            .weakValues()
-            .initialCapacity(5)
+                .expireAfterAccess(10, TimeUnit.MINUTES)
+                .maximumSize(50)
+                .weakValues()
+                .initialCapacity(50)
             .build();
 
     public ShopManager(@NotNull QuickShop plugin) {
@@ -83,9 +83,9 @@ public class ShopManager {
             plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
         Util.debugLog("Loading caching tax account...");
         String taxAccount = plugin.getConfig().getString("tax-account", "tax");
-        if (!(taxAccount == null || taxAccount.isEmpty())) {
+        if (!taxAccount.isEmpty()) {
             this.cacheTaxAccount = new Trader(taxAccount,
-                plugin.getServer().getOfflinePlayer(taxAccount));
+                    plugin.getServer().getOfflinePlayer(taxAccount));
         } else {
             // disable tax account
             cacheTaxAccount = null;
