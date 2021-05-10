@@ -941,12 +941,13 @@ public class ContainerShop implements Shop {
         this.moderator.setOwner(owner);
         //then change the sign
         Util.mainThreadRun(() -> {
-            for (Sign shopSign : signs) {
-                shopSign.setLine(0, MsgUtil
-                        .getMessageOfflinePlayer("signs.header", offlinePlayer, ownerName(false)));
-                //Don't forgot update it
-                shopSign.update(true);
-            }
+//            for (Sign shopSign : signs) {
+//                shopSign.setLine(0, MsgUtil
+//                        .getMessageOfflinePlayer("signs.header", offlinePlayer, ownerName(false)));
+//                //Don't forgot update it
+//                shopSign.update(true);
+//            }
+            setSignText();
             //Event
             plugin.getServer().getPluginManager()
                     .callEvent(new ShopModeratorChangedEvent(this, this.moderator));
