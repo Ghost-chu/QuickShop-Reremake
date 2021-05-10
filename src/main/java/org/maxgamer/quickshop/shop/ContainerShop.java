@@ -697,16 +697,6 @@ public class ContainerShop implements Shop {
                     }
                 }
             }
-//            if (this.getRemainingSpace() == -1) {
-//                lines[1] =
-//                        MsgUtil.getMessageOfflinePlayer(
-//                                "signs.buying",
-//                                player,
-//                                "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
-//            } else {
-//                lines[1] =
-//                        MsgUtil.getMessageOfflinePlayer("signs.buying", player, "" + this.getRemainingSpace());
-//            }
         }
         lines[2] =
                 MsgUtil.getMessageOfflinePlayer(
@@ -1406,15 +1396,6 @@ public class ContainerShop implements Shop {
                     + " container was missing, unload from memory...");
             this.onUnload();
             this.delete(true);
-//            if (!createBackup) {
-//                this.createBackup = Util.backupDatabase();
-//            }
-//            if (createBackup) {
-//                plugin.log("Deleting shop " + this + " request by non-shopable container.");
-//                this.delete();
-//            } else {
-//                Util.debugLog("Failed to create backup, shop at " + this.toString() + " won't to delete.");
-//            }
         }
     }
 
