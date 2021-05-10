@@ -54,7 +54,6 @@ public class PlotSquaredIntegrationV4 extends QSIntegratedPlugin implements List
         super(plugin);
         this.whiteList = plugin.getConfig().getBoolean("integration.plotsquared.whitelist-mode");
         this.deleteUntrusted = plugin.getConfig().getBoolean("integration.plotsquared.delete-when-user-untrusted");
-        this.registerListener();
     }
 
     @Override
@@ -104,6 +103,7 @@ public class PlotSquaredIntegrationV4 extends QSIntegratedPlugin implements List
         Flags.registerFlag(this.createFlag);
         Flags.registerFlag(this.tradeFlag);
         plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
+        this.registerListener();
         Util.debugLog("Success register " + getName() + " flags.");
     }
 

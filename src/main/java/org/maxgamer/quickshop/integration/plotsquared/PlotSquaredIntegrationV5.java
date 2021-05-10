@@ -56,7 +56,7 @@ public class PlotSquaredIntegrationV5 extends QSIntegratedPlugin {
         super(plugin);
         this.whiteList = plugin.getConfig().getBoolean("integration.plotsquared.whitelist-mode");
         this.deleteUntrusted = plugin.getConfig().getBoolean("integration.plotsquared.delete-when-user-untrusted");
-        new PlotAPI().registerListener(this);
+
     }
 
     @Override
@@ -101,6 +101,7 @@ public class PlotSquaredIntegrationV5 extends QSIntegratedPlugin {
         GlobalFlagContainer.getInstance().addAll(Arrays.asList(createFlag, tradeFlag));
         plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
         Util.debugLog("Success register " + getName() + " flags.");
+        new PlotAPI().registerListener(this);
     }
 
     @Override
