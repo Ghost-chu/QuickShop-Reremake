@@ -27,6 +27,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -216,7 +217,7 @@ public class BlockListener extends ProtectionListenerBase {
         //Chest combine mechanic based checking
         if (player.isSneaking()) {
             Block blockAgainst = e.getBlockAgainst();
-            if (blockAgainst.getType() == Material.CHEST && placingBlock.getFace(blockAgainst) != BlockFace.UP && placingBlock.getFace(blockAgainst) != BlockFace.DOWN && !Util.isDoubleChest(PaperLib.getBlockState(blockAgainst, false).getState())) {
+            if (blockAgainst.getType() == Material.CHEST && placingBlock.getFace(blockAgainst) != BlockFace.UP && placingBlock.getFace(blockAgainst) != BlockFace.DOWN && !Util.isDoubleChest(blockAgainst.getBlockData())) {
                 chest = e.getBlockAgainst();
             } else {
                 return;
@@ -228,12 +229,12 @@ public class BlockListener extends ProtectionListenerBase {
                 //just check the right side and left side
                 if (!face.equals(placingChestFacing) && !face.equals(placingChestFacing.getOppositeFace())) {
                     Block nearByBlock = placingBlock.getRelative(face);
-                    BlockState nearByBlockState = PaperLib.getBlockState(nearByBlock, false).getState();
+                    BlockData nearByBlockData = nearByBlock.getBlockData();
                     if (nearByBlock.getType() == Material.CHEST
                             //non double chest
-                            && !Util.isDoubleChest(nearByBlockState)
+                            && !Util.isDoubleChest(nearByBlockData)
                             //same facing
-                            && placingChestFacing == ((Directional) nearByBlockState.getBlockData()).getFacing()) {
+                            && placingChestFacing == ((Directional) nearByBlockData).getFacing()) {
                         if (chest == null) {
                             chest = nearByBlock;
                         } else {
