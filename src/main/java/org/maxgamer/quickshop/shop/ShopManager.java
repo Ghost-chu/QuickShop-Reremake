@@ -367,7 +367,7 @@ public class ShopManager {
             // Ooops, not founded that shop in this chunk.
         }
         @Nullable Block secondHalfShop = Util
-            .getSecondHalf(PaperLib.getBlockState(loc.getBlock(), false).getState());
+                .getSecondHalf(loc.getBlock());
         if (secondHalfShop != null) {
             inChunk = getShops(secondHalfShop.getChunk());
             if (inChunk != null) {
@@ -817,9 +817,8 @@ public class ShopManager {
             MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-already-owned", p));
             return;
         }
-        if (Util
-            .isDoubleChest(PaperLib.getBlockState(info.getLocation().getBlock(), false).getState())
-            && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
+        if (Util.isDoubleChest(info.getLocation().getBlock().getBlockData())
+                && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
             MsgUtil.sendMessage(p, MsgUtil.getMessage("no-double-chests", p));
             return;
         }
@@ -1400,7 +1399,7 @@ public class ShopManager {
                     if (!(state instanceof Container)) {
                         return null;
                     }
-                    @Nullable final Block half = Util.getSecondHalf(state);
+                    @Nullable final Block half = Util.getSecondHalf(currentBlock);
                     if (half != null) {
                         shop = getShop(half.getLocation());
                     }
