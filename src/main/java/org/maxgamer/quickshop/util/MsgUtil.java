@@ -46,7 +46,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.ServiceInjector;
 import org.maxgamer.quickshop.database.WarpedResultSet;
 import org.maxgamer.quickshop.event.ShopControlPanelOpenEvent;
-import org.maxgamer.quickshop.fileportlek.old.HumanReadableJsonConfiguration;
+import org.maxgamer.quickshop.file.HumanReadableJsonConfiguration;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.language.game.GameLanguage;
 import org.maxgamer.quickshop.util.language.game.MojangGameLanguageImpl;
@@ -174,6 +174,7 @@ public class MsgUtil {
         try {
             String raw = messagei18n.getString(loc);
             if (raw == null) {
+                Util.debugLog("Missing language key: " + loc);
                 return invaildMsg + ": " + loc;
             }
             String filled = fillArgs(raw, args);
@@ -214,7 +215,7 @@ public class MsgUtil {
         gameLanguage = ServiceInjector.getGameLanguage(new MojangGameLanguageImpl(plugin, languageCode));
     }
 
-    public static void Loadi18nFile() throws InvalidConfigurationException {
+    public static void loadI18nFile() throws InvalidConfigurationException {
         //Update instance
         plugin = QuickShop.getInstance();
         plugin.getLogger().info("Loading plugin translations files...");
@@ -295,7 +296,7 @@ public class MsgUtil {
         }
         String messageCodeInFile = messagei18n.getString("language-name");
         if (!Objects.equals(messageCodeInFile, languageCode)) {
-            String backupFileName = "messages-bak-" + UUID.randomUUID().toString() + ".json";
+            String backupFileName = "messages-bak-" + UUID.randomUUID() + ".json";
             Util.debugLog("Language name " + messageCodeInFile + " not matched with " + languageCode + ", replacing with build-in files and renaming current file to " + backupFileName);
             plugin.getLogger().warning("Language name " + messageCodeInFile + " not matched with " + languageCode + ", replacing with build-in files and renaming current file to " + backupFileName);
             File pending = new File(plugin.getDataFolder(), "messages.json");
@@ -344,7 +345,6 @@ public class MsgUtil {
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
-        plugin.getLogger().info("Completed to load plugin translations files.");
     }
 
     public static void loadEnchi18n() {
@@ -377,7 +377,6 @@ public class MsgUtil {
         } catch (IOException e) {
             plugin.getLogger().log(Level.WARNING, "Could not load/save transaction enchname from enchi18n.yml. Skipping...", e);
         }
-        plugin.getLogger().info("Complete to load enchantments translation.");
     }
 
     /**
@@ -415,7 +414,6 @@ public class MsgUtil {
         } catch (IOException e) {
             plugin.getLogger().log(Level.WARNING, "Could not load/save transaction itemname from itemi18n.yml. Skipping...", e);
         }
-        plugin.getLogger().info("Complete to load items translation.");
     }
 
     public static void loadPotioni18n() {
@@ -450,7 +448,6 @@ public class MsgUtil {
         } catch (IOException e) {
             plugin.getLogger().log(Level.WARNING, "Could not load/save transaction potionname from potioni18n.yml. Skipping...", e);
         }
-        plugin.getLogger().info("Complete to load potions effect translation.");
     }
 
     /**
@@ -1431,6 +1428,12 @@ public class MsgUtil {
             setAndUpdate("clean-warning");
             setAndUpdate("command.disabled");
             setAndUpdate("command.feature-not-enabled");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
+        if (selectedVersion == 50) {
+            setAndUpdate("signs.header");
+            setAndUpdate("signs.status-available");
+            setAndUpdate("signs.status-unavailable");
             setAndUpdate("language-version", ++selectedVersion);
         }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");

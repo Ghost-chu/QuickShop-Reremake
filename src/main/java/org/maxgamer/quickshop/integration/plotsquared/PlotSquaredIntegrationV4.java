@@ -19,29 +19,41 @@
 
 package org.maxgamer.quickshop.integration.plotsquared;
 
+import com.github.intellectualsites.plotsquared.bukkit.events.PlayerPlotTrustedEvent;
+import com.github.intellectualsites.plotsquared.bukkit.events.PlotDeleteEvent;
 import com.github.intellectualsites.plotsquared.plot.flag.BooleanFlag;
 import com.github.intellectualsites.plotsquared.plot.flag.Flags;
 import com.github.intellectualsites.plotsquared.plot.object.Plot;
+import com.sk89q.worldedit.regions.CuboidRegion;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
+import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.Util;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class PlotSquaredIntegrationV4 extends QSIntegratedPlugin {
+public class PlotSquaredIntegrationV4 extends QSIntegratedPlugin implements Listener {
     private final boolean whiteList;
+    private final boolean deleteUntrusted;
     private BooleanFlag createFlag;
     private BooleanFlag tradeFlag;
 
     public PlotSquaredIntegrationV4(QuickShop plugin) {
         super(plugin);
         this.whiteList = plugin.getConfig().getBoolean("integration.plotsquared.whitelist-mode");
+        this.deleteUntrusted = plugin.getConfig().getBoolean("integration.plotsquared.delete-when-user-untrusted");
     }
 
     @Override
@@ -91,11 +103,45 @@ public class PlotSquaredIntegrationV4 extends QSIntegratedPlugin {
         Flags.registerFlag(this.createFlag);
         Flags.registerFlag(this.tradeFlag);
         plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
+        this.registerListener();
         Util.debugLog("Success register " + getName() + " flags.");
     }
 
     @Override
     public void unload() {
+        this.unregisterListener();
     }
 
+    private List<Shop> getShops(Plot plot) {
+        List<Shop> shopsList = new ArrayList<>();
+        for (CuboidRegion region : plot.getRegions()) {
+            for (int x = region.getMinimumPoint().getX() >> 4;
+                 x <= region.getMaximumPoint().getX() >> 4; x++) {
+                for (int z = region.getMinimumPoint().getZ() >> 4;
+                     z <= region.getMaximumPoint().getZ() >> 4; z++) {
+                    Map<Location, Shop> shops = plugin.getShopManager().getShops(plot.getWorldName(), x, z);
+                    if (shops != null) {
+                        shopsList.addAll(shops.values());
+                    }
+                }
+            }
+        }
+        return shopsList;
+    }
+
+    @EventHandler
+    public void onPlotDelete(PlotDeleteEvent event) {
+        getShops(event.getPlot()).forEach(Shop::delete);
+    }
+
+    @EventHandler
+    public void onPlotUntrusted(PlayerPlotTrustedEvent event) {
+        if (!deleteUntrusted) {
+            return;
+        }
+        if (event.wasAdded()) {
+            return; // We only check untrusted
+        }
+        getShops(event.getPlot()).stream().filter(shop -> shop.getOwner().equals(event.getPlayer())).forEach(Shop::delete);
+    }
 }

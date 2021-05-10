@@ -19,11 +19,15 @@
 
 package org.maxgamer.quickshop.integration.plotsquared;
 
+import com.google.common.eventbus.Subscribe;
+import com.plotsquared.core.PlotSquared;
 import com.plotsquared.core.configuration.Caption;
 import com.plotsquared.core.configuration.Captions;
+import com.plotsquared.core.events.PlotDeleteEvent;
 import com.plotsquared.core.plot.Plot;
 import com.plotsquared.core.plot.flag.GlobalFlagContainer;
 import com.plotsquared.core.plot.flag.types.BooleanFlag;
+import com.sk89q.worldedit.regions.CuboidRegion;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -32,20 +36,27 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
+import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.Util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class PlotSquaredIntegrationV5 extends QSIntegratedPlugin {
     private final boolean whiteList;
+    private final boolean deleteUntrusted;
     private QuickshopCreateFlag createFlag;
     private QuickshopTradeFlag tradeFlag;
 
     public PlotSquaredIntegrationV5(QuickShop plugin) {
         super(plugin);
         this.whiteList = plugin.getConfig().getBoolean("integration.plotsquared.whitelist-mode");
+        this.deleteUntrusted = plugin.getConfig().getBoolean("integration.plotsquared.delete-when-user-untrusted");
+
     }
 
     @Override
@@ -90,11 +101,47 @@ public class PlotSquaredIntegrationV5 extends QSIntegratedPlugin {
         GlobalFlagContainer.getInstance().addAll(Arrays.asList(createFlag, tradeFlag));
         plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
         Util.debugLog("Success register " + getName() + " flags.");
+        PlotSquared.get().getEventDispatcher().registerListener(this);
     }
 
     @Override
     public void unload() {
+        PlotSquared.get().getEventDispatcher().unregisterListener(this);
     }
+
+    private List<Shop> getShops(Plot plot) {
+        List<Shop> shopsList = new ArrayList<>();
+        for (CuboidRegion region : plot.getRegions()) {
+            for (int x = region.getMinimumPoint().getX() >> 4;
+                 x <= region.getMaximumPoint().getX() >> 4; x++) {
+                for (int z = region.getMinimumPoint().getZ() >> 4;
+                     z <= region.getMaximumPoint().getZ() >> 4; z++) {
+                    Map<Location, Shop> shops = plugin.getShopManager().getShops(plot.getWorldName(), x, z);
+                    if (shops != null) {
+                        shopsList.addAll(shops.values());
+                    }
+                }
+            }
+        }
+        return shopsList;
+    }
+
+    @Subscribe
+    public void onPlotDelete(PlotDeleteEvent event) {
+        getShops(event.getPlot()).forEach(Shop::delete);
+    }
+
+    @Subscribe
+    public void onPlotPlayerUntrusted(com.plotsquared.core.events.PlayerPlotTrustedEvent event) {
+        if (!deleteUntrusted) {
+            return;
+        }
+        if (event.wasAdded()) {
+            return; // We only check untrusted
+        }
+        getShops(event.getPlot()).stream().filter(shop -> shop.getOwner().equals(event.getPlayer())).forEach(Shop::delete);
+    }
+
 
     static class QuickshopCreateFlag extends BooleanFlag<QuickshopCreateFlag> {
 

@@ -34,7 +34,7 @@ import java.util.UUID;
  * Contains shop's moderators infomations, owner, staffs etc.
  */
 @EqualsAndHashCode
-public class ShopModerator {
+public class ShopModerator implements Cloneable {
     @NonNull
     private UUID owner;
 

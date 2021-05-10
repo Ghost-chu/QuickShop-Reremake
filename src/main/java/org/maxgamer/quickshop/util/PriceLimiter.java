@@ -35,18 +35,18 @@ public class PriceLimiter {
     private boolean allowFreeShop;
 
     @NotNull
-    public Status check(@NotNull ItemStack stack, double price) {
+    public CheckResult check(@NotNull ItemStack stack, double price) {
         if (allowFreeShop) {
             if (price != 0 && price < minPrice) {
-                return Status.REACHED_PRICE_MIN_LIMIT;
+                return new CheckResult(Status.REACHED_PRICE_MIN_LIMIT, minPrice, maxPrice);
             }
         }
         if (price < minPrice) {
-            return Status.REACHED_PRICE_MIN_LIMIT;
+            return new CheckResult(Status.REACHED_PRICE_MIN_LIMIT, minPrice, maxPrice);
         }
         if (maxPrice != -1) {
             if (price > maxPrice) {
-                return Status.REACHED_PRICE_MAX_LIMIT;
+                return new CheckResult(Status.REACHED_PRICE_MAX_LIMIT, minPrice, maxPrice);
             }
         }
         double perItemPrice;
@@ -58,10 +58,19 @@ public class PriceLimiter {
         Map.Entry<Double, Double> materialLimit = Util.getPriceRestriction(stack.getType());
         if (materialLimit != null) {
             if (perItemPrice < materialLimit.getKey() || perItemPrice > materialLimit.getValue()) {
-                return Status.PRICE_RESTRICTED;
+                return new CheckResult(Status.PRICE_RESTRICTED, materialLimit.getKey(), materialLimit.getValue());
             }
+            return new CheckResult(Status.PASS, materialLimit.getKey(), materialLimit.getValue());
         }
-        return Status.PASS;
+        return new CheckResult(Status.PASS, minPrice, maxPrice);
+    }
+
+    @AllArgsConstructor
+    @Data
+    public static class CheckResult {
+        private PriceLimiter.Status status;
+        private double min;
+        private double max;
     }
 
     public enum Status {

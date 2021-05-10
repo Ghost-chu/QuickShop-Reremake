@@ -2,9 +2,9 @@
   "file-test": "Este é um arquivo de texto de teste. Nós o usamos para testar se as mensagens são enviadas. filho está quebrado. Você pode preenchê-lo com quaisquer ovos de Páscoa que goste aqui :)",
   "translation-author": "Tradutor: Ghost_chu, Andre_601",
   "translation-version": "Versão de suporte: Remake",
-  "translation-contributors": "Contribuidores: IceZombie13, Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken e Andre_601",
+  "translation-contributors": "Contribuidores: Torre de Timor, Netherfoam, KaiNoMood, Mgazul, JackTheChicken e Andre_601",
   "translation-country": "Zona do idioma: Português Brasileiro (pt_BR)",
-  "language-version": "-> idioma",
+  "language-version": "51",
   "not-looking-at-shop": "Não conseguimos encontrar uma QuickShop. Você precisa estar olhando para uma.",
   "no-anythings-in-your-hand": "&cNão há nada na sua mão.",
   "no-permission": "&cVocê não tem permissão para fazer isso.",
@@ -177,13 +177,15 @@
   "signs": {
     "selling": "Vendendo {0}",
     "stack-selling": "Vendendo {0}",
-    "header": "&c{0}",
+    "header": "{1}{0}",
     "buying": "Comprando {0}",
     "stack-buying": "Comprando {0}",
     "item": "{0}",
     "price": "{0} cada",
     "stack-price": "{0} por {1}x {2}",
-    "unlimited": "Ilimitado"
+    "unlimited": "Ilimitado",
+    "status-available": "&a",
+    "status-unavailable": "&c"
   },
   "controlpanel": {
     "setowner": "&aProprietário: &b{0} &e[&d&lMudar&e]",

@@ -20,9 +20,11 @@
 package org.maxgamer.quickshop.integration.towny;
 
 import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.event.PlotClearEvent;
 import com.palmergames.bukkit.towny.event.TownRemoveResidentEvent;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.utils.ShopPlotUtil;
 import org.bukkit.Bukkit;
@@ -54,17 +56,17 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
 
     private final boolean ignoreDisabledWorlds;
     private final boolean deleteShopOnLeave;
+    private final boolean deleteShopOnPlotClear;
     private boolean isNewVersion;
 
 
     public TownyIntegration(QuickShop plugin) {
         super(plugin);
-        createFlags =
-                TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.create"));
-        tradeFlags =
-                TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.trade"));
+        createFlags = TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.create"));
+        tradeFlags = TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.trade"));
         ignoreDisabledWorlds = plugin.getConfig().getBoolean("integration.towny.ignore-disabled-worlds");
         deleteShopOnLeave = plugin.getConfig().getBoolean("integration.towny.delete-shop-on-resident-leave");
+        deleteShopOnPlotClear = plugin.getConfig().getBoolean("integration.towny.delete-shop-on-plot-clear");
         //Testing if there have new method
         try {
             Town.class.getDeclaredMethod("getHomeblockWorld");
@@ -80,14 +82,18 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
     }
 
     private void processEvent(TownRemoveResidentEvent event) {
+
+    }
+
+
+    public void deleteShops(UUID owner, Town town) {
         if (!deleteShopOnLeave) {
             return;
         }
-        UUID owner = TownyAPI.getInstance().getPlayerUUID(event.getResident());
+
         if (owner == null) {
             return;
         }
-        Town town = event.getTown();
         String worldName;
         if (isNewVersion) {
             worldName = town.getHomeblockWorld().getName();
@@ -123,12 +129,54 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
         }
     }
 
+    public void purgeShops(TownBlock townBlock) {
+        if (!deleteShopOnPlotClear) {
+            return;
+        }
+        String worldName;
+        worldName = townBlock.getWorld().getName();
+        //Getting all shop with world-chunk-shop mapping
+        for (Map.Entry<String, Map<ShopChunk, Map<Location, Shop>>> entry : plugin.getShopManager().getShops().entrySet()) {
+            //Matching world
+            if (worldName.equals(entry.getKey())) {
+                World world = Bukkit.getWorld(entry.getKey());
+                if (world != null) {
+                    //Matching Location
+                    for (Map.Entry<ShopChunk, Map<Location, Shop>> chunkedShopEntry : entry.getValue().entrySet()) {
+                        Map<Location, Shop> shopMap = chunkedShopEntry.getValue();
+                        for (Shop shop : shopMap.values()) {
+                            //Matching Owner
+                            try {
+                                //It should be equal in address
+                                if (WorldCoord.parseWorldCoord(shop.getLocation()).getTownBlock() == townBlock) {
+                                    //delete it
+                                    shop.delete();
+                                }
+                            } catch (NotRegisteredException ignored) {
+                                //Is not in town, continue
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     @EventHandler
     public void onPlayerLeave(TownRemoveResidentEvent event) {
         if (Bukkit.isPrimaryThread()) {
-            processEvent(event);
+            deleteShops(TownyAPI.getInstance().getPlayerUUID(event.getResident()), event.getTown());
         } else {
-           Util.mainThreadRun(() -> processEvent(event));
+            Util.mainThreadRun(() -> deleteShops(TownyAPI.getInstance().getPlayerUUID(event.getResident()), event.getTown()));
+        }
+    }
+
+    @EventHandler
+    public void onPlotClear(PlotClearEvent event) {
+        if (Bukkit.isPrimaryThread()) {
+            purgeShops(event.getTownBlock());
+        } else {
+            Util.mainThreadRun(() -> purgeShops(event.getTownBlock()));
         }
     }
 

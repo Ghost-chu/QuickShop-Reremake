@@ -4,7 +4,7 @@
   "translation-version": "ondersteunende versie: Reremake",
   "translation-contributors": "Medewerkers",
   "translation-country": "Taal Zone: Engels (nl_US)",
-  "language-version": "50",
+  "language-version": "51",
   "not-looking-at-shop": "&cGeen QuickShop gevonden, je moet naar een QuickShop kijken.",
   "no-anythings-in-your-hand": "&cJe hebt niks in je hand.",
   "no-permission": "&cJe hebt hiervoor geen rechten.",
@@ -177,13 +177,15 @@
   "signs": {
     "selling": "Verkopen {0}",
     "stack-selling": "Verkopen {0}",
-    "header": "&c{0}",
+    "header": "{1}{0}",
     "buying": "{0} kopen",
     "stack-buying": "{0} kopen",
     "item": "{0}",
     "price": "{0} per stuk",
     "stack-price": "{0} per {1}x {2}",
-    "unlimited": "Onbeperkt"
+    "unlimited": "Onbeperkt",
+    "status-available": "&a",
+    "status-unavailable": "&c"
   },
   "controlpanel": {
     "setowner": "&aEigenaar: &b{0} &e[&d&lChange&e]",

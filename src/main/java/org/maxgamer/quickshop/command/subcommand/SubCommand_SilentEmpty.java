@@ -70,7 +70,7 @@ public class SubCommand_SilentEmpty implements CommandProcesser {
         final Inventory inventory = cs.getInventory();
 
         if (inventory == null) {
-            Util.debugLog("Inventory is empty! " + cs.toString());
+            Util.debugLog("Inventory is empty! " + cs);
             return;
         }
 

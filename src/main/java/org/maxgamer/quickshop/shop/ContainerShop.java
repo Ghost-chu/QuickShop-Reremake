@@ -30,6 +30,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.type.Chest;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -45,8 +47,6 @@ import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.util.*;
 
 import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 /**
@@ -61,7 +61,7 @@ public class ContainerShop implements Shop {
     private final Location location;
     @EqualsAndHashCode.Exclude
     private final QuickShop plugin;
-    private final Map<String, Map<String, Object>> extra;
+    private final YamlConfiguration extra;
     @EqualsAndHashCode.Exclude
     private final UUID runtimeRandomUniqueId = UUID.randomUUID();
     @NotNull
@@ -123,14 +123,14 @@ public class ContainerShop implements Shop {
      * @param extra     The extra data saved by addon
      */
     public ContainerShop(
-        @NotNull QuickShop plugin,
-        @NotNull Location location,
-        double price,
-        @NotNull ItemStack item,
-        @NotNull ShopModerator moderator,
-        boolean unlimited,
-        @NotNull ShopType type,
-        @NotNull Map<String, Map<String, Object>> extra) {
+            @NotNull QuickShop plugin,
+            @NotNull Location location,
+            double price,
+            @NotNull ItemStack item,
+            @NotNull ShopModerator moderator,
+            boolean unlimited,
+            @NotNull ShopType type,
+            @NotNull YamlConfiguration extra) {
         Util.ensureThread(false);
         this.location = location;
         this.price = price;
@@ -145,7 +145,7 @@ public class ContainerShop implements Shop {
             if (meta.hasDisplayName()) {
                 Util.debugLog("Shop item display is: " + meta.getDisplayName());
                 //https://hub.spigotmc.org/jira/browse/SPIGOT-5964
-                if (meta.getDisplayName().matches("\\{.*\\}")) {
+                if (meta.getDisplayName().matches("\\{.*}")) {
                     meta.setDisplayName(meta.getDisplayName());
                     //Correct both items
                     item.setItemMeta(meta);
@@ -627,12 +627,25 @@ public class ContainerShop implements Shop {
         }
     }
 
+    public boolean inventoryAvailable() {
+        if (isUnlimited()) {
+            return true;
+        }
+        if (isSelling()) {
+            return getRemainingStock() > 0;
+        }
+        if (isBuying()) {
+            return getRemainingSpace() > 0;
+        }
+        return true;
+    }
+
     @Override
     public String[] getSignText() {
         Util.ensureThread(false);
         String[] lines = new String[4];
         OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
-        lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(false));
+        lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(false), inventoryAvailable() ? MsgUtil.getMessageOfflinePlayer("signs.status-available", null) : MsgUtil.getMessageOfflinePlayer("signs.status-unavailable", null));
         if (this.isSelling()) {
             if (this.getItem().getAmount() > 1) {
                 if (this.getRemainingStock() == -1) {
@@ -715,7 +728,6 @@ public class ContainerShop implements Shop {
         List<Sign> signs = this.getSigns();
         for (Sign sign : signs) {
             if (Arrays.equals(sign.getLines(), lines)) {
-                Util.debugLog("Skipped new sign text setup: Same content");
                 continue;
             }
             for (int i = 0; i < lines.length; i++) {
@@ -767,9 +779,9 @@ public class ContainerShop implements Shop {
         int unlimited = this.isUnlimited() ? 1 : 0;
         try {
             plugin.getDatabaseHelper()
-                .updateShop(ShopModerator.serialize(this.moderator.clone()), this.getItem(),
-                    unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
-                    this.saveExtraToJson());
+                    .updateShop(ShopModerator.serialize(this.moderator.clone()), this.getItem(),
+                            unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
+                            this.saveExtraToYaml());
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING,
                 "Could not update a shop in the database! Changes will revert after a reboot!", e);
@@ -861,20 +873,16 @@ public class ContainerShop implements Shop {
         plugin.getShopContainerWatcher().scheduleCheck(this);
 
         // check price restriction
-        if (plugin.getShopManager().getPriceLimiter().check(item, price)
-            != PriceLimiter.Status.PASS) {
-            Entry<Double, Double> priceRestriction = Util.getPriceRestriction(
-                this.getMaterial()); //TODO Adapt priceLimiter, also improve priceLimiter return a container
-            if (priceRestriction != null) {
-                if (price < priceRestriction.getKey()) {
-                    setDirty();
-                    price = priceRestriction.getKey();
-                    this.update();
-                } else if (price > priceRestriction.getValue()) {
-                    setDirty();
-                    price = priceRestriction.getValue();
-                    this.update();
-                }
+        PriceLimiter.CheckResult priceRestriction = plugin.getShopManager().getPriceLimiter().check(item, price);
+        if (priceRestriction.getStatus() != PriceLimiter.Status.PASS) {
+            if (price < priceRestriction.getMin()) {
+                setDirty();
+                price = priceRestriction.getMin();
+                this.update();
+            } else if (price > priceRestriction.getMax()) {
+                setDirty();
+                price = priceRestriction.getMax();
+                this.update();
             }
         }
         checkDisplay();
@@ -1010,7 +1018,7 @@ public class ContainerShop implements Shop {
         setDirty();
         if (Util.fireCancellableEvent(new ShopTypeChangeEvent(this, this.shopType, newShopType))) {
             Util.debugLog(
-                "Some addon cancelled shop type changes, target shop: " + this.toString());
+                    "Some addon cancelled shop type changes, target shop: " + this);
             return;
         }
         this.shopType = newShopType;
@@ -1280,7 +1288,7 @@ public class ContainerShop implements Shop {
         //TODO: Rewrite centering item feature, currently implement is buggy and mess
         Util.ensureThread(false);
         Block attachedChest = Util
-                .getSecondHalf(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
+                .getSecondHalf(this.getLocation().getBlock());
 
         Shop preValue = attachedShop;
 
@@ -1368,8 +1376,7 @@ public class ContainerShop implements Shop {
      */
     public boolean isDoubleChestShop() {
         Util.ensureThread(false);
-        return Util
-            .isDoubleChest(PaperLib.getBlockState(this.getLocation().getBlock(), false).getState());
+        return Util.isDoubleChest(this.getLocation().getBlock().getBlockData());
     }
 
     /**
@@ -1401,8 +1408,8 @@ public class ContainerShop implements Shop {
     }
 
     @Override
-    public @NotNull String saveExtraToJson() {
-        return JsonUtil.getGson().toJson(this.extra);
+    public @NotNull String saveExtraToYaml() {
+        return extra.saveToString();
     }
 
     /**
@@ -1414,26 +1421,13 @@ public class ContainerShop implements Shop {
      * @return The data table
      */
     @Override
-    public @NotNull Map<String, Object> getExtra(@NotNull Plugin plugin) {
-        Map<String, Object> extraMap = this.extra.get(plugin.getName());
-        if (extraMap == null) {
-            extraMap = new ConcurrentHashMap<>();
-            this.extra.put(plugin.getName(), extraMap);
-        }
-
-        return extraMap;
+    public @NotNull ConfigurationSection getExtra(@NotNull Plugin plugin) {
+        ConfigurationSection section = extra.getConfigurationSection(plugin.getName());
+        if (section == null)
+            section = extra.createSection(plugin.getName());
+        return section;
     }
 
-    /**
-     * Gets ExtraManager to quick access extra data
-     *
-     * @param plugin Plugin instance
-     * @return The Extra data manager
-     */
-    @Override
-    public @NotNull ShopExtraManager getExtraManager(@NotNull Plugin plugin) {
-        return new ShopExtraManager(this, plugin);
-    }
 
     /**
      * Save the extra data to the shop.
@@ -1443,7 +1437,7 @@ public class ContainerShop implements Shop {
      * @deprecated Extra Map doen't need set to save it.
      */
     @Override
-    public void setExtra(@NotNull Plugin plugin, @NotNull Map<String, Object> data) {
+    public void setExtra(@NotNull Plugin plugin, @NotNull ConfigurationSection data) {
         setDirty();
         update();
     }
@@ -1476,8 +1470,8 @@ public class ContainerShop implements Shop {
      */
     @Override
     public @Nullable String getCurrency() {
-        Map<String, Object> extraMap = getExtra(plugin);
-        return (String) extraMap.get("currency");
+        ConfigurationSection section = getExtra(plugin);
+        return section.getString("currency");
     }
 
     /**
@@ -1487,14 +1481,9 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void setCurrency(@Nullable String currency) {
-        Map<String, Object> extraMap = getExtra(plugin);
-        if (currency == null) {
-            extraMap.remove("currency");
-        } else {
-            extraMap.put("currency", currency);
-        }
-        extra.put(plugin.getName(), extraMap);
-
+        ConfigurationSection section = getExtra(plugin);
+        section.set("currency", currency);
+        setExtra(plugin, section);
         setDirty();
         this.update();
     }

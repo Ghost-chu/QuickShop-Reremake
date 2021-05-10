@@ -4,7 +4,7 @@
   "translation-version": "إصدار الدعم: إعادة التشكيل",
   "translation-contributors": "المساهمون: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken و Andre_601",
   "translation-country": "منطقة اللغة: العربية (ar_AR)",
-  "language-version": "50",
+  "language-version": "51",
   "not-looking-at-shop": "&cلا يمكن العثور على QuickShop. تحتاج إلى النظر إلى واحد.",
   "no-anythings-in-your-hand": "&cلا يوجد شيء في يديك.",
   "no-permission": "لا تملك الصلاحيّات للقيام بذلك.",
@@ -177,13 +177,15 @@
   "signs": {
     "selling": "Selling {0}",
     "stack-selling": "Selling {0}",
-    "header": "&c{0}",
+    "header": "{1}{0}",
     "buying": "Buying {0}",
     "stack-buying": "Buying {0}",
     "item": "{0}",
     "price": "{0} each",
     "stack-price": "{0} per {1}x {2}",
-    "unlimited": "غير محدود"
+    "unlimited": "غير محدود",
+    "status-available": "&a",
+    "status-unavailable": "&c"
   },
   "controlpanel": {
     "setowner": "&aOwner: &b{0} &e[&d&lChange&e]",

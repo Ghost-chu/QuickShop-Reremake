@@ -4,7 +4,7 @@
   "translation-version": "Versiune suport: Reproducere",
   "translation-contributors": "Contribuitori: Turnul, Netherfoam, KaiNoMood, Mgazul, JackTheChicken și Andre_601",
   "translation-country": "Zona de Limbă: Engleză (ro_US)",
-  "language-version": "50",
+  "language-version": "51",
   "not-looking-at-shop": "&cNu am putut gasi un magazin. Trebuie sa te uiti la unul.",
   "no-anythings-in-your-hand": "&cNu este nimic in mana.",
   "no-permission": "&cNu ai permisiunea să faci asta.\".",
@@ -177,13 +177,15 @@
   "signs": {
     "selling": "Selling {0}",
     "stack-selling": "Selling {0}",
-    "header": "&c{0}",
+    "header": "{1}{0}",
     "buying": "Buying {0}",
     "stack-buying": "Buying {0}",
     "item": "{0}",
     "price": "{0} each",
     "stack-price": "{0} per {1}x {2}",
-    "unlimited": "Unlimited"
+    "unlimited": "Unlimited",
+    "status-available": "&a",
+    "status-unavailable": "&c"
   },
   "controlpanel": {
     "setowner": "&aOwner: &b{0} &e[&d&lChange&e]",

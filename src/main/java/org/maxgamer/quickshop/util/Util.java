@@ -22,9 +22,13 @@ package org.maxgamer.quickshop.util;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
-import org.bukkit.block.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.EnderChest;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -45,7 +49,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.database.MySQLCore;
 import org.maxgamer.quickshop.shop.DisplayItem;
 import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.watcher.InventoryEditContainer;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -149,13 +152,10 @@ public class Util {
      * @return True if it can be made into a shop, otherwise false.
      */
     public static boolean canBeShop(@NotNull Block b) {
-
-
         if (isBlacklistWorld(b.getWorld())) {
             return false;
         }
-
-        // Specificed types by configuration
+        // Specified types by configuration
         if (!isShoppables(b.getType())) {
             return false;
         }
@@ -163,7 +163,6 @@ public class Util {
         if (bs instanceof EnderChest) { // BlockState for Mod supporting
             return plugin.getOpenInvPlugin() != null;
         }
-
         return bs instanceof InventoryHolder;
     }
 
@@ -195,7 +194,6 @@ public class Util {
         }
         int items = 0;
         for (final ItemStack iStack : inv.getStorageContents()) {
-            //noinspection ConstantConditions
             if (iStack == null || iStack.getType() == Material.AIR) {
                 continue;
             }
@@ -219,9 +217,7 @@ public class Util {
             return 0;
         }
         int space = 0;
-
         int itemMaxStackSize = getItemMaxStackSize(item.getType());
-
         ItemStack[] contents = inv.getStorageContents();
         for (final ItemStack iStack : contents) {
             if (iStack == null || iStack.getType() == Material.AIR) {
@@ -282,7 +278,6 @@ public class Util {
                     // Okay we have hacked the dataVersion, now put it back
                     root.put("item", item);
                     config = yaml.dump(root);
-
                     Util.debugLog("Updated, we will try load as hacked ItemStack: " + config);
                 } else {
                     plugin
@@ -409,7 +404,6 @@ public class Util {
         }
     }
 
-
     /**
      * return the right side for given blockFace
      *
@@ -431,7 +425,6 @@ public class Util {
                 return blockFace;
         }
     }
-
 
     /**
      * Get vertical BlockFace list
@@ -535,17 +528,19 @@ public class Util {
         return restrictedPrices.get(material);
     }
 
-
-    public static boolean isDoubleChest(@Nullable BlockState state) {
-        if (!(state instanceof Chest)) {
+    public static boolean isDoubleChest(@Nullable BlockData blockData) {
+        if (!(blockData instanceof org.bukkit.block.data.type.Chest)) {
             return false;
         }
-        String blockDataStr = state.getBlockData().getAsString();
+        org.bukkit.block.data.type.Chest chestBlockData = (org.bukkit.block.data.type.Chest) blockData;
+        //Util.debugLog("Chest at " + state.getLocation() + " type  is " + chestBlockData.getType().name());
+        return chestBlockData.getType() != org.bukkit.block.data.type.Chest.Type.SINGLE;
+        //String blockDataStr = state.getBlockData().getAsString();
         //Black magic for detect double chest
         //minecraft:chest[facing=north,type=right,waterlogged=false]
         //minecraft:chest[facing=north,type=left,waterlogged=false]
         //minecraft:chest[facing=north,type=single,waterlogged=false]
-        return !blockDataStr.contains("type=single");
+        //return !blockDataStr.contains("type=single");
     }
 
     /**
@@ -690,7 +685,6 @@ public class Util {
 
         List<String> symbols = plugin.getConfig().getStringList("shop.alternate-currency-symbol-list");
 
-
         symbols.forEach(entry -> {
             String[] splits = entry.split(";", 2);
             if (splits.length < 2) {
@@ -708,7 +702,6 @@ public class Util {
      * @param filePath Target file
      * @return Byte array
      */
-    @Nullable
     public static byte[] inputStream2ByteArray(@NotNull String filePath) {
         try (InputStream in = new FileInputStream(filePath)) {
             return toByteArray(in);
@@ -734,7 +727,6 @@ public class Util {
      * @param inputStream Target stream
      * @return Byte array
      */
-    @Nullable
     public static byte[] inputStream2ByteArray(@NotNull InputStream inputStream) {
         try {
             byte[] data = toByteArray(inputStream);
@@ -758,35 +750,31 @@ public class Util {
             Util.debugLog("Skipped plugin gui inventory check.");
             return;
         }
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            try {
-                for (int i = 0; i < inv.getSize(); i++) {
-                    ItemStack itemStack = inv.getItem(i);
-                    if (itemStack == null) {
-                        continue;
-                    }
-                    if (DisplayItem.checkIsGuardItemStack(itemStack)) {
-                        // Found Item and remove it.
-                        Location location = inv.getLocation();
-                        if (location == null) {
-                            return; // Virtual GUI
-                        }
-                        plugin
-                                .getSyncTaskWatcher()
-                                .getInventoryEditQueue()
-                                .offer(new InventoryEditContainer(inv, i, itemStack, new ItemStack(Material.AIR)));
-                        Util.debugLog("Found shop display item in an inventory, Scheduling to removal...");
-                        MsgUtil.sendGlobalAlert(
-                                "[InventoryCheck] Found displayItem in inventory at "
-                                        + location
-                                        + ", Item is "
-                                        + itemStack.getType().name());
-                    }
+        try {
+            for (int i = 0; i < inv.getSize(); i++) {
+                ItemStack itemStack = inv.getItem(i);
+                if (itemStack == null) {
+                    continue;
                 }
-            } catch (Exception t) {
-                // Ignore
+                if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+                    // Found Item and remove it.
+                    Location location = inv.getLocation();
+                    if (location == null) {
+                        return; // Virtual GUI
+                    }
+
+                    inv.setItem(i, new ItemStack(Material.AIR));
+                    Util.debugLog("Found shop display item in an inventory, Removing...");
+                    MsgUtil.sendGlobalAlert(
+                            "[InventoryCheck] Found displayItem in inventory at "
+                                    + location
+                                    + ", Item is "
+                                    + itemStack.getType().name());
+                }
             }
-        });
+        } catch (Exception t) {
+            // Ignore
+        }
     }
 
     /**
@@ -912,26 +900,36 @@ public class Util {
     /**
      * Returns the chest attached to the given chest. The given block must be a chest.
      *
-     * @param state The chest to check.
+     * @param block The chest block
      * @return the block which is also a chest and connected to b.
      */
-    public static Block getSecondHalf(@NotNull BlockState state) {
-        if (!(state instanceof Chest)) {
+    public static Block getSecondHalf(@NotNull Block block) {
+        BlockData blockData = block.getBlockData();
+        if (!(blockData instanceof org.bukkit.block.data.type.Chest)) {
             return null;
         }
-        Chest oneSideOfChest = (Chest) state;
-        InventoryHolder chestHolder = oneSideOfChest.getInventory().getHolder();
-        if (chestHolder instanceof DoubleChest) {
-            DoubleChest doubleChest = (DoubleChest) chestHolder;
-            Chest leftC = (Chest) doubleChest.getLeftSide();
-            Chest rightC = (Chest) doubleChest.getRightSide();
-            if (equalsBlockStateLocation(oneSideOfChest.getLocation(), Objects.requireNonNull(rightC).getLocation())) {
-                return leftC.getBlock();
-            } else {
-                return rightC.getBlock();
-            }
+        org.bukkit.block.data.type.Chest chest = (org.bukkit.block.data.type.Chest) blockData;
+        if (!isDoubleChest(chest)) {
+            return null;
         }
-        return null;
+        BlockFace towardsLeft = getRightSide(chest.getFacing());
+        BlockFace actuallyBlockFace = chest.getType() == org.bukkit.block.data.type.Chest.Type.LEFT ? towardsLeft : towardsLeft.getOppositeFace();
+        return block.getRelative(actuallyBlockFace);
+
+//
+//        Chest oneSideOfChest = (Chest) state;
+//        InventoryHolder chestHolder = oneSideOfChest.getInventory().getHolder();
+//        if (chestHolder instanceof DoubleChest) {
+//            DoubleChest doubleChest = (DoubleChest) chestHolder;
+//            Chest leftC = (Chest) doubleChest.getLeftSide();
+//            Chest rightC = (Chest) doubleChest.getRightSide();
+//            if (equalsBlockStateLocation(oneSideOfChest.getLocation(), Objects.requireNonNull(rightC).getLocation())) {
+//                return leftC.getBlock();
+//            } else {
+//                return rightC.getBlock();
+//            }
+//        }
+//        return null;
     }
 
     /**
@@ -1026,40 +1024,6 @@ public class Util {
         return loc;
     }
 
-//    /**
-//     * Match the both map1 and map2
-//     *
-//     * @param map1 Map1
-//     * @param map2 Map2
-//     * @return Map1 match Map2 and Map2 match Map1
-//     */
-//    @Deprecated
-//    public static boolean mapDuoMatches(@NotNull Map<?, ?> map1, @NotNull Map<?, ?> map2) {
-//        boolean result = mapMatches(map1, map2);
-//        if (!result) {
-//            return false;
-//        }
-//        return mapMatches(map2, map1);
-//    }
-//
-//    /**
-//     * Match the map1 and map2
-//     *
-//     * @param map1 Map1
-//     * @param map2 Map2
-//     * @return Map1 match Map2
-//     */
-//    @Deprecated
-//    public static boolean mapMatches(@NotNull Map<?, ?> map1, @NotNull Map<?, ?> map2) {
-//        Set<? extends Entry<?, ?>> objectSet = map2.entrySet();
-//        for (Object obj : map1.keySet()) {
-//            if (!objectSet.contains(obj)) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-
     /**
      * Match the list1 and list2
      *
@@ -1106,36 +1070,6 @@ public class Util {
         text = ChatColor.translateAlternateColorCodes('&', text);
         return text;
     }
-
-//    private static final ThreadLocalRandom random = ThreadLocalRandom.current();
-    //     ONLY FOR FUN ^ ^
-//    /**
-//     * Replace &g to random HEX color
-//     * @param text original message contains &g
-//     * @return Processed message
-//     */
-//    public static String parseRandomHexText(@NotNull String text){
-//        String newStr = text.replaceFirst("&g","&x"+randomHexGen());
-//        while (!newStr.equals(text)){
-//            text = newStr;
-//            newStr = newStr.replaceFirst("&g","&x"+randomHexGen());
-//        }
-//        return newStr;
-//    }
-//
-//    public static String randomHexGen(){
-//        StringBuilder hex = new StringBuilder();
-//        for (int i = 0; i < 6; i++) {
-//            if(random.nextBoolean()) {
-//                hex.append("&");
-//                hex.append((char)random.nextInt('0', '9'));
-//            }else{
-//                hex.append("&");
-//                hex.append((char)random.nextInt('a', 'f'));
-//            }
-//        }
-//        return hex.toString();
-//    }
 
     /**
      * Parse colors for the List.
@@ -1221,18 +1155,6 @@ public class Util {
         }
         return new String(filecontent, StandardCharsets.UTF_8);
     }
-
-//    /**
-//     * Send warning message when some plugin calling deprecated method... With the trace.
-//     */
-//    @Deprecated
-//    public static void sendDeprecatedMethodWarn() {
-//        QuickShop.instance
-//                .getLogger()
-//                .warning(
-//                        "Some plugin is calling a Deprecated method, Please contact the author to tell them to use the new api!");
-//        MsgUtil.debugStackTrace(Thread.currentThread().getStackTrace());
-//    }
 
     /**
      * Covert ItemStack to YAML string.
@@ -1342,16 +1264,51 @@ public class Util {
         }
     }
 
-    //TODO: Need caching
+    @SneakyThrows
+    public static void makeExportBackup(@Nullable String backupName) {
+        File file;
+        if (StringUtils.isEmpty(backupName)) {
+            file = new File(plugin.getDataFolder(), "export.txt");
+        } else {
+            file = new File(plugin.getDataFolder(), backupName + ".txt");
+        }
+        if (file.exists()) {
+            Files.move(file.toPath(), new File(file.getParentFile(), file.getName() + UUID.randomUUID().toString().replace("-", "")).toPath());
+        }
+        file.createNewFile();
+
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            StringBuilder finalReport = new StringBuilder();
+            plugin
+                    .getShopLoader()
+                    .getOriginShopsInDatabase()
+                    .forEach((shop -> finalReport.append(shop).append("\n")));
+            try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
+                outputStream.write(finalReport.toString());
+            } catch (IOException ignored) {
+                plugin.getLogger().log(Level.WARNING, "Backup failed", ignored);
+            }
+
+        });
+    }
+
+
+    @Nullable
+    private static Class<?> cachedNMSClass = null;
+
     @NotNull
     public static Class<?> getNMSClass(@Nullable String className) {
+        if (cachedNMSClass != null) {
+            return cachedNMSClass;
+        }
         if (className == null) {
             className = "MinecraftServer";
         }
         String name = Bukkit.getServer().getClass().getPackage().getName();
         String version = name.substring(name.lastIndexOf('.') + 1);
         try {
-            return Class.forName("net.minecraft.server." + version + "." + className);
+            cachedNMSClass = Class.forName("net.minecraft.server." + version + "." + className);
+            return cachedNMSClass;
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }

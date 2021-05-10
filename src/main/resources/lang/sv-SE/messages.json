@@ -4,7 +4,7 @@
   "translation-version": "Supportversion: Reremake",
   "translation-contributors": "Medhjälpare: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken och Andre_601",
   "translation-country": "Språkområde: Engelska (en_US)",
-  "language-version": "50",
+  "language-version": "51",
   "not-looking-at-shop": "&cKunde inte hitta en QuickShop. Du måste titta på en.",
   "no-anythings-in-your-hand": "&cDet finns inget i din hand.",
   "no-permission": "&cDu har inte tillåtelse till att göra detta.",
@@ -177,13 +177,15 @@
   "signs": {
     "selling": "Säljer {0}",
     "stack-selling": "Säljer {0}",
-    "header": "&c{0}",
+    "header": "{1}{0}",
     "buying": "Köper {0}",
     "stack-buying": "Köper {0}",
     "item": "{0}",
     "price": "{0} st",
     "stack-price": "{0} per {1}x {2}",
-    "unlimited": "Obegränsad"
+    "unlimited": "Obegränsad",
+    "status-available": "&a",
+    "status-unavailable": "&c"
   },
   "controlpanel": {
     "setowner": "&aÄgare: &b{0} &e[&d&lÄndra&e]",

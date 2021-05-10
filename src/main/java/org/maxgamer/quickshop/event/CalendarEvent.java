@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is ConfigFile.java
+ * This file is a part of project QuickShop, the name is CalendarEvent.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,21 +17,19 @@
  *
  */
 
-package org.maxgamer.quickshop.fileportlek.newest;
+package org.maxgamer.quickshop.event;
 
-//import io.github.portlek.configs.BukkitManaged;
-//import io.github.portlek.configs.annotations.Config;
-//import io.github.portlek.configs.annotations.Value;
-//import io.github.portlek.configs.util.FileType;
-//
-//@Config(
-//    name = "config",
-//    type = FileType.JSON,
-//    location = "%basedir%/QuickShop"
-//)
-//public final class ConfigFile extends BukkitManaged {
-//
-//    @Value
-//    public String plugin_language = "en";
-//
-//}
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
+@Data
+public class CalendarEvent extends QSEvent {
+    private CalendarTriggerType calendarTriggerType;
+
+    public enum CalendarTriggerType {
+        NOTHING_CHANGED, SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, YEAR
+    }
+}

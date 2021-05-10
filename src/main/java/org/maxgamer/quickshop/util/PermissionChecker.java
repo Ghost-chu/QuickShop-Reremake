@@ -56,7 +56,7 @@ public class PermissionChecker {
         } else {
             this.eventManager = new BukkitEventManager();
         }
-        plugin.getLogger().info("Manager now selected: " + this.eventManager.getClass().getSimpleName());
+        plugin.getLogger().info("EventManager selected: " + this.eventManager.getClass().getSimpleName());
     }
 
     /**

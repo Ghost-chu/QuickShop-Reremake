@@ -79,47 +79,12 @@ public class DisplayProtectionListener extends ProtectionListenerBase {
                             + " , QuickShop already cancel it.");
         }
     }
-//
-//    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-//    public void entity(EntityDamageEvent event) {
-//        if (!(event.getEntity() instanceof ArmorStand)) {
-//            return;
-//        }
-//        if (DisplayItem.getNowUsing() != DisplayType.ARMORSTAND) {
-//            return;
-//        }
-//        if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand())) { //FIXME: Update this when drop 1.13 supports
-//            return;
-//        }
-//        event.setCancelled(true);
-//    }
 
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryOpenEvent event) {
         Util.inventoryCheck(event.getInventory());
     }
-
-    //    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    //    public void inventory(InventoryMoveItemEvent event) {
-    //        if (ListenerHelper.isDisabled(event.getClass())) {
-    //            return;
-    //        }
-    //        try {
-    //            ItemStack is = event.getItem();
-    //            if (DisplayItem.checkIsGuardItemStack(is)) {
-    //                event.setCancelled(true); ;
-    //                sendAlert("[DisplayGuard] Inventory " + event.getInitiator()
-    //                        .getLocation().toString() + " trying moving displayItem, QuickShop
-    // already removed it.");
-    //                event.setItem(new ItemStack(Material.AIR));
-    //                Util.inventoryCheck(event.getDestination());
-    //                Util.inventoryCheck(event.getInitiator());
-    //                Util.inventoryCheck(event.getSource());
-    //            }
-    //        } catch (Exception e) {}
-    //    }
-
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryPickupItemEvent event) {
@@ -155,25 +120,6 @@ public class DisplayProtectionListener extends ProtectionListenerBase {
 
         // Util.debugLog("We canceled an Item from despawning because they are our display item.");
     }
-    // Player can't interact the item entity... of course
-    //    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    //    public void player(PlayerInteractEvent e) {
-    //        if (ListenerHelper.isDisabled(e.getClass())) {
-    //            return;
-    //        }
-    //        ItemStack stack = e.getItem();
-    //        if (!DisplayItem.checkIsGuardItemStack(stack)) {
-    //            return;
-    //        }
-    //        stack.setType(Material.AIR);
-    //        stack.setAmount(0);
-    //        // You shouldn't be able to pick up that...
-    //        e.setCancelled(true);
-    //        sendAlert("[DisplayGuard] Player " + ((Player) e)
-    //                .getName() + " using the displayItem, QuickShop already removed it.");
-    //        Util.inventoryCheck(e.getPlayer().getInventory());
-    //    }
-
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void player(PlayerFishEvent event) {

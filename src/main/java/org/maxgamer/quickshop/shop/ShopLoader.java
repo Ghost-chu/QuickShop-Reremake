@@ -19,14 +19,17 @@
 
 package org.maxgamer.quickshop.shop;
 
+import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,8 +42,8 @@ import org.maxgamer.quickshop.util.Util;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -109,6 +112,9 @@ public class ShopLoader {
                                 data.isUnlimited(),
                                 data.getType(),
                                 data.getExtra());
+                if (data.needUpdate.get()) {
+                    shop.setDirty();
+                }
                 shopsInDatabase.add(shop);
                 this.costCalc(singleShopLoadTimer);
                 if (shopNullCheck(shop)) {
@@ -116,7 +122,7 @@ public class ShopLoader {
                         plugin.getLogger().warning("Deleting shop " + shop + " caused by corrupted.");
                         plugin.getDatabaseHelper().removeShop(origin.getWorld(), origin.getX(), origin.getY(), origin.getZ());
                     } else {
-                        Util.debugLog("Trouble database loading debug: " + data.toString());
+                        Util.debugLog("Trouble database loading debug: " + data);
                         Util.debugLog("Somethings gone wrong, skipping the loading...");
                     }
                     loadAfterWorldLoaded++;
@@ -133,16 +139,6 @@ public class ShopLoader {
                         plugin.getShopManager().removeShop(shop); // Remove from Mem
                         //TODO: Only remove from memory, so if it actually is a bug, user won't lost all shops.
                         //TODO: Old shop will be deleted when in same location creating new shop.
-//                        if (!backupedDatabaseInDeleteProcess) { // Only backup db one time.
-//                            backupedDatabaseInDeleteProcess = Util.backupDatabase();
-//                            if (backupedDatabaseInDeleteProcess) {
-//                                plugin.log("[SHOP LOADER] Removing shop in the database: " + shop.toString() + " - The block can't be shop");
-//                                plugin.getDatabaseHelper().removeShop(shop);
-//                            }
-//                        } else {
-//                            plugin.log("[SHOP LOADER] Removing shop in the database: " + shop.toString() + " - The block can't be shop");
-//                            plugin.getDatabaseHelper().removeShop(shop);
-//                        }
                         singleShopLoaded(singleShopLoadTimer);
                         continue;
                     }
@@ -230,6 +226,40 @@ public class ShopLoader {
             return sum;
         }
         return sum / m.length;
+    }
+
+    @NotNull
+    private YamlConfiguration extraUpgrade(@NotNull String extraString) {
+        if (!StringUtils.isEmpty(extraString) && !extraString.equalsIgnoreCase("QuickShop: {}")) {
+            Util.debugLog("Extra API -> Upgrading -> " + extraString.replaceAll("\n", ""));
+        }
+        YamlConfiguration yamlConfiguration = new YamlConfiguration();
+        JsonConfiguration jsonConfiguration = new JsonConfiguration();
+        try {
+            jsonConfiguration.loadFromString(extraString);
+        } catch (InvalidConfigurationException e) {
+            plugin.getLogger().log(Level.WARNING, "Cannot upgrade extra data: " + extraString, e);
+        }
+        for (String key : jsonConfiguration.getKeys(true)) {
+            yamlConfiguration.set(key, jsonConfiguration.get(key));
+        }
+        return yamlConfiguration;
+    }
+
+    private @NotNull YamlConfiguration deserializeExtra(@NotNull String extraString, @NotNull AtomicBoolean needUpdate) {
+        YamlConfiguration yamlConfiguration = new YamlConfiguration();
+        try {
+            if (extraString.startsWith("{")) {
+                yamlConfiguration = extraUpgrade(extraString);
+                needUpdate.set(true);
+            } else {
+                yamlConfiguration.loadFromString(extraString);
+            }
+        } catch (InvalidConfigurationException e) {
+            yamlConfiguration = extraUpgrade(extraString);
+            needUpdate.set(true);
+        }
+        return yamlConfiguration;
     }
 
     private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {
@@ -328,7 +358,9 @@ public class ShopLoader {
 
         private int z;
 
-        private Map<String, Map<String, Object>> extra;
+        private YamlConfiguration extra;
+
+        private AtomicBoolean needUpdate = new AtomicBoolean(false);
 
         ShopDatabaseInfo(ShopDatabaseInfoOrigin origin) {
             try {
@@ -339,14 +371,10 @@ public class ShopLoader {
                 this.location = new Location(world, x, y, z);
                 this.price = origin.getPrice();
                 this.unlimited = origin.isUnlimited();
-                this.moderators = deserializeModerator(origin.getModerators());
+                this.moderators = deserializeModerator(origin.getModerators(), needUpdate);
                 this.type = ShopType.fromID(origin.getType());
                 this.item = deserializeItem(origin.getItem());
-                //noinspection unchecked
-                this.extra = JsonUtil.getGson().fromJson(origin.getExtra(), Map.class);
-                if (this.extra == null) {
-                    this.extra = new ConcurrentHashMap<>();
-                }
+                this.extra = deserializeExtra(origin.getExtra(), needUpdate);
             } catch (Exception ex) {
                 exceptionHandler(ex, this.location);
             }
@@ -362,11 +390,12 @@ public class ShopLoader {
             }
         }
 
-        private @Nullable ShopModerator deserializeModerator(@NotNull String moderatorJson) {
+        private @Nullable ShopModerator deserializeModerator(@NotNull String moderatorJson, AtomicBoolean needUpdate) {
             ShopModerator shopModerator;
             if (Util.isUUID(moderatorJson)) {
                 Util.debugLog("Updating old shop data... for " + moderatorJson);
                 shopModerator = new ShopModerator(UUID.fromString(moderatorJson)); // New one
+                needUpdate.set(true);
             } else {
                 try {
                     shopModerator = ShopModerator.deserialize(moderatorJson);
@@ -375,6 +404,7 @@ public class ShopLoader {
                     //noinspection deprecation
                     moderatorJson = plugin.getServer().getOfflinePlayer(moderatorJson).getUniqueId().toString();
                     shopModerator = new ShopModerator(UUID.fromString(moderatorJson)); // New one
+                    needUpdate.set(true);
                 }
             }
             return shopModerator;
@@ -419,7 +449,7 @@ public class ShopLoader {
                 this.extra = rs.getString("extra");
                 //handle old shops
                 if (extra == null) {
-                    extra = "{}";
+                    extra = "";
                 }
             } catch (SQLException sqlex) {
                 exceptionHandler(sqlex, null);
