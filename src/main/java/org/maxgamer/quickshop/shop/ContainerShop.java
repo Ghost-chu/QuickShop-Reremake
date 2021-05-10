@@ -728,7 +728,6 @@ public class ContainerShop implements Shop {
         List<Sign> signs = this.getSigns();
         for (Sign sign : signs) {
             if (Arrays.equals(sign.getLines(), lines)) {
-                Util.debugLog("Skipped new sign text setup: Same content");
                 continue;
             }
             for (int i = 0; i < lines.length; i++) {
