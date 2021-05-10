@@ -331,7 +331,7 @@ public class QuickShop extends JavaPlugin {
         if (this.display) {
             //VirtualItem support
             if (DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
-                getLogger().info("Using Virtual item Display, loading ProtocolLib support...");
+                getLogger().info("Using Virtual Item display, loading ProtocolLib support...");
                 Plugin protocolLibPlugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
                 if (protocolLibPlugin != null && protocolLibPlugin.isEnabled()) {
                     getLogger().info("Successfully loaded ProtocolLib support!");
@@ -757,7 +757,7 @@ public class QuickShop extends JavaPlugin {
         shopLoader = new ShopLoader(this);
         shopLoader.loadShops();
 
-        getLogger().info("Registering Listeners...");
+        getLogger().info("Registering listeners...");
         // Register events
         // Listeners (These don't)
         new BlockListener(this, this.shopCache).register();
@@ -788,7 +788,6 @@ public class QuickShop extends JavaPlugin {
         MsgUtil.loadTransactionMessages();
         MsgUtil.clean();
         if (this.getConfig().getBoolean("updater", true)) {
-            getLogger().info("Registering UpdateWatcher...");
             updateWatcher = new UpdateWatcher();
             updateWatcher.init();
         }

@@ -345,7 +345,6 @@ public class MsgUtil {
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
-        plugin.getLogger().info("Completed to load plugin translations files.");
     }
 
     public static void loadEnchi18n() {
@@ -378,7 +377,6 @@ public class MsgUtil {
         } catch (IOException e) {
             plugin.getLogger().log(Level.WARNING, "Could not load/save transaction enchname from enchi18n.yml. Skipping...", e);
         }
-        plugin.getLogger().info("Complete to load enchantments translation.");
     }
 
     /**
@@ -416,7 +414,6 @@ public class MsgUtil {
         } catch (IOException e) {
             plugin.getLogger().log(Level.WARNING, "Could not load/save transaction itemname from itemi18n.yml. Skipping...", e);
         }
-        plugin.getLogger().info("Complete to load items translation.");
     }
 
     public static void loadPotioni18n() {
@@ -451,7 +448,6 @@ public class MsgUtil {
         } catch (IOException e) {
             plugin.getLogger().log(Level.WARNING, "Could not load/save transaction potionname from potioni18n.yml. Skipping...", e);
         }
-        plugin.getLogger().info("Complete to load potions effect translation.");
     }
 
     /**

@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -233,6 +234,9 @@ public class ShopLoader {
 
     @NotNull
     private YamlConfiguration extraUpgrade(@NotNull String extraString) {
+        if (!StringUtils.isEmpty(extraString) && !extraString.equalsIgnoreCase("QuickShop: {}")) {
+            Util.debugLog("Extra API -> Upgrading -> " + extraString.replaceAll("\n", ""));
+        }
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
         File tempFile = new File(Util.getCacheFolder(), "upgrading.json.tmp");
         new Copied(tempFile).accept(new ByteArrayInputStream(extraString.getBytes(StandardCharsets.UTF_8)));
@@ -245,7 +249,6 @@ public class ShopLoader {
 
     private @NotNull YamlConfiguration deserializeExtra(@NotNull String extraString, @NotNull AtomicBoolean needUpdate) {
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
-        Util.debugLog(extraString);
         try {
             if (extraString.startsWith("{")) {
                 yamlConfiguration = extraUpgrade(extraString);
