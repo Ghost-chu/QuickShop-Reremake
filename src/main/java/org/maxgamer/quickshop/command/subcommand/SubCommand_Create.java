@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
-import io.papermc.lib.PaperLib;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -114,7 +113,7 @@ public class SubCommand_Create implements CommandProcesser {
                 item = new ItemStack(material, 1);
             }
         }
-        Util.debugLog("Pending task for material: " + item.toString());
+        Util.debugLog("Pending task for material: " + item);
 
         String price = cmdArg[0];
 
@@ -149,7 +148,7 @@ public class SubCommand_Create implements CommandProcesser {
                 return;
             }
 
-            if (Util.isDoubleChest(PaperLib.getBlockState(b, false).getState())
+            if (Util.isDoubleChest(b.getBlockData())
                     && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("no-double-chests", sender));
                 return;
