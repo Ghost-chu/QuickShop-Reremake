@@ -20,7 +20,7 @@
 package org.maxgamer.quickshop.integration.plotsquared;
 
 import com.google.common.eventbus.Subscribe;
-import com.plotsquared.core.api.PlotAPI;
+import com.plotsquared.core.PlotSquared;
 import com.plotsquared.core.configuration.Caption;
 import com.plotsquared.core.configuration.Captions;
 import com.plotsquared.core.events.PlotDeleteEvent;
@@ -101,11 +101,12 @@ public class PlotSquaredIntegrationV5 extends QSIntegratedPlugin {
         GlobalFlagContainer.getInstance().addAll(Arrays.asList(createFlag, tradeFlag));
         plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
         Util.debugLog("Success register " + getName() + " flags.");
-        new PlotAPI().registerListener(this);
+        PlotSquared.get().getEventDispatcher().registerListener(this);
     }
 
     @Override
     public void unload() {
+        PlotSquared.get().getEventDispatcher().unregisterListener(this);
     }
 
     private List<Shop> getShops(Plot plot) {
