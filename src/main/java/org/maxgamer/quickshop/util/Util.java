@@ -149,13 +149,10 @@ public class Util {
      * @return True if it can be made into a shop, otherwise false.
      */
     public static boolean canBeShop(@NotNull Block b) {
-
-
         if (isBlacklistWorld(b.getWorld())) {
             return false;
         }
-
-        // Specificed types by configuration
+        // Specified types by configuration
         if (!isShoppables(b.getType())) {
             return false;
         }
@@ -163,7 +160,6 @@ public class Util {
         if (bs instanceof EnderChest) { // BlockState for Mod supporting
             return plugin.getOpenInvPlugin() != null;
         }
-
         return bs instanceof InventoryHolder;
     }
 
@@ -195,7 +191,6 @@ public class Util {
         }
         int items = 0;
         for (final ItemStack iStack : inv.getStorageContents()) {
-            //noinspection ConstantConditions
             if (iStack == null || iStack.getType() == Material.AIR) {
                 continue;
             }
@@ -219,9 +214,7 @@ public class Util {
             return 0;
         }
         int space = 0;
-
         int itemMaxStackSize = getItemMaxStackSize(item.getType());
-
         ItemStack[] contents = inv.getStorageContents();
         for (final ItemStack iStack : contents) {
             if (iStack == null || iStack.getType() == Material.AIR) {
@@ -282,7 +275,6 @@ public class Util {
                     // Okay we have hacked the dataVersion, now put it back
                     root.put("item", item);
                     config = yaml.dump(root);
-
                     Util.debugLog("Updated, we will try load as hacked ItemStack: " + config);
                 } else {
                     plugin
@@ -409,7 +401,6 @@ public class Util {
         }
     }
 
-
     /**
      * return the right side for given blockFace
      *
@@ -431,7 +422,6 @@ public class Util {
                 return blockFace;
         }
     }
-
 
     /**
      * Get vertical BlockFace list
@@ -534,7 +524,6 @@ public class Util {
     public static Entry<Double, Double> getPriceRestriction(@NotNull Material material) {
         return restrictedPrices.get(material);
     }
-
 
     public static boolean isDoubleChest(@Nullable BlockState state) {
         if (!(state instanceof Chest)) {
@@ -1019,40 +1008,6 @@ public class Util {
         loc.setPitch(pitch * 180f / (float) Math.PI);
         return loc;
     }
-
-//    /**
-//     * Match the both map1 and map2
-//     *
-//     * @param map1 Map1
-//     * @param map2 Map2
-//     * @return Map1 match Map2 and Map2 match Map1
-//     */
-//    @Deprecated
-//    public static boolean mapDuoMatches(@NotNull Map<?, ?> map1, @NotNull Map<?, ?> map2) {
-//        boolean result = mapMatches(map1, map2);
-//        if (!result) {
-//            return false;
-//        }
-//        return mapMatches(map2, map1);
-//    }
-//
-//    /**
-//     * Match the map1 and map2
-//     *
-//     * @param map1 Map1
-//     * @param map2 Map2
-//     * @return Map1 match Map2
-//     */
-//    @Deprecated
-//    public static boolean mapMatches(@NotNull Map<?, ?> map1, @NotNull Map<?, ?> map2) {
-//        Set<? extends Entry<?, ?>> objectSet = map2.entrySet();
-//        for (Object obj : map1.keySet()) {
-//            if (!objectSet.contains(obj)) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
 
     /**
      * Match the list1 and list2
