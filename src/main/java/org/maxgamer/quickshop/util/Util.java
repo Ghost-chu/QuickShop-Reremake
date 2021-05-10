@@ -528,29 +528,6 @@ public class Util {
         return restrictedPrices.get(material);
     }
 
-    /**
-     * Turn 90 degrees
-     *
-     * @param face The block face
-     * @return The blockface that turned 90 degrees
-     * @author https://github.com/rutgerkok/BlockLocker/blob/65a83c001bc01d2967b184ac355b18fb7f1959e3/src/main/java/nl/rutgerkok/blocklocker/impl/blockfinder/BlockFinder.java#L183
-     */
-    @NotNull
-    public static BlockFace turn90Degrees(BlockFace face) {
-        switch (face) {
-            case NORTH:
-                return BlockFace.EAST;
-            case EAST:
-                return BlockFace.SOUTH;
-            case SOUTH:
-                return BlockFace.WEST;
-            case WEST:
-                return BlockFace.NORTH;
-            default:
-                throw new IllegalArgumentException("Cannot handle " + face);
-        }
-    }
-
     public static boolean isDoubleChest(@Nullable BlockData blockData) {
         if (!(blockData instanceof org.bukkit.block.data.type.Chest)) {
             return false;
@@ -935,7 +912,7 @@ public class Util {
         if (!isDoubleChest(chest)) {
             return null;
         }
-        BlockFace towardsLeft = turn90Degrees(chest.getFacing());
+        BlockFace towardsLeft = getRightSide(chest.getFacing());
         BlockFace actuallyBlockFace = chest.getType() == org.bukkit.block.data.type.Chest.Type.LEFT ? towardsLeft : towardsLeft.getOppositeFace();
         return block.getRelative(actuallyBlockFace);
 
@@ -1309,7 +1286,7 @@ public class Util {
             try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
                 outputStream.write(finalReport.toString());
             } catch (IOException ignored) {
-
+                plugin.getLogger().log(Level.WARNING, "Backup failed", ignored);
             }
 
         });
