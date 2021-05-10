@@ -529,12 +529,15 @@ public class Util {
         if (!(state instanceof Chest)) {
             return false;
         }
-        String blockDataStr = state.getBlockData().getAsString();
+        org.bukkit.block.data.type.Chest chestBlockData = (org.bukkit.block.data.type.Chest) state.getBlockData();
+        Util.debugLog("Chest at " + state.getLocation() + " type  is " + chestBlockData.getType().name());
+        return chestBlockData.getType() != org.bukkit.block.data.type.Chest.Type.SINGLE;
+        //String blockDataStr = state.getBlockData().getAsString();
         //Black magic for detect double chest
         //minecraft:chest[facing=north,type=right,waterlogged=false]
         //minecraft:chest[facing=north,type=left,waterlogged=false]
         //minecraft:chest[facing=north,type=single,waterlogged=false]
-        return !blockDataStr.contains("type=single");
+        //return !blockDataStr.contains("type=single");
     }
 
     /**
