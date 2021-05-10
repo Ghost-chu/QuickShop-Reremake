@@ -1266,7 +1266,6 @@ public class Util {
 
     @SneakyThrows
     public static void makeExportBackup(@Nullable String backupName) {
-        QuickShop plugin = QuickShop.getInstance();
         File file;
         if (StringUtils.isEmpty(backupName)) {
             file = new File(plugin.getDataFolder(), "export.txt");
