@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
@@ -66,9 +67,9 @@ public class SubCommand_Refill implements CommandProcesser {
             if (shop == null) {
                 continue;
             }
-            try {
+            if (StringUtils.isNumeric(cmdArg[0])) {
                 add = Integer.parseInt(cmdArg[0]);
-            } catch (NumberFormatException e) {
+            } else {
                 if (cmdArg[0].equals(plugin.getConfig().getString("shop.word-for-trade-all-items"))) {
                     add = shop.getRemainingSpace();
                 } else {
