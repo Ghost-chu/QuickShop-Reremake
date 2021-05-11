@@ -55,11 +55,15 @@ public class RollbarErrorReporter {
             , UnsupportedClassVersionError.class
             , LinkageError.class);
     private final QuickShop plugin;
-    @Getter
-    private final boolean enabled;
+    private final QuickShopExceptionFilter quickShopExceptionFilter;
     private boolean disable;
     private boolean tempDisable;
     private String lastPaste = null;
+    private final GlobalExceptionFilter serverExceptionFilter;
+    private final GlobalExceptionFilter globalExceptionFilter;
+    @Getter
+    private volatile boolean enabled = false;
+
 
     public RollbarErrorReporter(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -70,10 +74,16 @@ public class RollbarErrorReporter {
                 .handleUncaughtErrors(false)
                 .build();
         this.rollbar = Rollbar.init(config);
-        plugin.getLogger().setFilter(new QuickShopExceptionFilter()); // Redirect log request passthrough our error catcher.
-        plugin.getServer().getLogger().setFilter(new GlobalExceptionFilter());
-        plugin.getServer().getLogger().setFilter(new GlobalExceptionFilter());
-        Logger.getGlobal().setFilter(new GlobalExceptionFilter());
+
+        quickShopExceptionFilter = new QuickShopExceptionFilter(plugin.getLogger().getFilter());
+        plugin.getLogger().setFilter(quickShopExceptionFilter); // Redirect log request passthrough our error catcher.
+
+        serverExceptionFilter = new GlobalExceptionFilter(plugin.getServer().getLogger().getFilter());
+        plugin.getServer().getLogger().setFilter(serverExceptionFilter);
+
+        globalExceptionFilter = new GlobalExceptionFilter(Logger.getGlobal().getFilter());
+        Logger.getGlobal().setFilter(globalExceptionFilter);
+
         Util.debugLog("Rollbar error reporter success loaded.");
 //        if (bootPaste == null) {
 //            new BukkitRunnable() {
@@ -91,6 +101,13 @@ public class RollbarErrorReporter {
 //            plugin.log("Reload detected, the server paste will not created again, previous paste link: " + bootPaste);
 //        }
         enabled = true;
+    }
+
+    public void unregister() {
+        enabled = false;
+        plugin.getLogger().setFilter(quickShopExceptionFilter.preFilter);
+        plugin.getServer().getLogger().setFilter(serverExceptionFilter.preFilter);
+        Logger.getGlobal().setFilter(globalExceptionFilter.preFilter);
     }
 
     private Map<String, Object> makeMapping() {
@@ -307,6 +324,18 @@ public class RollbarErrorReporter {
 
     class GlobalExceptionFilter implements Filter {
 
+        @Nullable
+        @Getter
+        private final Filter preFilter;
+
+        GlobalExceptionFilter(@Nullable Filter preFilter) {
+            this.preFilter = preFilter;
+        }
+
+        private boolean defaultValue(LogRecord record) {
+            return preFilter == null || preFilter.isLoggable(record);
+        }
+
         /**
          * Check if a given log record should be published.
          *
@@ -316,18 +345,18 @@ public class RollbarErrorReporter {
         @Override
         public boolean isLoggable(@NotNull LogRecord record) {
             if (!enabled) {
-                return true;
+                return defaultValue(record);
             }
             Level level = record.getLevel();
             if (level != Level.WARNING && level != Level.SEVERE) {
-                return true;
+                return defaultValue(record);
             }
             if (record.getThrown() == null) {
-                return true;
+                return defaultValue(record);
             }
             if (Util.isDevMode()) {
                 sendError(record.getThrown(), record.getMessage());
-                return true;
+                return defaultValue(record);
             } else {
                 return sendError(record.getThrown(), record.getMessage()) == null;
             }
@@ -336,6 +365,17 @@ public class RollbarErrorReporter {
     }
 
     class QuickShopExceptionFilter implements Filter {
+        @Nullable
+        @Getter
+        private final Filter preFilter;
+
+        QuickShopExceptionFilter(@Nullable Filter preFilter) {
+            this.preFilter = preFilter;
+        }
+
+        private boolean defaultValue(LogRecord record) {
+            return preFilter == null || preFilter.isLoggable(record);
+        }
 
         /**
          * Check if a given log record should be published.
@@ -346,18 +386,18 @@ public class RollbarErrorReporter {
         @Override
         public boolean isLoggable(@NotNull LogRecord record) {
             if (!enabled) {
-                return true;
+                return defaultValue(record);
             }
             Level level = record.getLevel();
             if (level != Level.WARNING && level != Level.SEVERE) {
-                return true;
+                return defaultValue(record);
             }
             if (record.getThrown() == null) {
-                return true;
+                return defaultValue(record);
             }
             if (Util.isDevMode()) {
                 sendError(record.getThrown(), record.getMessage());
-                return true;
+                return defaultValue(record);
             } else {
                 return sendError(record.getThrown(), record.getMessage()) == null;
             }

@@ -572,6 +572,7 @@ public class QuickShop extends JavaPlugin {
 
         Util.debugLog("Cleanup tasks...");
         AsyncPacketSender.stop();
+        sentryErrorReporter.unregister();
         try {
             Bukkit.getScheduler().cancelTasks(this);
         } catch (Throwable ignored) {
