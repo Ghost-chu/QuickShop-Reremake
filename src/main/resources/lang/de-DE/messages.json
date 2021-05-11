@@ -170,10 +170,10 @@
       "transfer": "&eTransfer someone's ALL shops to other",
       "removeworld": "&eEntferne ALLE Shops in einer bestimmten Welt",
       "currency": "&eSetze oder entferne die Währungseinstellungen des Shops",
-      "ban": "&eBanning a player from the shop",
-      "unban": "&eUnbanning a player from the shop",
-      "freeze": "&eDisable or Enable shop trading",
-      "lock": "&eSwitch the shop lock status"
+      "ban": "&eBannt einen Spieler vom Shop",
+      "unban": "&eEntbannt einen Spieler vom Shop",
+      "freeze": "&e(De)aktiviere Shop-Handel",
+      "lock": "&eÄndere den Lock-Status des Shops"
     },
     "disabled": "&cDieser Befehl ist deaktiviert: &e{0}",
     "feature-not-enabled": "Dieses Feature ist nicht in der Config aktiviert."
@@ -192,7 +192,7 @@
     "status-unavailable": "&c",
     "out-of-stock": "Ausverkauft",
     "out-of-space": "Kein Platz",
-    "freeze": "Trade disabled"
+    "freeze": "Handeln deaktiviert"
   },
   "controlpanel": {
     "setowner": "&aBesitzer: &b{0} &e[&d&lÄndern&e]",
@@ -218,10 +218,10 @@
     "item-hover": "&eKlicke, um das Shopitem zu ändern",
     "currency": "&aWährung: &b{0} &e[&d&lÄndern&e]",
     "currency-hover": "&eKlicke um die Währung zu setzen oder zu entfernen, welcher dieser Shop verwendet",
-    "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
-    "lock-hover": "&eEnable/Disable shop lock protection.",
-    "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
-    "freeze-hover": "&eToggle shop freeze status,"
+    "lock": "&eShop Sperre: &b{0} &e[&d&lÄndern&e]",
+    "lock-hover": "&eAktiviere/Deaktiviere Sperrschutz des Shops.",
+    "freeze": "&eFreeze Modus: &b{0} &e[&d&lÄndern&e]",
+    "freeze-hover": "&eÄndere den Freeze-Status des Shops."
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
