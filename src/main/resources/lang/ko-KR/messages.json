@@ -170,8 +170,8 @@
       "transfer": "&e누군가의 모든 가게를 다른 곳으로 옮깁니다.",
       "removeworld": "&e지정된 월드의 모든 상점을 제거합니다.",
       "currency": "&a상점의 통화 설정을 설정하거나 제거합니다.",
-      "ban": "&eBanning a player from the shop",
-      "unban": "&eUnbanning a player from the shop",
+      "ban": "&e플레이어 차단",
+      "unban": "&e플레이어 차단헤제",
       "freeze": "&eDisable or Enable shop trading",
       "lock": "&eSwitch the shop lock status"
     },
