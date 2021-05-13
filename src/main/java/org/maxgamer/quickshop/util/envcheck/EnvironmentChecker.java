@@ -248,7 +248,7 @@ public class EnvironmentChecker {
                     "*\n" +
                     "* You can get Java at here:\n" +
                     "* https://www.oracle.com/java/technologies/javase-downloads.html\n" +
-                    "* Attention: Mojang decide upgrading Java 16\n# +
+                    "* Attention: Mojang decide upgrading Java 16\n" +
                     "* So if you still use Java lower 16, you probably cannot start Minecraft server and client.\n" +
                     "*\n" +
                     "*\n" +
