@@ -25,14 +25,17 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
+import org.maxgamer.quickshop.shop.Shop;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class GriefPreventionIntegration extends QSIntegratedPlugin {
@@ -40,11 +43,13 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
     private final List<Flag> createLimits = new ArrayList<>(3);
     private final List<Flag> tradeLimits = new ArrayList<>(3);
     private final boolean whiteList;
+    private final boolean deleteOnUntrusted;
 
     public GriefPreventionIntegration(QuickShop plugin) {
         super(plugin);
         ConfigurationSection configurationSection = plugin.getConfig();
         this.whiteList = configurationSection.getBoolean("integration.griefprevention.whitelist-mode");
+        deleteOnUntrusted = configurationSection.getBoolean("integration.griefprevention.delete-on-untrusted");
         createLimits.addAll(toFlags(configurationSection.getStringList("integration.griefprevention.create")));
         tradeLimits.addAll(toFlags(configurationSection.getStringList("integration.griefprevention.trade")));
     }
@@ -92,14 +97,52 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
         return true;
     }
 
+    @EventHandler
+    public void onUntrusted(me.ryanhamshire.GriefPrevention.events.TrustChangedEvent event) {
+        if (!deleteOnUntrusted) {
+            return;
+        }
+        if (event.isGiven()) {
+            return;
+        }
+        event.getClaims().forEach(claim -> {
+            claim.getChunks().forEach(chunk -> {
+                Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
+                if (shops != null) {
+                    shops.values().forEach(shop -> {
+                        if (shop.getOwner().equals(claim.getOwnerID())) {
+                            return;
+                        }
+                        //https://github.com/TechFortress/GriefPrevention/blob/e63d1d9e513f48aa0aaa81f154de01626248b7fe/src/main/java/me/ryanhamshire/GriefPrevention/events/TrustChangedEvent.java#L104
+                        if (event.getIdentifier().equals(shop.getOwner().toString())) { //Single
+                            plugin.log("[SHOP DELETE] GP Integration: Single delete #" + event.getIdentifier());
+                            shop.delete();
+                            return;
+                        }
+
+                        if (event.getIdentifier().contains(shop.getOwner().toString())) { //Group
+                            plugin.log("[SHOP DELETE] GP Integration: Group delete #" + event.getIdentifier());
+                            shop.delete();
+                            return;
+                        }
+                        if (event.getIdentifier().equals("all") || event.getIdentifier().equals("public")) { //All
+                            plugin.log("[SHOP DELETE] GP Integration: All/Public delete #" + event.getIdentifier());
+                            shop.delete();
+                            return;
+                        }
+                    });
+                }
+            });
+        });
+    }
     @Override
     public void load() {
-
+        this.registerListener();
     }
 
     @Override
     public void unload() {
-
+        this.unregisterListener();
     }
 
     enum Flag {
