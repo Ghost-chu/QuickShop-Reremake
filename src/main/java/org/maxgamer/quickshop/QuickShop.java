@@ -636,7 +636,7 @@ public class QuickShop extends JavaPlugin {
 
     private void runtimeCheck(@NotNull EnvCheckEntry.Stage stage) {
         environmentChecker = new org.maxgamer.quickshop.util.envcheck.EnvironmentChecker(this);
-        ResultReport resultReport = environmentChecker.run();
+        ResultReport resultReport = environmentChecker.run(stage);
         if (resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
             StringJoiner joiner = new StringJoiner("\n", "", "");
             for (Entry<EnvCheckEntry, ResultContainer> result : resultReport.getResults().entrySet()) {
