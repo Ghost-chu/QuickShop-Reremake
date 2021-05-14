@@ -40,10 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
@@ -94,7 +91,7 @@ public class EnvironmentChecker {
         });
     }
 
-    public ResultReport run() {
+    public ResultReport run(EnvCheckEntry.Stage stage) {
         sortTests();
         CheckResult result = CheckResult.PASSED;
         Map<EnvCheckEntry, ResultContainer> results = new LinkedHashMap<>();
@@ -106,35 +103,39 @@ public class EnvironmentChecker {
             }
             try {
                 EnvCheckEntry envCheckEntry = declaredMethod.getAnnotation(EnvCheckEntry.class);
-                    ResultContainer executeResult = (ResultContainer) declaredMethod.invoke(this);
-                    //plugin.getLogger().info("Result: "+executeResult.getResultMessage());
-                    if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if it worse than latest one.
-                        result = executeResult.getResult();
-                    }
-                    switch (executeResult.getResult()) {
-                        case PASSED:
-                            if (Util.isDevEdition() || Util.isDevMode()) {
-                                plugin.getLogger().info("[OK] " + envCheckEntry.name());
-                                Util.debugLog("[Pass] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                            }
-                            break;
-                        case WARNING:
-                            plugin.getLogger().warning("[WARN] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                            Util.debugLog("[Warning] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                            break;
-                        case STOP_WORKING:
-                            plugin.getLogger().warning("[STOP] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                            Util.debugLog("[Stop-Freeze] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                            //It's okay, QuickShop should continue executing checks to collect more data.
-                            //And show user all errors at once.
-                            break;
-                        case DISABLE_PLUGIN:
-                            plugin.getLogger().warning("[FATAL] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                            Util.debugLog("[Fatal-Disable] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                            skipAllTest = true; //We need disable plugin NOW! Some HUGE exception is here, hurry up!
-                            break;
-                    }
-                    results.put(envCheckEntry, executeResult);
+                if (Arrays.stream(envCheckEntry.stage()).noneMatch(entry -> entry == stage)) {
+                    Util.debugLog("Skip test: " + envCheckEntry.name() + ": Except stage: " + Arrays.toString(envCheckEntry.stage()) + " Current stage: " + stage);
+                    continue;
+                }
+                ResultContainer executeResult = (ResultContainer) declaredMethod.invoke(this);
+                //plugin.getLogger().info("Result: "+executeResult.getResultMessage());
+                if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if it worse than latest one.
+                    result = executeResult.getResult();
+                }
+                switch (executeResult.getResult()) {
+                    case PASSED:
+                        if (Util.isDevEdition() || Util.isDevMode()) {
+                            plugin.getLogger().info("[OK] " + envCheckEntry.name());
+                            Util.debugLog("[Pass] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        }
+                        break;
+                    case WARNING:
+                        plugin.getLogger().warning("[WARN] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        Util.debugLog("[Warning] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        break;
+                    case STOP_WORKING:
+                        plugin.getLogger().warning("[STOP] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        Util.debugLog("[Stop-Freeze] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        //It's okay, QuickShop should continue executing checks to collect more data.
+                        //And show user all errors at once.
+                        break;
+                    case DISABLE_PLUGIN:
+                        plugin.getLogger().warning("[FATAL] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        Util.debugLog("[Fatal-Disable] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        skipAllTest = true; //We need disable plugin NOW! Some HUGE exception is here, hurry up!
+                        break;
+                }
+                results.put(envCheckEntry, executeResult);
             } catch (Exception e) {
                 plugin.getLogger().log(Level.WARNING, "Failed executing EnvCheckEntry [" + declaredMethod.getName() + "]: Exception thrown out without caught. Something going wrong!", e);
                 plugin.getLogger().warning("[FAIL] " + declaredMethod.getName());
@@ -219,7 +220,7 @@ public class EnvironmentChecker {
 
 
     @SneakyThrows
-    @EnvCheckEntry(name = "Java Runtime Environment Version Test", priority = 1)
+    @EnvCheckEntry(name = "Java Runtime Environment Version Test", priority = 1, stage = EnvCheckEntry.Stage.ON_ENABLE)
     public ResultContainer jrevTest() {
         if (isOutdatedJvm()) {
             String jvmWarning = "\n" +
