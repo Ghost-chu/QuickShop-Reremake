@@ -400,6 +400,7 @@ public class QuickShop extends JavaPlugin {
                                         if (!Objects.requireNonNull(vault.getVault()).hasAccount(tax)) {
                                             try {
                                                 Util.debugLog("Tax account not exists! Creating...");
+                                                getLogger().warning("QuickShop detected tax account not exists, we're trying to create one. If you see any errors, please change tax-account in config.yml to server owner in-game username");
                                                 vault.getVault().createPlayerAccount(tax);
                                             } catch (Exception ignored) {
                                             }
