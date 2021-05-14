@@ -164,13 +164,13 @@ public class EnvironmentChecker {
     @EnvCheckEntry(name = "Signature Verify", priority = 0, stage = {EnvCheckEntry.Stage.ON_LOAD, EnvCheckEntry.Stage.ON_ENABLE})
     public ResultContainer securityVerify() {
         if (System.getProperty("org.maxgamer.quickshop.EnvironmentChecker.disableRuntimeSignatureVerify").equals("true")) {
-            plugin.getLogger().warning("Signature verify has been disabled. Please check if it not excepted.");
+            plugin.getLogger().warning("Signature Verify has been disabled. Please check if it not excepted.");
+            plugin.getLogger().warning("Signature verify is only way to allow QuickShop to self-check if virus infected QuickShop.");
+            plugin.getLogger().warning("If you still want QuickShop to check itself, please remove [-Dorg.maxgamer.quickshop.EnvironmentChecker.disableRuntimeSignatureVerify=true] from startup flag.");
             plugin.getLogger().warning("Server will continue loading in 10 seconds.");
             Thread.sleep(10000);
             return new ResultContainer(CheckResult.WARNING, "Check skipped using property args.");
         }
-
-
         JarVerifyTool tool = new JarVerifyTool();
         try {
             ClassLoader loader = this.getClass().getClassLoader();
