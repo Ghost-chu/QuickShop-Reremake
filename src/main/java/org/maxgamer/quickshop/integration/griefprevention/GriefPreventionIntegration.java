@@ -97,7 +97,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
         return true;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onUntrusted(me.ryanhamshire.GriefPrevention.events.TrustChangedEvent event) {
         if (!deleteOnUntrusted) {
             return;
