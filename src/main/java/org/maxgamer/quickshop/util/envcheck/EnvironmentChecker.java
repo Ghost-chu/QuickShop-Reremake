@@ -222,6 +222,9 @@ public class EnvironmentChecker {
     @SneakyThrows
     @EnvCheckEntry(name = "Java Runtime Environment Version Test", priority = 1, stage = EnvCheckEntry.Stage.ON_ENABLE)
     public ResultContainer jrevTest() {
+        if ("true".equalsIgnoreCase(System.getProperty("org.maxgamer.quickshop.EnvironmentChecker.disableRuntimeJavaBuildVerify"))) {
+            return new ResultContainer(CheckResult.WARNING, "Check skipped using property args.");
+        }
         if (isOutdatedJvm()) {
             String jvmWarning = "\n" +
                     "============================================================\n" +
