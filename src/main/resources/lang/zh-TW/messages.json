@@ -4,7 +4,7 @@
   "translation-version": "支援版本：Reremake（重製版）",
   "translation-contributors": "貢獻人員 ： Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
   "translation-country": "語言：&b&l繁體中文 Chinese Traditional（zh_TW）",
-  "language-version": "52",
+  "language-version": "53",
   "not-looking-at-shop": "&c無法找到儲物箱商店。你需要注視著儲物箱。",
   "no-anythings-in-your-hand": "&c手上沒有任何東西。",
   "no-permission": "&4你沒有使用該指令的許可權。",
@@ -169,7 +169,11 @@
       "removeall": "&e刪除該玩家的所有商店",
       "transfer": "&e我們將某人的所有商店轉移給其他人",
       "removeworld": "&e指定世界的商店已經全部刪除",
-      "currency": "&e設置或移除目前商店的貨幣"
+      "currency": "&e設置或移除目前商店的貨幣",
+      "ban": "&eBanning a player from the shop",
+      "unban": "&eUnbanning a player from the shop",
+      "freeze": "&eDisable or Enable shop trading",
+      "lock": "&eSwitch the shop lock status"
     },
     "disabled": "&c這個指令被停用 ： &e{0}",
     "feature-not-enabled": "該功能沒有在 config 中啟用。"
@@ -187,7 +191,8 @@
     "status-available": "&a",
     "status-unavailable": "&c",
     "out-of-stock": "Out of Stock",
-    "out-of-space": "Out of Space"
+    "out-of-space": "Out of Space",
+    "freeze": "Trade disabled"
   },
   "controlpanel": {
     "setowner": "&a店主 ： &b{0} &e[&d&l修改&e]",
@@ -212,7 +217,11 @@
     "item": "&a商店物品：{0} &e[&d&l修改&e]",
     "item-hover": "&e點擊修改商店物品",
     "currency": "&a目前 ： &b{0} &e[&d&l設定&e]",
-    "currency-hover": "&e點擊設置或移除目前正在使用的商店貨幣"
+    "currency-hover": "&e點擊設置或移除目前正在使用的商店貨幣",
+    "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
+    "lock-hover": "&eEnable/Disable shop lock protection.",
+    "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
+    "freeze-hover": "&eToggle shop freeze status,"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",

@@ -4,7 +4,7 @@
   "translation-version": "Unterstütze Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Sprache: Deutsch (de_DE)",
-  "language-version": "52",
+  "language-version": "53",
   "not-looking-at-shop": "&cKonnte keinen QuickShop finden. Du musst auf einen schauen.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cYou do not have permission to do that.",
@@ -169,7 +169,11 @@
       "removeall": "&eEntferne ALLE Shops eines bestimmten Spielers",
       "transfer": "&eTransfer someone's ALL shops to other",
       "removeworld": "&eEntferne ALLE Shops in einer bestimmten Welt",
-      "currency": "&eSetze oder entferne die Währungseinstellungen des Shops"
+      "currency": "&eSetze oder entferne die Währungseinstellungen des Shops",
+      "ban": "&eBannt einen Spieler vom Shop",
+      "unban": "&eEntbannt einen Spieler vom Shop",
+      "freeze": "&e(De)aktiviere Shop-Handel",
+      "lock": "&eÄndere den Lock-Status des Shops"
     },
     "disabled": "&cDieser Befehl ist deaktiviert: &e{0}",
     "feature-not-enabled": "Dieses Feature ist nicht in der Config aktiviert."
@@ -187,7 +191,8 @@
     "status-available": "&a",
     "status-unavailable": "&c",
     "out-of-stock": "Ausverkauft",
-    "out-of-space": "Kein Platz"
+    "out-of-space": "Kein Platz",
+    "freeze": "Handeln deaktiviert"
   },
   "controlpanel": {
     "setowner": "&aBesitzer: &b{0} &e[&d&lÄndern&e]",
@@ -212,7 +217,11 @@
     "item": "&aShopitem: {0} &e[&d&lÄndern&e]",
     "item-hover": "&eKlicke, um das Shopitem zu ändern",
     "currency": "&aWährung: &b{0} &e[&d&lÄndern&e]",
-    "currency-hover": "&eKlicke um die Währung zu setzen oder zu entfernen, welcher dieser Shop verwendet"
+    "currency-hover": "&eKlicke um die Währung zu setzen oder zu entfernen, welcher dieser Shop verwendet",
+    "lock": "&eShop Sperre: &b{0} &e[&d&lÄndern&e]",
+    "lock-hover": "&eAktiviere/Deaktiviere Sperrschutz des Shops.",
+    "freeze": "&eFreeze Modus: &b{0} &e[&d&lÄndern&e]",
+    "freeze-hover": "&eÄndere den Freeze-Status des Shops."
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",

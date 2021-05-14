@@ -4,7 +4,7 @@
   "translation-version": "ondersteunende versie: Reremake",
   "translation-contributors": "Medewerkers",
   "translation-country": "Taal Zone: Engels (nl_US)",
-  "language-version": "52",
+  "language-version": "53",
   "not-looking-at-shop": "&cGeen QuickShop gevonden, je moet naar een QuickShop kijken.",
   "no-anythings-in-your-hand": "&cJe hebt niks in je hand.",
   "no-permission": "&cJe hebt hiervoor geen rechten.",
@@ -169,7 +169,11 @@
       "removeall": "&eVerwijder ALLE winkels van een bepaalde speler",
       "transfer": "&eTransfer iemands ALLE winkels naar andere",
       "removeworld": "&eVerwijder alle winkels in een bepaalde wereld",
-      "currency": "&eSet of verwijder de valuta instellingen van de winkel"
+      "currency": "&eSet of verwijder de valuta instellingen van de winkel",
+      "ban": "&eBanning a player from the shop",
+      "unban": "&eUnbanning a player from the shop",
+      "freeze": "&eDisable or Enable shop trading",
+      "lock": "&eSwitch the shop lock status"
     },
     "disabled": "&cDeze opdracht is uitgeschakeld: &e{0}",
     "feature-not-enabled": "De functie niet ingeschakeld in de config."
@@ -187,7 +191,8 @@
     "status-available": "&a",
     "status-unavailable": "&c",
     "out-of-stock": "Out of Stock",
-    "out-of-space": "Out of Space"
+    "out-of-space": "Out of Space",
+    "freeze": "Trade disabled"
   },
   "controlpanel": {
     "setowner": "&aEigenaar: &b{0} &e[&d&lChange&e]",
@@ -212,7 +217,11 @@
     "item": "&aShop item: {0} &e[&d&lChange&e]",
     "item-hover": "&eKlik om winkel item te wijzigen",
     "currency": "&aValuta: &b{0} e[&d&lSet&e]",
-    "currency-hover": "&eKlik om de valuta die deze winkel gebruikt in te stellen of te verwijderen"
+    "currency-hover": "&eKlik om de valuta die deze winkel gebruikt in te stellen of te verwijderen",
+    "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
+    "lock-hover": "&eEnable/Disable shop lock protection.",
+    "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
+    "freeze-hover": "&eToggle shop freeze status,"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
