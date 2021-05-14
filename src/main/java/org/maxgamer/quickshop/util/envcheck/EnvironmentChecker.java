@@ -164,7 +164,7 @@ public class EnvironmentChecker {
     @SneakyThrows
     @EnvCheckEntry(name = "Signature Verify", priority = 0, stage = {EnvCheckEntry.Stage.ON_LOAD, EnvCheckEntry.Stage.ON_ENABLE})
     public ResultContainer securityVerify() {
-        if (System.getProperty("org.maxgamer.quickshop.EnvironmentChecker.disableRuntimeSignatureVerify").equals("true")) {
+        if ("true".equalsIgnoreCase(System.getProperty("org.maxgamer.quickshop.EnvironmentChecker.disableRuntimeSignatureVerify"))) {
             plugin.getLogger().warning("Signature Verify has been disabled. Please check if it not excepted.");
             plugin.getLogger().warning("Signature verify is only way to allow QuickShop to self-check if virus infected QuickShop.");
             plugin.getLogger().warning("If you still want QuickShop to check itself, please remove [-Dorg.maxgamer.quickshop.EnvironmentChecker.disableRuntimeSignatureVerify=true] from startup flag.");
