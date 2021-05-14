@@ -535,20 +535,28 @@ public class QuickShop extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
+        if (this.integrationHelper != null) {
+            this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
+        }
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
-        calendarWatcher.stop();
+        if (calendarWatcher != null) {
+            calendarWatcher.stop();
+        }
         Util.debugLog("Unloading all shops...");
         try {
-            this.getShopManager().getLoadedShops().forEach(Shop::onUnload);
+            if (this.getShopManager() != null) {
+                this.getShopManager().getLoadedShops().forEach(Shop::onUnload);
+            }
         } catch (Exception ignored) {
         }
 
         // this.reloadConfig();
         Util.debugLog("Calling integrations...");
-        integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
+        if (integrationHelper != null) {
+            integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
+            integrationHelper.unregisterAll();
+        }
         compatibilityTool.unregisterAll();
-        integrationHelper.unregisterAll();
 
         Util.debugLog("Cleaning up resources and unloading all shops...");
         /* Remove all display items, and any dupes we can find */
@@ -576,7 +584,6 @@ public class QuickShop extends JavaPlugin {
             Bukkit.getScheduler().cancelTasks(this);
         } catch (Throwable ignored) {
         }
-
         Util.debugLog("All shutdown work is finished.");
 
     }
