@@ -153,7 +153,7 @@ public class EnvironmentChecker {
         }
         try {
             int majorVersion = Integer.parseInt(splitVersion[0]);
-            return majorVersion < 11; //Target JDK/JRE version
+            return majorVersion < 16; //Target JDK/JRE version
         } catch (NumberFormatException ignored) {
             Util.debugLog("Failed to parse jvm major version to check: " + splitVersion[0]);
             return false;
@@ -231,7 +231,7 @@ public class EnvironmentChecker {
                     "*\n" +
                     "* You should schedule an upgrade for Java on your server,\n" +
                     "* because we will drop support with any version Java that\n" +
-                    "* lower Java 11.\n" +
+                    "* lower Java 16.\n" +
                     "*\n" +
                     "* That means:\n" +
                     "* 1) The new version of QuickShop for 1.17 updates will stop working on your server.\n" +
@@ -250,14 +250,15 @@ public class EnvironmentChecker {
                     "* \n" +
                     "* What should I do?\n" +
                     "* You should update your server Java builds as soon as you can.\n" +
-                    "* Java 11 or any version after 11 is okay. \n" +
+                    "* Java 16 or any version after 16 is okay. \n" +
                     "*\n" +
-                    "* Most plugins can run on Java 11+ without problems un-\n" +
+                    "* Most plugins can run on Java 16+ without problems un-\n" +
                     "* less the code is really bad/hacky and you should uninstall it.\n" +
                     "*\n" +
                     "* You can get Java at here:\n" +
                     "* https://www.oracle.com/java/technologies/javase-downloads.html\n" +
-                    "* And we recommended Java SE 11 (LTS) build for Minecraft Server.\n" +
+                    "* Attention: Mojang decide upgrading Java 16\n" +
+                    "* So if you still use Java lower 16, you probably cannot start Minecraft server and client.\n" +
                     "*\n" +
                     "*\n" +
                     String.format("* Current Java version: %s", System.getProperty("java.version"));
