@@ -230,15 +230,14 @@ public class EnvironmentChecker {
                     "============================================================\n" +
                     "    Warning! You're running an outdated version of Java\n" +
                     "============================================================\n" +
-                    "* QuickShop will stop being compatible with this Java build\n" +
-                    "* since we released 1.17 updates.\n" +
+                    "* QuickShop will stop being compatible in future!\n" +
                     "*\n" +
                     "* You should schedule an upgrade for Java on your server,\n" +
                     "* because we will drop support with any version Java that\n" +
                     "* lower Java 16.\n" +
                     "*\n" +
                     "* That means:\n" +
-                    "* 1) The new version of QuickShop for 1.17 updates will stop working on your server.\n" +
+                    "* 1) The new version of QuickShop in future will stop working on your server.\n" +
                     "* 2) No more supporting for QuickShop that running\n" +
                     "* on an outdated Java builds.\n" +
                     "* 3) You will get performance improvements in the\n" +
