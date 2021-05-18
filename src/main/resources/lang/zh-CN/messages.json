@@ -170,10 +170,10 @@
       "transfer": "&e将某人的所有商店转移给其他人",
       "removeworld": "&e删除指定世界中的所有商店",
       "currency": "&e配置或禁用货币选项",
-      "ban": "&eBanning a player from the shop",
-      "unban": "&eUnbanning a player from the shop",
-      "freeze": "&eDisable or Enable shop trading",
-      "lock": "&eSwitch the shop lock status"
+      "ban": "&e封禁商店中的玩家",
+      "unban": "&e解禁商店中的玩家",
+      "freeze": "&e禁用或启用商店交易",
+      "lock": "&e切换商店锁状态"
     },
     "disabled": "&c此命令已禁用",
     "feature-not-enabled": "配置中未启用此功能。"
@@ -190,7 +190,7 @@
     "unlimited": "无限",
     "status-available": "&a",
     "status-unavailable": "&c",
-    "out-of-stock": "Out of Stock",
+    "out-of-stock": "缺货",
     "out-of-space": "空间不足",
     "freeze": "关闭交易"
   },
@@ -220,7 +220,7 @@
     "currency-hover": "&e点击以设置或移除商店使用的交易货币",
     "lock": "&e商店锁: &b{0} &e[&d&l切换&e]",
     "lock-hover": "&e启用/禁用商店锁保护。",
-    "freeze": "&e冻结模式： &b{0} &e[&d&lTogle&e]",
+    "freeze": "&e冻结模式： &b{0} &e[&d&l切换&e]",
     "freeze-hover": "&e切换商店冻结状态"
   },
   "tableformat": {
