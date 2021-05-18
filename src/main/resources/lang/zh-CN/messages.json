@@ -191,8 +191,8 @@
     "status-available": "&a",
     "status-unavailable": "&c",
     "out-of-stock": "Out of Stock",
-    "out-of-space": "Out of Space",
-    "freeze": "Trade disabled"
+    "out-of-space": "空间不足",
+    "freeze": "关闭交易"
   },
   "controlpanel": {
     "setowner": "&a所有者: &b{0} &e[&d&l修改&e]",
@@ -218,10 +218,10 @@
     "item-hover": "&e点击以更改商店物品",
     "currency": "&a货币: &b{0} &e[&d&l设置&e]",
     "currency-hover": "&e点击以设置或移除商店使用的交易货币",
-    "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
-    "lock-hover": "&eEnable/Disable shop lock protection.",
-    "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
-    "freeze-hover": "&eToggle shop freeze status,"
+    "lock": "&e商店锁: &b{0} &e[&d&l切换&e]",
+    "lock-hover": "&e启用/禁用商店锁保护。",
+    "freeze": "&e冻结模式： &b{0} &e[&d&lTogle&e]",
+    "freeze-hover": "&e切换商店冻结状态"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
