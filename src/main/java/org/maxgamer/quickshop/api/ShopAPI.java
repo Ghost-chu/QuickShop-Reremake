@@ -88,7 +88,7 @@ public class ShopAPI {
      * Gets shops in specific chunk
      *
      * @param chunk the chunk
-     * @return chunk
+     * @return The clone list of shops in this chunk
      */
     public List<Shop> getShops(Chunk chunk) {
         Map<Location, Shop> mapping = plugin.getShopManager().getShops(chunk);
