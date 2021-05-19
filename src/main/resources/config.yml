@@ -22,7 +22,7 @@
 # IF YOU WANT EDIT CONFIGURATION, THE FILE "config.yml" IS THE CORRECT FILE
 
 #Do not touch if you not clear know about this
-config-version: 128
+config-version: 129
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
