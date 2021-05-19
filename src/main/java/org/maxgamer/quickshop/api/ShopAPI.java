@@ -99,7 +99,7 @@ public class ShopAPI {
      * Check if block is a shop and get it
      *
      * @param block The block
-     * @return Shop object if target is a shop otherwise null
+     * @return Shop object if target is a shop otherwise Optional.empty
      */
     public Optional<Shop> getShop(Block block) {
         return Optional.ofNullable(plugin.getShopManager().getShopIncludeAttached(block.getLocation()));
@@ -109,7 +109,7 @@ public class ShopAPI {
      * Check if location block is a shop and get it
      *
      * @param location The block location
-     * @return Shop object if target is a shop otherwise null
+     * @return Shop object if target is a shop otherwise Optional.empty
      */
     public Optional<Shop> getShop(Location location) {
         return Optional.ofNullable(plugin.getShopManager().getShopIncludeAttached(location));
