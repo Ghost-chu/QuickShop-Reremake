@@ -479,7 +479,8 @@ public class Util {
             }
         }
         if (itemStack.hasItemMeta()
-                && Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName()) {
+                && Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName()
+                && !QuickShop.getInstance().getConfig().getBoolean("shop.force-use-item-original-name")) {
             return itemStack.getItemMeta().getDisplayName();
         }
         return MsgUtil.getItemi18n(itemStack.getType().name());

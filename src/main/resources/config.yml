@@ -436,6 +436,8 @@ shop:
   remove-protection-trigger: true
   #Allow quickshop selling/buying multi items in once transaction.
   allow-stacks: false
+  #This option to control QuickShop ignore the item custom display name.
+  force-use-item-original-name: false
 #List of items that can't be sold in shops.  Anyone with quickshop.bypass.<itemID> can bypass it
 blacklist:
   - Bedrock
