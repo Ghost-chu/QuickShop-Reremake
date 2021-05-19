@@ -1727,11 +1727,15 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 127) {
             getConfig().set("integration.plotsquared.delete-when-user-untrusted", true);
             getConfig().set("integration.towny.delete-shop-on-plot-clear", true);
-            getConfig().set("shop.force-use-item-original-name", false);
             getConfig().set("config-version", ++selectedVersion);
             //Util.makeExportBackup("update-autobackup-" + UUID.randomUUID());
             //Util.backupDatabase();
         }
+        if (selectedVersion == 128) {
+            getConfig().set("shop.force-use-item-original-name", false);
+            getConfig().set("config-version", ++selectedVersion);
+        }
+
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
