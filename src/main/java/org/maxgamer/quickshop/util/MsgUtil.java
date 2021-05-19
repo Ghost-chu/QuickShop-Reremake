@@ -317,9 +317,8 @@ public class MsgUtil {
 
         if (StringUtils.isNumeric(strVer) && !StringUtils.isEmpty(strVer)) {
             ver = Integer.parseInt(strVer);
-        } else {
-            ver = messagei18n.getInt("language-version");
         }
+
         if (ver == 0) {
             messagei18n.set("language-version", 1);
         } else {
