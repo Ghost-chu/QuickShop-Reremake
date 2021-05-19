@@ -1733,6 +1733,7 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 128) {
             getConfig().set("shop.force-use-item-original-name", false);
+            getConfig().set("integration.griefprevention.delete-on-untrusted", false);
             getConfig().set("config-version", ++selectedVersion);
         }
 
