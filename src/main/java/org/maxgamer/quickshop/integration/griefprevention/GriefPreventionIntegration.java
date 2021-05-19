@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.integration.griefprevention;
 
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -105,11 +106,12 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
         if (event.isGiven()) {
             return;
         }
-        event.getClaims().forEach(claim -> {
-            claim.getChunks().forEach(chunk -> {
+
+        for (Claim claim : event.getClaims()) {
+            for (Chunk chunk : claim.getChunks()) {
                 Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
                 if (shops != null) {
-                    shops.values().forEach(shop -> {
+                    for (Shop shop : shops.values()) {
                         if (shop.getOwner().equals(claim.getOwnerID())) {
                             return;
                         }
@@ -130,10 +132,10 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
                             shop.delete();
                             return;
                         }
-                    });
+                    }
                 }
-            });
-        });
+            }
+        }
     }
     @Override
     public void load() {
