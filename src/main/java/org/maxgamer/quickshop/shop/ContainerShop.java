@@ -1173,18 +1173,17 @@ public class ContainerShop implements Shop {
 
     @Override
     public String toString() {
-        StringBuilder sb =
-                new StringBuilder(
-                        "Shop "
-                                + (location.getWorld() == null ? "unloaded world"
-                                : location.getWorld().getName())
-                                + "("
-                                + location.getBlockX()
-                                + ", "
-                                + location.getBlockY()
-                                + ", "
-                                + location.getBlockZ()
-                                + ")");
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Shop ")
+                .append(location.getWorld() == null ? "unloaded world" : location.getWorld().getName())
+                .append("(")
+                .append(location.getBlockX())
+                .append(", ")
+                .append(location.getBlockY())
+                .append(", ")
+                .append(location.getBlockZ())
+                .append(")");
         sb.append(" Owner: ").append(this.ownerName(false)).append(" - ").append(getOwner());
         if (isUnlimited()) {
             sb.append(" Unlimited: true");
