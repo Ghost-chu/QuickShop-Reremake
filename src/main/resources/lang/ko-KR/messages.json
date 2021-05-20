@@ -4,7 +4,7 @@
   "translation-version": "지원 버전: Reremake",
   "translation-contributors": "기여자: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "언어 지역: 한국어 (Ko)",
-  "language-version": "51",
+  "language-version": "53",
   "not-looking-at-shop": "&c퀵샵을 찾을수 없습니다. 상점을 보고있어야만합니다!",
   "no-anythings-in-your-hand": "&c당신의 손에 아무것도 없습니다.",
   "no-permission": "&c이것을 하기위해선 권한이 필요합니다.",
@@ -169,7 +169,11 @@
       "removeall": "&e지정된 플레이어의 모든 상점을 제거합니다.",
       "transfer": "&e누군가의 모든 가게를 다른 곳으로 옮깁니다.",
       "removeworld": "&e지정된 월드의 모든 상점을 제거합니다.",
-      "currency": "&a상점의 통화 설정을 설정하거나 제거합니다."
+      "currency": "&a상점의 통화 설정을 설정하거나 제거합니다.",
+      "ban": "&e플레이어 차단",
+      "unban": "&e플레이어 차단헤제",
+      "freeze": "&eDisable or Enable shop trading",
+      "lock": "&eSwitch the shop lock status"
     },
     "disabled": "&c이 명령어는 비활성화 되어있습니다: &e{0}",
     "feature-not-enabled": "이옵션은 컨피그에서 비활성 상태입니다"
@@ -185,7 +189,10 @@
     "stack-price": "아이템 {2}, {1} 개당 {0}원",
     "unlimited": "무제한",
     "status-available": "&a",
-    "status-unavailable": "&c"
+    "status-unavailable": "&c",
+    "out-of-stock": "Out of Stock",
+    "out-of-space": "Out of Space",
+    "freeze": "Trade disabled"
   },
   "controlpanel": {
     "setowner": "&a주인: &b{0} &e[&d&l바꾸기&e]",
@@ -210,7 +217,11 @@
     "item": "&a상점 아이템: {0} &e[&d&l변경&e]",
     "item-hover": "&e클릭하여 상점의 아이템을 변경합니다",
     "currency": "&c통화 : &b{0} &e[&d&l설정&e]",
-    "currency-hover": "&e클릭하여 이 상점이 사용중인 통화를 설정하거나 제거합니다."
+    "currency-hover": "&e클릭하여 이 상점이 사용중인 통화를 설정하거나 제거합니다.",
+    "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
+    "lock-hover": "&eEnable/Disable shop lock protection.",
+    "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
+    "freeze-hover": "&eToggle shop freeze status,"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",

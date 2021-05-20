@@ -129,12 +129,12 @@ public class PlotSquaredIntegrationV4 extends QSIntegratedPlugin implements List
         return shopsList;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlotDelete(PlotDeleteEvent event) {
         getShops(event.getPlot()).forEach(Shop::delete);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlotUntrusted(PlayerPlotTrustedEvent event) {
         if (!deleteUntrusted) {
             return;

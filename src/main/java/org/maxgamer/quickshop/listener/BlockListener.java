@@ -86,13 +86,6 @@ public class BlockListener extends ProtectionListenerBase {
                 return;
             }
 
-//            if (e.isCancelled()) {
-//                MsgUtil.sendMessage(p, MsgUtil.getMessage("no-permission", p));
-//                Util.debugLog("The action was cancelled by other plugin");
-//                return;
-//            }
-
-
             // Cancel their current menu... Doesnt cancel other's menu's.
             final Info action = super.getPlugin().getShopManager().getActions().get(p.getUniqueId());
 

@@ -4,7 +4,7 @@
   "translation-version": "Поддерживаемая версия: Reremake",
   "translation-contributors": "Участники: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken и Andre_601",
   "translation-country": "Языковой регион: Русский (ru_RU)",
-  "language-version": "51",
+  "language-version": "53",
   "not-looking-at-shop": "&cНе удалось найти игрока, который использует магазина. Возможно игрок не зарегистрирован.",
   "no-anythings-in-your-hand": "&cУ вас нет товаров в руках.",
   "no-permission": "У вас недостаточно прав.",
@@ -169,7 +169,11 @@
       "removeall": "&eУдалить ВСЕ магазины указанного игрока",
       "transfer": "&eПередайте кого-нибудь ВСЕ магазины в другие",
       "removeworld": "&eУдалить ВСЕ магазины в указанном мире",
-      "currency": "&eУстановить или удалить настройки валюты магазина"
+      "currency": "&eУстановить или удалить настройки валюты магазина",
+      "ban": "&eBanning a player from the shop",
+      "unban": "&eUnbanning a player from the shop",
+      "freeze": "&eDisable or Enable shop trading",
+      "lock": "&eSwitch the shop lock status"
     },
     "disabled": "&cДанная команда недоступна: &e{0}",
     "feature-not-enabled": "Функция не включена в конфигурации."
@@ -185,7 +189,10 @@
     "stack-price": "{0} за {1}x {2}",
     "unlimited": "∞",
     "status-available": "&a",
-    "status-unavailable": "&c"
+    "status-unavailable": "&c",
+    "out-of-stock": "Out of Stock",
+    "out-of-space": "Out of Space",
+    "freeze": "Trade disabled"
   },
   "controlpanel": {
     "setowner": "&aВладелец: &b{0} &e[&d&lИзменить&e]",
@@ -210,7 +217,11 @@
     "item": "&aМагазин товара: {0} &e[&d&lИзменить&e]",
     "item-hover": "&eНажмите, чтобы изменить магазин товара",
     "currency": "&aВалюта: &b{0} &e[&d&lУстановить&e]",
-    "currency-hover": "&eНажмите, чтобы установить или удалить валюту, которую этот магазин использует"
+    "currency-hover": "&eНажмите, чтобы установить или удалить валюту, которую этот магазин использует",
+    "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
+    "lock-hover": "&eEnable/Disable shop lock protection.",
+    "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
+    "freeze-hover": "&eToggle shop freeze status,"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",

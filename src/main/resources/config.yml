@@ -22,7 +22,7 @@
 # IF YOU WANT EDIT CONFIGURATION, THE FILE "config.yml" IS THE CORRECT FILE
 
 #Do not touch if you not clear know about this
-config-version: 128
+config-version: 129
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -436,6 +436,8 @@ shop:
   remove-protection-trigger: true
   #Allow quickshop selling/buying multi items in once transaction.
   allow-stacks: false
+  #This option to control QuickShop ignore the item custom display name.
+  force-use-item-original-name: false
 #List of items that can't be sold in shops.  Anyone with quickshop.bypass.<itemID> can bypass it
 blacklist:
   - Bedrock
@@ -626,6 +628,8 @@ integration:
     #CONTAINER_ACCESS = Player must can access container.
     #ACCESS = Player must have ability to access the target claim.
     trade: [ ]
+    #Should QuickShop delete shops if shop owner has been untrusted in claim?
+    delete-on-untrusted: true
   residence:
     enable: false
     #Should we prevent create a shop or trade with shop outside this plugin area

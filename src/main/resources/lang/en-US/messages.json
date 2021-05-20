@@ -4,7 +4,7 @@
   "translation-version": "Support Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: English (en_US)",
-  "language-version": "51",
+  "language-version": "53",
   "not-looking-at-shop": "&cCould not find a QuickShop. You need to look at one.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cYou do not have permission to do that.",
@@ -169,7 +169,11 @@
       "removeall": "&eRemove ALL shops of a specified player",
       "transfer": "&eTransfer someone's ALL shops to other",
       "removeworld": "&eRemove ALL shops in a specified world",
-      "currency": "&eSet or remove the currency setting of the shop"
+      "currency": "&eSet or remove the currency setting of the shop",
+      "ban": "&eBans a player from the shop",
+      "unban": "&eUnbans a player from the shop",
+      "freeze": "&eDisable or Enable shop trading",
+      "lock": "&eSwitch the shop's lock status"
     },
     "disabled": "&cThis command is disabled: &e{0}",
     "feature-not-enabled": "This feature is not enabled in the config file."
@@ -185,7 +189,10 @@
     "stack-price": "{0} per {1}x {2}",
     "unlimited": "Unlimited",
     "status-available": "&a",
-    "status-unavailable": "&c"
+    "status-unavailable": "&c",
+    "out-of-stock": "Out of Stock",
+    "out-of-space": "Out of Space",
+    "freeze": "Trading disabled"
   },
   "controlpanel": {
     "setowner": "&aOwner: &b{0} &e[&d&lChange&e]",
@@ -210,7 +217,11 @@
     "item": "&aShop Item: {0} &e[&d&lChange&e]",
     "item-hover": "&eClick to change shop Item",
     "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
-    "currency-hover": "&eClick to set or remove the currency that this shop is using"
+    "currency-hover": "&eClick to set or remove the currency that this shop is using",
+    "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
+    "lock-hover": "&eEnable/Disable the shop's lock protection.",
+    "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
+    "freeze-hover": "&eToggle the shop's freeze status."
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",

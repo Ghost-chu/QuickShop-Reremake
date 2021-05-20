@@ -314,12 +314,11 @@ public class MsgUtil {
         /* Set default language vesion and update messages.yml */
         int ver = 0;
         String strVer = messagei18n.getString("language-version");
-        if (StringUtils.isNumeric(strVer)) {
-            try {
-                ver = Integer.parseInt(strVer);
-            } catch (NumberFormatException ignore) {
-            }
+
+        if (StringUtils.isNumeric(strVer) && !StringUtils.isEmpty(strVer)) {
+            ver = Integer.parseInt(strVer);
         }
+
         if (ver == 0) {
             messagei18n.set("language-version", 1);
         } else {
@@ -905,7 +904,9 @@ public class MsgUtil {
 
     private static void printEnchantment(ChatSheetPrinter chatSheetPrinter, Map<Enchantment, Integer> enchs) {
         for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-            chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + RomanNumber.toRoman(entries.getValue()));
+            //Use boxed object to avoid NPE
+            Integer level = entries.getValue();
+            chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + RomanNumber.toRoman(level == null ? 1 : level));
         }
     }
 
@@ -1436,24 +1437,25 @@ public class MsgUtil {
             setAndUpdate("signs.status-unavailable");
             setAndUpdate("language-version", ++selectedVersion);
         }
+        if (selectedVersion == 51) {
+            setAndUpdate("signs.out-of-stock");
+            setAndUpdate("signs.out-of-space");
+            setAndUpdate("command.description.ban");
+            setAndUpdate("command.description.unban");
+            setAndUpdate("command.description.freeze");
+            setAndUpdate("command.description.lock");
+            setAndUpdate("controlpanel.lock");
+            setAndUpdate("controlpanel.lock-hover");
+            setAndUpdate("controlpanel.freeze");
+            setAndUpdate("controlpanel.freeze-hover");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
     }
 
 
     private static void setAndUpdate(@NotNull String path, @Nullable Object object) {
-        if (object == null) {
-            messagei18n.set(path, null); // Removal
-            return;
-        }
-        Object alt = null;
-        if (builtInLang != null) {
-            alt = builtInLang.get(path, object);
-        }
-        if (alt == null) {
-            messagei18n.set(path, object);
-        } else {
-            messagei18n.set(path, alt);
-        }
+        messagei18n.set(path, object);
     }
 
     private static void setAndUpdate(@NotNull String path) {
