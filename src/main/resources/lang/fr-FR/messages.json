@@ -4,7 +4,7 @@
   "translation-version": "Version suportée: Reremake",
   "translation-contributors": "Contributeurs : Timtower, Netherfoam, KaiNoMood, Mgazul, JackThePicken, Andre_601 et brunopaiva15, HiiRaZ",
   "translation-country": "Langue: Français (fr_FR)",
-  "language-version": "51",
+  "language-version": "53",
   "not-looking-at-shop": "&cImpossible de trouver un QuickShop. Vous devez en regarder un.",
   "no-anythings-in-your-hand": "&cVous n'avez aucun objet dans votre main.",
   "no-permission": "&cVous n'avez pas la permission de faire ceci.",
@@ -169,7 +169,11 @@
       "removeall": "&eSupprimer toutes les boutiques d'un joueur spécifié",
       "transfer": "&eTransférer TOUS les shops d'un joueur vers un autre",
       "removeworld": "&eSupprime TOUTES les boutiques dans un monde spécifié",
-      "currency": "&eDéfinir ou supprimer les paramètres actuelles de la boutique"
+      "currency": "&eDéfinir ou supprimer les paramètres actuelles de la boutique",
+      "ban": "&eBanning a player from the shop",
+      "unban": "&eUnbanning a player from the shop",
+      "freeze": "&eDisable or Enable shop trading",
+      "lock": "&eSwitch the shop lock status"
     },
     "disabled": "&cCette commande est désactivée : &e{0}",
     "feature-not-enabled": "La fonctionnalité n'est pas activée dans la configuration."
@@ -185,7 +189,10 @@
     "stack-price": "{0} par {1} x {2}",
     "unlimited": "Illimité",
     "status-available": "&a",
-    "status-unavailable": "&c"
+    "status-unavailable": "&c",
+    "out-of-stock": "Out of Stock",
+    "out-of-space": "Out of Space",
+    "freeze": "Trade disabled"
   },
   "controlpanel": {
     "setowner": "&aPropriétaire: &b{0} &e[&dChanger&e]",
@@ -210,7 +217,11 @@
     "item": "&aIllimité: {0} &e[&d&lChanger&e]",
     "item-hover": "&eCliquez pour changer l'objet de la boutique",
     "currency": "blocks away from you",
-    "currency-hover": "&eCliquez pour définir ou supprimer le mode utilisée par cette boutique"
+    "currency-hover": "&eCliquez pour définir ou supprimer le mode utilisée par cette boutique",
+    "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
+    "lock-hover": "&eEnable/Disable shop lock protection.",
+    "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
+    "freeze-hover": "&eToggle shop freeze status,"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",

@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
@@ -52,14 +53,7 @@ public class SubCommand_Refill implements CommandProcesser {
             return;
         }
 
-        final int add;
-
-        try {
-            add = Integer.parseInt(cmdArg[0]);
-        } catch (NumberFormatException e) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("thats-not-a-number", sender));
-            return;
-        }
+        int add;
 
         final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
 
@@ -67,15 +61,22 @@ public class SubCommand_Refill implements CommandProcesser {
             MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
-
         while (bIt.hasNext()) {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-
             if (shop == null) {
                 continue;
             }
-
+            if (StringUtils.isNumeric(cmdArg[0])) {
+                add = Integer.parseInt(cmdArg[0]);
+            } else {
+                if (cmdArg[0].equals(plugin.getConfig().getString("shop.word-for-trade-all-items"))) {
+                    add = shop.getRemainingSpace();
+                } else {
+                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("thats-not-a-number", sender));
+                    return;
+                }
+            }
             shop.add(shop.getItem(), add);
             MsgUtil.sendMessage(sender, MsgUtil.getMessage("refill-success", sender));
             return;

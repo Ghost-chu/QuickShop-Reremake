@@ -400,7 +400,12 @@ public class QuickShop extends JavaPlugin {
                                         if (!Objects.requireNonNull(vault.getVault()).hasAccount(tax)) {
                                             try {
                                                 Util.debugLog("Tax account not exists! Creating...");
-                                                vault.getVault().createPlayerAccount(tax);
+                                                getLogger().warning("QuickShop detected tax account not exists, we're trying to create one. If you see any errors, please change tax-account in config.yml to server owner in-game username");
+                                                if (vault.getVault().createPlayerAccount(tax)) {
+                                                    getLogger().info("Tax account created.");
+                                                } else {
+                                                    getLogger().warning("Cannot to create tax-account,  please change tax-account in config.yml to server owner in-game username");
+                                                }
                                             } catch (Exception ignored) {
                                             }
                                             if (!vault.getVault().hasAccount(tax)) {
@@ -535,20 +540,28 @@ public class QuickShop extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
+        if (this.integrationHelper != null) {
+            this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
+        }
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
-        calendarWatcher.stop();
+        if (calendarWatcher != null) {
+            calendarWatcher.stop();
+        }
         Util.debugLog("Unloading all shops...");
         try {
-            this.getShopManager().getLoadedShops().forEach(Shop::onUnload);
+            if (this.getShopManager() != null) {
+                this.getShopManager().getLoadedShops().forEach(Shop::onUnload);
+            }
         } catch (Exception ignored) {
         }
 
         // this.reloadConfig();
         Util.debugLog("Calling integrations...");
-        integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
+        if (integrationHelper != null) {
+            integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
+            integrationHelper.unregisterAll();
+        }
         compatibilityTool.unregisterAll();
-        integrationHelper.unregisterAll();
 
         Util.debugLog("Cleaning up resources and unloading all shops...");
         /* Remove all display items, and any dupes we can find */
@@ -572,11 +585,14 @@ public class QuickShop extends JavaPlugin {
 
         Util.debugLog("Cleanup tasks...");
         AsyncPacketSender.stop();
+        if (sentryErrorReporter != null) {
+            sentryErrorReporter.unregister();
+        }
+
         try {
             Bukkit.getScheduler().cancelTasks(this);
         } catch (Throwable ignored) {
         }
-
         Util.debugLog("All shutdown work is finished.");
 
     }
@@ -625,7 +641,7 @@ public class QuickShop extends JavaPlugin {
 
     private void runtimeCheck(@NotNull EnvCheckEntry.Stage stage) {
         environmentChecker = new org.maxgamer.quickshop.util.envcheck.EnvironmentChecker(this);
-        ResultReport resultReport = environmentChecker.run();
+        ResultReport resultReport = environmentChecker.run(stage);
         if (resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
             StringJoiner joiner = new StringJoiner("\n", "", "");
             for (Entry<EnvCheckEntry, ResultContainer> result : resultReport.getResults().entrySet()) {
@@ -1715,6 +1731,12 @@ public class QuickShop extends JavaPlugin {
             //Util.makeExportBackup("update-autobackup-" + UUID.randomUUID());
             //Util.backupDatabase();
         }
+        if (selectedVersion == 128) {
+            getConfig().set("shop.force-use-item-original-name", false);
+            getConfig().set("integration.griefprevention.delete-on-untrusted", false);
+            getConfig().set("config-version", ++selectedVersion);
+        }
+
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");

@@ -40,10 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
@@ -94,7 +91,7 @@ public class EnvironmentChecker {
         });
     }
 
-    public ResultReport run() {
+    public ResultReport run(EnvCheckEntry.Stage stage) {
         sortTests();
         CheckResult result = CheckResult.PASSED;
         Map<EnvCheckEntry, ResultContainer> results = new LinkedHashMap<>();
@@ -106,35 +103,39 @@ public class EnvironmentChecker {
             }
             try {
                 EnvCheckEntry envCheckEntry = declaredMethod.getAnnotation(EnvCheckEntry.class);
-                    ResultContainer executeResult = (ResultContainer) declaredMethod.invoke(this);
-                    //plugin.getLogger().info("Result: "+executeResult.getResultMessage());
-                    if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if it worse than latest one.
-                        result = executeResult.getResult();
-                    }
-                    switch (executeResult.getResult()) {
-                        case PASSED:
-                            if (Util.isDevEdition() || Util.isDevMode()) {
-                                plugin.getLogger().info("[OK] " + envCheckEntry.name());
-                                Util.debugLog("[Pass] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                            }
-                            break;
-                        case WARNING:
-                            plugin.getLogger().warning("[WARN] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                            Util.debugLog("[Warning] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                            break;
-                        case STOP_WORKING:
-                            plugin.getLogger().warning("[STOP] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                            Util.debugLog("[Stop-Freeze] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                            //It's okay, QuickShop should continue executing checks to collect more data.
-                            //And show user all errors at once.
-                            break;
-                        case DISABLE_PLUGIN:
-                            plugin.getLogger().warning("[FATAL] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                            Util.debugLog("[Fatal-Disable] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                            skipAllTest = true; //We need disable plugin NOW! Some HUGE exception is here, hurry up!
-                            break;
-                    }
-                    results.put(envCheckEntry, executeResult);
+                if (Arrays.stream(envCheckEntry.stage()).noneMatch(entry -> entry == stage)) {
+                    Util.debugLog("Skip test: " + envCheckEntry.name() + ": Except stage: " + Arrays.toString(envCheckEntry.stage()) + " Current stage: " + stage);
+                    continue;
+                }
+                ResultContainer executeResult = (ResultContainer) declaredMethod.invoke(this);
+                //plugin.getLogger().info("Result: "+executeResult.getResultMessage());
+                if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if it worse than latest one.
+                    result = executeResult.getResult();
+                }
+                switch (executeResult.getResult()) {
+                    case PASSED:
+                        if (Util.isDevEdition() || Util.isDevMode()) {
+                            plugin.getLogger().info("[OK] " + envCheckEntry.name());
+                            Util.debugLog("[Pass] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        }
+                        break;
+                    case WARNING:
+                        plugin.getLogger().warning("[WARN] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        Util.debugLog("[Warning] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        break;
+                    case STOP_WORKING:
+                        plugin.getLogger().warning("[STOP] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        Util.debugLog("[Stop-Freeze] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        //It's okay, QuickShop should continue executing checks to collect more data.
+                        //And show user all errors at once.
+                        break;
+                    case DISABLE_PLUGIN:
+                        plugin.getLogger().warning("[FATAL] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        Util.debugLog("[Fatal-Disable] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        skipAllTest = true; //We need disable plugin NOW! Some HUGE exception is here, hurry up!
+                        break;
+                }
+                results.put(envCheckEntry, executeResult);
             } catch (Exception e) {
                 plugin.getLogger().log(Level.WARNING, "Failed executing EnvCheckEntry [" + declaredMethod.getName() + "]: Exception thrown out without caught. Something going wrong!", e);
                 plugin.getLogger().warning("[FAIL] " + declaredMethod.getName());
@@ -153,15 +154,16 @@ public class EnvironmentChecker {
         }
         try {
             int majorVersion = Integer.parseInt(splitVersion[0]);
-            return majorVersion < 11; //Target JDK/JRE version
+            return majorVersion < 16; //Target JDK/JRE version
         } catch (NumberFormatException ignored) {
             Util.debugLog("Failed to parse jvm major version to check: " + splitVersion[0]);
             return false;
         }
     }
 
+    @SneakyThrows
     @EnvCheckEntry(name = "Signature Verify", priority = 0, stage = {EnvCheckEntry.Stage.ON_LOAD, EnvCheckEntry.Stage.ON_ENABLE})
-    public ResultContainer securityVerify() {
+    public ResultContainer securtyVerify() {
         JarVerifyTool tool = new JarVerifyTool();
         try {
             ClassLoader loader = this.getClass().getClassLoader();
@@ -210,22 +212,21 @@ public class EnvironmentChecker {
 
 
     @SneakyThrows
-    @EnvCheckEntry(name = "Java Runtime Environment Version Test", priority = 1)
+    @EnvCheckEntry(name = "Java Runtime Environment Version Test", priority = 1, stage = EnvCheckEntry.Stage.ON_ENABLE)
     public ResultContainer jrevTest() {
         if (isOutdatedJvm()) {
             String jvmWarning = "\n" +
                     "============================================================\n" +
                     "    Warning! You're running an outdated version of Java\n" +
                     "============================================================\n" +
-                    "* QuickShop will stop being compatible with this Java build\n" +
-                    "* since we released 1.17 updates.\n" +
+                    "* QuickShop will stop being compatible in future!\n" +
                     "*\n" +
                     "* You should schedule an upgrade for Java on your server,\n" +
                     "* because we will drop support with any version Java that\n" +
-                    "* lower Java 11.\n" +
+                    "* lower Java 16.\n" +
                     "*\n" +
                     "* That means:\n" +
-                    "* 1) The new version of QuickShop for 1.17 updates will stop working on your server.\n" +
+                    "* 1) The new version of QuickShop in future will stop working on your server.\n" +
                     "* 2) No more supporting for QuickShop that running\n" +
                     "* on an outdated Java builds.\n" +
                     "* 3) You will get performance improvements in the\n" +
@@ -241,14 +242,15 @@ public class EnvironmentChecker {
                     "* \n" +
                     "* What should I do?\n" +
                     "* You should update your server Java builds as soon as you can.\n" +
-                    "* Java 11 or any version after 11 is okay. \n" +
+                    "* Java 16 or any version after 16 is okay. \n" +
                     "*\n" +
-                    "* Most plugins can run on Java 11+ without problems un-\n" +
+                    "* Most plugins can run on Java 16+ without problems un-\n" +
                     "* less the code is really bad/hacky and you should uninstall it.\n" +
                     "*\n" +
                     "* You can get Java at here:\n" +
                     "* https://www.oracle.com/java/technologies/javase-downloads.html\n" +
-                    "* And we recommended Java SE 11 (LTS) build for Minecraft Server.\n" +
+                    "* Attention: Mojang decide upgrading Java 16\n" +
+                    "* So if you still use Java lower 16, you probably cannot start Minecraft server and client.\n" +
                     "*\n" +
                     "*\n" +
                     String.format("* Current Java version: %s", System.getProperty("java.version"));
