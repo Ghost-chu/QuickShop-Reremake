@@ -170,10 +170,10 @@
       "transfer": "&ePrzenieś czyjeś WSZYSTKIE sklepy do innych",
       "removeworld": "&eUsuń WSZYSTKIE sklepy w określonym świecie",
       "currency": "&eUstaw lub usuń ustawienia waluty sklepu",
-      "ban": "&eBanning a player from the shop",
-      "unban": "&eUnbanning a player from the shop",
-      "freeze": "&eDisable or Enable shop trading",
-      "lock": "&eSwitch the shop lock status"
+      "ban": "&eBanowanie gracza ze sklepu",
+      "unban": "&eOdbanowanie gracza ze sklepu",
+      "freeze": "&eWyłącz lub włącz handel sklepowy",
+      "lock": "&eZmień status blokady sklepu"
     },
     "disabled": "&cTa komenda jest wyłączona: &e{0}",
     "feature-not-enabled": "Funkcja nie jest włączona w konfiguracji."
@@ -190,7 +190,7 @@
     "unlimited": "Nieograniczony",
     "status-available": "&a",
     "status-unavailable": "&c",
-    "out-of-stock": "Out of Stock",
+    "out-of-stock": "Wyprzedano produkt",
     "out-of-space": "Za mało miejsca",
     "freeze": "Handel wyłączony"
   },
