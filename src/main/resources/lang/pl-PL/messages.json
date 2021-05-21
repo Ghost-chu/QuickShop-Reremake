@@ -191,8 +191,8 @@
     "status-available": "&a",
     "status-unavailable": "&c",
     "out-of-stock": "Out of Stock",
-    "out-of-space": "Out of Space",
-    "freeze": "Trade disabled"
+    "out-of-space": "Za mało miejsca",
+    "freeze": "Handel wyłączony"
   },
   "controlpanel": {
     "setowner": "&aWłaściciel: &b{0} &e[&d&lZmień&e]",
@@ -218,10 +218,10 @@
     "item-hover": "&eKliknij, aby zmienić przedmiot sklepu",
     "currency": "&aWaluta: &b{0} &e[&d&lUstaw&e]",
     "currency-hover": "&eKliknij, aby ustawić lub usunąć walutę, której używa ten sklep",
-    "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
-    "lock-hover": "&eEnable/Disable shop lock protection.",
-    "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
-    "freeze-hover": "&eToggle shop freeze status,"
+    "lock": "&eBlokada sklepu: &b{0} &e[&d&lPrzełącz&e]",
+    "lock-hover": "&eWłącz/Wyłącz ochronę blokady sklepu.",
+    "freeze": "&eTryb zamrożenia: &b{0} &e[&d&lPrzełącz&e]",
+    "freeze-hover": "&ePrzełącz status zamrożenia sklepu"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
