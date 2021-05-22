@@ -1,6 +1,6 @@
 {
   "file-test": "이것은텍스트파일일까요? 한국어 일까yo?",
-  "translation-author": "번역: Ghost_chu, 치키이예(ruddls030), jho5245, Kim dong kwon",
+  "translation-author": "번역: Ghost_chu, 치키이예(ruddls030), jho5245, Kim dong kwon, PPAG",
   "translation-version": "지원 버전: Reremake",
   "translation-contributors": "기여자: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "언어 지역: 한국어 (Ko)",
@@ -172,8 +172,8 @@
       "currency": "&a상점의 통화 설정을 설정하거나 제거합니다.",
       "ban": "&e플레이어 차단",
       "unban": "&e플레이어 차단헤제",
-      "freeze": "&eDisable or Enable shop trading",
-      "lock": "&eSwitch the shop lock status"
+      "freeze": "&e상점 거래 비활성화 또는 활성화",
+      "lock": "상점 잠금 상태 전환"
     },
     "disabled": "&c이 명령어는 비활성화 되어있습니다: &e{0}",
     "feature-not-enabled": "이옵션은 컨피그에서 비활성 상태입니다"
@@ -190,9 +190,9 @@
     "unlimited": "무제한",
     "status-available": "&a",
     "status-unavailable": "&c",
-    "out-of-stock": "Out of Stock",
-    "out-of-space": "Out of Space",
-    "freeze": "Trade disabled"
+    "out-of-stock": "일시 품절",
+    "out-of-space": "공간 부족",
+    "freeze": "거래 비활성화"
   },
   "controlpanel": {
     "setowner": "&a주인: &b{0} &e[&d&l바꾸기&e]",
@@ -218,10 +218,10 @@
     "item-hover": "&e클릭하여 상점의 아이템을 변경합니다",
     "currency": "&c통화 : &b{0} &e[&d&l설정&e]",
     "currency-hover": "&e클릭하여 이 상점이 사용중인 통화를 설정하거나 제거합니다.",
-    "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
-    "lock-hover": "&eEnable/Disable shop lock protection.",
-    "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
-    "freeze-hover": "&eToggle shop freeze status,"
+    "lock": "&e동결 생태: &b{0} &e[&d&l전환&e]",
+    "lock-hover": "&e상점 잠금 보호를 활성화/비활성화 합니다. ",
+    "freeze": "&e동결 생태: &b{0} &e[&d&l전환&e]",
+    "freeze-hover": "&e상점 동결 상태 전환,"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
