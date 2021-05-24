@@ -170,10 +170,10 @@
       "transfer": "&ePrzenieś czyjeś WSZYSTKIE sklepy do innych",
       "removeworld": "&eUsuń WSZYSTKIE sklepy w określonym świecie",
       "currency": "&eUstaw lub usuń ustawienia waluty sklepu",
-      "ban": "&eBanning a player from the shop",
-      "unban": "&eUnbanning a player from the shop",
-      "freeze": "&eDisable or Enable shop trading",
-      "lock": "&eSwitch the shop lock status"
+      "ban": "&eBanowanie gracza ze sklepu",
+      "unban": "&eOdbanowanie gracza ze sklepu",
+      "freeze": "&eWyłącz lub włącz handel sklepowy",
+      "lock": "&eZmień status blokady sklepu"
     },
     "disabled": "&cTa komenda jest wyłączona: &e{0}",
     "feature-not-enabled": "Funkcja nie jest włączona w konfiguracji."
@@ -190,9 +190,9 @@
     "unlimited": "Nieograniczony",
     "status-available": "&a",
     "status-unavailable": "&c",
-    "out-of-stock": "Out of Stock",
-    "out-of-space": "Out of Space",
-    "freeze": "Trade disabled"
+    "out-of-stock": "Wyprzedano produkt",
+    "out-of-space": "Za mało miejsca",
+    "freeze": "Handel wyłączony"
   },
   "controlpanel": {
     "setowner": "&aWłaściciel: &b{0} &e[&d&lZmień&e]",
@@ -218,10 +218,10 @@
     "item-hover": "&eKliknij, aby zmienić przedmiot sklepu",
     "currency": "&aWaluta: &b{0} &e[&d&lUstaw&e]",
     "currency-hover": "&eKliknij, aby ustawić lub usunąć walutę, której używa ten sklep",
-    "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
-    "lock-hover": "&eEnable/Disable shop lock protection.",
-    "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
-    "freeze-hover": "&eToggle shop freeze status,"
+    "lock": "&eBlokada sklepu: &b{0} &e[&d&lPrzełącz&e]",
+    "lock-hover": "&eWłącz/Wyłącz ochronę blokady sklepu.",
+    "freeze": "&eTryb zamrożenia: &b{0} &e[&d&lPrzełącz&e]",
+    "freeze-hover": "&ePrzełącz status zamrożenia sklepu"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
