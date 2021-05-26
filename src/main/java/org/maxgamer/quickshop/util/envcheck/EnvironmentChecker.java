@@ -193,7 +193,7 @@ public class EnvironmentChecker {
                 });
                 plugin.getLogger().severe("QuickShop detected that the jar has been modified! This is usually caused by the file being damaged or virus infected.");
                 plugin.getLogger().severe("To prevent severe server failure, QuickShop has been disabled.");
-                plugin.getLogger().severe("You can join our support Discord for more information: https://discord.com/invite/bfefw2E.");
+                plugin.getLogger().severe("For further information, Please join our support Discord server: https://discord.com/invite/bfefw2E.");
                 return new ResultContainer(CheckResult.STOP_WORKING, "Security risk detected, QuickShop jar has been modified.");
             }
         } catch (IOException ioException) {
