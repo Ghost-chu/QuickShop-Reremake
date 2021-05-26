@@ -221,7 +221,7 @@
     "lock": "&eTienda bloqueada: &b{0} &e[&d&lToggle&e]",
     "lock-hover": "&eActivar/Desactivar protección contra bloqueo de la tienda.",
     "freeze": "&eTienda bloqueada: &b{0} &e[&d&lToggle&e]",
-    "freeze-hover": "&eToggle shop freeze status,"
+    "freeze-hover": "&eCambiar estado de congelación de la tienda"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
