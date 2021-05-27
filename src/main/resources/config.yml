@@ -654,7 +654,7 @@ integration:
     #Priority: UP > DOWN
     #
     #Available fields:
-    #BUILD = The player must have the ability to build ain the target claim.
+    #BUILD = The player must have the ability to build in the target claim.
     #CONTAINER_ACCESS = The player must be able to access containers.
     #ACCESS = The Player must have the ability to access the target claim.
     create:
@@ -664,7 +664,7 @@ integration:
     #Priority: UP > DOWN
     #
     #Available fields:
-    #BUILD = The player must have the ability to build ain the target claim.
+    #BUILD = The player must have the ability to build in the target claim.
     #CONTAINER_ACCESS = The player must be able to access containers.
     #ACCESS = The Player must have the ability to access the target claim.
     trade: [ ]
@@ -742,7 +742,7 @@ protect:
   hopper: true
   entity: true
 #This option allows you to set custom item max stacksizes.
-#If nothing matches, then all stacksize options will use *.
+#If nothing matches, then all items (*) will be used.
 #* means all items.
 #Examples:
 #
