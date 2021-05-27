@@ -212,6 +212,30 @@ public class ShopManager {
         return this.shops.get(world);
     }
 
+    private void processWaterLoggedSign(@NotNull Block signBlock) {
+        signBlock.setType(Util.getSignMaterial());
+        BlockState bs = signBlock.getState();
+        if (signBlock.getType() == Material.WATER
+                && (bs.getBlockData() instanceof Waterlogged)) {
+            Waterlogged waterable = (Waterlogged) bs.getBlockData();
+            waterable.setWaterlogged(true); // Looks like sign directly put in water
+        }
+        if (bs.getBlockData() instanceof WallSign) {
+            WallSign signBlockDataType = (WallSign) bs.getBlockData();
+            BlockFace bf = signBlock.getLocation().getBlock().getFace(signBlock);
+            if (bf != null) {
+                signBlockDataType.setFacing(bf);
+                bs.setBlockData(signBlockDataType);
+            }
+        } else {
+            plugin.getLogger().warning(
+                    "Sign material "
+                            + bs.getType().name()
+                            + " not a WallSign, make sure you using correct sign material.");
+        }
+        bs.update(true);
+    }
+
     /**
      * Create a shop use Shop and Info object.
      *
@@ -225,29 +249,8 @@ public class ShopManager {
             throw new IllegalStateException("The owner creating the shop is offline or not exist");
         }
         if (info.getSignBlock() != null && autoSign) {
-            if (Util.isAir(info.getSignBlock().getType())
-                    || info.getSignBlock().getType() == Material.WATER) {
-                info.getSignBlock().setType(Util.getSignMaterial());
-                BlockState bs = info.getSignBlock().getState();
-                if (info.getSignBlock().getType() == Material.WATER
-                        && (bs.getBlockData() instanceof Waterlogged)) {
-                    Waterlogged waterable = (Waterlogged) bs.getBlockData();
-                    waterable.setWaterlogged(true); // Looks like sign directly put in water
-                }
-                if (bs.getBlockData() instanceof WallSign) {
-                    WallSign signBlockDataType = (WallSign) bs.getBlockData();
-                    BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
-                    if (bf != null) {
-                        signBlockDataType.setFacing(bf);
-                        bs.setBlockData(signBlockDataType);
-                    }
-                } else {
-                    plugin.getLogger().warning(
-                            "Sign material "
-                                    + bs.getType().name()
-                                    + " not a WallSign, make sure you using correct sign material.");
-                }
-                bs.update(true);
+            if (Util.isAir(info.getSignBlock().getType()) || info.getSignBlock().getType() == Material.WATER) {
+                this.processWaterLoggedSign(info.getSignBlock());
             } else {
                 if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
                     MsgUtil.sendMessage(player, MsgUtil.getMessage("failed-to-put-sign", player));
