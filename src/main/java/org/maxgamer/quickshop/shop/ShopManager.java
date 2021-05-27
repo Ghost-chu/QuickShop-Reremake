@@ -50,6 +50,7 @@ import org.maxgamer.quickshop.util.holder.Result;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 /**
  * Manage a lot of shops.
@@ -271,7 +272,7 @@ public class ShopManager {
                     // also remove from memory when failed
                     shop.delete(true);
                     plugin.getLogger()
-                            .warning("Shop create failed, trying to auto fix the database...");
+                            .log(Level.WARNING, "Shop create failed, trying to auto fix the database...", e);
                     boolean backupSuccess = Util.backupDatabase();
                     if (backupSuccess) {
                         plugin.getDatabaseHelper().removeShop(shop);
@@ -279,6 +280,16 @@ public class ShopManager {
                         plugin.getLogger().warning(
                                 "Failed to backup the database, all changes will revert after a reboot.");
                     }
+                    plugin.getDatabaseHelper().createShop(shop, null, e2 -> {
+                        plugin.getLogger()
+                                .log(Level.SEVERE, "Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
+                        MsgUtil.sendMessage(player, MsgUtil.getMessage("shop-creation-failed", player));
+                        Util.mainThreadRun(() -> {
+                            shop.onUnload();
+                            removeShop(shop);
+                            shop.delete();
+                        });
+                    });
                 }));
     }
 
