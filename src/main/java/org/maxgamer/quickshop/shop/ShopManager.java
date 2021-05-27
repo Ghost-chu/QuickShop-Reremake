@@ -665,52 +665,31 @@ public class ShopManager {
             total = e.getTotal(); // Allow addon to set it
         }
         EconomyTransaction transaction;
+        EconomyTransaction.EconomyTransactionBuilder builder = EconomyTransaction.builder()
+                .core(eco)
+                .amount(total)
+                .taxModifier(taxModifier)
+                .taxAccount(cacheTaxAccount)
+                .currency(shop.getCurrency())
+                .world(shop.getLocation().getWorld())
+                .to(buyer);
         if (!shop.isUnlimited()
                 || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")
                 && shop.isUnlimited())) {
-            transaction =
-                    EconomyTransaction.builder()
-                            .core(eco)
-                            .amount(total)
-                            .from(shop.getOwner())
-                            .to(buyer)
-                            .taxModifier(taxModifier)
-                            .taxAccount(cacheTaxAccount)
-                            .currency(shop.getCurrency())
-                            .build();
+            transaction = builder.from(shop.getOwner()).build();
         } else {
-            transaction =
-                    EconomyTransaction.builder()
-                            .core(eco)
-                            .amount(total)
-                            .from(null)
-                            .to(buyer)
-                            .taxModifier(taxModifier)
-                            .taxAccount(cacheTaxAccount)
-                            .currency(shop.getCurrency())
-                            .build();
+            transaction = builder.from(null).build();
         }
         if (!transaction.failSafeCommit()) {
             if (transaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
-                MsgUtil.sendMessage(
-                        buyer,
-                        MsgUtil.getMessage(
-                                buyer,
-                                "the-owner-cant-afford-to-buy-from-you",
-                                Objects.requireNonNull(
-                                        format(total, shop.getLocation().getWorld(), shop.getCurrency())),
-                                Objects.requireNonNull(
-                                        format(eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(),
-                                                shop.getCurrency()), shop.getLocation().getWorld(),
-                                                shop.getCurrency())
-                                )));
+                MsgUtil.sendMessage(buyer, MsgUtil.getMessage(buyer, "the-owner-cant-afford-to-buy-from-you",
+                        Objects.requireNonNull(format(total, shop.getLocation().getWorld(), shop.getCurrency())),
+                        Objects.requireNonNull(format(eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(),
+                                shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency()))));
             } else {
                 MsgUtil.sendMessage(buyer, MsgUtil.getMessage(buyer, "purchase-failed"));
-                plugin
-                        .getLogger()
-                        .severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
-                QuickShop.getInstance()
-                        .log("EconomyTransaction Failed, last error:" + transaction.getLastError());
+                plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
+                QuickShop.getInstance().log("EconomyTransaction Failed, last error:" + transaction.getLastError());
             }
             return;
         }
@@ -718,23 +697,16 @@ public class ShopManager {
         // Notify the owner of the purchase. //TODO: move to a standalone method
         Player player = plugin.getServer().getPlayer(buyer);
 
-        String msg =
-                MsgUtil.getMessage(
-                        buyer,
-                        "player-sold-to-your-store",
-                        player != null ? player.getName() : buyer.toString(),
-                        String.valueOf(amount),
-                        "##########" + Util.serialize(shop.getItem()) + "##########");
+        String msg = MsgUtil.getMessage(buyer, "player-sold-to-your-store",
+                player != null ? player.getName() : buyer.toString(),
+                String.valueOf(amount),
+                "##########" + Util.serialize(shop.getItem()) + "##########");
 
         if (space == amount) {
-            msg +=
-                    "\n"
-                            + MsgUtil.getMessage(
-                            buyer,
-                            "shop-out-of-space",
-                            Integer.toString(shop.getLocation().getBlockX()),
-                            Integer.toString(shop.getLocation().getBlockY()),
-                            Integer.toString(shop.getLocation().getBlockZ()));
+            msg += "\n" + MsgUtil.getMessage(buyer, "shop-out-of-space",
+                    Integer.toString(shop.getLocation().getBlockX()),
+                    Integer.toString(shop.getLocation().getBlockY()),
+                    Integer.toString(shop.getLocation().getBlockZ()));
         }
         if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
             for (UUID staff : shop.getModerator().getStaffs()) {
@@ -742,12 +714,9 @@ public class ShopManager {
             }
         }
         MsgUtil.send(shop, shop.getOwner(), msg);
-        shop.buy(
-                buyer, buyerInventory, player != null ? player.getLocation() : shop.getLocation(),
-                amount);
+        shop.buy(buyer, buyerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
         MsgUtil.sendSellSuccess(buyer, shop, amount);
-        ShopSuccessPurchaseEvent se =
-                new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, taxModifier);
+        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, taxModifier);
         plugin.getServer().getPluginManager().callEvent(se);
         shop.setSignText(); // Update the signs count
     }
@@ -772,20 +741,15 @@ public class ShopManager {
         if (player != null) {
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.tax")) {
                 tax = 0;
-                Util.debugLog("Disable the Tax for player " + player
-                        + " cause they have permission quickshop.tax");
+                Util.debugLog("Disable the Tax for player " + player + " cause they have permission quickshop.tax");
             }
-            if (shop.isUnlimited() && QuickShop.getPermissionManager()
-                    .hasPermission(player, "quickshop.tax.bypassunlimited")) {
+            if (shop.isUnlimited() && QuickShop.getPermissionManager().hasPermission(player, "quickshop.tax.bypassunlimited")) {
                 tax = 0;
-                Util.debugLog("Disable the Tax for player " + player
-                        + " cause they have permission quickshop.tax.bypassunlimited and shop is unlimited.");
+                Util.debugLog("Disable the Tax for player " + player + " cause they have permission quickshop.tax.bypassunlimited and shop is unlimited.");
             }
         }
         if (tax >= 1.0) {
-            plugin.getLogger().warning(
-                    "Disable tax due to is invalid, it should be in 0.0-1.0 (current value is " + tax
-                            + ")");
+            plugin.getLogger().warning("Disable tax due to is invalid, it should be in 0.0-1.0 (current value is " + tax + ")");
             tax = 0;
         }
         if (tax < 0) {
@@ -803,13 +767,11 @@ public class ShopManager {
                              boolean bypassProtectionChecks) {
         Util.ensureThread(false);
         if (plugin.getEconomy() == null) {
-            MsgUtil.sendMessage(p,
-                    "Error: Economy system not loaded, type /qs main command to get details.");
+            MsgUtil.sendMessage(p, "Error: Economy system not loaded, type /qs main command to get details.");
             return;
         }
         if (plugin.isAllowStack() && !p.hasPermission("quickshop.create.stacks")) {
-            Util.debugLog("Player " + p
-                    + " no permission to create stacks shop, forcing creating single item shop");
+            Util.debugLog("Player " + p + " no permission to create stacks shop, forcing creating single item shop");
             info.getItem().setAmount(1);
         }
 
@@ -819,11 +781,8 @@ public class ShopManager {
         if (!bypassProtectionChecks) {
             Result result = plugin.getPermissionChecker().canBuild(p, info.getLocation());
             if (!result.isSuccess()) {
-                MsgUtil.sendMessage(p,
-                        MsgUtil.getMessage("3rd-plugin-build-check-failed", p, result.getMessage()));
-                Util.debugLog(
-                        "Failed to create shop because protection check failed, found:" + result
-                                .getMessage());
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("3rd-plugin-build-check-failed", p, result.getMessage()));
+                Util.debugLog("Failed to create shop because protection check failed, found:" + result.getMessage());
                 return;
             }
         }
@@ -980,6 +939,7 @@ public class ShopManager {
                             .to(null)
                             .amount(createCost)
                             .currency(plugin.getCurrency())
+                            .world(shop.getLocation().getWorld())
                             .build();
             if (!economyTransaction.failSafeCommit()) {
                 if (economyTransaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
