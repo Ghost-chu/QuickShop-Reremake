@@ -854,13 +854,14 @@ public class ShopManager {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("failed-to-put-sign", p));
                     return;
                 }
-            }
-            Material signType = info.getSignBlock().getType();
-            if (signType != Material.WATER
-                    && !Util.isAir(signType)
-                    && !plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("failed-to-put-sign", p));
-                return;
+            } else {
+                Material signType = info.getSignBlock().getType();
+                if (signType != Material.WATER
+                        && !Util.isAir(signType)
+                        && !plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
+                    MsgUtil.sendMessage(p, MsgUtil.getMessage("failed-to-put-sign", p));
+                    return;
+                }
             }
         }
 
