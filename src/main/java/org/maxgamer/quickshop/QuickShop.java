@@ -612,7 +612,7 @@ public class QuickShop extends JavaPlugin {
         If set to true, it will write out the default values, to the target file.
         However, once written, you will not be able to tell the difference between a default and a value from the configuration.
         ==========================================================================================================================
-        getConfig().options().copyDefaults(true).header("Read the example.config.yml file to get commented example config file."); // Load defaults.
+        getConfig().options().copyDefaults(true).header("Read the example-configuration.yml file to get commented example config file."); // Load defaults.
         saveDefaultConfig();
         reloadConfig();
         */
@@ -620,10 +620,10 @@ public class QuickShop extends JavaPlugin {
                 "=================================\n" +
                         "=    QuickShop  Configuration   =\n" +
                         "=================================\n" +
-                        "\nNotes:" +
-                        "Please read the example.config.yml file to get commented example config file.\n" +
-                        "Please read the example.config.yml file to get commented example config file.\n" +
-                        "Please read the example.config.yml file to get commented example config file.\n"
+                        "\nNotes:\n" +
+                        "Please read the example-configuration.yml file to get commented example config file.\n" +
+                        "Please read the example-configuration.yml file to get commented example config file.\n" +
+                        "Please read the example-configuration.yml file to get commented example config file.\n"
         );
         if (getConfig().getInt("config-version", 0) == 0) {
             getConfig().set("config-version", 1);
@@ -1748,10 +1748,11 @@ public class QuickShop extends JavaPlugin {
         saveConfig();
         reloadConfig();
 
-        //Delete old example.config.yml
+        //Delete old example configuration files
         new File(getDataFolder(), "example.config.yml").delete();
+        new File(getDataFolder(), "example-configuration.txt").delete();
 
-        Path exampleConfigFile = new File(getDataFolder(), "example-configuration.txt").toPath();
+        Path exampleConfigFile = new File(getDataFolder(), "example-configuration.yml").toPath();
         try {
             Files.copy(Objects.requireNonNull(getResource("config.yml")), exampleConfigFile, REPLACE_EXISTING);
         } catch (IOException ioe) {
