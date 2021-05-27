@@ -38,7 +38,6 @@ import org.maxgamer.quickshop.util.paste.Paste;
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -68,7 +67,7 @@ public class RollbarErrorReporter {
     public RollbarErrorReporter(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         Config config = ConfigBuilder.withAccessToken("4846d9b99e5d4d238f9135ea9c744c28")
-                .environment(Util.isDevEdition() ? "development" : "production")
+                .environment("release".contentEquals(QuickShop.getInstance().getBuildInfo().getGitBranch()) ? "production" : "development")
                 .platform(plugin.getServer().getVersion())
                 .codeVersion(QuickShop.getVersion())
                 .handleUncaughtErrors(false)
@@ -128,31 +127,32 @@ public class RollbarErrorReporter {
         return dataMapping;
     }
 
-    private UUID sendError0(@NotNull Throwable throwable, @NotNull String... context) {
+    private void sendError0(@NotNull Throwable throwable, @NotNull String... context) {
         try {
             if (plugin.getBootError() != null) {
-                return null; // Don't report any errors if boot failed.
+                return; // Don't report any errors if boot failed.
             }
             if (tempDisable) {
                 this.tempDisable = false;
-                return null;
+                return;
             }
             if (disable) {
-                return null;
+                return;
             }
             if (!enabled) {
-                return null;
-            }
-
-            if (!checkWasCauseByQS(throwable)) {
-                return null;
+                return;
             }
 
             if (!canReport(throwable)) {
-                return null;
+                return;
             }
             if (ignoredException.contains(throwable.getClass())) {
-                return null;
+                return;
+            }
+            if (throwable.getCause() != null) {
+                if (ignoredException.contains(throwable.getCause())) {
+                    return;
+                }
             }
             if (lastPaste == null) {
                 String pasteURL;
@@ -181,11 +181,9 @@ public class RollbarErrorReporter {
             if (Util.isDevMode()) {
                 throwable.printStackTrace();
             }
-            return null;
         } catch (Exception th) {
             ignoreThrow();
             plugin.getLogger().log(Level.WARNING, "Something going wrong when automatic report errors, please submit this error on Issue Tracker", th);
-            return null;
         }
     }
 
@@ -194,16 +192,13 @@ public class RollbarErrorReporter {
      *
      * @param throwable Throws
      * @param context   BreadCrumb
-     * @return Event Uniqud ID
      */
-    public @Nullable UUID sendError(@NotNull Throwable throwable, @NotNull String... context) {
-        AtomicReference<UUID> uuid = new AtomicReference<>();
+    public void sendError(@NotNull Throwable throwable, @NotNull String... context) {
         if (Bukkit.isPrimaryThread()) {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> uuid.set(sendError0(throwable, context)));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> sendError0(throwable, context));
             //ignore async response
-            return null;
         } else {
-            return sendError0(throwable, context);
+            sendError0(throwable, context);
         }
     }
 
@@ -227,7 +222,9 @@ public class RollbarErrorReporter {
             // version.
             return false;
         }
-        if (!checkWasCauseByQS(throwable)) {
+
+        PossiblyLevel possiblyLevel = checkWasCauseByQS(throwable);
+        if (possiblyLevel == PossiblyLevel.IMPOSSIBLE) {
             return false;
         }
         if (throwable.getMessage().startsWith("#")) {
@@ -259,32 +256,38 @@ public class RollbarErrorReporter {
      * @param throwable Throws
      * @return Cause or not
      */
-    public boolean checkWasCauseByQS(@Nullable Throwable throwable) {
+    public PossiblyLevel checkWasCauseByQS(@Nullable Throwable throwable) {
         if (throwable == null) {
-            return false;
+            return PossiblyLevel.IMPOSSIBLE;
         }
         if (throwable.getMessage() == null) {
-            return false;
+            return PossiblyLevel.IMPOSSIBLE;
         }
         if (throwable.getMessage().contains("Could not pass event")) {
-            return throwable.getMessage().contains("QuickShop");
+            if (throwable.getMessage().contains("QuickShop")) {
+                return PossiblyLevel.CONFIRM;
+            } else {
+                return PossiblyLevel.IMPOSSIBLE;
+            }
         }
         while (throwable.getCause() != null) {
             throwable = throwable.getCause();
         }
-        long element =
-                Arrays.stream(throwable.getStackTrace())
-                        .limit(5)
-                        .filter(
-                                stackTraceElement ->
-                                        stackTraceElement.getClassName().contains("org.maxgamer.quickshop"))
-                        .count();
-        if (element > 0) {
-            return true;
+
+        if (throwable.getStackTrace()[0].getClassName().contains("org.maxgamer.quickshop")) {
+            return PossiblyLevel.CONFIRM;
+        }
+        long errorCount = Arrays.stream(throwable.getStackTrace())
+                .limit(3)
+                .filter(stackTraceElement -> stackTraceElement.getClassName().contains("org.maxgamer.quickshop"))
+                .count();
+
+        if (errorCount > 0) {
+            return PossiblyLevel.MAYBE;
         } else if (throwable.getCause() != null) {
             return checkWasCauseByQS(throwable.getCause());
         }
-        return false;
+        return PossiblyLevel.IMPOSSIBLE;
     }
 
     /**
@@ -320,6 +323,12 @@ public class RollbarErrorReporter {
                     .append("\n");
         }
         return buffer.toString();
+    }
+
+    enum PossiblyLevel {
+        CONFIRM,
+        MAYBE,
+        IMPOSSIBLE
     }
 
     class GlobalExceptionFilter implements Filter {
@@ -358,7 +367,13 @@ public class RollbarErrorReporter {
                 sendError(record.getThrown(), record.getMessage());
                 return defaultValue(record);
             } else {
-                return sendError(record.getThrown(), record.getMessage()) == null;
+                sendError(record.getThrown(), record.getMessage());
+                PossiblyLevel possiblyLevel = checkWasCauseByQS(record.getThrown());
+                if (possiblyLevel == PossiblyLevel.IMPOSSIBLE)
+                    return false;
+                if (possiblyLevel == PossiblyLevel.MAYBE)
+                    plugin.getLogger().warning("This seems not a QuickShop but we still sent this error to QuickShop developers. If you have any question, you should ask QuickShop developer.");
+                return true;
             }
         }
 
@@ -399,7 +414,13 @@ public class RollbarErrorReporter {
                 sendError(record.getThrown(), record.getMessage());
                 return defaultValue(record);
             } else {
-                return sendError(record.getThrown(), record.getMessage()) == null;
+                sendError(record.getThrown(), record.getMessage());
+                PossiblyLevel possiblyLevel = checkWasCauseByQS(record.getThrown());
+                if (possiblyLevel == PossiblyLevel.IMPOSSIBLE)
+                    return false;
+                if (possiblyLevel == PossiblyLevel.MAYBE)
+                    plugin.getLogger().warning("This seems not a QuickShop but we still sent this error to QuickShop developers. If you have any question, you should ask QuickShop developer.");
+                return true;
             }
         }
 
