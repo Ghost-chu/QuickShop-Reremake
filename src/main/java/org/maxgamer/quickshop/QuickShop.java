@@ -621,9 +621,9 @@ public class QuickShop extends JavaPlugin {
                         "=    QuickShop  Configuration   =\n" +
                         "=================================\n" +
                         "\nNotes:\n" +
-                        "Please read the example-configuration.yml file to get commented example config file.\n" +
-                        "Please read the example-configuration.yml file to get commented example config file.\n" +
-                        "Please read the example-configuration.yml file to get commented example config file.\n"
+                        "Please read the example-configuration.yml file to get a commented example config.\n" +
+                        "Please read the example-configuration.yml file to get a commented example config.\n" +
+                        "Please read the example-configuration.yml file to get a commented example config.\n"
         );
         if (getConfig().getInt("config-version", 0) == 0) {
             getConfig().set("config-version", 1);
