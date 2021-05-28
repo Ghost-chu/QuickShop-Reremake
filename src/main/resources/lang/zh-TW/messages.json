@@ -60,7 +60,7 @@
   "admin-shop": "管理員商店",
   "unknown-owner": "未知",
   "owner-bypass-check": "&e略過了所有檢查，交易成功。 （ 你是商店店主 ！ ）",
-  "reached-maximum-can-create": "&c你創建的商店數量 {0}/{1} 已經達到上限 ！",
+  "reached-maximum-can-create": "&c你建立的商店數量 {0}/{1} 已經達到上限 ！",
   "restricted-prices": "&c{0} 元是無效的價格 ： 最高 {1} 元，最低 {2} 元。",
   "no-enough-money-to-keep-shops": "&c你的金錢不夠繳稅，所以你所有的商店已經被刪除...",
   "nothing-to-flush": "&a沒有關於商店的新訊息。",
@@ -102,11 +102,11 @@
     "total-value-of-chest": "&a儲物箱中物品價值：&e{0} 元",
     "damage-percent-remaining": "&a耐久值 ： &e剩餘 {0}%。",
     "this-shop-is-buying": "&a此商店是 &d收購物品&a 的商店。",
-    "this-shop-is-selling": "&a此商店是 &b出售物品&a 的商店。",
+    "this-shop-is-selling": "&a此商店正在&b出售&a物品。",
     "shop-stack": "&a每份物品的數量：&e{0}",
     "effects": "&a藥水效果"
   },
-  "bypassing-lock": "&c你使用繞過權限打開了一個上鎖的商店 ！",
+  "bypassing-lock": "&c你繞過了 Quickshop 鎖 ！",
   "that-is-locked": "&c此商店已經上鎖。",
   "how-many-buy": "&a在聊天室中輸入你想要 &b購買 &a的數量，你可以購買 &e{0} &a個。輸入 &bALL &a購買全部。",
   "how-many-sell": "&a在聊天室中輸入你想要 &d出售 &a的數量，你有 &e{0} &a個可以出售。輸入 &bALL &a賣出全部。",
@@ -315,5 +315,5 @@
   "backup-success": "&a備份成功。",
   "console-only": "&c該指令只能在控制台執行。",
   "console-only-danger": "&c這是一個危險的指令，因此只能由控制台執行。 ",
-  "clean-warning": "&e如果商店在不允許的世界中損壞或創建或出售/購買不允許的物品並且＆c＆lIN未裝載的世界商店&e，此指令將清除&c所有的&e商店，請確保你已完全備份商店數據並使用 &b/qs cleanghost cleanghost confirm &e繼續。 "
+  "clean-warning": "&e此指令將清除&c&未裝載的世界商店&e及&c所有&e已損壞的、在不允許的世界中建立、或購買/販賣不允許商品的商店，請確保你已完全備份商店數據並使用 &b/qs cleanghost confirm &e以繼續。"
 }
