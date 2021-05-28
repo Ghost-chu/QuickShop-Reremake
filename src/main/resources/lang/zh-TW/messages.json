@@ -52,7 +52,7 @@
   "nearby-shop-this-way": "&a商店距離你 {0} 格遠。",
   "nearby-shop-header": "&a匹配附近商店 &b{0}&a ： ",
   "nearby-shop-entry": "&a-資訊：{0} &a價格：&b {1} &ax：&b{2} &ay：&b{3} &az：&b{4} &a距離：&b{5} &a個方塊。",
-  "no-nearby-shop": "&a這個商店離你有 {0} 格的距離。",
+  "no-nearby-shop": "&c找不到符合 {0} 的商店。",
   "buying-more-than-selling": "&c警告 ： 你收購的物品比出售的物品多。",
   "not-enough-space": "&c你只剩下 {0} 格空間可以裝東西 ！",
   "refill-success": "&a補貨成功",
@@ -170,10 +170,10 @@
       "transfer": "&e我們將某人的所有商店轉移給其他人",
       "removeworld": "&e指定世界的商店已經全部刪除",
       "currency": "&e設置或移除目前商店的貨幣",
-      "ban": "&eBanning a player from the shop",
-      "unban": "&eUnbanning a player from the shop",
-      "freeze": "&eDisable or Enable shop trading",
-      "lock": "&eSwitch the shop lock status"
+      "ban": "&e禁止玩家進入商店",
+      "unban": "&e重新允許玩家進入商店",
+      "freeze": "&e停用或啟用商店交易",
+      "lock": "&e切換商店上鎖狀態"
     },
     "disabled": "&c這個指令被停用 ： &e{0}",
     "feature-not-enabled": "該功能沒有在 config 中啟用。"
@@ -190,9 +190,9 @@
     "unlimited": "無限",
     "status-available": "&a",
     "status-unavailable": "&c",
-    "out-of-stock": "Out of Stock",
-    "out-of-space": "Out of Space",
-    "freeze": "Trade disabled"
+    "out-of-stock": "無庫存",
+    "out-of-space": "空間不足",
+    "freeze": "已停用交易"
   },
   "controlpanel": {
     "setowner": "&a店主 ： &b{0} &e[&d&l修改&e]",
