@@ -22,7 +22,7 @@
 #                        TO EDIT QUICKSHOP'S CONFIGURATION, USE THE "config.yml" FILE!
 
 #Do not touch this if you don't know what you're doing!
-config-version: 129
+config-version: 130
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not existant/not supported language, then QuickShop will use en_US.
@@ -272,8 +272,15 @@ shop:
   #The display type you want use.
   #0=Normal Dropped Item
   #1=ArmorStand
-  #2=Virtual Item (Requires ProtocolLib, fallback to type 0 if ProtocoLib is not installed)
+  #2=Virtual Item (Requires ProtocolLib, fallback to type 0 if ProtocolLib is not installed)
   display-type: 2
+
+  #Show we use global virtual item queue?
+  #Virtual item display need to send fake packet
+  #which will generate task for each shop
+  #But it may have performance issue for too many tasks
+  #Turn on this ONLY when you think the HUGE tasks amount causing lag
+  use-global-virtual-item-queue: false
 
   #Allow QuickShop to automatically despawn displays when no players are in range of the shop.
   display-auto-despawn: false
