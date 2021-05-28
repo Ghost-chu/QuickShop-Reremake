@@ -1450,6 +1450,10 @@ public class MsgUtil {
             setAndUpdate("controlpanel.freeze-hover");
             setAndUpdate("language-version", ++selectedVersion);
         }
+        if (selectedVersion == 52) {
+            setAndUpdate("shop-creation-failed");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
     }
 
