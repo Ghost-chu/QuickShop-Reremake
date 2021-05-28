@@ -170,10 +170,10 @@
       "transfer": "&eTransferir TODAS las tiendas de alguien a otros",
       "removeworld": "&ese removieron ALL tiendas en el mundo",
       "currency": "&eEstablecer o remover la configuración de divisa en la tienda",
-      "ban": "&eBanning a player from the shop",
-      "unban": "&eUnbanning a player from the shop",
-      "freeze": "&eDisable or Enable shop trading",
-      "lock": "&eSwitch the shop lock status"
+      "ban": "&eBanear a un jugador de la tienda",
+      "unban": "&eDesbaneando a un jugador de la tienda",
+      "freeze": "&eDesactivar o activar el trading en la tienda",
+      "lock": "&eCambiar el estado de bloqueo de la tienda"
     },
     "disabled": "&cEste comando esta deshabilitado: &e{0}",
     "feature-not-enabled": "La característica no está habilitada en la configuración."
@@ -190,9 +190,9 @@
     "unlimited": "Ilimitado",
     "status-available": "&a",
     "status-unavailable": "&c",
-    "out-of-stock": "Out of Stock",
-    "out-of-space": "Out of Space",
-    "freeze": "Trade disabled"
+    "out-of-stock": "Agotado",
+    "out-of-space": "Sin espacio",
+    "freeze": "Operación desactivada"
   },
   "controlpanel": {
     "setowner": "&aPropietario: &b{0} &e[&d&lCambiar&e]",
@@ -218,10 +218,10 @@
     "item-hover": "&eClic para cambiar el artículo de la tienda",
     "currency": "&aMoneda: &b{0} &e[&d&lSet&e]",
     "currency-hover": "&eClick para establecer o remover la divisa que utiliza la tienda",
-    "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
-    "lock-hover": "&eEnable/Disable shop lock protection.",
-    "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
-    "freeze-hover": "&eToggle shop freeze status,"
+    "lock": "&eTienda bloqueada: &b{0} &e[&d&lToggle&e]",
+    "lock-hover": "&eActivar/Desactivar protección contra bloqueo de la tienda.",
+    "freeze": "&eTienda bloqueada: &b{0} &e[&d&lToggle&e]",
+    "freeze-hover": "&eCambiar estado de congelación de la tienda"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
