@@ -370,8 +370,8 @@ public class VirtualDisplayItem extends DisplayItem {
                     });
                 }
             };
-            protocolManager.addPacketListener(packetAdapter); //TODO: This may affects performance
         }
+        protocolManager.addPacketListener(packetAdapter); //TODO: This may affects performance
     }
 
     private void unload() {
