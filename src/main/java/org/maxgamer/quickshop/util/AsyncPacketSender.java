@@ -21,12 +21,13 @@ package org.maxgamer.quickshop.util;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.QuickShop;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 public final class AsyncPacketSender {
 
-    private static final Queue<Runnable> asyncPacketSendQueue = new ConcurrentLinkedQueue<>();
+    private static final LinkedBlockingQueue<Runnable> asyncPacketSendQueue = new LinkedBlockingQueue<>();
     private static BukkitTask asyncSendingTask;
 
     private AsyncPacketSender() {
@@ -35,13 +36,22 @@ public final class AsyncPacketSender {
     public static void start(QuickShop plugin) {
         //lazy initialize
         if (asyncSendingTask == null || asyncSendingTask.isCancelled()) {
-            asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-                Runnable nextTask = asyncPacketSendQueue.poll();
-                while (nextTask != null) {
-                    nextTask.run();
-                    nextTask = asyncPacketSendQueue.poll();
+            asyncSendingTask = plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+                while (true) {
+                    try {
+                        // Add time out so we can enter next loop to check task cancelled.
+                        Runnable nextTask = asyncPacketSendQueue.poll(1, TimeUnit.SECONDS);
+                        if (asyncSendingTask.isCancelled()) {
+                            break; // End loop task
+                        }
+                        if (nextTask != null) {
+                            nextTask.run();
+                        }
+                    } catch (InterruptedException e) {
+                        plugin.getLogger().log(Level.WARNING, "AsyncSendingTask quitting incorrectly", e);
+                    }
                 }
-            }, 0, 1);
+            });
         }
     }
 
