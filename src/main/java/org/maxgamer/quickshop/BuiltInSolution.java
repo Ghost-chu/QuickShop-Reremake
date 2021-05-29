@@ -22,48 +22,48 @@ package org.maxgamer.quickshop;
 import org.bukkit.ChatColor;
 
 /**
- * A class to check known issue cause plugin failed enable.
+ * A class to check known issues that cause plugin boot failure.
  */
 class BuiltInSolution {
 
     /**
-     * Call when failed load database, and use this to check the reason.
+     * Call îf database failed to load. This checks the failure reason.
      *
-     * @return The reason of error.
+     * @return The error reason.
      */
     static BootError databaseError() {
         return new BootError(QuickShop.getInstance().getLogger(),
-                "Error connecting to the database",
-                "Make sure your database service is running.",
-                "Or check the configuration in your config.yml");
+                "Error connecting to the database!",
+                "Please make sure your database service is running.",
+                "and check the configuration in your config.yml");
     }
 
     /**
-     * Call when failed load economy system, and use this to check the reason.
+     * Call îf economy system failed to load. This checks the failure reason.
      *
-     * @return The reason of error.
+     * @return The error reason.
      */
     static BootError econError() {
-        // Check Vault is installed
+        // Check if Vault is installed
         if (QuickShop.getInstance().getServer().getPluginManager().getPlugin("Vault") == null) {
-            // Vault not installed
+            // Vault is not installed
             return new BootError(QuickShop.getInstance().getLogger(),
                     "Vault is not installed or loaded!",
-                    "Make sure you installed Vault.");
+                    "Please make sure Vault is installed.");
         }
         // Vault is installed
         if (QuickShop.getInstance().getServer().getPluginManager().getPlugin("CMI") != null) {
-            // Found may in-compatiable plugin
+            // Found possible incompatible plugin
             return new BootError(QuickShop.getInstance().getLogger(),
-                    "No Economy plugin detected, did you installed and loaded them? Make sure they loaded before QuickShop.",
-                    "Make sure you have an economy plugin hooked into Vault.",
+                    "No Economy plugin detected! Please make sure that you have a compatible economy",
+                    "plugin installed that is hooked into Vault and loads before QuickShop.",
                     ChatColor.YELLOW + "Incompatibility detected: CMI Installed",
-                    "Download CMI Edition of Vault might fix this.");
+                    "The use of the CMI Edition of Vault might fix this.");
         }
 
         return new BootError(QuickShop.getInstance().getLogger(),
-                "No Economy plugin detected, did you installed and loaded them? Make sure they loaded before QuickShop.",
-                "Install an economy plugin to get Vault working.");
+                "No Economy plugin detected! Please make sure that you have a",
+                "compatible economy plugin installed to get Vault working.");
     }
 
 }
