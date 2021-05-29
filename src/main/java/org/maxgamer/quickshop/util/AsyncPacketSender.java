@@ -21,48 +21,78 @@ package org.maxgamer.quickshop.util;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.QuickShop;
 
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-public final class AsyncPacketSender {
+public class AsyncPacketSender {
 
-    private static final LinkedBlockingQueue<Runnable> asyncPacketSendQueue = new LinkedBlockingQueue<>();
-    private static BukkitTask asyncSendingTask;
+    private static AsyncSendingTask instance = null;
+    private static boolean isUsingGlobal = false;
+    private static volatile boolean enabled = false;
+
+    public synchronized static void start(QuickShop plugin) {
+        isUsingGlobal = plugin.getConfig().getBoolean("use-global-virtual-item-queue");
+        if (isUsingGlobal) {
+            createAndCancelExistingTask(plugin);
+        }
+        enabled = true;
+    }
 
     private AsyncPacketSender() {
     }
 
-    public static void start(QuickShop plugin) {
-        //lazy initialize
-        if (asyncSendingTask == null || asyncSendingTask.isCancelled()) {
-            asyncSendingTask = plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                while (true) {
-                    try {
-                        // Add time out so we can enter next loop to check task cancelled.
-                        Runnable nextTask = asyncPacketSendQueue.poll(1, TimeUnit.SECONDS);
-                        if (asyncSendingTask.isCancelled()) {
-                            break; // End loop task
-                        }
-                        if (nextTask != null) {
-                            nextTask.run();
-                        }
-                    } catch (InterruptedException e) {
-                        plugin.getLogger().log(Level.WARNING, "AsyncSendingTask quitting incorrectly", e);
+    private synchronized static void createAndCancelExistingTask(QuickShop plugin) {
+        if (instance != null) {
+            instance.stop();
+        }
+        instance = new AsyncSendingTask();
+        instance.start(plugin);
+    }
+
+    public static AsyncSendingTask create() {
+        if (!enabled) {
+            throw new IllegalStateException("Please start AsyncPacketSender first!");
+        }
+        if (isUsingGlobal) {
+            return instance;
+        } else {
+            return new AsyncSendingTask();
+        }
+    }
+
+    public synchronized static void stop() {
+        if (isUsingGlobal) {
+            instance.stop();
+        }
+    }
+
+    public static class AsyncSendingTask {
+        private final Queue<Runnable> asyncPacketSendQueue = new ConcurrentLinkedQueue<>();
+        private BukkitTask asyncSendingTask;
+
+        public void start(QuickShop plugin) {
+            //lazy initialize
+            if (asyncSendingTask == null || asyncSendingTask.isCancelled()) {
+                asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+                    Runnable nextTask = asyncPacketSendQueue.poll();
+                    while (nextTask != null) {
+                        nextTask.run();
+                        nextTask = asyncPacketSendQueue.poll();
                     }
-                }
-            });
+                }, 0, 1);
+            }
         }
-    }
 
-    public static void offer(Runnable runnable) {
-        asyncPacketSendQueue.offer(runnable);
-    }
 
-    public static void stop() {
-        if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {
-            asyncSendingTask.cancel();
+        public void stop() {
+            if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {
+                asyncSendingTask.cancel();
+            }
+            asyncPacketSendQueue.clear();
         }
-        asyncPacketSendQueue.clear();
+
+        public void offer(Runnable runnable) {
+            asyncPacketSendQueue.offer(runnable);
+        }
     }
 }
