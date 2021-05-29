@@ -768,6 +768,12 @@ public class QuickShop extends JavaPlugin {
         if (display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
         }
+        if (display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
+            displayDupeRemoverWatcher.runTaskTimerAsynchronously(this, 0, 1);
+        }
+        if (display && DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+            AsyncPacketSender.start(this);
+        }
 
         /* Load all shops. */
         shopLoader = new ShopLoader(this);
@@ -808,7 +814,7 @@ public class QuickShop extends JavaPlugin {
             updateWatcher.init();
         }
 
-        getLogger().info("QuickShop Loaded! " + enableTimer.endTimer() + " ms.");
+
         /* Delay the Ecoonomy system load, give a chance to let economy system regiser. */
         /* And we have a listener to listen the ServiceRegisterEvent :) */
         Util.debugLog("Loading economy system...");
@@ -823,12 +829,7 @@ public class QuickShop extends JavaPlugin {
         // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
         signUpdateWatcher.runTaskTimer(this, 0, 10);
         shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
-        if (display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
-            displayDupeRemoverWatcher.runTaskTimerAsynchronously(this, 0, 1);
-        }
-        if (display && DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
-            AsyncPacketSender.start(this);
-        }
+
         if (logWatcher != null) {
             logWatcher.runTaskTimerAsynchronously(this, 10, 10);
             getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
@@ -857,6 +858,7 @@ public class QuickShop extends JavaPlugin {
         calendarWatcher.start();
         Util.debugLog("Now using display-type: " + DisplayItem.getNowUsing().name());
         // sentryErrorReporter.sendError(new IllegalAccessError("no fucking way"));
+        getLogger().info("QuickShop Loaded! " + enableTimer.endTimer() + " ms.");
     }
 
     private void loadItemMatcher() {
