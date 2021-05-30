@@ -544,16 +544,12 @@ public class QuickShop extends JavaPlugin {
     public void onDisable() {
 
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
+        if (sentryErrorReporter != null) {
+            sentryErrorReporter.unregister();
+        }
+
         if (this.integrationHelper != null) {
             this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
-        }
-        for (BukkitTask bukkitTask : timerTaskList) {
-            if (!bukkitTask.isCancelled()) {
-                bukkitTask.cancel();
-            }
-        }
-        if (calendarWatcher != null) {
-            calendarWatcher.stop();
         }
         Util.debugLog("Unloading all shops...");
         try {
@@ -586,16 +582,22 @@ public class QuickShop extends JavaPlugin {
         if (logWatcher != null) {
             logWatcher.close();
         }
+        for (BukkitTask bukkitTask : timerTaskList) {
+            if (!bukkitTask.isCancelled()) {
+                bukkitTask.cancel();
+            }
+        }
+        if (calendarWatcher != null) {
+            calendarWatcher.stop();
+        }
         /* Unload UpdateWatcher */
         if (this.updateWatcher != null) {
             this.updateWatcher.uninit();
         }
 
-        Util.debugLog("Cleanup tasks...");
         AsyncPacketSender.stop();
-        if (sentryErrorReporter != null) {
-            sentryErrorReporter.unregister();
-        }
+
+        Util.debugLog("Cleanup tasks...");
 
         try {
             Bukkit.getScheduler().cancelTasks(this);
