@@ -21,48 +21,57 @@ package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.InvalidDescriptionException;
+import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.nonquickshopstuff.com.rylinaux.plugman.util.PluginUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
 
-import java.lang.reflect.InvocationTargetException;
+import java.io.File;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 
 @AllArgsConstructor
 public class SubCommand_Reload implements CommandProcesser {
 
     private final QuickShop plugin;
+    private static Method paperPluginDisableMethod = null;
+
+    static {
+
+        try {
+            paperPluginDisableMethod = Class.forName("org.bukkit.plugin.PluginManager").getDeclaredMethod("disablePlugin", Plugin.class, boolean.class);
+            paperPluginDisableMethod.setAccessible(true);
+        } catch (Throwable ignored) {
+        }
+    }
 
     @Override
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.reloading", sender));
-
-
+        PluginManager pluginManager = plugin.getServer().getPluginManager();
         try {
-            Method newDisableMethod = plugin.getServer().getPluginManager().getClass().getDeclaredMethod("disablePlugin", Plugin.class, Boolean.class);
-            plugin.getLogger().info("Reloading with new disable method...");
-            newDisableMethod.invoke(plugin.getServer().getPluginManager(), plugin, false);
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-            if (!(e instanceof NoSuchMethodException))
-                e.printStackTrace();
-            plugin.getLogger().info("Reloading with classic disable method...");
-            plugin.getServer().getPluginManager().disablePlugin(plugin);
-
+            File file = Paths.get(plugin.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile();
+            Throwable throwable = PluginUtil.unload(plugin);
+            if (throwable != null) {
+                throw new RuntimeException("Failed to reload plugin, considering restart the server. (unload plugin failed)");
+            }
+            Plugin plugin = pluginManager.loadPlugin(file);
+            if (plugin != null) {
+                plugin.onLoad();
+                pluginManager.enablePlugin(plugin);
+            } else {
+                throw new RuntimeException("Failed to reload plugin, considering restart the server. (Load plugin failed)");
+            }
+        } catch (URISyntaxException | InvalidDescriptionException | InvalidPluginException e) {
+            throw new RuntimeException("Failed to reload plugin, considering restart the server.", e);
         }
-//
-//        try {
-//            Plugin newPlugin = Bukkit.getPluginManager().loadPlugin(new File(plugin.getClass().getProtectionDomain().getCodeSource().getLocation().getFile()));
-//            if (newPlugin == null) {
-//                throw new InvalidPluginException("Plugin loading failed - null instance returned.");
-//            }
-//            Bukkit.getPluginManager().enablePlugin(newPlugin);
-//        } catch (InvalidPluginException | InvalidDescriptionException e) {
-//            throw new RuntimeException("Failed to reload plugin, considering restart the server.", e);
-//        }
-        plugin.getServer().getPluginManager().enablePlugin(plugin);
     }
 
 
