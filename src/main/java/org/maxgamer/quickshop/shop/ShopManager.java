@@ -29,6 +29,7 @@ import lombok.Getter;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.*;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -214,27 +215,28 @@ public class ShopManager {
     }
 
     private void processWaterLoggedSign(@NotNull Block container, @NotNull Block signBlock) {
-        BlockState bs = signBlock.getState();
-        boolean signIsWater = bs.getType() == Material.WATER;
+        boolean signIsWatered = signBlock.getType() == Material.WATER;
         signBlock.setType(Util.getSignMaterial());
-        if (signIsWater && (bs.getBlockData() instanceof Waterlogged)) {
-            Waterlogged waterable = (Waterlogged) bs.getBlockData();
+        BlockState signBlockState = signBlock.getState();
+        BlockData signBlockData = signBlockState.getBlockData();
+        if (signIsWatered && (signBlockData instanceof Waterlogged)) {
+            Waterlogged waterable = (Waterlogged) signBlockData;
             waterable.setWaterlogged(true); // Looks like sign directly put in water
         }
-        if (bs.getBlockData() instanceof WallSign) {
-            WallSign signBlockDataType = (WallSign) bs.getBlockData();
+        if (signBlockData instanceof WallSign) {
+            WallSign wallSignBlockData = (WallSign) signBlockData;
             BlockFace bf = container.getFace(signBlock);
             if (bf != null) {
-                signBlockDataType.setFacing(bf);
-                bs.setBlockData(signBlockDataType);
+                wallSignBlockData.setFacing(bf);
+                signBlockState.setBlockData(wallSignBlockData);
             }
         } else {
             plugin.getLogger().warning(
                     "Sign material "
-                            + bs.getType().name()
+                            + signBlockState.getType().name()
                             + " not a WallSign, make sure you using correct sign material.");
         }
-        bs.update(true);
+        signBlockState.update(true);
     }
 
     /**
