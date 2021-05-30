@@ -37,13 +37,13 @@ public class QuickShopAPI {
      * DO NOT CALL ME, IT JUST A INTERNAL METHOD, BUT BECAUSE CROSS-PACKAGE ACCESS, IT IS PUBLIC, SO DO NOT EXECUTE IT.
      * Go away =w=
      *
-     * @param qs The QuickShop plugin instance
+     * @param doNotUseThisMethodInYourPlugin_ItOnlyCanBeAccessByQuickShopInternally The QuickShop plugin instance
      */
-    public static void setupApi(@NotNull JavaPlugin qs) {
-        if (!(qs instanceof QuickShop)) {
+    public static void setupApi(@NotNull JavaPlugin doNotUseThisMethodInYourPlugin_ItOnlyCanBeAccessByQuickShopInternally) {
+        if (!(doNotUseThisMethodInYourPlugin_ItOnlyCanBeAccessByQuickShopInternally instanceof QuickShop)) {
             throw new IllegalArgumentException("You can't setup API, it should only access by QuickShop internal calling.");
         }
-        plugin = (QuickShop) qs;
+        plugin = (QuickShop) doNotUseThisMethodInYourPlugin_ItOnlyCanBeAccessByQuickShopInternally;
         shopAPI = new ShopAPI(plugin);
         displayItemAPI = new DisplayItemAPI(plugin);
     }
