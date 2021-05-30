@@ -540,10 +540,11 @@ public class QuickShop extends JavaPlugin {
 
     @Override
     public void onDisable() {
+
+        getLogger().info("QuickShop is finishing remaining work, this may need a while...");
         if (this.integrationHelper != null) {
             this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
         }
-        getLogger().info("QuickShop is finishing remaining work, this may need a while...");
         if (calendarWatcher != null) {
             calendarWatcher.stop();
         }
@@ -593,6 +594,10 @@ public class QuickShop extends JavaPlugin {
             Bukkit.getScheduler().cancelTasks(this);
         } catch (Throwable ignored) {
         }
+
+        Util.debugLog("Cleanup listeners...");
+        HandlerList.unregisterAll(this);
+
         Util.debugLog("All shutdown work is finished.");
 
     }
