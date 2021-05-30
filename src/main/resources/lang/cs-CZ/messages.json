@@ -4,7 +4,7 @@
   "translation-version": "Verze: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: Czech (cs_CZ)",
-  "language-version": "53",
+  "language-version": "54",
   "not-looking-at-shop": "&cNelze najít QuickShop. Musíš se na něj podívat.",
   "no-anythings-in-your-hand": "&cNemáš v ruce žádný předmět.",
   "no-permission": "&cNa tuto akci nemáš práva.",
@@ -315,5 +315,6 @@
   "backup-success": "&aZáloha úspěšná.",
   "console-only": "&cTento příkaz může být spuštěn pouze v konzoli.",
   "console-only-danger": "&cTento příkaz může být spuštěn pouze v konzoli.",
-  "clean-warning": "&eTento příkaz vyčistí &volat obchody v případě, že je obchod poškozen nebo vytvořen v nepovoleném světě nebo prodávat/nakupuje nepovolené položky a &c&lIN NEZAMĚŘENO SVĚTY SHOPS&e, Ujistěte se, že máte úplnou zálohu dat vašich obchodů a použijte &b/qs cleanghost potvrdit &eto pokračování."
+  "clean-warning": "&eTento příkaz vyčistí &volat obchody v případě, že je obchod poškozen nebo vytvořen v nepovoleném světě nebo prodávat/nakupuje nepovolené položky a &c&lIN NEZAMĚŘENO SVĚTY SHOPS&e, Ujistěte se, že máte úplnou zálohu dat vašich obchodů a použijte &b/qs cleanghost potvrdit &eto pokračování.",
+  "shop-creation-failed": "&cShop creation failed, please contact with server administrator."
 }
