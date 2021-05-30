@@ -171,10 +171,14 @@ public class RollbarErrorReporter {
             plugin
                     .getLogger()
                     .warning(
-                            "A exception was thrown, QuickShop already caught this exception and reported it, switch to debug mode to see the full errors.");
+                            "A exception was thrown, QuickShop already caught this exception and reported it. This error will only shown once before next restart.");
             plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
             plugin.getLogger().warning("Description: " + throwable.getMessage());
             plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID());
+            plugin.getLogger().warning("Exception  : ");
+            ignoreThrows();
+            throwable.printStackTrace();
+            resetIgnores();
             plugin.getLogger().warning("====QuickShop Error Report E N D===");
             Util.debugLog(throwable.getMessage());
             Arrays.stream(throwable.getStackTrace()).forEach(a -> Util.debugLog(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
@@ -370,10 +374,12 @@ public class RollbarErrorReporter {
                 sendError(record.getThrown(), record.getMessage());
                 PossiblyLevel possiblyLevel = checkWasCauseByQS(record.getThrown());
                 if (possiblyLevel == PossiblyLevel.IMPOSSIBLE)
-                    return false;
-                if (possiblyLevel == PossiblyLevel.MAYBE)
+                    return true;
+                if (possiblyLevel == PossiblyLevel.MAYBE) {
                     plugin.getLogger().warning("This seems not a QuickShop but we still sent this error to QuickShop developers. If you have any question, you should ask QuickShop developer.");
-                return true;
+                    return true;
+                }
+                return false;
             }
         }
 
@@ -417,10 +423,12 @@ public class RollbarErrorReporter {
                 sendError(record.getThrown(), record.getMessage());
                 PossiblyLevel possiblyLevel = checkWasCauseByQS(record.getThrown());
                 if (possiblyLevel == PossiblyLevel.IMPOSSIBLE)
-                    return false;
-                if (possiblyLevel == PossiblyLevel.MAYBE)
+                    return true;
+                if (possiblyLevel == PossiblyLevel.MAYBE) {
                     plugin.getLogger().warning("This seems not a QuickShop but we still sent this error to QuickShop developers. If you have any question, you should ask QuickShop developer.");
-                return true;
+                    return true;
+                }
+                return false;
             }
         }
 
