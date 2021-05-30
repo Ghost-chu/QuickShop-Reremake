@@ -22,7 +22,6 @@ import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.QuickShop;
 
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 public class AsyncPacketSender {
 
@@ -73,22 +72,15 @@ public class AsyncPacketSender {
         public void start(QuickShop plugin) {
             //lazy initialize
             if (asyncSendingTask == null || asyncSendingTask.isCancelled()) {
-                asyncSendingTask = plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                    while (true) {
-                        try {
-                            // Add delay so CPU won't to be tried and make sure the loop can be exit while cancelled.
-                            Runnable nextTask = asyncPacketSendQueue.poll(3, TimeUnit.SECONDS);
-                            if (nextTask != null) {
-                                nextTask.run();
-                            }
-                            if (asyncSendingTask.isCancelled()) {
-                                break;
-                            }
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+                    if (asyncSendingTask.isCancelled()) {
+                        return;
                     }
-                });
+                    Runnable nextTask = asyncPacketSendQueue.poll();
+                    if (nextTask != null) {
+                        nextTask.run();
+                    }
+                }, 0, 1);
             }
         }
 
