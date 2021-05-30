@@ -311,10 +311,10 @@
   "currency-set": "&aShop货币成功设置为 {0}。",
   "currency-unset": "&aShop货币已成功删除。现在使用默认设置。",
   "currency-not-support": "&c此经济插件不支持多货币功能。",
-  "item-not-exist": "&c项目 &e{0} &cdo不存在，请检查您的拼写。",
+  "item-not-exist": "&物品 &e{0} &c不存在，请检查您的拼写。",
   "backup-success": "&a备份成功。",
   "console-only": "&c此命令只能由控制台执行。",
-  "console-only-danger": "&c这是一个危险命令所以只能通过控制台执行。",
-  "clean-warning": "&e这个命令将清理&e 商店，如果商店在不允许的世界上被损坏或创建，或出售/购买不允许的项目，以及 &c&lIN不要加载世界商品， 请确保您的商店数据备份完整，并使用 &b/qs 清除主机确认 &eto 继续。",
-  "shop-creation-failed": "&cShop creation failed, please contact with server administrator."
+  "console-only-danger": "&c这是一个危险命令，所以只能通过控制台执行。",
+  "clean-warning": "&e这个命令将清理&c所有&e在不允许创建商店的世界的、出售/购买不允许的物品的，以及 &c&l所有在服务器没有加载的世界的商店， 请在确保您的商店数据备份完整后使用 &b/qs cleanghost confirm &e来继续。",
+  "shop-creation-failed": "&c商店创建失败，请与服务器管理员联系。"
 }
