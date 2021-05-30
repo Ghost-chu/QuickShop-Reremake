@@ -214,10 +214,10 @@ public class ShopManager {
     }
 
     private void processWaterLoggedSign(@NotNull Block signBlock) {
-        signBlock.setType(Util.getSignMaterial());
         BlockState bs = signBlock.getState();
-        if (signBlock.getType() == Material.WATER
-                && (bs.getBlockData() instanceof Waterlogged)) {
+        boolean signIsWater = bs.getType() == Material.WATER;
+        signBlock.setType(Util.getSignMaterial());
+        if (signIsWater && (bs.getBlockData() instanceof Waterlogged)) {
             Waterlogged waterable = (Waterlogged) bs.getBlockData();
             waterable.setWaterlogged(true); // Looks like sign directly put in water
         }
