@@ -23,6 +23,7 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.CalendarEvent;
 import org.maxgamer.quickshop.util.Util;
@@ -38,6 +39,7 @@ public class CalendarWatcher extends BukkitRunnable {
     @Getter
     private final YamlConfiguration configuration;
     private final QuickShop plugin;
+    private BukkitTask task;
 
     public CalendarWatcher(QuickShop plugin) {
         this.plugin = plugin;
@@ -53,13 +55,15 @@ public class CalendarWatcher extends BukkitRunnable {
     }
 
     public void start() {
-        this.runTaskTimerAsynchronously(plugin, 20, 20);
+        task = this.runTaskTimerAsynchronously(plugin, 20, 20);
     }
 
     public void stop() {
         save();
         try {
-            this.cancel();
+            if (task != null && !task.isCancelled()) {
+                task.cancel();
+            }
         } catch (IllegalStateException ignored) {
         }
     }

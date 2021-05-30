@@ -38,6 +38,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.QuickShopAPI;
@@ -247,6 +248,8 @@ public class QuickShop extends JavaPlugin {
     private ShopControlPanel shopControlPanelManager;
     @Getter
     private CalendarWatcher calendarWatcher;
+
+    private final List<BukkitTask> timerTaskList = new ArrayList<>(3);
 
     @NotNull
     public static QuickShop getInstance() {
@@ -544,6 +547,11 @@ public class QuickShop extends JavaPlugin {
         if (this.integrationHelper != null) {
             this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
         }
+        for (BukkitTask bukkitTask : timerTaskList) {
+            if (!bukkitTask.isCancelled()) {
+                bukkitTask.cancel();
+            }
+        }
         if (calendarWatcher != null) {
             calendarWatcher.stop();
         }
@@ -773,7 +781,7 @@ public class QuickShop extends JavaPlugin {
             displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
         }
         if (display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
-            displayDupeRemoverWatcher.runTaskTimerAsynchronously(this, 0, 1);
+            timerTaskList.add(displayDupeRemoverWatcher.runTaskTimerAsynchronously(this, 0, 1));
         }
         if (display && DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
             AsyncPacketSender.start(this);
@@ -835,12 +843,12 @@ public class QuickShop extends JavaPlugin {
         shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
 
         if (logWatcher != null) {
-            logWatcher.runTaskTimerAsynchronously(this, 10, 10);
+            timerTaskList.add(logWatcher.runTaskTimerAsynchronously(this, 10, 10));
             getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
         }
         if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
             getLogger().info("Ongoing fee feature is enabled.");
-            ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks"));
+            timerTaskList.add(ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks")));
         }
 
 
