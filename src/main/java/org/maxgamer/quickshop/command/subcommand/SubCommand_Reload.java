@@ -32,7 +32,6 @@ import org.maxgamer.quickshop.nonquickshopstuff.com.rylinaux.plugman.util.Plugin
 import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
@@ -40,16 +39,6 @@ import java.nio.file.Paths;
 public class SubCommand_Reload implements CommandProcesser {
 
     private final QuickShop plugin;
-    private static Method paperPluginDisableMethod = null;
-
-    static {
-
-        try {
-            paperPluginDisableMethod = Class.forName("org.bukkit.plugin.PluginManager").getDeclaredMethod("disablePlugin", Plugin.class, boolean.class);
-            paperPluginDisableMethod.setAccessible(true);
-        } catch (Throwable ignored) {
-        }
-    }
 
     @Override
     public void onCommand(
