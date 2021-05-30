@@ -4,7 +4,7 @@
   "translation-version": "지원 버전: Reremake",
   "translation-contributors": "기여자: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "언어 지역: 한국어 (Ko)",
-  "language-version": "53",
+  "language-version": "54",
   "not-looking-at-shop": "&c퀵샵을 찾을수 없습니다. 상점을 보고있어야만합니다!",
   "no-anythings-in-your-hand": "&c당신의 손에 아무것도 없습니다.",
   "no-permission": "&c이것을 하기위해선 권한이 필요합니다.",
@@ -315,5 +315,6 @@
   "backup-success": "&a백업 완료.",
   "console-only": "&c이 명령어는 콘솔에서만 사용할 수 있습니다.",
   "console-only-danger": "&c이 명령어는 위험하기 때문에 콘솔에서만 실행할수 있습니다. ",
-  "clean-warning": "이 명령어은 허용되지 않는 월드 또는 허용되지 않는 아이템을 판매/구매하거나 구입하거나 로드되지 않은 월드 샵에서 모든 샵을 삭제합니다 샵 데이터를 전체 백업하고 /qs cleanhost를 사용하여 계속 진행하십시오."
+  "clean-warning": "이 명령어은 허용되지 않는 월드 또는 허용되지 않는 아이템을 판매/구매하거나 구입하거나 로드되지 않은 월드 샵에서 모든 샵을 삭제합니다 샵 데이터를 전체 백업하고 /qs cleanhost를 사용하여 계속 진행하십시오.",
+  "shop-creation-failed": "&cShop creation failed, please contact with server administrator."
 }
