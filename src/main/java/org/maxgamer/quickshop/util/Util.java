@@ -867,8 +867,9 @@ public class Util {
      * @return true if the given location is loaded or not.
      */
     public static boolean isLoaded(@NotNull Location loc) {
+
         // plugin.getLogger().log(Level.WARNING, "Checking isLoaded(Location loc)");
-        if (loc.getWorld() == null) {
+        if ((!getNMSVersion().contains("1_13") && !loc.isWorldLoaded()) || loc.getWorld() == null) {
             // plugin.getLogger().log(Level.WARNING, "Is not loaded. (No world)");
             return false;
         }
