@@ -887,6 +887,9 @@ public class ShopManager {
                         String.valueOf(materialLimit.getKey()),
                         String.valueOf(materialLimit.getValue())));
                 return;
+            case NOT_VALID:
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("not-a-number", p, message));
+                return;
         }
 
         // Set to 1 when disabled stacking shop
