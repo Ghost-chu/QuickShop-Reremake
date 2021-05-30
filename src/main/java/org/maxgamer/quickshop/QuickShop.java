@@ -519,7 +519,7 @@ public class QuickShop extends JavaPlugin {
         runtimeCheck(EnvCheckEntry.Stage.ON_LOAD);
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
-        QuickShopAPI.setupApi(this);
+        QuickShopAPI._internal_access_only_setupApi(this);
         //noinspection ResultOfMethodCallIgnored
         getDataFolder().mkdirs();
         this.bootError = null;
@@ -673,7 +673,7 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Starting plugin self-test, please wait...");
         runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
 
-        QuickShopAPI.setupApi(this);
+        QuickShopAPI._internal_access_only_setupApi(this);
 
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
