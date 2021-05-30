@@ -4,7 +4,7 @@
   "translation-version": "ondersteunende versie: Reremake",
   "translation-contributors": "Medewerkers",
   "translation-country": "Taal Zone: Engels (nl_US)",
-  "language-version": "53",
+  "language-version": "54",
   "not-looking-at-shop": "&cGeen QuickShop gevonden, je moet naar een QuickShop kijken.",
   "no-anythings-in-your-hand": "&cJe hebt niks in je hand.",
   "no-permission": "&cJe hebt hiervoor geen rechten.",
@@ -315,5 +315,6 @@
   "backup-success": "&aBack-up succesvol.",
   "console-only": "&cDeze opdracht kan alleen worden uitgevoerd door Console.",
   "console-only-danger": "&cDit is een gevaars-commando zodat alleen door Console kan worden uitgevoerd.",
-  "clean-warning": "&eThis command zal &call shops verwijderen als de winkel beschadigd is of gemaakt is in niet-toegestane werelden of als het kopen van niet-toegestane artikelen en &c&lIN NIET LOADED WORLD SHOPS&e, zorg ervoor dat u volledige back-up van uw winkels gegevens heeft en gebruik &b/qs cleanghost bevestig &eto continu."
+  "clean-warning": "&eThis command zal &call shops verwijderen als de winkel beschadigd is of gemaakt is in niet-toegestane werelden of als het kopen van niet-toegestane artikelen en &c&lIN NIET LOADED WORLD SHOPS&e, zorg ervoor dat u volledige back-up van uw winkels gegevens heeft en gebruik &b/qs cleanghost bevestig &eto continu.",
+  "shop-creation-failed": "&cShop creation failed, please contact with server administrator."
 }
