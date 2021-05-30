@@ -4,7 +4,7 @@
   "translation-version": "Version suportée: Reremake",
   "translation-contributors": "Contributeurs : Timtower, Netherfoam, KaiNoMood, Mgazul, JackThePicken, Andre_601 et brunopaiva15, HiiRaZ",
   "translation-country": "Langue: Français (fr_FR)",
-  "language-version": "53",
+  "language-version": "54",
   "not-looking-at-shop": "&cImpossible de trouver un QuickShop. Vous devez en regarder un.",
   "no-anythings-in-your-hand": "&cVous n'avez aucun objet dans votre main.",
   "no-permission": "&cVous n'avez pas la permission de faire ceci.",
@@ -315,5 +315,6 @@
   "backup-success": "&aSauvegarde réussie.",
   "console-only": "&cCette commande ne peut être exécutée que par la Console.",
   "console-only-danger": "&cIl s'agit d'une commande dangereuse qui ne peut être exécutée que par la Console.",
-  "clean-warning": "&eCette commande purgera &ctoutes &eles boutiques si la boutique est endommagée ou créée dans des mondes non autorisés ou vendant/achetant des objets non autorisés et &c&lDANS DES BOUTIQUES DE MONDES NON CHARGÉS&e, assurez-vous d'avoir une sauvegarde complète des données de vos boutiques et utilisez la commande &b/qs cleanghost confirm &epour continuer."
+  "clean-warning": "&eCette commande purgera &ctoutes &eles boutiques si la boutique est endommagée ou créée dans des mondes non autorisés ou vendant/achetant des objets non autorisés et &c&lDANS DES BOUTIQUES DE MONDES NON CHARGÉS&e, assurez-vous d'avoir une sauvegarde complète des données de vos boutiques et utilisez la commande &b/qs cleanghost confirm &epour continuer.",
+  "shop-creation-failed": "&cShop creation failed, please contact with server administrator."
 }
