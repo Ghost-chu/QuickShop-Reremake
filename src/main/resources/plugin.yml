@@ -4,7 +4,6 @@ version: ${project.version}
 authors: [PotatoCraft Studio, Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul, TiaraRinne, sandtechnology]
 
 description: Economy Shops plugin
-#softdepend: [Herochat] OLD Remove Herochat support.
 softdepend:
   - Vault
   - Reserve

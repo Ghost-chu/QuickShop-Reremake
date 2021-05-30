@@ -30,9 +30,9 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopChunk;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class WorldListener extends QSListener {
 
@@ -52,7 +52,7 @@ public class WorldListener extends QSListener {
 
         plugin.getShopLoader().loadShops(world.getName());
         // New world data
-        final Map<ShopChunk, Map<Location, Shop>> inWorld = new HashMap<>(1);
+        final Map<ShopChunk, Map<Location, Shop>> inWorld = new ConcurrentHashMap<>(1);
         // Old world data
         final Map<ShopChunk, Map<Location, Shop>> oldInWorld =
                 plugin.getShopManager().getShops(world.getName());
@@ -63,7 +63,7 @@ public class WorldListener extends QSListener {
         }
 
         for (Entry<ShopChunk, Map<Location, Shop>> oldInChunk : oldInWorld.entrySet()) {
-            final Map<Location, Shop> inChunk = new HashMap<>(1);
+            final Map<Location, Shop> inChunk = new ConcurrentHashMap<>(1);
             // Put the new chunk were the old chunk was
             inWorld.put(oldInChunk.getKey(), inChunk);
 
