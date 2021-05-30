@@ -20,11 +20,17 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.InvalidDescriptionException;
+import org.bukkit.plugin.InvalidPluginException;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.util.MsgUtil;
+
+import java.io.File;
 
 @AllArgsConstructor
 public class SubCommand_Reload implements CommandProcesser {
@@ -36,7 +42,16 @@ public class SubCommand_Reload implements CommandProcesser {
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.reloading", sender));
         plugin.getServer().getPluginManager().disablePlugin(plugin);
-        plugin.getServer().getPluginManager().enablePlugin(plugin);
+        try {
+            Plugin newPlugin = Bukkit.getPluginManager().loadPlugin(new File(plugin.getClass().getProtectionDomain().getCodeSource().getLocation().getFile()));
+            if (newPlugin == null) {
+                throw new InvalidPluginException("Plugin loading failed - null instance returned.");
+            }
+            Bukkit.getPluginManager().enablePlugin(newPlugin);
+        } catch (InvalidPluginException | InvalidDescriptionException e) {
+            throw new RuntimeException("Failed to reload plugin, considering restart the server.", e);
+        }
+        //plugin.getServer().getPluginManager().enablePlugin(plugin);
     }
 
 
