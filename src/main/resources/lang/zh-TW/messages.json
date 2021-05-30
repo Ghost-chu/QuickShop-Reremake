@@ -4,7 +4,7 @@
   "translation-version": "支援版本 ： Reremake （ 重製版 ）",
   "translation-contributors": "貢獻人員 ： Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
   "translation-country": "語言 ： &b&l繁體中文 Chinese Traditional （ zh_TW ）",
-  "language-version": "53",
+  "language-version": "54",
   "not-looking-at-shop": "&c無法找到儲物箱商店，你需要注視著儲物箱。",
   "no-anythings-in-your-hand": "&c手上沒有任何東西。",
   "no-permission": "&4你沒有使用該指令的權限。",
@@ -315,5 +315,6 @@
   "backup-success": "&a備份成功。",
   "console-only": "&c該指令只能在控制台執行。",
   "console-only-danger": "&c這是一個危險的指令，因此只能由控制台執行。 ",
-  "clean-warning": "&e此指令將清除&c&未裝載的世界商店&e及&c所有&e已損壞的、在不允許的世界中建立、或購買/販賣不允許商品的商店，請確保你已完全備份商店數據並使用 &b/qs cleanghost confirm &e以繼續。"
+  "clean-warning": "&e此指令將清除&c&未裝載的世界商店&e及&c所有&e已損壞的、在不允許的世界中建立、或購買/販賣不允許商品的商店，請確保你已完全備份商店數據並使用 &b/qs cleanghost confirm &e以繼續。",
+  "shop-creation-failed": "&cShop creation failed, please contact with server administrator."
 }
