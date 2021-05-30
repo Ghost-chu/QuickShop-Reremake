@@ -170,8 +170,8 @@
       "transfer": "&e我們將某人的所有商店轉移給其他人",
       "removeworld": "&e指定世界的商店已全部刪除",
       "currency": "&e設置或移除目前商店的貨幣",
-      "ban": "&e禁止玩家進入商店",
-      "unban": "&e重新允許玩家進入商店",
+      "ban": "&e封禁商店中的玩家",
+      "unban": "&e解除封禁商店中的玩家",
       "freeze": "&e停用或啟用商店交易",
       "lock": "&e切換商店上鎖狀態"
     },
@@ -247,7 +247,7 @@
       "QuickShop {0} 已正式發布，你還在使用 QuickShop {1} ！",
       "蹦 ！ 新的 QuickShop 版本 {0} 到來了，快更新 ！",
       "驚喜 ！ QuickShop {0} 出來了，你還在使用 QuickShop {1}。",
-      "看來你需要更新， QuickShop {0} 已正式發布了。",
+      "看來你需要更新， QuickShop {0} 已正式發布了 ！",
       "噢 ！ QuickShop {0} 已正式發布了，你還在使用 QuickShop {1} ！",
       "我保證， QS 已更新到了 {0}。你怎麼還沒有更新 ？",
       "修復並重新…… 抱歉 QuickShop {0} 已正式發布了 ！",
@@ -255,24 +255,24 @@
       "我的天啊 ！ QuickShop {0} 已出來了 ！ 你怎麼還在使用 QuickShop {1} ？",
       "今日新聞 ： QuickShop 已正式發布 {0} 的更新 ！",
       "插件已陣亡，你應該要更新 QuickShop 到 {0} ！",
-      "新的 QuickShop {0} 更新被點燃。保存更新！",
+      "QuickShop 更新 {0} 發布了，現在就下載拯救更新吧 ！",
       "指揮官 ， QuickShop 的新版本 {0} 發布了 ！",
       "看看我的新風格── QuickShop {0} 出來了，你還在使用 QuickShop {1}。",
       "啊啊啊啊啊啊啊啊 ！ QuickShop 更新 {0} 來了 ！ 快更新 ！",
       "你在想什麼呢 ？ QuickShop {0} 已正式發布 ！ 請更新 ！",
       "博士， QuickShop 有一個新的更新 {0} ！ 你應該考慮一下更新了~",
-      "Ko~ko~da~yo~（在這裡哦）QuickShop 有新的更新 {0} ~"
+      "Ko~ko~da~yo~ QuickShop 有新的更新 {0} ~"
     ],
     "remote-disable-warning": "&c該版本的 QuickShop 已被遠端伺服器標記為停用，這意味著該版本可能存在嚴重問題，請從我們的 Spigot 插件頁面取得詳細資訊 ： {0}。在你切換到穩定版本之前，該警告將繼續出現，但不會影響伺服器的性能。",
     "label": {
-      "unstable": "[不穩定]",
-      "stable": "[穩定]",
+      "unstable": "[不穩定 Unstable]",
+      "stable": "[穩定 Stable]",
       "lts": "[長期支援 LTS]",
       "qualityverifyed": "[品質認證 Quality]",
       "github": "[GitHub]",
       "spigotmc": "[SpigotMC]",
       "bukkitdev": "[BukkitDev]",
-      "master": "[Master]"
+      "master": "[主要分支 Master]"
     }
   },
   "shop-removed-cause-ongoing-fee": "&c你在 {0} 的商店已被刪除了，因為你沒有足夠的資金去維護它 ！",
