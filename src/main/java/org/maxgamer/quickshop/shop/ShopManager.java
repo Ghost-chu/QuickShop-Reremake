@@ -213,7 +213,7 @@ public class ShopManager {
         return this.shops.get(world);
     }
 
-    private void processWaterLoggedSign(@NotNull Block signBlock) {
+    private void processWaterLoggedSign(@NotNull Block container, @NotNull Block signBlock) {
         BlockState bs = signBlock.getState();
         boolean signIsWater = bs.getType() == Material.WATER;
         signBlock.setType(Util.getSignMaterial());
@@ -223,7 +223,7 @@ public class ShopManager {
         }
         if (bs.getBlockData() instanceof WallSign) {
             WallSign signBlockDataType = (WallSign) bs.getBlockData();
-            BlockFace bf = signBlock.getLocation().getBlock().getFace(signBlock);
+            BlockFace bf = container.getFace(signBlock);
             if (bf != null) {
                 signBlockDataType.setFacing(bf);
                 bs.setBlockData(signBlockDataType);
@@ -251,7 +251,7 @@ public class ShopManager {
         }
         if (info.getSignBlock() != null && autoSign) {
             if (Util.isAir(info.getSignBlock().getType()) || info.getSignBlock().getType() == Material.WATER) {
-                this.processWaterLoggedSign(info.getSignBlock());
+                this.processWaterLoggedSign(shop.getLocation().getBlock(), info.getSignBlock());
             } else {
                 if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
                     MsgUtil.sendMessage(player, MsgUtil.getMessage("failed-to-put-sign", player));
