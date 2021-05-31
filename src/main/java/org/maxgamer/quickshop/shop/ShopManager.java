@@ -779,7 +779,7 @@ public class ShopManager {
 
         // Checking the shop can be created
         Util.debugLog("Calling for protection check...");
-        // Fix openInv compatiable issue
+        // Fix openInv compatible issue
         if (!bypassProtectionChecks) {
             Result result = plugin.getPermissionChecker().canBuild(p, info.getLocation());
             if (!result.isSuccess()) {
