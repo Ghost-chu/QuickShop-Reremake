@@ -4,7 +4,7 @@
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
   "translation-country": "本地化语言：简体中文 (zh_CN)",
-  "language-version": "53",
+  "language-version": "54",
   "not-looking-at-shop": "&c无法找到商店，您需要注视着你想要操作的商店。",
   "no-anythings-in-your-hand": "&c你的手里没有任何物品。",
   "no-permission": "&c你没有权限这样做。",
@@ -192,7 +192,7 @@
     "status-unavailable": "&c",
     "out-of-stock": "缺货",
     "out-of-space": "空间不足",
-    "freeze": "关闭交易"
+    "freeze": "交易已被禁用"
   },
   "controlpanel": {
     "setowner": "&a所有者: &b{0} &e[&d&l修改&e]",
@@ -237,7 +237,7 @@
     "price": "[价格]",
     "range": "[范围]",
     "amount": "[数量]",
-    "currency": "货币名称",
+    "currency": "[货币名称]",
     "item": "[物品]"
   },
   "updatenotify": {
@@ -308,12 +308,13 @@
     "help-us": "&a[帮助我们提高翻译质量]"
   },
   "currency-not-exists": "&c无法找到您想要设置的货币，也许是拼写错误或该货币在这个世界不可用。",
-  "currency-set": "&aShop货币成功设置为 {0}。",
-  "currency-unset": "&aShop货币已成功删除。现在使用默认设置。",
+  "currency-set": "&a商店货币单位已被成功设置为 {0}。",
+  "currency-unset": "&a商店货币单位已被成功删除。现在会使用默认货币单位。",
   "currency-not-support": "&c此经济插件不支持多货币功能。",
-  "item-not-exist": "&c项目 &e{0} &cdo不存在，请检查您的拼写。",
+  "item-not-exist": "&物品 &e{0} &c不存在，请检查您的拼写。",
   "backup-success": "&a备份成功。",
   "console-only": "&c此命令只能由控制台执行。",
-  "console-only-danger": "&c这是一个危险命令所以只能通过控制台执行。",
-  "clean-warning": "&e这个命令将清理&e 商店，如果商店在不允许的世界上被损坏或创建，或出售/购买不允许的项目，以及 &c&lIN不要加载世界商品， 请确保您的商店数据备份完整，并使用 &b/qs 清除主机确认 &eto 继续。"
+  "console-only-danger": "&c这是一个危险命令，所以只能通过控制台执行。",
+  "clean-warning": "&e这个命令将清理&c所有&e在不允许创建商店的世界的、出售/购买不允许的物品的，以及 &c&l所有在服务器没有加载的世界的商店， 请在确保您的商店数据备份完整后使用 &b/qs cleanghost confirm &e来继续。",
+  "shop-creation-failed": "&c商店创建失败，请与服务器管理员联系。"
 }

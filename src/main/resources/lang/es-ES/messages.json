@@ -4,7 +4,7 @@
   "translation-version": "&c&lVersión soportada: &b&lReremake",
   "translation-contributors": "Contribuidores: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken y Andre_601",
   "translation-country": "&c&lZona de idioma: &b&lEspañol (es_ES)",
-  "language-version": "53",
+  "language-version": "54",
   "not-looking-at-shop": "&cNo se pudo encontrar ninguna QuickShop. Tienes que mirar hacia una.",
   "no-anythings-in-your-hand": "&cNo hay nada en tu mano.",
   "no-permission": "&cNo tienes permiso para hacer eso.",
@@ -315,5 +315,6 @@
   "backup-success": "&aCopia de seguridad exitosa.",
   "console-only": "&cEste comando solo puede ser ejecutado por Consola.",
   "console-only-danger": "&cPor seguridad, este comando solo puede ser ejecutado por Consola.",
-  "clean-warning": "&eEste comando purgará &e las tiendas si la tienda está dañada o creada en mundos no permitidos o compras/objetos no permitidos y &c&LEN MUNDOS DE TIENDAS NO CARGADOS, asegúrate de tener una copia de seguridad completa de los datos de tu tienda y usa &b/qs confirmar &eo continuar."
+  "clean-warning": "&eEste comando purgará &e las tiendas si la tienda está dañada o creada en mundos no permitidos o compras/objetos no permitidos y &c&LEN MUNDOS DE TIENDAS NO CARGADOS, asegúrate de tener una copia de seguridad completa de los datos de tu tienda y usa &b/qs confirmar &eo continuar.",
+  "shop-creation-failed": "&cShop creation failed, please contact with server administrator."
 }
