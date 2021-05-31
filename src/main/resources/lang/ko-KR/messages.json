@@ -125,7 +125,7 @@
     "new-owner": "&a새 주인 : &e{0}",
     "now-buying": "&a이제 &e{0}&a를 구매합니다.",
     "now-selling": "&a이제 &e{0}&a를 판매합니다.",
-    "cleaning": "&a어떤 물량도 없는 상점들을 제거하는중입니다.",
+    "cleaning": "&a어떤 물량도 없는 상점들을 제거하는중입니다...",
     "reloading": "&a리로드 중...",
     "cleaned": "&e{0}개&a의 상점을 제거했습니다.",
     "no-type-given": "&c사용법: /qs find <아이템 이름>",
@@ -220,7 +220,7 @@
     "currency-hover": "&e클릭하여 이 상점이 사용중인 통화를 설정하거나 제거합니다.",
     "lock": "&e동결 생태: &b{0} &e[&d&l전환&e]",
     "lock-hover": "&e상점 잠금 보호를 활성화/비활성화 합니다. ",
-    "freeze": "&e동결 생태: &b{0} &e[&d&l전환&e]",
+    "freeze": "&e동결 상태: &b{0} &e[&d&l전환&e]",
     "freeze-hover": "&e상점 동결 상태 전환,"
   },
   "tableformat": {
@@ -280,7 +280,7 @@
   "complete": "&a완료!",
   "quickshop-gui-preview": "QuickShop GUI 아이템 미리보기",
   "shops-recovering": "상점을 백업본으로부터 복구하는 중입니다...",
-  "shops-backingup": "데이터베이스로부터 상점백업을 만들고 있습니다",
+  "shops-backingup": "상점백업을 데이터베이스에 만들고 있습니다",
   "saved-to-path": "백업이 {0} 에 저장되었습니다.",
   "backup-failed": "데이터베이스에 백업할 수 없습니다, 자세한 내용은 콘솔을 확인해주세요.",
   "translate-not-completed-yet-click": "{0} 언어의 번역이 {1} 완료되었습니다, 번역을 향상시키고 싶으신가요? 여기를 클릭하세요!",
@@ -315,6 +315,6 @@
   "backup-success": "&a백업 완료.",
   "console-only": "&c이 명령어는 콘솔에서만 사용할 수 있습니다.",
   "console-only-danger": "&c이 명령어는 위험하기 때문에 콘솔에서만 실행할수 있습니다. ",
-  "clean-warning": "이 명령어은 허용되지 않는 월드 또는 허용되지 않는 아이템을 판매/구매하거나 구입하거나 로드되지 않은 월드 샵에서 모든 샵을 삭제합니다 샵 데이터를 전체 백업하고 /qs cleanhost를 사용하여 계속 진행하십시오.",
+  "clean-warning": "이 명령어은 허용되지 않는 월드 또는 허용되지 않는 아이템을 판매/구매중인 상점과 &c&l로드되지 않은 월드의 모든 샵을 삭제합니다 샵 데이터를 전체 백업하고 /qs cleanhost를 사용하여 계속 진행하십시오.",
   "shop-creation-failed": "&c상점을 만들지 못했습니다, 서버 관리자에게 문의해주세요."
 }
