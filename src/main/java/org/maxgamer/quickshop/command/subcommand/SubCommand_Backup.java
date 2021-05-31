@@ -36,7 +36,7 @@ public class SubCommand_Backup implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (Util.backupDatabase()) {
-            MsgUtil.sendMessage(sender, "Backup successfully");
+            MsgUtil.sendMessage(sender, "Backup successful");
         } else {
             MsgUtil.sendMessage(sender, "Backup failed");
         }
