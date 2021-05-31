@@ -316,5 +316,5 @@
   "console-only": "&cDetta kommando kan endast köras av Konsolen.",
   "console-only-danger": "&cDetta är ett farligt kommando så att endast kan utföras av Konsolen.",
   "clean-warning": "&eDetta kommando kommer att rensa &ebutiker om butiken är skadad eller skapad i otillåtna världar eller sälja/köpa otillåtna föremål och &c&lIN INTE LADDA ORLD SHOPS&e, se till att du har full säkerhetskopiering av dina butikers data och använd &b/qs cleanghost confirm &eför att fortsätta.",
-  "shop-creation-failed": "&cShop creation failed, please contact with server administrator."
+  "shop-creation-failed": "&cSkapandet av butiken misslyckades, kontakta serveradministratören."
 }
