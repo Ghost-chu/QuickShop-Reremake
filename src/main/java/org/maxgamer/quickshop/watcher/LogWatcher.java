@@ -24,9 +24,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.util.Util;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -35,6 +33,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
@@ -43,12 +42,12 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.systemDefault());
     private static final DateTimeFormatter logFileFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.systemDefault());
     private final Queue<String> logs = new ConcurrentLinkedQueue<>();
-    private FileWriter logFileWriter = null;
 
-    private PrintWriter pw;
+    private PrintWriter printWriter = null;
 
     public LogWatcher(QuickShop plugin, File log) {
         try {
+            boolean deleteFailed = false;
             if (!log.exists()) {
                 //noinspection ResultOfMethodCallIgnored
                 log.createNewFile();
@@ -69,15 +68,25 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
                     try (GzipCompressorOutputStream archiveOutputStream = new GzipCompressorOutputStream(new BufferedOutputStream(new FileOutputStream(targetPath.toFile())), gzipParameters)) {
                         Files.copy(log.toPath(), archiveOutputStream);
                         archiveOutputStream.finish();
-                        //noinspection ResultOfMethodCallIgnored
-                        log.delete();
-                        //noinspection ResultOfMethodCallIgnored
-                        log.createNewFile();
+                        if (log.delete()) {
+                            //noinspection ResultOfMethodCallIgnored
+                            log.createNewFile();
+                            deleteFailed = false;
+                        } else {
+                            deleteFailed = true;
+                        }
                     }
                 }
             }
-            logFileWriter = new FileWriter(log, true);
-            pw = new PrintWriter(logFileWriter);
+            FileWriter logFileWriter;
+            if (deleteFailed) {
+                //If could not delete, just override it
+                logFileWriter = new FileWriter(log, false);
+            } else {
+                //Otherwise append
+                logFileWriter = new FileWriter(log, true);
+            }
+            printWriter = new PrintWriter(logFileWriter);
         } catch (FileNotFoundException e) {
             plugin.getLogger().log(Level.SEVERE, "Log file was not found!", e);
         } catch (IOException e) {
@@ -87,42 +96,29 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
 
     @SneakyThrows
     public void close() {
-        if (logFileWriter != null) {
-            logFileWriter.flush();
-            logFileWriter.close();
+        if (printWriter != null) {
+            printWriter.flush();
+            printWriter.close();
         }
     }
 
     public void log(@NonNull String log) {
-        this.add("[" + dateTimeFormatter.format(Instant.now()) + "] " + log);
-    }
-
-    public void add(@NotNull String s) {
-        logs.add(s);
+        logs.add("[" + dateTimeFormatter.format(Instant.now()) + "] " + log);
     }
 
     @Override
     public void run() {
-        for (String log : logs) {
-            if (logFileWriter == null) {
-                continue;
-            }
-            if (pw == null) {
-                continue;
-            }
-            pw.println(log);
+        if (printWriter == null) {
+            //Waiting for init
+            return;
         }
-        logs.clear();
-        if (logFileWriter != null) {
-            try {
-                if (pw != null) {
-                    pw.flush();
-                }
-                logFileWriter.flush();
-            } catch (IOException ioe) {
-                Util.debugLog("Failed to flush log to disk: " + ioe.getMessage());
-            }
+        Iterator<String> iterator = logs.iterator();
+        while (iterator.hasNext()) {
+            String log = iterator.next();
+            printWriter.println(log);
+            iterator.remove();
         }
+        printWriter.flush();
     }
 
 }
