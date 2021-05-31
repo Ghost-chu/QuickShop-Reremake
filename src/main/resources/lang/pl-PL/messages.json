@@ -4,7 +4,7 @@
   "translation-version": "Wspierana wersja: Reremake",
   "translation-contributors": "Współtwórcy: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken i Andre_601",
   "translation-country": "Język: Polski (pl_PL)",
-  "language-version": "53",
+  "language-version": "54",
   "not-looking-at-shop": "&cNie można znaleźć QuickShop. Musisz na niego patrzeć.",
   "no-anythings-in-your-hand": "&cW twojej ręce nic nie ma.",
   "no-permission": "&cNie masz uprawnień, aby to zrobić.",
@@ -315,5 +315,6 @@
   "backup-success": "&aKopia zapasowa powiodła się.",
   "console-only": "&cTa komenda może być wykonana tylko przez Konsolę.",
   "console-only-danger": "&cTo jest polecenie niebezpieczne, więc może być wykonane tylko przez Konsolę.",
-  "clean-warning": "&eTa komenda wyczyści &cwszystkie &e sklepy, jeśli sklep jest uszkodzony lub stworzony w niedozwolonych światach lub sprzedaje/kupuje niedozwolone przedmioty i &c&lNIE JEST ZAŁADOWANY W SKLEPIE ŚWIATOWYM&e, upewnij się, że masz pełną kopię zapasową danych sklepów i użyj &b/qs cleanghost confirm &eaby kontynuować."
+  "clean-warning": "&eTa komenda wyczyści &cwszystkie &e sklepy, jeśli sklep jest uszkodzony lub stworzony w niedozwolonych światach lub sprzedaje/kupuje niedozwolone przedmioty i &c&lNIE JEST ZAŁADOWANY W SKLEPIE ŚWIATOWYM&e, upewnij się, że masz pełną kopię zapasową danych sklepów i użyj &b/qs cleanghost confirm &eaby kontynuować.",
+  "shop-creation-failed": "&cShop creation failed, please contact with server administrator."
 }
