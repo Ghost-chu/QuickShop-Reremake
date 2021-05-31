@@ -265,9 +265,9 @@
     ],
     "remote-disable-warning": "&c該版本的 QuickShop 已被遠端伺服器標記為停用，這意味著該版本可能存在嚴重問題，請從我們的 Spigot 插件頁面取得詳細資訊 ： {0}。在你切換到穩定版本之前，該警告將繼續出現，但不會影響伺服器的性能。",
     "label": {
-      "unstable": "[不穩定]",
-      "stable": "[穩定]",
-      "lts": "[LTS]",
+      "unstable": "[不穩定 Unstable]",
+      "stable": "[穩定 Stable]",
+      "lts": "[長期支援 LTS]",
       "qualityverifyed": "[品質認證 Quality]",
       "github": "[GitHub]",
       "spigotmc": "[SpigotMC]",
