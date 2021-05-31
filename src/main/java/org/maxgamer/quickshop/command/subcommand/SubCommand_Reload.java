@@ -49,7 +49,7 @@ public class SubCommand_Reload implements CommandProcesser {
             File file = Paths.get(plugin.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile();
             Throwable throwable = PluginUtil.unload(plugin);
             if (throwable != null) {
-                throw new RuntimeException("Failed to reload plugin, considering restart the server. (unload plugin failed)");
+                throw new RuntimeException("Failed to reload plugin, considering restart the server. (Unload plugin failed)", throwable);
             }
             Plugin plugin = pluginManager.loadPlugin(file);
             if (plugin != null) {
