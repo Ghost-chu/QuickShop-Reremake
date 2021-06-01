@@ -1454,11 +1454,13 @@ public class MsgUtil {
             setAndUpdate("shop-creation-failed");
             setAndUpdate("language-version", ++selectedVersion);
         }
+        if (selectedVersion == 53) {
+            setAndUpdate("language-version", ++selectedVersion);
+        }
         if (selectedVersion == 54) {
             setAndUpdate("shop-owner-self-trade");
             setAndUpdate("language-version", ++selectedVersion);
         }
-
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
     }
 
