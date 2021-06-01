@@ -171,8 +171,8 @@
       "transfer": "&eTransfer someone's ALL shops to other",
       "removeworld": "&eRemove ALL shops in a specified world",
       "currency": "&eSet or remove the currency setting of the shop",
-      "ban": "&eBans a player from the shop",
-      "unban": "&eUnbans a player from the shop",
+      "ban": "&eBan a player from the shop",
+      "unban": "&eUnban a player from the shop",
       "freeze": "&eDisable or Enable shop trading",
       "lock": "&eSwitch the shop's lock status"
     },
