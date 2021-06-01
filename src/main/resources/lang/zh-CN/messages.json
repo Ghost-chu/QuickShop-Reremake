@@ -1,5 +1,5 @@
 {
-  "_comment": "Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake",
+  "_comment": "译者您好！如果您正在 Github 上或直接编辑源文件的方式进行翻译，请您前往 https://crowdin.com/project/quickshop-reremake",
   "file-test": "这是个测试文件，我们使用它来测试messages.json是否损坏。你可以在这里填入任何喜欢的彩蛋 :)",
   "translation-author": "翻译人员： Ghost_chu, Andre_601",
   "translation-version": "支持版本：Reremake",
@@ -318,5 +318,5 @@
   "console-only-danger": "&cThis is a dangerous command, so that only the Console can execute it.",
   "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
   "shop-creation-failed": "&c商店创建失败，请与服务器管理员联系。",
-  "shop-owner-self-trade": "&eYou trading with yourself shop, so you might won't gain any balance."
+  "shop-owner-self-trade": "&e你正在和自己的商店进行交易，你可能不会得到任何钱。"
 }
