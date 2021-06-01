@@ -98,6 +98,7 @@ public class EnvironmentChecker {
         boolean skipAllTest = false;
         ResultContainer executeResult = null;
         CheckResult result = CheckResult.PASSED;
+        Properties properties = System.getProperties();
 
         for (Method declaredMethod : this.tests) {
             if (skipAllTest) {
@@ -109,8 +110,7 @@ public class EnvironmentChecker {
                     Util.debugLog("Skip test: " + envCheckEntry.name() + ": Except stage: " + Arrays.toString(envCheckEntry.stage()) + " Current stage: " + stage);
                     continue;
                 }
-
-                if (!System.getProperty("org.maxgamer.quickshop.util.envcheck.skip." + envCheckEntry.name(), "false").equalsIgnoreCase("true")) {
+                if (!properties.containsKey("org.maxgamer.quickshop.util.envcheck.skip." + envCheckEntry.name())) {
                     executeResult = (ResultContainer) declaredMethod.invoke(this);
                     //plugin.getLogger().info("Result: "+executeResult.getResultMessage());
                     if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if its worse than the latest one.
