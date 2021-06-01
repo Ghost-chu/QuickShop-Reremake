@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - "l10n_master/*"
+      - "l10n_master"
 jobs:
   merge-branch:
     runs-on: ubuntu-latest
