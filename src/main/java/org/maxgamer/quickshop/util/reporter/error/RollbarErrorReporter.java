@@ -67,7 +67,7 @@ public class RollbarErrorReporter {
     public RollbarErrorReporter(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         Config config = ConfigBuilder.withAccessToken("4846d9b99e5d4d238f9135ea9c744c28")
-                .environment("release".contentEquals(QuickShop.getInstance().getBuildInfo().getGitBranch()) ? "production" : "development")
+                .environment(Util.isDevEdition() ? "development" : "production")
                 .platform(plugin.getServer().getVersion())
                 .codeVersion(QuickShop.getVersion())
                 .handleUncaughtErrors(false)
@@ -239,6 +239,12 @@ public class RollbarErrorReporter {
             stackTraceElement = throwable.getStackTrace()[1];
         } else {
             stackTraceElement = throwable.getStackTrace()[2];
+        }
+        if (stackTraceElement.getClassName().contains("org.maxgamer.quickshop.util.reporter.error")) {
+            ignoreThrows();
+            plugin.getLogger().log(Level.WARNING, "Uncaught exception in ErrorRollbar", throwable);
+            resetIgnores();
+            return false;
         }
         String text =
                 stackTraceElement.getClassName()
