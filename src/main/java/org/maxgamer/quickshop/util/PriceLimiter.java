@@ -36,6 +36,9 @@ public class PriceLimiter {
 
     @NotNull
     public CheckResult check(@NotNull ItemStack stack, double price) {
+        if (Double.isInfinite(price) || Double.isNaN(price)) {
+            return new CheckResult(Status.NOT_VALID, minPrice, maxPrice);
+        }
         if (allowFreeShop) {
             if (price != 0 && price < minPrice) {
                 return new CheckResult(Status.REACHED_PRICE_MIN_LIMIT, minPrice, maxPrice);
@@ -77,6 +80,7 @@ public class PriceLimiter {
         PASS,
         REACHED_PRICE_MAX_LIMIT,
         REACHED_PRICE_MIN_LIMIT,
-        PRICE_RESTRICTED
+        PRICE_RESTRICTED,
+        NOT_VALID
     }
 }

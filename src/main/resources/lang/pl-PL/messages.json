@@ -4,7 +4,7 @@
   "translation-version": "Wspierana wersja: Reremake",
   "translation-contributors": "Współtwórcy: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken i Andre_601",
   "translation-country": "Język: Polski (pl_PL)",
-  "language-version": "53",
+  "language-version": "54",
   "not-looking-at-shop": "&cNie można znaleźć QuickShop. Musisz na niego patrzeć.",
   "no-anythings-in-your-hand": "&cW twojej ręce nic nie ma.",
   "no-permission": "&cNie masz uprawnień, aby to zrobić.",
@@ -170,10 +170,10 @@
       "transfer": "&ePrzenieś czyjeś WSZYSTKIE sklepy do innych",
       "removeworld": "&eUsuń WSZYSTKIE sklepy w określonym świecie",
       "currency": "&eUstaw lub usuń ustawienia waluty sklepu",
-      "ban": "&eBanning a player from the shop",
-      "unban": "&eUnbanning a player from the shop",
-      "freeze": "&eDisable or Enable shop trading",
-      "lock": "&eSwitch the shop lock status"
+      "ban": "&eBanowanie gracza ze sklepu",
+      "unban": "&eOdbanowanie gracza ze sklepu",
+      "freeze": "&eWyłącz lub włącz handel sklepowy",
+      "lock": "&eZmień status blokady sklepu"
     },
     "disabled": "&cTa komenda jest wyłączona: &e{0}",
     "feature-not-enabled": "Funkcja nie jest włączona w konfiguracji."
@@ -190,9 +190,9 @@
     "unlimited": "Nieograniczony",
     "status-available": "&a",
     "status-unavailable": "&c",
-    "out-of-stock": "Out of Stock",
-    "out-of-space": "Out of Space",
-    "freeze": "Trade disabled"
+    "out-of-stock": "Wyprzedano produkt",
+    "out-of-space": "Za mało miejsca",
+    "freeze": "Handel wyłączony"
   },
   "controlpanel": {
     "setowner": "&aWłaściciel: &b{0} &e[&d&lZmień&e]",
@@ -218,10 +218,10 @@
     "item-hover": "&eKliknij, aby zmienić przedmiot sklepu",
     "currency": "&aWaluta: &b{0} &e[&d&lUstaw&e]",
     "currency-hover": "&eKliknij, aby ustawić lub usunąć walutę, której używa ten sklep",
-    "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
-    "lock-hover": "&eEnable/Disable shop lock protection.",
-    "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
-    "freeze-hover": "&eToggle shop freeze status,"
+    "lock": "&eBlokada sklepu: &b{0} &e[&d&lPrzełącz&e]",
+    "lock-hover": "&eWłącz/Wyłącz ochronę blokady sklepu.",
+    "freeze": "&eTryb zamrożenia: &b{0} &e[&d&lPrzełącz&e]",
+    "freeze-hover": "&ePrzełącz status zamrożenia sklepu"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -315,5 +315,6 @@
   "backup-success": "&aKopia zapasowa powiodła się.",
   "console-only": "&cTa komenda może być wykonana tylko przez Konsolę.",
   "console-only-danger": "&cTo jest polecenie niebezpieczne, więc może być wykonane tylko przez Konsolę.",
-  "clean-warning": "&eTa komenda wyczyści &cwszystkie &e sklepy, jeśli sklep jest uszkodzony lub stworzony w niedozwolonych światach lub sprzedaje/kupuje niedozwolone przedmioty i &c&lNIE JEST ZAŁADOWANY W SKLEPIE ŚWIATOWYM&e, upewnij się, że masz pełną kopię zapasową danych sklepów i użyj &b/qs cleanghost confirm &eaby kontynuować."
+  "clean-warning": "&eTa komenda wyczyści &cwszystkie &e sklepy, jeśli sklep jest uszkodzony lub stworzony w niedozwolonych światach lub sprzedaje/kupuje niedozwolone przedmioty i &c&lNIE JEST ZAŁADOWANY W SKLEPIE ŚWIATOWYM&e, upewnij się, że masz pełną kopię zapasową danych sklepów i użyj &b/qs cleanghost confirm &eaby kontynuować.",
+  "shop-creation-failed": "&cShop creation failed, please contact with server administrator."
 }

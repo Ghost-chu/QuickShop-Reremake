@@ -93,9 +93,12 @@ public class EnvironmentChecker {
 
     public ResultReport run(EnvCheckEntry.Stage stage) {
         sortTests();
-        CheckResult result = CheckResult.PASSED;
+
         Map<EnvCheckEntry, ResultContainer> results = new LinkedHashMap<>();
         boolean skipAllTest = false;
+        ResultContainer executeResult = null;
+        CheckResult result = CheckResult.PASSED;
+        Properties properties = System.getProperties();
 
         for (Method declaredMethod : this.tests) {
             if (skipAllTest) {
@@ -107,12 +110,20 @@ public class EnvironmentChecker {
                     Util.debugLog("Skip test: " + envCheckEntry.name() + ": Except stage: " + Arrays.toString(envCheckEntry.stage()) + " Current stage: " + stage);
                     continue;
                 }
-                ResultContainer executeResult = (ResultContainer) declaredMethod.invoke(this);
-                //plugin.getLogger().info("Result: "+executeResult.getResultMessage());
-                if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if it worse than latest one.
-                    result = executeResult.getResult();
+                if (!properties.containsKey("org.maxgamer.quickshop.util.envcheck.skip." + envCheckEntry.name().toUpperCase(Locale.ROOT).replace(" ", "_"))) {
+                    executeResult = (ResultContainer) declaredMethod.invoke(this);
+                    //plugin.getLogger().info("Result: "+executeResult.getResultMessage());
+                    if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if its worse than the latest one.
+                        result = executeResult.getResult();
+                    }
+                } else {
+                    result = CheckResult.SKIPPED;
                 }
-                switch (executeResult.getResult()) {
+                switch (result) {
+                    case SKIPPED:
+                        plugin.getLogger().info("[SKIP] " + envCheckEntry.name());
+                        Util.debugLog("Runtime check [" + envCheckEntry.name() + "] has been skipped (Startup Flag).");
+                        break;
                     case PASSED:
                         if (Util.isDevEdition() || Util.isDevMode()) {
                             plugin.getLogger().info("[OK] " + envCheckEntry.name());
@@ -132,12 +143,16 @@ public class EnvironmentChecker {
                     case DISABLE_PLUGIN:
                         plugin.getLogger().warning("[FATAL] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                         Util.debugLog("[Fatal-Disable] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                        skipAllTest = true; //We need disable plugin NOW! Some HUGE exception is here, hurry up!
+                        skipAllTest = true; //We need to disable the plugin NOW! Some HUGE exception is happening here, hurry up!
                         break;
                 }
-                results.put(envCheckEntry, executeResult);
+                if (executeResult != null) {
+                    results.put(envCheckEntry, executeResult);
+                } else {
+                    results.put(envCheckEntry, new ResultContainer(CheckResult.SKIPPED, "Startup flag mark this check should be skipped."));
+                }
             } catch (Exception e) {
-                plugin.getLogger().log(Level.WARNING, "Failed executing EnvCheckEntry [" + declaredMethod.getName() + "]: Exception thrown out without caught. Something going wrong!", e);
+                plugin.getLogger().log(Level.WARNING, "Failed to execute EnvCheckEntry [" + declaredMethod.getName() + "]: Exception thrown out without getting caught. Something went wrong!", e);
                 plugin.getLogger().warning("[FAIL] " + declaredMethod.getName());
             }
         }
@@ -172,7 +187,7 @@ public class EnvironmentChecker {
                  InputStream stream2 = loader.getResourceAsStream("META-INF/SELFSIGN.DSA");
                  InputStream stream3 = loader.getResourceAsStream("META-INF/SELFSIGN.SF")) {
                 if (stream1 == null || stream2 == null || stream3 == null) {
-                    plugin.getLogger().warning("The signature not exists in QuickShop jar. The jar has been modified or you're running custom build.");
+                    plugin.getLogger().warning("The signature could not be found! The QuickShop jar has been modified or you're running a custom build.");
                     return new ResultContainer(CheckResult.STOP_WORKING, "Security risk detected, QuickShop jar has been modified.");
                 }
             }
@@ -183,7 +198,7 @@ public class EnvironmentChecker {
             JarFile jarFile = new JarFile(jarPath);
             List<JarEntry> modifiedEntry = tool.verify(jarFile);
             if (modifiedEntry.isEmpty()) {
-                return new ResultContainer(CheckResult.PASSED, "The jar is valid. No issues detected");
+                return new ResultContainer(CheckResult.PASSED, "The jar is valid. No issues detected.");
             } else {
                 modifiedEntry.forEach(jarEntry -> {
                     plugin.getLogger().warning(">> Modified Class Detected <<");
@@ -191,13 +206,14 @@ public class EnvironmentChecker {
                     plugin.getLogger().warning("CRC: " + jarEntry.getCrc());
                     plugin.getLogger().warning(JsonUtil.getGson().toJson(jarEntry));
                 });
-                plugin.getLogger().severe("QuickShop detected the jar has been modified. This usually caused by the file downloaded damaged or virus infected. You should run virus scanning to prevent virus infected.");
-                plugin.getLogger().severe("To prevent serve server fail, QuickShop has been disabled.");
+                plugin.getLogger().severe("QuickShop detected that the jar has been modified! This is usually caused by the file being damaged or virus infected.");
+                plugin.getLogger().severe("To prevent severe server failure, QuickShop has been disabled.");
+                plugin.getLogger().severe("For further information, Please join our support Discord server: https://discord.com/invite/bfefw2E.");
                 return new ResultContainer(CheckResult.STOP_WORKING, "Security risk detected, QuickShop jar has been modified.");
             }
         } catch (IOException ioException) {
-            plugin.getLogger().log(Level.WARNING, "ALERT: QuickShop cannot validate itself. This may caused by your have deleted QuickShop's jar while server running.", ioException);
-            return new ResultContainer(CheckResult.WARNING, "Failed to validate file digital signature, Security ");
+            plugin.getLogger().log(Level.WARNING, "ALERT: QuickShop cannot validate itself. This may be caused by you having deleted QuickShop's jar while the server is running.", ioException);
+            return new ResultContainer(CheckResult.WARNING, "Failed to validate digital signature! Security may be compromised!");
         }
 
         //tool.verify()
@@ -217,41 +233,35 @@ public class EnvironmentChecker {
         if (isOutdatedJvm()) {
             String jvmWarning = "\n" +
                     "============================================================\n" +
-                    "    Warning! You're running an outdated version of Java\n" +
+                    "    Warning! You're running an outdated version of Java!\n" +
                     "============================================================\n" +
-                    "* QuickShop will stop being compatible in future!\n" +
+                    "* QuickShop will stop being compatible with your current Java version in the future!\n" +
                     "*\n" +
-                    "* You should schedule an upgrade for Java on your server,\n" +
-                    "* because we will drop support with any version Java that\n" +
-                    "* lower Java 16.\n" +
+                    "* You should schedule a Java upgrade on your server,\n" +
+                    "* because we will drop support for any Java versions lower than Java 16.\n" +
                     "*\n" +
                     "* That means:\n" +
-                    "* 1) The new version of QuickShop in future will stop working on your server.\n" +
-                    "* 2) No more supporting for QuickShop that running\n" +
-                    "* on an outdated Java builds.\n" +
-                    "* 3) You will get performance improvements in the\n" +
-                    "* new version of Java builds.\n" +
+                    "* 1) Future QuickShop builds will no longer work on your server.\n" +
+                    "* 2) No support for QuickShop builds that run on outdated Java versions will be given.\n" +
                     "* \n" +
                     "* Why:\n" +
-                    "* 1) We didn't want to keep compatibility with legacy software\n" +
-                    "* and systems. As Paper did it, we will follow the step.\n" +
-                    "* 2) Newer Java builds support legacy plugin that built for 8 \n" +
-                    "* or legacy, so the most plugins will still working.\n" +
-                    "* 3) New Java API allows access resources and processing it\n" +
-                    "*  faster than before, and that means performance improvement.\n" +
+                    "* 1) We don't want to keep compatibility with outdated software\n" +
+                    "*    and systems. As Paper upgraded, we did too.\n" +
+                    "* 2) Java is downward compatible, so most legacy (Java 8+) Plugins should still work.\n" +
+                    "* 3) Newer Java APIs allow accessing resources and processing them\n" +
+                    "*    faster than before, meaning a performance improvement.\n" +
                     "* \n" +
                     "* What should I do?\n" +
-                    "* You should update your server Java builds as soon as you can.\n" +
-                    "* Java 16 or any version after 16 is okay. \n" +
+                    "* You should update your server's Java version\n" +
+                    "* as soon as you can to Java 16 or higher.\n" +
                     "*\n" +
-                    "* Most plugins can run on Java 16+ without problems un-\n" +
-                    "* less the code is really bad/hacky and you should uninstall it.\n" +
+                    "* Most plugins can run on Java 16+ without problems\n" +
+                    "* unless their code is really outdated.\n" +
+                    "* If a Plugin is not compatible with Java 16 and the developer\n" +
+                    "* doesn't update it, then you should replace them.\n" +
                     "*\n" +
-                    "* You can get Java at here:\n" +
+                    "* You can get Java 16 here:\n" +
                     "* https://www.oracle.com/java/technologies/javase-downloads.html\n" +
-                    "* Attention: Mojang decide upgrading Java 16\n" +
-                    "* So if you still use Java lower 16, you probably cannot start Minecraft server and client.\n" +
-                    "*\n" +
                     "*\n" +
                     String.format("* Current Java version: %s", System.getProperty("java.version"));
             plugin.getLogger().warning(jvmWarning);
@@ -276,7 +286,7 @@ public class EnvironmentChecker {
             }
             return success;
         } catch (Exception e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to check Spigot API, the server " + plugin.getServer().getBukkitVersion() + " may not Spigot or Spigot's forks");
+            plugin.getLogger().log(Level.WARNING, "Failed to check Spigot API!" + plugin.getServer().getBukkitVersion() + " may not be Spigot based.");
             return failed;
         }
 
@@ -285,7 +295,7 @@ public class EnvironmentChecker {
     @EnvCheckEntry(name = "Old QuickShop Test", priority = 3)
     public ResultContainer oldQuickShopTest() {
         if (Util.isClassAvailable("org.maxgamer.quickshop.Util.NMS")) {
-            return new ResultContainer(CheckResult.STOP_WORKING, "FATAL: Old QuickShop is installed, You must remove old QuickShop jar from plugins folder!");
+            return new ResultContainer(CheckResult.STOP_WORKING, "FATAL: Old QuickShop build is installed! You must remove old QuickShop jar from the plugins folder!");
         }
         return new ResultContainer(CheckResult.PASSED, "No old QuickShop jar installled on this server");
     }
@@ -307,17 +317,19 @@ public class EnvironmentChecker {
     public ResultContainer moddedBasedTest() {
         boolean trigged = false;
         if (isForgeBasedServer()) {
-            plugin.getLogger().warning("WARN: QuickShop not designed and tested on Forge platform, you're running QuickShop modded server and use at your own risk.");
-            plugin.getLogger().warning("WARN: You won't get any support under Forge platform.");
+            plugin.getLogger().warning("WARN: QuickShop is not designed and tested for Forge!");
+            plugin.getLogger().warning("WARN: Use at you own risk!.");
+            plugin.getLogger().warning("WARN: No support will be given!");
             trigged = true;
         }
         if (isFabricBasedServer()) {
-            plugin.getLogger().warning("WARN: QSRR not designed and tested on Fabric platform, you're running QuickShop modded server and use at your own risk.");
-            plugin.getLogger().warning("WARN: You won't get any support under Fabric platform.");
+            plugin.getLogger().warning("WARN: QSRR is not designed and tested for Fabric!");
+            plugin.getLogger().warning("WARN: Use at you own risk!.");
+            plugin.getLogger().warning("WARN: No support will be given!");
             trigged = true;
         }
         if (trigged) {
-            return new ResultContainer(CheckResult.WARNING, "Modded server won't get any support.");
+            return new ResultContainer(CheckResult.WARNING, "No support will be given to modded servers.");
         }
         return new ResultContainer(CheckResult.PASSED, "Server is unmodified.");
     }
@@ -343,7 +355,7 @@ public class EnvironmentChecker {
             }
             if (julySafe.getConfig().getBoolean("quickshop_bug_fix.enabled")) {
                 julySafe.getConfig().set("quickshop_bug_fix.enabled", false); // Disables JulySafe's QuickShopBugFix module in configuration.
-                plugin.getLogger().warning("========================================");// Send chinese alert to users cause this plugin is Chinese plugins.
+                plugin.getLogger().warning("========================================");// Send chinese alert to users because this is a Chinese plugin.
                 plugin.getLogger().warning("警告：检测到您已安装 JulySafe 插件，且已开启 QuickShop 偷东西bug修复模块");
                 plugin.getLogger().warning("警告：我们已确认不存在此 BUG 且此模块对正常 Gameplay 造成了严重影响且");
                 plugin.getLogger().warning("警告：实际上并不会真正做到修复的效果。并且存在潜在破坏 QuickShop 本身保护机制的行为。");
@@ -374,7 +386,7 @@ public class EnvironmentChecker {
         if (checkJulySafe()) {
             return new ResultContainer(CheckResult.WARNING, "JulySafe is installed and \"QuickShop *bugfix* \" module is enabled");
         }
-        return new ResultContainer(CheckResult.PASSED, "JulySafe not installed or qs bug fix module is disabled.");
+        return new ResultContainer(CheckResult.PASSED, "JulySafe is not installed or qs bug fix module is disabled.");
     }
 
     @EnvCheckEntry(name = "CoreSupport Test", priority = 6)
@@ -382,10 +394,10 @@ public class EnvironmentChecker {
         String nmsVersion = Util.getNMSVersion();
         GameVersion gameVersion = GameVersion.get(nmsVersion);
         if (!gameVersion.isCoreSupports()) {
-            return new ResultContainer(CheckResult.STOP_WORKING, "Your Minecraft version is no-longer supported: " + ReflectFactory.getServerVersion() + " (" + nmsVersion + ")");
+            return new ResultContainer(CheckResult.STOP_WORKING, "Your Minecraft version is no longer supported: " + ReflectFactory.getServerVersion() + " (" + nmsVersion + ")");
         }
         if (gameVersion == GameVersion.UNKNOWN) {
-            return new ResultContainer(CheckResult.WARNING, "QuickShop may not fully support your current version " + nmsVersion + "/" + ReflectFactory.getServerVersion() + ", Some features may not working.");
+            return new ResultContainer(CheckResult.WARNING, "QuickShop may not fully support version " + nmsVersion + "/" + ReflectFactory.getServerVersion() + ", Some features may not work.");
         }
         return new ResultContainer(CheckResult.PASSED, "Passed checks");
     }
@@ -395,7 +407,7 @@ public class EnvironmentChecker {
         String nmsVersion = Util.getNMSVersion();
         GameVersion gameVersion = GameVersion.get(nmsVersion);
         if (!gameVersion.isVirtualDisplaySupports()) {
-            return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem seems won't working on this Minecraft server, Make sure you have up-to-date QuickShop and server core jar.");
+            return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem seems to not work on this Minecraft server, Make sure your QuickShop and server builds are up to date.");
         }
         return new ResultContainer(CheckResult.PASSED, "Passed checks");
     }
@@ -405,15 +417,15 @@ public class EnvironmentChecker {
         String nmsVersion = Util.getNMSVersion();
         GameVersion gameVersion = GameVersion.get(nmsVersion);
         if (!gameVersion.isPersistentStorageApiSupports()) {
-            return new ResultContainer(CheckResult.WARNING, "PersistentStorageApi seems won't working on this Minecraft server, You may hit exploit risk. Make sure you have up-to-date server at least higher than 1.13.2");
+            return new ResultContainer(CheckResult.WARNING, "PersistentStorageApi seems to not work on this Minecraft server, You may be at risk for an exploit. Make sure your server is running at least 1.13.2.");
         }
         return new ResultContainer(CheckResult.PASSED, "Passed checks");
     }
 
-    @EnvCheckEntry(name = "PacketListenerAPI conflict Test", priority = 9)
+    @EnvCheckEntry(name = "PacketListenerAPI Conflict Test", priority = 9)
     public ResultContainer plapiConflictTest() {
         if (plugin.isDisplay() && DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && Bukkit.getPluginManager().isPluginEnabled("ProtocolLib") && Bukkit.getPluginManager().isPluginEnabled("PacketListenerAPI")) {
-            return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem may stop working on your server. We already know plugin [PacketListenerAPI] conflict with plugin [ProtocolLib] (that we required to sending fake items). If you display not showing, please uninstall [PacketListenerAPI]. And it's fine to keep them if nothing wrong.");
+            return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem may stop working on your server. We are already aware that [PacketListenerAPI] and [ProtocolLib] are conficting. (QuickShops requirement to send fake items). If your display is not showing, please uninstall [PacketListenerAPI].");
         }
         return new ResultContainer(CheckResult.PASSED, "Passed checks");
     }

@@ -4,7 +4,7 @@
   "translation-version": "Destek Versiyonu: Reremake",
   "translation-contributors": "Katkıda Bulunanlar: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Dil Bölgesi: Türkçe (tr_TR)",
-  "language-version": "53",
+  "language-version": "54",
   "not-looking-at-shop": "&sHiç QuickShop bulunamadı. Birine bakman lazım.",
   "no-anythings-in-your-hand": "&cElinde hiçbir şey yok.",
   "no-permission": "&cBunu yapmaya iznin yok.",
@@ -315,5 +315,6 @@
   "backup-success": "&aBackup successfully.",
   "console-only": "&cThis command only can be executed by Console.",
   "console-only-danger": "&cThis is a danger command so that only can be executed by Console.",
-  "clean-warning": "&eThis command will purge &call &e shops if the shop is damaged or created in disallowed worlds or selling/buying disallowed items and &c&lIN NOT LOADED WORLD SHOPS&e, make sure you have full backup of your shops data and use &b/qs cleanghost confirm &eto continue."
+  "clean-warning": "&eThis command will purge &call &e shops if the shop is damaged or created in disallowed worlds or selling/buying disallowed items and &c&lIN NOT LOADED WORLD SHOPS&e, make sure you have full backup of your shops data and use &b/qs cleanghost confirm &eto continue.",
+  "shop-creation-failed": "&cShop creation failed, please contact with server administrator."
 }

@@ -63,6 +63,8 @@ public class VirtualDisplayItem extends DisplayItem {
     //The List which store packet sender
     private final Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
 
+    private volatile AsyncPacketSender.AsyncSendingTask asyncPacketSenderTask = null;
+
     private volatile boolean isDisplay;
 
     //If packet initialized
@@ -322,6 +324,12 @@ public class VirtualDisplayItem extends DisplayItem {
             }
         }
 
+        if (asyncPacketSenderTask != null) {
+            asyncPacketSenderTask.stop();
+        }
+        asyncPacketSenderTask = AsyncPacketSender.create();
+        asyncPacketSenderTask.start(plugin);
+
         if (packetAdapter == null) {
             packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
                 @Override
@@ -336,7 +344,7 @@ public class VirtualDisplayItem extends DisplayItem {
                     int x = integerStructureModifier.read(0);
                     //chunk z
                     int z = integerStructureModifier.read(1);
-                    AsyncPacketSender.offer(() -> {
+                    asyncPacketSenderTask.offer(() -> {
                         if (chunkLocation == null) {
                             World world = shop.getLocation().getWorld();
                             Chunk chunk;
@@ -359,35 +367,20 @@ public class VirtualDisplayItem extends DisplayItem {
                             packetSenders.add(player.getUniqueId());
                             sendFakeItem(player);
                         }
-//                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-//                        if (chunkLocation == null) {
-//                            World world = shop.getLocation().getWorld();
-//                            Chunk chunk = shop.getLocation().getChunk();
-//                            chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
-//                        }
-//                        if (chunkLocation.isSame(event.getPlayer().getWorld().getName(), x, z)) {
-//                            packetSenders.add(event.getPlayer().getUniqueId());
-//                            sendFakeItem(event.getPlayer());
-//                        }
-//                    }, 1);
                     });
                 }
             };
-            protocolManager.addPacketListener(packetAdapter); //TODO: This may affects performance
-//        asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-//            Runnable runnable = asyncPacketSendQueue.poll();
-//            while (runnable != null) {
-//                runnable.run();
-//                runnable = asyncPacketSendQueue.poll();
-//            }
-//        }, 0, 1);
         }
+        protocolManager.addPacketListener(packetAdapter); //TODO: This may affects performance
     }
 
     private void unload() {
         packetSenders.clear();
         if (packetAdapter != null) {
             protocolManager.removePacketListener(packetAdapter);
+        }
+        if (asyncPacketSenderTask != null) {
+            asyncPacketSenderTask.stop();
         }
     }
 

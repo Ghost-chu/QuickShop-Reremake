@@ -53,6 +53,7 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
+import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
@@ -867,8 +868,9 @@ public class Util {
      * @return true if the given location is loaded or not.
      */
     public static boolean isLoaded(@NotNull Location loc) {
+
         // plugin.getLogger().log(Level.WARNING, "Checking isLoaded(Location loc)");
-        if (loc.getWorld() == null) {
+        if ((!getNMSVersion().contains("1_13") && !loc.isWorldLoaded()) || loc.getWorld() == null) {
             // plugin.getLogger().log(Level.WARNING, "Is not loaded. (No world)");
             return false;
         }
@@ -1322,6 +1324,15 @@ public class Util {
      */
     public static boolean isDevEdition() {
         return !QuickShop.getInstance().getBuildInfo().getGitBranch().equalsIgnoreCase("release");
+    }
+
+    /**
+     * Getting startup flags
+     *
+     * @return Java startup flags without some JVM args
+     */
+    public static List<String> getStartupFlags() {
+        return ManagementFactory.getRuntimeMXBean().getInputArguments();
     }
 
     /**

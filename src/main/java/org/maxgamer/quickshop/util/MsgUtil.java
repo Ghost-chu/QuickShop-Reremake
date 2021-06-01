@@ -787,7 +787,7 @@ public class MsgUtil {
         }
         sendMessageToOps(content);
         plugin.getLogger().warning(content);
-        Objects.requireNonNull(plugin.getLogWatcher()).add(content);
+        plugin.log(content);
     }
 
     /**
@@ -1448,6 +1448,10 @@ public class MsgUtil {
             setAndUpdate("controlpanel.lock-hover");
             setAndUpdate("controlpanel.freeze");
             setAndUpdate("controlpanel.freeze-hover");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
+        if (selectedVersion == 52) {
+            setAndUpdate("shop-creation-failed");
             setAndUpdate("language-version", ++selectedVersion);
         }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");

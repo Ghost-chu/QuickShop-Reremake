@@ -4,7 +4,7 @@
   "translation-version": "Versione di Supporto: Reremake",
   "translation-contributors": "Collaboratori: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: English (it_US)",
-  "language-version": "53",
+  "language-version": "54",
   "not-looking-at-shop": "&cImpossibile trovare un negozio. È necessario guardarne uno.",
   "no-anythings-in-your-hand": "&cNon hai nulla in mano.",
   "no-permission": "&cNon hai il permesso per farlo.",
@@ -315,5 +315,6 @@
   "backup-success": "&aBackup completato.",
   "console-only": "&cQuesto comando può essere eseguito solo dalla Console.",
   "console-only-danger": "&cQuesto è un comando di pericolo, quindi può essere eseguito solo dalla Console.",
-  "clean-warning": "&eThis command will purge &call &e shops if the shop is damaged or created in disallowed worlds or selling/buying disallowed items and &c&lIN NOT LOADED WORLD SHOPS&e, make sure you have full backup of your shops data and use &b/qs cleanghost confirm &eto continue."
+  "clean-warning": "&eThis command will purge &call &e shops if the shop is damaged or created in disallowed worlds or selling/buying disallowed items and &c&lIN NOT LOADED WORLD SHOPS&e, make sure you have full backup of your shops data and use &b/qs cleanghost confirm &eto continue.",
+  "shop-creation-failed": "&cShop creation failed, please contact with server administrator."
 }

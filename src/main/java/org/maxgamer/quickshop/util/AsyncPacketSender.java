@@ -21,38 +21,79 @@ package org.maxgamer.quickshop.util;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.QuickShop;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-public final class AsyncPacketSender {
+public class AsyncPacketSender {
 
-    private static final Queue<Runnable> asyncPacketSendQueue = new ConcurrentLinkedQueue<>();
-    private static BukkitTask asyncSendingTask;
+    private static AsyncSendingTask instance = null;
+    private static boolean isUsingGlobal = false;
+    private static volatile boolean enabled = false;
+
+    public synchronized static void start(QuickShop plugin) {
+        isUsingGlobal = plugin.getConfig().getBoolean("use-global-virtual-item-queue");
+        if (isUsingGlobal) {
+            createAndCancelExistingTask(plugin);
+        }
+        enabled = true;
+    }
 
     private AsyncPacketSender() {
     }
 
-    public static void start(QuickShop plugin) {
-        //lazy initialize
-        if (asyncSendingTask == null || asyncSendingTask.isCancelled()) {
-            asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-                Runnable nextTask = asyncPacketSendQueue.poll();
-                while (nextTask != null) {
-                    nextTask.run();
-                    nextTask = asyncPacketSendQueue.poll();
-                }
-            }, 0, 1);
+    private synchronized static void createAndCancelExistingTask(QuickShop plugin) {
+        if (instance != null) {
+            instance.stop();
+        }
+        instance = new AsyncSendingTask();
+        instance.start(plugin);
+    }
+
+    public static AsyncSendingTask create() {
+        if (!enabled) {
+            throw new IllegalStateException("Please start AsyncPacketSender first!");
+        }
+        if (isUsingGlobal) {
+            return instance;
+        } else {
+            return new AsyncSendingTask();
         }
     }
 
-    public static void offer(Runnable runnable) {
-        asyncPacketSendQueue.offer(runnable);
+    public synchronized static void stop() {
+        if (isUsingGlobal) {
+            instance.stop();
+        }
     }
 
-    public static void stop() {
-        if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {
-            asyncSendingTask.cancel();
+    public static class AsyncSendingTask {
+        private final LinkedBlockingQueue<Runnable> asyncPacketSendQueue = new LinkedBlockingQueue<>();
+        private BukkitTask asyncSendingTask;
+
+        public void start(QuickShop plugin) {
+            //lazy initialize
+            if (asyncSendingTask == null || asyncSendingTask.isCancelled()) {
+                asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+                    if (asyncSendingTask.isCancelled()) {
+                        return;
+                    }
+                    Runnable nextTask = asyncPacketSendQueue.poll();
+                    if (nextTask != null) {
+                        nextTask.run();
+                    }
+                }, 0, 1);
+            }
         }
-        asyncPacketSendQueue.clear();
+
+
+        public void stop() {
+            if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {
+                asyncSendingTask.cancel();
+            }
+            asyncPacketSendQueue.clear();
+        }
+
+        public void offer(Runnable runnable) {
+            asyncPacketSendQueue.offer(runnable);
+        }
     }
 }

@@ -14,10 +14,10 @@
 ![Ver](https://img.shields.io/spiget/version/62575?label=version)
 ---
 
-QuickShop is a shop plugin, that allows players to sell items from a chest with no commands. It allows players to
-purchase any number of items easily. In fact, this plugin doesn't even have any commands that a player would ever need!
-QuickShop-Reremake is a fork for QuickShop NotLikeMe, QuickShop-Reremake has more features and bug fixes.  
-QuickShop-Reremake makes by PotatoCraft Studio from https://github.com/KaiKikuchi/QuickShop upstream repo.
+QuickShop is a shop plugin that allows players to easily sell/buy any items from a chest without any commands.
+In fact, none of the commands that QuickShop provides are ever needed by a player.
+QuickShop-Reremake is a fork of QuickShop NotLikeMe with more features, bug fixes and other improvements.  
+QuickShop-Reremake is made by PotatoCraft Studio from the https://github.com/KaiKikuchi/QuickShop upstream repository.
 
 ## Support
 
@@ -26,18 +26,18 @@ Open a new issue here: https://github.com/Ghost-chu/QuickShop-Reremake/issues
 ## Features
 
 - Easy to use
-- Togglable Display Item on top of the chest
-- NBT Data, Enchants, Tool Damage, Potion, and Mob Egg support
+- Toggleable Display Item on top of the chest
+- NBT Data, Enchantment, Tool Damage, Potion, and Mob Egg support
 - Unlimited chest support
 - Blacklist support & bypass permissions
-- Shops that buy items and sell items at the same time are possible (Using double chests)
-- Checks a player can open a chest before letting them create a shop!
+- Shops that buy and sell items at the same time (Using double chests)
+- Customisable permission checks
 - UUID support
-- More shop protection! [Reremake]
-- Item display name i18n! [Reremake]
-- Enchantment display name i18n! [Reremake]
+- Better shop protection [Reremake]
+- Item display name i18n [Reremake]
+- Enchantment display name i18n [Reremake]
 - A cool item preview [Reremake]
-- Friendly for the region and world protect plugin [Reremake]
+- World/region protection plugins support [Reremake]
 - ProtocolLib based Virtual DisplayItem support [Reremake]
 - Powerful API [Reremake]
 - Optimized performance [Reremake]
@@ -56,7 +56,7 @@ Snapshot: [CodeMC.io Jenkins](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-R
 - [Jenkins](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/)
 
 ## Contribute
-If you're a developer, you can contribute to the QuickShop code! Just make a fork and install Lombok plugin, then make a pull request when you're done! Please try to follow [Google Java Style](https://google.github.io/styleguide/javaguide.html). Also do not increase the plugin version number. Thank you very much!
+If you're a developer, you can contribute to the QuickShop code! Just make a fork and install the Lombok plugin, then make a pull request when you're done! Please try to follow [Google Java Style](https://google.github.io/styleguide/javaguide.html). Also do not increase the plugin version number. Thank you very much!
 
 ## Maven
 ```XML

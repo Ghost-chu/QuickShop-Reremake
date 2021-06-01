@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
+/*
 package org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.paste;
 
 import com.google.gson.Gson;
@@ -75,4 +75,4 @@ public class EngineHubPaster {
         String uploadUrl;
         Map<String, String> uploadFields;
     }
-}
+}*/
