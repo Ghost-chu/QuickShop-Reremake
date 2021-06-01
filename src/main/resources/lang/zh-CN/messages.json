@@ -45,7 +45,7 @@
   "fee-charged-for-price-change": "&a你花了 &c{0}&a 修改了价格。",
   "price-is-now": "&a商店的新价格是 &e{0}",
   "thats-not-a-number": "&c输入的内容不是数字",
-  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consisten with vanilla behaviour",
+  "forbidden-vanilla-behavior": "&c该操作有悖于原版行为，因此已被禁止",
   "no-price-given": "&c请输入一个有效的价格。",
   "average-price-nearby": "&a附近的平均价格： &e{0}",
   "shop-has-changed": "&c在你点击此商店之后此商店被修改了，为了避免恶意修改，您的操作已被取消！",
@@ -139,7 +139,7 @@
     "no-amount-given": "&c未指定数量。使用方式为 &a/qs refill <数量>&c",
     "now-debuging": "&a成功切换到了开发者模式，插件重载中...",
     "now-nolonger-debuging": "&a成功切换到了生产模式，插件重载中...",
-    "wrong-args": "&cInvalid argument. Use &l/qs help &cto see a list of commands.",
+    "wrong-args": "&c无效参数。使用 &l/qs help &c来查看命令帮助。",
     "description": {
       "title": "&aQuickShop 帮助",
       "unlimited": "&e将商店设置为无限库存。",
@@ -170,14 +170,14 @@
       "removeall": "&e删除指定玩家的&b所有&r&e商店",
       "transfer": "&e将某人的所有商店转移给其他人",
       "removeworld": "&e删除指定世界中的所有商店",
-      "currency": "&eSet or remove the currency setting of the shop",
+      "currency": "&e设置或移除该商店的货币类型设置",
       "ban": "&eBans a player from the shop",
       "unban": "&eUnbans a player from the shop",
       "freeze": "&e禁用或启用商店交易",
-      "lock": "&eSwitch the shop's lock status"
+      "lock": "&e切换商店锁状态"
     },
     "disabled": "&c此命令已禁用: &e{0}",
-    "feature-not-enabled": "This feature is not enabled in the config file."
+    "feature-not-enabled": "该功能未在配置文件中启用。"
   },
   "signs": {
     "selling": "出售 {0}",
@@ -193,7 +193,7 @@
     "status-unavailable": "&c",
     "out-of-stock": "缺货",
     "out-of-space": "空间不足",
-    "freeze": "Trading disabled"
+    "freeze": "交易已被禁用"
   },
   "controlpanel": {
     "setowner": "&a所有者: &b{0} &e[&d&l修改&e]",
@@ -220,9 +220,9 @@
     "currency": "&a货币: &b{0} &e[&d&l设置&e]",
     "currency-hover": "&e点击以设置或移除商店使用的交易货币",
     "lock": "&e商店锁: &b{0} &e[&d&l切换&e]",
-    "lock-hover": "&eEnable/Disable the shop's lock protection.",
+    "lock-hover": "&e启用/禁用商店锁",
     "freeze": "&e冻结模式： &b{0} &e[&d&l切换&e]",
-    "freeze-hover": "&eToggle the shop's freeze status."
+    "freeze-hover": "&e切换商店冻结状态。"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -264,7 +264,7 @@
       "博士，QuickShop有一个新的更新 {0}！你应该考虑一下更新了~",
       "Ko~ko~da~yo~QuickShop有一个新的更新 {0}~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server's performance.",
+    "remote-disable-warning": "&c这个版本的 QuickShop 被远程服务器标记为禁用，意味着这个版本可能存在严重的问题，可以在我们的 SpigotMC 插件页面获取详细信息。{0}. 此警告将继续出现，直到您切换到一个稳定的版本，但它不会影响您的服务器的性能。",
     "label": {
       "unstable": "[不稳定]",
       "stable": "[稳定]",
@@ -313,10 +313,10 @@
   "currency-unset": "&a商店货币单位已被成功删除。现在会使用默认货币单位。",
   "currency-not-support": "&c此经济插件不支持多货币功能。",
   "item-not-exist": "&物品 &e{0} &c不存在，请检查您的拼写。",
-  "backup-success": "&aBackup successfull.",
-  "console-only": "&cThis command can only be executed by Console.",
-  "console-only-danger": "&cThis is a dangerous command, so that only the Console can execute it.",
-  "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
+  "backup-success": "&a备份成功",
+  "console-only": "&c该命令只能由控制台执行",
+  "console-only-danger": "&c这是一个危险的命令，只有控制台才能执行它。",
+  "clean-warning": "&e这个命令将清理&c所有&e在不允许创建商店的世界的、出售/购买不允许的物品的，以及 &c&l所有在服务器没有加载的世界的商店， 请在确保您的商店数据备份完整后使用 &b/qs cleanghost confirm &e来继续。",
   "shop-creation-failed": "&c商店创建失败，请与服务器管理员联系。",
   "shop-owner-self-trade": "&e你正在和自己的商店进行交易，你可能不会得到任何钱。"
 }
