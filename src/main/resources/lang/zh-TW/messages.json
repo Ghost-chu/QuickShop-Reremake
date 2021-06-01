@@ -1,10 +1,11 @@
 {
+  "_comment": "Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake",
   "file-test": "這是個測試的文字檔案，我們使用它來測試 messages.json 是否損壞，你可以在這裡填入任何喜歡的彩蛋。 :)",
   "translation-author": "翻譯人員 ： Ghost_chu、Andre_601、Flandre_tw （主翻譯） 、Terence#3062 （主翻譯）",
   "translation-version": "支援版本 ： Reremake （重製版）",
   "translation-contributors": "貢獻人員 ： Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
   "translation-country": "語言 ： &b&l繁體中文 Chinese Traditional （zh_TW）",
-  "language-version": "54",
+  "language-version": "55",
   "not-looking-at-shop": "&c無法找到儲物箱商店，你需要注視著儲物箱。",
   "no-anythings-in-your-hand": "&c手上沒有任何東西。",
   "no-permission": "&4你沒有使用該指令的權限。",
@@ -44,7 +45,7 @@
   "fee-charged-for-price-change": "&a你付了 &c{0}&a 元修改商店定價。",
   "price-is-now": "&a現在你的商店定價是 &e{0} 元。",
   "thats-not-a-number": "&c無效的數字",
-  "forbidden-vanilla-behavior": "&c該操作不符合原版行為，因此被禁止。",
+  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consisten with vanilla behaviour",
   "no-price-given": "&c請提供一個有效的價格。",
   "average-price-nearby": "&a附近的平均價格 ： &e{0} 元。",
   "shop-has-changed": "&c你嘗試交易的商店在點擊後已有變動 ！",
@@ -138,7 +139,7 @@
     "no-amount-given": "&c沒有提供數量。請使用 ： &a/qs refill <amount>&c",
     "now-debuging": "&a成功開啟開發者模式，插件重新載入中……",
     "now-nolonger-debuging": "&a成功關閉開發者模式，插件重新載入中……",
-    "wrong-args": "&c無效的參數。使用 &l/ qs help &c查看指令列表。 ",
+    "wrong-args": "&cInvalid argument. Use &l/qs help &cto see a list of commands.",
     "description": {
       "title": "&aQuickShop 說明",
       "unlimited": "&e將商店設為庫存無限。",
@@ -169,14 +170,14 @@
       "removeall": "&e刪除該玩家的所有商店",
       "transfer": "&e我們將某人的所有商店轉移給其他人",
       "removeworld": "&e指定世界的商店已全部刪除",
-      "currency": "&e設置或移除目前商店的貨幣",
-      "ban": "&e封禁商店中的玩家",
-      "unban": "&e解除封禁商店中的玩家",
+      "currency": "&eSet or remove the currency setting of the shop",
+      "ban": "&eBans a player from the shop",
+      "unban": "&eUnbans a player from the shop",
       "freeze": "&e停用或啟用商店交易",
-      "lock": "&e切換商店上鎖狀態"
+      "lock": "&eSwitch the shop's lock status"
     },
     "disabled": "&c這個指令被停用 ： &e{0}",
-    "feature-not-enabled": "該功能沒有在 config 中啟用。"
+    "feature-not-enabled": "This feature is not enabled in the config file."
   },
   "signs": {
     "selling": "出售 {0} 個",
@@ -192,7 +193,7 @@
     "status-unavailable": "&c",
     "out-of-stock": "無庫存",
     "out-of-space": "空間不足",
-    "freeze": "已停用交易"
+    "freeze": "Trading disabled"
   },
   "controlpanel": {
     "setowner": "&a店主 ： &b{0} &e[&d&l修改&e]",
@@ -219,9 +220,9 @@
     "currency": "&a目前 ： &b{0} &e[&d&l設定&e]",
     "currency-hover": "&e點擊設置或移除目前正在使用的商店貨幣",
     "lock": "&e商店鎖 ： &b{0} &e[&d&l切換&e]",
-    "lock-hover": "&e開啟/關閉商店鎖保護。",
+    "lock-hover": "&eEnable/Disable the shop's lock protection.",
     "freeze": "&e凍結模式 ： &b{0} &e[&d&l切換&e]",
-    "freeze-hover": "&e切換商店凍結狀態。"
+    "freeze-hover": "&eToggle the shop's freeze status."
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -263,7 +264,7 @@
       "博士， QuickShop 有一個新的更新 {0} ！ 你應該考慮一下更新了~",
       "Ko~ko~da~yo~ QuickShop 有新的更新 {0} ~"
     ],
-    "remote-disable-warning": "&c該版本的 QuickShop 已被遠端伺服器標記為停用，這意味著該版本可能存在嚴重問題，請從我們的 Spigot 插件頁面取得詳細資訊 ： {0}。在你切換到穩定版本之前，該警告將繼續出現，但不會影響伺服器的性能。",
+    "remote-disable-warning": "&cThis version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server's performance.",
     "label": {
       "unstable": "[不穩定 Unstable]",
       "stable": "[穩定 Stable]",
@@ -312,9 +313,10 @@
   "currency-unset": "&a已成功刪除商店貨幣。現在使用預設設置。 ",
   "currency-not-support": "&c該經濟插件不支援多重經濟（multi-economy） 功能。",
   "item-not-exist": "&c物品&e {0}&c不存在，請檢查你的拼寫。 ",
-  "backup-success": "&a備份成功。",
-  "console-only": "&c該指令只能在控制台執行。",
-  "console-only-danger": "&c這是一個危險的指令，因此只能由控制台執行。 ",
-  "clean-warning": "&e此指令將清除&c&未裝載的世界商店&e及&c所有&e已損壞的、在不允許的世界中建立、或購買/販賣不允許商品的商店，請確保你已完全備份商店數據並使用 &b/qs cleanghost confirm &e以繼續。",
-  "shop-creation-failed": "&c商店建立失敗，請與伺服器管理員聯繫。"
+  "backup-success": "&aBackup successfull.",
+  "console-only": "&cThis command can only be executed by Console.",
+  "console-only-danger": "&cThis is a dangerous command, so that only the Console can execute it.",
+  "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
+  "shop-creation-failed": "&c商店建立失敗，請與伺服器管理員聯繫。",
+  "shop-owner-self-trade": "&eYou trading with yourself shop, so you might won't gain any balance."
 }
