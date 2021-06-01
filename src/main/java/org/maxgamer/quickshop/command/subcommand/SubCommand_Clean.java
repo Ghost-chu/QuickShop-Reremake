@@ -41,7 +41,7 @@ public class SubCommand_Clean implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Server) {
-            MsgUtil.sendMessage(sender, "Can't run this command by Console");
+            MsgUtil.sendMessage(sender, "This command can't be run by the console");
             return;
         }
 
@@ -71,7 +71,7 @@ public class SubCommand_Clean implements CommandProcesser {
         }
 
         for (Shop shop : pendingRemoval) {
-            plugin.log("Deleting shop " + shop + " request by /qs clean command.");
+            plugin.log("Deleting shop " + shop + " as requested by the /qs clean command.");
             shop.delete();
         }
 
