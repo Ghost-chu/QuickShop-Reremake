@@ -53,6 +53,7 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
+import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
@@ -1323,6 +1324,15 @@ public class Util {
      */
     public static boolean isDevEdition() {
         return !QuickShop.getInstance().getBuildInfo().getGitBranch().equalsIgnoreCase("release");
+    }
+
+    /**
+     * Getting startup flags
+     *
+     * @return Java startup flags without some JVM args
+     */
+    public static List<String> getStartupFlags() {
+        return ManagementFactory.getRuntimeMXBean().getInputArguments();
     }
 
     /**

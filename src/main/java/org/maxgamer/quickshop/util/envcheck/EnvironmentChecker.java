@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is EnvironmentChecker.java
+ * This file is a part of project QuickShop, the name is EnvironmentChecker.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -38,6 +38,7 @@ import org.maxgamer.quickshop.util.security.JarVerifyTool;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.management.ManagementFactory;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.*;
@@ -48,10 +49,12 @@ import java.util.logging.Level;
 public class EnvironmentChecker {
     private final QuickShop plugin;
     private final List<Method> tests = new ArrayList<>();
+    private final List<String> startupArgs;
 
     public EnvironmentChecker(QuickShop plugin) {
         this.plugin = plugin;
         this.registerTests(this.getClass()); //register self
+        this.startupArgs = ManagementFactory.getRuntimeMXBean().getInputArguments();
     }
 
     /**
@@ -93,9 +96,11 @@ public class EnvironmentChecker {
 
     public ResultReport run(EnvCheckEntry.Stage stage) {
         sortTests();
-        CheckResult result = CheckResult.PASSED;
+
         Map<EnvCheckEntry, ResultContainer> results = new LinkedHashMap<>();
         boolean skipAllTest = false;
+        ResultContainer executeResult = null;
+        CheckResult result = CheckResult.PASSED;
 
         for (Method declaredMethod : this.tests) {
             if (skipAllTest) {
@@ -107,12 +112,21 @@ public class EnvironmentChecker {
                     Util.debugLog("Skip test: " + envCheckEntry.name() + ": Except stage: " + Arrays.toString(envCheckEntry.stage()) + " Current stage: " + stage);
                     continue;
                 }
-                ResultContainer executeResult = (ResultContainer) declaredMethod.invoke(this);
-                //plugin.getLogger().info("Result: "+executeResult.getResultMessage());
-                if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if its worse than the latest one.
-                    result = executeResult.getResult();
+
+                if (!startupArgs.contains("-Dorg.maxgamer.quickshop.util.envcheck.skip." + envCheckEntry.name())) {
+                    executeResult = (ResultContainer) declaredMethod.invoke(this);
+                    //plugin.getLogger().info("Result: "+executeResult.getResultMessage());
+                    if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if its worse than the latest one.
+                        result = executeResult.getResult();
+                    }
+                } else {
+                    result = CheckResult.SKIPPED;
                 }
-                switch (executeResult.getResult()) {
+                switch (result) {
+                    case SKIPPED:
+                        plugin.getLogger().info("[SKIP] " + envCheckEntry.name());
+                        Util.debugLog("Runtime check [" + envCheckEntry.name() + "] has been skipped (Startup Flag).");
+                        break;
                     case PASSED:
                         if (Util.isDevEdition() || Util.isDevMode()) {
                             plugin.getLogger().info("[OK] " + envCheckEntry.name());
@@ -135,7 +149,11 @@ public class EnvironmentChecker {
                         skipAllTest = true; //We need to disable the plugin NOW! Some HUGE exception is happening here, hurry up!
                         break;
                 }
-                results.put(envCheckEntry, executeResult);
+                if (executeResult != null) {
+                    results.put(envCheckEntry, executeResult);
+                } else {
+                    results.put(envCheckEntry, new ResultContainer(CheckResult.SKIPPED, "Startup flag mark this check should be skipped."));
+                }
             } catch (Exception e) {
                 plugin.getLogger().log(Level.WARNING, "Failed to execute EnvCheckEntry [" + declaredMethod.getName() + "]: Exception thrown out without getting caught. Something went wrong!", e);
                 plugin.getLogger().warning("[FAIL] " + declaredMethod.getName());
