@@ -1,5 +1,9 @@
+name: Crowdin Merger
 on:
   push:
+    branches:
+      - "l10n_master"
+  pull_request:
     branches:
       - "l10n_master"
 jobs:
