@@ -178,7 +178,7 @@ public class EnvironmentChecker {
 
     @SneakyThrows
     @EnvCheckEntry(name = "Signature Verify", priority = 0, stage = {EnvCheckEntry.Stage.ON_LOAD, EnvCheckEntry.Stage.ON_ENABLE})
-    public ResultContainer securtyVerify() {
+    public ResultContainer securityVerify() {
         JarVerifyTool tool = new JarVerifyTool();
         try {
             ClassLoader loader = this.getClass().getClassLoader();
