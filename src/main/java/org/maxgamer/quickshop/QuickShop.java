@@ -38,6 +38,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.QuickShopAPI;
@@ -248,6 +249,8 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private CalendarWatcher calendarWatcher;
 
+    private final List<BukkitTask> timerTaskList = new ArrayList<>(3);
+
     @NotNull
     public static QuickShop getInstance() {
         return instance;
@@ -378,7 +381,7 @@ public class QuickShop extends JavaPlugin {
             EconomyCore core = null;
             switch (EconomyType.fromID(getConfig().getInt("economy-type"))) {
                 case UNKNOWN:
-                    bootError = new BootError(this.getLogger(), "Can't load the Economy provider, invaild value in config.yml.");
+                   setupBootError(new BootError(this.getLogger(), "Can't load the Economy provider, invaild value in config.yml."));
                     return false;
                 case VAULT:
                     core = new Economy_Vault(this);
@@ -440,7 +443,7 @@ public class QuickShop extends JavaPlugin {
                 return false;
             }
             if (!core.isValid()) {
-                bootError = BuiltInSolution.econError();
+                setupBootError(BuiltInSolution.econError());
                 return false;
             } else {
                 this.economy = new Economy(this, ServiceInjector.getEconomyCore(core));
@@ -451,8 +454,7 @@ public class QuickShop extends JavaPlugin {
             getLogger().log(Level.WARNING, "Something going wrong when loading up economy system", e);
             getLogger().severe("QuickShop could not hook into a economy/Not found Vault or Reserve!");
             getLogger().severe("QuickShop CANNOT start!");
-            bootError = BuiltInSolution.econError();
-            HandlerList.unregisterAll(this);
+            setupBootError(BuiltInSolution.econError());
             getLogger().severe("Plugin listeners was disabled, please fix the economy issue.");
             return false;
         }
@@ -519,7 +521,7 @@ public class QuickShop extends JavaPlugin {
         runtimeCheck(EnvCheckEntry.Stage.ON_LOAD);
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
-        QuickShopAPI.setupApi(this);
+        QuickShopAPI._internal_access_only_setupApi(this);
         //noinspection ResultOfMethodCallIgnored
         getDataFolder().mkdirs();
         this.bootError = null;
@@ -540,12 +542,14 @@ public class QuickShop extends JavaPlugin {
 
     @Override
     public void onDisable() {
+
+        getLogger().info("QuickShop is finishing remaining work, this may need a while...");
+        if (sentryErrorReporter != null) {
+            sentryErrorReporter.unregister();
+        }
+
         if (this.integrationHelper != null) {
             this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
-        }
-        getLogger().info("QuickShop is finishing remaining work, this may need a while...");
-        if (calendarWatcher != null) {
-            calendarWatcher.stop();
         }
         Util.debugLog("Unloading all shops...");
         try {
@@ -578,21 +582,31 @@ public class QuickShop extends JavaPlugin {
         if (logWatcher != null) {
             logWatcher.close();
         }
+        for (BukkitTask bukkitTask : timerTaskList) {
+            if (!bukkitTask.isCancelled()) {
+                bukkitTask.cancel();
+            }
+        }
+        if (calendarWatcher != null) {
+            calendarWatcher.stop();
+        }
         /* Unload UpdateWatcher */
         if (this.updateWatcher != null) {
             this.updateWatcher.uninit();
         }
 
-        Util.debugLog("Cleanup tasks...");
         AsyncPacketSender.stop();
-        if (sentryErrorReporter != null) {
-            sentryErrorReporter.unregister();
-        }
+
+        Util.debugLog("Cleanup tasks...");
 
         try {
             Bukkit.getScheduler().cancelTasks(this);
         } catch (Throwable ignored) {
         }
+
+        Util.debugLog("Cleanup listeners...");
+        HandlerList.unregisterAll(this);
+
         Util.debugLog("All shutdown work is finished.");
 
     }
@@ -612,7 +626,7 @@ public class QuickShop extends JavaPlugin {
         If set to true, it will write out the default values, to the target file.
         However, once written, you will not be able to tell the difference between a default and a value from the configuration.
         ==========================================================================================================================
-        getConfig().options().copyDefaults(true).header("Read the example.config.yml file to get commented example config file."); // Load defaults.
+        getConfig().options().copyDefaults(true).header("Read the example-configuration.yml file to get commented example config file."); // Load defaults.
         saveDefaultConfig();
         reloadConfig();
         */
@@ -620,10 +634,10 @@ public class QuickShop extends JavaPlugin {
                 "=================================\n" +
                         "=    QuickShop  Configuration   =\n" +
                         "=================================\n" +
-                        "\nNotes:" +
-                        "Please read the example.config.yml file to get commented example config file.\n" +
-                        "Please read the example.config.yml file to get commented example config file.\n" +
-                        "Please read the example.config.yml file to get commented example config file.\n"
+                        "\nNotes:\n" +
+                        "Please read the example-configuration.yml file to get a commented example config.\n" +
+                        "Please read the example-configuration.yml file to get a commented example config.\n" +
+                        "Please read the example-configuration.yml file to get a commented example config.\n"
         );
         if (getConfig().getInt("config-version", 0) == 0) {
             getConfig().set("config-version", 1);
@@ -649,7 +663,7 @@ public class QuickShop extends JavaPlugin {
                     joiner.add(String.format("- [%s/%s] %s", result.getValue().getResult().getDisplay(), result.getKey().name(), result.getValue().getResultMessage()));
                 }
             }
-            bootError = new BootError(this.getLogger(), joiner.toString());
+            setupBootError(new BootError(this.getLogger(), joiner.toString()));
             //noinspection ConstantConditions
             Util.mainThreadRun(() -> getCommand("qs").setTabCompleter(this)); //Disable tab completer
         }
@@ -673,7 +687,7 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Starting plugin self-test, please wait...");
         runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
 
-        QuickShopAPI.setupApi(this);
+        QuickShopAPI._internal_access_only_setupApi(this);
 
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
@@ -768,6 +782,12 @@ public class QuickShop extends JavaPlugin {
         if (display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
         }
+        if (display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
+            timerTaskList.add(displayDupeRemoverWatcher.runTaskTimerAsynchronously(this, 0, 1));
+        }
+        if (display && DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+            AsyncPacketSender.start(this);
+        }
 
         /* Load all shops. */
         shopLoader = new ShopLoader(this);
@@ -808,7 +828,7 @@ public class QuickShop extends JavaPlugin {
             updateWatcher.init();
         }
 
-        getLogger().info("QuickShop Loaded! " + enableTimer.endTimer() + " ms.");
+
         /* Delay the Ecoonomy system load, give a chance to let economy system regiser. */
         /* And we have a listener to listen the ServiceRegisterEvent :) */
         Util.debugLog("Loading economy system...");
@@ -823,19 +843,14 @@ public class QuickShop extends JavaPlugin {
         // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
         signUpdateWatcher.runTaskTimer(this, 0, 10);
         shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
-        if (display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
-            displayDupeRemoverWatcher.runTaskTimerAsynchronously(this, 0, 1);
-        }
-        if (display && DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
-            AsyncPacketSender.start(this);
-        }
+
         if (logWatcher != null) {
-            logWatcher.runTaskTimerAsynchronously(this, 10, 10);
+            timerTaskList.add(logWatcher.runTaskTimerAsynchronously(this, 10, 10));
             getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
         }
         if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
             getLogger().info("Ongoing fee feature is enabled.");
-            ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks"));
+            timerTaskList.add(ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks")));
         }
 
 
@@ -857,6 +872,7 @@ public class QuickShop extends JavaPlugin {
         calendarWatcher.start();
         Util.debugLog("Now using display-type: " + DisplayItem.getNowUsing().name());
         // sentryErrorReporter.sendError(new IllegalAccessError("no fucking way"));
+        getLogger().info("QuickShop Loaded! " + enableTimer.endTimer() + " ms.");
     }
 
     private void loadItemMatcher() {
@@ -1737,6 +1753,10 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", ++selectedVersion);
         }
 
+        if (selectedVersion == 129) {
+            getConfig().set("shop.use-global-virtual-item-queue", false);
+            getConfig().set("config-version", ++selectedVersion);
+        }
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
@@ -1748,14 +1768,20 @@ public class QuickShop extends JavaPlugin {
         saveConfig();
         reloadConfig();
 
-        //Delete old example.config.yml
+        //Delete old example configuration files
         new File(getDataFolder(), "example.config.yml").delete();
+        new File(getDataFolder(), "example-configuration.txt").delete();
 
-        Path exampleConfigFile = new File(getDataFolder(), "example-configuration.txt").toPath();
+        Path exampleConfigFile = new File(getDataFolder(), "example-configuration.yml").toPath();
         try {
             Files.copy(Objects.requireNonNull(getResource("config.yml")), exampleConfigFile, REPLACE_EXISTING);
         } catch (IOException ioe) {
             getLogger().warning("Error when creating the example config file: " + ioe.getMessage());
         }
+    }
+
+    public void setupBootError(BootError bootError) {
+        this.bootError = bootError;
+        HandlerList.unregisterAll(this);
     }
 }

@@ -25,7 +25,7 @@
     <artifactId>QuickShop</artifactId>
 
     <properties>
-        <pluginver>4.0.8.2</pluginver>
+        <pluginver>4.0.8.3</pluginver>
         <package>org.maxgamer.quickshop</package>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -120,6 +120,18 @@
                         </filter>
                     </filters>
                     <relocations>
+                        <relocation>
+                            <pattern>com.google.errorprone.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.com.google.errorprone.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.github.benmanes.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.com.github.benmanes.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.checkerframework.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.org.checkerframework.</shadedPattern>
+                        </relocation>
                         <relocation>
                             <pattern>org.slf4j.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.org.slf4j.slf4j.</shadedPattern>
@@ -221,7 +233,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.3.0</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
                     <excludePackageNames>org.maxgamer.quickshop.nonquickshopstuff.*</excludePackageNames>
@@ -487,7 +499,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>20.1.0</version>
+            <version>21.0.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -546,7 +558,7 @@
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
             <artifactId>MockBukkit-v1.16</artifactId>
-            <version>0.34.2</version>
+            <version>0.35.2</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -740,7 +752,7 @@
         <dependency>
             <groupId>com.massivecraft</groupId>
             <artifactId>Factions</artifactId>
-            <version>1.6.9.5-U0.5.20</version>
+            <version>1.6.9.5-U0.5.21</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -818,23 +830,17 @@
         <!--            <classifier>1.7.25</classifier>-->
         <!--            <scope>compile</scope>-->
         <!--        </dependency>-->
-        <dependency>
-            <groupId>com.esotericsoftware</groupId>
-            <artifactId>reflectasm</artifactId>
-            <version>1.11.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.lucko</groupId>
-            <artifactId>helper</artifactId>
-            <version>5.6.5</version>
-            <scope>compile</scope>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.15</version>
+        </dependency>
+        <dependency>
+            <groupId>me.lucko</groupId>
+            <artifactId>helper</artifactId>
+            <version>5.6.5</version>
+            <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-nop -->
         <dependency>
