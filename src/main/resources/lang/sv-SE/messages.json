@@ -1,10 +1,11 @@
 {
+  "_comment": "Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake",
   "file-test": "Detta är en testtextfil. Vi använder den för att testa om messages.json är trasig. Du kan fylla den med valfria påskägg som du gillar här :)",
   "translation-author": "Översättare: Ghost_chu, Andre_601",
   "translation-version": "Supportversion: Reremake",
   "translation-contributors": "Medhjälpare: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken och Andre_601",
   "translation-country": "Språkområde: Engelska (en_US)",
-  "language-version": "54",
+  "language-version": "55",
   "not-looking-at-shop": "&cKunde inte hitta en QuickShop. Du måste titta på en.",
   "no-anythings-in-your-hand": "&cDet finns inget i din hand.",
   "no-permission": "&cDu har inte tillåtelse till att göra detta.",
@@ -44,7 +45,7 @@
   "fee-charged-for-price-change": "&aDu betalade &c{0}&a för att ändra priset.",
   "price-is-now": "&aDet nya priset för butiken är &e{0}",
   "thats-not-a-number": "&cOgiltig siffra",
-  "forbidden-vanilla-behavior": "&cOperationen är förbjuden på grund av att den inte är konsekvent med vanilla-beteendet",
+  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consisten with vanilla behaviour",
   "no-price-given": "&cVar god ange ett giltigt pris.",
   "average-price-nearby": "&aNärliggande genomsnittspris: &e{0}",
   "shop-has-changed": "&cButiken du försökte använda har ändrats sedan du klickade på den!",
@@ -138,7 +139,7 @@
     "no-amount-given": "&cInget belopp angivet. Använd &a/qs refill <antal>&c",
     "now-debuging": "&Framgångsrikt aktiverat utvecklarläge. Laddar om QuickShop...",
     "now-nolonger-debuging": "&aFramgångsrikt inaktiverat utvecklarläge. Laddar om QuickShop...",
-    "wrong-args": "&cOgiltiga argument. Använd &l/qs help &rför att förhandsgranska en lista över kommandon.",
+    "wrong-args": "&cInvalid argument. Use &l/qs help &cto see a list of commands.",
     "description": {
       "title": "&aQuickShop-hjälp",
       "unlimited": "&eGer en butik obegränsat lager.",
@@ -169,14 +170,14 @@
       "removeall": "&eTa bort alla butiker från en angiven spelare",
       "transfer": "&eÖverför alla butiker från en spelare till en annan",
       "removeworld": "&eTa bort ALLA butiker i angiven värld",
-      "currency": "&eSet eller ta bort valutainställningarna i butiken",
-      "ban": "&eBanning a player from the shop",
-      "unban": "&eUnbanning a player from the shop",
+      "currency": "&eSet or remove the currency setting of the shop",
+      "ban": "&eBans a player from the shop",
+      "unban": "&eUnbans a player from the shop",
       "freeze": "&eDisable or Enable shop trading",
-      "lock": "&eSwitch the shop lock status"
+      "lock": "&eSwitch the shop's lock status"
     },
     "disabled": "&cDetta kommando är inaktiverat: &e{0}",
-    "feature-not-enabled": "Funktionen är inte aktiverad i konfigurationen."
+    "feature-not-enabled": "This feature is not enabled in the config file."
   },
   "signs": {
     "selling": "Säljer {0}",
@@ -192,7 +193,7 @@
     "status-unavailable": "&c",
     "out-of-stock": "Out of Stock",
     "out-of-space": "Out of Space",
-    "freeze": "Trade disabled"
+    "freeze": "Trading disabled"
   },
   "controlpanel": {
     "setowner": "&aÄgare: &b{0} &e[&d&lÄndra&e]",
@@ -219,9 +220,9 @@
     "currency": "&aValuta: &b{0} &e[&d&lÄndra&e]",
     "currency-hover": "&eKlicka för att ändra eller ta bort den valuta som denna butik använder",
     "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
-    "lock-hover": "&eEnable/Disable shop lock protection.",
+    "lock-hover": "&eEnable/Disable the shop's lock protection.",
     "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
-    "freeze-hover": "&eToggle shop freeze status,"
+    "freeze-hover": "&eToggle the shop's freeze status."
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -263,7 +264,7 @@
       "Läkare, QuickShop har en ny uppdatering {0}! Du bör uppdatera~",
       "Ko~ko~da~yo~ QuickShop har en ny uppdatering {0}~"
     ],
-    "remote-disable-warning": "&cDenna version av QuickShop har markerats som inaktiverad av fjärrservern. Det innebär att denna version kan ha allvarliga problem. Få information från vår SpigotMC-sida: {0}. Denna varning kommer att visas och spammas i din konsol tills du växlar till en icke inaktiverad version. Detta kommer dock inte att påverka din server.",
+    "remote-disable-warning": "&cThis version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server's performance.",
     "label": {
       "unstable": "[Ostabil]",
       "stable": "[Stabil]",
@@ -312,9 +313,10 @@
   "currency-unset": "&aButikens valuta har tagits bort. Använder standardinställningar nu.",
   "currency-not-support": "&cEkonomi-pluginet stöder inte flervaluta-funktionen.",
   "item-not-exist": "&cObjektet &e{0} &cexisterar inte, kontrollera din stavning.",
-  "backup-success": "&aBackup framgångsrik.",
-  "console-only": "&cDetta kommando kan endast köras av Konsolen.",
-  "console-only-danger": "&cDetta är ett farligt kommando så att endast kan utföras av Konsolen.",
-  "clean-warning": "&eDetta kommando kommer att rensa &ebutiker om butiken är skadad eller skapad i otillåtna världar eller sälja/köpa otillåtna föremål och &c&lIN INTE LADDA ORLD SHOPS&e, se till att du har full säkerhetskopiering av dina butikers data och använd &b/qs cleanghost confirm &eför att fortsätta.",
-  "shop-creation-failed": "&cSkapandet av butiken misslyckades, kontakta serveradministratören."
+  "backup-success": "&aBackup successfull.",
+  "console-only": "&cThis command can only be executed by Console.",
+  "console-only-danger": "&cThis is a dangerous command, so that only the Console can execute it.",
+  "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
+  "shop-creation-failed": "&cSkapandet av butiken misslyckades, kontakta serveradministratören.",
+  "shop-owner-self-trade": "&eYou trading with yourself shop, so you might won't gain any balance."
 }
