@@ -38,7 +38,6 @@ import org.maxgamer.quickshop.util.security.JarVerifyTool;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.management.ManagementFactory;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.*;
@@ -49,12 +48,10 @@ import java.util.logging.Level;
 public class EnvironmentChecker {
     private final QuickShop plugin;
     private final List<Method> tests = new ArrayList<>();
-    private final List<String> startupArgs;
 
     public EnvironmentChecker(QuickShop plugin) {
         this.plugin = plugin;
         this.registerTests(this.getClass()); //register self
-        this.startupArgs = ManagementFactory.getRuntimeMXBean().getInputArguments();
     }
 
     /**
@@ -113,7 +110,7 @@ public class EnvironmentChecker {
                     continue;
                 }
 
-                if (!startupArgs.contains("-Dorg.maxgamer.quickshop.util.envcheck.skip." + envCheckEntry.name())) {
+                if (!System.getProperty("org.maxgamer.quickshop.util.envcheck.skip." + envCheckEntry.name(), "false").equalsIgnoreCase("true")) {
                     executeResult = (ResultContainer) declaredMethod.invoke(this);
                     //plugin.getLogger().info("Result: "+executeResult.getResultMessage());
                     if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if its worse than the latest one.
