@@ -175,7 +175,7 @@
       "freeze": "&e禁用或启用商店交易",
       "lock": "&e切换商店锁状态"
     },
-    "disabled": "&c此命令已禁用",
+    "disabled": "&c此命令已禁用: &e{0}",
     "feature-not-enabled": "配置中未启用此功能。"
   },
   "signs": {
