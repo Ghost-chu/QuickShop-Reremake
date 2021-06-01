@@ -1,10 +1,11 @@
 {
+  "_comment": "Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake",
   "file-test": "This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)",
   "translation-author": "Translator: Ghost_chu, Andre_601",
   "translation-version": "Support Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: English (en_US)",
-  "language-version": "54",
+  "language-version": "55",
   "not-looking-at-shop": "&cCould not find a QuickShop. You need to look at one.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cYou do not have permission to do that.",
@@ -316,5 +317,6 @@
   "console-only": "&cThis command can only be executed by Console.",
   "console-only-danger": "&cThis is a dangerous command, so that only the Console can execute it.",
   "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
-  "shop-creation-failed": "&cShop creation failed, please contact with server administrator."
+  "shop-creation-failed": "&cShop creation failed, please contact with server administrator.",
+  "shop-owner-self-trade": "&eYou trading with yourself shop, so you might won't gain any balance."
 }
