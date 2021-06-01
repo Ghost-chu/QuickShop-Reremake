@@ -193,7 +193,7 @@
     "status-unavailable": "&c",
     "out-of-stock": "Ausverkauft",
     "out-of-space": "Kein Platz",
-    "freeze": "Trading disabled"
+    "freeze": "Handel deaktiviert"
   },
   "controlpanel": {
     "setowner": "&aBesitzer: &b{0} &e[&d&lÄndern&e]",
@@ -220,9 +220,9 @@
     "currency": "&aWährung: &b{0} &e[&d&lÄndern&e]",
     "currency-hover": "&eKlicke um die Währung zu setzen oder zu entfernen, welcher dieser Shop verwendet",
     "lock": "&eShop Sperre: &b{0} &e[&d&lÄndern&e]",
-    "lock-hover": "&eEnable/Disable the shop's lock protection.",
+    "lock-hover": "&eAktiviere/Deaktiviere den Sperrschutz des Shops.",
     "freeze": "&eFreeze Modus: &b{0} &e[&d&lÄndern&e]",
-    "freeze-hover": "&eToggle the shop's freeze status."
+    "freeze-hover": "&eÄndere den Freeze-Status des Shops."
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
