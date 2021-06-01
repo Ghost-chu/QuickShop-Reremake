@@ -1,6 +1,6 @@
 {
   "file-test": "This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)",
-  "translation-author": "Translator: Ghost_chu, Andre_601",
+  "translation-author": "Tradutor: Ghost_chu, Andre_601",
   "translation-version": "Support Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: English (en_US)",
@@ -91,7 +91,7 @@
     "enchants": "&5Enchantments",
     "stored-enchants": "&5Stored Enchantments",
     "shop-information": "&aShop Information:",
-    "owner": "&aOwner: {0}",
+    "owner": "&aProprietário: {0}",
     "item": "&aItem: &e{0}",
     "item-holochat-error": "&c[Error]",
     "preview": "&b[Item Preview]",
