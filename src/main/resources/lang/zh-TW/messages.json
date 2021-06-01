@@ -1,10 +1,11 @@
 {
+  "_comment": "你好翻譯者! 假若你正在從Github 或者其他 開源碼中 編輯檔案,你應該前往 https://crowdin.com/project/quickshop-reremake\n中進行翻譯",
   "file-test": "這是個測試的文字檔案，我們使用它來測試 messages.json 是否損壞，你可以在這裡填入任何喜歡的彩蛋。 :)",
   "translation-author": "翻譯人員 ： Ghost_chu、Andre_601、Flandre_tw （主翻譯） 、Terence#3062 （主翻譯）",
   "translation-version": "支援版本 ： Reremake （重製版）",
   "translation-contributors": "貢獻人員 ： Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
   "translation-country": "語言 ： &b&l繁體中文 Chinese Traditional （zh_TW）",
-  "language-version": "54",
+  "language-version": "55",
   "not-looking-at-shop": "&c無法找到儲物箱商店，你需要注視著儲物箱。",
   "no-anythings-in-your-hand": "&c手上沒有任何東西。",
   "no-permission": "&4你沒有使用該指令的權限。",
@@ -138,7 +139,7 @@
     "no-amount-given": "&c沒有提供數量。請使用 ： &a/qs refill <amount>&c",
     "now-debuging": "&a成功開啟開發者模式，插件重新載入中……",
     "now-nolonger-debuging": "&a成功關閉開發者模式，插件重新載入中……",
-    "wrong-args": "&c無效的參數。使用 &l/ qs help &c查看指令列表。 ",
+    "wrong-args": "&c無效的參數。使用 &l/ qs help &c查看指令列表。",
     "description": {
       "title": "&aQuickShop 說明",
       "unlimited": "&e將商店設為庫存無限。",
@@ -176,7 +177,7 @@
       "lock": "&e切換商店上鎖狀態"
     },
     "disabled": "&c這個指令被停用 ： &e{0}",
-    "feature-not-enabled": "該功能沒有在 config 中啟用。"
+    "feature-not-enabled": "該功能沒有在設定檔案中啟用。"
   },
   "signs": {
     "selling": "出售 {0} 個",
@@ -314,7 +315,8 @@
   "item-not-exist": "&c物品&e {0}&c不存在，請檢查你的拼寫。 ",
   "backup-success": "&a備份成功。",
   "console-only": "&c該指令只能在控制台執行。",
-  "console-only-danger": "&c這是一個危險的指令，因此只能由控制台執行。 ",
+  "console-only-danger": "&c 由於這個是一個有風險的指令, 請你在控制台中執行",
   "clean-warning": "&e此指令將清除&c&未裝載的世界商店&e及&c所有&e已損壞的、在不允許的世界中建立、或購買/販賣不允許商品的商店，請確保你已完全備份商店數據並使用 &b/qs cleanghost confirm &e以繼續。",
-  "shop-creation-failed": "&c商店建立失敗，請與伺服器管理員聯繫。"
+  "shop-creation-failed": "&c商店建立失敗，請與伺服器管理員聯繫。",
+  "shop-owner-self-trade": "&e你正在跟自己開的商店進行交易所以不會有任何金錢上的改變"
 }
