@@ -45,7 +45,7 @@ public class SubCommand_Find implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "Only player can run this command");
+            MsgUtil.sendMessage(sender, "Only players can use this command!");
             return;
         }
 
