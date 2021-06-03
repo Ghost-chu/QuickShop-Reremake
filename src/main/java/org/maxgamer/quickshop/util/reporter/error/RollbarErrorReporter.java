@@ -284,10 +284,17 @@ public class RollbarErrorReporter {
             throwable = throwable.getCause();
         }
 
-        if (throwable.getStackTrace()[0].getClassName().contains("org.maxgamer.quickshop")) {
+        StackTraceElement[] stackTraceElements = throwable.getStackTrace();
+
+        if (stackTraceElements.length == 0) {
+            return PossiblyLevel.IMPOSSIBLE;
+        }
+
+        if (stackTraceElements[0].getClassName().contains("org.maxgamer.quickshop")) {
             return PossiblyLevel.CONFIRM;
         }
-        long errorCount = Arrays.stream(throwable.getStackTrace())
+
+        long errorCount = Arrays.stream(stackTraceElements)
                 .limit(3)
                 .filter(stackTraceElement -> stackTraceElement.getClassName().contains("org.maxgamer.quickshop"))
                 .count();
