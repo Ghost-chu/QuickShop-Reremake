@@ -46,11 +46,11 @@ public class SubCommand_Paste implements CommandProcesser {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             if (plugin.getServer().getPluginManager().getPlugin("ConsoleSpamFix") != null) {
                 if (cmdArg.length < 1) {
-                    sender.sendMessage("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!");
+                    sender.sendMessage("Warning: ConsoleSpamFix is installed! Please disable it before reporting any errors!");
                     return;
                 } else {
                     if (Arrays.stream(cmdArg).noneMatch(str -> str.contains("--force"))) {
-                        sender.sendMessage("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!");
+                        sender.sendMessage("Warning: ConsoleSpamFix is installed! Please disable it before reporting any errors!");
                         return;
                     }
                 }
@@ -60,9 +60,9 @@ public class SubCommand_Paste implements CommandProcesser {
                 pasteToLocalFile(sender);
                 return;
             }
-            sender.sendMessage("§aPlease wait, we're uploading the data to the pastebin...");
+            sender.sendMessage("§aPlease wait, QS is uploading the data to pastebin...");
             if (!pasteToPastebin(sender)) {
-                sender.sendMessage("The paste failed, saving the paste at local location...");
+                sender.sendMessage("The paste upload has failed! Saving the paste locally...");
                 pasteToLocalFile(sender);
             }
         });
@@ -93,12 +93,12 @@ public class SubCommand_Paste implements CommandProcesser {
                 fwriter.write(pasteText);
                 fwriter.flush();
             }
-            sender.sendMessage("Paste was saved to your server at: " + file.getAbsolutePath());
+            sender.sendMessage("The paste was saved to " + file.getAbsolutePath());
             return true;
         } catch (IOException e) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            plugin.getLogger().log(Level.WARNING, "Failed to save paste to your local drive, the content will print to Console", e);
-            sender.sendMessage("Saving failed, output to console...");
+            plugin.getLogger().log(Level.WARNING, "Failed to save paste locally! The content will be send to the console", e);
+            sender.sendMessage("Paste save failed! Sending paste to the console...");
             plugin.getLogger().info(pasteText);
             return false;
         }
