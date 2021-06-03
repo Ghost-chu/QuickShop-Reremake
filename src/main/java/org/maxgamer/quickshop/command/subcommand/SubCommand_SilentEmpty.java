@@ -41,13 +41,13 @@ public class SubCommand_SilentEmpty implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            Util.debugLog("Exception on command, cancel.");
+            Util.debugLog("Exception on command! Canceling!");
             return;
         }
 
         Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(UUID.fromString(cmdArg[0]));
 //        if (cmdArg.length < 1) {
-//            Util.debugLog("Exception on command, cancel.");
+//            Util.debugLog("Exception on command! Canceling!");
 //            return;
 //        }
 //
