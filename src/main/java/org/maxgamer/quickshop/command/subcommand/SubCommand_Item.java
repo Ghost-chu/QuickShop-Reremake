@@ -40,7 +40,7 @@ public class SubCommand_Item implements CommandProcesser {
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "This command can't be run by the console");
+            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
             return;
         }
         final BlockIterator bIt = new BlockIterator((Player) sender, 10);
