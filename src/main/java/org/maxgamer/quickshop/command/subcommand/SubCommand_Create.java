@@ -76,7 +76,7 @@ public class SubCommand_Create implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "This command can't be run by the console");
+            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
             return;
         }
 
