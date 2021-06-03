@@ -41,7 +41,7 @@ public class SubCommand_SilentBuy implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            Util.debugLog("Exception on command, cancel.");
+            Util.debugLog("Exception on command! Cancelling!");
             return;
         }
 
