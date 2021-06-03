@@ -54,11 +54,11 @@ public class SubCommand_RemoveWorld implements CommandProcesser {
                 shopsDeleted++;
             }
         }
-        Util.debugLog("Successfully delete all shops in world " + cmdArg[0]);
+        Util.debugLog("Successfully deleted all shops in world " + cmdArg[0] + "!");
 
         MsgUtil.sendMessage(sender, MsgUtil.getMessage("shops-removed-in-world", sender, String.valueOf(shopsDeleted), world.getName()));
 //        if (!(sender instanceof Player)) {
-//            MsgUtil.sendMessage(sender, ChatColor.RED + "Only players may use that command.");
+//            MsgUtil.sendMessage(sender, ChatColor.RED + "This command can't be run by the console!");
 //            return;
 //        }
 //
@@ -82,7 +82,7 @@ public class SubCommand_RemoveWorld implements CommandProcesser {
 //                    || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
 //                //shop.onUnload();
 //                shop.delete();
-//                plugin.log("Deleting shop " + shop + " request by /qs remove command.");
+//                plugin.log("Deleting shop " + shop + " as requested by the /qs remove command.");
 //            } else {
 //                MsgUtil.sendMessage(sender, ChatColor.RED + MsgUtil.getMessage("no-permission", sender));
 //            }
