@@ -41,7 +41,7 @@ public class SubCommand_Clean implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Server) {
-            MsgUtil.sendMessage(sender, "This command can't be run by the console");
+            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
             return;
         }
 
