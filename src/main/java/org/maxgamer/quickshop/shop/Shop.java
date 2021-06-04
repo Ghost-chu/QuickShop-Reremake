@@ -479,5 +479,10 @@ public interface Shop {
      */
     Shop getAttachedShop();
 
-
+    /**
+     * Getting ShopInfoStorage that you can use for storage the shop data
+     *
+     * @return ShopInfoStorage
+     */
+    ShopInfoStorage saveToInfoStorage();
 }

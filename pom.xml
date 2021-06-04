@@ -59,9 +59,18 @@
 
     <profiles>
         <profile>
+            <id>debug</id>
+            <properties>
+                <mvn.build.ver>${pluginver}-SNAPSHOT</mvn.build.ver>
+                <!-- Disable signature in local env, deploy phrase never will running in local env -->
+                <mvn.sign.phrase>deploy</mvn.sign.phrase>
+            </properties>
+        </profile>
+        <profile>
             <id>master</id>
             <properties>
                 <mvn.build.ver>${pluginver}-SNAPSHOT</mvn.build.ver>
+                <mvn.sign.phrase>install</mvn.sign.phrase>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -71,6 +80,7 @@
             <id>release</id>
             <properties>
                 <mvn.build.ver>${pluginver}</mvn.build.ver>
+                <mvn.sign.phrase>install</mvn.sign.phrase>
             </properties>
         </profile>
     </profiles>
@@ -261,7 +271,7 @@
                 <version>3.0.0</version>
                 <executions>
                     <execution>
-                        <phase>install</phase>
+                        <phase>${mvn.sign.phrase}</phase>
                         <id>sign</id>
                         <goals>
                             <goal>sign</goal>
