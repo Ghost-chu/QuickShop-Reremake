@@ -1,7 +1,7 @@
 name: ${project.name}
 main: ${package}.${project.name}
 version: ${project.version}
-authors: [PotatoCraft Studio, Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul, TiaraRinne, sandtechnology]
+authors: [ PotatoCraft Studio, Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul, TiaraRinne, sandtechnology, Starmism, Chris6ix ]
 
 description: Economy Shops plugin
 softdepend:
