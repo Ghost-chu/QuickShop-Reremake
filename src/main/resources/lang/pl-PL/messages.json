@@ -1,10 +1,11 @@
 {
+  "_comment": "Witaj tłumaczu! Jeśli edytujesz to z Github'a lub ze źródeł kodowych, powinieneś przejść do https://crowdin.com/project/quickshop-reremake",
   "file-test": "To jest testowy plik tekstowy. Używamy go do testowania jeśli messages.json jest zepsuty. Możesz wypełnić go dowolnymi easter egg'ami, które lubisz :)",
   "translation-author": "Tłumacz: Ghost_chu, Andre_601",
   "translation-version": "Wspierana wersja: Reremake",
   "translation-contributors": "Współtwórcy: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken i Andre_601",
   "translation-country": "Język: Polski (pl_PL)",
-  "language-version": "53",
+  "language-version": "56",
   "not-looking-at-shop": "&cNie można znaleźć QuickShop. Musisz na niego patrzeć.",
   "no-anythings-in-your-hand": "&cW twojej ręce nic nie ma.",
   "no-permission": "&cNie masz uprawnień, aby to zrobić.",
@@ -138,7 +139,7 @@
     "no-amount-given": "&cNie podano ilości. Użyj &a/qs refill <amount>&c",
     "now-debuging": "&aPomyślnie przełączono się do trybu developerskiego. Przeładuj QuickShop...",
     "now-nolonger-debuging": "&aPomyślnie przełączono się do trybu developerskiego. Przeładuj QuickShop...",
-    "wrong-args": "&cNieprawidłowe argumenty. Użyj &l/qs help &caby zobaczyć listę poleceń.",
+    "wrong-args": "&cNieprawidłowy argument. Użyj &l/qs help &caby zobaczyć listę poleceń.",
     "description": {
       "title": "&aPomoc Sklepu",
       "unlimited": "&eDaje sklepowi nieograniczone zapasy.",
@@ -170,13 +171,13 @@
       "transfer": "&ePrzenieś czyjeś WSZYSTKIE sklepy do innych",
       "removeworld": "&eUsuń WSZYSTKIE sklepy w określonym świecie",
       "currency": "&eUstaw lub usuń ustawienia waluty sklepu",
-      "ban": "&eBanowanie gracza ze sklepu",
-      "unban": "&eOdbanowanie gracza ze sklepu",
+      "ban": "&eBanuje gracza ze sklepu",
+      "unban": "&eOdbanuje gracza ze sklepu",
       "freeze": "&eWyłącz lub włącz handel sklepowy",
       "lock": "&eZmień status blokady sklepu"
     },
     "disabled": "&cTa komenda jest wyłączona: &e{0}",
-    "feature-not-enabled": "Funkcja nie jest włączona w konfiguracji."
+    "feature-not-enabled": "Ta funkcja nie jest włączona w pliku konfiguracyjnym."
   },
   "signs": {
     "selling": "Kup {0}",
@@ -221,7 +222,7 @@
     "lock": "&eBlokada sklepu: &b{0} &e[&d&lPrzełącz&e]",
     "lock-hover": "&eWłącz/Wyłącz ochronę blokady sklepu.",
     "freeze": "&eTryb zamrożenia: &b{0} &e[&d&lPrzełącz&e]",
-    "freeze-hover": "&ePrzełącz status zamrożenia sklepu"
+    "freeze-hover": "&ePrzełącz status zamrożenia sklepu."
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -263,7 +264,7 @@
       "Lekarz, QuickShop ma nową aktualizację {0}! Powinieneś zaktualizować~",
       "Ko~ko~da~yo~ QuickShop ma nową aktualizację {0}~"
     ],
-    "remote-disable-warning": "&cTa wersja pluginu QuickShop jest oznaczona jako wyłączona przez serwer zdalny, co oznacza, że ta wersja może mieć poważny problem. Szczegółowe informacje można znaleźć na naszej stronie pluginu Spigot: {0}. To ostrzeżenie będzie się pojawiać, dopóki nie przełączysz się na wersję stabilną, ale nie wpłynie to na wydajność serwera.",
+    "remote-disable-warning": "&cTa wersja QuickShop jest oznaczona jako wyłączona przez zdalny serwer, co oznacza, że ta wersja może mieć poważny problem, uzyskaj szczegóły z naszej strony SpigotMC: {0}. To ostrzeżenie będzie wyświetlane dopóki nie przejdziesz do stabilnej wersji, ale nie wpłynie to na wydajność Twojego serwera.",
     "label": {
       "unstable": "[Niestabilny]",
       "stable": "[Stabilny]",
@@ -313,7 +314,10 @@
   "currency-not-support": "&cWtyczka ekonomiczna nie obsługuje funkcji wieloekonomicznej.",
   "item-not-exist": "&cElement &e{0} &cnie istnieje, sprawdź swoją pisownię.",
   "backup-success": "&aKopia zapasowa powiodła się.",
-  "console-only": "&cTa komenda może być wykonana tylko przez Konsolę.",
-  "console-only-danger": "&cTo jest polecenie niebezpieczne, więc może być wykonane tylko przez Konsolę.",
-  "clean-warning": "&eTa komenda wyczyści &cwszystkie &e sklepy, jeśli sklep jest uszkodzony lub stworzony w niedozwolonych światach lub sprzedaje/kupuje niedozwolone przedmioty i &c&lNIE JEST ZAŁADOWANY W SKLEPIE ŚWIATOWYM&e, upewnij się, że masz pełną kopię zapasową danych sklepów i użyj &b/qs cleanghost confirm &eaby kontynuować."
+  "console-only": "&cTo polecenie może być wykonane tylko przez konsolę.",
+  "console-only-danger": "&cJest to niebezpieczne polecenie, więc tylko konsola może go wykonać.",
+  "clean-warning": "&eTa komenda wyczyści &cwszystkie &esklepy, jeśli sklep jest uszkodzony, został utworzony w niedozwolonych światach, sprzedaje/skupuje niedozwolone przedmioty lub &c&lISTNIEJE W NIEZAŁADOWANYM ŚWIECIE&e. Upewnij się, że najpierw utwórzyłeś pełną kopię zapasową danych Twojego sklepu i użyj &b/qs cleanghost confirm &eaby kontynuować.",
+  "shop-creation-failed": "&cTworzenie sklepu nie powiodło się, skontaktuj się z administratorem serwera.",
+  "shop-owner-self-trade": "&eHandlujesz z własnym sklepem, więc nie będziesz mógł uzyskać żadnych korzyści.",
+  "chest-title": "QuickShop Store"
 }

@@ -1,10 +1,11 @@
 {
+  "_comment": "Hej översättare! Om du redigerar detta från Github eller från kodkällor, besök https://crowdin.com/project/quickshop-reremake",
   "file-test": "Detta är en testtextfil. Vi använder den för att testa om messages.json är trasig. Du kan fylla den med valfria påskägg som du gillar här :)",
   "translation-author": "Översättare: Ghost_chu, Andre_601",
   "translation-version": "Supportversion: Reremake",
   "translation-contributors": "Medhjälpare: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken och Andre_601",
   "translation-country": "Språkområde: Engelska (en_US)",
-  "language-version": "53",
+  "language-version": "56",
   "not-looking-at-shop": "&cKunde inte hitta en QuickShop. Du måste titta på en.",
   "no-anythings-in-your-hand": "&cDet finns inget i din hand.",
   "no-permission": "&cDu har inte tillåtelse till att göra detta.",
@@ -138,7 +139,7 @@
     "no-amount-given": "&cInget belopp angivet. Använd &a/qs refill <antal>&c",
     "now-debuging": "&Framgångsrikt aktiverat utvecklarläge. Laddar om QuickShop...",
     "now-nolonger-debuging": "&aFramgångsrikt inaktiverat utvecklarläge. Laddar om QuickShop...",
-    "wrong-args": "&cOgiltiga argument. Använd &l/qs help &rför att förhandsgranska en lista över kommandon.",
+    "wrong-args": "&cOgiltiga argument. Använd &l/qs help &rför att se en lista över kommandon.",
     "description": {
       "title": "&aQuickShop-hjälp",
       "unlimited": "&eGer en butik obegränsat lager.",
@@ -169,14 +170,14 @@
       "removeall": "&eTa bort alla butiker från en angiven spelare",
       "transfer": "&eÖverför alla butiker från en spelare till en annan",
       "removeworld": "&eTa bort ALLA butiker i angiven värld",
-      "currency": "&eSet eller ta bort valutainställningarna i butiken",
-      "ban": "&eBanning a player from the shop",
-      "unban": "&eUnbanning a player from the shop",
+      "currency": "&eAnge eller ta bort valutainställningarna i butiken",
+      "ban": "&eBannlyser en spelare från butiken",
+      "unban": "&eUnbannar en spelare från butiken",
       "freeze": "&eDisable or Enable shop trading",
-      "lock": "&eSwitch the shop lock status"
+      "lock": "&eVäxla butikens låsstatus"
     },
     "disabled": "&cDetta kommando är inaktiverat: &e{0}",
-    "feature-not-enabled": "Funktionen är inte aktiverad i konfigurationen."
+    "feature-not-enabled": "Funktionen är inte aktiverad i konfigurationsfilen."
   },
   "signs": {
     "selling": "Säljer {0}",
@@ -192,7 +193,7 @@
     "status-unavailable": "&c",
     "out-of-stock": "Out of Stock",
     "out-of-space": "Out of Space",
-    "freeze": "Trade disabled"
+    "freeze": "Handel inaktiverad"
   },
   "controlpanel": {
     "setowner": "&aÄgare: &b{0} &e[&d&lÄndra&e]",
@@ -219,9 +220,9 @@
     "currency": "&aValuta: &b{0} &e[&d&lÄndra&e]",
     "currency-hover": "&eKlicka för att ändra eller ta bort den valuta som denna butik använder",
     "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
-    "lock-hover": "&eEnable/Disable shop lock protection.",
+    "lock-hover": "&eAktivera/Inaktivera butikens låsskydd.",
     "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
-    "freeze-hover": "&eToggle shop freeze status,"
+    "freeze-hover": "&eVäxla butikens frysningsstatus."
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -313,7 +314,10 @@
   "currency-not-support": "&cEkonomi-pluginet stöder inte flervaluta-funktionen.",
   "item-not-exist": "&cObjektet &e{0} &cexisterar inte, kontrollera din stavning.",
   "backup-success": "&aBackup framgångsrik.",
-  "console-only": "&cDetta kommando kan endast köras av Konsolen.",
-  "console-only-danger": "&cDetta är ett farligt kommando så att endast kan utföras av Konsolen.",
-  "clean-warning": "&eDetta kommando kommer att rensa &ebutiker om butiken är skadad eller skapad i otillåtna världar eller sälja/köpa otillåtna föremål och &c&lIN INTE LADDA ORLD SHOPS&e, se till att du har full säkerhetskopiering av dina butikers data och använd &b/qs cleanghost confirm &eför att fortsätta."
+  "console-only": "&cDetta kommando kan endast exekveras av Konsolen.",
+  "console-only-danger": "&cDetta är ett farligt kommando, varför endast konsolen kan exekvera det.",
+  "clean-warning": "&eDetta kommando kommer att rensa &ebutiker som är skadade eller skapade i otillåtna världar eller säljer/köper otillåtna föremål eller &c&lEXISTERAR I OLADDADE VÄRLDAR&e. Se till att du har full säkerhetskopiering av dina butikers data och använd &b/qs cleanghost confirm &eför att fortsätta.",
+  "shop-creation-failed": "&cSkapandet av butiken misslyckades, kontakta serveradministratören.",
+  "shop-owner-self-trade": "&eYou handlar med din egen butik, så du kanske inte kommer att få något saldo.",
+  "chest-title": "QuickShop Store"
 }

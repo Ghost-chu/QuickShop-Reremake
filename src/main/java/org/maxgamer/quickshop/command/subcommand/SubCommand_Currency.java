@@ -44,7 +44,7 @@ public class SubCommand_Currency implements CommandProcesser {
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
 
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "This command can't be run by console");
+            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
             return;
         }
 

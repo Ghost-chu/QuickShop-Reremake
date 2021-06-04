@@ -1,10 +1,11 @@
 {
+  "_comment": "译者您好！如果您正在 Github 上或直接编辑源文件的方式进行翻译，请您前往 https://crowdin.com/project/quickshop-reremake",
   "file-test": "这是个测试文件，我们使用它来测试messages.json是否损坏。你可以在这里填入任何喜欢的彩蛋 :)",
   "translation-author": "翻译人员： Ghost_chu, Andre_601",
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
   "translation-country": "本地化语言：简体中文 (zh_CN)",
-  "language-version": "53",
+  "language-version": "56",
   "not-looking-at-shop": "&c无法找到商店，您需要注视着你想要操作的商店。",
   "no-anythings-in-your-hand": "&c你的手里没有任何物品。",
   "no-permission": "&c你没有权限这样做。",
@@ -44,7 +45,7 @@
   "fee-charged-for-price-change": "&a你花了 &c{0}&a 修改了价格。",
   "price-is-now": "&a商店的新价格是 &e{0}",
   "thats-not-a-number": "&c输入的内容不是数字",
-  "forbidden-vanilla-behavior": "&c禁止操作，因为它不符合原版行为",
+  "forbidden-vanilla-behavior": "&c该操作有悖于原版行为，因此已被禁止",
   "no-price-given": "&c请输入一个有效的价格。",
   "average-price-nearby": "&a附近的平均价格： &e{0}",
   "shop-has-changed": "&c在你点击此商店之后此商店被修改了，为了避免恶意修改，您的操作已被取消！",
@@ -138,7 +139,7 @@
     "no-amount-given": "&c未指定数量。使用方式为 &a/qs refill <数量>&c",
     "now-debuging": "&a成功切换到了开发者模式，插件重载中...",
     "now-nolonger-debuging": "&a成功切换到了生产模式，插件重载中...",
-    "wrong-args": "&c无效参数。使用 &l/qs help &c查看命令列表。",
+    "wrong-args": "&c无效参数。使用 &l/qs help &c来查看命令帮助。",
     "description": {
       "title": "&aQuickShop 帮助",
       "unlimited": "&e将商店设置为无限库存。",
@@ -169,14 +170,14 @@
       "removeall": "&e删除指定玩家的&b所有&r&e商店",
       "transfer": "&e将某人的所有商店转移给其他人",
       "removeworld": "&e删除指定世界中的所有商店",
-      "currency": "&e配置或禁用货币选项",
-      "ban": "&e封禁商店中的玩家",
-      "unban": "&e解禁商店中的玩家",
+      "currency": "&e设置或移除该商店的货币类型设置",
+      "ban": "&eBans a player from the shop",
+      "unban": "&eUnbans a player from the shop",
       "freeze": "&e禁用或启用商店交易",
       "lock": "&e切换商店锁状态"
     },
-    "disabled": "&c此命令已禁用",
-    "feature-not-enabled": "配置中未启用此功能。"
+    "disabled": "&c此命令已禁用: &e{0}",
+    "feature-not-enabled": "该功能未在配置文件中启用。"
   },
   "signs": {
     "selling": "出售 {0}",
@@ -192,7 +193,7 @@
     "status-unavailable": "&c",
     "out-of-stock": "缺货",
     "out-of-space": "空间不足",
-    "freeze": "关闭交易"
+    "freeze": "交易已被禁用"
   },
   "controlpanel": {
     "setowner": "&a所有者: &b{0} &e[&d&l修改&e]",
@@ -219,9 +220,9 @@
     "currency": "&a货币: &b{0} &e[&d&l设置&e]",
     "currency-hover": "&e点击以设置或移除商店使用的交易货币",
     "lock": "&e商店锁: &b{0} &e[&d&l切换&e]",
-    "lock-hover": "&e启用/禁用商店锁保护。",
+    "lock-hover": "&e启用/禁用商店锁",
     "freeze": "&e冻结模式： &b{0} &e[&d&l切换&e]",
-    "freeze-hover": "&e切换商店冻结状态"
+    "freeze-hover": "&e切换商店冻结状态。"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -237,7 +238,7 @@
     "price": "[价格]",
     "range": "[范围]",
     "amount": "[数量]",
-    "currency": "货币名称",
+    "currency": "[货币名称]",
     "item": "[物品]"
   },
   "updatenotify": {
@@ -263,7 +264,7 @@
       "博士，QuickShop有一个新的更新 {0}！你应该考虑一下更新了~",
       "Ko~ko~da~yo~QuickShop有一个新的更新 {0}~"
     ],
-    "remote-disable-warning": "&c这个版本的QuickShop被远程服务器标记为禁用，意味着这个版本可能存在严重的问题，可以在我们的SpigotMC插件页面获取详细信息。{0}. 此警告将继续出现，直到您切换到一个稳定的版本，但它不会影响您的服务器的性能。",
+    "remote-disable-warning": "&c这个版本的 QuickShop 被远程服务器标记为禁用，意味着这个版本可能存在严重的问题，可以在我们的 SpigotMC 插件页面获取详细信息。{0}. 此警告将继续出现，直到您切换到一个稳定的版本，但它不会影响您的服务器的性能。",
     "label": {
       "unstable": "[不稳定]",
       "stable": "[稳定]",
@@ -308,12 +309,15 @@
     "help-us": "&a[帮助我们提高翻译质量]"
   },
   "currency-not-exists": "&c无法找到您想要设置的货币，也许是拼写错误或该货币在这个世界不可用。",
-  "currency-set": "&aShop货币成功设置为 {0}。",
-  "currency-unset": "&aShop货币已成功删除。现在使用默认设置。",
+  "currency-set": "&a商店货币单位已被成功设置为 {0}。",
+  "currency-unset": "&a商店货币单位已被成功删除。现在会使用默认货币单位。",
   "currency-not-support": "&c此经济插件不支持多货币功能。",
-  "item-not-exist": "&c项目 &e{0} &cdo不存在，请检查您的拼写。",
-  "backup-success": "&a备份成功。",
-  "console-only": "&c此命令只能由控制台执行。",
-  "console-only-danger": "&c这是一个危险命令所以只能通过控制台执行。",
-  "clean-warning": "&e这个命令将清理&e 商店，如果商店在不允许的世界上被损坏或创建，或出售/购买不允许的项目，以及 &c&lIN不要加载世界商品， 请确保您的商店数据备份完整，并使用 &b/qs 清除主机确认 &eto 继续。"
+  "item-not-exist": "&物品 &e{0} &c不存在，请检查您的拼写。",
+  "backup-success": "&a备份成功",
+  "console-only": "&c该命令只能由控制台执行",
+  "console-only-danger": "&c这是一个危险的命令，只有控制台才能执行它。",
+  "clean-warning": "&e这个命令将清理&c所有&e在不允许创建商店的世界的、出售/购买不允许的物品的，以及 &c&l所有在服务器没有加载的世界的商店， 请在确保您的商店数据备份完整后使用 &b/qs cleanghost confirm &e来继续。",
+  "shop-creation-failed": "&c商店创建失败，请与服务器管理员联系。",
+  "shop-owner-self-trade": "&e你正在和自己的商店进行交易，你可能不会得到任何钱。",
+  "chest-title": "QuickShop Store"
 }

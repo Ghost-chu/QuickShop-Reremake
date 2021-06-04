@@ -414,7 +414,7 @@ public class ShopLoader {
 
     @Getter
     @Setter
-    public class ShopDatabaseInfoOrigin {
+    static public class ShopDatabaseInfoOrigin {
         private String item;
 
         private String moderators;
@@ -435,24 +435,20 @@ public class ShopLoader {
 
         private String extra;
 
-        ShopDatabaseInfoOrigin(ResultSet rs) {
-            try {
-                this.x = rs.getInt("x");
-                this.y = rs.getInt("y");
-                this.z = rs.getInt("z");
-                this.world = rs.getString("world");
-                this.item = rs.getString("itemConfig");
-                this.moderators = rs.getString("owner");
-                this.price = rs.getDouble("price");
-                this.type = rs.getInt("type");
-                this.unlimited = rs.getBoolean("unlimited");
-                this.extra = rs.getString("extra");
-                //handle old shops
-                if (extra == null) {
-                    extra = "";
-                }
-            } catch (SQLException sqlex) {
-                exceptionHandler(sqlex, null);
+        ShopDatabaseInfoOrigin(ResultSet rs) throws SQLException {
+            this.x = rs.getInt("x");
+            this.y = rs.getInt("y");
+            this.z = rs.getInt("z");
+            this.world = rs.getString("world");
+            this.item = rs.getString("itemConfig");
+            this.moderators = rs.getString("owner");
+            this.price = rs.getDouble("price");
+            this.type = rs.getInt("type");
+            this.unlimited = rs.getBoolean("unlimited");
+            this.extra = rs.getString("extra");
+            //handle old shops
+            if (extra == null) {
+                extra = "";
             }
         }
 
@@ -467,6 +463,10 @@ public class ShopLoader {
             this.type = type;
             this.unlimited = unlimited;
             this.extra = extra;
+        }
+
+        ShopDatabaseInfoOrigin() {
+
         }
 
         @Override

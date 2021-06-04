@@ -1,16 +1,17 @@
 {
-  "file-test": "This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)",
+  "_comment": "Hi translator! If you are editing this from Github or from code sources, you should go to https://crowdin.com/project/quickshop-reremake",
+  "file-test": "This is a test text file. We use it to test if the messages.json is broken. You can fill it with any easter-eggs you like here :)",
   "translation-author": "Translator: Ghost_chu, Andre_601",
   "translation-version": "Support Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: English (en_US)",
-  "language-version": "53",
+  "language-version": "56",
   "not-looking-at-shop": "&cCould not find a QuickShop. You need to look at one.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cYou do not have permission to do that.",
   "integrations-check-failed-create": "&cIntegration {0} denied the shop-creation",
   "integrations-check-failed-trade": "&cIntegration {0} denied the Shop trading",
-  "3rd-plugin-build-check-failed": "&c3rd party plugin &l{0}&r&c denied the permission checks, did you have permission setup in there?",
+  "3rd-plugin-build-check-failed": "&c3rd party plugin &l{0}&r&c denied the permission checks, did you have permission set up in there?",
   "no-creative-break": "&cYou cannot break other players shops in creative mode, switch to survival mode or try to use the supertool {0} instead.",
   "trading-in-creative-mode-is-disabled": "&cYou cannot trade with this shop while being in creative mode.",
   "supertool-is-disabled": "&cSupertool is disabled. Cannot break any shops.",
@@ -170,8 +171,8 @@
       "transfer": "&eTransfer someone's ALL shops to other",
       "removeworld": "&eRemove ALL shops in a specified world",
       "currency": "&eSet or remove the currency setting of the shop",
-      "ban": "&eBans a player from the shop",
-      "unban": "&eUnbans a player from the shop",
+      "ban": "&eBan a player from the shop",
+      "unban": "&eUnban a player from the shop",
       "freeze": "&eDisable or Enable shop trading",
       "lock": "&eSwitch the shop's lock status"
     },
@@ -315,5 +316,8 @@
   "backup-success": "&aBackup successfull.",
   "console-only": "&cThis command can only be executed by Console.",
   "console-only-danger": "&cThis is a dangerous command, so that only the Console can execute it.",
-  "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue."
+  "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
+  "shop-creation-failed": "&cShop creation failed, please contact with server administrator.",
+  "shop-owner-self-trade": "&eYou trade with your own shop, so you might not gain any balance.",
+  "chest-title": "QuickShop Store"
 }

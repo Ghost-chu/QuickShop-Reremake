@@ -29,6 +29,7 @@ import lombok.Getter;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.*;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -213,28 +214,29 @@ public class ShopManager {
         return this.shops.get(world);
     }
 
-    private void processWaterLoggedSign(@NotNull Block signBlock) {
+    private void processWaterLoggedSign(@NotNull Block container, @NotNull Block signBlock) {
+        boolean signIsWatered = signBlock.getType() == Material.WATER;
         signBlock.setType(Util.getSignMaterial());
-        BlockState bs = signBlock.getState();
-        if (signBlock.getType() == Material.WATER
-                && (bs.getBlockData() instanceof Waterlogged)) {
-            Waterlogged waterable = (Waterlogged) bs.getBlockData();
+        BlockState signBlockState = signBlock.getState();
+        BlockData signBlockData = signBlockState.getBlockData();
+        if (signIsWatered && (signBlockData instanceof Waterlogged)) {
+            Waterlogged waterable = (Waterlogged) signBlockData;
             waterable.setWaterlogged(true); // Looks like sign directly put in water
         }
-        if (bs.getBlockData() instanceof WallSign) {
-            WallSign signBlockDataType = (WallSign) bs.getBlockData();
-            BlockFace bf = signBlock.getLocation().getBlock().getFace(signBlock);
+        if (signBlockData instanceof WallSign) {
+            WallSign wallSignBlockData = (WallSign) signBlockData;
+            BlockFace bf = container.getFace(signBlock);
             if (bf != null) {
-                signBlockDataType.setFacing(bf);
-                bs.setBlockData(signBlockDataType);
+                wallSignBlockData.setFacing(bf);
+                signBlockState.setBlockData(wallSignBlockData);
             }
         } else {
             plugin.getLogger().warning(
                     "Sign material "
-                            + bs.getType().name()
+                            + signBlockState.getType().name()
                             + " not a WallSign, make sure you using correct sign material.");
         }
-        bs.update(true);
+        signBlockState.update(true);
     }
 
     /**
@@ -251,7 +253,7 @@ public class ShopManager {
         }
         if (info.getSignBlock() != null && autoSign) {
             if (Util.isAir(info.getSignBlock().getType()) || info.getSignBlock().getType() == Material.WATER) {
-                this.processWaterLoggedSign(info.getSignBlock());
+                this.processWaterLoggedSign(shop.getLocation().getBlock(), info.getSignBlock());
             } else {
                 if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
                     MsgUtil.sendMessage(player, MsgUtil.getMessage("failed-to-put-sign", player));
@@ -777,7 +779,7 @@ public class ShopManager {
 
         // Checking the shop can be created
         Util.debugLog("Calling for protection check...");
-        // Fix openInv compatiable issue
+        // Fix openInv compatible issue
         if (!bypassProtectionChecks) {
             Result result = plugin.getPermissionChecker().canBuild(p, info.getLocation());
             if (!result.isSuccess()) {
@@ -886,6 +888,9 @@ public class ShopManager {
                         Util.getItemStackName(info.getItem()),
                         String.valueOf(materialLimit.getKey()),
                         String.valueOf(materialLimit.getValue())));
+                return;
+            case NOT_VALID:
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("not-a-number", p, message));
                 return;
         }
 

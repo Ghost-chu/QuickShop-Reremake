@@ -159,6 +159,12 @@ public class InternalListener implements Listener {
             plugin.log("Player " + (creator != null ? creator.getName() : event.getPurchaser()) + " had " + plugin.getEconomy().getBalance(event.getPurchaser(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency()) + " after trading.");
             plugin.log("Shop Owner " + event.getShop().ownerName() + " had " + plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency()) + " after trading.");
         }
+        if (event.getPurchaser().equals(event.getShop().getOwner())) {
+            Player player = Bukkit.getPlayer(event.getPurchaser());
+            if (player != null) {
+                MsgUtil.sendMessage(player, MsgUtil.getMessage("shop-owner-self-trade", player));
+            }
+        }
     }
 
 }

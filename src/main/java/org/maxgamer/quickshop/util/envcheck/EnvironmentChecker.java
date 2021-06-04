@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is EnvironmentChecker.java
+ * This file is a part of project QuickShop, the name is EnvironmentChecker.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -93,9 +93,12 @@ public class EnvironmentChecker {
 
     public ResultReport run(EnvCheckEntry.Stage stage) {
         sortTests();
-        CheckResult result = CheckResult.PASSED;
+
         Map<EnvCheckEntry, ResultContainer> results = new LinkedHashMap<>();
         boolean skipAllTest = false;
+        ResultContainer executeResult = null;
+        CheckResult result = CheckResult.PASSED;
+        Properties properties = System.getProperties();
 
         for (Method declaredMethod : this.tests) {
             if (skipAllTest) {
@@ -107,12 +110,20 @@ public class EnvironmentChecker {
                     Util.debugLog("Skip test: " + envCheckEntry.name() + ": Except stage: " + Arrays.toString(envCheckEntry.stage()) + " Current stage: " + stage);
                     continue;
                 }
-                ResultContainer executeResult = (ResultContainer) declaredMethod.invoke(this);
-                //plugin.getLogger().info("Result: "+executeResult.getResultMessage());
-                if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if its worse than the latest one.
-                    result = executeResult.getResult();
+                if (!properties.containsKey("org.maxgamer.quickshop.util.envcheck.skip." + envCheckEntry.name().toUpperCase(Locale.ROOT).replace(" ", "_"))) {
+                    executeResult = (ResultContainer) declaredMethod.invoke(this);
+                    //plugin.getLogger().info("Result: "+executeResult.getResultMessage());
+                    if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if its worse than the latest one.
+                        result = executeResult.getResult();
+                    }
+                } else {
+                    result = CheckResult.SKIPPED;
                 }
-                switch (executeResult.getResult()) {
+                switch (result) {
+                    case SKIPPED:
+                        plugin.getLogger().info("[SKIP] " + envCheckEntry.name());
+                        Util.debugLog("Runtime check [" + envCheckEntry.name() + "] has been skipped (Startup Flag).");
+                        break;
                     case PASSED:
                         if (Util.isDevEdition() || Util.isDevMode()) {
                             plugin.getLogger().info("[OK] " + envCheckEntry.name());
@@ -135,7 +146,11 @@ public class EnvironmentChecker {
                         skipAllTest = true; //We need to disable the plugin NOW! Some HUGE exception is happening here, hurry up!
                         break;
                 }
-                results.put(envCheckEntry, executeResult);
+                if (executeResult != null) {
+                    results.put(envCheckEntry, executeResult);
+                } else {
+                    results.put(envCheckEntry, new ResultContainer(CheckResult.SKIPPED, "Startup flag mark this check should be skipped."));
+                }
             } catch (Exception e) {
                 plugin.getLogger().log(Level.WARNING, "Failed to execute EnvCheckEntry [" + declaredMethod.getName() + "]: Exception thrown out without getting caught. Something went wrong!", e);
                 plugin.getLogger().warning("[FAIL] " + declaredMethod.getName());
@@ -163,7 +178,7 @@ public class EnvironmentChecker {
 
     @SneakyThrows
     @EnvCheckEntry(name = "Signature Verify", priority = 0, stage = {EnvCheckEntry.Stage.ON_LOAD, EnvCheckEntry.Stage.ON_ENABLE})
-    public ResultContainer securtyVerify() {
+    public ResultContainer securityVerify() {
         JarVerifyTool tool = new JarVerifyTool();
         try {
             ClassLoader loader = this.getClass().getClassLoader();

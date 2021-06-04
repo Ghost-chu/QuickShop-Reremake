@@ -59,12 +59,11 @@ public class Economy_TNE implements EconomyCore {
         if (!isValid()) {
             return null;
         }
-        if (currency == null) {
-            return null;
-        }
-        for (TNECurrency apiCurrency : this.api.getCurrencies(world.getName())) {
-            if (apiCurrency.getIdentifier().equals(currency)) {
-                return apiCurrency;
+        if (currency != null) {
+            for (TNECurrency apiCurrency : this.api.getCurrencies(world.getName())) {
+                if (apiCurrency.getIdentifier().equals(currency)) {
+                    return apiCurrency;
+                }
             }
         }
         return this.api.getDefault(world.getName()); // Want to get some default currency available in thi world

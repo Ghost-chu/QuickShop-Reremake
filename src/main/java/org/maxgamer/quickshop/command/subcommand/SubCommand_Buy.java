@@ -42,7 +42,7 @@ public class SubCommand_Buy implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "Can't run command by Console");
+            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
             return;
         }
 

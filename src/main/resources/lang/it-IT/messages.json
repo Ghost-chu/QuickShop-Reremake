@@ -1,10 +1,11 @@
 {
+  "_comment": "Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake",
   "file-test": "This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)",
   "translation-author": "Traduttori: Ghost_chu, Andre_601, MaxFederico",
   "translation-version": "Versione di Supporto: Reremake",
   "translation-contributors": "Collaboratori: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: English (it_US)",
-  "language-version": "53",
+  "language-version": "56",
   "not-looking-at-shop": "&cImpossibile trovare un negozio. È necessario guardarne uno.",
   "no-anythings-in-your-hand": "&cNon hai nulla in mano.",
   "no-permission": "&cNon hai il permesso per farlo.",
@@ -44,7 +45,7 @@
   "fee-charged-for-price-change": "&aHai pagato &c{0}&a per cambiare il prezzo.",
   "price-is-now": "&aIl nuovo prezzo del negozio è &e{0}",
   "thats-not-a-number": "&cNumero Invalido",
-  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consistent with vanilla behavior",
+  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consisten with vanilla behaviour",
   "no-price-given": "&cPerfavore, inserisci un prezzo valido.",
   "average-price-nearby": "&aPrezzo medio nelle vicinanze: &e{0}",
   "shop-has-changed": "&cIl negozio che hai provato ad utilizzare è cambiato da quando l'hai cliccato!",
@@ -138,7 +139,7 @@
     "no-amount-given": "&cNessun importo fornito. Usa &a/qs refill <amount>&c",
     "now-debuging": "&aModalità sviluppatore attivata con successo. Ricaricando QuickShop...",
     "now-nolonger-debuging": "&aModalità sviluppatore disabilitata con successo. Ricaricando QuickShop...",
-    "wrong-args": "&cArgomenti non validi. Usa &l/qs help &cper vedere un elenco di comandi.",
+    "wrong-args": "&cInvalid argument. Use &l/qs help &cto see a list of commands.",
     "description": {
       "title": "&aAiuto di QuickShop",
       "unlimited": "&eDà a un negozio scorte illimitate.",
@@ -169,14 +170,14 @@
       "removeall": "&eRimuovi TUTTI i negozi di un giocatore specificato",
       "transfer": "&eTrasferisci tutti i negozi di qualcuno ad un altro player",
       "removeworld": "&eRimuovi tutti i negozi in uno specifico mondo",
-      "currency": "&eImposta o rimuove le impostazioni di valuta del negozio",
-      "ban": "&eBanning a player from the shop",
-      "unban": "&eUnbanning a player from the shop",
+      "currency": "&eSet or remove the currency setting of the shop",
+      "ban": "&eBans a player from the shop",
+      "unban": "&eUnbans a player from the shop",
       "freeze": "&eDisable or Enable shop trading",
-      "lock": "&eSwitch the shop lock status"
+      "lock": "&eSwitch the shop's lock status"
     },
     "disabled": "&cQuesto comando è disabilitato: &e{0}",
-    "feature-not-enabled": "La funzione non è abilitata nel config."
+    "feature-not-enabled": "This feature is not enabled in the config file."
   },
   "signs": {
     "selling": "Vendi {0}",
@@ -192,7 +193,7 @@
     "status-unavailable": "&c",
     "out-of-stock": "Out of Stock",
     "out-of-space": "Out of Space",
-    "freeze": "Trade disabled"
+    "freeze": "Trading disabled"
   },
   "controlpanel": {
     "setowner": "&aProprietario: &b{0} &e[&d&lCambia&e]",
@@ -219,9 +220,9 @@
     "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
     "currency-hover": "&eClicca per impostare o rimuovere la valuta che questo negozio sta usando",
     "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
-    "lock-hover": "&eEnable/Disable shop lock protection.",
+    "lock-hover": "&eEnable/Disable the shop's lock protection.",
     "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
-    "freeze-hover": "&eToggle shop freeze status,"
+    "freeze-hover": "&eToggle the shop's freeze status."
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -263,7 +264,7 @@
       "Dottore, QuickShop ha un nuovo aggiornamento {0}! Dovresti aggiornare~",
       "Ko~ko~da~yo~ QuickShop ha un nuovo aggiornamento {0}~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop is marked disabled by remote server, meaning this version may have serious problem, get details from our Spigot plugin page: {0}. This warning will continue to appear untill you switch to a stable version, but it will not affect your server's performence.",
+    "remote-disable-warning": "&cThis version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server's performance.",
     "label": {
       "unstable": "[Unstable]",
       "stable": "[Stable]",
@@ -312,8 +313,11 @@
   "currency-unset": "&aValuta del negozio rimossa con successo. Utilizzando le impostazioni predefinite ora.",
   "currency-not-support": "&cIl plugin dell'conomia non supporta la funzione multi-economia.",
   "item-not-exist": "&cL'elemento &e{0} &cnon esiste, controlla la tua ortografia.",
-  "backup-success": "&aBackup completato.",
-  "console-only": "&cQuesto comando può essere eseguito solo dalla Console.",
-  "console-only-danger": "&cQuesto è un comando di pericolo, quindi può essere eseguito solo dalla Console.",
-  "clean-warning": "&eThis command will purge &call &e shops if the shop is damaged or created in disallowed worlds or selling/buying disallowed items and &c&lIN NOT LOADED WORLD SHOPS&e, make sure you have full backup of your shops data and use &b/qs cleanghost confirm &eto continue."
+  "backup-success": "&aBackup successfull.",
+  "console-only": "&cThis command can only be executed by Console.",
+  "console-only-danger": "&cThis is a dangerous command, so that only the Console can execute it.",
+  "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
+  "shop-creation-failed": "&cShop creation failed, please contact with server administrator.",
+  "shop-owner-self-trade": "&eYou trading with yourself shop, so you might won't gain any balance.",
+  "chest-title": "QuickShop Store"
 }
