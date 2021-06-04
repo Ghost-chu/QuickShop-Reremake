@@ -508,7 +508,7 @@ plugin:
     #Should BlockHub only be used for permission checks?
     only: false
   #If you have WorldEdit, QuickShop will try migrating shops in EditSession. [BETA]
-  WorldEdit: false
+  WorldEdit: true
 effect:
   sound:
     ontabcomplete: true

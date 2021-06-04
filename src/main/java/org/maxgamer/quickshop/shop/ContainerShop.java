@@ -876,19 +876,6 @@ public class ContainerShop implements Shop {
             }
         }
         checkDisplay();
-        dataUpdate();
-    }
-
-    private void dataUpdate() {
-        dataUpdatePersistentInfo();
-    }
-
-    private void setInventoryTitleWithData() {
-
-    }
-
-    private void dataUpdatePersistentInfo() {
-
     }
 
     /**

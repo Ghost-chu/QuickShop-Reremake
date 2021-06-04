@@ -1784,7 +1784,7 @@ public class QuickShop extends JavaPlugin {
         }
 
         if (selectedVersion == 130) {
-            getConfig().set("plugin.WorldEdit", false);
+            getConfig().set("plugin.WorldEdit", true);
             getConfig().set("config-version", ++selectedVersion);
         }
 

@@ -53,11 +53,9 @@ public class WorldEditBlockListener extends AbstractDelegateExtent {
 
     @Override
     public <T extends BlockStateHolder<T>> boolean setBlock(final BlockVector3 position, final T block) throws WorldEditException {
-
         if (!(this.world instanceof BukkitWorld)) {
             return super.setBlock(position, block);
         }
-
         org.bukkit.World world = ((BukkitWorld) this.world).getWorld();
         BlockState oldBlock = extent.getBlock(position);
         BlockState newBlock = block.toImmutableState();
@@ -67,13 +65,11 @@ public class WorldEditBlockListener extends AbstractDelegateExtent {
         if (extent.setBlock(position, block)) {
             // Block Changed
             if (oldBlock.getBlockType().getMaterial().hasContainer() && !newBlock.getBlockType().getMaterial().hasContainer()) {
-                Util.debugLog("Location: " + location);
                 Shop shop = plugin.getShopManager().getShop(location, true); // Because WorldEdit can only remove half of shop, so we can keep another half as shop if it is doublechest shop.
-                Util.debugLog("Shop: " + shop);
                 if (shop != null) {
                     plugin.getLogger().info("Removing shop at " + location + " because removed by WorldEdit.");
                     plugin.log("Deleting shop " + shop + " as requested by the WorldEdit support.");
-                    shop.delete();
+                    Util.mainThreadRun(shop::delete);
                 }
             }
         }

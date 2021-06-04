@@ -28,7 +28,6 @@ import com.sk89q.worldedit.util.eventbus.Subscribe;
 import com.sk89q.worldedit.world.World;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.listener.QSListener;
-import org.maxgamer.quickshop.util.Util;
 
 public class WorldEditAdapter extends QSListener {
     private final WorldEditPlugin weBukkit;
@@ -51,7 +50,6 @@ public class WorldEditAdapter extends QSListener {
         Actor actor = event.getActor();
         World world = event.getWorld();
         if (actor != null && event.getStage() == EditSession.Stage.BEFORE_CHANGE) {
-            Util.debugLog("Replacing the extent...");
             event.setExtent(new WorldEditBlockListener(actor, world, event.getExtent(), plugin));
         }
     }
