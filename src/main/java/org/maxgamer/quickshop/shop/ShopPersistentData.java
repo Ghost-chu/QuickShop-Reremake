@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is QSListener.java
+ * This file is a part of project QuickShop, the name is ShopPersistentData.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -16,20 +16,28 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
-package org.maxgamer.quickshop.listener;
-
-import org.bukkit.event.Listener;
-import org.maxgamer.quickshop.QuickShop;
-
-public abstract class QSListener implements Listener {
-    public final QuickShop plugin;
-
-    public QSListener(QuickShop plugin) {
-        this.plugin = plugin;
-    }
-
-    public void register() {
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
-    }
-}
+package org.maxgamer.quickshop.shop;
+//
+//import com.google.gson.annotations.Expose;
+//import lombok.Getter;
+//
+//@Getter
+//public class ShopPersistentData {
+//    @Expose
+//    private final String world;
+//    @Expose
+//    private final int x;
+//    @Expose
+//    private final int y;
+//    @Expose
+//    private final int z;
+//    private final boolean setup;
+//
+//    public ShopPersistentData(int x, int y, int z, String world, boolean setup) {
+//        this.x = x;
+//        this.y = y;
+//        this.z = z;
+//        this.world = world;
+//        this.setup = setup;
+//    }
+//}
