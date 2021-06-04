@@ -177,7 +177,7 @@
       "lock": "&eZmień status blokady sklepu"
     },
     "disabled": "&cTa komenda jest wyłączona: &e{0}",
-    "feature-not-enabled": "This feature is not enabled in the config file."
+    "feature-not-enabled": "Ta funkcja nie jest włączona w pliku konfiguracyjnym."
   },
   "signs": {
     "selling": "Kup {0}",
@@ -193,7 +193,7 @@
     "status-unavailable": "&c",
     "out-of-stock": "Wyprzedano produkt",
     "out-of-space": "Za mało miejsca",
-    "freeze": "Trading disabled"
+    "freeze": "Handel wyłączony"
   },
   "controlpanel": {
     "setowner": "&aWłaściciel: &b{0} &e[&d&lZmień&e]",
@@ -220,9 +220,9 @@
     "currency": "&aWaluta: &b{0} &e[&d&lUstaw&e]",
     "currency-hover": "&eKliknij, aby ustawić lub usunąć walutę, której używa ten sklep",
     "lock": "&eBlokada sklepu: &b{0} &e[&d&lPrzełącz&e]",
-    "lock-hover": "&eEnable/Disable the shop's lock protection.",
+    "lock-hover": "&eWłącz/Wyłącz ochronę blokady sklepu.",
     "freeze": "&eTryb zamrożenia: &b{0} &e[&d&lPrzełącz&e]",
-    "freeze-hover": "&eToggle the shop's freeze status."
+    "freeze-hover": "&ePrzełącz status zamrożenia sklepu."
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -264,7 +264,7 @@
       "Lekarz, QuickShop ma nową aktualizację {0}! Powinieneś zaktualizować~",
       "Ko~ko~da~yo~ QuickShop ma nową aktualizację {0}~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server's performance.",
+    "remote-disable-warning": "&cTa wersja QuickShop jest oznaczona jako wyłączona przez zdalny serwer, co oznacza, że ta wersja może mieć poważny problem, uzyskaj szczegóły z naszej strony SpigotMC: {0}. To ostrzeżenie będzie wyświetlane dopóki nie przejdziesz do stabilnej wersji, ale nie wpłynie to na wydajność Twojego serwera.",
     "label": {
       "unstable": "[Niestabilny]",
       "stable": "[Stabilny]",
@@ -313,10 +313,10 @@
   "currency-unset": "&aWaluta sklepu usunięta pomyślnie. Używasz teraz ustawień domyślnych.",
   "currency-not-support": "&cWtyczka ekonomiczna nie obsługuje funkcji wieloekonomicznej.",
   "item-not-exist": "&cElement &e{0} &cnie istnieje, sprawdź swoją pisownię.",
-  "backup-success": "&aBackup successfull.",
-  "console-only": "&cThis command can only be executed by Console.",
-  "console-only-danger": "&cThis is a dangerous command, so that only the Console can execute it.",
-  "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
-  "shop-creation-failed": "&cShop creation failed, please contact with server administrator.",
-  "shop-owner-self-trade": "&eYou trading with yourself shop, so you might won't gain any balance."
+  "backup-success": "&aKopia zapasowa powiodła się.",
+  "console-only": "&cTo polecenie może być wykonane tylko przez konsolę.",
+  "console-only-danger": "&cJest to niebezpieczne polecenie, więc tylko konsola może go wykonać.",
+  "clean-warning": "&eTa komenda wyczyści &cwszystkie &esklepy, jeśli sklep jest uszkodzony, został utworzony w niedozwolonych światach, sprzedaje/skupuje niedozwolone przedmioty lub &c&lISTNIEJE W NIEZAŁADOWANYM ŚWIECIE&e. Upewnij się, że najpierw utwórzyłeś pełną kopię zapasową danych Twojego sklepu i użyj &b/qs cleanghost confirm &eaby kontynuować.",
+  "shop-creation-failed": "&cTworzenie sklepu nie powiodło się, skontaktuj się z administratorem serwera.",
+  "shop-owner-self-trade": "&eHandlujesz z własnym sklepem, więc nie będziesz mógł uzyskać żadnych korzyści."
 }
