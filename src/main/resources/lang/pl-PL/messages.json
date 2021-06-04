@@ -1,5 +1,5 @@
 {
-  "_comment": "Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake",
+  "_comment": "Witaj tłumaczu! Jeśli edytujesz to z Github'a lub ze źródeł kodowych, powinieneś przejść do https://crowdin.com/project/quickshop-reremake",
   "file-test": "To jest testowy plik tekstowy. Używamy go do testowania jeśli messages.json jest zepsuty. Możesz wypełnić go dowolnymi easter egg'ami, które lubisz :)",
   "translation-author": "Tłumacz: Ghost_chu, Andre_601",
   "translation-version": "Wspierana wersja: Reremake",
@@ -45,7 +45,7 @@
   "fee-charged-for-price-change": "&aZapłaciłeś &c{0}&a, aby zmienić cenę.",
   "price-is-now": "&aNowa cena sklepu to &e{0}",
   "thats-not-a-number": "&cNieprawidłowa liczba",
-  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consisten with vanilla behaviour",
+  "forbidden-vanilla-behavior": "&cOperacja jest zabroniona, ponieważ nie jest zgodna z zachowaniem waniliowym",
   "no-price-given": "&cPodaj poprawną cenę.",
   "average-price-nearby": "&aCena w pobliżu: &e{0}",
   "shop-has-changed": "&cSklep, z którego próbowałeś skorzystać, zmienił się od momentu kliknięcia!",
@@ -139,7 +139,7 @@
     "no-amount-given": "&cNie podano ilości. Użyj &a/qs refill <amount>&c",
     "now-debuging": "&aPomyślnie przełączono się do trybu developerskiego. Przeładuj QuickShop...",
     "now-nolonger-debuging": "&aPomyślnie przełączono się do trybu developerskiego. Przeładuj QuickShop...",
-    "wrong-args": "&cInvalid argument. Use &l/qs help &cto see a list of commands.",
+    "wrong-args": "&cNieprawidłowy argument. Użyj &l/qs help &caby zobaczyć listę poleceń.",
     "description": {
       "title": "&aPomoc Sklepu",
       "unlimited": "&eDaje sklepowi nieograniczone zapasy.",
@@ -170,11 +170,11 @@
       "removeall": "&eUsuń WSZYSTKIE sklepy określonego gracza",
       "transfer": "&ePrzenieś czyjeś WSZYSTKIE sklepy do innych",
       "removeworld": "&eUsuń WSZYSTKIE sklepy w określonym świecie",
-      "currency": "&eSet or remove the currency setting of the shop",
-      "ban": "&eBans a player from the shop",
-      "unban": "&eUnbans a player from the shop",
+      "currency": "&eUstaw lub usuń ustawienia waluty sklepu",
+      "ban": "&eBanuje gracza ze sklepu",
+      "unban": "&eOdbanuje gracza ze sklepu",
       "freeze": "&eWyłącz lub włącz handel sklepowy",
-      "lock": "&eSwitch the shop's lock status"
+      "lock": "&eZmień status blokady sklepu"
     },
     "disabled": "&cTa komenda jest wyłączona: &e{0}",
     "feature-not-enabled": "This feature is not enabled in the config file."
