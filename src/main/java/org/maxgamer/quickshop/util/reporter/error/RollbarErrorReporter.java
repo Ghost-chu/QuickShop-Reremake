@@ -106,7 +106,7 @@ public class RollbarErrorReporter {
         enabled = false;
         plugin.getLogger().setFilter(quickShopExceptionFilter.preFilter);
         plugin.getServer().getLogger().setFilter(serverExceptionFilter.preFilter);
-        Logger.getGlobal().setFilter(globalExceptionFilter.preFilter);
+        //Logger.getGlobal().setFilter(globalExceptionFilter.preFilter);
     }
 
     private Map<String, Object> makeMapping() {
