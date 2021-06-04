@@ -5,7 +5,7 @@
   "translation-version": "Wspierana wersja: Reremake",
   "translation-contributors": "Współtwórcy: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken i Andre_601",
   "translation-country": "Język: Polski (pl_PL)",
-  "language-version": "55",
+  "language-version": "56",
   "not-looking-at-shop": "&cNie można znaleźć QuickShop. Musisz na niego patrzeć.",
   "no-anythings-in-your-hand": "&cW twojej ręce nic nie ma.",
   "no-permission": "&cNie masz uprawnień, aby to zrobić.",
@@ -318,5 +318,6 @@
   "console-only-danger": "&cJest to niebezpieczne polecenie, więc tylko konsola może go wykonać.",
   "clean-warning": "&eTa komenda wyczyści &cwszystkie &esklepy, jeśli sklep jest uszkodzony, został utworzony w niedozwolonych światach, sprzedaje/skupuje niedozwolone przedmioty lub &c&lISTNIEJE W NIEZAŁADOWANYM ŚWIECIE&e. Upewnij się, że najpierw utwórzyłeś pełną kopię zapasową danych Twojego sklepu i użyj &b/qs cleanghost confirm &eaby kontynuować.",
   "shop-creation-failed": "&cTworzenie sklepu nie powiodło się, skontaktuj się z administratorem serwera.",
-  "shop-owner-self-trade": "&eHandlujesz z własnym sklepem, więc nie będziesz mógł uzyskać żadnych korzyści."
+  "shop-owner-self-trade": "&eHandlujesz z własnym sklepem, więc nie będziesz mógł uzyskać żadnych korzyści.",
+  "chest-title": "QuickShop Store"
 }
