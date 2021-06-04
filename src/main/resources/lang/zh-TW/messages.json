@@ -5,7 +5,7 @@
   "translation-version": "支援版本 ： Reremake （重製版）",
   "translation-contributors": "貢獻人員 ： Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
   "translation-country": "語言 ： &b&l繁體中文 Chinese Traditional （zh_TW）",
-  "language-version": "55",
+  "language-version": "56",
   "not-looking-at-shop": "&c無法找到儲物箱商店，你需要注視著儲物箱。",
   "no-anythings-in-your-hand": "&c手上沒有任何東西。",
   "no-permission": "&4你沒有使用該指令的權限。",
@@ -251,7 +251,7 @@
       "看來你需要更新， QuickShop {0} 已正式發布了 ！",
       "噢 ！ QuickShop {0} 已正式發布了，你還在使用 QuickShop {1} ！",
       "我保證， QS 已更新到了 {0}。你怎麼還沒有更新 ？",
-      "修復並重新…… 抱歉 QuickShop {0} 已正式發布了 ！",
+      "修復並重…… 抱歉，QuickShop {0} 已正式發布了 ！",
       "錯誤 ！ 不，其實並沒有錯誤，QuickShop {0} 已正式發布 ！",
       "我的天啊 ！ QuickShop {0} 已出來了 ！ 你怎麼還在使用 QuickShop {1} ？",
       "今日新聞 ： QuickShop 已正式發布 {0} 的更新 ！",
@@ -318,5 +318,6 @@
   "console-only-danger": "&c由於這個是一個有風險的指令 ， 請你在控制台中執行。",
   "clean-warning": "&e此指令將清除&c&未裝載的世界商店&e及&c所有&e已損壞的、在不允許的世界中建立、或購買/販賣不允許商品的商店，請確保你已完全備份商店數據並使用 &b/qs cleanghost confirm &e以繼續。",
   "shop-creation-failed": "&c商店建立失敗，請與伺服器管理員聯繫。",
-  "shop-owner-self-trade": "&e你正在跟自己開的商店進行交易 ， 所以你的存款不會改變。"
+  "shop-owner-self-trade": "&e你正在跟自己開的商店進行交易 ， 所以你的存款不會改變。",
+  "chest-title": "QuickShop 商店"
 }
