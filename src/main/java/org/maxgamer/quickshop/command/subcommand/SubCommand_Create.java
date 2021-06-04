@@ -127,7 +127,7 @@ public class SubCommand_Create implements CommandProcesser {
             if (p.isOnline()) {
                 Result result = plugin.getPermissionChecker().canBuild(p, b);
                 if (!result.isSuccess()) {
-                    MsgUtil.sendMessage(p, MsgUtil.getMessage("3rd-plugin-build-check-failed", p, result.getMessage()));
+                    MsgUtil.sendMessage(p, MsgUtil.getMessage("->3rd-plugin-build-check-failed", p, result.getMessage()));
                     Util.debugLog("Failed to create shop because the protection check has failed! Reason:" + result.getMessage());
                     return;
                 }
@@ -144,7 +144,7 @@ public class SubCommand_Create implements CommandProcesser {
                 // As of the new checking system, most plugins will tell the
                 // player why they can't create a shop there.
                 // So telling them a message would cause spam etc.
-                Util.debugLog("Util report you can't build shop there.");
+                Util.debugLog("->Util report you can't build shop there.");
                 return;
             }
 
