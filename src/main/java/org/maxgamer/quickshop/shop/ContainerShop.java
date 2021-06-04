@@ -876,6 +876,15 @@ public class ContainerShop implements Shop {
             }
         }
         checkDisplay();
+        dataUpdate();
+    }
+
+    private void dataUpdate() {
+        dataUpdatePersistentInfo();
+    }
+
+    private void dataUpdatePersistentInfo() {
+
     }
 
     /**
@@ -1476,6 +1485,11 @@ public class ContainerShop implements Shop {
             inventoryPreview = new InventoryPreview(plugin, getItem(), player);
         }
         inventoryPreview.show();
+    }
+
+    @Override
+    public ShopInfoStorage saveToInfoStorage() {
+        return new ShopInfoStorage(ShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml());
     }
 
 }

@@ -17,49 +17,49 @@
  *
  */
 package org.maxgamer.quickshop.shop;
-//
-//import com.google.gson.Gson;
-//import com.google.gson.GsonBuilder;
-//import org.bukkit.persistence.PersistentDataAdapterContext;
-//import org.bukkit.persistence.PersistentDataType;
-//import org.jetbrains.annotations.NotNull;
-//import org.maxgamer.quickshop.util.MsgUtil;
-//
-//public class ShopPersistentDataType implements PersistentDataType<String, ShopPersistentData> {
-//    static final ShopPersistentDataType INSTANCE = new ShopPersistentDataType();
-//
-//    private static final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-//
-//    @Override
-//    public @NotNull Class<String> getPrimitiveType() {
-//        return String.class;
-//    }
-//
-//    @Override
-//    public @NotNull Class<ShopPersistentData> getComplexType() {
-//        return ShopPersistentData.class;
-//    }
-//
-//    @NotNull
-//    @Override
-//    public String toPrimitive(@NotNull ShopPersistentData complex, @NotNull PersistentDataAdapterContext context) {
-//        try {
-//            return gson.toJson(complex);
-//        } catch (Exception th) {
-//            MsgUtil.debugStackTrace(th.getStackTrace());
-//            return "";
-//        }
-//    }
-//
-//    @NotNull
-//    @Override
-//    public ShopPersistentData fromPrimitive(
-//            @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
-//        try {
-//            return gson.fromJson(primitive, ShopPersistentData.class);
-//        } catch (Exception th) {
-//            MsgUtil.debugStackTrace(th.getStackTrace());
-//            return new ShopPersistentData(0, 0, 0, "null", false);
-//        }
-//    }
-//}
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.bukkit.persistence.PersistentDataAdapterContext;
+import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.util.MsgUtil;
+
+public class ShopPersistentDataType implements PersistentDataType<String, ShopPersistentData> {
+    static final ShopPersistentDataType INSTANCE = new ShopPersistentDataType();
+
+    private static final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+
+    @Override
+    public @NotNull Class<String> getPrimitiveType() {
+        return String.class;
+    }
+
+    @Override
+    public @NotNull Class<ShopPersistentData> getComplexType() {
+        return ShopPersistentData.class;
+    }
+
+    @NotNull
+    @Override
+    public String toPrimitive(@NotNull ShopPersistentData complex, @NotNull PersistentDataAdapterContext context) {
+        try {
+            return gson.toJson(complex);
+        } catch (Exception th) {
+            MsgUtil.debugStackTrace(th.getStackTrace());
+            return "";
+        }
+    }
+
+    @NotNull
+    @Override
+    public ShopPersistentData fromPrimitive(
+            @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
+        try {
+            return gson.fromJson(primitive, ShopPersistentData.class);
+        } catch (Exception th) {
+            MsgUtil.debugStackTrace(th.getStackTrace());
+            return new ShopPersistentData(0, 0, 0, "null", false);
+        }
+    }
+}
