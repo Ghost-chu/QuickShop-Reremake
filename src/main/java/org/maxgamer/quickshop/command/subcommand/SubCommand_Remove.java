@@ -40,7 +40,7 @@ public class SubCommand_Remove implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, ChatColor.RED + "Only players may use that command.");
+            MsgUtil.sendMessage(sender, ChatColor.RED + "This command can't be run by the console!");
             return;
         }
 
@@ -64,7 +64,7 @@ public class SubCommand_Remove implements CommandProcesser {
                     || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
                 //shop.onUnload();
                 shop.delete();
-                plugin.log("Deleting shop " + shop + " request by /qs remove command.");
+                plugin.log("Deleting shop " + shop + " as requested by the /qs remove command.");
             } else {
                 MsgUtil.sendMessage(sender, ChatColor.RED + MsgUtil.getMessage("no-permission", sender));
             }

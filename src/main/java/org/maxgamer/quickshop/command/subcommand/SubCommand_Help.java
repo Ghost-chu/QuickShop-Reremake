@@ -57,7 +57,7 @@ public class SubCommand_Help implements CommandProcesser {
                 if (container.getDescription() != null) {
                     commandDesc = container.getDescription();
                     if (commandDesc == null) {
-                        commandDesc = "Error: Subcommand " + container.getPrefix() + " # " + container.getClass().getCanonicalName() + " not register the correct help description.";
+                        commandDesc = "Error: Subcommand " + container.getPrefix() + " # " + container.getClass().getCanonicalName() + " doesn't register the correct help description.";
                     }
                 }
                 if (!container.isDisabled()) {

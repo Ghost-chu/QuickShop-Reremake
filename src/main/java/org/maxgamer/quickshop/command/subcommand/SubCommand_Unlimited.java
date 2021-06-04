@@ -39,7 +39,7 @@ public class SubCommand_Unlimited implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "Only player can run this command.");
+            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
             return;
         }
 
