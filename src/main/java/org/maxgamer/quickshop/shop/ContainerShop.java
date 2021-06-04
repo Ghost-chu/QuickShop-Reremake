@@ -1478,5 +1478,4 @@ public class ContainerShop implements Shop {
         inventoryPreview.show();
     }
 
-
 }

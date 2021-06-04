@@ -414,7 +414,7 @@ public class ShopLoader {
 
     @Getter
     @Setter
-    public class ShopDatabaseInfoOrigin {
+    static public class ShopDatabaseInfoOrigin {
         private String item;
 
         private String moderators;
@@ -467,6 +467,10 @@ public class ShopLoader {
             this.type = type;
             this.unlimited = unlimited;
             this.extra = extra;
+        }
+
+        ShopDatabaseInfoOrigin() {
+
         }
 
         @Override

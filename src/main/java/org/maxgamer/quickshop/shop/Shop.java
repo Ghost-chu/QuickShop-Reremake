@@ -474,8 +474,10 @@ public interface Shop {
 
     /**
      * Returns the attached shop object if any, otherwise null.
+     *
      * @return Shop or null
      */
-    ContainerShop getAttachedShop();
+    Shop getAttachedShop();
+
 
 }
