@@ -66,7 +66,7 @@ public class SubCommand_RemoveAll implements CommandProcesser {
                 }
                 for (Shop shop : tempList) {
                     if (shop.getOwner().equals(shopOwner.getUniqueId())) {
-                        plugin.log("Deleting shop " + shop + " request by /qs removeall command.");
+                        plugin.log("Deleting shop " + shop + " as requested by the /qs removeall command.");
                         shop.delete();
                         i++;
                     }
@@ -77,12 +77,12 @@ public class SubCommand_RemoveAll implements CommandProcesser {
                     return;
                 }
                 if (!(sender instanceof OfflinePlayer)) {
-                    sender.sendMessage(ChatColor.RED + "This command only can execute by player");
+                    sender.sendMessage(ChatColor.RED + "This command can't be run by the console!");
                     return;
                 }
                 for (Shop shop : tempList) {
                     if (shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
-                        plugin.log("Deleting shop " + shop + " request by /qs removeall command.");
+                        plugin.log("Deleting shop " + shop + " as requested by the /qs removeall command.");
                         shop.delete();
                         i++;
                     }

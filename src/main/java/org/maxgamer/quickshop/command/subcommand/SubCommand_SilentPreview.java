@@ -41,12 +41,12 @@ public class SubCommand_SilentPreview implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "Can't run this command from Console");
+            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
             return;
         }
 
         if (cmdArg.length < 1) {
-            Util.debugLog("Exception on command, cancel.");
+            Util.debugLog("Exception on command! Canceling!");
             return;
         }
 

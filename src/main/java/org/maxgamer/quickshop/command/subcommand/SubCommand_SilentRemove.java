@@ -42,7 +42,7 @@ public class SubCommand_SilentRemove implements CommandProcesser {
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
 
         if (cmdArg.length < 1) {
-            Util.debugLog("Exception on command, cancel.");
+            Util.debugLog("Exception on command! Canceling!");
             return;
         }
 
@@ -61,7 +61,7 @@ public class SubCommand_SilentRemove implements CommandProcesser {
         }
 
         //shop.onUnload();
-        plugin.log("Deleting shop " + shop + " request by /qs silentremove (control panel) command.");
+        plugin.log("Deleting shop " + shop + " as requested by the /qs silentremove command from the control panel.");
         shop.delete();
     }
 }

@@ -41,14 +41,14 @@ public class SubCommand_CleanGhost implements CommandProcesser {
         if (cmdArg.length < 1) {
             MsgUtil.sendMessage(sender,
                     ChatColor.YELLOW
-                            + "This command will purge all data damaged shop, create in disallow world shop, create disallow sell items shop and IN NOT LOADED WORLD SHOPS, make sure you have backup your shops data, and use /qs cleanghost confirm to continue.");
+                            + "This command will purge all shops that: have corrupted data / are created in disallowed or unloaded worlds / trade with blacklisted items! Please make sure you have a backup of your shops data! Use /qs cleanghost to confirm the purge.");
             return;
         }
 
         if (!"confirm".equalsIgnoreCase(cmdArg[0])) {
             MsgUtil.sendMessage(sender,
                     ChatColor.YELLOW
-                            + "This command will purge all data damaged shop, create in disallow world shop, create disallow sell items shop and IN NOT LOADED WORLD SHOPS, make sure you have backup your shops data, and use /qs cleanghost confirm to continue.");
+                            + "This command will purge all shops that: have corrupted data / are created in disallowed or unloaded worlds / trade with blacklisted items! Please make sure you have a backup of your shops data! Use /qs cleanghost to confirm the purge.");
             return;
         }
 
@@ -57,7 +57,7 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                         + "Starting checking the shop be ghost, all does not exist shop will be removed...");
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            MsgUtil.sendMessage(sender, ChatColor.GREEN + "Async thread is started, please wait...");
+            MsgUtil.sendMessage(sender, ChatColor.GREEN + "Starting async thread, please wait...");
             Util.backupDatabase(); // Already warn the user, don't care about backup result.
             for (Shop shop : plugin.getShopLoader().getShopsInDatabase()) {
                 MsgUtil.sendMessage(sender,
@@ -77,44 +77,44 @@ public class SubCommand_CleanGhost implements CommandProcesser {
           }*/
                 if (shop.getItem().getType() == Material.AIR) {
                     MsgUtil.sendMessage(sender,
-                            ChatColor.YELLOW + "Shop " + shop + " removing cause item data is damaged.");
-                    plugin.log("Deleting shop " + shop + " request by /qs cleanghost command.");
+                            ChatColor.YELLOW + "Deleting shop " + shop + " because of corrupted item data.");
+                    plugin.log("Deleting shop " + shop + " as requested by the /qs cleanghost command.");
                     Util.mainThreadRun(shop::delete);
                     continue;
                 }
           /*
           shop.getLocation() is a constant that has NotNull annotations so.
           if (shop.getLocation() == null) {
-              MsgUtil.sendMessage(sender,ChatColor.YELLOW + "Shop " + shop + " removing cause location data is damaged.");
+              MsgUtil.sendMessage(sender,ChatColor.YELLOW + "Deleting shop " + shop + " because of corrupted location data.");
               shop.delete();
               continue;
           }*/
                 if (shop.getLocation().getWorld() == null) {
                     MsgUtil.sendMessage(sender,
-                            ChatColor.YELLOW + "Shop " + shop + " removing cause target world not loaded.");
+                            ChatColor.YELLOW + "Deleting shop " + shop + " because the its world is not loaded.");
                     Util.mainThreadRun(shop::delete);
-                    plugin.log("Deleting shop " + shop + " request by /qs cleanghost command.");
+                    plugin.log("Deleting shop " + shop + " as requested by the /qs cleanghost command.");
                     continue;
                 }
                 //noinspection ConstantConditions
                 if (shop.getOwner() == null) {
                     MsgUtil.sendMessage(sender,
-                            ChatColor.YELLOW + "Shop " + shop + " removing cause owner data is damaged.");
+                            ChatColor.YELLOW + "Deleting shop " + shop + " because of corrupted owner data.");
                     Util.mainThreadRun(shop::delete);
-                    plugin.log("Deleting shop " + shop + " request by /qs cleanghost command.");
+                    plugin.log("Deleting shop " + shop + " as requested by the /qs cleanghost command.");
                     continue;
                 }
                 // Shop exist check
                 Util.mainThreadRun(() -> {
                     Util.debugLog(
-                            "Posted to main server thread to continue access Bukkit API for shop "
+                            "Posted to main server thread to continue accessing Bukkit API for shop "
                                     + shop);
                     if (!Util.canBeShop(shop.getLocation().getBlock())) {
                         MsgUtil.sendMessage(sender,
                                 ChatColor.YELLOW
-                                        + "Shop "
+                                        + "Deleting shop "
                                         + shop
-                                        + " removing cause target location nolonger is a shop or disallow create the shop.");
+                                        + " because the target location is nolonger a shop or disallow create the shop.");
                         shop.delete();
                                     }
                                 }); // Post to server main thread to check.
@@ -124,7 +124,7 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                     Thread.interrupted();
                 }
             }
-            MsgUtil.sendMessage(sender, ChatColor.GREEN + "All shops completed checks.");
+            MsgUtil.sendMessage(sender, ChatColor.GREEN + "All shops have been checked!");
         });
     }
 
