@@ -883,6 +883,10 @@ public class ContainerShop implements Shop {
         dataUpdatePersistentInfo();
     }
 
+    private void setInventoryTitleWithData() {
+
+    }
+
     private void dataUpdatePersistentInfo() {
 
     }
