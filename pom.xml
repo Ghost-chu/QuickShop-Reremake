@@ -25,7 +25,7 @@
     <artifactId>QuickShop</artifactId>
 
     <properties>
-        <pluginver>4.0.8.2</pluginver>
+        <pluginver>4.0.8.3</pluginver>
         <package>org.maxgamer.quickshop</package>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -59,9 +59,18 @@
 
     <profiles>
         <profile>
+            <id>debug</id>
+            <properties>
+                <mvn.build.ver>${pluginver}-SNAPSHOT</mvn.build.ver>
+                <!-- Disable signature in local env, deploy phrase never will running in local env -->
+                <mvn.sign.phrase>deploy</mvn.sign.phrase>
+            </properties>
+        </profile>
+        <profile>
             <id>master</id>
             <properties>
                 <mvn.build.ver>${pluginver}-SNAPSHOT</mvn.build.ver>
+                <mvn.sign.phrase>install</mvn.sign.phrase>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -71,6 +80,7 @@
             <id>release</id>
             <properties>
                 <mvn.build.ver>${pluginver}</mvn.build.ver>
+                <mvn.sign.phrase>install</mvn.sign.phrase>
             </properties>
         </profile>
     </profiles>
@@ -120,6 +130,18 @@
                         </filter>
                     </filters>
                     <relocations>
+                        <relocation>
+                            <pattern>com.google.errorprone.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.com.google.errorprone.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.github.benmanes.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.com.github.benmanes.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.checkerframework.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.org.checkerframework.</shadedPattern>
+                        </relocation>
                         <relocation>
                             <pattern>org.slf4j.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.org.slf4j.slf4j.</shadedPattern>
@@ -249,7 +271,7 @@
                 <version>3.0.0</version>
                 <executions>
                     <execution>
-                        <phase>install</phase>
+                        <phase>${mvn.sign.phrase}</phase>
                         <id>sign</id>
                         <goals>
                             <goal>sign</goal>
@@ -740,7 +762,7 @@
         <dependency>
             <groupId>com.massivecraft</groupId>
             <artifactId>Factions</artifactId>
-            <version>1.6.9.5-U0.5.20</version>
+            <version>1.6.9.5-U0.5.21</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -776,13 +798,13 @@
         <dependency>
             <groupId>de.themoep</groupId>
             <artifactId>minedown</artifactId>
-            <version>1.7.0-SNAPSHOT</version>
+            <version>1.7.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>de.themoep</groupId>
             <artifactId>minedown-adventure</artifactId>
-            <version>1.7.0-SNAPSHOT</version>
+            <version>1.7.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -818,23 +840,17 @@
         <!--            <classifier>1.7.25</classifier>-->
         <!--            <scope>compile</scope>-->
         <!--        </dependency>-->
-        <dependency>
-            <groupId>com.esotericsoftware</groupId>
-            <artifactId>reflectasm</artifactId>
-            <version>1.11.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.lucko</groupId>
-            <artifactId>helper</artifactId>
-            <version>5.6.5</version>
-            <scope>compile</scope>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.15</version>
+        </dependency>
+        <dependency>
+            <groupId>me.lucko</groupId>
+            <artifactId>helper</artifactId>
+            <version>5.6.5</version>
+            <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-nop -->
         <dependency>

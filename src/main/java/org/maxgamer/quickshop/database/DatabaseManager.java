@@ -78,7 +78,11 @@ public class DatabaseManager {
 
         if (useQueue) {
             try {
-                task = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> plugin.getDatabaseManager().runTask(), 1, plugin.getConfig().getLong("database.queue-commit-interval") * 20);
+                task = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+                    if (!task.isCancelled()) {
+                        plugin.getDatabaseManager().runTask();
+                    }
+                }, 1, plugin.getConfig().getLong("database.queue-commit-interval") * 20);
             } catch (IllegalPluginAccessException e) {
                 Util.debugLog("Plugin is disabled but trying create database task, move to Main Thread...");
                 plugin.getDatabaseManager().runTask();

@@ -644,73 +644,60 @@ public class ContainerShop implements Shop {
     public String[] getSignText() {
         Util.ensureThread(false);
         String[] lines = new String[4];
+
+        //Line 1
         OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
-        lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(false), inventoryAvailable() ? MsgUtil.getMessageOfflinePlayer("signs.status-available", null) : MsgUtil.getMessageOfflinePlayer("signs.status-unavailable", null));
-        int remainingStock = getRemainingStock();
-        int remainingSpace = getRemainingSpace();
-        if (this.isSelling()) {
-            if (this.getItem().getAmount() > 1) {
-                if (remainingStock == -1) {
-                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.stack-selling", player,
-                            MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
-                } else {
-                    lines[1] =
-                            MsgUtil.getMessageOfflinePlayer("signs.stack-selling", player,
-                                    Integer.toString(remainingStock));
-                    if (remainingStock == 0) {
-                        lines[1] = MsgUtil.getMessageOfflinePlayer("signs.out-of-stock", player);
-                    }
-                }
-            } else {
-                if (this.getRemainingStock() == -1) {
-                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.selling", player,
-                            MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
-                } else {
-                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.selling", player,
-                            Integer.toString(this.getRemainingStock()));
-                    if (remainingStock == 0) {
-                        lines[1] = MsgUtil.getMessageOfflinePlayer("signs.out-of-stock", player);
-                    }
-                }
-            }
-        } else if (this.isBuying()) {
-            if (this.getItem().getAmount() > 1) {
-                if (remainingSpace == -1) {
-                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.stack-buying", player,
-                            MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
-                } else {
-                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.stack-buying", player,
-                            Integer.toString(remainingSpace));
-                    if (remainingSpace == 0) {
-                        lines[1] = MsgUtil.getMessageOfflinePlayer("signs.out-of-space", player);
-                    }
-                }
-            } else {
-                if (remainingSpace == -1) {
-                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.buying", player,
-                            MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
-                } else {
-                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.buying", player,
-                            Integer.toString(remainingSpace));
-                    if (remainingSpace == 0) {
-                        lines[1] = MsgUtil.getMessageOfflinePlayer("signs.out-of-space", player);
-                    }
-                }
-            }
+        String statusStringKey = inventoryAvailable() ? "signs.status-available" : "signs.status-unavailable";
+        lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(false), MsgUtil.getMessageOfflinePlayer(statusStringKey, null));
+
+        //Line 2
+        String tradingStringKey;
+        String noRemainingStringKey;
+        int shopRemaining;
+
+        switch (shopType) {
+            case BUYING:
+                shopRemaining = getRemainingSpace();
+                tradingStringKey = isStackingShop() ? "signs.stack-buying" : "signs.buying";
+                noRemainingStringKey = "signs.out-of-space";
+                break;
+            case SELLING:
+                shopRemaining = getRemainingStock();
+                tradingStringKey = isStackingShop() ? "signs.stack-selling" : "signs.selling";
+                noRemainingStringKey = "signs.out-of-stock";
+                break;
+            default:
+                shopRemaining = 0;
+                tradingStringKey = "MissingKey for shop type:" + shopType;
+                noRemainingStringKey = "MissingKey for shop type:" + shopType;
         }
-        lines[2] =
-                MsgUtil.getMessageOfflinePlayer(
-                        "signs.item", player, Util.getItemStackName(this.getItem()));
+        switch (shopRemaining) {
+            //Unlimited
+            case -1:
+                lines[1] = MsgUtil.getMessageOfflinePlayer(tradingStringKey, player, MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
+                break;
+            //No remaining
+            case 0:
+                lines[1] = MsgUtil.getMessageOfflinePlayer(noRemainingStringKey, player);
+                break;
+            //Has remaining
+            default:
+                lines[1] = MsgUtil.getMessageOfflinePlayer(tradingStringKey, player, Integer.toString(shopRemaining));
+        }
+
+        //line 3
+        lines[2] = MsgUtil.getMessageOfflinePlayer("signs.item", player, Util.getItemStackName(this.getItem()));
+
+        //line 4
         if (this.isStackingShop()) {
             lines[3] = MsgUtil.getMessageOfflinePlayer("signs.stack-price", player,
                     Util.format(this.getPrice(), this), Integer.toString(item.getAmount()),
                     Util.getItemStackName(item));
         } else {
-            lines[3] = MsgUtil
-                    .getMessageOfflinePlayer("signs.price", player, Util.format(this.getPrice(), this));
-
+            lines[3] = MsgUtil.getMessageOfflinePlayer("signs.price", player, Util.format(this.getPrice(), this));
         }
-        //new pattern
+
+        //New pattern for recognizing shop sign
         lines[1] = shopSignPrefix + lines[1] + " ";
 
         return lines;
@@ -874,7 +861,11 @@ public class ContainerShop implements Shop {
         // check price restriction
         PriceLimiter.CheckResult priceRestriction = plugin.getShopManager().getPriceLimiter().check(item, price);
         if (priceRestriction.getStatus() != PriceLimiter.Status.PASS) {
-            if (price < priceRestriction.getMin()) {
+            if (priceRestriction.getStatus() == PriceLimiter.Status.NOT_VALID) {
+                setDirty();
+                price = priceRestriction.getMin();
+                this.update();
+            } else if (price < priceRestriction.getMin()) {
                 setDirty();
                 price = priceRestriction.getMin();
                 this.update();
@@ -1487,5 +1478,9 @@ public class ContainerShop implements Shop {
         inventoryPreview.show();
     }
 
+    @Override
+    public ShopInfoStorage saveToInfoStorage() {
+        return new ShopInfoStorage(ShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml());
+    }
 
 }

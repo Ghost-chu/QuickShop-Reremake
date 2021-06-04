@@ -67,7 +67,7 @@ public class RollbarErrorReporter {
     public RollbarErrorReporter(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         Config config = ConfigBuilder.withAccessToken("4846d9b99e5d4d238f9135ea9c744c28")
-                .environment("release".contentEquals(QuickShop.getInstance().getBuildInfo().getGitBranch()) ? "production" : "development")
+                .environment(Util.isDevEdition() ? "development" : "production")
                 .platform(plugin.getServer().getVersion())
                 .codeVersion(QuickShop.getVersion())
                 .handleUncaughtErrors(false)
@@ -106,7 +106,7 @@ public class RollbarErrorReporter {
         enabled = false;
         plugin.getLogger().setFilter(quickShopExceptionFilter.preFilter);
         plugin.getServer().getLogger().setFilter(serverExceptionFilter.preFilter);
-        Logger.getGlobal().setFilter(globalExceptionFilter.preFilter);
+        //Logger.getGlobal().setFilter(globalExceptionFilter.preFilter);
     }
 
     private Map<String, Object> makeMapping() {
@@ -171,10 +171,14 @@ public class RollbarErrorReporter {
             plugin
                     .getLogger()
                     .warning(
-                            "A exception was thrown, QuickShop already caught this exception and reported it, switch to debug mode to see the full errors.");
+                            "A exception was thrown, QuickShop already caught this exception and reported it. This error will only shown once before next restart.");
             plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
             plugin.getLogger().warning("Description: " + throwable.getMessage());
             plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID());
+            plugin.getLogger().warning("Exception  : ");
+            ignoreThrows();
+            throwable.printStackTrace();
+            resetIgnores();
             plugin.getLogger().warning("====QuickShop Error Report E N D===");
             Util.debugLog(throwable.getMessage());
             Arrays.stream(throwable.getStackTrace()).forEach(a -> Util.debugLog(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
@@ -236,6 +240,12 @@ public class RollbarErrorReporter {
         } else {
             stackTraceElement = throwable.getStackTrace()[2];
         }
+        if (stackTraceElement.getClassName().contains("org.maxgamer.quickshop.util.reporter.error")) {
+            ignoreThrows();
+            plugin.getLogger().log(Level.WARNING, "Uncaught exception in ErrorRollbar", throwable);
+            resetIgnores();
+            return false;
+        }
         String text =
                 stackTraceElement.getClassName()
                         + "#"
@@ -274,10 +284,17 @@ public class RollbarErrorReporter {
             throwable = throwable.getCause();
         }
 
-        if (throwable.getStackTrace()[0].getClassName().contains("org.maxgamer.quickshop")) {
+        StackTraceElement[] stackTraceElements = throwable.getStackTrace();
+
+        if (stackTraceElements.length == 0) {
+            return PossiblyLevel.IMPOSSIBLE;
+        }
+
+        if (stackTraceElements[0].getClassName().contains("org.maxgamer.quickshop")) {
             return PossiblyLevel.CONFIRM;
         }
-        long errorCount = Arrays.stream(throwable.getStackTrace())
+
+        long errorCount = Arrays.stream(stackTraceElements)
                 .limit(3)
                 .filter(stackTraceElement -> stackTraceElement.getClassName().contains("org.maxgamer.quickshop"))
                 .count();
@@ -370,10 +387,12 @@ public class RollbarErrorReporter {
                 sendError(record.getThrown(), record.getMessage());
                 PossiblyLevel possiblyLevel = checkWasCauseByQS(record.getThrown());
                 if (possiblyLevel == PossiblyLevel.IMPOSSIBLE)
-                    return false;
-                if (possiblyLevel == PossiblyLevel.MAYBE)
+                    return true;
+                if (possiblyLevel == PossiblyLevel.MAYBE) {
                     plugin.getLogger().warning("This seems not a QuickShop but we still sent this error to QuickShop developers. If you have any question, you should ask QuickShop developer.");
-                return true;
+                    return true;
+                }
+                return false;
             }
         }
 
@@ -417,10 +436,12 @@ public class RollbarErrorReporter {
                 sendError(record.getThrown(), record.getMessage());
                 PossiblyLevel possiblyLevel = checkWasCauseByQS(record.getThrown());
                 if (possiblyLevel == PossiblyLevel.IMPOSSIBLE)
-                    return false;
-                if (possiblyLevel == PossiblyLevel.MAYBE)
+                    return true;
+                if (possiblyLevel == PossiblyLevel.MAYBE) {
                     plugin.getLogger().warning("This seems not a QuickShop but we still sent this error to QuickShop developers. If you have any question, you should ask QuickShop developer.");
-                return true;
+                    return true;
+                }
+                return false;
             }
         }
 

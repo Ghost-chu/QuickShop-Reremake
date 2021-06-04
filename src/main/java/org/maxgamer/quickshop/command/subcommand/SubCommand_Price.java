@@ -46,7 +46,7 @@ public class SubCommand_Price implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "Can't run this command by Console");
+            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
             return;
         }
 
@@ -60,25 +60,31 @@ public class SubCommand_Price implements CommandProcesser {
         final double price;
         final double minPrice = plugin.getConfig().getDouble("shop.minimum-price");
 
-        try { //TODO Migrate to PriceLimiter
-            if (plugin.getConfig().getBoolean("whole-number-prices-only")) {
-                try {
-                    price = Long.parseLong(cmdArg[0]);
-                } catch (NumberFormatException ex2) {
-                    // input is number, but not Integer
-                    Util.debugLog(ex2.getMessage());
-                    MsgUtil.sendMessage(p, MsgUtil.getMessage("not-a-integer", p, cmdArg[0]));
-                    return;
-                }
-            } else {
-                price = Double.parseDouble(cmdArg[0]);
+        //TODO Migrate to PriceLimiter
+        if (plugin.getConfig().getBoolean("whole-number-prices-only")) {
+            try {
+                price = Long.parseLong(cmdArg[0]);
+            } catch (NumberFormatException ex2) {
+                // input is number, but not Integer
+                Util.debugLog(ex2.getMessage());
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("not-a-integer", p, cmdArg[0]));
+                return;
             }
+        } else {
+            try {
+                price = Double.parseDouble(cmdArg[0]);
 
-        } catch (NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
+                // No number input
+                Util.debugLog(ex.getMessage());
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("not-a-number", p, cmdArg[0]));
+                return;
+            }
             // No number input
-            Util.debugLog(ex.getMessage());
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("not-a-number", p, cmdArg[0]));
-            return;
+            if (Double.isInfinite(price) || Double.isNaN(price)) {
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("not-a-number", p, cmdArg[0]));
+                return;
+            }
         }
 
         final boolean format = plugin.getConfig().getBoolean("use-decimal-format");
@@ -173,7 +179,7 @@ public class SubCommand_Price implements CommandProcesser {
                             .getLogger()
                             .log(
                                     Level.WARNING,
-                                    "QuickShop can't pay tax to the account in config.yml, please set the tax account name to an existing player!");
+                                    "QuickShop can't pay taxes to the configured tax account! Please set the tax account name in the config.yml to an existing player!");
                 }
             }
             // Update the shop

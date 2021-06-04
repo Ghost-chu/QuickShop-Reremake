@@ -22,7 +22,7 @@
 #                        TO EDIT QUICKSHOP'S CONFIGURATION, USE THE "config.yml" FILE!
 
 #Do not touch this if you don't know what you're doing!
-config-version: 130
+config-version: 131
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not existant/not supported language, then QuickShop will use en_US.
@@ -275,11 +275,11 @@ shop:
   #2=Virtual Item (Requires ProtocolLib, fallback to type 0 if ProtocolLib is not installed)
   display-type: 2
 
-  #Show we use global virtual item queue?
-  #Virtual item display need to send fake packet
-  #which will generate task for each shop
-  #But it may have performance issue for too many tasks
-  #Turn on this ONLY when you think the HUGE tasks amount causing lag
+  #Should QS use global virtual item queue?
+  #Virtual item displays need to send fake packets, 
+  #which will create a task for each shop.
+  #Having too many of those tasks can impact performance.
+  #Turn this ONLY on when you think that the amount of tasks from the virtual item displays causes lag!
   use-global-virtual-item-queue: false
 
   #Allow QuickShop to automatically despawn displays when no players are in range of the shop.
@@ -507,6 +507,8 @@ plugin:
     enable: true
     #Should BlockHub only be used for permission checks?
     only: false
+  #If you have WorldEdit, QuickShop will try migrating shops in EditSession. [BETA]
+  WorldEdit: true
 effect:
   sound:
     ontabcomplete: true

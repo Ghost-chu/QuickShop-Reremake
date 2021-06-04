@@ -370,8 +370,8 @@ public class VirtualDisplayItem extends DisplayItem {
                     });
                 }
             };
-            protocolManager.addPacketListener(packetAdapter); //TODO: This may affects performance
         }
+        protocolManager.addPacketListener(packetAdapter); //TODO: This may affects performance
     }
 
     private void unload() {
@@ -399,7 +399,11 @@ public class VirtualDisplayItem extends DisplayItem {
     @Override
     public boolean isSpawned() {
         if (shop.isLeftShop()) {
-            return (Objects.requireNonNull(shop.getAttachedShop().getDisplayItem())).isSpawned();
+            Shop aShop = shop.getAttachedShop();
+            if (aShop instanceof ContainerShop) {
+                return (Objects.requireNonNull(((ContainerShop) aShop).getDisplayItem())).isSpawned();
+            }
+
         }
         return isDisplay;
     }

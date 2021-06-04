@@ -39,7 +39,7 @@ public class SubCommand_About implements CommandProcesser {
                 ChatColor.AQUA + "QuickShop " + ChatColor.YELLOW + QuickShop.getFork());
         MsgUtil.sendMessage(sender,
                 ChatColor.AQUA
-                        + "Ver "
+                        + "Version "
                         + ChatColor.YELLOW
                         + ">> "
                         + ChatColor.GREEN
@@ -71,12 +71,12 @@ public class SubCommand_About implements CommandProcesser {
         }
         MsgUtil.sendMessage(sender,
                 ChatColor.AQUA
-                        + "Dev "
+                        + "Developers "
                         + ChatColor.YELLOW
                         + ">> "
                         + ChatColor.GREEN
                         + Util.list2String(plugin.getDescription().getAuthors()));
-        MsgUtil.sendMessage(sender, ChatColor.GOLD + "Powered by Potato Craft Studio");
+        MsgUtil.sendMessage(sender, ChatColor.GOLD + "Powered by PotatoCraft Studio");
         MsgUtil.sendMessage(sender, ChatColor.RED + "Made with ❤");
     }
 

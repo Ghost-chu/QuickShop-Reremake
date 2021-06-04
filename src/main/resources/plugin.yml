@@ -1,11 +1,9 @@
 name: ${project.name}
 main: ${package}.${project.name}
 version: ${project.version}
-authors: [PotatoCraft Studio, Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul, TiaraRinne, sandtechnology]
+authors: [ PotatoCraft Studio, Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul, TiaraRinne, sandtechnology, Starmism, Chris6ix ]
 
 description: Economy Shops plugin
-#softdepend: [Herochat, Vault, Essentials, OpenInv] OLD Remove Herochat support.
-#Now we only need Vault.
 softdepend:
   - Vault
   - Reserve
@@ -29,6 +27,8 @@ softdepend:
   - GriefPrevention
   - JulySafe
   - FabledSkyblock
+  - OpenInv
+  - WorldEdit
 
 api-version: 1.13
 
@@ -40,132 +40,132 @@ commands:
 
 permissions:
   quickshop.create.sell:
-    description: Allows a player to sell from a shop
+    description: Allows a player to sell from a shop.
     default: op
   quickshop.create.buy:
-    description: Allows a player to buy from a shop
+    description: Allows a player to buy from a shop.
     default: op
   quickshop.create.double:
-    description: Allows a player to create a double shop
+    description: Allows a player to create a double shop.
     default: op
   quickshop.create.changeprice:
-    description: Allow a player to change their shop's price
+    description: Allows a player to change their shop's price.
     default: op
   quickshop.create.cmd:
-    description: Allow a player to use /qs create to create a shop
+    description: Allows a player to use /qs create to create a shop.
     default: op
   quickshop.create.admin:
-    description: Allow a player use /qs supercreate to create a shop bypass all protection checks
+    description: Allows a player use /qs supercreate to create a shop that bypasses all protection checks.
     default: op
   quickshop.create.changeitem:
-    description: Allow a player to change their shop's item
+    description: Allows a player to change their shop's item.
     default: op
   quickshop.create.changeamount:
-    description: Allow a player to change their shop's per bulk amount
+    description: Allows a player to change their shop's item amount per trade.
     default: op
   quickshop.create.stacks:
-    description: Allow a player to create a shop with stack items
+    description: Allows a player to create a shop with stacked items.
     default: op
   quickshop.use:
-    description: Allows a player to buy/sell using other players shops
+    description: Allows a player to buy/sell using other player's shops.
     default: true
   quickshop.unlimited:
-    description: Allows a Staff Member to use /qs unlimited and make a shop infinite
+    description: Allows a staff member to use /qs unlimited to make a shop infinite.
     default: op
   quickshop.bypass.<itemID>:
-    description: Allows a player to sell <itemID>, even if its blacklisted
+    description: Allows a player to sell blacklisted <itemIDs>.
     default: op
   quickshop.other.destroy:
-    description: Allows a Staff Member to destroy other players shops if they are locked in the config
+    description: Allows a staff member to destroy other player's shops even if they are locked.
     default: op
   quickshop.other.control:
-    description: Allows a Staff Member to open control panel for other players shop
+    description: Allows a staff member to open the control panel for other player's shops.
     default: op
   quickshop.other.open:
-    description: Allows a Staff Member to open someone elses shop if they are locked in the config
+    description: Allows a staff member to open someone else's shop even if it is locked.
     default: op
   quickshop.other.price:
-    description: Allows a Staff Member to change the price of someone elses shop
+    description: Allows a staff member to change the price of someone else's shop.
     default: op
   quickshop.other.item:
-    description: Allows a Staff Member to change the item of someone elses shop
+    description: Allows a staff member to change the item of someone else's shop.
     default: op
   quickshop.other.amount:
-    description: Allows a Staff Member to change the per bulk amount of someone elses shop
+    description: Allows a staff member to change the item amount per trade of someone else's shop.
     default: op
   quickshop.setowner:
-    description: Allows a Staff Member to change the owner of any shop
+    description: Allows a staff member to change the owner of any shop.
     default: op
   quickshop.staff:
-    description: Allow a shop owner to add staff to the shop
+    description: Allows a shop owner to manage their shop staff.
     default: op
   quickshop.find:
-    description: Allows a player to locate the nearest shop that has a specific item type. Works in a 3 chunk radius.
+    description: Allows a player to locate the nearest shop that has a specific item type. Distance configurable in config.
     default: true
   quickshop.refill:
-    description: Allows a Staff Member to refill the shop theyre looking at with the given number of items.
+    description: Allows a staff member to refill the shop they're looking at with the given number of items.
     default: op
   quickshop.empty:
-    description: Allows a Staff Member to empty the shop theyre looking at of all items.
+    description: Allows a staff member to empty the shop they're looking at of all items.
     default: op
   quickshop.debug:
-    description: Switch to or from developer mode
+    description: Enables developer mode.
     default: op
   quickshop.export:
-    description: Allows exporting the database to a plain file
+    description: Allows exporting the database to a plain file.
     default: op
   quickshop.alerts:
-    description: Recive cheat alert, plugin warnings and update notify
+    description: Recieve cheat alerts, plugin warnings and update notifications.
     default: op
   quickshop.about:
-    description: Show QuickShop about message
+    description: Show QuickShop's about message.
     default: true
   quickshop.info:
-    description: Show QuickShop Statistics.
+    description: Show QuickShop's Statistics.
     default: op
   quickshop.fetchmessage:
-    description: Use command /qs fetchmessage to manual fetch shop message from database. Will not effect auto fetch if you have it on...
+    description: Allows the use of the /qs fetchmessage command to manually fetch shop messages from the database. Will not effect auto fetch if turned on...
     default: true
   quickshop.paste:
-    description: Command to upload server information to Pastebin. !WARNING, This will upload your data and it may leak your server configuration and other sensitive information.
+    description: Allows the use of the /qs paste command to upload server information to Pastebin. !WARNING! This will upload your data and may leak your server configuration and other sensitive information.
     default: op
   quickshop.preview:
-    description: Permission for preview item to use a GUI
+    description: Permission to preview item using a GUI.
     default: true
   quickshop.tax:
-    description: Permission to bypass Tax
+    description: Permission to bypass taxes.
     default: op
   quickshop.tax.bypassunlimited:
-    description: Permission to bypass Tax but only for unlimited shop
+    description: Permission to bypass taxes but for unlimited shops ONLY.
     default: op
   quickshop.cleanghost:
-    description: Permission to use /qs cleanghost
+    description: Permission to use /qs cleanghost.
     default: op
   quickshop.reset:
-    description: Permission to use /qs reset
+    description: Permission to use /qs reset.
     default: op
   quickshop.bypasscreatefee:
-    description: Permission to bypass creation fee
+    description: Permission to bypass the creation fee.
     default: op
   quickshop.recovery:
-    description: Permission to use /qs recovery, WARNING DO NOT EXECUTE THIS COMMAND IF YOU DID NOT KNOW WHAT WILL HAPPEND
+    description: Permission to use /qs recovery. !WARNING! DO NOT EXECUTE THIS COMMAND IF YOU DON'T KNOW WHAT YOU'RE DOING.
     default: op
   quickshop.removeall.other:
-    description: Permission to use /qs removeall <player> to remove other player shops
+    description: Permission to use /qs removeall <player> to remove other player's shops.
     default: op
   quickshop.removeall.self:
-    description: Permission to use /qs removeall to remove player himself shops
+    description: Permission to use /qs removeall to remove player's own shops.
     default: op
   quickshop.removeworld:
-    description: Permission to us /qs removeworld
+    description: Permission to use /qs removeworld.
     default: op
   quickshop.currency:
-    description: Permission to us /qs currency
+    description: Permission to use /qs currency.
     default: op
   quickshop.other.currency:
-    description: Permission to us /qs currency but use for others shop
+    description: Permission to use /qs currency but for other's shops.
     default: op
   quickshop.showdisabled:
-    description: Permission to see commands in help list if commands are disabled
+    description: Permission to see disabled commands in help list.
     default: op
 

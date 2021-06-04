@@ -787,7 +787,7 @@ public class MsgUtil {
         }
         sendMessageToOps(content);
         plugin.getLogger().warning(content);
-        Objects.requireNonNull(plugin.getLogWatcher()).add(content);
+        plugin.log(content);
     }
 
     /**
@@ -1453,6 +1453,16 @@ public class MsgUtil {
         if (selectedVersion == 52) {
             setAndUpdate("shop-creation-failed");
             setAndUpdate("language-version", ++selectedVersion);
+        }
+        if (selectedVersion == 53) {
+            setAndUpdate("language-version", ++selectedVersion);
+        }
+        if (selectedVersion == 54) {
+            setAndUpdate("shop-owner-self-trade");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
+        if (selectedVersion == 55) {
+            setAndUpdate("chest-title", "QuickShop Store");
         }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
     }

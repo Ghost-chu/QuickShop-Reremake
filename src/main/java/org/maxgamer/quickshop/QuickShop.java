@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop;
 
 import com.google.common.collect.Lists;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import lombok.Getter;
 import lombok.Setter;
 import me.minebuilders.clearlag.Clearlag;
@@ -38,6 +39,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.QuickShopAPI;
@@ -53,6 +55,7 @@ import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationHelper;
 import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
 import org.maxgamer.quickshop.listener.*;
+import org.maxgamer.quickshop.listener.worldedit.WorldEditAdapter;
 import org.maxgamer.quickshop.permission.PermissionManager;
 import org.maxgamer.quickshop.shop.*;
 import org.maxgamer.quickshop.util.Timer;
@@ -247,6 +250,12 @@ public class QuickShop extends JavaPlugin {
     private ShopControlPanel shopControlPanelManager;
     @Getter
     private CalendarWatcher calendarWatcher;
+    @Getter
+    private final List<BukkitTask> timerTaskList = new ArrayList<>(3);
+    @Getter
+    private Plugin worldEditPlugin;
+    @Getter
+    private WorldEditAdapter worldEditAdapter;
 
     @NotNull
     public static QuickShop getInstance() {
@@ -321,6 +330,21 @@ public class QuickShop extends JavaPlugin {
                 getLogger().info("Successfully loaded BlockHub support!");
             }
         }
+        if (getConfig().getBoolean("plugin.WorldEdit")) {
+            String nmsVersion = Util.getNMSVersion();
+            GameVersion gameVersion = GameVersion.get(nmsVersion);
+            if (gameVersion.isPersistentStorageApiSupports()) {
+                this.worldEditPlugin = Bukkit.getPluginManager().getPlugin("WorldEdit");
+                if (this.worldEditPlugin != null) {
+                    this.worldEditAdapter = new WorldEditAdapter(this, (WorldEditPlugin) this.worldEditPlugin);
+                    this.worldEditAdapter.register();
+                    getLogger().info("Successfully loaded WorldEdit support!");
+                }
+            } else {
+                getLogger().warning("Failed to load WorldEdit support: Server doesn't support PersistentStorageApi.");
+            }
+        }
+
         if (getConfig().getBoolean("plugin.LWC") && Util.isClassAvailable("com.griefcraft.lwc.LWC")) {
             this.lwcPlugin = Bukkit.getPluginManager().getPlugin("LWC");
             if (this.lwcPlugin != null) {
@@ -378,7 +402,7 @@ public class QuickShop extends JavaPlugin {
             EconomyCore core = null;
             switch (EconomyType.fromID(getConfig().getInt("economy-type"))) {
                 case UNKNOWN:
-                    bootError = new BootError(this.getLogger(), "Can't load the Economy provider, invaild value in config.yml.");
+                   setupBootError(new BootError(this.getLogger(), "Can't load the Economy provider, invaild value in config.yml."));
                     return false;
                 case VAULT:
                     core = new Economy_Vault(this);
@@ -440,7 +464,7 @@ public class QuickShop extends JavaPlugin {
                 return false;
             }
             if (!core.isValid()) {
-                bootError = BuiltInSolution.econError();
+                setupBootError(BuiltInSolution.econError());
                 return false;
             } else {
                 this.economy = new Economy(this, ServiceInjector.getEconomyCore(core));
@@ -451,8 +475,7 @@ public class QuickShop extends JavaPlugin {
             getLogger().log(Level.WARNING, "Something going wrong when loading up economy system", e);
             getLogger().severe("QuickShop could not hook into a economy/Not found Vault or Reserve!");
             getLogger().severe("QuickShop CANNOT start!");
-            bootError = BuiltInSolution.econError();
-            HandlerList.unregisterAll(this);
+            setupBootError(BuiltInSolution.econError());
             getLogger().severe("Plugin listeners was disabled, please fix the economy issue.");
             return false;
         }
@@ -519,7 +542,7 @@ public class QuickShop extends JavaPlugin {
         runtimeCheck(EnvCheckEntry.Stage.ON_LOAD);
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
-        QuickShopAPI.setupApi(this);
+        QuickShopAPI._internal_access_only_setupApi(this);
         //noinspection ResultOfMethodCallIgnored
         getDataFolder().mkdirs();
         this.bootError = null;
@@ -540,12 +563,14 @@ public class QuickShop extends JavaPlugin {
 
     @Override
     public void onDisable() {
+
+        getLogger().info("QuickShop is finishing remaining work, this may need a while...");
+        if (sentryErrorReporter != null) {
+            sentryErrorReporter.unregister();
+        }
+
         if (this.integrationHelper != null) {
             this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
-        }
-        getLogger().info("QuickShop is finishing remaining work, this may need a while...");
-        if (calendarWatcher != null) {
-            calendarWatcher.stop();
         }
         Util.debugLog("Unloading all shops...");
         try {
@@ -553,6 +578,10 @@ public class QuickShop extends JavaPlugin {
                 this.getShopManager().getLoadedShops().forEach(Shop::onUnload);
             }
         } catch (Exception ignored) {
+        }
+        Util.debugLog("Unregister hooks...");
+        if (worldEditAdapter != null) {
+            worldEditAdapter.unregister();
         }
 
         // this.reloadConfig();
@@ -578,21 +607,31 @@ public class QuickShop extends JavaPlugin {
         if (logWatcher != null) {
             logWatcher.close();
         }
+        for (BukkitTask bukkitTask : timerTaskList) {
+            if (!bukkitTask.isCancelled()) {
+                bukkitTask.cancel();
+            }
+        }
+        if (calendarWatcher != null) {
+            calendarWatcher.stop();
+        }
         /* Unload UpdateWatcher */
         if (this.updateWatcher != null) {
             this.updateWatcher.uninit();
         }
 
-        Util.debugLog("Cleanup tasks...");
         AsyncPacketSender.stop();
-        if (sentryErrorReporter != null) {
-            sentryErrorReporter.unregister();
-        }
+
+        Util.debugLog("Cleanup tasks...");
 
         try {
             Bukkit.getScheduler().cancelTasks(this);
         } catch (Throwable ignored) {
         }
+
+        Util.debugLog("Cleanup listeners...");
+        HandlerList.unregisterAll(this);
+
         Util.debugLog("All shutdown work is finished.");
 
     }
@@ -649,7 +688,7 @@ public class QuickShop extends JavaPlugin {
                     joiner.add(String.format("- [%s/%s] %s", result.getValue().getResult().getDisplay(), result.getKey().name(), result.getValue().getResultMessage()));
                 }
             }
-            bootError = new BootError(this.getLogger(), joiner.toString());
+            setupBootError(new BootError(this.getLogger(), joiner.toString()));
             //noinspection ConstantConditions
             Util.mainThreadRun(() -> getCommand("qs").setTabCompleter(this)); //Disable tab completer
         }
@@ -673,7 +712,7 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Starting plugin self-test, please wait...");
         runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
 
-        QuickShopAPI.setupApi(this);
+        QuickShopAPI._internal_access_only_setupApi(this);
 
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
@@ -768,6 +807,12 @@ public class QuickShop extends JavaPlugin {
         if (display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
         }
+        if (display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
+            timerTaskList.add(displayDupeRemoverWatcher.runTaskTimerAsynchronously(this, 0, 1));
+        }
+        if (display && DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+            AsyncPacketSender.start(this);
+        }
 
         /* Load all shops. */
         shopLoader = new ShopLoader(this);
@@ -808,7 +853,7 @@ public class QuickShop extends JavaPlugin {
             updateWatcher.init();
         }
 
-        getLogger().info("QuickShop Loaded! " + enableTimer.endTimer() + " ms.");
+
         /* Delay the Ecoonomy system load, give a chance to let economy system regiser. */
         /* And we have a listener to listen the ServiceRegisterEvent :) */
         Util.debugLog("Loading economy system...");
@@ -823,19 +868,14 @@ public class QuickShop extends JavaPlugin {
         // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
         signUpdateWatcher.runTaskTimer(this, 0, 10);
         shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
-        if (display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
-            displayDupeRemoverWatcher.runTaskTimerAsynchronously(this, 0, 1);
-        }
-        if (display && DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
-            AsyncPacketSender.start(this);
-        }
+
         if (logWatcher != null) {
-            logWatcher.runTaskTimerAsynchronously(this, 10, 10);
+            timerTaskList.add(logWatcher.runTaskTimerAsynchronously(this, 10, 10));
             getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
         }
         if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
             getLogger().info("Ongoing fee feature is enabled.");
-            ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks"));
+            timerTaskList.add(ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks")));
         }
 
 
@@ -857,6 +897,7 @@ public class QuickShop extends JavaPlugin {
         calendarWatcher.start();
         Util.debugLog("Now using display-type: " + DisplayItem.getNowUsing().name());
         // sentryErrorReporter.sendError(new IllegalAccessError("no fucking way"));
+        getLogger().info("QuickShop Loaded! " + enableTimer.endTimer() + " ms.");
     }
 
     private void loadItemMatcher() {
@@ -1742,6 +1783,12 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", ++selectedVersion);
         }
 
+        if (selectedVersion == 130) {
+            getConfig().set("plugin.WorldEdit", true);
+            getConfig().set("config-version", ++selectedVersion);
+        }
+
+
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }
@@ -1762,5 +1809,10 @@ public class QuickShop extends JavaPlugin {
         } catch (IOException ioe) {
             getLogger().warning("Error when creating the example config file: " + ioe.getMessage());
         }
+    }
+
+    public void setupBootError(BootError bootError) {
+        this.bootError = bootError;
+        HandlerList.unregisterAll(this);
     }
 }

@@ -474,8 +474,15 @@ public interface Shop {
 
     /**
      * Returns the attached shop object if any, otherwise null.
+     *
      * @return Shop or null
      */
-    ContainerShop getAttachedShop();
+    Shop getAttachedShop();
 
+    /**
+     * Getting ShopInfoStorage that you can use for storage the shop data
+     *
+     * @return ShopInfoStorage
+     */
+    ShopInfoStorage saveToInfoStorage();
 }
