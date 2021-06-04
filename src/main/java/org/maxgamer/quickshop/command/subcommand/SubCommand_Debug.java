@@ -151,7 +151,7 @@ public class SubCommand_Debug implements CommandProcesser {
                                 + listener1.getListener().getClass().getCanonicalName());
             }
         } catch (Exception th) {
-            MsgUtil.sendMessage(sender, "ERR " + th.getMessage());
+            MsgUtil.sendMessage(sender, "->ERR " + th.getMessage());
             plugin.getLogger().log(Level.WARNING, "An error has occurred while getting the HandlerList", th);
         }
     }
