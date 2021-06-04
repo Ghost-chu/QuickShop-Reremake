@@ -28,6 +28,7 @@ softdepend:
   - JulySafe
   - FabledSkyblock
   - OpenInv
+  - WorldEdit
 
 api-version: 1.13
 
