@@ -85,7 +85,7 @@ public class VirtualDisplayItem extends DisplayItem {
     private PacketAdapter unloadPacketAdapter;
 
     //cache chunk x and z
-    private ShopChunk chunkLocation;
+    private volatile ShopChunk chunkLocation;
 
 
     public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
@@ -343,6 +343,13 @@ public class VirtualDisplayItem extends DisplayItem {
                     if (!shop.isLoaded() || !isDisplay || !isFull || shop.isLeftShop()) {
                         return;
                     }
+                    Player player = event.getPlayer();
+                    if (player instanceof TemporaryPlayer) {
+                        return;
+                    }
+                    if (player == null || !player.isOnline()) {
+                        return;
+                    }
                     StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
                     //chunk x
                     int x = integerStructureModifier.read(0);
@@ -359,13 +366,6 @@ public class VirtualDisplayItem extends DisplayItem {
                                 throw new RuntimeException("An error occurred when getting chunk from the world", e);
                             }
                             chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
-                        }
-                        Player player = event.getPlayer();
-                        if (player instanceof TemporaryPlayer) {
-                            return;
-                        }
-                        if (player == null || !player.isOnline()) {
-                            return;
                         }
                         if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
                             packetSenders.add(player.getUniqueId());
