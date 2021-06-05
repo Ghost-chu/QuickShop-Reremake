@@ -83,21 +83,6 @@ public class RollbarErrorReporter {
         // Logger.getGlobal().setFilter(globalExceptionFilter);
 
         Util.debugLog("Rollbar error reporter success loaded.");
-//        if (bootPaste == null) {
-//            new BukkitRunnable() {
-//                @Override
-//                public void run() {
-//                    Paste paste = new Paste(plugin);
-//                    lastPaste = paste.paste(paste.genNewPaste());
-//                    if (lastPaste != null) {
-//                        bootPaste = lastPaste;
-//                        plugin.log("Plugin booted up, the server paste was created for debugging, reporting errors and data-recovery: " + lastPaste);
-//                    }
-//                }
-//            }.runTaskAsynchronously(plugin);
-//        } else {
-//            plugin.log("Reload detected, the server paste will not created again, previous paste link: " + bootPaste);
-//        }
         enabled = true;
     }
 
@@ -120,8 +105,6 @@ public class RollbarErrorReporter {
         dataMapping.put("server_players", plugin.getServer().getOnlinePlayers().size() + "/" + plugin.getServer().getMaxPlayers());
         dataMapping.put("server_onlinemode", String.valueOf(plugin.getServer().getOnlineMode()));
         dataMapping.put("server_bukkitversion", plugin.getServer().getVersion());
-
-//        dataMapping.put("server_plugins", getPluginInfo());
         dataMapping.put("user", QuickShop.getInstance().getServerUniqueID().toString());
         return dataMapping;
     }

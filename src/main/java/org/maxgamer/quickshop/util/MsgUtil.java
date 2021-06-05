@@ -334,10 +334,8 @@ public class MsgUtil {
             plugin.getLogger().info(getMessage("translation-author", null));
             plugin.getLogger().info(getMessage("translation-contributors", null));
             plugin.getLogger().info(getMessage("translation-country", null));
-            // plugin.getLogger().info(getMessage("translation-version"));
             inited = true;
         }
-
         /* Save the upgraded messages.yml */
         try {
             messagei18n.save(extractedMessageFile);

@@ -169,7 +169,6 @@ public class DatabaseManager {
                     if (task == null) {
                         break;
                     }
-                    // Util.debugLog("Executing the SQL task: " + task);
 
                     task.run(connection);
                     long tookTime = timer.endTimer();
