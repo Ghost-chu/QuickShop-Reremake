@@ -62,11 +62,11 @@ public class SubCommand_ROOT implements CommandProcesser {
                             && !requirePermission.isEmpty()
                             && !QuickShop.getPermissionManager().hasPermission(sender, requirePermission)) {
                         Util.debugLog(
-                                "Sender "
+                                "Player "
                                         + sender.getName()
-                                        + " trying tab-complete the command: "
+                                        + " is trying to tab-complete the command: "
                                         + commandLabel
-                                        + ", but no permission "
+                                        + ", but doesn't have the permission: "
                                         + requirePermission);
                         return Collections.emptyList();
                     }

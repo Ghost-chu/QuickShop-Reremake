@@ -93,7 +93,7 @@ public class SubCommand_Info implements CommandProcesser {
                         + doubles
                         + " double shops. ("
                         + doubleschests
-                        + " shops create on double chest.)");
+                        + " shops created on double chest.)");
         MsgUtil.sendMessage(sender,
                 ChatColor.GREEN
                         + ""

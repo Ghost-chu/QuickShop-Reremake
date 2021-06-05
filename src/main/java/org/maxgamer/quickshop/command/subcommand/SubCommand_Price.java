@@ -46,7 +46,7 @@ public class SubCommand_Price implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "Can't run this command by Console");
+            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
             return;
         }
 
@@ -179,7 +179,7 @@ public class SubCommand_Price implements CommandProcesser {
                             .getLogger()
                             .log(
                                     Level.WARNING,
-                                    "QuickShop can't pay tax to the account in config.yml, please set the tax account name to an existing player!");
+                                    "QuickShop can't pay taxes to the configured tax account! Please set the tax account name in the config.yml to an existing player!");
                 }
             }
             // Update the shop

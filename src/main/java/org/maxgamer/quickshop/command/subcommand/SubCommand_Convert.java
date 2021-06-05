@@ -61,20 +61,20 @@ public class SubCommand_Convert implements CommandProcesser {
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Player) {
-            sender.sendMessage(ChatColor.RED + "Danger command, please execute in console.");
+            sender.sendMessage(ChatColor.RED + "Executing this command can be dangerous! Please execute it in the console.");
             return;
         }
         if (cmdArg.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Please select you want convert to: mysql or sqlite");
+            sender.sendMessage(ChatColor.RED + "Please select what you want convert to: mysql or sqlite");
             return;
         }
         if (running) {
-            sender.sendMessage(ChatColor.RED + "Convert command is running,Please wait until it finished!");
+            sender.sendMessage(ChatColor.RED + "Conversion is already running! Please wait until it has finished!");
             return;
         }
         if (cmdArg[0].equalsIgnoreCase("mysql")) {
             if (plugin.getDatabaseManager().getDatabase() instanceof MySQLCore) {
-                sender.sendMessage(ChatColor.RED + "Please switch to SQLite before converting to MySQL.");
+                sender.sendMessage(ChatColor.RED + "Your database is already in MySQL!");
                 return;
             }
             ConfigurationSection dbCfg = plugin.getConfig().getConfigurationSection("database");
@@ -92,17 +92,17 @@ public class SubCommand_Convert implements CommandProcesser {
                     sender.sendMessage(ChatColor.GREEN + "Converting...");
                     transferShops(new DatabaseHelper(plugin, databaseManager), sender);
                     databaseManager.unInit();
-                    sender.sendMessage(ChatColor.GREEN + "All done, please edit config.yml to mysql to apply changes.");
+                    sender.sendMessage(ChatColor.GREEN + "All done, please change your config.yml settings to mysql to apply the changes.");
                 } catch (Exception e) {
-                    sender.sendMessage(ChatColor.RED + "Error when converting database, Please check your console.");
-                    plugin.getServer().getLogger().log(Level.SEVERE, "Error when converting database", e);
+                    sender.sendMessage(ChatColor.RED + "Error in database conversion! Please check your console.");
+                    plugin.getServer().getLogger().log(Level.SEVERE, "Error in database conversion", e);
                 } finally {
                     running = false;
                 }
             });
         } else if (cmdArg[0].equalsIgnoreCase("sqlite")) {
             if (plugin.getDatabaseManager().getDatabase() instanceof SQLiteCore) {
-                sender.sendMessage(ChatColor.GREEN + "Please switch to MySQL before converting to SQLite.");
+                sender.sendMessage(ChatColor.GREEN + "Your database is already in SQLite!");
                 return;
             }
             running = true;
@@ -113,17 +113,17 @@ public class SubCommand_Convert implements CommandProcesser {
                     sender.sendMessage(ChatColor.GREEN + "Converting...");
                     transferShops(new DatabaseHelper(plugin, databaseManager), sender);
                     databaseManager.unInit();
-                    sender.sendMessage(ChatColor.GREEN + "All done, please edit config.yml to sqlite to apply changes.");
+                    sender.sendMessage(ChatColor.GREEN + "All done, please change your config.yml settings to sqlite to apply the changes.");
                 } catch (Exception e) {
-                    sender.sendMessage(ChatColor.RED + "Error when converting database, Please check your console.");
-                    plugin.getServer().getLogger().log(Level.SEVERE, "Error when converting database", e);
+                    sender.sendMessage(ChatColor.RED + "Error in database conversion! Please check your console.");
+                    plugin.getServer().getLogger().log(Level.SEVERE, "Error in database conversion", e);
                 } finally {
                     running = false;
                 }
             });
 
         } else {
-            sender.sendMessage(ChatColor.RED + "Wrong type! Only can be mysql or sqlite");
+            sender.sendMessage(ChatColor.RED + "Invalid type! Please choose mysql or sqlite");
         }
     }
 

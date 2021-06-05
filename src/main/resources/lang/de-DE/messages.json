@@ -1,10 +1,11 @@
 {
+  "_comment": "Hallo Übersetzer! Wenn du das in GitHub oder durch Codequellen bearbeitest, solltest du zu https://crowdin.com/project/quickshop-reremake gehen",
   "file-test": "Dies ist eine Text Testdatei. Wir verwenden sie um zu testen ob die messages.json kaputt ist. Du kannst sie mit jedem Easter Egg füllen wie du willst :)",
   "translation-author": "Übersetzer: Ghost_chu, Andre_601",
   "translation-version": "Unterstütze Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Sprache: Deutsch (de_DE)",
-  "language-version": "54",
+  "language-version": "56",
   "not-looking-at-shop": "&cKonnte keinen QuickShop finden. Du musst auf einen schauen.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cYou do not have permission to do that.",
@@ -44,7 +45,7 @@
   "fee-charged-for-price-change": "&aDu hast &c{0}&a bezahlt, um den Preis zu ändern.",
   "price-is-now": "&aDer neue Preis des Shops ist &e{0}",
   "thats-not-a-number": "&cUngültige Zahl",
-  "forbidden-vanilla-behavior": "&cDie Operation ist verboten da Sie nicht mit dem Vanillaverhalten übereinstimmt",
+  "forbidden-vanilla-behavior": "&cDie Operation ist verboten da Sie nicht mit dem Vanilla verhalten übereinstimmt",
   "no-price-given": "&cBitte gebe einen gültigen Preis ein.",
   "average-price-nearby": "&aDurchschnittspreis in der Umgebung: &e{0}",
   "shop-has-changed": "&cDer Shop, den du gerade benutzt wolltest, wurde verändert seit dem du drauf geklickt hast!",
@@ -138,7 +139,7 @@
     "no-amount-given": "&cKeine Menge angegeben. Verwende &a/qs refill <Menge>&c",
     "now-debuging": "&aEntwicklermodus erfolgreich aktiviert. Lade QuickShop neu...",
     "now-nolonger-debuging": "&aEntwicklermodus erfolgreich deaktiviert. Lade QuickShop neu...",
-    "wrong-args": "&cUngültige Argumente. Verwende &l/qs help &cum eine Liste aller Befehle zu sehen.",
+    "wrong-args": "&cUngültiges Argument. Verwende &l/qs help &cum eine Liste aller Befehle zu sehen.",
     "description": {
       "title": "&aQuickShop Hilfe",
       "unlimited": "&eGibt einen Shop einen unbegrenzten Vorrat.",
@@ -169,14 +170,14 @@
       "removeall": "&eEntferne ALLE Shops eines bestimmten Spielers",
       "transfer": "&eTransfer someone's ALL shops to other",
       "removeworld": "&eEntferne ALLE Shops in einer bestimmten Welt",
-      "currency": "&eSetze oder entferne die Währungseinstellungen des Shops",
+      "currency": "&eSetze oder Entferne die Währungseinstellungen des Shops",
       "ban": "&eBannt einen Spieler vom Shop",
       "unban": "&eEntbannt einen Spieler vom Shop",
       "freeze": "&e(De)aktiviere Shop-Handel",
-      "lock": "&eÄndere den Lock-Status des Shops"
+      "lock": "&eWechsle den Lock-Status des Shops"
     },
     "disabled": "&cDieser Befehl ist deaktiviert: &e{0}",
-    "feature-not-enabled": "Dieses Feature ist nicht in der Config aktiviert."
+    "feature-not-enabled": "Dieses Feature ist nicht in der Config Datei aktiviert."
   },
   "signs": {
     "selling": "Verkauft {0}",
@@ -192,7 +193,7 @@
     "status-unavailable": "&c",
     "out-of-stock": "Ausverkauft",
     "out-of-space": "Kein Platz",
-    "freeze": "Handeln deaktiviert"
+    "freeze": "Handel deaktiviert"
   },
   "controlpanel": {
     "setowner": "&aBesitzer: &b{0} &e[&d&lÄndern&e]",
@@ -219,7 +220,7 @@
     "currency": "&aWährung: &b{0} &e[&d&lÄndern&e]",
     "currency-hover": "&eKlicke um die Währung zu setzen oder zu entfernen, welcher dieser Shop verwendet",
     "lock": "&eShop Sperre: &b{0} &e[&d&lÄndern&e]",
-    "lock-hover": "&eAktiviere/Deaktiviere Sperrschutz des Shops.",
+    "lock-hover": "&eAktiviere/Deaktiviere den Sperrschutz des Shops.",
     "freeze": "&eFreeze Modus: &b{0} &e[&d&lÄndern&e]",
     "freeze-hover": "&eÄndere den Freeze-Status des Shops."
   },
@@ -263,7 +264,7 @@
       "Doktor, QuickShop hat ein neues Update {0}! Du solltest aktualisieren~",
       "Ko~ko~da~yo~ QuickShop hat ein neues Update {0} ~"
     ],
-    "remote-disable-warning": "&cDiese Version von QuickShop wurde vom Remote Server als deaktiviert markiert worden, was bedeutet, dass diese Version eventuell schwere Probleme hat. Erhalte Details von unserer Spigot Seite: {0}. Diese Warnung wird so lange erscheinen, bis du zu einer stabilen Version wechselst, wird die Server-Performance aber nicht beeinflussen.",
+    "remote-disable-warning": "&cDiese Version von QuickShop wurde vom Remote Server als deaktiviert markiert, was bedeutet, dass diese Version eventuell schwere Probleme hat. Erhalte Details von unserer Spigot Seite: {0}. Diese Warnung wird so lange erscheinen, bis du zu einer stabilen Version wechselst, wird die Server-Performance aber nicht beeinflussen.",
     "label": {
       "unstable": "[Instabil]",
       "stable": "[Stabil]",
@@ -314,7 +315,9 @@
   "item-not-exist": "&cDas Item &e{0} &cexistiert nicht, bitte überprüfe deine Schreibweise.",
   "backup-success": "&aBackup erfolgreich.",
   "console-only": "&cDieser Befehl kann nur per Konsole ausgeführt werden.",
-  "console-only-danger": "&cDies ist ein gefährlicher Befehl, weswegen er nur per Konsole ausgeführt werden kann.",
-  "clean-warning": "&eDieser Befehl wird &calle &eshops entfernen, welche beschädigt, in einer unerlaubten Welt sind, oder unerlaubte Items kaufen/verkaufen und &c&lIN NICHT GELADENEN SHOPWELTEN &esind. Stelle sicher dass du ein vollständiges Backup aller Shopdaten hast und fahre fort mit &b/qs cleanghost confirm &ezum bestätigen.",
-  "shop-creation-failed": "&cShop creation failed, please contact with server administrator."
+  "console-only-danger": "&cDies ist ein gefährlicher Befehl, weswegen nur die Konsole ihn ausführen kann.",
+  "clean-warning": "&eDieser Befehl wird &calle &eShops löschen welche entweder beschädigt sind, in nicht erlaubten Welten erstellt wurden, nicht erlaubte Items kaufen/verkaufen oder &c&lIN EINER NICHT GELADENEN WELT EXISTIEREN&e. Stelle sicher, dass du komplette Backups sämtlicher Shopdaten erstellst und vervende &b/qs cleanghost confirm &eum zu fortzufahren.",
+  "shop-creation-failed": "&cShop-Erstellung fehlgeschlagen, Bitte kontaktiere einen Server Administrator.",
+  "shop-owner-self-trade": "&eDu handelst mit deinem eigenen Shop, also wirst du keinen extra Saldo erhalten.",
+  "chest-title": "QuickShop Laden"
 }

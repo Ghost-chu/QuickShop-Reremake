@@ -62,7 +62,7 @@ public class SubCommand_Debug implements CommandProcesser {
                 break;
             case "handlerlist":
                 if (cmdArg.length < 2) {
-                    MsgUtil.sendMessage(sender, "You must given a event class");
+                    MsgUtil.sendMessage(sender, "You must enter an event class");
                     break;
                 }
 
@@ -97,13 +97,13 @@ public class SubCommand_Debug implements CommandProcesser {
                     final Block b = bIt.next();
                     final Shop shop = plugin.getShopManager().getShop(b.getLocation());
                     if (shop != null) {
-                        shop.getSigns().forEach(sign -> MsgUtil.sendMessage(sender, ChatColor.GREEN + "Sign founded at: " + sign.getLocation()));
+                        shop.getSigns().forEach(sign -> MsgUtil.sendMessage(sender, ChatColor.GREEN + "Sign located at: " + sign.getLocation()));
                         break;
                     }
                 }
                 break;
             default:
-                MsgUtil.sendMessage(sender, "Error, no correct args given.");
+                MsgUtil.sendMessage(sender, "Error! No correct arguments were entered!.");
                 break;
         }
     }
@@ -152,7 +152,7 @@ public class SubCommand_Debug implements CommandProcesser {
             }
         } catch (Exception th) {
             MsgUtil.sendMessage(sender, "ERR " + th.getMessage());
-            plugin.getLogger().log(Level.WARNING, "Something going wrong when getting HandlerList", th);
+            plugin.getLogger().log(Level.WARNING, "An error has occurred while getting the HandlerList", th);
         }
     }
 
