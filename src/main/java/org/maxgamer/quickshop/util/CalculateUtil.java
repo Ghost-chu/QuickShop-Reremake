@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 
 public final class CalculateUtil {
-    private static final MathContext MATH_CONTEXT = MathContext.DECIMAL32;
+    private static final MathContext mathContext = MathContext.DECIMAL32;
 
     private CalculateUtil() {
     }
