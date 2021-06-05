@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AsyncPacketSender {
 
-    private static AsyncSendingTask instance = null;
+    private volatile static AsyncSendingTask instance = null;
     private static boolean isUsingGlobal = false;
     private static volatile boolean enabled = false;
 
@@ -69,10 +69,10 @@ public class AsyncPacketSender {
 
     public static class AsyncSendingTask {
         private final Queue<Runnable> asyncPacketSendQueue = new ArrayBlockingQueue<>(100, true);
-        private BukkitTask asyncSendingTask;
+        private volatile BukkitTask asyncSendingTask;
         private final AtomicBoolean taskDone = new AtomicBoolean(true);
 
-        public void start(QuickShop plugin) {
+        public synchronized void start(QuickShop plugin) {
             //lazy initialize
             if (asyncSendingTask == null || asyncSendingTask.isCancelled()) {
                 asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
@@ -95,7 +95,7 @@ public class AsyncPacketSender {
         }
 
 
-        public void stop() {
+        public synchronized void stop() {
             if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {
                 asyncSendingTask.cancel();
             }
