@@ -89,8 +89,7 @@ public class ShopLoader {
         Timer totalLoadTimer = new Timer(true);
         this.plugin.getLogger().info("Loading shops from the database...");
         Timer fetchTimer = new Timer(true);
-        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops()) {
-            ResultSet rs = warpRS.getResultSet();
+        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
             this.plugin
                     .getLogger()
                     .info("Used " + fetchTimer.endTimer() + "ms to fetch all shops from the database.");
@@ -230,7 +229,7 @@ public class ShopLoader {
 
     @NotNull
     private YamlConfiguration extraUpgrade(@NotNull String extraString) {
-        if (!StringUtils.isEmpty(extraString) && !extraString.equalsIgnoreCase("QuickShop: {}")) {
+        if (!StringUtils.isEmpty(extraString) && !"QuickShop: {}".equalsIgnoreCase(extraString)) {
             Util.debugLog("Extra API -> Upgrading -> " + extraString.replaceAll("\n", ""));
         }
         YamlConfiguration yamlConfiguration = new YamlConfiguration();

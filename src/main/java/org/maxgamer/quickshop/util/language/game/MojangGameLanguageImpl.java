@@ -72,16 +72,18 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         }
         languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
         lock.lock();
-        final GameLanguageLoadThread loadThread = new GameLanguageLoadThread(plugin, languageCode);
-        loadThread.start();
-        boolean timeout = !downloadCondition.await(20, TimeUnit.SECONDS);
-        if (timeout) {
-            Util.debugLog("No longer waiting file downloading because it now timed out, now downloading in background.");
-            plugin.getLogger().info("No longer waiting file downloading because it now timed out, now downloading in background, please reset itemi18n.yml, potioni18n.yml and enchi18n.yml after download completed.");
+        try {
+            final GameLanguageLoadThread loadThread = new GameLanguageLoadThread(plugin, languageCode);
+            loadThread.start();
+            boolean timeout = !downloadCondition.await(20, TimeUnit.SECONDS);
+            if (timeout) {
+                Util.debugLog("No longer waiting file downloading because it now timed out, now downloading in background.");
+                plugin.getLogger().info("No longer waiting file downloading because it now timed out, now downloading in background, please reset itemi18n.yml, potioni18n.yml and enchi18n.yml after download completed.");
+            }
+            this.lang = loadThread.getLang(); // Get the Lang whatever thread running or died.
+        } finally {
+            lock.unlock();
         }
-        this.lang = loadThread.getLang(); // Get the Lang whatever thread running or died.
-        lock.unlock();
-
     }
 
     @Override
@@ -181,11 +183,16 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
             this.languageCode = languageCode;
         }
 
+        @Override
         public void run() {
             lock.lock();
-            execute();
-            downloadCondition.signalAll();
-            lock.unlock();
+            try {
+                execute();
+                downloadCondition.signalAll();
+            } finally {
+                lock.unlock();
+            }
+
         }
 
         public void execute() {
@@ -202,7 +209,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 String cacheSha1 = yamlConfiguration.getString("sha1", "ERROR");
                 String cacheCode = yamlConfiguration.getString("lang");
                 /* If language name is default, use computer language */
-                if (languageCode.equalsIgnoreCase("en_us")) {
+                if ("en_us".equalsIgnoreCase(languageCode)) {
                     isLatest = true;
                     return; //Ignore english language
                 }

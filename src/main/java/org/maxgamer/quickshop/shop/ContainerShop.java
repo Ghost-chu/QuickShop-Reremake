@@ -1238,6 +1238,7 @@ public class ContainerShop implements Shop {
      * Updates the attachedShop variable to reflect the currently attached shop, if any.
      * Also updates the left shop status.
      */
+    @Override
     public void updateAttachedShop() {
         //TODO: Rewrite centering item feature, currently implement is buggy and mess
         Util.ensureThread(false);
@@ -1306,6 +1307,7 @@ public class ContainerShop implements Shop {
      *
      * @return If the chest is a real double chest, as in it is a double and it has the same item.
      */
+    @Override
     public boolean isRealDouble() {
         Util.ensureThread(false);
         if (attachedShop == null) {
@@ -1369,8 +1371,9 @@ public class ContainerShop implements Shop {
     @Override
     public @NotNull ConfigurationSection getExtra(@NotNull Plugin plugin) {
         ConfigurationSection section = extra.getConfigurationSection(plugin.getName());
-        if (section == null)
+        if (section == null) {
             section = extra.createSection(plugin.getName());
+        }
         return section;
     }
 

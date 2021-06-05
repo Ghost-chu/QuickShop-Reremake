@@ -140,6 +140,8 @@ public final class EnvironmentChecker {
                         Util.debugLog("[Fatal-Disable] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                         skipAllTest = true; //We need to disable the plugin NOW! Some HUGE exception is happening here, hurry up!
                         break;
+                    default:
+                        plugin.getLogger().warning("[UNDEFINED] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                 }
                 if (executeResult != null) {
                     results.put(envCheckEntry, executeResult);
@@ -175,6 +177,7 @@ public final class EnvironmentChecker {
     @EnvCheckEntry(name = "Signature Verify", priority = 0, stage = {EnvCheckEntry.Stage.ON_LOAD, EnvCheckEntry.Stage.ON_ENABLE})
     public ResultContainer securityVerify() {
         JarVerifyTool tool = new JarVerifyTool();
+        JarFile jarFile = null;
         try {
             ClassLoader loader = this.getClass().getClassLoader();
 
@@ -190,7 +193,7 @@ public final class EnvironmentChecker {
             String jarPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
             jarPath = URLDecoder.decode(jarPath, "UTF-8");
             Util.debugLog("JarPath selected: " + jarPath);
-            JarFile jarFile = new JarFile(jarPath);
+            jarFile = new JarFile(jarPath);
             List<JarEntry> modifiedEntry = tool.verify(jarFile);
             if (modifiedEntry.isEmpty()) {
                 return new ResultContainer(CheckResult.PASSED, "The jar is valid. No issues detected.");
@@ -209,6 +212,13 @@ public final class EnvironmentChecker {
         } catch (IOException ioException) {
             plugin.getLogger().log(Level.WARNING, "ALERT: QuickShop cannot validate itself. This may be caused by you having deleted QuickShop's jar while the server is running.", ioException);
             return new ResultContainer(CheckResult.WARNING, "Failed to validate digital signature! Security may be compromised!");
+        } finally {
+            if (jarFile != null) {
+                try {
+                    jarFile.close();
+                } catch (IOException ignored) {
+                }
+            }
         }
 
         //tool.verify()

@@ -86,6 +86,9 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
                 //Otherwise append
                 logFileWriter = new FileWriter(log, true);
             }
+
+            //TODO log file writer should close after use
+
             printWriter = new PrintWriter(logFileWriter);
         } catch (FileNotFoundException e) {
             plugin.getLogger().log(Level.SEVERE, "Log file was not found!", e);
@@ -94,6 +97,7 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
         }
     }
 
+    @Override
     @SneakyThrows
     public void close() {
         if (printWriter != null) {

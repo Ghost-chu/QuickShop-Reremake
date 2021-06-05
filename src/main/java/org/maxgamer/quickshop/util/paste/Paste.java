@@ -95,7 +95,7 @@ public class Paste {
 //                case RESERVE:
 //                    finalReport.append("Reserve").append("%").append("No details");
 //                    break;
-                case UNKNOWN:
+                default:
                     finalReport.append("Unknown").append("%").append("Unknown error");
                     break;
             }
