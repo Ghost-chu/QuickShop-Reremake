@@ -482,9 +482,11 @@ public class ContainerShop implements Shop {
         }
         if (inventoryPreview != null) {
             inventoryPreview.close();
+            inventoryPreview = null;
         }
-        if (this.getDisplayItem() != null) {
-            this.getDisplayItem().remove();
+        if (this.displayItem != null) {
+            this.displayItem.remove();
+            this.displayItem = null;
         }
         update();
         this.isLoaded = false;
