@@ -426,6 +426,7 @@ public class ContainerShop implements Shop {
             }
             plugin.getShopManager().removeShop(this);
             plugin.getDatabaseHelper().removeShop(this);
+            plugin.getShopLoader().removeShopFromShopLoader(this);
         }
         // Use that copy we saved earlier (which is now deleted) to refresh it's now alone neighbor
         if (neighbor != null) {
