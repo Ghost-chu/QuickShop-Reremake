@@ -54,7 +54,6 @@ public class PluginUtil {
      * @param plugin the plugin to unload
      * @return the exception when unloading, null if succeed
      */
-    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("DM_GC")
     @Nullable
     public static Throwable unload(Plugin plugin) {
 
