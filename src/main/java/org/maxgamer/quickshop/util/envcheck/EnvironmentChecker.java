@@ -21,10 +21,6 @@ package org.maxgamer.quickshop.util.envcheck;
 
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.DisplayItem;
@@ -331,41 +327,6 @@ public class EnvironmentChecker {
             return new ResultContainer(CheckResult.WARNING, "No support will be given to modded servers.");
         }
         return new ResultContainer(CheckResult.PASSED, "Server is unmodified.");
-    }
-
-    public boolean checkJulySafe() {
-        Plugin julySafe = plugin.getServer().getPluginManager().getPlugin("JulySafe");
-        boolean triggered = false;
-        if (julySafe != null) {
-            for (RegisteredListener registeredListener : BlockPlaceEvent.getHandlerList().getRegisteredListeners()) {
-                if (registeredListener.getPlugin().equals(julySafe)) {
-                    Class<?> clazz;
-                    try {
-                        clazz = Class.forName("com.github.julyss2019.bukkit.plugins.julysafe.listeners.QuickShopBugFixListener");
-                    } catch (ClassNotFoundException ignored) {
-                        clazz = null;
-                    }
-                    if (registeredListener.getListener().getClass().equals(clazz)
-                            || registeredListener.getListener().getClass().getName().contains("QuickShop")) {
-                        HandlerList.unregisterAll(registeredListener.getListener()); //Unregister JulySafe's QuickShopBugFixListener
-                        triggered = true;
-                    }
-                }
-            }
-            if (julySafe.getConfig().getBoolean("quickshop_bug_fix.enabled")) {
-                julySafe.getConfig().set("quickshop_bug_fix.enabled", false);
-                triggered = true;
-            }
-        }
-        return triggered;
-    }
-
-    @EnvCheckEntry(name = "JulySafe Test", priority = 5)
-    public ResultContainer julySafeTest() {
-        if (checkJulySafe()) {
-            return new ResultContainer(CheckResult.WARNING, "JulySafe is installed and \"QuickShop *bugfix* \" module is enabled, QuickShop has been disabled bug fix module since it not exists anymore.");
-        }
-        return new ResultContainer(CheckResult.PASSED, "JulySafe is not installed or qs bug fix module is disabled.");
     }
 
     @EnvCheckEntry(name = "CoreSupport Test", priority = 6)
