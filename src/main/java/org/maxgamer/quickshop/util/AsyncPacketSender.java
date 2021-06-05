@@ -21,7 +21,8 @@ package org.maxgamer.quickshop.util;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.QuickShop;
 
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AsyncPacketSender {
@@ -67,7 +68,7 @@ public class AsyncPacketSender {
     }
 
     public static class AsyncSendingTask {
-        private final LinkedBlockingQueue<Runnable> asyncPacketSendQueue = new LinkedBlockingQueue<>();
+        private final Queue<Runnable> asyncPacketSendQueue = new ArrayBlockingQueue<>(100, true);
         private BukkitTask asyncSendingTask;
         private final AtomicBoolean taskDone = new AtomicBoolean(true);
 
