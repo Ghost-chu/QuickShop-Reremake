@@ -386,6 +386,8 @@ public class VirtualDisplayItem extends DisplayItem {
         packetSenders.clear();
         if (packetAdapter != null) {
             protocolManager.removePacketListener(packetAdapter);
+            //Prevent memory leak
+            packetAdapter = null;
         }
         if (asyncPacketSenderTask != null) {
             asyncPacketSenderTask.stop();
