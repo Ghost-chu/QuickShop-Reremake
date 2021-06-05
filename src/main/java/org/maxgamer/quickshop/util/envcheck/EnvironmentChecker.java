@@ -318,7 +318,7 @@ public final class EnvironmentChecker {
             trigged = true;
         }
         if (isFabricBasedServer()) {
-            plugin.getLogger().warning("WARN: QSRR is not designed and tested for Fabric!");
+            plugin.getLogger().warning("WARN: QuickShop is not designed and tested for Fabric!");
             plugin.getLogger().warning("WARN: Use at you own risk!.");
             plugin.getLogger().warning("WARN: No support will be given!");
             trigged = true;
