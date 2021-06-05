@@ -385,8 +385,9 @@ public class RollbarErrorReporter {
             } else {
                 sendError(record.getThrown(), record.getMessage());
                 PossiblyLevel possiblyLevel = checkWasCauseByQS(record.getThrown());
-                if (possiblyLevel == PossiblyLevel.IMPOSSIBLE)
+                if (possiblyLevel == PossiblyLevel.IMPOSSIBLE) {
                     return true;
+                }
                 if (possiblyLevel == PossiblyLevel.MAYBE) {
                     plugin.getLogger().warning("This seems not a QuickShop but we still sent this error to QuickShop developers. If you have any question, you should ask QuickShop developer.");
                     return true;
@@ -434,8 +435,9 @@ public class RollbarErrorReporter {
             } else {
                 sendError(record.getThrown(), record.getMessage());
                 PossiblyLevel possiblyLevel = checkWasCauseByQS(record.getThrown());
-                if (possiblyLevel == PossiblyLevel.IMPOSSIBLE)
+                if (possiblyLevel == PossiblyLevel.IMPOSSIBLE) {
                     return true;
+                }
                 if (possiblyLevel == PossiblyLevel.MAYBE) {
                     plugin.getLogger().warning("This seems not a QuickShop error but we still sent this error to QuickShop developers. If you have any question, you may can ask QuickShop developer but don't except any solution.");
                     return true;

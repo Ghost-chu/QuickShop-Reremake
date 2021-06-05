@@ -81,8 +81,6 @@ public class VirtualDisplayItem extends DisplayItem {
 
     //packetListener
     private PacketAdapter packetAdapter;
-    //packetListener
-    private PacketAdapter unloadPacketAdapter;
 
     //cache chunk x and z
     private volatile ShopChunk chunkLocation;

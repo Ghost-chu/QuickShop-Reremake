@@ -349,6 +349,9 @@ public class Util {
      */
     @NotNull
     public static String format(double n, @Nullable Shop shop) {
+        if (shop == null) {
+            return "Error: Shop null";
+        }
         return format(n, disableVaultFormat, shop.getLocation().getWorld(), shop);
     }
 
@@ -645,16 +648,10 @@ public class Util {
                 try {
                     Material mat = Material.matchMaterial(sp[0]);
                     if (mat == null) {
-                        plugin
-                                .getLogger()
-                                .warning(
-                                        "Material "
-                                                + sp[0]
-                                                + " in config.yml can't match with a valid Materials, check your config.yml!");
+                        plugin.getLogger().warning("Material " + sp[0] + " in config.yml can't match with a valid Materials, check your config.yml!");
                         continue;
                     }
-                    restrictedPrices.put(
-                            mat, new SimpleEntry<>(Double.valueOf(sp[1]), Double.valueOf(sp[2])));
+                    restrictedPrices.put(mat, new SimpleEntry<>(Double.valueOf(sp[1]), Double.valueOf(sp[2])));
                 } catch (Exception e) {
                     plugin.getLogger().warning("Invalid price restricted material: " + s);
                 }
@@ -666,7 +663,7 @@ public class Util {
                 continue;
             }
 
-            if (data[0].equalsIgnoreCase("*")) {
+            if ("*".equalsIgnoreCase(data[0])) {
                 bypassedCustomStackSize = Integer.parseInt(data[1]);
             }
             Material mat = Material.matchMaterial(data[0]);
@@ -1262,8 +1259,8 @@ public class Util {
         try {
             double[] tps = ((double[]) tpsField.get(serverInstance));
             return tps[0];
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+        } catch (IllegalAccessException ignored) {
+            return 20.0;
         }
     }
 
@@ -1323,7 +1320,7 @@ public class Util {
      * @return DevEdition status
      */
     public static boolean isDevEdition() {
-        return !QuickShop.getInstance().getBuildInfo().getGitBranch().equalsIgnoreCase("release");
+        return !"release".equalsIgnoreCase(QuickShop.getInstance().getBuildInfo().getGitBranch());
     }
 
     /**
@@ -1426,11 +1423,13 @@ public class Util {
     public static void ensureThread(boolean async) {
         boolean isMainThread = Bukkit.isPrimaryThread();
         if (async) {
-            if (isMainThread)
+            if (isMainThread) {
                 throw new IllegalStateException("#[Illegal Access] This method require runs on async thread.");
+            }
         } else {
-            if (!isMainThread)
+            if (!isMainThread) {
                 throw new IllegalStateException("#[Illegal Access] This method require runs on server main thread.");
+            }
         }
     }
 

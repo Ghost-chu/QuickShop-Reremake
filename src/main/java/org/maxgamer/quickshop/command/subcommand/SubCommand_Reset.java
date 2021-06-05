@@ -81,6 +81,8 @@ public class SubCommand_Reset implements CommandProcesser {
                 MsgUtil.loadI18nFile();
                 MsgUtil.sendMessage(sender, MsgUtil.getMessage("complete", sender));
                 break;
+            default:
+                MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.wrong-args", sender));
         }
     }
 

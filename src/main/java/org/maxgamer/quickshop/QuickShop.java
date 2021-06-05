@@ -666,7 +666,11 @@ public class QuickShop extends JavaPlugin {
         }
         /* It will generate a new UUID above updateConfig */
         this.serverUniqueID = UUID.fromString(Objects.requireNonNull(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID()))));
-        updateConfig(getConfig().getInt("config-version"));
+        try {
+            updateConfig(getConfig().getInt("config-version"));
+        } catch (IOException exception) {
+            getLogger().log(Level.WARNING, "Failed to update configuration", exception);
+        }
         try {
             MsgUtil.loadI18nFile();
         } catch (Exception e) {
@@ -1007,7 +1011,7 @@ public class QuickShop extends JavaPlugin {
     }
 
 
-    private void updateConfig(int selectedVersion) {
+    private void updateConfig(int selectedVersion) throws IOException {
         String serverUUID = getConfig().getString("server-uuid");
         if (serverUUID == null || serverUUID.isEmpty()) {
             UUID uuid = UUID.randomUUID();
@@ -1790,8 +1794,9 @@ public class QuickShop extends JavaPlugin {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }
 
-        InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(getResource("config.yml"))));
-        new ConfigurationFixer(this, YamlConfiguration.loadConfiguration(buildInConfigReader)).fix();
+        try (InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(getResource("config.yml"))))) {
+            new ConfigurationFixer(this, YamlConfiguration.loadConfiguration(buildInConfigReader)).fix();
+        }
 
         saveConfig();
         reloadConfig();

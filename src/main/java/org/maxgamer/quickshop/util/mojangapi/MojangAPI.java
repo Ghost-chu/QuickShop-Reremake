@@ -113,11 +113,13 @@ public class MojangAPI {
          */
         public Optional<AssetsFileData> getGameAssetsFile() {
             Optional<GameInfoAPI.DataBean> bean = getAssetsJson();
-            if (!bean.isPresent())
+            if (!bean.isPresent()) {
                 return Optional.empty();
+            }
             GameInfoAPI.DataBean.AssetIndexBean assetIndexBean = bean.get().getAssetIndex();
-            if (assetIndexBean == null || assetIndexBean.getUrl() == null || assetIndexBean.getId() == null)
+            if (assetIndexBean == null || assetIndexBean.getUrl() == null || assetIndexBean.getId() == null) {
                 return Optional.empty();
+            }
 
             try {
                 Optional<String> fileContent = request.get(new URL(assetIndexBean.getUrl()));
@@ -130,11 +132,13 @@ public class MojangAPI {
 
 
         private Optional<GameInfoAPI.DataBean> getAssetsJson() {
-            if (!isAvailable())
+            if (!isAvailable()) {
                 return Optional.empty();
+            }
             Optional<String> content = this.metaAPI.get();
-            if (!content.isPresent())
+            if (!content.isPresent()) {
                 return Optional.empty();
+            }
             GameInfoAPI gameInfoAPI = new GameInfoAPI(content.get());
             return Optional.of(gameInfoAPI.get());
         }
@@ -207,21 +211,25 @@ public class MojangAPI {
         @SneakyThrows
         public Optional<String> get() {
             Optional<String> result = request.get(this.metaEndpoint);
-            if (!result.isPresent())
+            if (!result.isPresent()) {
                 return Optional.empty();
+            }
             try {
                 JsonElement index = new JsonParser().parse(result.get());
-                if (!index.isJsonObject())
+                if (!index.isJsonObject()) {
                     return Optional.empty();
+                }
                 JsonElement availableVersions = index.getAsJsonObject().get("versions");
-                if (!availableVersions.isJsonArray())
+                if (!availableVersions.isJsonArray()) {
                     return Optional.empty();
+                }
                 for (JsonElement gameVersionData : availableVersions.getAsJsonArray()) {
                     if (gameVersionData.isJsonObject()) {
                         JsonElement gameId = gameVersionData.getAsJsonObject().get("id");
                         JsonElement gameIndexUrl = gameVersionData.getAsJsonObject().get("url");
-                        if (Objects.equals(gameId.getAsString(), version))
+                        if (Objects.equals(gameId.getAsString(), version)) {
                             return request.get(new URL(gameIndexUrl.getAsString()));
+                        }
                     }
                 }
                 return Optional.empty();

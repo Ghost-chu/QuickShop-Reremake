@@ -92,6 +92,7 @@ public class MySQLCore extends AbstractDatabaseCore {
         }
     }
 
+    @Override
     synchronized protected DatabaseConnection getConnection0() {
         for (int i = 0; i < MAX_CONNECTIONS; i++) {
             DatabaseConnection connection = POOL.get(i);

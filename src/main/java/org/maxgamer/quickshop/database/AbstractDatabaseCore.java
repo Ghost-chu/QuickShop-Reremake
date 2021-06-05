@@ -31,20 +31,25 @@ public abstract class AbstractDatabaseCore {
     private final Condition conditionLock = lock.newCondition();
 
     void waitForConnection() {
+        lock.lock();
         try {
-            lock.lock();
             conditionLock.await();
-            lock.unlock();
         } catch (InterruptedException e) {
             getPlugin().getLogger().log(Level.SEVERE, "Exception when waiting new database connection", e);
             Thread.currentThread().interrupt();
+        } finally {
+            lock.unlock();
         }
     }
 
     void signalForNewConnection() {
         lock.lock();
-        conditionLock.signal();
-        lock.unlock();
+        try {
+            conditionLock.signal();
+        } finally {
+            lock.unlock();
+        }
+
     }
 
     abstract void close();

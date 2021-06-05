@@ -49,14 +49,14 @@ public class SubCommand_Reload implements CommandProcesser {
             File file = Paths.get(plugin.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile();
             Throwable throwable = PluginUtil.unload(plugin);
             if (throwable != null) {
-                throw new RuntimeException("Failed to reload QuickShop! Please consider restarting the server. (Plugin unloading has failed)", throwable);
+                throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Plugin unloading has failed)", throwable);
             }
             Plugin plugin = pluginManager.loadPlugin(file);
             if (plugin != null) {
                 plugin.onLoad();
                 pluginManager.enablePlugin(plugin);
             } else {
-                throw new RuntimeException("Failed to reload QuickShop! Please consider restarting the server. (Plugin loading has failed)");
+                throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Plugin loading has failed)");
             }
         } catch (URISyntaxException | InvalidDescriptionException | InvalidPluginException e) {
             throw new RuntimeException("Failed to reload QuickShop! Please consider restarting the server.", e);
