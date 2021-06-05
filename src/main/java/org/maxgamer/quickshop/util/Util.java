@@ -709,7 +709,6 @@ public class Util {
     }
 
     private static byte[] toByteArray(@NotNull InputStream in) throws IOException {
-
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024 * 4];
         int n;
@@ -760,18 +759,12 @@ public class Util {
                     if (location == null) {
                         return; // Virtual GUI
                     }
-
                     inv.setItem(i, new ItemStack(Material.AIR));
                     Util.debugLog("Found shop display item in an inventory, Removing...");
-                    MsgUtil.sendGlobalAlert(
-                            "[InventoryCheck] Found displayItem in inventory at "
-                                    + location
-                                    + ", Item is "
-                                    + itemStack.getType().name());
+                    MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + location + ", Item is " + itemStack.getType().name());
                 }
             }
-        } catch (Exception t) {
-            // Ignore
+        } catch (Exception ignored) {
         }
     }
 
@@ -911,21 +904,6 @@ public class Util {
         BlockFace towardsLeft = getRightSide(chest.getFacing());
         BlockFace actuallyBlockFace = chest.getType() == org.bukkit.block.data.type.Chest.Type.LEFT ? towardsLeft : towardsLeft.getOppositeFace();
         return block.getRelative(actuallyBlockFace);
-
-//
-//        Chest oneSideOfChest = (Chest) state;
-//        InventoryHolder chestHolder = oneSideOfChest.getInventory().getHolder();
-//        if (chestHolder instanceof DoubleChest) {
-//            DoubleChest doubleChest = (DoubleChest) chestHolder;
-//            Chest leftC = (Chest) doubleChest.getLeftSide();
-//            Chest rightC = (Chest) doubleChest.getRightSide();
-//            if (equalsBlockStateLocation(oneSideOfChest.getLocation(), Objects.requireNonNull(rightC).getLocation())) {
-//                return leftC.getBlock();
-//            } else {
-//                return rightC.getBlock();
-//            }
-//        }
-//        return null;
     }
 
     /**
