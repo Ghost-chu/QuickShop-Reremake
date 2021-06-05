@@ -319,5 +319,5 @@
   "clean-warning": "&eDetta kommando kommer att rensa &ebutiker som är skadade eller skapade i otillåtna världar eller säljer/köper otillåtna föremål eller &c&lEXISTERAR I OLADDADE VÄRLDAR&e. Se till att du har full säkerhetskopiering av dina butikers data och använd &b/qs cleanghost confirm &eför att fortsätta.",
   "shop-creation-failed": "&cSkapandet av butiken misslyckades, kontakta serveradministratören.",
   "shop-owner-self-trade": "&eYou handlar med din egen butik, så du kanske inte kommer att få något saldo.",
-  "chest-title": "QuickShop Store"
+  "chest-title": "QuickShop-butik"
 }
