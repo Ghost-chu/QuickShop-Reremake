@@ -189,11 +189,7 @@ public class ShopManager {
      * @return Shops
      */
     public @Nullable Map<Location, Shop> getShops(@NotNull Chunk c) {
-        // long start = System.nanoTime();
         return getShops(c.getWorld().getName(), c.getX(), c.getZ());
-        // long end = System.nanoTime();
-        // plugin.getLogger().log(Level.WARNING, "Chunk lookup in " + ((end - start)/1000000.0) +
-        // "ms.");
     }
 
     public @Nullable Map<Location, Shop> getShops(@NotNull String world, int chunkX, int chunkZ) {
@@ -531,7 +527,6 @@ public class ShopManager {
      * @param shop The shop to remove
      */
     public void removeShop(@NotNull Shop shop) {
-        // shop.onUnload();
         Location loc = shop.getLocation();
         String world = Objects.requireNonNull(loc.getWorld()).getName();
         Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops().get(world);
@@ -543,7 +538,6 @@ public class ShopManager {
             return;
         }
         inChunk.remove(loc);
-        // shop.onUnload();
     }
 
     /**

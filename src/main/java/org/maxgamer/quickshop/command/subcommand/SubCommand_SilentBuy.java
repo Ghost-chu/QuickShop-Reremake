@@ -46,15 +46,6 @@ public class SubCommand_SilentBuy implements CommandProcesser {
         }
 
         Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(UUID.fromString(cmdArg[0]));
-//        final Shop shop =
-//                plugin
-//                        .getShopManager()
-//                        .getShop(
-//                                new Location(
-//                                        plugin.getServer().getWorld(cmdArg[0]),
-//                                        Integer.parseInt(cmdArg[1]),
-//                                        Integer.parseInt(cmdArg[2]),
-//                                        Integer.parseInt(cmdArg[3])));
 
         if (shop == null || !shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
             MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
@@ -62,11 +53,9 @@ public class SubCommand_SilentBuy implements CommandProcesser {
         }
 
         shop.setShopType(ShopType.BUYING);
-        // shop.setSignText();
         shop.update();
         MsgUtil.sendControlPanelInfo(sender, shop);
-        MsgUtil.sendMessage(sender,
-                MsgUtil.getMessage("command.now-buying", sender, Util.getItemStackName(shop.getItem())));
+        MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.now-buying", sender, Util.getItemStackName(shop.getItem())));
     }
 
 

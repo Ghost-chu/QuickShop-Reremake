@@ -73,7 +73,6 @@ public class InventoryPreview implements Listener {
             if (itemMeta.hasLore()) {
                 itemMeta.getLore().add(plugin.getPreviewProtectionLore());
             } else {
-                //itemMeta.setLore(Lists.newArrayList(plugin.getPreviewProtectionLore()));
                 itemMeta.setLore(Collections.singletonList(plugin.getPreviewProtectionLore()));
             }
             this.itemStack.setItemMeta(itemMeta);

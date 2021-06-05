@@ -107,7 +107,6 @@ public final class EnvironmentChecker {
                 }
                 if (!properties.containsKey("org.maxgamer.quickshop.util.envcheck.skip." + envCheckEntry.name().toUpperCase(Locale.ROOT).replace(" ", "_"))) {
                     executeResult = (ResultContainer) declaredMethod.invoke(this);
-                    //plugin.getLogger().info("Result: "+executeResult.getResultMessage());
                     if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if its worse than the latest one.
                         result = executeResult.getResult();
                     }
@@ -157,7 +156,6 @@ public final class EnvironmentChecker {
     }
 
     public boolean isOutdatedJvm() {
-        //String jvmVersion = ManagementFactory.getRuntimeMXBean().getVmVersion();
         String jvmVersion = System.getProperty("java.version"); //Use java version not jvm version.
         String[] splitVersion = jvmVersion.split("\\.");
         if (splitVersion.length < 1) {

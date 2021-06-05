@@ -538,7 +538,6 @@ public class Util {
             return false;
         }
         org.bukkit.block.data.type.Chest chestBlockData = (org.bukkit.block.data.type.Chest) blockData;
-        //Util.debugLog("Chest at " + state.getLocation() + " type  is " + chestBlockData.getType().name());
         return chestBlockData.getType() != org.bukkit.block.data.type.Chest.Type.SINGLE;
         //String blockDataStr = state.getBlockData().getAsString();
         //Black magic for detect double chest
@@ -865,10 +864,7 @@ public class Util {
      * @return true if the given location is loaded or not.
      */
     public static boolean isLoaded(@NotNull Location loc) {
-
-        // plugin.getLogger().log(Level.WARNING, "Checking isLoaded(Location loc)");
         if ((!getNMSVersion().contains("1_13") && !loc.isWorldLoaded()) || loc.getWorld() == null) {
-            // plugin.getLogger().log(Level.WARNING, "Is not loaded. (No world)");
             return false;
         }
         // Calculate the chunks coordinates. These are 1,2,3 for each chunk, NOT
@@ -950,7 +946,7 @@ public class Util {
      * @return Returns true if the item is a tool (Has durability) or false if it doesn't.
      */
     public static boolean isTool(@NotNull Material mat) {
-        return !(mat.getMaxDurability() == 0);
+        return mat.getMaxDurability() != 0;
     }
 
     /**

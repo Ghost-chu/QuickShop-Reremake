@@ -62,7 +62,6 @@ public class SubCommand_Remove implements CommandProcesser {
 
             if (shop.getModerator().isModerator(((Player) sender).getUniqueId())
                     || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
-                //shop.onUnload();
                 shop.delete();
                 plugin.log("Deleting shop " + shop + " as requested by the /qs remove command.");
             } else {

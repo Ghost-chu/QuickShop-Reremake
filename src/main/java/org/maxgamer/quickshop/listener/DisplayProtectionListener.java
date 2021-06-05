@@ -140,9 +140,7 @@ public class DisplayProtectionListener extends ProtectionListenerBase {
         if (!DisplayItem.checkIsGuardItemStack(is)) {
             return;
         }
-        // item.remove();
         event.getHook().remove();
-        // event.getCaught().remove();
         event.setCancelled(true);
         sendAlert(
                 "[DisplayGuard] Player "
