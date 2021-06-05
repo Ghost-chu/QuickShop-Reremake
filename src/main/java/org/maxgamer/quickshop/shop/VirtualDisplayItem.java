@@ -347,7 +347,11 @@ public class VirtualDisplayItem extends DisplayItem {
                     if (player instanceof TemporaryPlayer) {
                         return;
                     }
-                    if (player == null || !player.isOnline()) {
+                    if (player == null) {
+                        return;
+                    }
+                    if (!player.isOnline()) {
+                        packetSenders.remove(player.getUniqueId());
                         return;
                     }
                     StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
