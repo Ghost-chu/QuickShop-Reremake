@@ -1,10 +1,11 @@
 {
+  "_comment": "你好翻譯者 ！ 假若你正在從 Github 或其他代管平台編輯，你應該前往 https://crowdin.com/project/quickshop-reremake 進行翻譯",
   "file-test": "這是個測試的文字檔案，我們使用它來測試 messages.json 是否損壞，你可以在這裡填入任何喜歡的彩蛋。 :)",
-  "translation-author": "翻譯人員 ： Ghost_chu、Andre_601、Flandre_tw （主翻譯） 、Terence#3062 （主翻譯）",
+  "translation-author": "翻譯人員 ： Ghost_chu、Andre_601、Flandre_tw （主翻譯） 、胡蝶 しのぶ こちょう しのぶ#3062（主翻譯）",
   "translation-version": "支援版本 ： Reremake （重製版）",
   "translation-contributors": "貢獻人員 ： Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
   "translation-country": "語言 ： &b&l繁體中文 Chinese Traditional （zh_TW）",
-  "language-version": "54",
+  "language-version": "56",
   "not-looking-at-shop": "&c無法找到儲物箱商店，你需要注視著儲物箱。",
   "no-anythings-in-your-hand": "&c手上沒有任何東西。",
   "no-permission": "&4你沒有使用該指令的權限。",
@@ -112,7 +113,7 @@
   "how-many-sell": "&a在聊天室中輸入你想要 &d出售 &a的數量，你有 &e{0} &a個可以出售。輸入 &bALL &a賣出全部。",
   "not-allowed-to-create": "&c你無法在此建立商店。",
   "blacklisted-item": "&c由於這是黑名單的物品，所以你不能賣。",
-  "how-much-to-trade-for": "&a請在聊天室中輸入你想交易的 &e{1}x {0} &a的價格。",
+  "how-much-to-trade-for": "&a請在聊天室中輸入你想交易 &e{1}x {0} &a的價格。",
   "command": {
     "toggle-unlimited": {
       "unlimited": "&a這個商店現在已沒有數量限制",
@@ -138,7 +139,7 @@
     "no-amount-given": "&c沒有提供數量。請使用 ： &a/qs refill <amount>&c",
     "now-debuging": "&a成功開啟開發者模式，插件重新載入中……",
     "now-nolonger-debuging": "&a成功關閉開發者模式，插件重新載入中……",
-    "wrong-args": "&c無效的參數。使用 &l/ qs help &c查看指令列表。 ",
+    "wrong-args": "&c無效的參數 。 使用 &l/qs help &c 查看指令列表。",
     "description": {
       "title": "&aQuickShop 說明",
       "unlimited": "&e將商店設為庫存無限。",
@@ -169,14 +170,14 @@
       "removeall": "&e刪除該玩家的所有商店",
       "transfer": "&e我們將某人的所有商店轉移給其他人",
       "removeworld": "&e指定世界的商店已全部刪除",
-      "currency": "&e設置或移除目前商店的貨幣",
+      "currency": "&e設置或移除目前商店的貨幣設定",
       "ban": "&e封禁商店中的玩家",
       "unban": "&e解除封禁商店中的玩家",
       "freeze": "&e停用或啟用商店交易",
       "lock": "&e切換商店上鎖狀態"
     },
     "disabled": "&c這個指令被停用 ： &e{0}",
-    "feature-not-enabled": "該功能沒有在 config 中啟用。"
+    "feature-not-enabled": "該功能沒有在設定檔案中啟用。"
   },
   "signs": {
     "selling": "出售 {0} 個",
@@ -250,7 +251,7 @@
       "看來你需要更新， QuickShop {0} 已正式發布了 ！",
       "噢 ！ QuickShop {0} 已正式發布了，你還在使用 QuickShop {1} ！",
       "我保證， QS 已更新到了 {0}。你怎麼還沒有更新 ？",
-      "修復並重新…… 抱歉 QuickShop {0} 已正式發布了 ！",
+      "修復並重…… 抱歉，QuickShop {0} 已正式發布了 ！",
       "錯誤 ！ 不，其實並沒有錯誤，QuickShop {0} 已正式發布 ！",
       "我的天啊 ！ QuickShop {0} 已出來了 ！ 你怎麼還在使用 QuickShop {1} ？",
       "今日新聞 ： QuickShop 已正式發布 {0} 的更新 ！",
@@ -263,7 +264,7 @@
       "博士， QuickShop 有一個新的更新 {0} ！ 你應該考慮一下更新了~",
       "Ko~ko~da~yo~ QuickShop 有新的更新 {0} ~"
     ],
-    "remote-disable-warning": "&c該版本的 QuickShop 已被遠端伺服器標記為停用，這意味著該版本可能存在嚴重問題，請從我們的 Spigot 插件頁面取得詳細資訊 ： {0}。在你切換到穩定版本之前，該警告將繼續出現，但不會影響伺服器的性能。",
+    "remote-disable-warning": "&c該版本的 QuickShop 已被遠端伺服器標記為停用 ， 這意味著該版本可能存在嚴重問題 ， 請從我們的 Spigot 插件頁面取得詳細資訊 ： {0} 。 在你切換到穩定版本之前 ， 該警告將繼續出現 ， 但不會影響伺服器的性能。",
     "label": {
       "unstable": "[不穩定 Unstable]",
       "stable": "[穩定 Stable]",
@@ -314,7 +315,9 @@
   "item-not-exist": "&c物品&e {0}&c不存在，請檢查你的拼寫。 ",
   "backup-success": "&a備份成功。",
   "console-only": "&c該指令只能在控制台執行。",
-  "console-only-danger": "&c這是一個危險的指令，因此只能由控制台執行。 ",
+  "console-only-danger": "&c由於這個是一個有風險的指令 ， 請你在控制台中執行。",
   "clean-warning": "&e此指令將清除&c&未裝載的世界商店&e及&c所有&e已損壞的、在不允許的世界中建立、或購買/販賣不允許商品的商店，請確保你已完全備份商店數據並使用 &b/qs cleanghost confirm &e以繼續。",
-  "shop-creation-failed": "&c商店建立失敗，請與伺服器管理員聯繫。"
+  "shop-creation-failed": "&c商店建立失敗，請與伺服器管理員聯繫。",
+  "shop-owner-self-trade": "&e你正在跟自己開的商店進行交易 ， 所以你的存款不會改變。",
+  "chest-title": "QuickShop 商店"
 }

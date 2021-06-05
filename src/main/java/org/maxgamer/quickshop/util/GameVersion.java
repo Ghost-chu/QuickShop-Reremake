@@ -89,5 +89,4 @@ public enum GameVersion {
     public boolean isPersistentStorageApiSupports() {
         return persistentStorageApiSupports;
     }
-
 }

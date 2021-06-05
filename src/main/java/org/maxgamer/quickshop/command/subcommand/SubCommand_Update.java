@@ -41,25 +41,25 @@ public class SubCommand_Update implements CommandProcesser {
             MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Checking for updates...");
 
             if (plugin.getUpdateWatcher() == null) {
-                MsgUtil.sendMessage(sender, ChatColor.RED + "Updater seems has been disabled");
+                MsgUtil.sendMessage(sender, ChatColor.RED + "It seems like the Updater has been disabled.");
                 return;
             }
 
             if (plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) {
-                MsgUtil.sendMessage(sender, ChatColor.GREEN + "No updates can update now.");
+                MsgUtil.sendMessage(sender, ChatColor.GREEN + "You're running the latest version!.");
                 return;
             }
 
-            MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Downloading update, this may need a while...");
+            MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Downloading update! This may take a while...");
 
             //final byte[] pluginBin;
 
             try {
                 plugin.getUpdateWatcher().getUpdater().install(plugin.getUpdateWatcher().getUpdater().update(plugin.getUpdateWatcher().getUpdater().getCurrentRunning()));
             } catch (Exception e) {
-                MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed, get details to look the console.");
+                MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed! Please check your console for more information.");
                 plugin.getSentryErrorReporter().ignoreThrow();
-                plugin.getLogger().log(Level.WARNING, "Failed to update QuickShop cause something going wrong", e);
+                plugin.getLogger().log(Level.WARNING, "Failed to update QuickShop because of the following error:", e);
                 return;
             }
 
@@ -78,7 +78,7 @@ public class SubCommand_Update implements CommandProcesser {
 //                }
 
             MsgUtil.sendMessage(sender,
-                    ChatColor.GREEN + "Successfully, restart your server to apply the changes!");
+                    ChatColor.GREEN + "Successful! Please restart your server to apply the updated version!");
         });
     }
 

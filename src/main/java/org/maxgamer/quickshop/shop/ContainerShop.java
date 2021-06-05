@@ -158,13 +158,11 @@ public class ContainerShop implements Shop {
         this.extra = extra;
         initDisplayItem();
         this.dirty = false;
-        //version = dataMap != null ? Integer.parseInt(String.valueOf(dataMap.getOrDefault("version", 0))) : 0;
     }
 
     private void initDisplayItem() {
         Util.ensureThread(false);
         if (plugin.isDisplay()) {
-
             switch (DisplayItem.getNowUsing()) {
                 case UNKNOWN:
                     Util.debugLog(
@@ -174,19 +172,12 @@ public class ContainerShop implements Shop {
                 case REALITEM:
                     this.displayItem = new RealDisplayItem(this);
                     break;
-//                case ARMORSTAND:
-//                    this.displayItem = new ArmorStandDisplayItem(this);
-//                    break;
                 case VIRTUALITEM:
                     try {
-                        if (!GameVersion.get(ReflectFactory.getServerVersion())
-                                .isVirtualDisplaySupports()) {
-                            throw new IllegalStateException(
-                                    "Version not supports Virtual DisplayItem.");
+                        if (!GameVersion.get(ReflectFactory.getServerVersion()).isVirtualDisplaySupports()) {
+                            throw new IllegalStateException("Version not supports Virtual DisplayItem.");
                         }
                         this.displayItem = new VirtualDisplayItem(this);
-
-                        //Catch everything
                     } catch (Throwable e) {
                         Util.debugLog(e.getMessage());
                         MsgUtil.debugStackTrace(e.getStackTrace());
@@ -194,9 +185,7 @@ public class ContainerShop implements Shop {
                         plugin.saveConfig();
                         this.displayItem = new RealDisplayItem(this);
                         //do not throw
-                        plugin.getLogger().log(Level.SEVERE,
-                                "Failed to initialize VirtualDisplayItem, fallback to RealDisplayItem, are you using the latest version of ProtocolLib?",
-                                e);
+                        plugin.getLogger().log(Level.SEVERE, "Failed to initialize VirtualDisplayItem, fallback to RealDisplayItem, are you using the latest version of ProtocolLib?", e);
                     }
                     break;
                 default:
@@ -206,9 +195,6 @@ public class ContainerShop implements Shop {
                     break;
             }
         }
-//        } else {
-//            Util.debugLog("The display was disabled.");
-//        }
     }
 
     /**
@@ -283,17 +269,15 @@ public class ContainerShop implements Shop {
             this.setSignText();
             // This should not happen.
             if (amount > 0) {
-                plugin
-                        .getLogger()
-                        .log(
-                                Level.WARNING,
-                                "Could not take all items from a players inventory on purchase! "
-                                        + buyer
-                                        + ", missing: "
-                                        + amount
-                                        + ", item: "
-                                        + Util.getItemStackName(this.getItem())
-                                        + "!");
+                plugin.getLogger().log(
+                        Level.WARNING,
+                        "Could not take all items from a players inventory on purchase! "
+                                + buyer
+                                + ", missing: "
+                                + amount
+                                + ", item: "
+                                + Util.getItemStackName(this.getItem())
+                                + "!");
             }
         } else {
             Inventory chestInv = this.getInventory();
@@ -350,13 +334,7 @@ public class ContainerShop implements Shop {
         if (this.displayItem == null) {
             Util.debugLog("Warning: DisplayItem is null, this shouldn't happened...");
             StackTraceElement traceElements = Thread.currentThread().getStackTrace()[2];
-            Util.debugLog(
-                    "Call from: "
-                            + traceElements.getClassName()
-                            + "#"
-                            + traceElements.getMethodName()
-                            + "%"
-                            + traceElements.getLineNumber());
+            Util.debugLog("Call from: " + traceElements.getClassName() + "#" + traceElements.getMethodName() + "%" + traceElements.getLineNumber());
             return;
         }
 
@@ -375,7 +353,6 @@ public class ContainerShop implements Shop {
                 }
             }
         }
-
         /* Dupe is always need check, if enabled display */
         this.displayItem.removeDupe();
         // plugin.getDisplayDupeRemoverWatcher().add(this.displayItem);
@@ -397,8 +374,7 @@ public class ContainerShop implements Shop {
         boolean result = this.moderator.delStaff(player);
         update();
         if (result) {
-            Util.mainThreadRun(() -> plugin.getServer().getPluginManager()
-                    .callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
+            Util.mainThreadRun(() -> plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
         }
         return result;
     }
@@ -450,6 +426,7 @@ public class ContainerShop implements Shop {
             }
             plugin.getShopManager().removeShop(this);
             plugin.getDatabaseHelper().removeShop(this);
+            plugin.getShopLoader().removeShopFromShopLoader(this);
         }
         // Use that copy we saved earlier (which is now deleted) to refresh it's now alone neighbor
         if (neighbor != null) {
@@ -505,9 +482,11 @@ public class ContainerShop implements Shop {
         }
         if (inventoryPreview != null) {
             inventoryPreview.close();
+            inventoryPreview = null;
         }
-        if (this.getDisplayItem() != null) {
-            this.getDisplayItem().remove();
+        if (this.displayItem != null) {
+            this.displayItem.remove();
+            this.displayItem = null;
         }
         update();
         this.isLoaded = false;
@@ -751,7 +730,7 @@ public class ContainerShop implements Shop {
         }
     }
 
-    public synchronized void update0() {
+    private synchronized void update0() {
         Util.ensureThread(false);
         ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
         if (Util.fireCancellableEvent(shopUpdateEvent)) {
@@ -893,11 +872,11 @@ public class ContainerShop implements Shop {
 
     @Override
     public void setModerator(@NotNull ShopModerator shopModerator) {
+        Util.ensureThread(false);
         setDirty();
         this.moderator = shopModerator;
         update();
-        Util.mainThreadRun(() -> plugin.getServer().getPluginManager()
-                .callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
+        plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
     }
 
     /**
@@ -915,25 +894,11 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void setOwner(@NotNull UUID owner) {
-        OfflinePlayer offlinePlayer = plugin.getServer().getOfflinePlayer(owner);
-        //Get the sign at first
-        List<Sign> signs = this.getSigns();
-        //then setOwner
+        Util.ensureThread(false);
         this.moderator.setOwner(owner);
-        //then change the sign
-        Util.mainThreadRun(() -> {
-//            for (Sign shopSign : signs) {
-//                shopSign.setLine(0, MsgUtil
-//                        .getMessageOfflinePlayer("signs.header", offlinePlayer, ownerName(false)));
-//                //Don't forgot update it
-//                shopSign.update(true);
-//            }
-            setSignText();
-            //Event
-            plugin.getServer().getPluginManager()
-                    .callEvent(new ShopModeratorChangedEvent(this, this.moderator));
-        });
+        setSignText();
         update();
+        plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
     }
 
     /**
@@ -951,6 +916,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void setPrice(double price) {
+        Util.ensureThread(false);
         ShopPriceChangeEvent event = new ShopPriceChangeEvent(this, this.price, price);
         if (Util.fireCancellableEvent(event)) {
             Util.debugLog("A plugin cancelled the price change event.");
@@ -1080,8 +1046,7 @@ public class ContainerShop implements Shop {
     @NotNull
     @Override
     public List<UUID> getStaffs() {
-        return new ArrayList<>(this.moderator
-                .getStaffs()); //Clone only, so make sure external calling will use addStaff
+        return new ArrayList<>(this.moderator.getStaffs()); //Clone only, so make sure external calling will use addStaff
     }
 
     @Override
@@ -1106,6 +1071,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public void setUnlimited(boolean unlimited) {
+        Util.ensureThread(false);
         this.unlimited = unlimited;
         this.setSignText();
         update();
@@ -1478,5 +1444,9 @@ public class ContainerShop implements Shop {
         inventoryPreview.show();
     }
 
+    @Override
+    public ShopInfoStorage saveToInfoStorage() {
+        return new ShopInfoStorage(ShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml());
+    }
 
 }

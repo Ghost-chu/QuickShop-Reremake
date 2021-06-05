@@ -21,11 +21,13 @@ package org.maxgamer.quickshop.util;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.QuickShop;
 
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AsyncPacketSender {
 
-    private static AsyncSendingTask instance = null;
+    private volatile static AsyncSendingTask instance = null;
     private static boolean isUsingGlobal = false;
     private static volatile boolean enabled = false;
 
@@ -66,26 +68,34 @@ public class AsyncPacketSender {
     }
 
     public static class AsyncSendingTask {
-        private final LinkedBlockingQueue<Runnable> asyncPacketSendQueue = new LinkedBlockingQueue<>();
-        private BukkitTask asyncSendingTask;
+        private final Queue<Runnable> asyncPacketSendQueue = new ArrayBlockingQueue<>(100, true);
+        private volatile BukkitTask asyncSendingTask;
+        private final AtomicBoolean taskDone = new AtomicBoolean(true);
 
-        public void start(QuickShop plugin) {
+        public synchronized void start(QuickShop plugin) {
             //lazy initialize
             if (asyncSendingTask == null || asyncSendingTask.isCancelled()) {
                 asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
                     if (asyncSendingTask.isCancelled()) {
                         return;
                     }
-                    Runnable nextTask = asyncPacketSendQueue.poll();
-                    if (nextTask != null) {
-                        nextTask.run();
+                    if (!taskDone.get()) {
+                        return;
                     }
+                    taskDone.set(false);
+                    Runnable nextTask = asyncPacketSendQueue.poll();
+                    while (nextTask != null) {
+                        nextTask.run();
+                        nextTask = asyncPacketSendQueue.poll();
+                    }
+                    taskDone.set(true);
                 }, 0, 1);
             }
+
         }
 
 
-        public void stop() {
+        public synchronized void stop() {
             if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {
                 asyncSendingTask.cancel();
             }

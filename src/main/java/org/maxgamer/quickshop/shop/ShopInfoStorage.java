@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is QSListener.java
+ * This file is a part of project QuickShop, the name is ShopInfoStorage.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,19 +17,24 @@
  *
  */
 
-package org.maxgamer.quickshop.listener;
+package org.maxgamer.quickshop.shop;
 
-import org.bukkit.event.Listener;
-import org.maxgamer.quickshop.QuickShop;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
-public abstract class QSListener implements Listener {
-    protected final QuickShop plugin;
-
-    public QSListener(QuickShop plugin) {
-        this.plugin = plugin;
-    }
-
-    public void register() {
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
-    }
+/**
+ * TODO This class used for storage the shop
+ * Exclude location
+ */
+@AllArgsConstructor
+@Data
+@Builder
+public class ShopInfoStorage {
+    String moderator;
+    double price;
+    String item;
+    int unlimited;
+    int shopType;
+    String extra;
 }

@@ -81,10 +81,11 @@ public class VirtualDisplayItem extends DisplayItem {
 
     //packetListener
     private PacketAdapter packetAdapter;
+    //packetListener
+    private PacketAdapter unloadPacketAdapter;
 
     //cache chunk x and z
-    private ShopChunk chunkLocation;
-
+    private volatile ShopChunk chunkLocation;
 
 
     public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
@@ -319,19 +320,22 @@ public class VirtualDisplayItem extends DisplayItem {
             Collection<Entity> entityCollection = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), plugin.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), plugin.getServer().getViewDistance() * 16);
             for (Entity entity : entityCollection) {
                 if (entity instanceof Player) {
-                    packetSenders.add(entity.getUniqueId());
+                    packetSenders.add(entity.getUniqueId()); //TODO Possibly Memory Leaking because this list never remove single object
                 }
             }
         }
 
         if (asyncPacketSenderTask != null) {
             asyncPacketSenderTask.stop();
+            //Prevent memory leak
+            asyncPacketSenderTask = null;
         }
         asyncPacketSenderTask = AsyncPacketSender.create();
         asyncPacketSenderTask.start(plugin);
 
         if (packetAdapter == null) {
-            packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
+            //TODO: Also should listening UNLOAD_CHUNK packet to send entity destroy packet
+            packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {  //TODO: Possibly memory leaking: The lambda point to memory leaking
                 @Override
                 public void onPacketSending(@NotNull PacketEvent event) {
                     //is really full chunk data
@@ -339,12 +343,19 @@ public class VirtualDisplayItem extends DisplayItem {
                     if (!shop.isLoaded() || !isDisplay || !isFull || shop.isLeftShop()) {
                         return;
                     }
+                    Player player = event.getPlayer();
+                    if (player instanceof TemporaryPlayer) {
+                        return;
+                    }
+                    if (player == null || !player.isOnline()) {
+                        return;
+                    }
                     StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
                     //chunk x
                     int x = integerStructureModifier.read(0);
                     //chunk z
                     int z = integerStructureModifier.read(1);
-                    asyncPacketSenderTask.offer(() -> {
+                    asyncPacketSenderTask.offer(() -> { //TODO: Possibly memory leaking: The lambda point to memory leaking
                         if (chunkLocation == null) {
                             World world = shop.getLocation().getWorld();
                             Chunk chunk;
@@ -355,13 +366,6 @@ public class VirtualDisplayItem extends DisplayItem {
                                 throw new RuntimeException("An error occurred when getting chunk from the world", e);
                             }
                             chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
-                        }
-                        Player player = event.getPlayer();
-                        if (player instanceof TemporaryPlayer) {
-                            return;
-                        }
-                        if (player == null || !player.isOnline()) {
-                            return;
                         }
                         if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
                             packetSenders.add(player.getUniqueId());
@@ -378,9 +382,13 @@ public class VirtualDisplayItem extends DisplayItem {
         packetSenders.clear();
         if (packetAdapter != null) {
             protocolManager.removePacketListener(packetAdapter);
+            //Prevent memory leak
+            packetAdapter = null;
         }
         if (asyncPacketSenderTask != null) {
             asyncPacketSenderTask.stop();
+            //Prevent memory leak
+            asyncPacketSenderTask = null;
         }
     }
 
@@ -399,7 +407,11 @@ public class VirtualDisplayItem extends DisplayItem {
     @Override
     public boolean isSpawned() {
         if (shop.isLeftShop()) {
-            return (Objects.requireNonNull(shop.getAttachedShop().getDisplayItem())).isSpawned();
+            Shop aShop = shop.getAttachedShop();
+            if (aShop instanceof ContainerShop) {
+                return (Objects.requireNonNull(((ContainerShop) aShop).getDisplayItem())).isSpawned();
+            }
+
         }
         return isDisplay;
     }

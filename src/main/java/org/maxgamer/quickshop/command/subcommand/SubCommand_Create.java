@@ -76,7 +76,7 @@ public class SubCommand_Create implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "This command can't be run by console");
+            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
             return;
         }
 
@@ -128,7 +128,7 @@ public class SubCommand_Create implements CommandProcesser {
                 Result result = plugin.getPermissionChecker().canBuild(p, b);
                 if (!result.isSuccess()) {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("3rd-plugin-build-check-failed", p, result.getMessage()));
-                    Util.debugLog("Failed to create shop because protection check failed, found:" + result.getMessage());
+                    Util.debugLog("Failed to create shop because the protection check has failed! Reason:" + result.getMessage());
                     return;
                 }
             }

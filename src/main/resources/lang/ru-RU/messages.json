@@ -1,10 +1,11 @@
 {
+  "_comment": "Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake",
   "file-test": "Это тестовый файл. Мы используем его, если файл messages.json поломан. Вы тут можете заполнить любым пасхальными яйцами, которые вам нравятся здесь :)",
   "translation-author": "Переводчик: Ghost_chu, Andre_601",
   "translation-version": "Поддерживаемая версия: Reremake",
   "translation-contributors": "Участники: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken и Andre_601",
   "translation-country": "Языковой регион: Русский (ru_RU)",
-  "language-version": "54",
+  "language-version": "56",
   "not-looking-at-shop": "&cНе удалось найти игрока, который использует магазина. Возможно игрок не зарегистрирован.",
   "no-anythings-in-your-hand": "&cУ вас нет товаров в руках.",
   "no-permission": "У вас недостаточно прав.",
@@ -44,7 +45,7 @@
   "fee-charged-for-price-change": "&aВы заплатили &c{0}&a за изменения цены.",
   "price-is-now": "&aНовая цена магазина &e{0}",
   "thats-not-a-number": "&cНеверное значение",
-  "forbidden-vanilla-behavior": "&cОперация отклонена, она не соответствует ванильному поведению",
+  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consisten with vanilla behaviour",
   "no-price-given": "&cПожалуйста укажите верную цену.",
   "average-price-nearby": "&aСредняя цена: &e{0}",
   "shop-has-changed": "&cМагазин, который вы пытались использовать, изменился с момента нажатия!",
@@ -138,7 +139,7 @@
     "no-amount-given": "&cКоличество не указано. Используйте: &a/qs refill <количество>&c",
     "now-debuging": "&aУспешно включено режим разработчика. Перезагружаю...",
     "now-nolonger-debuging": "&aУспешно выключен режим разработчика. Перезагружаю...",
-    "wrong-args": "&cНедопустимые аргументы. Используйте &l/qs help &cдля того чтобы узнать список командов.",
+    "wrong-args": "&cInvalid argument. Use &l/qs help &cto see a list of commands.",
     "description": {
       "title": "&aQuickShop справка",
       "unlimited": "&eПредоставляет неограниченный запас магазина.",
@@ -169,14 +170,14 @@
       "removeall": "&eУдалить ВСЕ магазины указанного игрока",
       "transfer": "&eПередайте кого-нибудь ВСЕ магазины в другие",
       "removeworld": "&eУдалить ВСЕ магазины в указанном мире",
-      "currency": "&eУстановить или удалить настройки валюты магазина",
-      "ban": "&eBanning a player from the shop",
-      "unban": "&eUnbanning a player from the shop",
+      "currency": "&eSet or remove the currency setting of the shop",
+      "ban": "&eBans a player from the shop",
+      "unban": "&eUnbans a player from the shop",
       "freeze": "&eDisable or Enable shop trading",
-      "lock": "&eSwitch the shop lock status"
+      "lock": "&eSwitch the shop's lock status"
     },
     "disabled": "&cДанная команда недоступна: &e{0}",
-    "feature-not-enabled": "Функция не включена в конфигурации."
+    "feature-not-enabled": "This feature is not enabled in the config file."
   },
   "signs": {
     "selling": "Продаёт {0}",
@@ -192,7 +193,7 @@
     "status-unavailable": "&c",
     "out-of-stock": "Out of Stock",
     "out-of-space": "Out of Space",
-    "freeze": "Trade disabled"
+    "freeze": "Trading disabled"
   },
   "controlpanel": {
     "setowner": "&aВладелец: &b{0} &e[&d&lИзменить&e]",
@@ -219,9 +220,9 @@
     "currency": "&aВалюта: &b{0} &e[&d&lУстановить&e]",
     "currency-hover": "&eНажмите, чтобы установить или удалить валюту, которую этот магазин использует",
     "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
-    "lock-hover": "&eEnable/Disable shop lock protection.",
+    "lock-hover": "&eEnable/Disable the shop's lock protection.",
     "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
-    "freeze-hover": "&eToggle shop freeze status,"
+    "freeze-hover": "&eToggle the shop's freeze status."
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -263,7 +264,7 @@
       "Доктор, QuickShop уже есть новое обновление {0}! Вы должны обновить~",
       "Ко~ко~да~ё~ QuickShop появились новое обновление {0} ~"
     ],
-    "remote-disable-warning": "&cЭта версия QuickShop отмечена как отключенная удалённым сервером, означая, что эта версия может иметь серьезные проблемы, получить подробную информацию с нашей страницы плагина Spigot: {0}. Это предупреждение будет отображаться до тех пор, пока вы не переключитесь на стабильную версию, но это не повлияет на перфорирование вашего сервера.",
+    "remote-disable-warning": "&cThis version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server's performance.",
     "label": {
       "unstable": "[Нестабильный]",
       "stable": "[Стабильный]",
@@ -312,9 +313,11 @@
   "currency-unset": "&aМагазин успешно удалён. Использование настроек теперь по умолчанию.",
   "currency-not-support": "&cПлагин экономики не поддерживает функцию несколько экономики.",
   "item-not-exist": "&cТовар &e{0} &cне существует, проверьте правильность написания.",
-  "backup-success": "&aРезервное копирование успешно.",
-  "console-only": "&cЭта команда может быть выполнена только консолью.",
-  "console-only-danger": "&cЭто опасная команда, так что может быть выполнена только консолью.",
-  "clean-warning": "&eЭта команда очистит &cвсех &eмагазинов, если магазин повреждён или создан в запрещённых мирах или продажах/покупке запрещенных товаров и &c&lНЕ ЗАГРУЖЕН МИРА МАГАЗИНОВ&e, убедитесь, что у вас есть полная резервная копия данных ваших магазинов и используйте &b/qs cleanghost confirm &eдля продолжение.",
-  "shop-creation-failed": "&cShop creation failed, please contact with server administrator."
+  "backup-success": "&aBackup successfull.",
+  "console-only": "&cThis command can only be executed by Console.",
+  "console-only-danger": "&cThis is a dangerous command, so that only the Console can execute it.",
+  "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
+  "shop-creation-failed": "&cShop creation failed, please contact with server administrator.",
+  "shop-owner-self-trade": "&eYou trading with yourself shop, so you might won't gain any balance.",
+  "chest-title": "QuickShop Store"
 }

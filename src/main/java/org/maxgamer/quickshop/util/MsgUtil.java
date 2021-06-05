@@ -1461,6 +1461,9 @@ public class MsgUtil {
             setAndUpdate("shop-owner-self-trade");
             setAndUpdate("language-version", ++selectedVersion);
         }
+        if (selectedVersion == 55) {
+            setAndUpdate("chest-title", "QuickShop Store");
+        }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
     }
 

@@ -1,10 +1,11 @@
 {
+  "_comment": "Bonjour traducteur! Si vous éditez ceci à partir de Github ou à partir de sources de code, vous devriez aller sur https://crowdin.com/project/quickshop-reremake",
   "file-test": "Ceci est un fichier texte de test. Nous l'utilisons pour tester si les messages sont cassé. Vous pouvez le remplir avec n'importe quel \"easter eggs\" que vous aimez ici :)",
   "translation-author": "&cYou only have room for {0} more",
   "translation-version": "Version suportée: Reremake",
   "translation-contributors": "Contributeurs : Timtower, Netherfoam, KaiNoMood, Mgazul, JackThePicken, Andre_601 et brunopaiva15, HiiRaZ",
   "translation-country": "Langue: Français (fr_FR)",
-  "language-version": "54",
+  "language-version": "56",
   "not-looking-at-shop": "&cImpossible de trouver un QuickShop. Vous devez en regarder un.",
   "no-anythings-in-your-hand": "&cVous n'avez aucun objet dans votre main.",
   "no-permission": "&cVous n'avez pas la permission de faire ceci.",
@@ -138,7 +139,7 @@
     "no-amount-given": "&cAucun montant donné. Utilisez &a/qs refill <quantité>&c",
     "now-debuging": "&aPassage réussi en mode développeur. Rechargement de QuickShop...",
     "now-nolonger-debuging": "&aPassage réussi en mode développeur. Rechargement de QuickShop...",
-    "wrong-args": "&cArguments invalides. Utilisez &l/qs help &rpour prévisualiser la liste des commandes.",
+    "wrong-args": "&cArgument invalide. Utilisez &l/qs help &cpour voir une liste de commandes.",
     "description": {
       "title": "&aAide QuickShop",
       "unlimited": "&eDonne à une boutique un stock illimité.",
@@ -169,14 +170,14 @@
       "removeall": "&eSupprimer toutes les boutiques d'un joueur spécifié",
       "transfer": "&eTransférer TOUS les shops d'un joueur vers un autre",
       "removeworld": "&eSupprime TOUTES les boutiques dans un monde spécifié",
-      "currency": "&eDéfinir ou supprimer les paramètres actuelles de la boutique",
-      "ban": "&eInterdire un joueur de la boutique",
+      "currency": "&eDéfinir ou supprimer les paramètres de devise de la boutique",
+      "ban": "&eBannit un joueur de la boutique",
       "unban": "&eDébannir un joueur de la boutique",
       "freeze": "&eDésactiver ou activer le trading en magasin",
       "lock": "&eChanger l'état de verrouillage de la boutique"
     },
     "disabled": "&cCette commande est désactivée : &e{0}",
-    "feature-not-enabled": "La fonctionnalité n'est pas activée dans la configuration."
+    "feature-not-enabled": "Cette fonctionnalité n'est pas activée dans le fichier de configuration."
   },
   "signs": {
     "selling": "Vendre : {0}",
@@ -192,7 +193,7 @@
     "status-unavailable": "&c",
     "out-of-stock": "Rupture de stock",
     "out-of-space": "Espace insuffisant",
-    "freeze": "Transaction désactivée"
+    "freeze": "Echange désactivé"
   },
   "controlpanel": {
     "setowner": "&aPropriétaire: &b{0} &e[&dChanger&e]",
@@ -221,7 +222,7 @@
     "lock": "&eVerrouillage de la boutique : &b{0} &e[&d&lActiver&e]",
     "lock-hover": "&eActiver/Désactiver la protection de verrouillage de la boutique.",
     "freeze": "&eVerrouillage de la boutique : &b{0} &e[&d&lActiver&e]",
-    "freeze-hover": "&eActiver/désactiver le statut de blocage de la boutique,"
+    "freeze-hover": "&eActiver/désactiver le statut de blocage de la boutique."
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -263,7 +264,7 @@
       "Docteur, QuickShop a une nouvelle mise à jour {0}! Vous devriez mettre à jour ~",
       "Ko~ko~da~yo~ QuickShop a une nouvelle mise à jour {0}~"
     ],
-    "remote-disable-warning": "&cCette version de QuickShop a été désignée comme désactivée par le serveur distant. Cela signifie que cette version peux contenir de sérieux problèmes et bugs. Plus de détails sur notre page SpigotMC: {0}. Cet avertissement apparaitra dans votre console jusqu'à ce que vous utilisiez une version stable de QuickShop. Ceci n'affecte pas le fonctionnement de votre serveur.",
+    "remote-disable-warning": "&cCette version de QuickShop est marquée comme désactivée par le serveur distant, ce qui signifie que cette version peut avoir de sérieux problèmes, obtenez plus en profondeur des détails sur notre page SpigotMC : {0}. Cette alerte continuera d'apparaître jusqu'à ce que vous passiez à une version stable, mais elle n'affectera pas les performances de votre serveur.",
     "label": {
       "unstable": "[Instable]",
       "stable": "[Stable]",
@@ -313,8 +314,10 @@
   "currency-not-support": "&cLe plugin d'économie ne supporte pas la fonction de multi-économie.",
   "item-not-exist": "&cL'objet &e{0} &cn'existe pas, veuillez vérifier votre orthographe.",
   "backup-success": "&aSauvegarde réussie.",
-  "console-only": "&cCette commande ne peut être exécutée que par la Console.",
-  "console-only-danger": "&cIl s'agit d'une commande dangereuse qui ne peut être exécutée que par la Console.",
-  "clean-warning": "&eCette commande purgera &ctoutes &eles boutiques si la boutique est endommagée ou créée dans des mondes non autorisés ou vendant/achetant des objets non autorisés et &c&lDANS DES BOUTIQUES DE MONDES NON CHARGÉS&e, assurez-vous d'avoir une sauvegarde complète des données de vos boutiques et utilisez la commande &b/qs cleanghost confirm &epour continuer.",
-  "shop-creation-failed": "&cLa création de la boutique a échoué, veuillez contacter l'administrateur du serveur."
+  "console-only": "&cCette commande ne peut être exécutée que par la console.",
+  "console-only-danger": "&cCette commande est dangereuse pour que seule la console puisse l'exécuter.",
+  "clean-warning": "&eCette commande va purger &appeler &eshops si la boutique est endommagée, a été créée dans des mondes non autorisés, vende/achète des objets non autorisés ou &c&lEXISTS DANS UN MONDE DÉCHARGÉ. Assurez-vous d'abord de créer une sauvegarde complète des données de votre boutique et utilisez &b/qs cleanghost confirmer &epour continuer.",
+  "shop-creation-failed": "&cLa création de la boutique a échoué, veuillez contacter l'administrateur du serveur.",
+  "shop-owner-self-trade": "&eVous négociez avec vous en magasin, vous ne pourrez donc pas gagner de solde.",
+  "chest-title": "QuickShop Store"
 }

@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop;
 
 import com.google.common.collect.Lists;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import lombok.Getter;
 import lombok.Setter;
 import me.minebuilders.clearlag.Clearlag;
@@ -54,6 +55,7 @@ import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationHelper;
 import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
 import org.maxgamer.quickshop.listener.*;
+import org.maxgamer.quickshop.listener.worldedit.WorldEditAdapter;
 import org.maxgamer.quickshop.permission.PermissionManager;
 import org.maxgamer.quickshop.shop.*;
 import org.maxgamer.quickshop.util.Timer;
@@ -78,6 +80,7 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+
 public class QuickShop extends JavaPlugin {
 
     /**
@@ -248,8 +251,12 @@ public class QuickShop extends JavaPlugin {
     private ShopControlPanel shopControlPanelManager;
     @Getter
     private CalendarWatcher calendarWatcher;
-
+    @Getter
     private final List<BukkitTask> timerTaskList = new ArrayList<>(3);
+    @Getter
+    private Plugin worldEditPlugin;
+    @Getter
+    private WorldEditAdapter worldEditAdapter;
 
     @NotNull
     public static QuickShop getInstance() {
@@ -324,6 +331,17 @@ public class QuickShop extends JavaPlugin {
                 getLogger().info("Successfully loaded BlockHub support!");
             }
         }
+        if (getConfig().getBoolean("plugin.WorldEdit")) {
+            String nmsVersion = Util.getNMSVersion();
+            GameVersion gameVersion = GameVersion.get(nmsVersion);
+            this.worldEditPlugin = Bukkit.getPluginManager().getPlugin("WorldEdit");
+            if (this.worldEditPlugin != null) {
+                this.worldEditAdapter = new WorldEditAdapter(this, (WorldEditPlugin) this.worldEditPlugin);
+                this.worldEditAdapter.register();
+                getLogger().info("Successfully loaded WorldEdit support!");
+            }
+        }
+
         if (getConfig().getBoolean("plugin.LWC") && Util.isClassAvailable("com.griefcraft.lwc.LWC")) {
             this.lwcPlugin = Bukkit.getPluginManager().getPlugin("LWC");
             if (this.lwcPlugin != null) {
@@ -381,7 +399,7 @@ public class QuickShop extends JavaPlugin {
             EconomyCore core = null;
             switch (EconomyType.fromID(getConfig().getInt("economy-type"))) {
                 case UNKNOWN:
-                   setupBootError(new BootError(this.getLogger(), "Can't load the Economy provider, invaild value in config.yml."));
+                    setupBootError(new BootError(this.getLogger(), "Can't load the Economy provider, invaild value in config.yml."));
                     return false;
                 case VAULT:
                     core = new Economy_Vault(this);
@@ -557,6 +575,10 @@ public class QuickShop extends JavaPlugin {
                 this.getShopManager().getLoadedShops().forEach(Shop::onUnload);
             }
         } catch (Exception ignored) {
+        }
+        Util.debugLog("Unregister hooks...");
+        if (worldEditAdapter != null) {
+            worldEditAdapter.unregister();
         }
 
         // this.reloadConfig();
@@ -1757,6 +1779,12 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.use-global-virtual-item-queue", false);
             getConfig().set("config-version", ++selectedVersion);
         }
+
+        if (selectedVersion == 130) {
+            getConfig().set("plugin.WorldEdit", true);
+            getConfig().set("config-version", ++selectedVersion);
+        }
+
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
