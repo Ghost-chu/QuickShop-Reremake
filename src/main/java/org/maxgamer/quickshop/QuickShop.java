@@ -80,6 +80,7 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+
 public class QuickShop extends JavaPlugin {
 
     /**
@@ -333,15 +334,11 @@ public class QuickShop extends JavaPlugin {
         if (getConfig().getBoolean("plugin.WorldEdit")) {
             String nmsVersion = Util.getNMSVersion();
             GameVersion gameVersion = GameVersion.get(nmsVersion);
-            if (gameVersion.isPersistentStorageApiSupports()) {
-                this.worldEditPlugin = Bukkit.getPluginManager().getPlugin("WorldEdit");
-                if (this.worldEditPlugin != null) {
-                    this.worldEditAdapter = new WorldEditAdapter(this, (WorldEditPlugin) this.worldEditPlugin);
-                    this.worldEditAdapter.register();
-                    getLogger().info("Successfully loaded WorldEdit support!");
-                }
-            } else {
-                getLogger().warning("Failed to load WorldEdit support: Server doesn't support PersistentStorageApi.");
+            this.worldEditPlugin = Bukkit.getPluginManager().getPlugin("WorldEdit");
+            if (this.worldEditPlugin != null) {
+                this.worldEditAdapter = new WorldEditAdapter(this, (WorldEditPlugin) this.worldEditPlugin);
+                this.worldEditAdapter.register();
+                getLogger().info("Successfully loaded WorldEdit support!");
             }
         }
 
@@ -402,7 +399,7 @@ public class QuickShop extends JavaPlugin {
             EconomyCore core = null;
             switch (EconomyType.fromID(getConfig().getInt("economy-type"))) {
                 case UNKNOWN:
-                   setupBootError(new BootError(this.getLogger(), "Can't load the Economy provider, invaild value in config.yml."));
+                    setupBootError(new BootError(this.getLogger(), "Can't load the Economy provider, invaild value in config.yml."));
                     return false;
                 case VAULT:
                     core = new Economy_Vault(this);
