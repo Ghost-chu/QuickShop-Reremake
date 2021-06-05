@@ -41,7 +41,6 @@ import java.util.*;
 import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 
 public class RollbarErrorReporter {
     //private volatile static String bootPaste = null;
@@ -59,7 +58,7 @@ public class RollbarErrorReporter {
     private boolean tempDisable;
     private String lastPaste = null;
     private final GlobalExceptionFilter serverExceptionFilter;
-    private final GlobalExceptionFilter globalExceptionFilter;
+    //private final GlobalExceptionFilter globalExceptionFilter;
     @Getter
     private volatile boolean enabled = false;
 
@@ -77,11 +76,11 @@ public class RollbarErrorReporter {
         quickShopExceptionFilter = new QuickShopExceptionFilter(plugin.getLogger().getFilter());
         plugin.getLogger().setFilter(quickShopExceptionFilter); // Redirect log request passthrough our error catcher.
 
-        serverExceptionFilter = new GlobalExceptionFilter(plugin.getServer().getLogger().getFilter());
+        serverExceptionFilter = new GlobalExceptionFilter(plugin.getLogger().getFilter());
         plugin.getServer().getLogger().setFilter(serverExceptionFilter);
 
-        globalExceptionFilter = new GlobalExceptionFilter(Logger.getGlobal().getFilter());
-        Logger.getGlobal().setFilter(globalExceptionFilter);
+        //globalExceptionFilter = new GlobalExceptionFilter(Logger.getGlobal().getFilter());
+        // Logger.getGlobal().setFilter(globalExceptionFilter);
 
         Util.debugLog("Rollbar error reporter success loaded.");
 //        if (bootPaste == null) {
