@@ -330,6 +330,23 @@ public class ShopLoader {
         return new ArrayList<>(shopsInDatabase);
     }
 
+    public void removeShopFromShopLoader(Shop shop) {
+        if (this.shopsInDatabase.remove(shop)) {
+            for (ShopDatabaseInfoOrigin origin : this.originShopsInDatabase) {
+                if (Objects.equals(shop.getLocation().getWorld().getName(), origin.getWorld())) {
+                    if (shop.getLocation().getBlockX() == origin.getX()) {
+                        if (shop.getLocation().getBlockY() == origin.getY()) {
+                            if (shop.getLocation().getBlockZ() == origin.getZ()) {
+                                this.originShopsInDatabase.remove(origin);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     @NotNull
     public List<ShopDatabaseInfoOrigin> getOriginShopsInDatabase() {
         return new ArrayList<>(originShopsInDatabase);
