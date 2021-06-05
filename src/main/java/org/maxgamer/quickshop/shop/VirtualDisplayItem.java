@@ -327,6 +327,8 @@ public class VirtualDisplayItem extends DisplayItem {
 
         if (asyncPacketSenderTask != null) {
             asyncPacketSenderTask.stop();
+            //Prevent memory leak
+            asyncPacketSenderTask = null;
         }
         asyncPacketSenderTask = AsyncPacketSender.create();
         asyncPacketSenderTask.start(plugin);
@@ -383,6 +385,8 @@ public class VirtualDisplayItem extends DisplayItem {
         }
         if (asyncPacketSenderTask != null) {
             asyncPacketSenderTask.stop();
+            //Prevent memory leak
+            asyncPacketSenderTask = null;
         }
     }
 
