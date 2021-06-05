@@ -40,7 +40,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 
-public class EnvironmentChecker {
+public final class EnvironmentChecker {
     private final QuickShop plugin;
     private final List<Method> tests = new ArrayList<>();
 
