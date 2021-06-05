@@ -81,10 +81,11 @@ public class VirtualDisplayItem extends DisplayItem {
 
     //packetListener
     private PacketAdapter packetAdapter;
+    //packetListener
+    private PacketAdapter unloadPacketAdapter;
 
     //cache chunk x and z
     private ShopChunk chunkLocation;
-
 
 
     public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
@@ -331,6 +332,7 @@ public class VirtualDisplayItem extends DisplayItem {
         asyncPacketSenderTask.start(plugin);
 
         if (packetAdapter == null) {
+            //TODO: Also should listening UNLOAD_CHUNK packet to send entity destroy packet
             packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {  //TODO: Possibly memory leaking: The lambda point to memory leaking
                 @Override
                 public void onPacketSending(@NotNull PacketEvent event) {
