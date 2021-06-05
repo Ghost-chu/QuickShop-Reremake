@@ -915,9 +915,9 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void setOwner(@NotNull UUID owner) {
-        OfflinePlayer offlinePlayer = plugin.getServer().getOfflinePlayer(owner);
+        //OfflinePlayer offlinePlayer = plugin.getServer().getOfflinePlayer(owner);
         //Get the sign at first
-        List<Sign> signs = this.getSigns();
+        // List<Sign> signs = this.getSigns();
         //then setOwner
         this.moderator.setOwner(owner);
         //then change the sign
