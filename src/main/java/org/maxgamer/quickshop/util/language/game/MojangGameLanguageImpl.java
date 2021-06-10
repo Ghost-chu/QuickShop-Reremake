@@ -25,6 +25,7 @@ import com.google.gson.JsonParser;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -69,6 +70,10 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         if ("default".equalsIgnoreCase(languageCode)) {
             Locale locale = Locale.getDefault();
             languageCode = locale.getLanguage() + "_" + locale.getCountry();
+            if (StringUtils.isEmpty(locale.getCountry())) {
+                languageCode = locale.toLanguageTag();
+                plugin.getLogger().info("Your system offer empty data about local country, we will fallback to system language default country, current language set to " + languageCode + ". If it incorrect, please edit it in config.yml.");
+            }
         }
         languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
         lock.lock();
