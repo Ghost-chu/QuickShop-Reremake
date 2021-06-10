@@ -55,13 +55,18 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 
+/**
+ * MojangGameLanguageImpl - A simple GameLanguage impl
+ *
+ * @author Ghost_chu and sandtechnology
+ */
 public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements GameLanguage {
     private final QuickShop plugin;
     @Nullable
     private final JsonObject lang;
 
-    private final static Lock lock = new ReentrantLock();
-    private static final Condition downloadCondition = lock.newCondition();
+    private final static Lock LOCK = new ReentrantLock();
+    private static final Condition DOWNLOAD_CONDITION = LOCK.newCondition();
 
     @SneakyThrows
     public MojangGameLanguageImpl(@NotNull QuickShop plugin, @NotNull String languageCode) {
@@ -76,18 +81,18 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
             }
         }
         languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
-        lock.lock();
+        LOCK.lock();
         try {
             final GameLanguageLoadThread loadThread = new GameLanguageLoadThread(plugin, languageCode);
             loadThread.start();
-            boolean timeout = !downloadCondition.await(20, TimeUnit.SECONDS);
+            boolean timeout = !DOWNLOAD_CONDITION.await(20, TimeUnit.SECONDS);
             if (timeout) {
                 Util.debugLog("No longer waiting file downloading because it now timed out, now downloading in background.");
                 plugin.getLogger().info("No longer waiting file downloading because it now timed out, now downloading in background, please reset itemi18n.yml, potioni18n.yml and enchi18n.yml after download completed.");
             }
             this.lang = loadThread.getLang(); // Get the Lang whatever thread running or died.
         } finally {
-            lock.unlock();
+            LOCK.unlock();
         }
     }
 
@@ -190,12 +195,12 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
 
         @Override
         public void run() {
-            lock.lock();
+            LOCK.lock();
             try {
                 execute();
-                downloadCondition.signalAll();
+                DOWNLOAD_CONDITION.signalAll();
             } finally {
-                lock.unlock();
+                LOCK.unlock();
             }
 
         }
