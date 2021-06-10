@@ -24,18 +24,18 @@ import com.google.gson.GsonBuilder;
 
 public final class JsonUtil {
 
-    private static final Gson gson = new Gson();
-    private static final Gson humanReadableGson = new GsonBuilder().enableComplexMapKeySerialization().setPrettyPrinting().disableHtmlEscaping().create();
+    private static final Gson GSON = new Gson();
+    private static final Gson HUMAN_READABLE_GSON = new GsonBuilder().enableComplexMapKeySerialization().setPrettyPrinting().disableHtmlEscaping().create();
 
     private JsonUtil() {
     }
 
     public static Gson getGson() {
-        return gson;
+        return GSON;
     }
 
     public static Gson getHumanReadableGson() {
-        return humanReadableGson;
+        return HUMAN_READABLE_GSON;
     }
 
 
