@@ -22,6 +22,12 @@ package org.maxgamer.quickshop.util;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+
+/**
+ * Simple Timer for QuickShop to calc time passed (timestamp based)
+ *
+ * @author Ghost_chu
+ */
 @EqualsAndHashCode
 @ToString
 public class Timer {
