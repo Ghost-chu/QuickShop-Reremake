@@ -31,6 +31,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 
+/**
+ * ReflectFactory is library builtin QuickShop to get/execute stuff that cannot be access with BukkitAPI with reflect way.
+ *
+ * @author Ghost_chu
+ */
 public class ReflectFactory {
     private static String cachedVersion = null;
 
@@ -41,8 +46,10 @@ public class ReflectFactory {
         }
         try {
             Field consoleField = Bukkit.getServer().getClass().getDeclaredField("console");
-            consoleField.setAccessible(true); // protected
-            Object console = consoleField.get(Bukkit.getServer()); // dedicated server
+            // protected
+            consoleField.setAccessible(true);
+            // dedicated server
+            Object console = consoleField.get(Bukkit.getServer());
             cachedVersion = String.valueOf(
                     console.getClass().getSuperclass().getMethod("getVersion").invoke(console));
             return cachedVersion;
