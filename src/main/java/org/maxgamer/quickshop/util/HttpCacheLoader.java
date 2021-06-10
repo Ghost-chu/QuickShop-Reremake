@@ -27,6 +27,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 
+/**
+ * A utilities to prevent repeat request same resource.
+ *
+ * @author Ghost_chu
+ */
 public class HttpCacheLoader extends CacheLoader<URL, Optional<String>> {
     /**
      * Computes or retrieves the value corresponding to {@code key}.
