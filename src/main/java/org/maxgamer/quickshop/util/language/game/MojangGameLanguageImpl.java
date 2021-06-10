@@ -72,7 +72,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
             languageCode = locale.getLanguage() + "_" + locale.getCountry();
             if (StringUtils.isEmpty(locale.getCountry())) {
                 languageCode = locale.toLanguageTag();
-                plugin.getLogger().info("Your system offer empty data about local country, we will fallback to system language default country, current language set to " + languageCode + ". If it incorrect, please edit it in config.yml.");
+                plugin.getLogger().info("Your system offer empty data about locale country, we will fallback to system language default country, current language set to " + languageCode + ". If it incorrect, please edit it in config.yml.");
             }
         }
         languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
