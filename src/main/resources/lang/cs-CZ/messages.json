@@ -1,5 +1,5 @@
 {
-  "_comment": "Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake",
+  "_comment": "Ahoj překladateli! Pokud toto upravujeteš z Githubu nebo ze zdrojového kódu, měli bys mrknout na https://crowdin.com/project/quickshop-reremake",
   "file-test": "Toto je zkušební textový soubor. Používáme jej k testování, pokud jde o zprávy .json je rozbitý. Můžete jej vyplnit jakýmkoliv východním vejci, které se vám zde líbí :)",
   "translation-author": "Translator: Ghost_chu, Andre_601, LixCisCZ",
   "translation-version": "Verze: Reremake",
@@ -45,7 +45,7 @@
   "fee-charged-for-price-change": "&aZaplatili jste &c{0}&a za změnu ceny.",
   "price-is-now": "&aNová cena obchodu je &e{0}",
   "thats-not-a-number": "&cNeplatné číslo",
-  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consisten with vanilla behaviour",
+  "forbidden-vanilla-behavior": "Operace je zakázána, protože není v souladu s chováním vanilla verze",
   "no-price-given": "Zadejte platnou cenu",
   "average-price-nearby": "&aBlízká průměrná cena: &e{0}",
   "shop-has-changed": "&cObchod, který jste se pokusili použít, se změnil od doby, kdy jste na něj klikli!",
@@ -139,7 +139,7 @@
     "no-amount-given": "&cNebyla poskytnuta žádná hodnota. Použijte &a/qs refill <amount>&c",
     "now-debuging": "&aÚspěšně povolen vývojářský režim. Reloaduji QuickShop...",
     "now-nolonger-debuging": "&aÚspěšně zakázán vývojářský režim. Reloaduji QuickShop...",
-    "wrong-args": "&cInvalid argument. Use &l/qs help &cto see a list of commands.",
+    "wrong-args": "&cNeplatné argumenty. Použij &l/qs help &cpro zobrazení seznamu příkazů.",
     "description": {
       "title": "&aNápověda pro QuickShop",
       "unlimited": "&eDá obchodu neomezený sklad.",
@@ -170,14 +170,14 @@
       "removeall": "&eOdebrat VŠECHNY obchody zadaného hráče",
       "transfer": "&ePřeneste všechny obchody do jiného",
       "removeworld": "&eOdebrat VŠECHNY obchody zadaného hráče",
-      "currency": "&eSet or remove the currency setting of the shop",
-      "ban": "&eBans a player from the shop",
-      "unban": "&eUnbans a player from the shop",
+      "currency": "&eNastavte nebo odeberte nastavení měny obchodu",
+      "ban": "&eZabanování hráče z obchodu",
+      "unban": "&eOdbanování hráče z obchodu",
       "freeze": "&eZakázat nebo povolit obchodování obchodu",
-      "lock": "&eSwitch the shop's lock status"
+      "lock": "&ePřepnout stav zámku obchodu"
     },
     "disabled": "&cTento příkaz je zakázán: &e{0}",
-    "feature-not-enabled": "This feature is not enabled in the config file."
+    "feature-not-enabled": "Funkce není v konfiguraci povolena."
   },
   "signs": {
     "selling": "Prodej {0}",
@@ -193,7 +193,7 @@
     "status-unavailable": "&c",
     "out-of-stock": "Vyprodáno",
     "out-of-space": "Nedostatek místa",
-    "freeze": "Trading disabled"
+    "freeze": "Obchod je zakázán"
   },
   "controlpanel": {
     "setowner": "&aVlastník: &b{0} &e[&d&lZměna&e]",
@@ -220,9 +220,9 @@
     "currency": "&aMěna: &b{0} &e[&d&lNastavit&e]",
     "currency-hover": "&eKlikněte pro nastavení nebo odebrání měny, kterou tento obchod používá",
     "lock": "&eZámek obchodu: &b{0} &e[&d&lPřepnout&e]",
-    "lock-hover": "&eEnable/Disable the shop's lock protection.",
+    "lock-hover": "&ePovolit/Zakázat ochranu zámku obchodu.",
     "freeze": "&eRežim zmražení: &b{0} &e[&d&lPřepnout&e]",
-    "freeze-hover": "&eToggle the shop's freeze status."
+    "freeze-hover": "&ePřepnout stav zmrazení obchodu."
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
