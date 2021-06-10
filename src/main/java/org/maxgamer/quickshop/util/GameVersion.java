@@ -21,6 +21,11 @@ package org.maxgamer.quickshop.util;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Utilities to help QuickShop quickly check server supported features
+ *
+ * @author Ghost_chu and sandtechnology
+ */
 public enum GameVersion {
     v1_5_R1(false, false, false),
     v1_5_R2(false, false, false),
@@ -52,10 +57,26 @@ public enum GameVersion {
     v1_16_R3(true, true, true),
     v1_16_R4(true, true, true),
     UNKNOWN(true, true, true);
+    /**
+     * CoreSupports - Check does QuickShop most features supports this server version
+     */
     private final boolean coreSupports;
+    /**
+     * VirtualDisplaySupports - Check does QuickShop VirtualDisplayItem feature this server version
+     */
     private final boolean virtualDisplaySupports;
+    /**
+     * PersistentStorageApiSupports - Check if server support PersistentStorage API
+     */
     private final boolean persistentStorageApiSupports;
 
+    /**
+     * Utilities to help QuickShop quickly check server supported features
+     *
+     * @param coreSupports                 Does QuickShop most features supports this server version
+     * @param virtualDisplaySupports       Does QuickShop VirtualDisplayItem feature this server version
+     * @param persistentStorageApiSupports Does server support PersistentStorage API
+     */
     GameVersion(boolean coreSupports, boolean virtualDisplaySupports, boolean persistentStorageApiSupports) {
         this.coreSupports = coreSupports;
         this.virtualDisplaySupports = virtualDisplaySupports;
