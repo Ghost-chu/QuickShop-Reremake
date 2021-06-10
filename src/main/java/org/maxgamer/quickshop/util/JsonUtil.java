@@ -22,6 +22,11 @@ package org.maxgamer.quickshop.util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+/**
+ * Utilities to prevent create Gson object in other place and reuse gson object in runtime
+ *
+ * @author Ghost_chu and sandtechnology
+ */
 public final class JsonUtil {
 
     private static final Gson GSON = new Gson();
