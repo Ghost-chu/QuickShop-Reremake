@@ -44,7 +44,6 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
@@ -75,10 +74,8 @@ public class ShopProtectionListener extends ProtectionListenerBase {
         if (!Util.isClassAvailable("com.destroystokyo.paper.PaperWorldConfig")) {
             return;
         }
-
         Util.debugLog("QuickShop is scanning all worlds settings about disableHopperMoveEvents disabled worlds");
         plugin.getServer().getWorlds().forEach(world -> {
-
             if (plugin.getShopManager().getShopsInWorld(world).isEmpty()) {
                 return;
             }
@@ -114,8 +111,8 @@ public class ShopProtectionListener extends ProtectionListenerBase {
                         yamlConfiguration.save(paperConfigYaml);
                     }
                 }
-            } catch (NoSuchFieldException | IllegalAccessException | NullPointerException | IOException e) {
-                plugin.getLogger().log(Level.WARNING, "Failed to automatic disable disable-move-event for world [" + world.getName() + "], please disable it by yourself or player can steal items from shops.", e);
+            } catch (Exception ex) {
+                plugin.getLogger().log(Level.WARNING, "Failed to automatic disable disable-move-event for world [" + world.getName() + "], please disable it by yourself or player can steal items from shops.", ex);
             }
         });
 
