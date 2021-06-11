@@ -54,7 +54,7 @@ public class SubCommand_CleanGhost implements CommandProcesser {
 
         MsgUtil.sendMessage(sender,
                 ChatColor.GREEN
-                        + "->Starting checking the shop be ghost, all does not exist shop will be removed...");
+                        + "Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...");
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             MsgUtil.sendMessage(sender, ChatColor.GREEN + "Starting async thread, please wait...");
@@ -107,14 +107,14 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                 // Shop exist check
                 Util.mainThreadRun(() -> {
                     Util.debugLog(
-                            "->Posted to main server thread to continue accessing Bukkit API for shop "
+                            "Posted to main server thread to continue accessing Bukkit API for shop "
                                     + shop);
                     if (!Util.canBeShop(shop.getLocation().getBlock())) {
                         MsgUtil.sendMessage(sender,
                                 ChatColor.YELLOW
                                         + "Deleting shop "
                                         + shop
-                                        + " ->because the target location is nolonger a shop or disallow create the shop.");
+                                        + " because it is no longer on the target location or it is not allowed to create shops in this location.");
                         shop.delete();
                                     }
                                 }); // Post to server main thread to check.
