@@ -259,6 +259,8 @@ public class QuickShop extends JavaPlugin {
     private WorldEditAdapter worldEditAdapter;
     @Getter
     private GameVersion gameVersion;
+    @Getter
+    private OfflinePlayer taxAccount;
 
     @NotNull
     public static QuickShop getInstance() {
@@ -523,6 +525,9 @@ public class QuickShop extends JavaPlugin {
         } else {
             logWatcher = null;
         }
+        this.taxAccount = this.getServer().getOfflinePlayer(
+          Objects.requireNonNull(this.getConfig().getString("tax-account"))
+        );
     }
 
     /**
