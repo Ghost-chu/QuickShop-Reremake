@@ -180,11 +180,11 @@
     "feature-not-enabled": "이옵션은 컨피그에서 비활성 상태입니다"
   },
   "signs": {
-    "selling": "&6판매 {0}",
-    "stack-selling": "&6판매중 {0}",
+    "selling": "&6판매 {0} 개",
+    "stack-selling": "&6판매중 {0} 개",
     "header": "{1}{0}",
-    "buying": "구매 {0}",
-    "stack-buying": "구매중 {0}",
+    "buying": "&b구매 {0} 개",
+    "stack-buying": "&b구매중 {0} 개",
     "item": "{0}",
     "price": "개당 {0}",
     "stack-price": "아이템 {2}, {1} 개당 {0}원",
