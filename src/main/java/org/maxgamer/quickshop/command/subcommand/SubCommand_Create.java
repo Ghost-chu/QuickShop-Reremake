@@ -53,8 +53,9 @@ public class SubCommand_Create implements CommandProcesser {
     @Nullable
     private Material matchMaterial(String itemName) {
         Material material = Material.matchMaterial(itemName);
-        if (isValidMaterial(material))
+        if (isValidMaterial(material)) {
             return material;
+        }
         ConfigurationSection section = MsgUtil.getItemi18n().getConfigurationSection("itemi18n");
         for (String itemKey : section.getKeys(false)) {
             if (itemName.equalsIgnoreCase(section.getString(itemKey))) {

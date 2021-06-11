@@ -95,7 +95,7 @@ public class Paste {
 //                case RESERVE:
 //                    finalReport.append("Reserve").append("%").append("No details");
 //                    break;
-                case UNKNOWN:
+                default:
                     finalReport.append("Unknown").append("%").append("Unknown error");
                     break;
             }
@@ -335,20 +335,6 @@ public class Paste {
                     .append("\t\t\n")
                     .append(Util.list2String(Util.getDebugLogs()).replaceAll(",", "\n"))
                     .append("\n");
-
-            //            try {
-            //                finalReport.append("\t*********************************\n");
-            //                finalReport.append("\tlatest.log:\n");
-            //                finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
-            //                        .inputStream2ByteArray(new File(new File(".", "logs"),
-            // "latest.log").getPath())), StandardCharsets.UTF_8)).append("\n");
-            //                finalReport.append("\t*********************************\n");
-            //            } catch (Exception th) {
-            //                finalReport.append("\t*********************************\n");
-            //                finalReport.append("\tlatest.log:\n");
-            //                finalReport.append("\t\t\n").append("Read failed.").append("\n");
-            //                finalReport.append("\t*********************************\n");
-            //            }
             try {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tbukkit.yml:\n");
@@ -415,6 +401,38 @@ public class Paste {
             } catch (Exception th) {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\ttuinity.yml:\n");
+                finalReport.append("\t\t\n").append("Read failed.").append("\n");
+            }
+            try {
+                finalReport.append("\t*********************************\n");
+                finalReport.append("\tpurpur.yml:\n");
+                finalReport
+                        .append("\t\t\n")
+                        .append(
+                                new String(
+                                        Objects.requireNonNull(
+                                                Util.inputStream2ByteArray(new File(new File("."), "purpur.yml").getPath())),
+                                        StandardCharsets.UTF_8))
+                        .append("\n");
+            } catch (Exception th) {
+                finalReport.append("\t*********************************\n");
+                finalReport.append("\tpurpur.yml:\n");
+                finalReport.append("\t\t\n").append("Read failed.").append("\n");
+            }
+            try {
+                finalReport.append("\t*********************************\n");
+                finalReport.append("\tairplane.air:\n");
+                finalReport
+                        .append("\t\t\n")
+                        .append(
+                                new String(
+                                        Objects.requireNonNull(
+                                                Util.inputStream2ByteArray(new File(new File("."), "airplane.air").getPath())),
+                                        StandardCharsets.UTF_8))
+                        .append("\n");
+            } catch (Exception th) {
+                finalReport.append("\t*********************************\n");
+                finalReport.append("\tairplane.air:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
             }
         } catch (Exception ignored) {

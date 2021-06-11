@@ -107,7 +107,6 @@ public final class EnvironmentChecker {
                 }
                 if (!properties.containsKey("org.maxgamer.quickshop.util.envcheck.skip." + envCheckEntry.name().toUpperCase(Locale.ROOT).replace(" ", "_"))) {
                     executeResult = (ResultContainer) declaredMethod.invoke(this);
-                    //plugin.getLogger().info("Result: "+executeResult.getResultMessage());
                     if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if its worse than the latest one.
                         result = executeResult.getResult();
                     }
@@ -140,6 +139,8 @@ public final class EnvironmentChecker {
                         Util.debugLog("[Fatal-Disable] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                         skipAllTest = true; //We need to disable the plugin NOW! Some HUGE exception is happening here, hurry up!
                         break;
+                    default:
+                        plugin.getLogger().warning("[UNDEFINED] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                 }
                 if (executeResult != null) {
                     results.put(envCheckEntry, executeResult);
@@ -155,7 +156,6 @@ public final class EnvironmentChecker {
     }
 
     public boolean isOutdatedJvm() {
-        //String jvmVersion = ManagementFactory.getRuntimeMXBean().getVmVersion();
         String jvmVersion = System.getProperty("java.version"); //Use java version not jvm version.
         String[] splitVersion = jvmVersion.split("\\.");
         if (splitVersion.length < 1) {
@@ -175,6 +175,7 @@ public final class EnvironmentChecker {
     @EnvCheckEntry(name = "Signature Verify", priority = 0, stage = {EnvCheckEntry.Stage.ON_LOAD, EnvCheckEntry.Stage.ON_ENABLE})
     public ResultContainer securityVerify() {
         JarVerifyTool tool = new JarVerifyTool();
+        JarFile jarFile = null;
         try {
             ClassLoader loader = this.getClass().getClassLoader();
 
@@ -190,7 +191,7 @@ public final class EnvironmentChecker {
             String jarPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
             jarPath = URLDecoder.decode(jarPath, "UTF-8");
             Util.debugLog("JarPath selected: " + jarPath);
-            JarFile jarFile = new JarFile(jarPath);
+            jarFile = new JarFile(jarPath);
             List<JarEntry> modifiedEntry = tool.verify(jarFile);
             if (modifiedEntry.isEmpty()) {
                 return new ResultContainer(CheckResult.PASSED, "The jar is valid. No issues detected.");
@@ -209,6 +210,13 @@ public final class EnvironmentChecker {
         } catch (IOException ioException) {
             plugin.getLogger().log(Level.WARNING, "ALERT: QuickShop cannot validate itself. This may be caused by you having deleted QuickShop's jar while the server is running.", ioException);
             return new ResultContainer(CheckResult.WARNING, "Failed to validate digital signature! Security may be compromised!");
+        } finally {
+            if (jarFile != null) {
+                try {
+                    jarFile.close();
+                } catch (IOException ignored) {
+                }
+            }
         }
 
         //tool.verify()
@@ -362,7 +370,17 @@ public final class EnvironmentChecker {
         return new ResultContainer(CheckResult.PASSED, "Passed checks");
     }
 
-    @EnvCheckEntry(name = "PacketListenerAPI Conflict Test", priority = 9)
+    @EnvCheckEntry(name = "GameVersion supporting Test", priority = 9)
+    public ResultContainer gamerVersionSupportTest() {
+        String nmsVersion = Util.getNMSVersion();
+        GameVersion gameVersion = GameVersion.get(nmsVersion);
+        if (gameVersion == GameVersion.UNKNOWN) {
+            return new ResultContainer(CheckResult.WARNING, "Your Minecraft server version not tested by developers, QuickShop may ran into issues on this version.");
+        }
+        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+    }
+
+    @EnvCheckEntry(name = "PacketListenerAPI Conflict Test", priority = 10)
     public ResultContainer plapiConflictTest() {
         if (plugin.isDisplay() && DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && Bukkit.getPluginManager().isPluginEnabled("ProtocolLib") && Bukkit.getPluginManager().isPluginEnabled("PacketListenerAPI")) {
             return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem may stop working on your server. We are already aware that [PacketListenerAPI] and [ProtocolLib] are conflicting. (QuickShops requirement to send fake items). If your display is not showing, please uninstall [PacketListenerAPI].");

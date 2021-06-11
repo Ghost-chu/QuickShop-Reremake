@@ -122,11 +122,6 @@ public class SubCommand_Price implements CommandProcesser {
             fee = plugin.getConfig().getDouble("shop.fee-for-price-change");
         }
 
-    /*if (fee > 0 && plugin.getEconomy().getBalance(p.getUniqueId()) < fee) {
-        MsgUtil.sendMessage(sender,
-            MsgUtil.getMessage("you-cant-afford-to-change-price", plugin.getEconomy().format(fee)));
-        return;
-    }*/
         final BlockIterator bIt = new BlockIterator(p, 10);
         // Loop through every block they're looking at upto 10 blocks away
         if (!bIt.hasNext()) {
@@ -174,17 +169,11 @@ public class SubCommand_Price implements CommandProcesser {
                                             .getUniqueId(),
                                     fee, shop.getLocation().getWorld(), shop.getCurrency());
                 } catch (Exception e) {
-                    e.getMessage();
-                    plugin
-                            .getLogger()
-                            .log(
-                                    Level.WARNING,
-                                    "QuickShop can't pay taxes to the configured tax account! Please set the tax account name in the config.yml to an existing player!");
+                    plugin.getLogger().log(Level.WARNING, "QuickShop can't pay taxes to the configured tax account! Please set the tax account name in the config.yml to an existing player!", e);
                 }
             }
             // Update the shop
             shop.setPrice(price);
-            // shop.setSignText();
             shop.update();
             MsgUtil.sendMessage(sender,
                     MsgUtil.getMessage("price-is-now", sender, plugin.getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency())));

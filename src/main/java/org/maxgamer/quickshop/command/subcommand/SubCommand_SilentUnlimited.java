@@ -44,19 +44,6 @@ public class SubCommand_SilentUnlimited implements CommandProcesser {
         }
 
         Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(UUID.fromString(cmdArg[0]));
-//        if (cmdArg.length < 4) {
-//            return;
-//        }
-//
-//        final Shop shop =
-//                plugin
-//                        .getShopManager()
-//                        .getShop(
-//                                new Location(
-//                                        plugin.getServer().getWorld(cmdArg[0]),
-//                                        Integer.parseInt(cmdArg[1]),
-//                                        Integer.parseInt(cmdArg[2]),
-//                                        Integer.parseInt(cmdArg[3])));
 
         if (shop == null) {
             MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
@@ -64,7 +51,6 @@ public class SubCommand_SilentUnlimited implements CommandProcesser {
         }
 
         shop.setUnlimited(!shop.isUnlimited());
-        // shop.setSignText();
         shop.update();
         MsgUtil.sendControlPanelInfo(sender, shop);
 

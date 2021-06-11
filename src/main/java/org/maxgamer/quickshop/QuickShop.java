@@ -159,7 +159,7 @@ public class QuickShop extends JavaPlugin {
      */
     @Getter
     private boolean limit = false;
-    // private BukkitTask itemWatcherTask;
+
     @Nullable
     @Getter
     private LogWatcher logWatcher;
@@ -209,7 +209,7 @@ public class QuickShop extends JavaPlugin {
      */
     @Getter
     private ShopManager shopManager;
-    // private ShopVaildWatcher shopVaildWatcher;
+
     @Getter
     private DisplayAutoDespawnWatcher displayAutoDespawnWatcher;
     @Getter
@@ -257,6 +257,8 @@ public class QuickShop extends JavaPlugin {
     private Plugin worldEditPlugin;
     @Getter
     private WorldEditAdapter worldEditAdapter;
+    @Getter
+    private GameVersion gameVersion;
 
     @NotNull
     public static QuickShop getInstance() {
@@ -405,7 +407,7 @@ public class QuickShop extends JavaPlugin {
                     core = new Economy_Vault(this);
                     Util.debugLog("Now using the Vault economy system.");
                     if (getConfig().getDouble("tax", 0) > 0) {
-                        //getLogger().info("Checking the tax account infos...");
+
                         try {
                             String taxAccount = getConfig().getString("tax-account", "tax");
                             if (!(taxAccount == null || taxAccount.isEmpty())) {
@@ -450,9 +452,6 @@ public class QuickShop extends JavaPlugin {
                     core = new Economy_TNE(this);
                     Util.debugLog("Now using the TNE economy system.");
                     break;
-//                case MIXED:
-//                    core = new Economy_Mixed(this);
-//                    Util.debugLog("Now using the Mixed economy system.");
                 default:
                     Util.debugLog("No any economy provider selected.");
                     break;
@@ -581,7 +580,6 @@ public class QuickShop extends JavaPlugin {
             worldEditAdapter.unregister();
         }
 
-        // this.reloadConfig();
         Util.debugLog("Calling integrations...");
         if (integrationHelper != null) {
             integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
@@ -666,7 +664,11 @@ public class QuickShop extends JavaPlugin {
         }
         /* It will generate a new UUID above updateConfig */
         this.serverUniqueID = UUID.fromString(Objects.requireNonNull(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID()))));
-        updateConfig(getConfig().getInt("config-version"));
+        try {
+            updateConfig(getConfig().getInt("config-version"));
+        } catch (IOException exception) {
+            getLogger().log(Level.WARNING, "Failed to update configuration", exception);
+        }
         try {
             MsgUtil.loadI18nFile();
         } catch (Exception e) {
@@ -716,6 +718,9 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
         getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
         getLogger().info("Let's start loading the plugin");
+
+        String nmsVersion = Util.getNMSVersion();
+        gameVersion = GameVersion.get(nmsVersion);
 
         getLogger().info("Chat processor selected: " + this.quickChatType.name());
 
@@ -833,7 +838,6 @@ public class QuickShop extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(internalListener, this);
         if (isDisplay() && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayWatcher = new DisplayWatcher(this);
-//            new DisplayBugFixListener(this).register();
             new DisplayProtectionListener(this, this.shopCache).register();
             if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
                 new ClearLaggListener(this).register();
@@ -893,7 +897,6 @@ public class QuickShop extends JavaPlugin {
         calendarWatcher = new CalendarWatcher(this);
         calendarWatcher.start();
         Util.debugLog("Now using display-type: " + DisplayItem.getNowUsing().name());
-        // sentryErrorReporter.sendError(new IllegalAccessError("no fucking way"));
         getLogger().info("QuickShop Loaded! " + enableTimer.endTimer() + " ms.");
     }
 
@@ -1007,7 +1010,7 @@ public class QuickShop extends JavaPlugin {
     }
 
 
-    private void updateConfig(int selectedVersion) {
+    private void updateConfig(int selectedVersion) throws IOException {
         String serverUUID = getConfig().getString("server-uuid");
         if (serverUUID == null || serverUUID.isEmpty()) {
             UUID uuid = UUID.randomUUID();
@@ -1766,8 +1769,6 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.plotsquared.delete-when-user-untrusted", true);
             getConfig().set("integration.towny.delete-shop-on-plot-clear", true);
             getConfig().set("config-version", ++selectedVersion);
-            //Util.makeExportBackup("update-autobackup-" + UUID.randomUUID());
-            //Util.backupDatabase();
         }
         if (selectedVersion == 128) {
             getConfig().set("shop.force-use-item-original-name", false);
@@ -1790,8 +1791,9 @@ public class QuickShop extends JavaPlugin {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }
 
-        InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(getResource("config.yml"))));
-        new ConfigurationFixer(this, YamlConfiguration.loadConfiguration(buildInConfigReader)).fix();
+        try (InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(getResource("config.yml"))))) {
+            new ConfigurationFixer(this, YamlConfiguration.loadConfiguration(buildInConfigReader)).fix();
+        }
 
         saveConfig();
         reloadConfig();

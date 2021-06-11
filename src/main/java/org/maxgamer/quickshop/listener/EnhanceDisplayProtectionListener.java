@@ -247,50 +247,8 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
         }
     }
 
-//    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-//    public void entity(EntityDeathEvent event) {
-//        if (DisplayItem.getNowUsing() != DisplayType.ARMORSTAND) {
-//            return;
-//        }
-//        if (!(event.getEntity() instanceof ArmorStand)) {
-//            return;
-//        }
-//        if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand())) { //FIXME: Update this when drop 1.13 supports
-//            return;
-//        }
-//        event.setDroppedExp(0);
-//        event.getDrops().clear();
-//    }
-
-//    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-//    public void entity(EntityInteractEvent event) {
-//        if (DisplayItem.getNowUsing() != DisplayType.ARMORSTAND) {
-//            return;
-//        }
-//        if (!(event.getEntity() instanceof ArmorStand)) {
-//            return;
-//        }
-//        if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand())) { //FIXME: Update this when drop 1.13 supports
-//            return;
-//        }
-//        event.setCancelled(true);
-//        final Entity entity = event.getEntity();
-//        if (entity instanceof InventoryHolder) {
-//            Util.inventoryCheck(((InventoryHolder) entity).getInventory());
-//        }
-//        sendAlert(
-//                "[DisplayGuard] Entity  "
-//                        + event.getEntityType().name()
-//                        + " # "
-//                        + event.getEntity().getLocation()
-//                        + " trying interact the hold displayItem's entity.");
-//    }
-
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryClickEvent event) {
-//        if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
-//            return;
-//        }
         if (!DisplayItem.checkIsGuardItemStack(event.getCurrentItem())) {
             return;
         }
@@ -308,7 +266,6 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
                         + " at"
                         + event.getClickedInventory().getLocation()
                         + " was clicked the displayItem, QuickShop already removed it.");
-        //event.getCurrentItem().setAmount(0);
         event.getCurrentItem().setType(Material.AIR);
         event.setResult(Event.Result.DENY);
         Util.inventoryCheck(event.getInventory());
@@ -316,9 +273,6 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryDragEvent event) {
-//        if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
-//            return;
-//        }
         ItemStack itemStack = event.getCursor();
         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
@@ -342,9 +296,6 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryCreativeEvent event) {
-//        if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
-//            return;
-//        }
         ItemStack itemStack = event.getCursor();
         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
@@ -368,9 +319,6 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void item(PlayerItemHeldEvent e) {
-//        if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
-//            return;
-//        }
         final ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
         final ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
         if (DisplayItem.checkIsGuardItemStack(stack)) {
@@ -397,9 +345,6 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void player(CraftItemEvent event) {
-//        if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
-//            return;
-//        }
         ItemStack itemStack;
         itemStack = event.getCurrentItem();
         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
@@ -424,9 +369,6 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void player(PlayerBucketEmptyEvent event) {
-//        if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
-//            return;
-//        }
         final Block waterBlock = event.getBlockClicked().getRelative(event.getBlockFace());
         final Shop shop =
                 getShopPlayer(waterBlock.getRelative(BlockFace.DOWN).getLocation(), true);

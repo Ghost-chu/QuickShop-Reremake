@@ -101,7 +101,7 @@ public class CompatibilityManager extends QuickShopInstanceHolder {
         try {
             compatibilityModule = compatibilityModuleClass.getConstructor(plugin.getClass()).newInstance(plugin);
         } catch (NullPointerException | NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            throw new IllegalStateException("Invalid compatibility module class: " + compatibilityModuleClass);
+            throw new IllegalStateException("Invalid compatibility module class: " + compatibilityModuleClass, e);
         }
         register(compatibilityModule);
     }

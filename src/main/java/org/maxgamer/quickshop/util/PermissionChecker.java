@@ -41,6 +41,11 @@ import org.maxgamer.quickshop.eventmanager.QuickEventManager;
 import org.maxgamer.quickshop.util.holder.Result;
 import org.primesoft.blockshub.BlocksHubBukkit;
 
+/**
+ * A helper to resolve issue around other plugins with BlockBreakEvent
+ *
+ * @author Ghost_chu and sandtechnology
+ */
 public class PermissionChecker {
     private final QuickShop plugin;
 

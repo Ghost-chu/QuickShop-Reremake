@@ -158,7 +158,6 @@ public class RealDisplayItem extends DisplayItem {
         }
 
         boolean removed = false;
-        // Chunk chunk = shop.getLocation().getChunk();
 
         ArrayList<Entity> elist = new ArrayList<>(item.getNearbyEntities(1.5, 1.5, 1.5));
         if (shop.isRealDouble()) {

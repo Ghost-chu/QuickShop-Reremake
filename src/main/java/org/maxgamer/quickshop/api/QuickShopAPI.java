@@ -47,7 +47,7 @@ public class QuickShopAPI {
      *
      * @return The Shop API
      */
-    public static @NotNull ShopAPI getShopAPI() {
+    public static @Nullable ShopAPI getShopAPI() {
         return shopAPI;
     }
 
@@ -56,7 +56,7 @@ public class QuickShopAPI {
      *
      * @return The DisplayItem API
      */
-    public static @NotNull DisplayItemAPI getDisplayItemAPI() {
+    public static @Nullable DisplayItemAPI getDisplayItemAPI() {
         return displayItemAPI;
     }
 

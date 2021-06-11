@@ -60,15 +60,12 @@ public class SubCommand_Sell implements CommandProcesser {
             if (shop != null) {
                 if (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control")) {
                     shop.setShopType(ShopType.SELLING);
-                    // shop.setSignText();
                     shop.update();
-                    MsgUtil.sendMessage(sender,
-                            MsgUtil.getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
-                    return;
+                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
                 } else {
                     MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-managed-shop", sender));
-                    return;
                 }
+                return;
             }
         }
         MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));

@@ -31,6 +31,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 
+/**
+ * ReflectFactory is library builtin QuickShop to get/execute stuff that cannot be access with BukkitAPI with reflect way.
+ *
+ * @author Ghost_chu
+ */
 public class ReflectFactory {
     private static String cachedVersion = null;
 
@@ -41,8 +46,10 @@ public class ReflectFactory {
         }
         try {
             Field consoleField = Bukkit.getServer().getClass().getDeclaredField("console");
-            consoleField.setAccessible(true); // protected
-            Object console = consoleField.get(Bukkit.getServer()); // dedicated server
+            // protected
+            consoleField.setAccessible(true);
+            // dedicated server
+            Object console = consoleField.get(Bukkit.getServer());
             cachedVersion = String.valueOf(
                     console.getClass().getSuperclass().getMethod("getVersion").invoke(console));
             return cachedVersion;
@@ -67,12 +74,14 @@ public class ReflectFactory {
                     Class.forName("org.bukkit.craftbukkit." + nmsVersion + ".inventory.CraftItemStack")
                             .getDeclaredMethod("asNMSCopy", ItemStack.class);
 
-            nbtTagCompoundClass = Class.forName("net.minecraft.server." + nmsVersion + ".NBTTagCompound");
-
-            itemStack_saveMethod =
-                    Class.forName("net.minecraft.server." + nmsVersion + ".ItemStack")
-                            .getDeclaredMethod("save", nbtTagCompoundClass);
-
+            GameVersion gameVersion = GameVersion.get(nmsVersion);
+            if (gameVersion.isNewNmsName()) {
+                nbtTagCompoundClass = Class.forName("net.minecraft.nbt.NBTTagCompound");
+                itemStack_saveMethod = Class.forName("net.minecraft.world.item.ItemStack").getDeclaredMethod("save", nbtTagCompoundClass);
+            } else {
+                nbtTagCompoundClass = Class.forName("net.minecraft.server." + nmsVersion + ".NBTTagCompound");
+                itemStack_saveMethod = Class.forName("net.minecraft.server." + nmsVersion + ".ItemStack").getDeclaredMethod("save", nbtTagCompoundClass);
+            }
         } catch (Exception t) {
             QuickShop.getInstance().getLogger().log(Level.WARNING, "Failed to loading up net.minecraft.server support module, usually this caused by NMS changes but QuickShop not support yet, Did you have up-to-date?", t);
         }
