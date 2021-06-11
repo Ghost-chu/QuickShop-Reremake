@@ -180,8 +180,8 @@
     "feature-not-enabled": "이옵션은 컨피그에서 비활성 상태입니다"
   },
   "signs": {
-    "selling": "판매 {0}",
-    "stack-selling": "판매중 {0}",
+    "selling": "&6판매 {0}",
+    "stack-selling": "&6판매중 {0}",
     "header": "{1}{0}",
     "buying": "구매 {0}",
     "stack-buying": "구매중 {0}",
