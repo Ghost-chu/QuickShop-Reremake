@@ -98,7 +98,7 @@ public class SubCommand_Info implements CommandProcesser {
                 ChatColor.GREEN
                         + ""
                         + nostock
-                        + " ->nostock selling shops (excluding doubles) which will be removed by /qs clean.");
+                        + " out-of-stock shops (excluding doubles) which will be removed by /qs clean.");
         MsgUtil.sendMessage(sender, ChatColor.GREEN + "QuickShop " + QuickShop.getVersion());
     }
 
