@@ -896,13 +896,5 @@
             <version>latest</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>spigot</groupId>
-            <artifactId>spigot117</artifactId>
-            <version>1.17</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/spigot-1.17.jar</systemPath>
-        </dependency>
-
     </dependencies>
 </project>
