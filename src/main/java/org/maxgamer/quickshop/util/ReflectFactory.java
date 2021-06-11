@@ -77,7 +77,7 @@ public class ReflectFactory {
             GameVersion gameVersion = GameVersion.get(nmsVersion);
             if (gameVersion.isNewNmsName()) {
                 nbtTagCompoundClass = Class.forName("net.minecraft.nbt.NBTTagCompound");
-                itemStack_saveMethod = Class.forName("net.minecraft.world.item").getDeclaredMethod("save", nbtTagCompoundClass);
+                itemStack_saveMethod = Class.forName("net.minecraft.world.item.ItemStack").getDeclaredMethod("save", nbtTagCompoundClass);
             } else {
                 nbtTagCompoundClass = Class.forName("net.minecraft.server." + nmsVersion + ".NBTTagCompound");
                 itemStack_saveMethod = Class.forName("net.minecraft.server." + nmsVersion + ".ItemStack").getDeclaredMethod("save", nbtTagCompoundClass);
