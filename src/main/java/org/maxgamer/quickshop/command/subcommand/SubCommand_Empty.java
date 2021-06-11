@@ -66,7 +66,6 @@ public class SubCommand_Empty implements CommandProcesser {
                 final Inventory inventory = cs.getInventory();
 
                 if (inventory == null) {
-                    // TODO: 24/11/2019 Send message about that issue.
                     return;
                 }
 
