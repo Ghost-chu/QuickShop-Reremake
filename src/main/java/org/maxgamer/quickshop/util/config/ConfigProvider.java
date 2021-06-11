@@ -83,7 +83,9 @@ public class ConfigProvider extends QuickShopInstanceHolder {
         try (InputStream defaultConfigStream = plugin.getResource("config.yml")) {
             config.load(configFile);
             if (defaultConfigStream != null) {
-                config.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(defaultConfigStream, StandardCharsets.UTF_8)));
+                try (InputStreamReader reader = new InputStreamReader(defaultConfigStream, StandardCharsets.UTF_8)) {
+                    config.setDefaults(YamlConfiguration.loadConfiguration(reader));
+                }
             }
         } catch (IOException | InvalidConfigurationException exception) {
             if (!defaults) {
