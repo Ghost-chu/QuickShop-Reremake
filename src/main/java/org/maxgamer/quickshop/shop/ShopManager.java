@@ -65,6 +65,7 @@ public class ShopManager {
     private final Map<UUID, Info> actions = Maps.newConcurrentMap();
 
     private final QuickShop plugin;
+    @Getter
     private final Trader cacheTaxAccount;
     @Getter
     private final PriceLimiter priceLimiter;

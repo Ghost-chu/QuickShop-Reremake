@@ -161,7 +161,7 @@ public class SubCommand_Price implements CommandProcesser {
                     plugin
                             .getEconomy()
                             .deposit(
-                                    plugin.getTaxAccount(),
+                                    plugin.getShopManager().getCacheTaxAccount(),
                                     fee, shop.getLocation().getWorld(), shop.getCurrency());
                 } catch (Exception e) {
                     plugin.getLogger().log(Level.WARNING, "QuickShop can't pay taxes to the configured tax account! Please set the tax account name in the config.yml to an existing player!", e);
