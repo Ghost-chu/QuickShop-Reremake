@@ -202,7 +202,7 @@ public class SubCommand_Price implements CommandProcesser {
             final Shop nextTo = cs.getAttachedShop();
 
             if (nextTo == null) {
-                // ->TODO: 24/11/2019 Send message about that issue.
+                // TODO: 24/11/2019 Send message about that issue.
                 return;
             }
 
