@@ -370,7 +370,17 @@ public final class EnvironmentChecker {
         return new ResultContainer(CheckResult.PASSED, "Passed checks");
     }
 
-    @EnvCheckEntry(name = "PacketListenerAPI Conflict Test", priority = 9)
+    @EnvCheckEntry(name = "GameVersion supporting Test", priority = 9)
+    public ResultContainer gamerVersionSupportTest() {
+        String nmsVersion = Util.getNMSVersion();
+        GameVersion gameVersion = GameVersion.get(nmsVersion);
+        if (gameVersion == GameVersion.UNKNOWN) {
+            return new ResultContainer(CheckResult.WARNING, "Your Minecraft server version not tested by developers, QuickShop may ran into issues on this version.");
+        }
+        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+    }
+
+    @EnvCheckEntry(name = "PacketListenerAPI Conflict Test", priority = 10)
     public ResultContainer plapiConflictTest() {
         if (plugin.isDisplay() && DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && Bukkit.getPluginManager().isPluginEnabled("ProtocolLib") && Bukkit.getPluginManager().isPluginEnabled("PacketListenerAPI")) {
             return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem may stop working on your server. We are already aware that [PacketListenerAPI] and [ProtocolLib] are conflicting. (QuickShops requirement to send fake items). If your display is not showing, please uninstall [PacketListenerAPI].");
