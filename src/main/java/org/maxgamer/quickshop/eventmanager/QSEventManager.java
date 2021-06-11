@@ -83,6 +83,7 @@ public class QSEventManager implements QuickEventManager, Listener {
                         });
     }
 
+    @Override
     public void callEvent(Event event) {
         if (event.isAsynchronous()) {
             if (Thread.holdsLock(plugin.getServer().getPluginManager())) {

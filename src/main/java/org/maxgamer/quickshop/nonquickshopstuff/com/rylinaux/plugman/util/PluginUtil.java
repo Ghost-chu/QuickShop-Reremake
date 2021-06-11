@@ -1,5 +1,3 @@
-package org.maxgamer.quickshop.nonquickshopstuff.com.rylinaux.plugman.util;
-
 /*
  * #%L
  * PlugMan
@@ -25,6 +23,8 @@ package org.maxgamer.quickshop.nonquickshopstuff.com.rylinaux.plugman.util;
  * THE SOFTWARE.
  * #L%
  */
+
+package org.maxgamer.quickshop.nonquickshopstuff.com.rylinaux.plugman.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -116,11 +116,13 @@ public class PluginUtil {
 
         pluginManager.disablePlugin(plugin);
 
-        if (plugins != null)
+        if (plugins != null) {
             plugins.remove(plugin);
+        }
 
-        if (names != null)
+        if (names != null) {
             names.remove(name);
+        }
 
         if (listeners != null && reloadlisteners) {
             for (SortedSet<RegisteredListener> set : listeners.values()) {

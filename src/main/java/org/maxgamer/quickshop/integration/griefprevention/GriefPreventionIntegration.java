@@ -127,7 +127,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
                             shop.delete();
                             return;
                         }
-                        if (event.getIdentifier().equals("all") || event.getIdentifier().equals("public")) { //All
+                        if ("all".equals(event.getIdentifier()) || "public".equals(event.getIdentifier())) { //All
                             plugin.log("[SHOP DELETE] GP Integration: All/Public delete #" + event.getIdentifier());
                             shop.delete();
                             return;

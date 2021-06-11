@@ -120,6 +120,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
      * @param givenStack   The second item stack
      * @return true if the itemstacks match. (Material, durability, enchants, name)
      */
+    @Override
     public boolean matches(@Nullable ItemStack requireStack, @Nullable ItemStack givenStack) {
         if (requireStack == null && givenStack == null) {
             return true;
@@ -455,7 +456,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
                 }
                 return true;
             }));
-            if (!Util.getNMSVersion().equals("v1_13_R1") && !Util.getNMSVersion().equals("v1_13_R2")) {
+            if (!"v1_13_R1".equals(Util.getNMSVersion()) && !"v1_13_R2".equals(Util.getNMSVersion())) {
                 addIfEnable(itemMatcherConfig, "custommodeldata", ((meta1, meta2) -> {
                     if (meta1.hasCustomModelData() != meta2.hasCustomModelData()) {
                         return false;
@@ -465,7 +466,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
                     }
                     return true;
                 }));
-                if (!Util.getNMSVersion().equals("v1_14_R1")) {
+                if (!"v1_14_R1".equals(Util.getNMSVersion())) {
                     addIfEnable(itemMatcherConfig, "suspiciousStew", ((meta1, meta2) -> {
                         if ((meta1 instanceof SuspiciousStewMeta) != (meta2 instanceof SuspiciousStewMeta)) {
                             return false;

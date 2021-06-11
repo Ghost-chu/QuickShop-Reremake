@@ -171,8 +171,8 @@
       "transfer": "&e将某人的所有商店转移给其他人",
       "removeworld": "&e删除指定世界中的所有商店",
       "currency": "&e设置或移除该商店的货币类型设置",
-      "ban": "&eBans a player from the shop",
-      "unban": "&eUnbans a player from the shop",
+      "ban": "&e封禁商店中的玩家",
+      "unban": "&e解禁商店中的玩家",
       "freeze": "&e禁用或启用商店交易",
       "lock": "&e切换商店锁状态"
     },
@@ -319,5 +319,5 @@
   "clean-warning": "&e这个命令将清理&c所有&e在不允许创建商店的世界的、出售/购买不允许的物品的，以及 &c&l所有在服务器没有加载的世界的商店， 请在确保您的商店数据备份完整后使用 &b/qs cleanghost confirm &e来继续。",
   "shop-creation-failed": "&c商店创建失败，请与服务器管理员联系。",
   "shop-owner-self-trade": "&e你正在和自己的商店进行交易，你可能不会得到任何钱。",
-  "chest-title": "QuickShop Store"
+  "chest-title": "QuickShop商店"
 }

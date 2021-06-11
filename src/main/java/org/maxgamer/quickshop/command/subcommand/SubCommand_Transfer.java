@@ -87,7 +87,9 @@ public class SubCommand_Transfer implements CommandProcesser {
             }
             MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.transfer-success-other", sender, Integer.toString(shopList.size()), fromPlayerName, targetPlayerName));
 
-        } else MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.wrong-args", sender));
+        } else {
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.wrong-args", sender));
+        }
     }
 
     @Override

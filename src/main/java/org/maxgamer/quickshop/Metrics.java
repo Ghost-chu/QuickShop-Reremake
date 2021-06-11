@@ -70,7 +70,7 @@ public class Metrics {
     static {
         // You can use the property to disable the check in your test environment
         if (System.getProperty("bstats.relocatecheck") == null
-                || !System.getProperty("bstats.relocatecheck").equals("false")) {
+                || !"false".equals(System.getProperty("bstats.relocatecheck"))) {
             // Maven's Relocate is clever and changes strings, too. So we have to use this little "trick"
             // ... :D
             final String defaultPackage =
@@ -362,8 +362,7 @@ public class Metrics {
                             ? ((Collection<?>) onlinePlayersMethod.invoke(plugin.getServer())).size()
                             : ((Player[]) onlinePlayersMethod.invoke(plugin.getServer())).length;
         } catch (Exception e) {
-            playerAmount =
-                    plugin.getServer().getOnlinePlayers().size(); // Just use the new method if the Reflection failed
+            playerAmount = plugin.getServer().getOnlinePlayers().size(); // Just use the new method if the Reflection failed
         }
         int onlineMode = plugin.getServer().getOnlineMode() ? 1 : 0;
         String bukkitVersion = plugin.getServer().getVersion();

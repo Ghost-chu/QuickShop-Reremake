@@ -99,12 +99,8 @@ public class HttpRequest implements Closeable {
      * @return a URL object
      * @throws RuntimeException if the URL is invalid
      */
-    public static URL url(String url) {
-        try {
-            return new URL(url);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+    public static URL url(String url) throws MalformedURLException {
+        return new URL(url);
     }
 
     /**
@@ -191,7 +187,7 @@ public class HttpRequest implements Closeable {
      * @return this object
      */
     public HttpRequest header(String key, String value) {
-        if (key.equalsIgnoreCase("Content-Type")) {
+        if ("Content-Type".equalsIgnoreCase(key)) {
             contentType = value;
         } else {
             headers.put(key, value);

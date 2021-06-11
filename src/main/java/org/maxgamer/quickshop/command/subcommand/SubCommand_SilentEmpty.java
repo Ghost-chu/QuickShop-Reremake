@@ -46,20 +46,6 @@ public class SubCommand_SilentEmpty implements CommandProcesser {
         }
 
         Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(UUID.fromString(cmdArg[0]));
-//        if (cmdArg.length < 1) {
-//            Util.debugLog("Exception on command! Canceling!");
-//            return;
-//        }
-//
-//        final Shop shop =
-//                plugin
-//                        .getShopManager()
-//                        .getShop(
-//                                new Location(
-//                                        plugin.getServer().getWorld(cmdArg[0]),
-//                                        Integer.parseInt(cmdArg[1]),
-//                                        Integer.parseInt(cmdArg[2]),
-//                                        Integer.parseInt(cmdArg[3])));
 
         if (!(shop instanceof ContainerShop)) {
             MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));

@@ -57,10 +57,6 @@ public class SubCommand_Currency implements CommandProcesser {
 
             if (shop != null) {
                 if (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.currency")) {
-                    //shop.setShopType(ShopType.BUYING);
-                    // shop.setSignText();
-                    //shop.update();
-                    //MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.now-buying", sender, Util.getItemStackName(shop.getItem())));
                     if (cmdArg.length < 1) {
                         shop.setCurrency(null);
                         MsgUtil.sendMessage(sender, MsgUtil.getMessage("currency-unset", sender));

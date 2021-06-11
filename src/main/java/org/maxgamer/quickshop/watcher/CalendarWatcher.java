@@ -85,20 +85,27 @@ public class CalendarWatcher extends BukkitRunnable {
         int weekNow = c.get(Calendar.WEEK_OF_MONTH);
         int monthNow = c.get(Calendar.MONTH);
         int yearNow = c.get(Calendar.YEAR);
-        if (secondNow != secondRecord)
+        if (secondNow != secondRecord) {
             type = CalendarEvent.CalendarTriggerType.SECOND;
-        if (minuteNow != minuteRecord)
+        }
+        if (minuteNow != minuteRecord) {
             type = CalendarEvent.CalendarTriggerType.MINUTE;
-        if (hourNow != hourRecord)
+        }
+        if (hourNow != hourRecord) {
             type = CalendarEvent.CalendarTriggerType.HOUR;
-        if (dayNow != dayRecord)
+        }
+        if (dayNow != dayRecord) {
             type = CalendarEvent.CalendarTriggerType.DAY;
-        if (weekNow != weekRecord)
+        }
+        if (weekNow != weekRecord) {
             type = CalendarEvent.CalendarTriggerType.WEEK;
-        if (monthNow != monthRecord)
+        }
+        if (monthNow != monthRecord) {
             type = CalendarEvent.CalendarTriggerType.MONTH;
-        if (yearNow != yearRecord)
+        }
+        if (yearNow != yearRecord) {
             type = CalendarEvent.CalendarTriggerType.YEAR;
+        }
 
 
         configuration.set("second", secondNow);

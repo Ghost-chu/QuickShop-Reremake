@@ -25,11 +25,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.shop.ShopType;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+
+import java.util.Objects;
 
 
 public class InternalListener implements Listener {
@@ -44,8 +47,8 @@ public class InternalListener implements Listener {
     }
 
 
-    public boolean isForbidden(Material shopMaterial, Material itemMaterial) {
-        if (shopMaterial != itemMaterial) {
+    public boolean isForbidden(@NotNull Material shopMaterial, @NotNull Material itemMaterial) {
+        if (!Objects.equals(shopMaterial, itemMaterial)) {
             return false;
         }
         return shopMaterial.isBlock() && shopMaterial.name().toUpperCase().endsWith("SHULKER_BOX");

@@ -186,7 +186,7 @@
     "buying": "Kjøper {0}",
     "stack-buying": "Kjøper {0}",
     "item": "{0}",
-    "price": "{0} hver",
+    "price": "{0} stk",
     "stack-price": "{0} per {1}x {2}",
     "unlimited": "Ubegrenset",
     "status-available": "&a",

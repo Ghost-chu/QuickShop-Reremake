@@ -44,6 +44,7 @@ public class DatabaseConnection implements AutoCloseable {
         }
     }
 
+    @Override
     public synchronized void close() {
         try {
             markUsing();

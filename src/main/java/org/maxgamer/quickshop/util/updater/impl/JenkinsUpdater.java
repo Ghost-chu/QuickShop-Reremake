@@ -90,11 +90,7 @@ public class JenkinsUpdater implements QuickUpdater {
 
     @Override
     public byte[] update(@NotNull VersionType versionType) throws IOException {
-        InputStream is = HttpRequest.get(new URL(jobUrl + "lastSuccessfulBuild/artifact/target/QuickShop.jar"))
-                .header("User-Agent", "QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion())
-                .execute()
-                .getInputStream();
-        try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+        try (InputStream is = HttpRequest.get(new URL(jobUrl + "lastSuccessfulBuild/artifact/target/QuickShop.jar")).header("User-Agent", "QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion()).execute().getInputStream(); ByteArrayOutputStream os = new ByteArrayOutputStream()) {
             byte[] buff = new byte[1024];
             int len;
             long downloaded = 0;
@@ -117,10 +113,10 @@ public class JenkinsUpdater implements QuickUpdater {
     public void install(byte[] bytes) throws IOException {
         File pluginFolder = new File("plugins");
         if (!pluginFolder.exists()) {
-            throw new RuntimeException("Can't find the plugins folder.");
+            throw new IOException("Can't find the plugins folder.");
         }
         if (!pluginFolder.isDirectory()) {
-            throw new RuntimeException("Plugins not a folder.");
+            throw new IOException("Plugins not a folder.");
         }
         File[] plugins = pluginFolder.listFiles();
         if (plugins == null) {
