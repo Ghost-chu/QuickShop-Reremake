@@ -110,6 +110,7 @@ public class InventoryPreview implements Listener {
             return;
         }
         final int size = 9;
+
         inventory = plugin.getServer().createInventory(new QuickShopPreviewInventoryHolder(itemStack, size), size, MsgUtil.getMessage("menu.preview", player));
         for (int i = 0; i < size; i++) {
             inventory.setItem(i, itemStack);

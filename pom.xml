@@ -286,7 +286,22 @@
                     <keypass>${env.quickshop-signer-pwd}</keypass>
                 </configuration>
             </plugin>
-
+            <!--            <plugin>-->
+            <!--                &lt;!&ndash; https://mvnrepository.com/artifact/org.codehaus.mojo/exec-maven-plugin &ndash;&gt;-->
+            <!--                <groupId>org.codehaus.mojo</groupId>-->
+            <!--                <artifactId>exec-maven-plugin</artifactId>-->
+            <!--                <version>3.0.0</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <goals>-->
+            <!--                            <goal>java</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--                <configuration>-->
+            <!--                    <executable>${basedir}/scripts/calculate-version.sh</executable>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
         </plugins>
         <resources>
             <resource>
@@ -881,5 +896,13 @@
             <version>latest</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>spigot</groupId>
+            <artifactId>spigot117</artifactId>
+            <version>1.17</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/spigot-1.17.jar</systemPath>
+        </dependency>
+
     </dependencies>
 </project>
