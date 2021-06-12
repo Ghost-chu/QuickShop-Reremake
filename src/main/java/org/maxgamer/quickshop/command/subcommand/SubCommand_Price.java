@@ -146,6 +146,8 @@ public class SubCommand_Price implements CommandProcesser {
                 return;
             }
 
+            //TODO Use EconomyTransaction
+
             if (fee > 0 && !plugin.getEconomy().withdraw(p.getUniqueId(), fee, shop.getLocation().getWorld(), shop.getCurrency())) {
                 MsgUtil.sendMessage(sender,
                         MsgUtil.getMessage(
