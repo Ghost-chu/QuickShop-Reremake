@@ -74,10 +74,20 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         this.plugin = plugin;
         if ("default".equalsIgnoreCase(languageCode)) {
             Locale locale = Locale.getDefault();
-            languageCode = locale.getLanguage() + "_" + locale.getCountry();
-            if (StringUtils.isEmpty(locale.getCountry())) {
-                languageCode = locale.toLanguageTag();
-                plugin.getLogger().info("Your system offer empty data about locale country, we will fallback to system language default country, current language set to " + languageCode + ". If it incorrect, please edit it in config.yml.");
+            String language = locale.getLanguage();
+            String country = locale.getCountry();
+            boolean isLanguageEmpty = StringUtils.isEmpty(language);
+            boolean isCountryEmpty = StringUtils.isEmpty(country);
+            if (isLanguageEmpty && isCountryEmpty) {
+                plugin.getLogger().warning("Unable to get language code, fallback to en_US, please change game-language option in config.yml.");
+                languageCode = "en_US";
+            } else {
+                if (isCountryEmpty || isLanguageEmpty) {
+                    languageCode = isLanguageEmpty ? country + '_' + country : language + '_' + language;
+                    plugin.getLogger().warning("Unable to get language code, guessing" + languageCode + " instead, If it's incorrect, please change game-language option in config.yml.");
+                } else {
+                    languageCode = language + '_' + country;
+                }
             }
         }
         languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
