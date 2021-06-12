@@ -21,11 +21,6 @@ package org.maxgamer.quickshop.util.envcheck;
 
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.DisplayItem;
@@ -45,7 +40,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 
-public class EnvironmentChecker {
+public final class EnvironmentChecker {
     private final QuickShop plugin;
     private final List<Method> tests = new ArrayList<>();
 
@@ -112,7 +107,6 @@ public class EnvironmentChecker {
                 }
                 if (!properties.containsKey("org.maxgamer.quickshop.util.envcheck.skip." + envCheckEntry.name().toUpperCase(Locale.ROOT).replace(" ", "_"))) {
                     executeResult = (ResultContainer) declaredMethod.invoke(this);
-                    //plugin.getLogger().info("Result: "+executeResult.getResultMessage());
                     if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if its worse than the latest one.
                         result = executeResult.getResult();
                     }
@@ -145,6 +139,8 @@ public class EnvironmentChecker {
                         Util.debugLog("[Fatal-Disable] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                         skipAllTest = true; //We need to disable the plugin NOW! Some HUGE exception is happening here, hurry up!
                         break;
+                    default:
+                        plugin.getLogger().warning("[UNDEFINED] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                 }
                 if (executeResult != null) {
                     results.put(envCheckEntry, executeResult);
@@ -160,7 +156,6 @@ public class EnvironmentChecker {
     }
 
     public boolean isOutdatedJvm() {
-        //String jvmVersion = ManagementFactory.getRuntimeMXBean().getVmVersion();
         String jvmVersion = System.getProperty("java.version"); //Use java version not jvm version.
         String[] splitVersion = jvmVersion.split("\\.");
         if (splitVersion.length < 1) {
@@ -180,6 +175,7 @@ public class EnvironmentChecker {
     @EnvCheckEntry(name = "Signature Verify", priority = 0, stage = {EnvCheckEntry.Stage.ON_LOAD, EnvCheckEntry.Stage.ON_ENABLE})
     public ResultContainer securityVerify() {
         JarVerifyTool tool = new JarVerifyTool();
+        JarFile jarFile = null;
         try {
             ClassLoader loader = this.getClass().getClassLoader();
 
@@ -195,7 +191,7 @@ public class EnvironmentChecker {
             String jarPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
             jarPath = URLDecoder.decode(jarPath, "UTF-8");
             Util.debugLog("JarPath selected: " + jarPath);
-            JarFile jarFile = new JarFile(jarPath);
+            jarFile = new JarFile(jarPath);
             List<JarEntry> modifiedEntry = tool.verify(jarFile);
             if (modifiedEntry.isEmpty()) {
                 return new ResultContainer(CheckResult.PASSED, "The jar is valid. No issues detected.");
@@ -214,6 +210,13 @@ public class EnvironmentChecker {
         } catch (IOException ioException) {
             plugin.getLogger().log(Level.WARNING, "ALERT: QuickShop cannot validate itself. This may be caused by you having deleted QuickShop's jar while the server is running.", ioException);
             return new ResultContainer(CheckResult.WARNING, "Failed to validate digital signature! Security may be compromised!");
+        } finally {
+            if (jarFile != null) {
+                try {
+                    jarFile.close();
+                } catch (IOException ignored) {
+                }
+            }
         }
 
         //tool.verify()
@@ -323,7 +326,7 @@ public class EnvironmentChecker {
             trigged = true;
         }
         if (isFabricBasedServer()) {
-            plugin.getLogger().warning("WARN: QSRR is not designed and tested for Fabric!");
+            plugin.getLogger().warning("WARN: QuickShop is not designed and tested for Fabric!");
             plugin.getLogger().warning("WARN: Use at you own risk!.");
             plugin.getLogger().warning("WARN: No support will be given!");
             trigged = true;
@@ -332,61 +335,6 @@ public class EnvironmentChecker {
             return new ResultContainer(CheckResult.WARNING, "No support will be given to modded servers.");
         }
         return new ResultContainer(CheckResult.PASSED, "Server is unmodified.");
-    }
-
-    public boolean checkJulySafe() {
-        Plugin julySafe = plugin.getServer().getPluginManager().getPlugin("JulySafe");
-        boolean triggered = false;
-        if (julySafe != null) {
-            for (RegisteredListener registeredListener : BlockPlaceEvent.getHandlerList().getRegisteredListeners()) {
-                if (registeredListener.getPlugin().equals(julySafe)) {
-                    Class<?> clazz = null;
-                    try {
-                        clazz = Class.forName("com.github.julyss2019.bukkit.plugins.julysafe.listeners.QuickShopBugFixListener");
-                    } catch (ClassNotFoundException ignored) {
-                        return false;
-                    }
-                    if (registeredListener.getListener().getClass().equals(clazz)
-                            || registeredListener.getListener().getClass().getName().contains("julysafe.listeners.QuickShopBugFixListener")) {
-                        HandlerList.unregisterAll(registeredListener.getListener()); //Unregister JulySafe's QuickShopBugFixListener
-                        triggered = true;
-                    }
-                }
-            }
-            if (julySafe.getConfig().getBoolean("quickshop_bug_fix.enabled")) {
-                julySafe.getConfig().set("quickshop_bug_fix.enabled", false); // Disables JulySafe's QuickShopBugFix module in configuration.
-                plugin.getLogger().warning("========================================");// Send chinese alert to users because this is a Chinese plugin.
-                plugin.getLogger().warning("警告：检测到您已安装 JulySafe 插件，且已开启 QuickShop 偷东西bug修复模块");
-                plugin.getLogger().warning("警告：我们已确认不存在此 BUG 且此模块对正常 Gameplay 造成了严重影响且");
-                plugin.getLogger().warning("警告：实际上并不会真正做到修复的效果。并且存在潜在破坏 QuickShop 本身保护机制的行为。");
-                plugin.getLogger().warning("警告：我们强烈您使用 虚拟悬浮物 (Virtual DisplayItem) 解决潜在的安全隐患。");
-                plugin.getLogger().warning("警告：同时我(Ghost_chu)也对国内部分开发者将其他插件 BUG 在不与插件本身开发者交流报告的情况下直接作为插件卖点宣传的行为强烈抨击。");
-                plugin.getLogger().warning("警告：我长期活跃并维护相关插件，这些所谓的修复插件开发者完全应该可以联系插件开发者报告错误，但是这些插件的插件开发者并没有这么做。");
-                plugin.getLogger().warning("警告：如果你说你的修复模块有点用，那么我也可以接受；" +
-                        "而 JulySafe 插件采用了完全修复不了问题的解决方案去修复了一个 " + ChatColor.RED + ChatColor.BOLD + "根本不存在的BUG");
-                plugin.getLogger().warning("警告：并将锅甩给 QuickShop 的行为是我所不能接受的，在此公开对此行为进行批评。");
-                plugin.getLogger().warning("========================================");
-                plugin.getLogger().warning("警告：QuickShop 已自动采取措施在配置文件中禁用此模块并注销 JulySafe 的 QuickShopBugFixListener 监听器使此模块强制失效。");
-                plugin.getLogger().warning("警告：您的服务器将会在25秒后继续加载，以确保您已阅读相关声明，感谢您的理解。");
-                triggered = true;
-            }
-            if (triggered) {
-                try {
-                    Thread.sleep(25 * 1000);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        }
-        return triggered;
-    }
-
-    @EnvCheckEntry(name = "JulySafe Test", priority = 5)
-    public ResultContainer julySafeTest() {
-        if (checkJulySafe()) {
-            return new ResultContainer(CheckResult.WARNING, "JulySafe is installed and \"QuickShop *bugfix* \" module is enabled");
-        }
-        return new ResultContainer(CheckResult.PASSED, "JulySafe is not installed or qs bug fix module is disabled.");
     }
 
     @EnvCheckEntry(name = "CoreSupport Test", priority = 6)
@@ -422,10 +370,20 @@ public class EnvironmentChecker {
         return new ResultContainer(CheckResult.PASSED, "Passed checks");
     }
 
-    @EnvCheckEntry(name = "PacketListenerAPI Conflict Test", priority = 9)
+    @EnvCheckEntry(name = "GameVersion supporting Test", priority = 9)
+    public ResultContainer gamerVersionSupportTest() {
+        String nmsVersion = Util.getNMSVersion();
+        GameVersion gameVersion = GameVersion.get(nmsVersion);
+        if (gameVersion == GameVersion.UNKNOWN) {
+            return new ResultContainer(CheckResult.WARNING, "Your Minecraft server version not tested by developers, QuickShop may ran into issues on this version.");
+        }
+        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+    }
+
+    @EnvCheckEntry(name = "PacketListenerAPI Conflict Test", priority = 10)
     public ResultContainer plapiConflictTest() {
         if (plugin.isDisplay() && DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && Bukkit.getPluginManager().isPluginEnabled("ProtocolLib") && Bukkit.getPluginManager().isPluginEnabled("PacketListenerAPI")) {
-            return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem may stop working on your server. We are already aware that [PacketListenerAPI] and [ProtocolLib] are conficting. (QuickShops requirement to send fake items). If your display is not showing, please uninstall [PacketListenerAPI].");
+            return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem may stop working on your server. We are already aware that [PacketListenerAPI] and [ProtocolLib] are conflicting. (QuickShops requirement to send fake items). If your display is not showing, please uninstall [PacketListenerAPI].");
         }
         return new ResultContainer(CheckResult.PASSED, "Passed checks");
     }

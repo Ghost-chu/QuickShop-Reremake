@@ -28,6 +28,12 @@ import org.maxgamer.quickshop.economy.EconomyCore;
 import org.maxgamer.quickshop.util.language.game.GameLanguage;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 
+/**
+ * ServiceInjector used for "Replaceable Modules" features that allow 3rd party QuickShop addon
+ * replace some modules used in QuickShop internal by register as service.
+ *
+ * @author Ghost_chu
+ */
 public class ServiceInjector {
     public static @NotNull EconomyCore getEconomyCore(@NotNull EconomyCore def) {
         @Nullable RegisteredServiceProvider<? extends EconomyCore> registeredServiceProvider =

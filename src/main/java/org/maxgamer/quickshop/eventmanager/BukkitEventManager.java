@@ -23,6 +23,7 @@ import org.bukkit.event.Event;
 import org.maxgamer.quickshop.QuickShop;
 
 public class BukkitEventManager implements QuickEventManager {
+    @Override
     public void callEvent(Event event) {
         QuickShop.getInstance().getServer().getPluginManager().callEvent(event);
     }

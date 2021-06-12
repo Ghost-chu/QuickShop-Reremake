@@ -25,7 +25,7 @@
     <artifactId>QuickShop</artifactId>
 
     <properties>
-        <pluginver>4.0.8.3</pluginver>
+        <pluginver>4.0.8.7</pluginver>
         <package>org.maxgamer.quickshop</package>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -286,7 +286,22 @@
                     <keypass>${env.quickshop-signer-pwd}</keypass>
                 </configuration>
             </plugin>
-
+            <!--            <plugin>-->
+            <!--                &lt;!&ndash; https://mvnrepository.com/artifact/org.codehaus.mojo/exec-maven-plugin &ndash;&gt;-->
+            <!--                <groupId>org.codehaus.mojo</groupId>-->
+            <!--                <artifactId>exec-maven-plugin</artifactId>-->
+            <!--                <version>3.0.0</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <goals>-->
+            <!--                            <goal>java</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--                <configuration>-->
+            <!--                    <executable>${basedir}/scripts/calculate-version.sh</executable>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
         </plugins>
         <resources>
             <resource>
@@ -547,7 +562,7 @@
         <dependency>
             <groupId>com.github.angeschossen</groupId>
             <artifactId>LandsAPI</artifactId>
-            <version>5.7.4</version>
+            <version>5.10.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -584,7 +599,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.17-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -604,7 +619,7 @@
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
-            <version>7.0.4</version>
+            <version>7.0.5</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

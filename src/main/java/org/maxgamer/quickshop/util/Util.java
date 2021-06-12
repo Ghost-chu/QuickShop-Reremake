@@ -349,6 +349,9 @@ public class Util {
      */
     @NotNull
     public static String format(double n, @Nullable Shop shop) {
+        if (shop == null) {
+            return "Error: Shop null";
+        }
         return format(n, disableVaultFormat, shop.getLocation().getWorld(), shop);
     }
 
@@ -535,7 +538,6 @@ public class Util {
             return false;
         }
         org.bukkit.block.data.type.Chest chestBlockData = (org.bukkit.block.data.type.Chest) blockData;
-        //Util.debugLog("Chest at " + state.getLocation() + " type  is " + chestBlockData.getType().name());
         return chestBlockData.getType() != org.bukkit.block.data.type.Chest.Type.SINGLE;
         //String blockDataStr = state.getBlockData().getAsString();
         //Black magic for detect double chest
@@ -645,16 +647,10 @@ public class Util {
                 try {
                     Material mat = Material.matchMaterial(sp[0]);
                     if (mat == null) {
-                        plugin
-                                .getLogger()
-                                .warning(
-                                        "Material "
-                                                + sp[0]
-                                                + " in config.yml can't match with a valid Materials, check your config.yml!");
+                        plugin.getLogger().warning("Material " + sp[0] + " in config.yml can't match with a valid Materials, check your config.yml!");
                         continue;
                     }
-                    restrictedPrices.put(
-                            mat, new SimpleEntry<>(Double.valueOf(sp[1]), Double.valueOf(sp[2])));
+                    restrictedPrices.put(mat, new SimpleEntry<>(Double.valueOf(sp[1]), Double.valueOf(sp[2])));
                 } catch (Exception e) {
                     plugin.getLogger().warning("Invalid price restricted material: " + s);
                 }
@@ -666,7 +662,7 @@ public class Util {
                 continue;
             }
 
-            if (data[0].equalsIgnoreCase("*")) {
+            if ("*".equalsIgnoreCase(data[0])) {
                 bypassedCustomStackSize = Integer.parseInt(data[1]);
             }
             Material mat = Material.matchMaterial(data[0]);
@@ -713,7 +709,6 @@ public class Util {
     }
 
     private static byte[] toByteArray(@NotNull InputStream in) throws IOException {
-
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024 * 4];
         int n;
@@ -764,18 +759,12 @@ public class Util {
                     if (location == null) {
                         return; // Virtual GUI
                     }
-
                     inv.setItem(i, new ItemStack(Material.AIR));
                     Util.debugLog("Found shop display item in an inventory, Removing...");
-                    MsgUtil.sendGlobalAlert(
-                            "[InventoryCheck] Found displayItem in inventory at "
-                                    + location
-                                    + ", Item is "
-                                    + itemStack.getType().name());
+                    MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + location + ", Item is " + itemStack.getType().name());
                 }
             }
-        } catch (Exception t) {
-            // Ignore
+        } catch (Exception ignored) {
         }
     }
 
@@ -868,10 +857,7 @@ public class Util {
      * @return true if the given location is loaded or not.
      */
     public static boolean isLoaded(@NotNull Location loc) {
-
-        // plugin.getLogger().log(Level.WARNING, "Checking isLoaded(Location loc)");
         if ((!getNMSVersion().contains("1_13") && !loc.isWorldLoaded()) || loc.getWorld() == null) {
-            // plugin.getLogger().log(Level.WARNING, "Is not loaded. (No world)");
             return false;
         }
         // Calculate the chunks coordinates. These are 1,2,3 for each chunk, NOT
@@ -918,21 +904,6 @@ public class Util {
         BlockFace towardsLeft = getRightSide(chest.getFacing());
         BlockFace actuallyBlockFace = chest.getType() == org.bukkit.block.data.type.Chest.Type.LEFT ? towardsLeft : towardsLeft.getOppositeFace();
         return block.getRelative(actuallyBlockFace);
-
-//
-//        Chest oneSideOfChest = (Chest) state;
-//        InventoryHolder chestHolder = oneSideOfChest.getInventory().getHolder();
-//        if (chestHolder instanceof DoubleChest) {
-//            DoubleChest doubleChest = (DoubleChest) chestHolder;
-//            Chest leftC = (Chest) doubleChest.getLeftSide();
-//            Chest rightC = (Chest) doubleChest.getRightSide();
-//            if (equalsBlockStateLocation(oneSideOfChest.getLocation(), Objects.requireNonNull(rightC).getLocation())) {
-//                return leftC.getBlock();
-//            } else {
-//                return rightC.getBlock();
-//            }
-//        }
-//        return null;
     }
 
     /**
@@ -953,7 +924,7 @@ public class Util {
      * @return Returns true if the item is a tool (Has durability) or false if it doesn't.
      */
     public static boolean isTool(@NotNull Material mat) {
-        return !(mat.getMaxDurability() == 0);
+        return mat.getMaxDurability() != 0;
     }
 
     /**
@@ -1262,8 +1233,8 @@ public class Util {
         try {
             double[] tps = ((double[]) tpsField.get(serverInstance));
             return tps[0];
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+        } catch (IllegalAccessException ignored) {
+            return 20.0;
         }
     }
 
@@ -1323,7 +1294,7 @@ public class Util {
      * @return DevEdition status
      */
     public static boolean isDevEdition() {
-        return !QuickShop.getInstance().getBuildInfo().getGitBranch().equalsIgnoreCase("release");
+        return !"release".equalsIgnoreCase(QuickShop.getInstance().getBuildInfo().getGitBranch());
     }
 
     /**
@@ -1426,11 +1397,13 @@ public class Util {
     public static void ensureThread(boolean async) {
         boolean isMainThread = Bukkit.isPrimaryThread();
         if (async) {
-            if (isMainThread)
+            if (isMainThread) {
                 throw new IllegalStateException("#[Illegal Access] This method require runs on async thread.");
+            }
         } else {
-            if (!isMainThread)
+            if (!isMainThread) {
                 throw new IllegalStateException("#[Illegal Access] This method require runs on server main thread.");
+            }
         }
     }
 

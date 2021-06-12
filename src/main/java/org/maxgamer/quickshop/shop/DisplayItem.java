@@ -81,8 +81,6 @@ public abstract class DisplayItem {
         if (itemStack == null) {
             return false;
         }
-        //    itemStack = itemStack.clone();
-        //    itemStack.setAmount(1);
         if (!itemStack.hasItemMeta()) {
             return false;
         }
@@ -190,7 +188,6 @@ public abstract class DisplayItem {
     @NotNull
     public static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
         itemStack = itemStack.clone();
-        //itemStack.setAmount(1);
         ItemMeta iMeta = itemStack.getItemMeta();
         if (iMeta == null) {
             iMeta = plugin.getServer().getItemFactory().getItemMeta(itemStack.getType());

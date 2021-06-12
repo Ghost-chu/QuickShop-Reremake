@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.shop;
 
+import lombok.EqualsAndHashCode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -100,7 +101,7 @@ public class ShopControlPanel {
         this.panelRegistry.remove(namespace);
     }
 
-
+    @EqualsAndHashCode
     public static class Entry {
         private final int priority;
         private final Function<Map.Entry<@NotNull CommandSender, @NotNull Shop>, @Nullable QuickComponent> executor;

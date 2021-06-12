@@ -89,8 +89,7 @@ public class ShopLoader {
         Timer totalLoadTimer = new Timer(true);
         this.plugin.getLogger().info("Loading shops from the database...");
         Timer fetchTimer = new Timer(true);
-        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops()) {
-            ResultSet rs = warpRS.getResultSet();
+        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
             this.plugin
                     .getLogger()
                     .info("Used " + fetchTimer.endTimer() + "ms to fetch all shops from the database.");
@@ -230,7 +229,7 @@ public class ShopLoader {
 
     @NotNull
     private YamlConfiguration extraUpgrade(@NotNull String extraString) {
-        if (!StringUtils.isEmpty(extraString) && !extraString.equalsIgnoreCase("QuickShop: {}")) {
+        if (!StringUtils.isEmpty(extraString) && !"QuickShop: {}".equalsIgnoreCase(extraString)) {
             Util.debugLog("Extra API -> Upgrading -> " + extraString.replaceAll("\n", ""));
         }
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
@@ -328,6 +327,23 @@ public class ShopLoader {
     @NotNull
     public List<Shop> getShopsInDatabase() {
         return new ArrayList<>(shopsInDatabase);
+    }
+
+    public void removeShopFromShopLoader(Shop shop) {
+        if (this.shopsInDatabase.remove(shop)) {
+            for (ShopDatabaseInfoOrigin origin : this.originShopsInDatabase) {
+                if (Objects.equals(shop.getLocation().getWorld().getName(), origin.getWorld())) {
+                    if (shop.getLocation().getBlockX() == origin.getX()) {
+                        if (shop.getLocation().getBlockY() == origin.getY()) {
+                            if (shop.getLocation().getBlockZ() == origin.getZ()) {
+                                this.originShopsInDatabase.remove(origin);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @NotNull

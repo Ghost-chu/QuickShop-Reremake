@@ -53,25 +53,18 @@ public class SubCommand_Unlimited implements CommandProcesser {
         while (bIt.hasNext()) {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-
             if (shop == null) {
                 continue;
             }
-
             shop.setUnlimited(!shop.isUnlimited());
-            // shop.setSignText();
             shop.update();
-
             if (shop.isUnlimited()) {
                 MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.toggle-unlimited.unlimited", sender));
                 return;
             }
-
             MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.toggle-unlimited.limited", sender));
-
             return;
         }
-
         MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 

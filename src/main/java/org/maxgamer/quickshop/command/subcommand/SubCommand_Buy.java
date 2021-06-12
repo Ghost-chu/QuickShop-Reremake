@@ -60,7 +60,6 @@ public class SubCommand_Buy implements CommandProcesser {
             if (shop != null) {
                 if (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control")) {
                     shop.setShopType(ShopType.BUYING);
-                    // shop.setSignText();
                     shop.update();
                     MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.now-buying", sender, Util.getItemStackName(shop.getItem())));
                 } else {
