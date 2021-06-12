@@ -1,6 +1,6 @@
 {
   "_comment": "Hei kääntäjä! Jos muokkaat tätä Githubista tai koodilähteistä, sinun pitäisi mennä https://crowdin.com/project/quickshop-reremake",
-  "file-test": "Tämä on testi tekstitiedosto. Käytämme sitä testataksemme onko message.json rikki. Voit täyttää sen millä tahansa pääsiäismunalla, josta pidät :)",
+  "file-test": "Tämä on testi tekstitiedosto. Käytämme sitä testataksemme onko messages.json rikki. Voit täyttää sen millä tahansa pääsiäismunalla, josta pidät :)",
   "translation-author": "Kääntäjät: eemunni, Antti",
   "translation-version": "Tuettu versio: Reremake",
   "translation-contributors": "Avustajat: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
@@ -10,9 +10,9 @@
   "no-anythings-in-your-hand": "&cKädessäsi ei ole mitään.",
   "no-permission": "&cSinulla ei ole oikeutta tehdä noin.",
   "integrations-check-failed-create": "&cIntergraatio {0} kielsi kaupan luomisen",
-  "integrations-check-failed-trade": "&cIntergraatio {0} kielsi kaupan vaihdon",
+  "integrations-check-failed-trade": "&cIntergraatio {0} kielsi kaupankäynnin",
   "3rd-plugin-build-check-failed": "&cKolmannen osapuolen lisäosa &l{0}&r&c kielsi oikeuden tarkistukset, onko sinulla oikeudet asennettu oikein täällä?",
-  "no-creative-break": "&cEt voi rikkoa muiden pelaajien kauppoja luova tilalla, vaihda selviytymistilaan tai yritä käyttää supertyökalua {0}.",
+  "no-creative-break": "&cEt voi rikkoa muiden pelaajien kauppoja luova tilassa, vaihda selviytymistilaan tai yritä käyttää supertyökalua {0}.",
   "trading-in-creative-mode-is-disabled": "&cEt voi ostaa/myydä luovassa tilassa.",
   "supertool-is-disabled": "&cSupertyökalu on poistettu käytöstä, et voi rikkoa mitään kauppoja.",
   "no-double-chests": "&cEt voi luoda tupla-arkkukauppaa.",
@@ -22,7 +22,7 @@
   "price-too-cheap": "&cHinnan pitää olla korkeampi kuin &e${0}",
   "no-price-change": "&cTuo ei vaihtaisi kaupan hintaa!",
   "you-cant-afford-a-new-shop": "&cKaupan luominen maksaa {0}.",
-  "player-bought-from-your-store-tax": "&cPelaaja {0} osti {1} {2} kaupastasi ja sait siitä {3} ja {4} veroina.",
+  "player-bought-from-your-store-tax": "&c{0} osti {1} {2} kaupastasi ja sait siitä {3} ({4} verot).",
   "you-cant-afford-to-change-price": "&cHinnan vaihtaminen maksaa {0}.",
   "success-created-shop": "&cKauppa luotu.",
   "success-removed-shop": "&aKauppa poistettu.",
@@ -35,17 +35,17 @@
   "not-a-number": "&cVoit ainoastaan antaa numeroita, kirjoitit {0}.",
   "exceeded-maximum": "&cArvo ylitti Javan enimmäisarvon.",
   "not-a-integer": "&cVoit ainoastaan antaa numeroita, kirjoitit {0}.",
-  "player-bought-from-your-store": "&cPelaaja {0} osti {1} {2} kaupastasi ja sait siitä {3}.",
+  "player-bought-from-your-store": "&c{0} osti {1} {2} kaupastasi ja sait siitä {3}.",
   "shop-out-of-stock": "&5Kaupastasi koordinaateissa {0}, {1}, {2} on loppunut {3}!",
   "shop-has-no-space": "&cKaupassa on {1} paikkaa tuotteelle {0}.",
-  "you-dont-have-that-many-items": "&cSinulla on vain {0} {1}",
+  "you-dont-have-that-many-items": "&cSinulla on vain {0} {1}.",
   "the-owner-cant-afford-to-buy-from-you": "&cTuotteen hinta on {0}, mutta omistajalla on vain {1}",
-  "player-sold-to-your-store": "&aPelaaja {0} myi {1} {2} kauppaasi.",
+  "player-sold-to-your-store": "&a{0} myi {1} {2} kauppaasi.",
   "shop-out-of-space": "&5Kauppasi koordinaateissa {0}, {1}, {2} on nyt täynnä.",
   "fee-charged-for-price-change": "&aMaksoit {0} vaihtaaksesi kaupan hinnan.",
   "price-is-now": "&aKaupan uusi hinta on nyt &e{0}",
-  "thats-not-a-number": "&cEpäkelpo numero.",
-  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consisten with vanilla behaviour",
+  "thats-not-a-number": "&cEpäkelpo numero",
+  "forbidden-vanilla-behavior": "&cToimenpide on kielletty, koska se ei ole yhdenmukainen vanilla käyttäytymisen kanssa",
   "no-price-given": "&cAnnathan validin hinnan.",
   "average-price-nearby": "&aLähistöllä olevien keskimääräinen hinta: &e{0}",
   "shop-has-changed": "&cKauppa, jota yritit käyttää, on muuttanut hintaansa tai muita tietoja sen jälkeen kun klikkasit sitä!",
@@ -105,12 +105,12 @@
     "this-shop-is-buying": "&aTämä kauppa &a&lOSTAA &atuotteita.",
     "this-shop-is-selling": "&aTämä kauppa &c&lMYY &atavaroita.",
     "shop-stack": "&aIrtotavaran määrä: &e{0}",
-    "effects": "&aEfektit: &e{0}"
+    "effects": "&aEfektit"
   },
   "bypassing-lock": "&cOhitetaan QuickShop lukitus!",
   "that-is-locked": "&cTämä kauppa on lukossa.",
-  "how-many-buy": "&aKirjoita chattin, kuinka monta haluat &bOSTAA&a. Voit ostaa &e{0}&a. Kirjoita &ball&a ostaaksesi kaiken.",
-  "how-many-sell": "&aKirjoita chattin, kuinka monta haluat &bMYYDÄ&a. Sinulla on &e{0}&a saatavilla. Kirjoita &ball&a myydäksesi kaiken.",
+  "how-many-buy": "&aKirjoita chattiin, kuinka monta haluat &bOSTAA&a. Voit ostaa &e{0}&a. Kirjoita &ball&a ostaaksesi kaiken.",
+  "how-many-sell": "&aKirjoita chattiin, kuinka monta haluat &bMYYDÄ&a. Sinulla on &e{0}&a saatavilla. Kirjoita &ball&a myydäksesi kaiken.",
   "not-allowed-to-create": "&cEt luultavasti voi luoda kauppaa tänne.",
   "blacklisted-item": "&cEt voi myydä tätä tavaraa, koska se on mustalla listalla",
   "how-much-to-trade-for": "&aKirjoita chattiin, mihin hintaan haluat vaihtaa &e{1}x {0}&a.",
@@ -170,7 +170,7 @@
       "removeall": "&ePoista KAIKKI kaupat kyseiseltä pelaajalta",
       "transfer": "&eSiirrä jonkun KAIKKI kaupat toiselle",
       "removeworld": "&ePoista KAIKKI kaupat kyseisestä maailmasta",
-      "currency": "&eSet or remove the currency setting of the shop",
+      "currency": "&eMuuta kaupan valuutta-asetuksia",
       "ban": "&eAntaa pelaajalle porttikiellon kauppaasi",
       "unban": "&ePoistaa pelaajan porttikiellon kaupastasi",
       "freeze": "&eOta kaupankäynti käyttöön tai poista se käytöstä",
@@ -193,7 +193,7 @@
     "status-unavailable": "&c",
     "out-of-stock": "Loppuunmyyty",
     "out-of-space": "Arkku Täynnä",
-    "freeze": "Trading disabled"
+    "freeze": "Vaihto jäädytetty"
   },
   "controlpanel": {
     "setowner": "&aOmistaja: &b{0} &e[&d&lVaihda&e]",
@@ -239,7 +239,7 @@
     "range": "[säde]",
     "amount": "[määrä]",
     "currency": "[valuutan nimi]",
-    "item": "[item]"
+    "item": "[tuote]"
   },
   "updatenotify": {
     "buttontitle": "[Päivitä nyt]",
@@ -273,7 +273,7 @@
       "github": "[GitHub]",
       "spigotmc": "[SpigotMC]",
       "bukkitdev": "[BukkitDev]",
-      "master": "[master]"
+      "master": "[Master]"
     }
   },
   "shop-removed-cause-ongoing-fee": "&cKauppasi {0} on poistettu, koska sinulla ei ollut rahaa sen pitämiseen!",
@@ -308,7 +308,7 @@
     "qa-issues": "&eLaadunvarmistuksen ongelmat: &b{0}%",
     "help-us": "&a[Auta meitä parantamaan käännösten laatua]"
   },
-  "currency-not-exists": "&cCannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.",
+  "currency-not-exists": "&cValuutan jonka kirjoitit ei löytynyt. Ehkä kirjoitit sen väärin tai valuutta ei ole käytössä tässä maailmassa.",
   "currency-set": "&aKaupan valuutta asetettu onnistuneesti {0}.",
   "currency-unset": "&aKaupan valuutta poistettiin onnistuneesti. Nyt käytetään oletusasetuksia.",
   "currency-not-support": "&cTämä ekonomia plugini ei tue multi-economy ominaisuutta.",
