@@ -128,9 +128,7 @@ public class DatabaseManager {
         DatabaseConnection connection = database.getConnection();
         String query = "SELECT * FROM " + table + " LIMIT 1";
         boolean match = false;
-        try {
-            PreparedStatement ps = connection.get().prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
+        try (PreparedStatement ps = connection.get().prepareStatement(query); ResultSet rs = ps.executeQuery()) {
             ResultSetMetaData metaData = rs.getMetaData();
             for (int i = 1; i <= metaData.getColumnCount(); i++) {
                 if (metaData.getColumnLabel(i).equals(column)) {
@@ -138,9 +136,6 @@ public class DatabaseManager {
                     break;
                 }
             }
-            rs.close();
-            ps.close();
-
         } catch (SQLException e) {
             return match;
         } finally {
@@ -158,8 +153,8 @@ public class DatabaseManager {
                 return;
             }
             DatabaseConnection dbconnection = this.database.getConnection();
-            Connection connection = dbconnection.get();
-            try {
+
+            try (Connection connection = dbconnection.get()) {
                 //start our commit
                 connection.setAutoCommit(false);
                 Timer ctimer = new Timer(true);
@@ -174,7 +169,6 @@ public class DatabaseManager {
                     if (task == null) {
                         break;
                     }
-                    // Util.debugLog("Executing the SQL task: " + task);
 
                     task.run(connection);
                     long tookTime = timer.endTimer();

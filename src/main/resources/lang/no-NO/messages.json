@@ -186,7 +186,7 @@
     "buying": "Kjøper {0}",
     "stack-buying": "Kjøper {0}",
     "item": "{0}",
-    "price": "{0} hver",
+    "price": "{0} stk",
     "stack-price": "{0} per {1}x {2}",
     "unlimited": "Ubegrenset",
     "status-available": "&a",
@@ -319,5 +319,5 @@
   "clean-warning": "&eDenne kommandoen vil fjerne &calle &ebutikker hvis de er skadet, ble opprettet i en verden som ikke er tillatt, selger eller kjøper varer som ikke er tillatt eller &c&lEKSISTERER I EN VERDEN SOM IKKE ER AKTIVERT&e. Sørg for å opprette en fullstendig sikkerhetskopi av butikkdataene først og bruk &b/qs cleanghost confirm &efor å fortsette.",
   "shop-creation-failed": "&cOpprettelse av butikk feilet, vennligst ta kontakt med server administrator.",
   "shop-owner-self-trade": "&eDu handler i din egen butikk, du vil ikke tjene penger på denne måten.",
-  "chest-title": "QuickShop Store"
+  "chest-title": "QuickShop Butikk"
 }

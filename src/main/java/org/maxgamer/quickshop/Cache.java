@@ -29,6 +29,11 @@ import org.maxgamer.quickshop.shop.Shop;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Cache is a utilities to quick access shops on large network with Caffeine Cache Library
+ *
+ * @author Ghost_chu
+ */
 public class Cache {
     private final QuickShop plugin;
     private final com.github.benmanes.caffeine.cache.Cache<Location, Shop> accessCaching = Caffeine

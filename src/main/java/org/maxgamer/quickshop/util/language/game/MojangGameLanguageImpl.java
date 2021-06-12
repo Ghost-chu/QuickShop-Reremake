@@ -25,6 +25,7 @@ import com.google.gson.JsonParser;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -54,13 +55,18 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 
+/**
+ * MojangGameLanguageImpl - A simple GameLanguage impl
+ *
+ * @author Ghost_chu and sandtechnology
+ */
 public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements GameLanguage {
     private final QuickShop plugin;
     @Nullable
     private final JsonObject lang;
 
-    private final static Lock lock = new ReentrantLock();
-    private static final Condition downloadCondition = lock.newCondition();
+    private final static Lock LOCK = new ReentrantLock();
+    private static final Condition DOWNLOAD_CONDITION = LOCK.newCondition();
 
     @SneakyThrows
     public MojangGameLanguageImpl(@NotNull QuickShop plugin, @NotNull String languageCode) {
@@ -68,20 +74,36 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         this.plugin = plugin;
         if ("default".equalsIgnoreCase(languageCode)) {
             Locale locale = Locale.getDefault();
-            languageCode = locale.getLanguage() + "_" + locale.getCountry();
+            String language = locale.getLanguage();
+            String country = locale.getCountry();
+            boolean isLanguageEmpty = StringUtils.isEmpty(language);
+            boolean isCountryEmpty = StringUtils.isEmpty(country);
+            if (isLanguageEmpty && isCountryEmpty) {
+                plugin.getLogger().warning("Unable to get language code, fallback to en_US, please change game-language option in config.yml.");
+                languageCode = "en_US";
+            } else {
+                if (isCountryEmpty || isLanguageEmpty) {
+                    languageCode = isLanguageEmpty ? country + '_' + country : language + '_' + language;
+                    plugin.getLogger().warning("Unable to get language code, guessing" + languageCode + " instead, If it's incorrect, please change game-language option in config.yml.");
+                } else {
+                    languageCode = language + '_' + country;
+                }
+            }
         }
         languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
-        lock.lock();
-        final GameLanguageLoadThread loadThread = new GameLanguageLoadThread(plugin, languageCode);
-        loadThread.start();
-        boolean timeout = !downloadCondition.await(20, TimeUnit.SECONDS);
-        if (timeout) {
-            Util.debugLog("No longer waiting file downloading because it now timed out, now downloading in background.");
-            plugin.getLogger().info("No longer waiting file downloading because it now timed out, now downloading in background, please reset itemi18n.yml, potioni18n.yml and enchi18n.yml after download completed.");
+        LOCK.lock();
+        try {
+            final GameLanguageLoadThread loadThread = new GameLanguageLoadThread(plugin, languageCode);
+            loadThread.start();
+            boolean timeout = !DOWNLOAD_CONDITION.await(20, TimeUnit.SECONDS);
+            if (timeout) {
+                Util.debugLog("No longer waiting file downloading because it now timed out, now downloading in background.");
+                plugin.getLogger().info("No longer waiting file downloading because it now timed out, now downloading in background, please reset itemi18n.yml, potioni18n.yml and enchi18n.yml after download completed.");
+            }
+            this.lang = loadThread.getLang(); // Get the Lang whatever thread running or died.
+        } finally {
+            LOCK.unlock();
         }
-        this.lang = loadThread.getLang(); // Get the Lang whatever thread running or died.
-        lock.unlock();
-
     }
 
     @Override
@@ -181,11 +203,16 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
             this.languageCode = languageCode;
         }
 
+        @Override
         public void run() {
-            lock.lock();
-            execute();
-            downloadCondition.signalAll();
-            lock.unlock();
+            LOCK.lock();
+            try {
+                execute();
+                DOWNLOAD_CONDITION.signalAll();
+            } finally {
+                LOCK.unlock();
+            }
+
         }
 
         public void execute() {
@@ -202,7 +229,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 String cacheSha1 = yamlConfiguration.getString("sha1", "ERROR");
                 String cacheCode = yamlConfiguration.getString("lang");
                 /* If language name is default, use computer language */
-                if (languageCode.equalsIgnoreCase("en_us")) {
+                if ("en_us".equalsIgnoreCase(languageCode)) {
                     isLatest = true;
                     return; //Ignore english language
                 }

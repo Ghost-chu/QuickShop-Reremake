@@ -23,7 +23,7 @@ import org.bukkit.event.Listener;
 import org.maxgamer.quickshop.QuickShop;
 
 public abstract class QSListener implements Listener {
-    public final QuickShop plugin;
+    protected final QuickShop plugin;
 
     public QSListener(QuickShop plugin) {
         this.plugin = plugin;

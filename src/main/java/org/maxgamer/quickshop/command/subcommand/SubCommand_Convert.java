@@ -72,7 +72,7 @@ public class SubCommand_Convert implements CommandProcesser {
             sender.sendMessage(ChatColor.RED + "Conversion is already running! Please wait until it has finished!");
             return;
         }
-        if (cmdArg[0].equalsIgnoreCase("mysql")) {
+        if ("mysql".equalsIgnoreCase(cmdArg[0])) {
             if (plugin.getDatabaseManager().getDatabase() instanceof MySQLCore) {
                 sender.sendMessage(ChatColor.RED + "Your database is already in MySQL!");
                 return;
@@ -100,7 +100,7 @@ public class SubCommand_Convert implements CommandProcesser {
                     running = false;
                 }
             });
-        } else if (cmdArg[0].equalsIgnoreCase("sqlite")) {
+        } else if ("sqlite".equalsIgnoreCase(cmdArg[0])) {
             if (plugin.getDatabaseManager().getDatabase() instanceof SQLiteCore) {
                 sender.sendMessage(ChatColor.GREEN + "Your database is already in SQLite!");
                 return;

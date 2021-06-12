@@ -73,7 +73,6 @@ public class InventoryPreview implements Listener {
             if (itemMeta.hasLore()) {
                 itemMeta.getLore().add(plugin.getPreviewProtectionLore());
             } else {
-                //itemMeta.setLore(Lists.newArrayList(plugin.getPreviewProtectionLore()));
                 itemMeta.setLore(Collections.singletonList(plugin.getPreviewProtectionLore()));
             }
             this.itemStack.setItemMeta(itemMeta);
@@ -111,6 +110,7 @@ public class InventoryPreview implements Listener {
             return;
         }
         final int size = 9;
+
         inventory = plugin.getServer().createInventory(new QuickShopPreviewInventoryHolder(), size, MsgUtil.getMessage("menu.preview", player));
         for (int i = 0; i < size; i++) {
             inventory.setItem(i, itemStack);

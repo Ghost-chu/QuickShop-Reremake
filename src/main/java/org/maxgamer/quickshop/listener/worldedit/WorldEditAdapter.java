@@ -37,6 +37,7 @@ public class WorldEditAdapter extends QSListener {
         this.weBukkit = weBukkit;
     }
 
+    @Override
     public void register() {
         weBukkit.getWorldEdit().getEventBus().register(this);
     }

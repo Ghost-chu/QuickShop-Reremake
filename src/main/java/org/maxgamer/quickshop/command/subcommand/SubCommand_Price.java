@@ -27,6 +27,7 @@ import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.economy.EconomyTransaction;
 import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -34,7 +35,6 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 
 @AllArgsConstructor
@@ -122,11 +122,6 @@ public class SubCommand_Price implements CommandProcesser {
             fee = plugin.getConfig().getDouble("shop.fee-for-price-change");
         }
 
-    /*if (fee > 0 && plugin.getEconomy().getBalance(p.getUniqueId()) < fee) {
-        MsgUtil.sendMessage(sender,
-            MsgUtil.getMessage("you-cant-afford-to-change-price", plugin.getEconomy().format(fee)));
-        return;
-    }*/
         final BlockIterator bIt = new BlockIterator(p, 10);
         // Loop through every block they're looking at upto 10 blocks away
         if (!bIt.hasNext()) {
@@ -150,41 +145,32 @@ public class SubCommand_Price implements CommandProcesser {
                 MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-price-change", sender));
                 return;
             }
-
-            if (fee > 0 && !plugin.getEconomy().withdraw(p.getUniqueId(), fee, shop.getLocation().getWorld(), shop.getCurrency())) {
-                MsgUtil.sendMessage(sender,
-                        MsgUtil.getMessage(
-                                "you-cant-afford-to-change-price", sender, plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency())));
-                return;
-            }
-
             if (fee > 0) {
-                MsgUtil.sendMessage(sender,
-                        MsgUtil.getMessage(
-                                "fee-charged-for-price-change", sender, plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency())));
-                try {
-                    //noinspection deprecation
-                    plugin
-                            .getEconomy()
-                            .deposit(
-                                    plugin
-                                            .getServer()
-                                            .getOfflinePlayer(
-                                                    Objects.requireNonNull(plugin.getConfig().getString("tax-account")))
-                                            .getUniqueId(),
-                                    fee, shop.getLocation().getWorld(), shop.getCurrency());
-                } catch (Exception e) {
-                    e.getMessage();
-                    plugin
-                            .getLogger()
-                            .log(
-                                    Level.WARNING,
-                                    "QuickShop can't pay taxes to the configured tax account! Please set the tax account name in the config.yml to an existing player!");
+                EconomyTransaction transaction = EconomyTransaction.builder()
+                        .allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false))
+                        .core(plugin.getEconomy())
+                        .from(p.getUniqueId())
+                        .amount(fee)
+                        .world(shop.getLocation().getWorld())
+                        .currency(shop.getCurrency())
+                        .build();
+                if (!transaction.failSafeCommit()) {
+                    EconomyTransaction.TransactionSteps steps = transaction.getSteps();
+                    if (steps == EconomyTransaction.TransactionSteps.CHECK) {
+                        MsgUtil.sendMessage(sender,
+                                MsgUtil.getMessage(
+                                        "you-cant-afford-to-change-price", sender, plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency())));
+                    } else {
+                        MsgUtil.sendMessage(sender,
+                                MsgUtil.getMessage(
+                                        "fee-charged-for-price-change", sender, plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency())));
+                        plugin.getLogger().log(Level.WARNING, "QuickShop can't pay taxes to the configured tax account! Please set the tax account name in the config.yml to an existing player: " + transaction.getLastError());
+                    }
+                    return;
                 }
             }
             // Update the shop
             shop.setPrice(price);
-            // shop.setSignText();
             shop.update();
             MsgUtil.sendMessage(sender,
                     MsgUtil.getMessage("price-is-now", sender, plugin.getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency())));
@@ -218,7 +204,6 @@ public class SubCommand_Price implements CommandProcesser {
 
             return;
         }
-
         MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 

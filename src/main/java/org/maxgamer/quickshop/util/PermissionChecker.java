@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.util;
 
+import com.griefcraft.lwc.LWC;
 import com.griefcraft.lwc.LWCPlugin;
 import com.griefcraft.model.Protection;
 import org.bukkit.Bukkit;
@@ -41,6 +42,11 @@ import org.maxgamer.quickshop.eventmanager.QuickEventManager;
 import org.maxgamer.quickshop.util.holder.Result;
 import org.primesoft.blockshub.BlocksHubBukkit;
 
+/**
+ * A helper to resolve issue around other plugins with BlockBreakEvent
+ *
+ * @author Ghost_chu and sandtechnology
+ */
 public class PermissionChecker {
     private final QuickShop plugin;
 
@@ -86,10 +92,13 @@ public class PermissionChecker {
 
         if (plugin.getLwcPlugin() != null) {
             LWCPlugin lwc = (LWCPlugin) plugin.getLwcPlugin();
-            Protection protection = lwc.getLWC().findProtection(block.getLocation());
-            if (protection != null && !protection.isOwner(player)) {
-                Util.debugLog("LWC reporting player no permission to access this block.");
-                return new Result("LWC");
+            LWC lwcInstance = lwc.getLWC();
+            if (lwcInstance != null) {
+                Protection protection = lwcInstance.findProtection(block.getLocation());
+                if (protection != null && !protection.isOwner(player)) {
+                    Util.debugLog("LWC reporting player no permission to access this block.");
+                    return new Result("LWC");
+                }
             }
 
         }

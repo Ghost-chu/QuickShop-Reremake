@@ -30,6 +30,8 @@ import java.util.logging.Logger;
 
 /**
  * BootError class contains print errors on /qs command when plugin failed launched.
+ *
+ * @author Ghost_chu
  */
 @EqualsAndHashCode
 @ToString

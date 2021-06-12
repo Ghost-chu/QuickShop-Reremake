@@ -28,6 +28,11 @@ import java.nio.file.Files;
 import java.util.Objects;
 import java.util.logging.Level;
 
+/**
+ * ConfigurationFixer is a utilities to help user automatically fix broken configuration.
+ *
+ * @author sandtechnology
+ */
 @AllArgsConstructor
 public class ConfigurationFixer {
     private final QuickShop plugin;

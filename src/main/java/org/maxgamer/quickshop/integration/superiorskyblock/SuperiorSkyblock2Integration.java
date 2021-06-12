@@ -79,8 +79,9 @@ public class SuperiorSkyblock2Integration extends QSIntegratedPlugin implements 
         if (onlyOwnerCanCreateShop) {
             return island.getOwner().equals(superiorPlayer);
         } else {
-            if (island.getOwner().equals(superiorPlayer))
+            if (island.getOwner().equals(superiorPlayer)) {
                 return true;
+            }
             return island.isMember(superiorPlayer);
         }
     }

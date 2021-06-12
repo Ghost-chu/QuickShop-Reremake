@@ -1,5 +1,5 @@
 {
-  "_comment": "Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake",
+  "_comment": "Ahoj překladateli! Pokud toto upravujeteš z Githubu nebo ze zdrojového kódu, měl bys mrknout na https://crowdin.com/project/quickshop-reremake",
   "file-test": "Toto je zkušební textový soubor. Používáme jej k testování, pokud jde o zprávy .json je rozbitý. Můžete jej vyplnit jakýmkoliv východním vejci, které se vám zde líbí :)",
   "translation-author": "Translator: Ghost_chu, Andre_601, LixCisCZ",
   "translation-version": "Verze: Reremake",
@@ -11,10 +11,10 @@
   "no-permission": "&cNa tuto akci nemáš práva.",
   "integrations-check-failed-create": "&cIntegrace {0} zamítla vytvoření obchodu",
   "integrations-check-failed-trade": "&cIntegrace {0} zamítla obchod",
-  "3rd-plugin-build-check-failed": "Doplněk &c3rd party &l{0}&r&c odmítl kontrolu oprávnění, máte tam nastavená oprávnění?",
-  "no-creative-break": "&cNemůžete rozbít obchody ostatních hráčů v kreativním režimu, přepnout do režimu přežití nebo se pokusit použít supernástroj {0}.",
+  "3rd-plugin-build-check-failed": "Plugin &c3 strany &l{0}&r&c odmítl kontrolu oprávnění, máte správně nastavená oprávnění?",
+  "no-creative-break": "&cNemůžete rozbít obchody ostatních hráčů v kreativním režimu, přepněte do režimu přežití nebo zkuste použít super tool {0}.",
   "trading-in-creative-mode-is-disabled": "&cV kreativním módu nemůžeš obchodovat.",
-  "supertool-is-disabled": "&cSupertool je zakázán. Nelze rozbít žádné obchody.",
+  "supertool-is-disabled": "&cSupertool je zakázán. Nelze zničit žádné obchody.",
   "no-double-chests": "&cNemůžeš vytvářet DoubleChest obchod.",
   "not-managed-shop": "&cNejsi vlastník nebo moderátor obchodu",
   "shop-already-owned": "&cTato truhla je již obchodem.",
@@ -45,7 +45,7 @@
   "fee-charged-for-price-change": "&aZaplatili jste &c{0}&a za změnu ceny.",
   "price-is-now": "&aNová cena obchodu je &e{0}",
   "thats-not-a-number": "&cNeplatné číslo",
-  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consisten with vanilla behaviour",
+  "forbidden-vanilla-behavior": "Operace je zakázána, protože není v souladu s chováním vanilla verze",
   "no-price-given": "Zadejte platnou cenu",
   "average-price-nearby": "&aBlízká průměrná cena: &e{0}",
   "shop-has-changed": "&cObchod, který jste se pokusili použít, se změnil od doby, kdy jste na něj klikli!",
@@ -139,7 +139,7 @@
     "no-amount-given": "&cNebyla poskytnuta žádná hodnota. Použijte &a/qs refill <amount>&c",
     "now-debuging": "&aÚspěšně povolen vývojářský režim. Reloaduji QuickShop...",
     "now-nolonger-debuging": "&aÚspěšně zakázán vývojářský režim. Reloaduji QuickShop...",
-    "wrong-args": "&cInvalid argument. Use &l/qs help &cto see a list of commands.",
+    "wrong-args": "&cNeplatné argumenty. Použij &l/qs help &cpro zobrazení seznamu příkazů.",
     "description": {
       "title": "&aNápověda pro QuickShop",
       "unlimited": "&eDá obchodu neomezený sklad.",
@@ -170,14 +170,14 @@
       "removeall": "&eOdebrat VŠECHNY obchody zadaného hráče",
       "transfer": "&ePřeneste všechny obchody do jiného",
       "removeworld": "&eOdebrat VŠECHNY obchody zadaného hráče",
-      "currency": "&eSet or remove the currency setting of the shop",
-      "ban": "&eBans a player from the shop",
-      "unban": "&eUnbans a player from the shop",
+      "currency": "&eNastavte nebo odeberte nastavení měny obchodu",
+      "ban": "&eZabanování hráče z obchodu",
+      "unban": "&eOdbanování hráče z obchodu",
       "freeze": "&eZakázat nebo povolit obchodování obchodu",
-      "lock": "&eSwitch the shop's lock status"
+      "lock": "&ePřepnout stav zámku obchodu"
     },
     "disabled": "&cTento příkaz je zakázán: &e{0}",
-    "feature-not-enabled": "This feature is not enabled in the config file."
+    "feature-not-enabled": "Funkce není v konfiguraci povolena."
   },
   "signs": {
     "selling": "Prodej {0}",
@@ -193,7 +193,7 @@
     "status-unavailable": "&c",
     "out-of-stock": "Vyprodáno",
     "out-of-space": "Nedostatek místa",
-    "freeze": "Trading disabled"
+    "freeze": "Obchod je zakázán"
   },
   "controlpanel": {
     "setowner": "&aVlastník: &b{0} &e[&d&lZměna&e]",
@@ -220,9 +220,9 @@
     "currency": "&aMěna: &b{0} &e[&d&lNastavit&e]",
     "currency-hover": "&eKlikněte pro nastavení nebo odebrání měny, kterou tento obchod používá",
     "lock": "&eZámek obchodu: &b{0} &e[&d&lPřepnout&e]",
-    "lock-hover": "&eEnable/Disable the shop's lock protection.",
+    "lock-hover": "&ePovolit/Zakázat ochranu zámku obchodu.",
     "freeze": "&eRežim zmražení: &b{0} &e[&d&lPřepnout&e]",
-    "freeze-hover": "&eToggle the shop's freeze status."
+    "freeze-hover": "&ePřepnout stav zmrazení obchodu."
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -264,7 +264,7 @@
       "Doktor, QuickShop má novou aktualizaci {0}! Měl byste aktualizovat~",
       "Ko~ko~da~yo~ QuickShop má nový update {0}~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server's performance.",
+    "remote-disable-warning": "&cTato verze QuickShopu je označena jako zakázaná vzdáleným serverem, což znamená, že tato verze může mít vážný problém, získejte podrobnosti na naší SpigotMC stránce: {0}. Toto varování se bude objevovat dokud nepřepnete na stabilní verzi, ale neovlivní to výkon vašeho serveru.",
     "label": {
       "unstable": "[Unstable]",
       "stable": "[Stable]",
@@ -313,11 +313,11 @@
   "currency-unset": "Měna &aShopu byla úspěšně odstraněna. Nyní se používá výchozí nastavení.",
   "currency-not-support": "&cDoplněk pro ekonomiku nepodporuje funkci více ekonomik.",
   "item-not-exist": "&cPoložka &e{0} neexistuje, prosím zkontrolujte pravopis.",
-  "backup-success": "&aBackup successfull.",
-  "console-only": "&cThis command can only be executed by Console.",
-  "console-only-danger": "&cThis is a dangerous command, so that only the Console can execute it.",
-  "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
-  "shop-creation-failed": "&cShop creation failed, please contact with server administrator.",
-  "shop-owner-self-trade": "&eYou trading with yourself shop, so you might won't gain any balance.",
-  "chest-title": "QuickShop Store"
+  "backup-success": "&aZáloha byla úspěšně provedena.",
+  "console-only": "&cTento příkaz může být použit pouze z konzole.",
+  "console-only-danger": "&cTento příkaz není bezpečný, můžete ho použít pouze v konzoly.",
+  "clean-warning": "&eTento příkaz vyčistí &volání &eshops, pokud je obchod poškozen, byl vytvořen v nepovolených světech, prodává/nakupuje nepovolené položky nebo &c&lEXISTUJE V NENAČTENÉM SVĚTĚ&e. Nezapomeňte nejprve vytvořit úplnou zálohu dat vašch obchodu pro potrvrzení použijte &b/qs cleanghost.",
+  "shop-creation-failed": "&cVytvoření ochodu se nezdařilo, kontaktujte prosím správce serveru.",
+  "shop-owner-self-trade": "&eObchodujete se svým obchodem, takže nebudete moci získat žádné peníze.",
+  "chest-title": "Obchod QuickShop"
 }

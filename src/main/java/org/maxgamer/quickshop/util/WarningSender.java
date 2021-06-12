@@ -24,6 +24,11 @@ import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 
+/**
+ * WarningSender to prevent send too many warnings to CommandSender in short time.
+ *
+ * @author Ghost_chu
+ */
 @EqualsAndHashCode
 @ToString
 public class WarningSender {
