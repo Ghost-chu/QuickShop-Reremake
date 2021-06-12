@@ -1,7 +1,7 @@
 {
   "_comment": "Hei kääntäjä! Jos muokkaat tätä Githubista tai koodilähteistä, sinun pitäisi mennä https://crowdin.com/project/quickshop-reremake",
   "file-test": "Tämä on testi tekstitiedosto. Käytämme sitä testataksemme onko messages.json rikki. Voit täyttää sen millä tahansa pääsiäismunalla, josta pidät :)",
-  "translation-author": "Kääntäjät: eemunni, Antti",
+  "translation-author": "Kääntäjät: eemunni, Antti, salasan1",
   "translation-version": "Tuettu versio: Reremake",
   "translation-contributors": "Avustajat: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Kielialue: Suomi (fi_FI)",
@@ -310,7 +310,7 @@
   },
   "currency-not-exists": "&cValuutan jonka kirjoitit ei löytynyt. Ehkä kirjoitit sen väärin tai valuutta ei ole käytössä tässä maailmassa.",
   "currency-set": "&aKaupan valuutta asetettu onnistuneesti {0}.",
-  "currency-unset": "&aKaupan valuutta poistettiin onnistuneesti. Nyt käytetään oletusasetuksia.",
+  "currency-unset": "&aKaupan valuutta poistettiin onnistuneesti. Käytetään oletusasetuksia.",
   "currency-not-support": "&cTämä ekonomia plugini ei tue multi-economy ominaisuutta.",
   "item-not-exist": "&cEsinettä &e{0} &cei ole olemassa, tarkista oikeinkirjoitus.",
   "backup-success": "&aVarmuuskopiointi onnistui.",
