@@ -31,7 +31,7 @@
   "shop-purchase-cancelled": "&cKaupasta ostaminen peruttu.",
   "shop-stock-too-low": "&cKaupassa on jäljellä {0} {1}!",
   "you-cant-afford-to-buy": "&cTuote maksaa {0}, mutta sinulla on vain {1}",
-  "negative-amount": "&cHöpsö! Et voi myydä negatiivisia määriä!",
+  "negative-amount": "&cEt voi vaihtaa negatiivisia määriä",
   "not-a-number": "&cVoit ainoastaan antaa numeroita, kirjoitit {0}.",
   "exceeded-maximum": "&cThe value exceeded the maximum value in Java.",
   "not-a-integer": "&cVoit ainoastaan antaa numeroita, kirjoitit {0}.",
@@ -117,7 +117,7 @@
   "command": {
     "toggle-unlimited": {
       "unlimited": "&aKaupassa on nyt rajattomasti tavaroita",
-      "limited": "&aKauppa ei ole enään rajaton"
+      "limited": "&aKauppa ei ole enää rajaton"
     },
     "transfer-success": "&aSiirretty &e{0} &akauppa(a) &e{1}:lle",
     "transfer-success-other": "&aSiirretty &e{0} {1}&a:n kauppa(a) &e{2}:lle",
@@ -125,7 +125,7 @@
     "no-owner-given": "&cEi omistajaa annettu",
     "new-owner": "&aUusi omistaja: &e{0}",
     "now-buying": "&aNyt &dOSTETAAN &e{0}",
-    "now-selling": "&aKauppasi &a&lMYY&a nyt tuotetta &e{0}",
+    "now-selling": "&aKauppasi &bMYY&a nyt tuotetta &e{0}",
     "cleaning": "&aPoistetaan kaupat ilman jäljellä olevaan irtotavaraa...",
     "reloading": "&aLadataan uudelleen...",
     "cleaned": "&aPoistettu &e{0}&a kauppaa.",
@@ -139,7 +139,7 @@
     "no-amount-given": "&cMäärää ei annettu. Käytä &a/qs refill <määrä>&c",
     "now-debuging": "&aOnnistuneesti siirrytty kehittäjätilaan. QuickShop ladataan uudelleen...",
     "now-nolonger-debuging": "&aOnnistuneesti siirrytty käyttötilaan. QuickShop ladataan uudelleen...",
-    "wrong-args": "&cInvalid argument. Use &l/qs help &cto see a list of commands.",
+    "wrong-args": "&cVirheellinen argumentti. Kirjoita &l/qs help &cnähdäksesi lista komennoista.",
     "description": {
       "title": "&aQuickShop apu",
       "unlimited": "&eAntaa kaupalle loputtoman varaston.",
@@ -176,8 +176,8 @@
       "freeze": "&eDisable or Enable shop trading",
       "lock": "&eSwitch the shop's lock status"
     },
-    "disabled": "&cThis command is disabled: &e{0}",
-    "feature-not-enabled": "This feature is not enabled in the config file."
+    "disabled": "&cTämä komento on poistettu käytöstä: &e{0}",
+    "feature-not-enabled": "Tämä ominaisuus ei ole käytössä asetustiedostossa."
   },
   "signs": {
     "selling": "{0} kpl",
@@ -191,25 +191,25 @@
     "unlimited": "Rajaton",
     "status-available": "&a",
     "status-unavailable": "&c",
-    "out-of-stock": "Out of Stock",
-    "out-of-space": "Out of Space",
+    "out-of-stock": "Loppuunmyyty",
+    "out-of-space": "Arkku Täynnä",
     "freeze": "Trading disabled"
   },
   "controlpanel": {
-    "setowner": "&aOmistaja: &b{0} &e[&dvaihda&e]",
+    "setowner": "&aOmistaja: &b{0} &e[&d&lVaihda&e]",
     "infomation": "&aKaupan asetukset:",
     "setowner-hover": "&eVaikuttaisi siltä, että haluat vaithaa kaupan omistajaa. Klikkaa!",
-    "unlimited": "&aLoputon: {0} &e[&d&|Muuta&e]",
+    "unlimited": "&aLoputon: {0} &e[&d&lMuuta&e]",
     "unlimited-hover": "&eNäyttäisi siltä että haluat muokata kauppaasi, paina ottaaksesi käyttöön tai poistamalla käytöstä.",
-    "mode-selling": "&aKaupan tila: &bMyydään &e[&d&|Muuta&e]",
+    "mode-selling": "&aKaupan tila: &bMyydään &e[&d&lMuuta&e]",
     "mode-selling-hover": "&ePaina asettaaksesi kauppa osto-tilaan.",
-    "mode-buying": "&aKaupan tila: &eOstetaan &e[&d&|Vaihda&e]",
+    "mode-buying": "&aKaupan tila: &eOstetaan &e[&d&lVaihda&e]",
     "mode-buying-hover": "&ePaina asettaaksesi kauppa myynti-tilaan.",
-    "price": "&aHinta: &b{0} &e[&d&|vaihda&e]",
+    "price": "&aHinta: &b{0} &e[&d&lVaihda&e]",
     "price-hover": "&ePaina asettaaksesi uusi hinta tuotteelle.",
     "refill": "&aUudelleentäyttö: Täydennä kaupan varasto &e[&d&lOK&e]",
     "refill-hover": "&eNäyttäisi siltä että haluat muokata kauppaa, paina täydentääksesi kaupan varasto.",
-    "empty": "&aTyhjennä: Tyhjennä kaupan varasto &e[&d&|OK&e]",
+    "empty": "&aTyhjennä: Tyhjennä kaupan varasto &e[&d&lOK&e]",
     "empty-hover": "&eNäyttäisi siltä että haluat muokata kauppaa, paina tyhjenttäksesi kaupan varasto.",
     "remove": "&c&l[Poista kauppa]",
     "remove-hover": "&ePoista tämä kauppa klikkaamalla.",
@@ -294,7 +294,7 @@
     "translate-on-crowdin": "[Käännä Crowdinissa]"
   },
   "shop-now-freezed": "&aOlet jäädyttänyt kaupan. Kukaan ei voi vaihtaa kaupan kanssa nyt!",
-  "shop-nolonger-freezed": "&aOlet sulattanut kaupan. Se on nyt takaisin normaalissa tilassa!",
+  "shop-nolonger-freezed": "&aPoistit kaupan jäädytyksen. Se on nyt normaalissa tilassa!",
   "shop-cannot-trade-when-freezing": "&cEt voi vaihtaa tämän kaupan kanssa, koska se on jäässä.",
   "shop-freezed-at-location": "&eKauppasi {0} {1} jäätyi!",
   "denied-put-in-item": "&cEt voi laittaa tätä tavaraa kauppaasi!",
@@ -313,11 +313,11 @@
   "currency-unset": "&aShop currency removed successfully. Using default settings now.",
   "currency-not-support": "&cThe economy plugin doesn't support the multi-economy feature.",
   "item-not-exist": "&cThe item &e{0} &cdoes not exist, please check your spelling.",
-  "backup-success": "&aBackup successfull.",
+  "backup-success": "&aVarmuuskopiointi onnistui.",
   "console-only": "&cThis command can only be executed by Console.",
   "console-only-danger": "&cThis is a dangerous command, so that only the Console can execute it.",
   "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
   "shop-creation-failed": "&cShop creation failed, please contact with server administrator.",
   "shop-owner-self-trade": "&eYou trading with yourself shop, so you might won't gain any balance.",
-  "chest-title": "QuickShop Store"
+  "chest-title": "QuickShop Kauppa"
 }
