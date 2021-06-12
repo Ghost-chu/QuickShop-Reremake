@@ -158,15 +158,10 @@ public class SubCommand_Price implements CommandProcesser {
                         MsgUtil.getMessage(
                                 "fee-charged-for-price-change", sender, plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency())));
                 try {
-                    //noinspection deprecation
                     plugin
                             .getEconomy()
                             .deposit(
-                                    plugin
-                                            .getServer()
-                                            .getOfflinePlayer(
-                                                    Objects.requireNonNull(plugin.getConfig().getString("tax-account")))
-                                            .getUniqueId(),
+                                    plugin.getShopManager().getCacheTaxAccount(),
                                     fee, shop.getLocation().getWorld(), shop.getCurrency());
                 } catch (Exception e) {
                     plugin.getLogger().log(Level.WARNING, "QuickShop can't pay taxes to the configured tax account! Please set the tax account name in the config.yml to an existing player!", e);
