@@ -40,6 +40,7 @@ public class LuckoPastebinPaster implements PasteInterface {
     public String pasteTheText(@NotNull String text) throws IOException {
         HttpRequest request = HttpRequest.post(new URL("https://bytebin.lucko.me/post"))
                 .body(text)
+                .header("User-Agent", "QuickShop-Reremake")
                 .execute();
         request.expectResponseCode(200, 201, 301, 302);
         String json = request.returnContent().asString("UTF-8");
