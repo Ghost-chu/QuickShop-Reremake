@@ -19,7 +19,7 @@
 
 package org.maxgamer.quickshop.util.paste;
 
-import com.github.benmanes.caffeine.cache.stats.CacheStats;
+import com.google.common.cache.CacheStats;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.bukkit.World;
@@ -234,12 +234,7 @@ public class Paste {
             finalReport.append("\t\tLoad         Count: ").append(stats.loadCount()).append("\n");
             finalReport.append("\t\tLoad Success Count: ").append(stats.loadSuccessCount()).append("\n");
             finalReport.append("\t\t--------------------------").append("\n");
-            finalReport.append("\t\tLoad Failure Rate : ").append(stats.loadFailureRate()).append("\n");
-            finalReport.append("\t\tLoad Failure Count: ").append(stats.loadFailureCount()).append("\n");
-            finalReport.append("\t\tLoad Success Count: ").append(stats.loadSuccessCount()).append("\n");
-            finalReport.append("\t\t--------------------------").append("\n");
             finalReport.append("\t\tEviction     Count: ").append(stats.evictionCount()).append("\n");
-            finalReport.append("\t\tEviction    Weight: ").append(stats.evictionWeight()).append("\n");
             finalReport.append("\t\tEviction     Count: ").append(stats.evictionCount()).append("\n");
             finalReport.append("\t\t--------------------------").append("\n");
             finalReport.append("\t\tRequest      Count: ").append(stats.requestCount()).append("\n");

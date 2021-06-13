@@ -19,8 +19,8 @@
 
 package org.maxgamer.quickshop;
 
-import com.github.benmanes.caffeine.cache.Caffeine;
-import com.github.benmanes.caffeine.cache.stats.CacheStats;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheStats;
 import org.bukkit.Location;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
@@ -36,12 +36,12 @@ import java.util.concurrent.TimeUnit;
  */
 public class Cache {
     private final QuickShop plugin;
-    private final com.github.benmanes.caffeine.cache.Cache<Location, Shop> accessCaching = Caffeine
+    private final com.google.common.cache.Cache<Location, Shop> accessCaching = CacheBuilder
             .newBuilder()
-            .initialCapacity(10000)
+            .initialCapacity(1000)
             .expireAfterAccess(120, TimeUnit.MINUTES)
-            .recordStats()
             .weakValues()
+            .recordStats()
             .build();
 
     public Cache(QuickShop plugin) {

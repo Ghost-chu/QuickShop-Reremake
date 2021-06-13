@@ -19,8 +19,8 @@
 
 package org.maxgamer.quickshop.listener;
 
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -52,7 +52,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerListener extends QSListener {
-    private final Cache<Player, Long> dupeClickPrevent = Caffeine
+    private final Cache<Player, Long> dupeClickPrevent = CacheBuilder
             .newBuilder()
             .initialCapacity(10)
             .expireAfterAccess(1, TimeUnit.SECONDS)

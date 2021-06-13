@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.util.paste;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
 import org.maxgamer.quickshop.util.JsonUtil;
 
@@ -40,6 +41,7 @@ public class LuckoPastebinPaster implements PasteInterface {
     public String pasteTheText(@NotNull String text) throws IOException {
         HttpRequest request = HttpRequest.post(new URL("https://bytebin.lucko.me/post"))
                 .body(text)
+                .header("User-Agent", "QuickShop-" + QuickShop.getFork() + "-" + QuickShop.getVersion())
                 .execute();
         request.expectResponseCode(200, 201, 301, 302);
         String json = request.returnContent().asString("UTF-8");
