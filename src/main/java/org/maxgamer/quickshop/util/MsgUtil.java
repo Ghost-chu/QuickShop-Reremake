@@ -724,8 +724,11 @@ public class MsgUtil {
             final String raw = messagei18n.getString(loc);
             if (raw == null) {
                 Util.debugLog("ERR: MsgUtil cannot find the the phrase at " + loc + ", printing the all readed datas: " + messagei18n);
-
-                return invaildMsg + ": " + loc;
+                if (plugin.getSentryErrorReporter() != null) {
+                    plugin.getSentryErrorReporter().sendError(new RuntimeException("Cannot found phrase " + loc));
+                }
+                // TODO: Remove me after we confirm all code about sendMessage has been correctly migrated.
+                return fillArgs(loc, args);
             }
             String filled = fillArgs(raw, args);
             if (player instanceof OfflinePlayer) {
