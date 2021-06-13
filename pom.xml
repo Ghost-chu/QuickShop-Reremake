@@ -891,6 +891,16 @@
             <artifactId>helper-profiles</artifactId>
             <version>1.2.0</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.destroystokyo.paper</groupId>
+                    <artifactId>paper-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>
