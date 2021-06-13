@@ -487,6 +487,13 @@ public class Paste {
             Util.debugLog(ex.getMessage());
         }
         try {
+            // Lucko Pastebin
+            paster = new LuckoPastebinPaster();
+            return paster.pasteTheText(content);
+        } catch (Exception ex) {
+            Util.debugLog(ex.getMessage());
+        }
+        try {
             // Ubuntu Pastebin
             paster = new UbuntuPaster();
             return paster.pasteTheText(content);
@@ -498,24 +505,40 @@ public class Paste {
 
 
     @Nullable
-    public String paste(@NotNull String content, int type) {
+    public String paste(@NotNull String content, PasteType type) {
         PasteInterface paster;
-        if (type == 0) {
-            try {
-                // EngineHub Pastebin
-                paster = new PastebinPaster();
-                return paster.pasteTheText(content);
-            } catch (Exception ignore) {
-            }
-        } else {
-            try {
-                // Ubuntu Pastebin
-                paster = new UbuntuPaster();
-                return paster.pasteTheText(content);
-            } catch (Exception ignore) {
-            }
+        switch (type) {
+            case PASTEBIN:
+                try {
+                    // EngineHub Pastebin
+                    paster = new PastebinPaster();
+                    return paster.pasteTheText(content);
+                } catch (Exception ignore) {
+                }
+                break;
+            case UBUNTU:
+                try {
+                    // Ubuntu Pastebin
+                    paster = new UbuntuPaster();
+                    return paster.pasteTheText(content);
+                } catch (Exception ignore) {
+                }
+                break;
+            default:
+                try {
+                    // Lucko Pastebin
+                    paster = new LuckoPastebinPaster();
+                    return paster.pasteTheText(content);
+                } catch (Exception ignore) {
+                }
+                break;
         }
         return null;
     }
 
+    enum PasteType {
+        LUCKO,
+        PASTEBIN,
+        UBUNTU
+    }
 }
