@@ -22,10 +22,7 @@ package org.maxgamer.quickshop.command;
 import com.google.common.collect.Sets;
 import lombok.Data;
 import org.bukkit.Sound;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -397,8 +394,9 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 return true;
             }
         }
-
-        if (sender instanceof Player && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
+        boolean isPlayer = sender instanceof Player;
+        boolean isConsole = sender instanceof ConsoleCommandSender;
+        if (isPlayer && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
             Player player = (Player) sender;
             ((Player) sender)
                     .playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
@@ -419,6 +417,12 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 if (container.isDisabled()) {
                     MsgUtil.sendDirectMessage(sender, container.getDisableText(sender));
                     return true;
+                }
+                if (container.isConsoleOnly() && !isConsole) {
+                    continue;
+                }
+                if (container.isPlayerOnly() && !isPlayer) {
+                    continue;
                 }
                 List<String> requirePermissions = container.getPermissions();
                 List<String> selectivePermissions = container.getSelectivePermissions();
@@ -494,7 +498,9 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         if (plugin.getBootError() != null) {
             return Collections.emptyList();
         }
-        if (sender instanceof Player && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
+        boolean isPlayer = sender instanceof Player;
+        boolean isConsole = sender instanceof ConsoleCommandSender;
+        if (isPlayer && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
             Player player = (Player) sender;
             ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
         }
@@ -507,6 +513,12 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             System.arraycopy(cmdArg, 1, passThroughArgs, 0, passThroughArgs.length);
             for (CommandContainer container : cmds) {
                 if (!container.getPrefix().toLowerCase().startsWith(cmdArg[0])) {
+                    continue;
+                }
+                if (container.isConsoleOnly() && !isConsole) {
+                    continue;
+                }
+                if (container.isPlayerOnly() && !isPlayer) {
                     continue;
                 }
                 List<String> requirePermissions = container.getPermissions();
