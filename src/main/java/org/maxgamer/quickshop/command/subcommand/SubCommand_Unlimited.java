@@ -39,14 +39,14 @@ public class SubCommand_Unlimited implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
+            MsgUtil.sendDirectMessage(sender, "This command can't be run by the console!");
             return;
         }
 
         final BlockIterator bIt = new BlockIterator((Player) sender, 10);
 
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;
         }
 
@@ -59,13 +59,13 @@ public class SubCommand_Unlimited implements CommandProcesser {
             shop.setUnlimited(!shop.isUnlimited());
             shop.update();
             if (shop.isUnlimited()) {
-                MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.toggle-unlimited.unlimited", sender));
+                MsgUtil.sendMessage(sender, "command.toggle-unlimited.unlimited");
                 return;
             }
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.toggle-unlimited.limited", sender));
+            MsgUtil.sendMessage(sender, "command.toggle-unlimited.limited");
             return;
         }
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender, "not-looking-at-shop");
     }
 
 }

@@ -45,19 +45,19 @@ public class SubCommand_SetOwner implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
+            MsgUtil.sendDirectMessage(sender, "This command can't be run by the console!");
             return;
         }
 
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.no-owner-given", sender));
+            MsgUtil.sendMessage(sender, "command.no-owner-given");
             return;
         }
 
         final BlockIterator bIt = new BlockIterator((Player) sender, 10);
 
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;
         }
 
@@ -71,15 +71,15 @@ public class SubCommand_SetOwner implements CommandProcesser {
 
             @SuppressWarnings("deprecation") final OfflinePlayer newShopOwner = plugin.getServer().getOfflinePlayer(cmdArg[0]);
             if (newShopOwner.getName() == null) {
-                MsgUtil.sendMessage(sender, MsgUtil.getMessage("unknown-player", null));
+                MsgUtil.sendMessage(sender, "unknown-player");
                 return;
             }
             shop.setOwner(newShopOwner.getUniqueId());
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.new-owner", sender, newShopOwner.getName()));
+            MsgUtil.sendMessage(sender, "command.new-owner", newShopOwner.getName()))
             return;
         }
 
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender, "not-looking-at-shop");
     }
 
     @NotNull

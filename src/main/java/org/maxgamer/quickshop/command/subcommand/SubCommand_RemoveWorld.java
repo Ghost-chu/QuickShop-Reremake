@@ -39,12 +39,12 @@ public class SubCommand_RemoveWorld implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.no-world-given", sender));
+            MsgUtil.sendMessage(sender, "command.no-world-given");
             return;
         }
         World world = Bukkit.getWorld(cmdArg[0]);
         if (world == null) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("world-not-exists", sender, cmdArg[0]));
+            MsgUtil.sendMessage(sender, "world-not-exists", cmdArg[0]);
             return;
         }
         int shopsDeleted = 0;
@@ -56,7 +56,7 @@ public class SubCommand_RemoveWorld implements CommandProcesser {
         }
         Util.debugLog("Successfully deleted all shops in world " + cmdArg[0] + "!");
 
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("shops-removed-in-world", sender, String.valueOf(shopsDeleted), world.getName()));
+        MsgUtil.sendMessage(sender, "shops-removed-in-world", String.valueOf(shopsDeleted), world.getName());
 //        if (!(sender instanceof Player)) {
 //            MsgUtil.sendMessage(sender, ChatColor.RED + "This command can't be run by the console!");
 //            return;

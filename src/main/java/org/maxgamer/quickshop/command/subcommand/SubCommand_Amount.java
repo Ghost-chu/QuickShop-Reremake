@@ -39,19 +39,19 @@ public class SubCommand_Amount implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.wrong-args", sender));
+            MsgUtil.sendMessage(sender, "command.wrong-args");
             return;
         }
 
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
+            MsgUtil.sendDirectMessage(sender, "This command can't be run by the console!");
             return;
         }
 
         final Player player = (Player) sender;
 
         if (!plugin.getShopManager().getActions().containsKey(player.getUniqueId())) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-pending-action", sender));
+            MsgUtil.sendMessage(sender, "no-pending-action");
             return;
         }
 

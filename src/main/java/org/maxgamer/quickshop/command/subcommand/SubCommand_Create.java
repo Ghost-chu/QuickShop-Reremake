@@ -77,7 +77,7 @@ public class SubCommand_Create implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
+            MsgUtil.sendDirectMessage(sender, "This command can't be run by the console!");
             return;
         }
 
@@ -86,18 +86,18 @@ public class SubCommand_Create implements CommandProcesser {
         final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
 
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage(p.getUniqueId(), "command.wrong-args"));
+            MsgUtil.sendMessage(p, "command.wrong-args");
             return;
         } else if (cmdArg.length == 1) {
             item = p.getInventory().getItemInMainHand();
             if (Util.isAir(item.getType())) {
-                MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-anythings-in-your-hand", sender));
+                MsgUtil.sendMessage(sender, "no-anythings-in-your-hand");
                 return;
             }
         } else {
             Material material = matchMaterial(cmdArg[1]);
             if (material == null) {
-                MsgUtil.sendMessage(sender, MsgUtil.getMessage("item-not-exist", sender, cmdArg[1]));
+                MsgUtil.sendMessage(sender, "item-not-exist", cmdArg[1]);
                 return;
             }
             if (cmdArg.length > 2 && QuickShop.getPermissionManager().hasPermission(sender, "quicshop.create.stack") && plugin.isAllowStack()) {
@@ -128,7 +128,7 @@ public class SubCommand_Create implements CommandProcesser {
             if (p.isOnline()) {
                 Result result = plugin.getPermissionChecker().canBuild(p, b);
                 if (!result.isSuccess()) {
-                    MsgUtil.sendMessage(p, MsgUtil.getMessage("3rd-plugin-build-check-failed", p, result.getMessage()));
+                    MsgUtil.sendMessage(p, "3rd-plugin-build-check-failed", result.getMessage());
                     Util.debugLog("Failed to create shop because the protection check has failed! Reason:" + result.getMessage());
                     return;
                 }
@@ -151,14 +151,14 @@ public class SubCommand_Create implements CommandProcesser {
 
             if (Util.isDoubleChest(b.getBlockData())
                     && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("no-double-chests", sender));
+                MsgUtil.sendMessage(p, "no-double-chests");
                 return;
             }
 
             if (Util.isBlacklisted(item)
                     && !QuickShop.getPermissionManager()
                     .hasPermission(p, "quickshop.bypass." + item.getType().name())) {
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("blacklisted-item", sender));
+                MsgUtil.sendMessage(p, "blacklisted-item");
                 return;
             }
 
@@ -168,7 +168,7 @@ public class SubCommand_Create implements CommandProcesser {
             plugin.getShopManager().handleChat(p, price);
             return;
         }
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender, "not-looking-at-shop");
     }
 
     @NotNull

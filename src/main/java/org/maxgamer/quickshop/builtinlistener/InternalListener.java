@@ -58,7 +58,7 @@ public class InternalListener implements Listener {
     public void shopCreate(ShopCreateEvent event) {
         if (isForbidden(event.getShop().getLocation().getBlock().getType(), event.getShop().getItem().getType())) {
             event.setCancelled(true);
-            MsgUtil.sendMessage(event.getCreator(), MsgUtil.getMessage("forbidden-vanilla-behavior", null));
+            MsgUtil.sendMessage(event.getCreator(), "forbidden-vanilla-behavior");
             return;
         }
         if (loggingAction) {
@@ -106,7 +106,7 @@ public class InternalListener implements Listener {
     public void shopPrePurchase(ShopPurchaseEvent event) {
         if (isForbidden(event.getShop().getLocation().getBlock().getType(), event.getShop().getItem().getType())) {
             event.setCancelled(true);
-            MsgUtil.sendMessage(event.getPurchaser(), MsgUtil.getMessage("forbidden-vanilla-behavior", null));
+            MsgUtil.sendMessage(event.getPurchaser(), "forbidden-vanilla-behavior");
             return;
         }
         if (loggingBalance) {
@@ -165,7 +165,7 @@ public class InternalListener implements Listener {
         if (event.getPurchaser().equals(event.getShop().getOwner())) {
             Player player = Bukkit.getPlayer(event.getPurchaser());
             if (player != null) {
-                MsgUtil.sendMessage(player, MsgUtil.getMessage("shop-owner-self-trade", player));
+                MsgUtil.sendMessage(player, "shop-owner-self-trade", player);
             }
         }
     }

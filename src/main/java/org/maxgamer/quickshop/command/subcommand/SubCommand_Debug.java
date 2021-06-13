@@ -62,7 +62,7 @@ public class SubCommand_Debug implements CommandProcesser {
                 break;
             case "handlerlist":
                 if (cmdArg.length < 2) {
-                    MsgUtil.sendMessage(sender, "You must enter an event class");
+                    MsgUtil.sendDirectMessage(sender, "You must enter an event class");
                     break;
                 }
 
@@ -72,38 +72,38 @@ public class SubCommand_Debug implements CommandProcesser {
                 RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
 
                 List<String> arguments = runtimeMxBean.getInputArguments();
-                MsgUtil.sendMessage(sender,
+                MsgUtil.sendDirectMessage(sender,
                         ChatColor.GOLD + "Arguments: " + ChatColor.AQUA + Util.list2String(arguments));
-                MsgUtil.sendMessage(sender, ChatColor.GOLD + "Name: " + ChatColor.AQUA + runtimeMxBean.getName());
-                MsgUtil.sendMessage(sender,
+                MsgUtil.sendDirectMessage(sender, ChatColor.GOLD + "Name: " + ChatColor.AQUA + runtimeMxBean.getName());
+                MsgUtil.sendDirectMessage(sender,
                         ChatColor.GOLD + "VM Name: " + ChatColor.AQUA + runtimeMxBean.getVmName());
-                MsgUtil.sendMessage(sender,
+                MsgUtil.sendDirectMessage(sender,
                         ChatColor.GOLD + "Uptime: " + ChatColor.AQUA + runtimeMxBean.getUptime());
-                MsgUtil.sendMessage(sender,
+                MsgUtil.sendDirectMessage(sender,
                         ChatColor.GOLD + "JVM Ver: " + ChatColor.AQUA + runtimeMxBean.getVmVersion());
                 Map<String, String> sys = runtimeMxBean.getSystemProperties();
                 List<String> sysData = new ArrayList<>();
                 sys.keySet().forEach(key -> sysData.add(key + "=" + sys.get(key)));
-                MsgUtil.sendMessage(sender,
+                MsgUtil.sendDirectMessage(sender,
                         ChatColor.GOLD + "Sys Pro: " + ChatColor.AQUA + Util.list2String(sysData));
                 break;
             case "signs":
                 final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
                 if (!bIt.hasNext()) {
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+                    MsgUtil.sendMessage(sender, "not-looking-at-shop");
                     return;
                 }
                 while (bIt.hasNext()) {
                     final Block b = bIt.next();
                     final Shop shop = plugin.getShopManager().getShop(b.getLocation());
                     if (shop != null) {
-                        shop.getSigns().forEach(sign -> MsgUtil.sendMessage(sender, ChatColor.GREEN + "Sign located at: " + sign.getLocation()));
+                        shop.getSigns().forEach(sign -> MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "Sign located at: " + sign.getLocation()));
                         break;
                     }
                 }
                 break;
             default:
-                MsgUtil.sendMessage(sender, "Error! No correct arguments were entered!.");
+                MsgUtil.sendDirectMessage(sender, "Error! No correct arguments were entered!.");
                 break;
         }
     }
@@ -123,7 +123,7 @@ public class SubCommand_Debug implements CommandProcesser {
             plugin.saveConfig();
             plugin.getServer().getPluginManager().disablePlugin(plugin);
             plugin.getServer().getPluginManager().enablePlugin(plugin);
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.now-nolonger-debuging", sender));
+            MsgUtil.sendMessage(sender, "command.now-nolonger-debuging");
             return;
         }
 
@@ -131,7 +131,7 @@ public class SubCommand_Debug implements CommandProcesser {
         plugin.saveConfig();
         plugin.getServer().getPluginManager().disablePlugin(plugin);
         plugin.getServer().getPluginManager().enablePlugin(plugin);
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.now-debuging", sender));
+        MsgUtil.sendMessage(sender, "command.now-debuging");
     }
 
     public void printHandlerList(@NotNull CommandSender sender, String event) {
@@ -142,7 +142,7 @@ public class SubCommand_Debug implements CommandProcesser {
             final HandlerList list = (HandlerList) method.invoke(null, obj);
 
             for (RegisteredListener listener1 : list.getRegisteredListeners()) {
-                MsgUtil.sendMessage(sender,
+                MsgUtil.sendDirectMessage(sender,
                         ChatColor.AQUA
                                 + listener1.getPlugin().getName()
                                 + ChatColor.YELLOW
@@ -151,7 +151,7 @@ public class SubCommand_Debug implements CommandProcesser {
                                 + listener1.getListener().getClass().getCanonicalName());
             }
         } catch (Exception th) {
-            MsgUtil.sendMessage(sender, "ERR " + th.getMessage());
+            MsgUtil.sendDirectMessage(sender, "ERR " + th.getMessage());
             plugin.getLogger().log(Level.WARNING, "An error has occurred while getting the HandlerList", th);
         }
     }

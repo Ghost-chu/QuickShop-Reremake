@@ -42,7 +42,7 @@ public class SubCommand_Export implements CommandProcesser {
             return;
         }
         Util.makeExportBackup(null);
-        MsgUtil.sendMessage(sender, "Done.");
+        MsgUtil.sendDirectMessage(sender, "Done.");
     }
 
 

@@ -45,12 +45,12 @@ public class SubCommand_Find implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
+            MsgUtil.sendDirectMessage(sender, "This command can't be run by the console!");
             return;
         }
 
         if (cmdArg.length == 0) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.no-type-given", sender));
+            MsgUtil.sendMessage(sender, "command.no-type-given");
             return;
         }
 
@@ -117,7 +117,7 @@ public class SubCommand_Find implements CommandProcesser {
         }
         //Check if no shops found
         if (aroundShops.isEmpty()) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-nearby-shop", sender, lookFor));
+            MsgUtil.sendMessage(sender, "no-nearby-shop", lookFor);
             return;
         }
 
@@ -132,7 +132,7 @@ public class SubCommand_Find implements CommandProcesser {
             Location lookAt = closest.getKey().getLocation().clone().add(0.5, 0.5, 0.5);
             PaperLib.teleportAsync(p, Util.lookAt(p.getEyeLocation(), lookAt).add(0, -1.62, 0),
                     PlayerTeleportEvent.TeleportCause.UNKNOWN);
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("nearby-shop-this-way", sender, closest.getValue().intValue()));
+            MsgUtil.sendMessage(p, "nearby-shop-this-way", String.valueOf(closest.getValue().intValue()));
         } else {
             StringBuilder stringBuilder = new StringBuilder(MsgUtil.getMessage("nearby-shop-header", sender, lookFor)).append("\n");
             for (Map.Entry<Shop, Double> shopDoubleEntry : sortedShops) {
@@ -141,7 +141,7 @@ public class SubCommand_Find implements CommandProcesser {
                 //  "nearby-shop-entry": "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)"
                 stringBuilder.append(MsgUtil.getMessage("nearby-shop-entry", sender, shop.getSignText()[1], shop.getSignText()[3], location.getBlockX(), location.getBlockY(), location.getBlockZ(), shopDoubleEntry.getValue().intValue())).append("\n");
             }
-            MsgUtil.sendMessage(sender, stringBuilder.toString());
+            MsgUtil.sendDirectMessage(sender, stringBuilder.toString());
         }
     }
 }

@@ -44,7 +44,7 @@ public class SubCommand_Currency implements CommandProcesser {
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
 
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
+            MsgUtil.sendDirectMessage(sender, "This command can't be run by the console!");
             return;
         }
 
@@ -59,23 +59,23 @@ public class SubCommand_Currency implements CommandProcesser {
                 if (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.currency")) {
                     if (cmdArg.length < 1) {
                         shop.setCurrency(null);
-                        MsgUtil.sendMessage(sender, MsgUtil.getMessage("currency-unset", sender));
+                        MsgUtil.sendMessage(sender, "currency-unset");
                         return;
                     }
                     if (!plugin.getEconomy().supportCurrency()) {
-                        MsgUtil.sendMessage(sender, MsgUtil.getMessage("currency-not-support", sender));
+                        MsgUtil.sendMessage(sender, "currency-not-support");
                         return;
                     }
                     if (!plugin.getEconomy().hasCurrency(shop.getLocation().getWorld(), cmdArg[0])) {
-                        MsgUtil.sendMessage(sender, MsgUtil.getMessage("currency-not-exists", sender));
+                        MsgUtil.sendMessage(sender, "currency-not-exists");
                         return;
                     }
                     shop.setCurrency(cmdArg[0]);
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("currency-set", sender, cmdArg[0]));
+                    MsgUtil.sendMessage(sender, "currency-set", cmdArg[0]);
                     return;
 
                 } else {
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-managed-shop", sender));
+                    MsgUtil.sendMessage(sender, "not-managed-shop");
                 }
                 return;
             }
