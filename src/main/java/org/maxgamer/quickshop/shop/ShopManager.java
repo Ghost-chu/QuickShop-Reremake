@@ -1166,7 +1166,6 @@ public class ShopManager {
             return;
         }
         if (shop.isBuying()) {
-
             if (StringUtils.isNumeric(message)) {
                 amount = Integer.parseInt(message);
             } else {
