@@ -19,8 +19,8 @@
 
 package org.maxgamer.quickshop.listener;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import me.lucko.helper.cooldown.Cooldown;
+import me.lucko.helper.cooldown.CooldownMap;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -52,12 +52,13 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerListener extends QSListener {
-    private final Cache<Player, Long> dupeClickPrevent = CacheBuilder
-            .newBuilder()
-            .initialCapacity(10)
-            .expireAfterAccess(1, TimeUnit.SECONDS)
-            .weakKeys()
-            .build();
+    //    private final Cache<Player, Long> dupeClickPrevent = CacheBuilder
+//            .newBuilder()
+//            .initialCapacity(10)
+//            .expireAfterAccess(1, TimeUnit.SECONDS)
+//            .weakKeys()
+//            .build();
+    private final CooldownMap<Player> cooldownMap = CooldownMap.create(Cooldown.of(1, TimeUnit.SECONDS));
     private boolean swapBehavior = false;
 
     public PlayerListener(QuickShop plugin) {
@@ -74,7 +75,7 @@ public class PlayerListener extends QSListener {
 
         // ----Adventure dupe click workaround start----
         if (e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
-            dupeClickPrevent.put(e.getPlayer(), System.currentTimeMillis());
+            cooldownMap.test(e.getPlayer());
         }
         // ----Adventure dupe click workaround end----
         if (!e.getAction().equals(Action.LEFT_CLICK_BLOCK) && b != null) {
@@ -101,11 +102,8 @@ public class PlayerListener extends QSListener {
             return;
         }
         // ----Adventure dupe click workaround start----
-        Long dupeTime = dupeClickPrevent.getIfPresent(event.getPlayer());
-        if (dupeTime != null && dupeTime > System.currentTimeMillis() - 1000) {
+        if (!cooldownMap.test(event.getPlayer())) {
             return;
-        } else if (dupeTime != null) {
-            dupeClickPrevent.invalidate(event.getPlayer());
         }
         // ----Adventure dupe click workaround end----
         Block focused = event.getPlayer().getTargetBlock(null, 5);
