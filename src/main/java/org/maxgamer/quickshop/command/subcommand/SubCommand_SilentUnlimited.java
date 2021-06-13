@@ -46,7 +46,7 @@ public class SubCommand_SilentUnlimited implements CommandProcesser {
         Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(UUID.fromString(cmdArg[0]));
 
         if (shop == null) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;
         }
 
@@ -55,11 +55,11 @@ public class SubCommand_SilentUnlimited implements CommandProcesser {
         MsgUtil.sendControlPanelInfo(sender, shop);
 
         if (shop.isUnlimited()) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.toggle-unlimited.unlimited", sender));
+            MsgUtil.sendMessage(sender, "command.toggle-unlimited.unlimited");
             return;
         }
 
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.toggle-unlimited.limited", sender));
+        MsgUtil.sendMessage(sender, "command.toggle-unlimited.limited");
     }
 
 }

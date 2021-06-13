@@ -48,7 +48,7 @@ public class SubCommand_SilentEmpty implements CommandProcesser {
         Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(UUID.fromString(cmdArg[0]));
 
         if (!(shop instanceof ContainerShop)) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;
         }
 
@@ -62,7 +62,7 @@ public class SubCommand_SilentEmpty implements CommandProcesser {
 
         inventory.clear();
         MsgUtil.sendControlPanelInfo(sender, shop);
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("empty-success", sender));
+        MsgUtil.sendMessage(sender, "empty-success");
     }
 
 }

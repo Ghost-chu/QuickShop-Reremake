@@ -47,7 +47,7 @@ public class SubCommand_Transfer implements CommandProcesser {
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length == 1) {
             if (!(sender instanceof Player)) {
-                MsgUtil.sendMessage(sender, "This command can't be run by the console!");
+                MsgUtil.sendDirectMessage(sender, "This command can't be run by the console!");
                 return;
             }
             //noinspection deprecation
@@ -61,10 +61,10 @@ public class SubCommand_Transfer implements CommandProcesser {
             for (Shop shop : shopList) {
                 shop.setOwner(targetPlayerUUID);
             }
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.transfer-success", sender, Integer.toString(shopList.size()), targetPlayerName));
+            MsgUtil.sendMessage(sender, "command.transfer-success", Integer.toString(shopList.size()), targetPlayerName);
         } else if (cmdArg.length == 2) {
             if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.transfer.other")) {
-                MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-permission", sender));
+                MsgUtil.sendMessage(sender, "no-permission");
                 return;
             }
             //noinspection deprecation
@@ -85,10 +85,10 @@ public class SubCommand_Transfer implements CommandProcesser {
             for (Shop shop : shopList) {
                 shop.setOwner(targetPlayerUUID);
             }
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.transfer-success-other", sender, Integer.toString(shopList.size()), fromPlayerName, targetPlayerName));
+            MsgUtil.sendMessage(sender, "command.transfer-success-other", Integer.toString(shopList.size()), fromPlayerName, targetPlayerName);
 
         } else {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.wrong-args", sender));
+            MsgUtil.sendMessage(sender, "command.wrong-args");
         }
     }
 

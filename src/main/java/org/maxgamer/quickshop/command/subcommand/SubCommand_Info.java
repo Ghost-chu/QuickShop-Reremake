@@ -76,9 +76,9 @@ public class SubCommand_Info implements CommandProcesser {
             }
         }
 
-        MsgUtil.sendMessage(sender, ChatColor.RED + "QuickShop Statistics...");
-        MsgUtil.sendMessage(sender, ChatColor.GREEN + "Server UniqueID: " + plugin.getServerUniqueID());
-        MsgUtil.sendMessage(sender,
+        MsgUtil.sendDirectMessage(sender, ChatColor.RED + "QuickShop Statistics...");
+        MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "Server UniqueID: " + plugin.getServerUniqueID());
+        MsgUtil.sendDirectMessage(sender,
                 ChatColor.GREEN
                         + ""
                         + (buying + selling)
@@ -87,19 +87,19 @@ public class SubCommand_Info implements CommandProcesser {
                         + " chunks spread over "
                         + worlds
                         + " worlds.");
-        MsgUtil.sendMessage(sender,
+        MsgUtil.sendDirectMessage(sender,
                 ChatColor.GREEN
                         + ""
                         + doubles
                         + " double shops. ("
                         + doubleschests
                         + " shops created on double chest.)");
-        MsgUtil.sendMessage(sender,
+        MsgUtil.sendDirectMessage(sender,
                 ChatColor.GREEN
                         + ""
                         + nostock
                         + " out-of-stock shops (excluding doubles) which will be removed by /qs clean.");
-        MsgUtil.sendMessage(sender, ChatColor.GREEN + "QuickShop " + QuickShop.getVersion());
+        MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "QuickShop " + QuickShop.getVersion());
     }
 
 

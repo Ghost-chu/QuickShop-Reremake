@@ -206,9 +206,9 @@ public class PlayerListener extends QSListener {
                     itemAmount = 0;
                 }
                 if (shop.isStackingShop()) {
-                    MsgUtil.sendMessage(p, MsgUtil.getMessage("how-many-buy-stack", p, Integer.toString(shop.getItem().getAmount()), Integer.toString(itemAmount)));
+                    MsgUtil.sendMessage(p, "how-many-buy-stack", p, Integer.toString(shop.getItem().getAmount()), Integer.toString(itemAmount));
                 } else {
-                    MsgUtil.sendMessage(p, MsgUtil.getMessage("how-many-buy", p, Integer.toString(itemAmount)));
+                    MsgUtil.sendMessage(p, "how-many-buy", p, Integer.toString(itemAmount));
                 }
             } else {
                 final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
@@ -230,9 +230,9 @@ public class PlayerListener extends QSListener {
                     items = 0;
                 }
                 if (shop.isStackingShop()) {
-                    MsgUtil.sendMessage(p, MsgUtil.getMessage("how-many-sell-stack", p, Integer.toString(shop.getItem().getAmount()), Integer.toString(items)));
+                    MsgUtil.sendMessage(p, "how-many-sell-stack", p, Integer.toString(shop.getItem().getAmount()), Integer.toString(items));
                 } else {
-                    MsgUtil.sendMessage(p, MsgUtil.getMessage("how-many-sell", p, Integer.toString(items)));
+                    MsgUtil.sendMessage(p, "how-many-sell", p, Integer.toString(items));
                 }
             }
             // Add the new action
@@ -258,13 +258,13 @@ public class PlayerListener extends QSListener {
             }
             if (Util.isDoubleChest(b.getBlockData())
                     && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("no-double-chests", p));
+                MsgUtil.sendMessage(p, "no-double-chests", p);
                 return;
             }
             if (Util.isBlacklisted(item)
                     && !QuickShop.getPermissionManager()
                     .hasPermission(p, "quickshop.bypass." + item.getType().name())) {
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("blacklisted-item", p));
+                MsgUtil.sendMessage(p, "blacklisted-item", p);
                 return;
             }
             if (b.getType() == Material.ENDER_CHEST //FIXME: Need a better impl
@@ -294,10 +294,9 @@ public class PlayerListener extends QSListener {
 
             plugin.getShopManager().getActions().put(p.getUniqueId(), info);
             MsgUtil.sendMessage(p,
-                    MsgUtil.getMessage(
-                            "how-much-to-trade-for",
-                            p,
-                            Util.getItemStackName(Objects.requireNonNull(e.getItem())), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1)));
+                    "how-much-to-trade-for",
+                    p,
+                    Util.getItemStackName(Objects.requireNonNull(e.getItem())), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1));
         }
     }
 
@@ -365,10 +364,10 @@ public class PlayerListener extends QSListener {
         final Location loc2 = p.getLocation();
         if (loc1.getWorld() != loc2.getWorld() || loc1.distanceSquared(loc2) > 25) {
             if (info.getAction() == ShopAction.BUY) {
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-purchase-cancelled", p));
+                MsgUtil.sendMessage(p, "shop-purchase-cancelled", p);
                 Util.debugLog(p.getName() + " too far with the shop location.");
             } else if (info.getAction() == ShopAction.CREATE) {
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-creation-cancelled", p));
+                MsgUtil.sendMessage(p, "shop-creation-cancelled", p);
                 Util.debugLog(p.getName() + " too far with the shop location.");
             }
             plugin.getShopManager().getActions().remove(p.getUniqueId());

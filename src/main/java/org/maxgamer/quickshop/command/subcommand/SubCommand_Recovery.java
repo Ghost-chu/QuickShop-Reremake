@@ -44,7 +44,7 @@ public class SubCommand_Recovery implements CommandProcesser {
         }
         File file = new File(plugin.getDataFolder(), "recovery.txt");
         if (!file.exists()) {
-            MsgUtil.sendMessage(sender, "recovery.txt doesn't exist! Do not execute this command unless you know what are you doing.");
+            MsgUtil.sendDirectMessage(sender, "recovery.txt doesn't exist! Do not execute this command unless you know what are you doing.");
             return;
         }
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {

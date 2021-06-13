@@ -54,14 +54,14 @@ public class SubCommand_RemoveAll implements CommandProcesser {
                 }
             }
             if (shopOwner == null) {
-                MsgUtil.sendMessage(sender, MsgUtil.getMessage("unknown-player", null));
+                MsgUtil.sendMessage(sender, "unknown-player");
                 return;
             }
 
             int i = 0;
             if (!shopOwner.equals(sender)) { //Non-self shop
                 if (!sender.hasPermission("quickshop.removeall.other")) {
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-permission", sender));
+                    MsgUtil.sendMessage(sender, "no-permission");
                     return;
                 }
                 for (Shop shop : tempList) {
@@ -73,7 +73,7 @@ public class SubCommand_RemoveAll implements CommandProcesser {
                 }
             } else { //Self shop
                 if (!sender.hasPermission("quickshop.removeall.self")) {
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-permission", sender));
+                    MsgUtil.sendMessage(sender, "no-permission");
                     return;
                 }
                 if (!(sender instanceof OfflinePlayer)) {
@@ -88,9 +88,9 @@ public class SubCommand_RemoveAll implements CommandProcesser {
                     }
                 }
             }
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.some-shops-removed", sender, Integer.toString(i)));
+            MsgUtil.sendMessage(sender, "command.some-shops-removed", Integer.toString(i));
         } else {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.no-owner-given", sender));
+            MsgUtil.sendMessage(sender, "command.no-owner-given");
         }
     }
 

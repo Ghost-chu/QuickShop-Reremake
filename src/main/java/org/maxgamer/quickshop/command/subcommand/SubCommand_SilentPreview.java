@@ -41,7 +41,7 @@ public class SubCommand_SilentPreview implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
+            MsgUtil.sendDirectMessage(sender, "This command can't be run by the console!");
             return;
         }
 
@@ -54,7 +54,7 @@ public class SubCommand_SilentPreview implements CommandProcesser {
 
 
         if (!(shop instanceof ContainerShop)) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;
         }
         shop.openPreview(((Player) sender));

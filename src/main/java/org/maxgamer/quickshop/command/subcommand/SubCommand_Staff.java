@@ -50,14 +50,14 @@ public class SubCommand_Staff implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
+            MsgUtil.sendDirectMessage(sender, "This command can't be run by the console!");
             return;
         }
 
         final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
 
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;
         }
         while (bIt.hasNext()) {
@@ -71,19 +71,19 @@ public class SubCommand_Staff implements CommandProcesser {
                     switch (cmdArg[0]) {
                         case "clear":
                             shop.clearStaffs();
-                            MsgUtil.sendMessage(sender, MsgUtil.getMessage("shop-staff-cleared", sender));
+                            MsgUtil.sendMessage(sender, "shop-staff-cleared");
                             return;
                         case "list":
                             final List<UUID> staffs = shop.getStaffs();
                             if (staffs.isEmpty()) {
-                                MsgUtil.sendMessage(sender,
+                                MsgUtil.sendDirectMessage(sender,
                                         ChatColor.GREEN
                                                 + MsgUtil.getMessage("tableformat.left_begin", sender)
                                                 + "Empty");
                                 return;
                             }
                             for (UUID uuid : staffs) {
-                                MsgUtil.sendMessage(sender,
+                                MsgUtil.sendDirectMessage(sender,
                                         ChatColor.GREEN
                                                 + MsgUtil.getMessage("tableformat.left_begin", sender)
                                                 + Bukkit.getOfflinePlayer(uuid).getName());
@@ -92,7 +92,7 @@ public class SubCommand_Staff implements CommandProcesser {
                         case "add":
                         case "del":
                         default:
-                            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.wrong-args", sender));
+                            MsgUtil.sendMessage(sender, "command.wrong-args");
                             return;
                     }
                 case 2:
@@ -106,24 +106,24 @@ public class SubCommand_Staff implements CommandProcesser {
                     switch (cmdArg[0]) {
                         case "add":
                             shop.addStaff(offlinePlayer.getUniqueId());
-                            MsgUtil.sendMessage(sender, MsgUtil.getMessage("shop-staff-added", sender, offlinePlayerName));
+                            MsgUtil.sendMessage(sender, "shop-staff-added", offlinePlayerName);
                             return;
                         case "del":
                             shop.delStaff(offlinePlayer.getUniqueId());
                             MsgUtil.sendMessage(sender,
-                                    MsgUtil.getMessage("shop-staff-deleted", sender, offlinePlayerName));
+                                    "shop-staff-deleted", offlinePlayerName);
                             return;
                         default:
-                            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.wrong-args", sender));
+                            MsgUtil.sendMessage(sender, "command.wrong-args");
                             return;
                     }
                 default:
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.wrong-args", sender));
+                    MsgUtil.sendMessage(sender, "command.wrong-args");
                     return;
             }
         }
         //no match shop
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender, "not-looking-at-shop");
     }
 
     @NotNull

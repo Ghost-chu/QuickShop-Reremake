@@ -40,7 +40,7 @@ public class SubCommand_Remove implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, ChatColor.RED + "This command can't be run by the console!");
+            MsgUtil.sendDirectMessage(sender, ChatColor.RED + "This command can't be run by the console!");
             return;
         }
 
@@ -48,7 +48,7 @@ public class SubCommand_Remove implements CommandProcesser {
         final BlockIterator bIt = new BlockIterator(p, 10);
 
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;
         }
 
@@ -65,13 +65,13 @@ public class SubCommand_Remove implements CommandProcesser {
                 shop.delete();
                 plugin.log("Deleting shop " + shop + " as requested by the /qs remove command.");
             } else {
-                MsgUtil.sendMessage(sender, ChatColor.RED + MsgUtil.getMessage("no-permission", sender));
+                MsgUtil.sendMessage(sender, "no-permission");
             }
 
             return;
         }
 
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender, "not-looking-at-shop");
     }
 
 }

@@ -48,14 +48,14 @@ public class SubCommand_SilentBuy implements CommandProcesser {
         Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(UUID.fromString(cmdArg[0]));
 
         if (shop == null || !shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;
         }
 
         shop.setShopType(ShopType.BUYING);
         shop.update();
         MsgUtil.sendControlPanelInfo(sender, shop);
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.now-buying", sender, Util.getItemStackName(shop.getItem())));
+        MsgUtil.sendMessage(sender, "command.now-buying", Util.getItemStackName(shop.getItem()));
     }
 
 

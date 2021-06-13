@@ -46,7 +46,7 @@ public class SubCommand_Reset implements CommandProcesser {
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
 
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.no-type-given", sender));
+            MsgUtil.sendMessage(sender, "command.no-type-given");
             return;
         }
 
@@ -64,7 +64,7 @@ public class SubCommand_Reset implements CommandProcesser {
                 MsgUtil.loadItemi18n();
                 MsgUtil.loadEnchi18n();
                 MsgUtil.loadPotioni18n();
-                MsgUtil.sendMessage(sender, MsgUtil.getMessage("complete", sender));
+                MsgUtil.sendMessage(sender"complete");
                 break;
             case "config":
                 File config = new File(plugin.getDataFolder(), "config.yml");
@@ -73,16 +73,16 @@ public class SubCommand_Reset implements CommandProcesser {
                 plugin.reloadConfig();
                 plugin.getServer().getPluginManager().disablePlugin(plugin);
                 plugin.getServer().getPluginManager().enablePlugin(plugin);
-                MsgUtil.sendMessage(sender, MsgUtil.getMessage("complete", sender));
+                MsgUtil.sendMessage(sender, "complete");
                 break;
             case "messages":
                 File msgs = new File(plugin.getDataFolder(), "messages.json");
                 msgs.delete();
                 MsgUtil.loadI18nFile();
-                MsgUtil.sendMessage(sender, MsgUtil.getMessage("complete", sender));
+                MsgUtil.sendMessage(sender, "complete");
                 break;
             default:
-                MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.wrong-args", sender));
+                MsgUtil.sendMessage(sender, "command.wrong-args");
         }
     }
 

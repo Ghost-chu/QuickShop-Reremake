@@ -1479,13 +1479,12 @@ public class MsgUtil {
             messagei18n.set(path, alt);
         }
     }
-    @Deprecated
-    public static void sendMessage(@NotNull UUID sender, @Nullable String... messages) {
-        sendMessage(Bukkit.getPlayer(sender), messages);
+
+    public static void sendDirectMessage(@NotNull UUID sender, @Nullable String... messages) {
+        sendDirectMessage(Bukkit.getPlayer(sender), messages);
     }
 
-    @Deprecated
-    public static void sendMessage(@Nullable CommandSender sender, @Nullable String... messages) {
+    public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable String... messages) {
         if (messages == null) {
             Util.debugLog("INFO: null messages trying to be sent.");
             return;
@@ -1509,7 +1508,7 @@ public class MsgUtil {
         }
     }
 
-    public static void sendMessage(@Nullable CommandSender sender, @Nullable String key, @NotNull Object... args) {
+    public static void sendMessage(@Nullable CommandSender sender, @Nullable String key, @NotNull String... args) {
         if (sender == null) {
             Util.debugLog("INFO: Sending message to null sender.");
             return;
@@ -1530,7 +1529,7 @@ public class MsgUtil {
         }
     }
 
-    public static void sendMessage(@Nullable UUID uuid, @Nullable String key, @NotNull Object... args) {
+    public static void sendMessage(@Nullable UUID uuid, @Nullable String key, @NotNull String... args) {
         if (uuid == null) {
             return;
         }

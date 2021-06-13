@@ -42,24 +42,24 @@ public class SubCommand_Size implements CommandProcesser {
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
+            MsgUtil.sendDirectMessage(sender, "This command can't be run by the console!");
             return;
         }
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.bulk-size-not-set", sender));
+            MsgUtil.sendMessage(sender, "command.bulk-size-not-set");
             return;
         }
         int amount;
         try {
             amount = Integer.parseInt(cmdArg[0]);
         } catch (NumberFormatException e) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-a-integer", sender, cmdArg[0]));
+            MsgUtil.sendMessage(sender, "not-a-integer", cmdArg[0]);
             return;
         }
         final BlockIterator bIt = new BlockIterator((Player) sender, 10);
         // Loop through every block they're looking at upto 10 blocks away
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;
         }
 
@@ -69,19 +69,19 @@ public class SubCommand_Size implements CommandProcesser {
             if (shop != null) {
                 if (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || sender.hasPermission("quickshop.other.amount")) {
                     if (amount <= 0 || amount > Util.getItemMaxStackSize(shop.getItem().getType())) {
-                        MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.invalid-bulk-amount", sender, Integer.toString(amount)));
+                        MsgUtil.sendMessage(sender, "command.invalid-bulk-amount", Integer.toString(amount));
                         return;
                     }
                     shop.getItem().setAmount(amount);
                     shop.refresh();
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.bulk-size-now", sender, Integer.toString(shop.getItem().getAmount()), Util.getItemStackName(shop.getItem())));
+                    MsgUtil.sendMessage(sender, "command.bulk-size-now", Integer.toString(shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()));
                     return;
                 } else {
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-managed-shop", sender));
+                    MsgUtil.sendMessage(sender, "not-managed-shop");
                 }
             }
         }
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender, "not-looking-at-shop");
 
 
     }

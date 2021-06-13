@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -50,13 +49,13 @@ public class SubCommand_SilentRemove implements CommandProcesser {
         final Player p = (Player) sender;
 
         if (shop == null) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;
         }
 
         if (!shop.getModerator().isModerator(p.getUniqueId())
                 && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy")) {
-            MsgUtil.sendMessage(sender, ChatColor.RED + MsgUtil.getMessage("no-permission", sender));
+            MsgUtil.sendMessage(sender, "no-permission");
             return;
         }
 

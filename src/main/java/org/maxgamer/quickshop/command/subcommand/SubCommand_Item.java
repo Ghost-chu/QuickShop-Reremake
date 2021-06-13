@@ -40,13 +40,13 @@ public class SubCommand_Item implements CommandProcesser {
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
+            MsgUtil.sendDirectMessage(sender, "This command can't be run by the console!");
             return;
         }
         final BlockIterator bIt = new BlockIterator((Player) sender, 10);
         // Loop through every block they're looking at upto 10 blocks away
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;
         }
         while (bIt.hasNext()) {
@@ -55,16 +55,16 @@ public class SubCommand_Item implements CommandProcesser {
 
             if (shop != null) {
                 if (!shop.getModerator().isModerator(((Player) sender).getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.item")) {
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-managed-shop", sender));
+                    MsgUtil.sendMessage(sender, "not-managed-shop");
                     return;
                 }
                 ItemStack itemStack = ((Player) sender).getInventory().getItemInMainHand().clone();
                 if (itemStack.getType() == Material.AIR) {
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.no-trade-item", sender));
+                    MsgUtil.sendMessage(sender, "command.no-trade-item");
                     return;
                 }
                 if (Util.isBlacklisted(itemStack) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.bypass." + itemStack.getType().name())) {
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("blacklisted-item", sender));
+                    MsgUtil.sendMessage(sender, "blacklisted-item");
                     return;
                 }
                 if (!plugin.isAllowStack() && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.stacks")) {
@@ -75,7 +75,7 @@ public class SubCommand_Item implements CommandProcesser {
                 return;
             }
         }
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender, "not-looking-at-shop");
     }
 
 }

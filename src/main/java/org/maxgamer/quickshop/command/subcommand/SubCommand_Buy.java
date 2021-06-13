@@ -42,14 +42,14 @@ public class SubCommand_Buy implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
+            MsgUtil.sendDirectMessage(sender, "This command can't be run by the console!");
             return;
         }
 
         final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
 
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;
         }
 
@@ -61,15 +61,14 @@ public class SubCommand_Buy implements CommandProcesser {
                 if (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control")) {
                     shop.setShopType(ShopType.BUYING);
                     shop.update();
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.now-buying", sender, Util.getItemStackName(shop.getItem())));
+                    MsgUtil.sendMessage(sender, "command.now-buying", Util.getItemStackName(shop.getItem()));
                 } else {
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-managed-shop", sender));
+                    MsgUtil.sendMessage(sender, "not-managed-shop");
                 }
                 return;
             }
         }
-
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender, "not-looking-at-shop");
     }
 
 
