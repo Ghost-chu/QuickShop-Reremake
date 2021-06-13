@@ -968,7 +968,6 @@ public class MsgUtil {
         chatSheetPrinter.printFooter();
     }
 
-
     /**
      * Get potion effect's i18n name.
      *
@@ -1480,29 +1479,12 @@ public class MsgUtil {
             messagei18n.set(path, alt);
         }
     }
-
-    public static void sendColoredMessage(@NotNull CommandSender sender, @NotNull ChatColor chatColor, @Nullable String... messages) {
-        if (messages == null) {
-            return;
-        }
-        for (String msg : messages) {
-            try {
-                if (StringUtils.isEmpty(msg)) {
-                    continue;
-                }
-                plugin.getQuickChat().send(sender, chatColor + msg);
-            } catch (Throwable throwable) {
-                Util.debugLog("Failed to send formatted text.");
-                sender.sendMessage(msg);
-            }
-        }
-
-    }
-
+    @Deprecated
     public static void sendMessage(@NotNull UUID sender, @Nullable String... messages) {
         sendMessage(Bukkit.getPlayer(sender), messages);
     }
 
+    @Deprecated
     public static void sendMessage(@Nullable CommandSender sender, @Nullable String... messages) {
         if (messages == null) {
             Util.debugLog("INFO: null messages trying to be sent.");
@@ -1527,4 +1509,31 @@ public class MsgUtil {
         }
     }
 
+    public static void sendMessage(@Nullable CommandSender sender, @Nullable String key, @NotNull Object... args) {
+        if (sender == null) {
+            Util.debugLog("INFO: Sending message to null sender.");
+            return;
+        }
+        if (StringUtils.isEmpty(key)) {
+            Util.debugLog("INFO: Message key is empty.");
+            return;
+        }
+        String message = MsgUtil.getMessage(key, sender, args);
+        if (StringUtils.isEmpty(message)) {
+            return;
+        }
+        try {
+            plugin.getQuickChat().send(sender, message);
+        } catch (Throwable throwable) {
+            Util.debugLog("Failed to send formatted text.");
+            sender.sendMessage(message);
+        }
+    }
+
+    public static void sendMessage(@Nullable UUID uuid, @Nullable String key, @NotNull Object... args) {
+        if (uuid == null) {
+            return;
+        }
+        sendMessage(Bukkit.getPlayer(uuid), key, args);
+    }
 }
