@@ -51,6 +51,10 @@ public class CommandContainer {
     private String description; // Will show in the /qs help
 
     private boolean disabled; //Set command is disabled or not.
+
+    private boolean playerOnly; //Set command is only for player.
+
+    private boolean consoleOnly; //Set command is only for console.
     @Nullable
     private String disablePlaceholder; //Set the text shown if command disabled
     @Nullable

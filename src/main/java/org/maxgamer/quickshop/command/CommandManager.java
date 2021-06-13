@@ -62,12 +62,14 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("unlimited")
+                        .playerOnly(true)
                         .permission("quickshop.unlimited")
                         .executor(new SubCommand_Unlimited(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("silentunlimited")
+                        .playerOnly(true)
                         .hidden(true)
                         .permission("quickshop.unlimited")
                         .executor(new SubCommand_SilentUnlimited(plugin))
@@ -75,6 +77,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("slientunlimited")
+                        .playerOnly(true)
                         .hidden(true)
                         .permission("quickshop.unlimited")
                         .executor(new SubCommand_SilentUnlimited(plugin))
@@ -82,12 +85,14 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("transfer")
+                        .playerOnly(true)
                         .permission("quickshop.transfer")
                         .executor(new SubCommand_Transfer(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("setowner")
+                        .playerOnly(true)
                         .permission("quickshop.setowner")
                         .executor(new SubCommand_SetOwner(plugin))
                         .build());
@@ -102,23 +107,27 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 CommandContainer.builder()
                         .prefix("amount")
                         .permission(null)
+                        .playerOnly(true)
                         .executor(new SubCommand_Amount(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("buy")
+                        .playerOnly(true)
                         .permission("quickshop.create.buy")
                         .executor(new SubCommand_Buy(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("sell")
+                        .playerOnly(true)
                         .permission("quickshop.create.sell")
                         .executor(new SubCommand_Sell(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("silentbuy")
+                        .playerOnly(true)
                         .hidden(true)
                         .permission("quickshop.create.buy")
                         .executor(new SubCommand_SilentBuy(plugin))
@@ -126,6 +135,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("silentsell")
+                        .playerOnly(true)
                         .hidden(true)
                         .permission("quickshop.create.sell")
                         .executor(new SubCommand_SilentSell(plugin))
@@ -133,18 +143,21 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("price")
+                        .playerOnly(true)
                         .permission("quickshop.create.changeprice")
                         .executor(new SubCommand_Price(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("remove")
+                        .playerOnly(true)
                         .permission(null)
                         .executor(new SubCommand_Remove(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("silentremove")
+                        .playerOnly(true)
                         .hidden(true)
                         .permission(null)
                         .executor(new SubCommand_SilentRemove(plugin))
@@ -152,18 +165,21 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("empty")
+                        .playerOnly(true)
                         .permission("quickshop.empty")
                         .executor(new SubCommand_Empty(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("refill")
+                        .playerOnly(true)
                         .permission("quickshop.refill")
                         .executor(new SubCommand_Refill(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("silentempty")
+                        .playerOnly(true)
                         .hidden(true)
                         .permission("quickshop.empty")
                         .executor(new SubCommand_SilentEmpty(plugin))
@@ -171,6 +187,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("silentpreview")
+                        .playerOnly(true)
                         .hidden(true)
                         .permission("quickshop.preview")
                         .executor(new SubCommand_SilentPreview(plugin))
@@ -178,6 +195,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("clean")
+                        .playerOnly(true)
                         .permission("quickshop.clean")
                         .executor(new SubCommand_Clean(plugin))
                         .build());
@@ -202,6 +220,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("fetchmessage")
+                        .playerOnly(true)
                         .permission("quickshop.fetchmessage")
                         .executor(new SubCommand_FetchMessage(plugin))
                         .build());
@@ -220,12 +239,14 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("staff")
+                        .playerOnly(true)
                         .permission("quickshop.staff")
                         .executor(new SubCommand_Staff(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("create")
+                        .playerOnly(true)
                         .permission("quickshop.create.cmd")
                         .permission("quickshop.create.sell")
                         .executor(new SubCommand_Create(plugin))
@@ -240,12 +261,14 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("find")
+                        .playerOnly(true)
                         .permission("quickshop.find")
                         .executor(new SubCommand_Find(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("supercreate")
+                        .playerOnly(true)
                         .permission("quickshop.create.admin")
                         .permission("quickshop.create.sell")
                         .executor(new SubCommand_SuperCreate(plugin))
@@ -267,6 +290,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("recovery")
+                        .consoleOnly(true)
                         .hidden(true)
                         .permission("quickshop.recovery")
                         .executor(new SubCommand_Recovery(plugin))
@@ -274,6 +298,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("export")
+                        .consoleOnly(true)
                         .hidden(true)
                         .permission("quickshop.export")
                         .executor(new SubCommand_Export(plugin))
@@ -282,11 +307,13 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 CommandContainer.builder()
                         .prefix("convert")
                         .hidden(true)
+                        .consoleOnly(true)
                         .permission("quickshop.convert")
                         .executor(new SubCommand_Convert(plugin))
                         .build());
         registerCmd(CommandContainer.builder()
                 .prefix("size")
+                .playerOnly(true)
                 .permission("quickshop.create.stacks")
                 .permission("quickshop.create.changeamount")
                 .executor(new SubCommand_Size(plugin))
@@ -295,6 +322,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .build());
         registerCmd(CommandContainer.builder()
                 .prefix("item")
+                .playerOnly(true)
                 .permission("quickshop.create.changeitem")
                 .executor(new SubCommand_Item(plugin))
                 .build());
@@ -311,6 +339,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .build());
         registerCmd(CommandContainer.builder()
                 .prefix("currency")
+                .playerOnly(true)
                 .permission("quickshop.currency")
                 .executor(new SubCommand_Currency(plugin))
                 .build());
