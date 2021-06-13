@@ -38,8 +38,7 @@ public interface CommandProcesser {
      * @param cmdArg       Args
      * @param commandLabel The command prefix /qs is qs
      */
-    void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg);
+    void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg);
 
     /**
      * Accept the onTabComplete, it will call when have Tab Event cmdArg not contains
