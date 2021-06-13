@@ -480,15 +480,8 @@ public class Paste {
     public String paste(@NotNull String content) {
         PasteInterface paster;
         try {
-            // EngineHub Pastebin
+            // Pastebin
             paster = new PastebinPaster();
-            return paster.pasteTheText(content);
-        } catch (Exception ex) {
-            Util.debugLog(ex.getMessage());
-        }
-        try {
-            // Lucko Pastebin
-            paster = new LuckoPastebinPaster();
             return paster.pasteTheText(content);
         } catch (Exception ex) {
             Util.debugLog(ex.getMessage());
@@ -496,6 +489,13 @@ public class Paste {
         try {
             // Ubuntu Pastebin
             paster = new UbuntuPaster();
+            return paster.pasteTheText(content);
+        } catch (Exception ex) {
+            Util.debugLog(ex.getMessage());
+        }
+        try {
+            // Lucko Pastebin
+            paster = new LuckoPastebinPaster();
             return paster.pasteTheText(content);
         } catch (Exception ex) {
             Util.debugLog(ex.getMessage());
