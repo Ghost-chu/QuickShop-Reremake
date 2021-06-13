@@ -64,7 +64,7 @@ public class SubCommand_Reset implements CommandProcesser {
                 MsgUtil.loadItemi18n();
                 MsgUtil.loadEnchi18n();
                 MsgUtil.loadPotioni18n();
-                MsgUtil.sendMessage(sender"complete");
+                MsgUtil.sendMessage(sender, "complete");
                 break;
             case "config":
                 File config = new File(plugin.getDataFolder(), "config.yml");
