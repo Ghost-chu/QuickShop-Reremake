@@ -920,6 +920,7 @@ public class QuickShop extends JavaPlugin {
      * @return The setup result
      */
     private boolean setupDatabase() {
+        getLogger().info("Setting up database...");
         try {
             ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
             AbstractDatabaseCore dbCore;
