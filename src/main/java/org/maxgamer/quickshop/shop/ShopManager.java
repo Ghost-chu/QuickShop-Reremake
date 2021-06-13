@@ -1007,13 +1007,8 @@ public class ShopManager {
             stock = 10000;
         }
         if (stock < amount) {
-            MsgUtil.sendMessage(
-                    seller,
-                    MsgUtil.getMessage(
-                            seller,
-                            "shop-stock-too-low",
-                            Integer.toString(stock),
-                            Util.getItemStackName(shop.getItem())));
+            MsgUtil.sendMessage(seller, MsgUtil.getMessage(seller, "shop-stock-too-low", Integer.toString(stock),
+                    Util.getItemStackName(shop.getItem())));
             return;
         }
         if (amount < 1) {
