@@ -217,6 +217,10 @@
                             <pattern>com.github.ben-manes.caffeine.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.com.github.ben-manes.caffeine.</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>org.enginehub:squirrelid.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.org.enginehub:squirrelid.</shadedPattern>
+                        </relocation>
 
                         <!--                        <relocation>-->
                         <!--                            <pattern>de.leonhard</pattern>-->
@@ -415,6 +419,10 @@
         <repository>
             <id>bg-repo</id>
             <url>https://repo.bg-software.com/repository/api/</url>
+        </repository>
+        <repository>
+            <id>enginehub-repo</id>
+            <url>https://maven.enginehub.org/repo/</url>
         </repository>
     </repositories>
 
@@ -895,6 +903,12 @@
             <artifactId>SuperiorSkyblockAPI</artifactId>
             <version>latest</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.enginehub</groupId>
+            <artifactId>squirrelid</artifactId>
+            <version>0.3.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
