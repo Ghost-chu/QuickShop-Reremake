@@ -869,12 +869,6 @@
             <artifactId>commons-codec</artifactId>
             <version>1.15</version>
         </dependency>
-        <dependency>
-            <groupId>me.lucko</groupId>
-            <artifactId>helper</artifactId>
-            <version>5.6.5</version>
-            <scope>provided</scope>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-nop -->
         <dependency>
             <groupId>org.slf4j</groupId>
