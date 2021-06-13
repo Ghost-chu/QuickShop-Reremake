@@ -394,11 +394,11 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 List<String> requirePermissions = container.getPermissions();
                 List<String> selectivePermissions = container.getSelectivePermissions();
                 if (!checkPermissions(sender, commandLabel, passThroughArgs, requirePermissions, PermissionType.REQUIRE, Action.EXECUTE)) {
-                    MsgUtil.sendMessage(sender, "no-permission", sender);
+                    MsgUtil.sendMessage(sender, "no-permission");
                     return true;
                 }
                 if (!checkPermissions(sender, commandLabel, passThroughArgs, selectivePermissions, PermissionType.SELECTIVE, Action.EXECUTE)) {
-                    MsgUtil.sendMessage(sender, "no-permission", sender);
+                    MsgUtil.sendMessage(sender, "no-permission");
                     return true;
                 }
 

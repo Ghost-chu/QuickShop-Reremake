@@ -126,7 +126,7 @@ public class ShopManager {
             }
             int max = plugin.getShopLimit(p);
             if (owned + 1 > max) {
-                MsgUtil.sendMessage(p, "reached-maximum-can-create", p, String.valueOf(owned), String.valueOf(max));
+                MsgUtil.sendMessage(p, "reached-maximum-can-create", String.valueOf(owned), String.valueOf(max));
                 return false;
             }
         }
@@ -249,7 +249,7 @@ public class ShopManager {
                 this.processWaterLoggedSign(shop.getLocation().getBlock(), info.getSignBlock());
             } else {
                 if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
-                    MsgUtil.sendMessage(player, "failed-to-put-sign", player);
+                    MsgUtil.sendMessage(player, "failed-to-put-sign");
                     Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
                     return;
                 }
@@ -278,7 +278,7 @@ public class ShopManager {
                     plugin.getDatabaseHelper().createShop(shop, null, e2 -> {
                         plugin.getLogger()
                                 .log(Level.SEVERE, "Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
-                        MsgUtil.sendMessage(player, "shop-creation-failed", player);
+                        MsgUtil.sendMessage(player, "shop-creation-failed");
                         Util.mainThreadRun(() -> {
                             shop.onUnload();
                             removeShop(shop);
@@ -465,7 +465,7 @@ public class ShopManager {
             }
             if (info.getLocation().getWorld() != p.getLocation().getWorld()
                     || info.getLocation().distanceSquared(p.getLocation()) > 25) {
-                MsgUtil.sendMessage(p, "not-looking-at-shop", p);
+                MsgUtil.sendMessage(p, "not-looking-at-shop");
                 return;
             }
             if (info.getAction() == ShopAction.CREATE) {
@@ -669,7 +669,7 @@ public class ShopManager {
                 MsgUtil.sendMessage(buyer, "the-owner-cant-afford-to-buy-from-you",
                         Objects.requireNonNull(format(total, shop.getLocation().getWorld(), shop.getCurrency())),
                         Objects.requireNonNull(format(eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(),
-                                shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency()))))
+                                shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency())));
             } else {
                 MsgUtil.sendMessage(buyer, MsgUtil.getMessage(buyer, "purchase-failed"));
                 plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
@@ -772,7 +772,7 @@ public class ShopManager {
         }
 
         if (plugin.getShopManager().getShop(info.getLocation()) != null) {
-            MsgUtil.sendMessage(p, "shop-already-owned", );
+            MsgUtil.sendMessage(p, "shop-already-owned");
             return;
         }
         if (Util.isDoubleChest(info.getLocation().getBlock().getBlockData())
@@ -1119,7 +1119,7 @@ public class ShopManager {
         Result result = plugin.getIntegrationHelper()
                 .callIntegrationsCanTrade(p, info.getLocation());
         if (!result.isSuccess()) {
-            MsgUtil.sendMessage(p, "integrations-check-failed-trade", result.getMessage()))
+            MsgUtil.sendMessage(p, "integrations-check-failed-trade", result.getMessage());
             Util.debugLog("Cancel by integrations.");
             return;
         }

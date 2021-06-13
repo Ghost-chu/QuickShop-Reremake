@@ -165,7 +165,7 @@ public class InternalListener implements Listener {
         if (event.getPurchaser().equals(event.getShop().getOwner())) {
             Player player = Bukkit.getPlayer(event.getPurchaser());
             if (player != null) {
-                MsgUtil.sendMessage(player, "shop-owner-self-trade", player);
+                MsgUtil.sendMessage(player, "shop-owner-self-trade");
             }
         }
     }
