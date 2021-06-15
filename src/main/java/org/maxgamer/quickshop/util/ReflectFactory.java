@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.command.CommandMap;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -64,6 +65,7 @@ public class ReflectFactory {
     private static Method itemStack_saveMethod;
 
     private static Class<?> nbtTagCompoundClass;
+    private static Class<?> craftServerClass;
 
     static {
         String name = Bukkit.getServer().getClass().getPackage().getName();
@@ -82,6 +84,8 @@ public class ReflectFactory {
                 nbtTagCompoundClass = Class.forName("net.minecraft.server." + nmsVersion + ".NBTTagCompound");
                 itemStack_saveMethod = Class.forName("net.minecraft.server." + nmsVersion + ".ItemStack").getDeclaredMethod("save", nbtTagCompoundClass);
             }
+            craftServerClass = Class.forName("org.bukkit.craftbukkit." + nmsVersion + ".CraftServer");
+
         } catch (Exception t) {
             QuickShop.getInstance().getLogger().log(Level.WARNING, "Failed to loading up net.minecraft.server support module, usually this caused by NMS changes but QuickShop not support yet, Did you have up-to-date?", t);
         }
@@ -129,6 +133,21 @@ public class ReflectFactory {
 
         itemStack_saveMethod.invoke(mcStack, nbtTagCompound);
         return nbtTagCompound.toString();
+    }
+
+    public static CommandMap getCommandMap() throws NoSuchFieldException, IllegalAccessException {
+        Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+        commandMapField.setAccessible(true);
+        return (CommandMap) commandMapField.get(Bukkit.getServer());
+    }
+
+    public static void syncCommands() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method method = craftServerClass.getDeclaredMethod("syncCommands");
+        try {
+            method.setAccessible(true);
+        } catch (Exception ignored) {
+        }
+        method.invoke(Bukkit.getServer(), (Object[]) null);
     }
 
 

@@ -22,7 +22,7 @@
 #                        TO EDIT QUICKSHOP'S CONFIGURATION, USE THE "config.yml" FILE!
 
 #Do not touch this if you don't know what you're doing!
-config-version: 131
+config-version: 132
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not existant/not supported language, then QuickShop will use en_US.
@@ -772,6 +772,12 @@ debug:
   #Setting this to false will disable the loading of corrupt shops!
   delete-corrupt-shops: false
 
+custom-commands:
+  - shop
+  - chestshop
+  - cshop
+# - playershop
+# - pshop
 
 
 #Let this stay false, DO NOT TOUCH IT!
