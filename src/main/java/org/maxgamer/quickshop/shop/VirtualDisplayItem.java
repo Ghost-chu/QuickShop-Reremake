@@ -197,14 +197,14 @@ public class VirtualDisplayItem extends DisplayItem {
 
         //Also make a DestroyPacket to remove it
         fakeItemDestroyPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_DESTROY);
-        if (version == GameVersion.v1_17_R1 || version == GameVersion.UNKNOWN) {
+        if (GameVersion.v1_17_R1.ordinal() > version.ordinal()) {
+            //On 1.17-, we need to write an integer array
+            //Entity to remove
+            fakeItemDestroyPacket.getIntegerArrays().write(0, new int[]{entityID});
+        } else {
             //On 1.17 (may be 1.17+?), just need to write a int
             //Entity to remove
             fakeItemDestroyPacket.getIntegers().write(0, entityID);
-        } else {
-            //On 1.16-, we need to write an integer array
-            //Entity to remove
-            fakeItemDestroyPacket.getIntegerArrays().write(0, new int[]{entityID});
         }
         initialized = true;
     }
