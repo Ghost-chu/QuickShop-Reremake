@@ -44,6 +44,7 @@ public class SubCommand_Reload implements CommandHandler<CommandSender> {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        MsgUtil.sendMessage(sender, "server-crash-warning");
         MsgUtil.sendMessage(sender, "command.reloading");
         // Force save maps and players to prevent server crashing.
         Bukkit.savePlayers();
