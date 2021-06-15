@@ -39,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.util.AsyncPacketSender;
+import org.maxgamer.quickshop.util.GameVersion;
 import org.maxgamer.quickshop.util.Util;
 
 import java.lang.reflect.InvocationTargetException;
@@ -55,7 +56,7 @@ public class VirtualDisplayItem extends DisplayItem {
     //counter for ensuring ID is unique
     private static final AtomicInteger counter = new AtomicInteger(0);
 
-    private static final String version = Util.getNMSVersion();
+    private static final GameVersion version = plugin.getGameVersion();
 
     //unique EntityID
     private final int entityID = counter.decrementAndGet();
@@ -114,16 +115,18 @@ public class VirtualDisplayItem extends DisplayItem {
                 .write(5, 0);
 
         switch (version) {
-            case "v1_13_R1":
-            case "v1_13_R2":
+            case v1_13_R1:
+            case v1_13_R2:
                 fakeItemPacket.getIntegers()
+                        //For 1.13, we should use type id to represent the EntityType
+                        //2 -> minecraft:item (Object ID:https://wiki.vg/Object_Data)
                         .write(6, 2)
                         //int data to mark
                         .write(7, 1);
                 break;
             //int data to mark
             default:
-                //for 1.14+, we should use EntityType
+                //For 1.14+, we should use EntityType
                 fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
                 //int data to mark
                 fakeItemPacket.getIntegers().write(6, 1);
@@ -168,8 +171,8 @@ public class VirtualDisplayItem extends DisplayItem {
         //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
         //For 1.13 is 6, and 1.14+ is 7
         switch (version) {
-            case "v1_13_R1":
-            case "v1_13_R2":
+            case v1_13_R1:
+            case v1_13_R2:
                 wpw.setObject(6, WrappedDataWatcher.Registry.getItemStackSerializer(false), originalItemStack);
                 break;
             default:
@@ -194,8 +197,15 @@ public class VirtualDisplayItem extends DisplayItem {
 
         //Also make a DestroyPacket to remove it
         fakeItemDestroyPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_DESTROY);
-        //Entity to remove
-        fakeItemDestroyPacket.getIntegerArrays().write(0, new int[]{entityID});
+        if (version == GameVersion.v1_17_R1 || version == GameVersion.UNKNOWN) {
+            //On 1.17 (may be 1.17+?), just need to write a int
+            //Entity to remove
+            fakeItemDestroyPacket.getIntegers().write(0, entityID);
+        } else {
+            //On 1.16-, we need to write an integer array
+            //Entity to remove
+            fakeItemDestroyPacket.getIntegerArrays().write(0, new int[]{entityID});
+        }
         initialized = true;
     }
 
