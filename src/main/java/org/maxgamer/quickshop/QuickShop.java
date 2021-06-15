@@ -258,7 +258,7 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private WorldEditAdapter worldEditAdapter;
     @Getter
-    private GameVersion gameVersion;
+    private final GameVersion gameVersion = GameVersion.get(Util.getNMSVersion());
 
     @NotNull
     public static QuickShop getInstance() {
@@ -344,10 +344,15 @@ public class QuickShop extends JavaPlugin {
             }
         }
 
-        if (getConfig().getBoolean("plugin.LWC") && Util.isClassAvailable("com.griefcraft.lwc.LWC")) {
+        if (getConfig().getBoolean("plugin.LWC")) {
             this.lwcPlugin = Bukkit.getPluginManager().getPlugin("LWC");
             if (this.lwcPlugin != null) {
-                getLogger().info("Successfully loaded LWC support!");
+                if (Util.isMethodAvailable("com.griefcraft.lwc.LWC", "findProtection", org.bukkit.Location.class)) {
+                    getLogger().info("Successfully loaded LWC support!");
+                } else {
+                    getLogger().warning("Unsupported LWC version, please make sure you are using the modern version of LWC!");
+                    this.lwcPlugin = null;
+                }
             }
         }
         compatibilityTool.searchAndRegisterPlugins();
@@ -718,9 +723,6 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
         getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
         getLogger().info("Let's start loading the plugin");
-
-        String nmsVersion = Util.getNMSVersion();
-        gameVersion = GameVersion.get(nmsVersion);
 
         getLogger().info("Chat processor selected: " + this.quickChatType.name());
 

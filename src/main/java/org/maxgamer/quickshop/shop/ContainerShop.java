@@ -44,7 +44,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.*;
-import org.maxgamer.quickshop.util.*;
+import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.PriceLimiter;
+import org.maxgamer.quickshop.util.Util;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -173,20 +175,7 @@ public class ContainerShop implements Shop {
                     this.displayItem = new RealDisplayItem(this);
                     break;
                 case VIRTUALITEM:
-                    try {
-                        if (!GameVersion.get(ReflectFactory.getServerVersion()).isVirtualDisplaySupports()) {
-                            throw new IllegalStateException("Version not supports Virtual DisplayItem.");
-                        }
-                        this.displayItem = new VirtualDisplayItem(this);
-                    } catch (Throwable e) {
-                        Util.debugLog(e.getMessage());
-                        MsgUtil.debugStackTrace(e.getStackTrace());
-                        plugin.getConfig().set("shop.display-type", 0);
-                        plugin.saveConfig();
-                        this.displayItem = new RealDisplayItem(this);
-                        //do not throw
-                        plugin.getLogger().log(Level.SEVERE, "Failed to initialize VirtualDisplayItem, fallback to RealDisplayItem, are you using the latest version of ProtocolLib?", e);
-                    }
+                    this.displayItem = new VirtualDisplayItem(this);
                     break;
                 default:
                     Util.debugLog(
