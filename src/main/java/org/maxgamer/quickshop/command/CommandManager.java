@@ -22,7 +22,10 @@ package org.maxgamer.quickshop.command;
 import com.google.common.collect.Sets;
 import lombok.Data;
 import org.bukkit.Sound;
-import org.bukkit.command.*;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,7 +34,6 @@ import org.maxgamer.quickshop.command.subcommand.*;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -332,6 +334,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             Util.debugLog("Dupe subcommand registering: " + container);
             return;
         }
+        container.bakeExecutorType();
         cmds.removeIf(commandContainer -> commandContainer.getPrefix().equalsIgnoreCase(container.getPrefix()));
         cmds.add(container);
     }
@@ -367,9 +370,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 return true;
             }
         }
-        boolean isPlayer = sender instanceof Player;
-        boolean isConsole = sender instanceof ConsoleCommandSender;
-        if (isPlayer && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
+        if (sender instanceof Player && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
             Player player = (Player) sender;
             ((Player) sender)
                     .playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
@@ -392,7 +393,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                     return true;
                 }
                 if (!isAdapt(container, sender)) {
-                    MsgUtil.sendMessage(sender, "command-type-mismatch", getContainerType(container).getSimpleName());
+                    MsgUtil.sendMessage(sender, "command-type-mismatch", container.getExecutorType().getSimpleName());
                     return true;
                 }
                 List<String> requirePermissions = container.getPermissions();
@@ -459,23 +460,10 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         }
     }
 
-    @NotNull
-    private Class<?> getContainerType(CommandContainer container) {
-        for (Method declaredMethod : container.getExecutor().getClass().getDeclaredMethods()) {
-            if (!"onCommand".equals(declaredMethod.getName()) && !"onTabComplete".equals(declaredMethod.getName())) {
-                continue;
-            }
-            if (declaredMethod.getParameterCount() != 3) {
-                continue;
-            }
-            return declaredMethod.getParameterTypes()[0];
-        }
-        return Object.class;
-    }
 
     private boolean isAdapt(CommandContainer container, CommandSender sender) {
         try {
-            getContainerType(container).cast(sender);
+            container.getExecutorType().cast(sender);
             return true;
         } catch (ClassCastException exception) {
             return false;
@@ -492,9 +480,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         if (plugin.getBootError() != null) {
             return Collections.emptyList();
         }
-        boolean isPlayer = sender instanceof Player;
-        boolean isConsole = sender instanceof ConsoleCommandSender;
-        if (isPlayer && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
+        if (sender instanceof Player && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
             Player player = (Player) sender;
             ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
         }
