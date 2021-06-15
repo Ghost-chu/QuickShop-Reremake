@@ -52,14 +52,8 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerListener extends QSListener {
-    //    private final Cache<Player, Long> dupeClickPrevent = CacheBuilder
-//            .newBuilder()
-//            .initialCapacity(10)
-//            .expireAfterAccess(1, TimeUnit.SECONDS)
-//            .weakKeys()
-//            .build();
     private final CooldownMap<Player> cooldownMap = CooldownMap.create(Cooldown.of(1, TimeUnit.SECONDS));
-    private boolean swapBehavior = false;
+    private final boolean swapBehavior;
 
     public PlayerListener(QuickShop plugin) {
         super(plugin);
@@ -297,14 +291,8 @@ public class PlayerListener extends QSListener {
         }
     }
 
-    enum InteractAction {
-        TRADE,
-        CONTROL_PANEL
-    }
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent e) {
-
         try {
             Location location;
             //for strange NPE from spigot API fix
