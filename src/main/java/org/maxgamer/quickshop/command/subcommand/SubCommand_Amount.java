@@ -35,8 +35,7 @@ public class SubCommand_Amount implements CommandHandler<Player> {
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
             MsgUtil.sendMessage(sender, "command.wrong-args");
             return;

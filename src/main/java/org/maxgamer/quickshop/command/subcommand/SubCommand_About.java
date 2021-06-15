@@ -33,8 +33,7 @@ public class SubCommand_About implements CommandHandler<CommandSender> {
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         MsgUtil.sendDirectMessage(sender,
                 ChatColor.AQUA + "QuickShop " + ChatColor.YELLOW + QuickShop.getFork());
         MsgUtil.sendDirectMessage(sender,

@@ -45,11 +45,8 @@ public class SubCommand_Staff implements CommandHandler<Player> {
     private final List<String> tabCompleteList = Collections.unmodifiableList(Arrays.asList("add", "del", "list", "clear"));
 
     @Override
-    public void onCommand(
-            @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-
-        final BlockIterator bIt = new BlockIterator(sender, 10);
-
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        BlockIterator bIt = new BlockIterator(sender, 10);
         if (!bIt.hasNext()) {
             MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;

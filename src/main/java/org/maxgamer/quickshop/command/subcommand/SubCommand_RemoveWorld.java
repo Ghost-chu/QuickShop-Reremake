@@ -36,8 +36,7 @@ public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
             MsgUtil.sendMessage(sender, "command.no-world-given");
             return;
@@ -57,40 +56,6 @@ public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
         Util.debugLog("Successfully deleted all shops in world " + cmdArg[0] + "!");
 
         MsgUtil.sendMessage(sender, "shops-removed-in-world", String.valueOf(shopsDeleted), world.getName());
-//        if (!(sender instanceof Player)) {
-//            MsgUtil.sendMessage(sender, ChatColor.RED + "This command can't be run by the console!");
-//            return;
-//        }
-//
-//        final Player p = (Player) sender;
-//        final BlockIterator bIt = new BlockIterator(p, 10);
-//
-//        if (!bIt.hasNext()) {
-//            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
-//            return;
-//        }
-//
-//        while (bIt.hasNext()) {
-//            final Block b = bIt.next();
-//            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-//
-//            if (shop == null) {
-//                continue;
-//            }
-//
-//            if (shop.getModerator().isModerator(((Player) sender).getUniqueId())
-//                    || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
-//                //shop.onUnload();
-//                shop.delete();
-//                plugin.log("Deleting shop " + shop + " as requested by the /qs remove command.");
-//            } else {
-//                MsgUtil.sendMessage(sender, ChatColor.RED + MsgUtil.getMessage("no-permission", sender));
-//            }
-//
-//            return;
-//        }
-//
-//        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 
 }

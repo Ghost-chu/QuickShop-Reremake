@@ -42,11 +42,8 @@ public class SubCommand_SuperCreate implements CommandHandler<Player> {
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-
-        final ItemStack item = sender.getInventory().getItemInMainHand();
-
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        ItemStack item = sender.getInventory().getItemInMainHand();
         if (item.getType() == Material.AIR) {
             MsgUtil.sendMessage(sender, "no-anythings-in-your-hand");
             return;
@@ -66,12 +63,7 @@ public class SubCommand_SuperCreate implements CommandHandler<Player> {
                 return;
             }
             // Send creation menu.
-            final Info info =
-                    new Info(
-                            b.getLocation(),
-                            ShopAction.CREATE,
-                            sender.getInventory().getItemInMainHand(),
-                            b.getRelative(sender.getFacing().getOppositeFace()));
+            final Info info = new Info(b.getLocation(), ShopAction.CREATE, sender.getInventory().getItemInMainHand(), b.getRelative(sender.getFacing().getOppositeFace()));
 
             plugin.getShopManager().getActions().put(sender.getUniqueId(), info);
             MsgUtil.sendMessage(sender, "how-much-to-trade-for", Util.getItemStackName(item), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.stacks") ? item.getAmount() : 1));

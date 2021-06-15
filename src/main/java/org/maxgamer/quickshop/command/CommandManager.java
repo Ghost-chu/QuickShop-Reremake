@@ -202,7 +202,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 CommandContainer.builder()
                         .prefix("fetchmessage")
                         .permission("quickshop.fetchmessage")
-                        .executor(new SubCommand_FetchMessage(plugin))
+                        .executor(new SubCommand_FetchMessage())
                         .build());
         registerCmd(
                 CommandContainer.builder()
@@ -275,7 +275,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                         .prefix("export")
                         .hidden(true)
                         .permission("quickshop.export")
-                        .executor(new SubCommand_Export(plugin))
+                        .executor(new SubCommand_Export())
                         .build());
         registerCmd(
                 CommandContainer.builder()

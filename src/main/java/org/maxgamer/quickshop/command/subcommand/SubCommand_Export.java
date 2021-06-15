@@ -23,15 +23,12 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
 public class SubCommand_Export implements CommandHandler<ConsoleCommandSender> {
-
-    private final QuickShop plugin;
 
     @Override
     @SneakyThrows

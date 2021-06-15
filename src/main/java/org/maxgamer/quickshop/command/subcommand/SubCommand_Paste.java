@@ -40,8 +40,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         // do actions
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             if (plugin.getServer().getPluginManager().getPlugin("ConsoleSpamFix") != null) {

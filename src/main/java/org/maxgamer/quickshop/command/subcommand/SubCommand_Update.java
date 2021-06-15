@@ -35,8 +35,7 @@ public class SubCommand_Update implements CommandHandler<CommandSender> {
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             MsgUtil.sendDirectMessage(sender, ChatColor.YELLOW + "Checking for updates...");
 
@@ -52,8 +51,6 @@ public class SubCommand_Update implements CommandHandler<CommandSender> {
 
             MsgUtil.sendDirectMessage(sender, ChatColor.YELLOW + "Downloading update! This may take a while...");
 
-            //final byte[] pluginBin;
-
             try {
                 plugin.getUpdateWatcher().getUpdater().install(plugin.getUpdateWatcher().getUpdater().update(plugin.getUpdateWatcher().getUpdater().getCurrentRunning()));
             } catch (Exception e) {
@@ -62,20 +59,6 @@ public class SubCommand_Update implements CommandHandler<CommandSender> {
                 plugin.getLogger().log(Level.WARNING, "Failed to update QuickShop because of the following error:", e);
                 return;
             }
-
-//                MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Installing update...");
-//
-//                try {
-//                    Updater.replaceTheJar(pluginBin);
-//                } catch (IOException ioe) {
-//                    MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed, get details to look the console.");
-//                    plugin.getSentryErrorReporter().ignoreThrow();
-//                    ioe.printStackTrace();
-//                    return;
-//                } catch (RuntimeException re) {
-//                    MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed, " + re.getMessage());
-//                    return;
-//                }
 
             MsgUtil.sendDirectMessage(sender,
                     ChatColor.GREEN + "Successful! Please restart your server to apply the updated version!");
