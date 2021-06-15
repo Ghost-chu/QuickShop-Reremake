@@ -33,6 +33,8 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 
+import java.util.logging.Level;
+
 /**
  * @author Netherfoam A display item, that spawns a block above the chest and cannot be interacted
  * with.
@@ -180,10 +182,11 @@ public abstract class DisplayItem {
     @NotNull
     public static DisplayType getNowUsing() {
         DisplayType displayType = DisplayType.fromID(plugin.getConfig().getInt("shop.display-type"));
-        //Falling back to VirtualDisplayItem
+        //Falling back to RealDisplayItem when VirtualDisplayItem is unsupported
         if (isNotSupportVirtualItem && displayType == DisplayType.VIRTUALITEM) {
             plugin.getConfig().set("shop.display-type", 0);
             plugin.saveConfig();
+            plugin.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because VirtualDisplayItem is unsupported");
             return DisplayType.REALITEM;
         }
         return displayType;
