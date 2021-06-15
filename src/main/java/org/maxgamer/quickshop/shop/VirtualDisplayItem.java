@@ -238,7 +238,9 @@ public class VirtualDisplayItem extends DisplayItem {
                 @Override
                 public void onPacketSending(@NotNull PacketEvent event) {
                     //is really full chunk data
-                    boolean isFull = event.getPacket().getBooleans().read(0);
+                    //In 1.17, this value was removed, so read safely
+                    Boolean boxedIsFull = event.getPacket().getBooleans().readSafely(0);
+                    boolean isFull = boxedIsFull == null || boxedIsFull;
                     if (!shop.isLoaded() || !isDisplay || !isFull || shop.isLeftShop()) {
                         return;
                     }
