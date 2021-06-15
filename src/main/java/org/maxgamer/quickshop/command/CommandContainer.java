@@ -77,7 +77,7 @@ public class CommandContainer {
                 continue;
             }
             executorType = declaredMethod.getParameterTypes()[0];
-            break;
+            return;
         }
         executorType = Object.class;
     }
