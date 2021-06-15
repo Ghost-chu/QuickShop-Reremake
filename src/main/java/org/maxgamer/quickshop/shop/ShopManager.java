@@ -88,8 +88,13 @@ public class ShopManager {
         Util.debugLog("Loading caching tax account...");
         String taxAccount = plugin.getConfig().getString("tax-account", "tax");
         if (!taxAccount.isEmpty()) {
-            this.cacheTaxAccount = new Trader(taxAccount,
-                    plugin.getServer().getOfflinePlayer(taxAccount));
+            if (Util.isUUID(taxAccount)) {
+                this.cacheTaxAccount = new Trader(taxAccount,
+                        plugin.getServer().getOfflinePlayer(UUID.fromString(taxAccount)));
+            } else {
+                this.cacheTaxAccount = new Trader(taxAccount,
+                        plugin.getServer().getOfflinePlayer(taxAccount));
+            }
         } else {
             // disable tax account
             cacheTaxAccount = null;
