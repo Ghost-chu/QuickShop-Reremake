@@ -99,11 +99,11 @@ public class ShopManager {
             // disable tax account
             cacheTaxAccount = null;
         }
-        this.priceLimiter =
-                new PriceLimiter(
-                        plugin.getConfig().getDouble("shop.minimum-price"),
-                        plugin.getConfig().getInt("shop.maximum-price"),
-                        plugin.getConfig().getBoolean("shop.allow-free-shop"));
+        this.priceLimiter = new PriceLimiter(
+                plugin.getConfig().getDouble("shop.minimum-price"),
+                plugin.getConfig().getInt("shop.maximum-price"),
+                plugin.getConfig().getBoolean("shop.allow-free-shop"),
+                plugin.getConfig().getBoolean("whole-number-prices-only"));
         this.useOldCanBuildAlgorithm = plugin.getConfig().getBoolean("limits.old-algorithm");
         this.autoSign = plugin.getConfig().getBoolean("shop.auto-sign");
     }
@@ -825,40 +825,28 @@ public class ShopManager {
 
         // Price per item
         double price;
-
-        // Price parsing
-        if (plugin.getConfig().getBoolean("whole-number-prices-only")) {
-            try {
-                price = Integer.parseInt(message);
-            } catch (NumberFormatException numberFormatException) {
-                Util.debugLog(numberFormatException.getMessage());
-                MsgUtil.sendMessage(p, "not-a-integer", message);
+        try {
+            price = Double.parseDouble(message);
+            if (Double.isInfinite(price)) {
+                MsgUtil.sendMessage(p, "exceeded-maximum", message);
                 return;
             }
-        } else {
-            try {
-                price = Double.parseDouble(message);
-                if (Double.isInfinite(price)) {
-                    MsgUtil.sendMessage(p, "exceeded-maximum", message);
+            String strFormat = new DecimalFormat("#.#########").format(Math.abs(price))
+                    .replace(",", ".");
+            String[] processedDouble = strFormat.split("\\.");
+            if (processedDouble.length > 1) {
+                int maximumDigitsLimit = plugin.getConfig()
+                        .getInt("maximum-digits-in-price", -1);
+                if (processedDouble[1].length() > maximumDigitsLimit
+                        && maximumDigitsLimit != -1) {
+                    MsgUtil.sendMessage(p, "digits-reach-the-limit", String.valueOf(maximumDigitsLimit));
                     return;
                 }
-                String strFormat = new DecimalFormat("#.#########").format(Math.abs(price))
-                        .replace(",", ".");
-                String[] processedDouble = strFormat.split("\\.");
-                if (processedDouble.length > 1) {
-                    int maximumDigitsLimit = plugin.getConfig()
-                            .getInt("maximum-digits-in-price", -1);
-                    if (processedDouble[1].length() > maximumDigitsLimit
-                            && maximumDigitsLimit != -1) {
-                        MsgUtil.sendMessage(p, "digits-reach-the-limit", String.valueOf(maximumDigitsLimit));
-                        return;
-                    }
-                }
-            } catch (NumberFormatException ex) {
-                Util.debugLog(ex.getMessage());
-                MsgUtil.sendMessage(p, "not-a-number", message);
-                return;
             }
+        } catch (NumberFormatException ex) {
+            Util.debugLog(ex.getMessage());
+            MsgUtil.sendMessage(p, "not-a-number", message);
+            return;
         }
 
         // Price limit checking
@@ -878,12 +866,10 @@ public class ShopManager {
                                 : Double.toString(this.priceLimiter.getMinPrice()));
                 return;
             case PRICE_RESTRICTED:
-                Map.Entry<Double, Double> materialLimit = Util
-                        .getPriceRestriction(info.getItem().getType());
                 MsgUtil.sendMessage(p, "restricted-prices",
                         Util.getItemStackName(info.getItem()),
-                        String.valueOf(materialLimit.getKey()),
-                        String.valueOf(materialLimit.getValue()));
+                        String.valueOf(priceCheckResult.getMin()),
+                        String.valueOf(priceCheckResult.getMax()));
                 return;
             case NOT_VALID:
                 MsgUtil.sendMessage(p, "not-a-number", message);
