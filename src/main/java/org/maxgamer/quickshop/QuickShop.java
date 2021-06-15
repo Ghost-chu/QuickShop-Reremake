@@ -1796,6 +1796,8 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 131) {
             getConfig().set("custom-commands", ImmutableList.of("shop", "chestshop", "cshop"));
+            getConfig().set("unlimited-shop-owner-change", false);
+            getConfig().set("unlimited-shop-owner-change-account", "quickshop");
             getConfig().set("config-version", ++selectedVersion);
         }
 

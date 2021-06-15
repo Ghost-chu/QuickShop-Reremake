@@ -485,4 +485,10 @@ public interface Shop {
      * @return ShopInfoStorage
      */
     ShopInfoStorage saveToInfoStorage();
+
+    /**
+     * Change the owner to unlimited shop owner.
+     * It defined in configuration.
+     */
+    void migrateOwnerToUnlimitedShopOwner();
 }

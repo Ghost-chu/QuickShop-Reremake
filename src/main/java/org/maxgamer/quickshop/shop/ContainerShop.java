@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.shop;
 import com.lishid.openinv.OpenInv;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -1434,6 +1435,30 @@ public class ContainerShop implements Shop {
     @Override
     public ShopInfoStorage saveToInfoStorage() {
         return new ShopInfoStorage(ShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml());
+    }
+
+    /**
+     * Change the owner to unlimited shop owner.
+     * It defined in configuration.
+     */
+    @Override
+    public void migrateOwnerToUnlimitedShopOwner() {
+        String account = plugin.getConfig().getString("unlimited-shop-owner-change-account");
+        OfflinePlayer player;
+        if (Util.isUUID(account)) {
+            player = Bukkit.getOfflinePlayer(UUID.fromString(account));
+        } else {
+            player = Bukkit.getOfflinePlayer(plugin.getConfig().getString("unlimited-shop-owner-change-account"));
+        }
+        if (Bukkit.isPrimaryThread()) {
+            setOwner(player.getUniqueId());
+            setSignText();
+        } else {
+            Util.mainThreadRun(() -> {
+                setOwner(player.getUniqueId());
+                setSignText();
+            });
+        }
     }
 
 }

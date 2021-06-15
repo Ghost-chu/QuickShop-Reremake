@@ -54,10 +54,16 @@ public class SubCommand_SilentUnlimited implements CommandHandler<Player> {
 
         if (shop.isUnlimited()) {
             MsgUtil.sendMessage(sender, "command.toggle-unlimited.unlimited");
+            if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
+                shop.migrateOwnerToUnlimitedShopOwner();
+                MsgUtil.sendMessage(sender, "unlimited-shop-owner-changed");
+            }
             return;
         }
-
         MsgUtil.sendMessage(sender, "command.toggle-unlimited.limited");
+        if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
+            MsgUtil.sendMessage(sender, "unlimited-shop-owner-keeped");
+        }
     }
 
 }
