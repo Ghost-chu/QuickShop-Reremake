@@ -80,7 +80,7 @@ public class SubCommand_Currency implements CommandProcesser {
                 return;
             }
         }
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender, "not-looking-at-shop");
     }
 
     @NotNull

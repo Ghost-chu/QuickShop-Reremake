@@ -36,9 +36,8 @@ public interface QuickChat {
 
     void sendItemHologramChat(
             @NotNull Player player,
-            @NotNull String left,
-            @NotNull ItemStack itemStack,
-            @NotNull String right);
+            @NotNull String text,
+            @NotNull ItemStack itemStack);
 
     @NotNull QuickComponent getItemHologramChat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String
             message);

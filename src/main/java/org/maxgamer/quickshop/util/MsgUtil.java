@@ -21,8 +21,9 @@ package org.maxgamer.quickshop.util;
 
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import com.google.common.collect.Maps;
-import lombok.Getter;
-import lombok.SneakyThrows;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
+import lombok.*;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -66,7 +67,7 @@ import java.util.logging.Level;
 public class MsgUtil {
     private static final String invaildMsg = "Invaild message";
 
-    private static final Map<UUID, LinkedList<String>> outGoingPlayerMessages = Maps.newConcurrentMap();
+    private static final Map<UUID, List<TransactionMessage>> outGoingPlayerMessages = Maps.newConcurrentMap();
     private static final DecimalFormat decimalFormat = processFormat();
     public static GameLanguage gameLanguage;
     private static QuickShop plugin = QuickShop.getInstance();
@@ -110,26 +111,22 @@ public class MsgUtil {
         Player player = p.getPlayer();
         if (player != null) {
             UUID pName = p.getUniqueId();
-            LinkedList<String> msgs = outGoingPlayerMessages.get(pName);
+            List<TransactionMessage> msgs = outGoingPlayerMessages.get(pName);
             if (msgs != null) {
-                for (String msg : msgs) {
+                for (TransactionMessage msg : msgs) {
                     if (p.getPlayer() != null) {
                         Util.debugLog("Accepted the msg for player " + p.getName() + " : " + msg);
-                        // TODO: Use json message instead ########## stupid thing
-                        String[] msgData = msg.split("##########");
-                        if (msgData.length == 3) {
+                        if (msg.getHoverItem() != null) {
                             try {
-                                ItemStack data = Util.deserialize(msgData[1]);
+                                ItemStack data = Util.deserialize(msg.getHoverItem());
                                 if (data == null) {
-                                    MsgUtil.sendMessage(p.getPlayer(), msg);
+                                    MsgUtil.sendDirectMessage(p.getPlayer(), msg.getMessage());
                                 } else {
-                                    plugin.getQuickChat().sendItemHologramChat(player, msgData[0], data, msgData[2]);
+                                    plugin.getQuickChat().sendItemHologramChat(player, msg.getMessage(), data);
                                 }
                             } catch (InvalidConfigurationException e) {
-                                MsgUtil.sendMessage(p.getPlayer(), msg);
+                                MsgUtil.sendDirectMessage(p.getPlayer(), msg.getMessage());
                             }
-                        } else {
-                            MsgUtil.sendMessage(p.getPlayer(), msg);
                         }
                     }
                 }
@@ -464,8 +461,8 @@ public class MsgUtil {
                     ownerUUID = Bukkit.getOfflinePlayer(owner).getUniqueId();
                 }
                 String message = rs.getString("message");
-                List<String> msgs = outGoingPlayerMessages.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
-                msgs.add(message);
+                List<TransactionMessage> msgs = outGoingPlayerMessages.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
+                msgs.add(MsgUtil.TransactionMessage.fromJson(message));
             }
         } catch (SQLException e) {
             plugin.getLogger().log(Level.WARNING, "Could not load transaction messages from database. Skipping.", e);
@@ -473,75 +470,73 @@ public class MsgUtil {
     }
 
     /**
-     * @param player      The name of the player to message
-     * @param message     The message to send them Sends the given player a message if they're online.
-     *                    Else, if they're not online, queues it for them in the database.
-     * @param isUnlimited The shop is or unlimited
-     *                    <p>
-     *                    Deprecated for always use for bukkit deserialize method (costing ~145ms)
+     * @param player             The name of the player to message
+     * @param transactionMessage The message to send them Sends the given player a message if they're online.
+     *                           Else, if they're not online, queues it for them in the database.
+     * @param isUnlimited        The shop is or unlimited
+     *                           <p>
+     *                           Deprecated for always use for bukkit deserialize method (costing ~145ms)
      */
     @Deprecated
-    public static void send(@NotNull UUID player, @NotNull String message, boolean isUnlimited) {
+    public static void send(@NotNull UUID player, @NotNull TransactionMessage transactionMessage, boolean isUnlimited) {
         if (isUnlimited && plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
             return; // Ignore unlimited shops messages.
         }
-        Util.debugLog(message);
-        String[] msgData = message.split("##########");
+        Util.debugLog(transactionMessage.getMessage());
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
         if (!p.isOnline()) {
-            LinkedList<String> msgs = outGoingPlayerMessages.getOrDefault(player, new LinkedList<>());
-            msgs.add(message);
+            List<TransactionMessage> msgs = outGoingPlayerMessages.getOrDefault(player, new LinkedList<>());
+            msgs.add(transactionMessage);
             outGoingPlayerMessages.put(player, msgs);
-            plugin.getDatabaseHelper().sendMessage(player, message, System.currentTimeMillis());
+            plugin.getDatabaseHelper().sendMessage(player, transactionMessage.toJson(), System.currentTimeMillis());
         } else {
             if (p.getPlayer() != null) {
-                if (msgData.length == 3) {
+                if (transactionMessage.getHoverItem() != null) {
                     try {
-                        plugin.getQuickChat().sendItemHologramChat(p.getPlayer(), msgData[0], Objects.requireNonNull(Util.deserialize(msgData[1])), msgData[2]);
+                        plugin.getQuickChat().sendItemHologramChat(p.getPlayer(), transactionMessage.getHoverItem(), Objects.requireNonNull(Util.deserialize(transactionMessage.getHoverItem())));
                     } catch (Exception any) {
                         Util.debugLog("Unknown error, send by plain text.");
                         // Normal msg
-                        MsgUtil.sendMessage(p.getPlayer(), message);
+                        MsgUtil.sendDirectMessage(p.getPlayer(), transactionMessage.getMessage());
                     }
                 } else {
                     // Normal msg
-                    MsgUtil.sendMessage(p.getPlayer(), message);
+                    MsgUtil.sendDirectMessage(p.getPlayer(), transactionMessage.getMessage());
                 }
             }
         }
     }
 
     /**
-     * @param shop    The shop purchased
-     * @param player  The name of the player to message
-     * @param message The message to send, if the given player are online it will be send immediately,
-     *                Else, if they're not online, queues them in the database.
+     * @param shop               The shop purchased
+     * @param player             The name of the player to message
+     * @param transactionMessage The message to send, if the given player are online it will be send immediately,
+     *                           Else, if they're not online, queues them in the database.
      */
-    public static void send(@NotNull Shop shop, @NotNull UUID player, @NotNull String message) {
+    public static void send(@NotNull Shop shop, @NotNull UUID player, @NotNull TransactionMessage transactionMessage) {
         if (shop.isUnlimited() && plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
             return; // Ignore unlimited shops messages.
         }
-        Util.debugLog(message);
-        String[] msgData = message.split("##########");
+        Util.debugLog(transactionMessage.getMessage());
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
         if (!p.isOnline()) {
-            LinkedList<String> msgs = outGoingPlayerMessages.getOrDefault(player, new LinkedList<>());
-            msgs.add(message);
+            List<TransactionMessage> msgs = outGoingPlayerMessages.getOrDefault(player, new LinkedList<>());
+            msgs.add(transactionMessage);
             outGoingPlayerMessages.put(player, msgs);
-            plugin.getDatabaseHelper().sendMessage(player, message, System.currentTimeMillis());
+            plugin.getDatabaseHelper().sendMessage(player, transactionMessage.toJson(), System.currentTimeMillis());
         } else {
             if (p.getPlayer() != null) {
-                if (msgData.length == 3) {
+                if (transactionMessage.getHoverItem() != null) {
                     try {
-                        plugin.getQuickChat().sendItemHologramChat(p.getPlayer(), msgData[0], shop.getItem(), msgData[2]);
+                        plugin.getQuickChat().sendItemHologramChat(p.getPlayer(), transactionMessage.getHoverItem(), Objects.requireNonNull(Util.deserialize(transactionMessage.getHoverItem())));
                     } catch (Exception any) {
                         Util.debugLog("Unknown error, send by plain text.");
                         // Normal msg
-                        MsgUtil.sendMessage(p.getPlayer(), message);
+                        MsgUtil.sendDirectMessage(p.getPlayer(), transactionMessage.getMessage());
                     }
                 } else {
                     // Normal msg
-                    MsgUtil.sendMessage(p.getPlayer(), message);
+                    MsgUtil.sendDirectMessage(p.getPlayer(), transactionMessage.getMessage());
                 }
             }
         }
@@ -790,7 +785,7 @@ public class MsgUtil {
     public static void sendMessageToOps(@NotNull String message) {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.alerts")) {
-                MsgUtil.sendMessage(player, message);
+                MsgUtil.sendDirectMessage(player, message);
             }
         }
     }
@@ -1529,5 +1524,42 @@ public class MsgUtil {
             return;
         }
         sendMessage(Bukkit.getPlayer(uuid), key, args);
+    }
+
+    public static boolean isJson(String str) {
+        try {
+            new JsonParser().parse(str);
+            return true;
+        } catch (JsonParseException exception) {
+            return false;
+        }
+    }
+
+    @Data
+    @AllArgsConstructor
+    @Builder
+    public static class TransactionMessage {
+        @NotNull
+        private String message;
+        @Nullable
+        private String hoverItem;
+        @Nullable
+        private String hoverText;
+
+        @NotNull
+        public static TransactionMessage fromJson(String json) {
+            try {
+                if (MsgUtil.isJson(json)) {
+                    return JsonUtil.getGson().fromJson(json, TransactionMessage.class);
+                }
+            } catch (Exception ignored) {
+            }
+            return new TransactionMessage(json, null, null);
+        }
+
+        @NotNull
+        public String toJson() {
+            return JsonUtil.getGson().toJson(this);
+        }
     }
 }
