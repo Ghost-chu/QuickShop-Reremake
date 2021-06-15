@@ -464,7 +464,7 @@ public class MsgUtil {
                     ownerUUID = Bukkit.getOfflinePlayer(owner).getUniqueId();
                 }
                 String message = rs.getString("message");
-                LinkedList<String> msgs = outGoingPlayerMessages.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
+                List<String> msgs = outGoingPlayerMessages.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
                 msgs.add(message);
             }
         } catch (SQLException e) {
@@ -712,15 +712,14 @@ public class MsgUtil {
      * @param player The sender will send the message to
      * @return message
      */
+
     public static String getMessage(@NotNull String loc, @Nullable CommandSender player, @NotNull String... args) {
         try {
             final String raw = messagei18n.getString(loc);
             if (raw == null) {
                 Util.debugLog("ERR: MsgUtil cannot find the the phrase at " + loc + ", printing the all readed datas: " + messagei18n);
-                if (plugin.getSentryErrorReporter() != null) {
-                    plugin.getSentryErrorReporter().sendError(new RuntimeException("Cannot found phrase " + loc));
-                }
                 // TODO: Remove me after we confirm all code about sendMessage has been correctly migrated.
+
                 return fillArgs(loc, args);
             }
             String filled = fillArgs(raw, args);
