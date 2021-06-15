@@ -320,5 +320,7 @@
   "shop-creation-failed": "&c商店建立失敗，請與伺服器管理員聯繫。",
   "shop-owner-self-trade": "&e你正在跟自己開的商店進行交易 ， 所以你的存款不會改變。",
   "chest-title": "QuickShop 商店",
-  "command-type-mismatch": "&c此指令只能由 &b{0} 執行。"
+  "command-type-mismatch": "&c此指令只能由 &b{0} 執行。",
+  "unlimited-shop-owner-changed": "&eThis unlimited shop owner has been changed to {0}.",
+  "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself."
 }
