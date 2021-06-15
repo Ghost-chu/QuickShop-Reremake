@@ -28,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.util.MsgUtil;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.function.Function;
 
@@ -56,6 +57,30 @@ public class CommandContainer {
     private String disablePlaceholder; //Set the text shown if command disabled
     @Nullable
     private Function<@Nullable CommandSender, @NotNull String> disableCallback; //Set the callback that should return a text to shown
+
+    private Class<?> executorType;
+
+    @NotNull
+    public Class<?> getExecutorType() {
+        if (executorType == null) {
+            bakeExecutorType();
+        }
+        return executorType;
+    }
+
+    public void bakeExecutorType() {
+        for (Method declaredMethod : getExecutor().getClass().getDeclaredMethods()) {
+            if (!"onCommand".equals(declaredMethod.getName()) && !"onTabComplete".equals(declaredMethod.getName())) {
+                continue;
+            }
+            if (declaredMethod.getParameterCount() != 3) {
+                continue;
+            }
+            executorType = declaredMethod.getParameterTypes()[0];
+            break;
+        }
+        executorType = Object.class;
+    }
 
     public final @NotNull String getDisableText(@NotNull CommandSender sender) {
         if (this.getDisableCallback() != null) {
