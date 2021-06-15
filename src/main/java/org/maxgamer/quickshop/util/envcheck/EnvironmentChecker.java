@@ -356,14 +356,18 @@ public final class EnvironmentChecker {
         if (!gameVersion.isVirtualDisplaySupports()) {
             throwable = new IllegalStateException("Version not supports Virtual DisplayItem.");
         } else {
-            throwable = VirtualDisplayItem.PacketFactory.testFakeItem();
+            if (plugin.getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
+                throwable = VirtualDisplayItem.PacketFactory.testFakeItem();
+            } else {
+                throwable = new IllegalStateException("ProtocolLib is not installed.");
+            }
         }
         if (throwable != null) {
             Util.debugLog(throwable.getMessage());
             MsgUtil.debugStackTrace(throwable.getStackTrace());
             DisplayItem.setNotSupportVirtualItem(true);
             //do not throw
-            plugin.getLogger().log(Level.SEVERE, "Failed to initialize VirtualDisplayItem", throwable);
+            plugin.getLogger().log(Level.SEVERE, "Virtual DisplayItem Support Test: Failed to initialize VirtualDisplayItem", throwable);
             return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem seems to not work on this Minecraft server, Make sure QuickShop, ProtocolLib and server builds are up to date.");
         } else {
             return new ResultContainer(CheckResult.PASSED, "Passed checks");
