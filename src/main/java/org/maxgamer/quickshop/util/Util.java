@@ -76,7 +76,7 @@ public class Util {
     private static int bypassedCustomStackSize = -1;
     private static Yaml yaml = null;
     private static boolean devMode = false;
-    private static QuickShop plugin = QuickShop.getInstance();
+    private static QuickShop plugin;
     private static Object serverInstance;
     private static Field tpsField;
     private static List<String> worldBlacklist = new ArrayList<>(5);

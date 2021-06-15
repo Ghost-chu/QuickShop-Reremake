@@ -97,6 +97,7 @@ public class QuickShop extends JavaPlugin {
      * The manager to check permissions.
      */
     private static PermissionManager permissionManager;
+    @Getter
     private static boolean loaded = false;
     /**
      * WIP
