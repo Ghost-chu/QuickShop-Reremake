@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.shop;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
@@ -41,6 +42,9 @@ public abstract class DisplayItem {
     protected static final QuickShop plugin = QuickShop.getInstance();
 
     private static final Gson gson = JsonUtil.getGson();
+
+    @Setter
+    private static volatile boolean isNotSupportVirtualItem = false;
 
     protected final ItemStack originalItemStack;
 
@@ -175,7 +179,14 @@ public abstract class DisplayItem {
      */
     @NotNull
     public static DisplayType getNowUsing() {
-        return DisplayType.fromID(plugin.getConfig().getInt("shop.display-type"));
+        DisplayType displayType = DisplayType.fromID(plugin.getConfig().getInt("shop.display-type"));
+        //Falling back to VirtualDisplayItem
+        if (isNotSupportVirtualItem && displayType == DisplayType.VIRTUALITEM) {
+            plugin.getConfig().set("shop.display-type", 0);
+            plugin.saveConfig();
+            return DisplayType.REALITEM;
+        }
+        return displayType;
     }
 
     /**
