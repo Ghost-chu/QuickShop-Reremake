@@ -67,8 +67,7 @@ import java.util.logging.Level;
 
 public class Util {
     private static final EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
-    private static final EnumMap<Material, Entry<Double, Double>> restrictedPrices =
-            new EnumMap<>(Material.class);
+    private static final EnumMap<Material, Entry<Double, Double>> restrictedPrices = new EnumMap<>(Material.class);
     private static final EnumMap<Material, Integer> customStackSize = new EnumMap<>(Material.class);
     private static final EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
     private static final List<BlockFace> verticalFacing = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
@@ -1173,7 +1172,6 @@ public class Util {
      */
     @NotNull
     public static String getClassPrefix() {
-
         String className = Thread.currentThread().getStackTrace()[2].getClassName();
         try {
             Class<?> c = Class.forName(className);

@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import lombok.Getter;
@@ -29,6 +30,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -73,6 +75,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -777,12 +780,15 @@ public class QuickShop extends JavaPlugin {
             this.displayAutoDespawnWatcher.runTaskTimer(this, 20, getConfig().getInt("shop.display-check-time")); // not worth async
         }
 
+        getLogger().info("Registering commands...");
         /* PreInit for BootError feature */
         commandManager = new CommandManager(this);
         //noinspection ConstantConditions
         getCommand("qs").setExecutor(commandManager);
         //noinspection ConstantConditions
         getCommand("qs").setTabCompleter(commandManager);
+
+        this.registerCustomCommands();
 
         this.shopManager = new ShopManager(this);
 
@@ -1788,6 +1794,10 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("plugin.WorldEdit", true);
             getConfig().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 131) {
+            getConfig().set("custom-commands", ImmutableList.of("shop", "chestshop", "cshop"));
+            getConfig().set("config-version", ++selectedVersion);
+        }
 
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
@@ -1816,5 +1826,25 @@ public class QuickShop extends JavaPlugin {
     public void setupBootError(BootError bootError) {
         this.bootError = bootError;
         HandlerList.unregisterAll(this);
+    }
+
+    public void registerCustomCommands() {
+        List<String> customCommands = getConfig().getStringList("custom-commands");
+        PluginCommand quickShopCommand = getCommand("qs");
+        if (quickShopCommand == null) {
+            getLogger().warning("Failed to get QuickShop PluginCommand instance.");
+            return;
+        }
+        List<String> aliases = quickShopCommand.getAliases();
+        aliases.addAll(customCommands);
+        quickShopCommand.setAliases(aliases);
+        try {
+            ReflectFactory.getCommandMap().register("qs", quickShopCommand);
+            ReflectFactory.syncCommands();
+        } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            getLogger().log(Level.WARNING, "Failed to register command aliases", e);
+            return;
+        }
+        Util.debugLog("Command alias successfully registered.");
     }
 }
