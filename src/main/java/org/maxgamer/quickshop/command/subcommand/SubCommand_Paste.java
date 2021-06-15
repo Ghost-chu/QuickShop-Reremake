@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.paste.Paste;
 
@@ -35,7 +35,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 @AllArgsConstructor
-public class SubCommand_Paste implements CommandProcesser {
+public class SubCommand_Paste implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
 

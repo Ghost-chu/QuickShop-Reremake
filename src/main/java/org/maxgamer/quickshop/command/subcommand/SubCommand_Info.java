@@ -25,7 +25,7 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopChunk;
@@ -34,7 +34,7 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import java.util.Map;
 
 @AllArgsConstructor
-public class SubCommand_Info implements CommandProcesser {
+public class SubCommand_Info implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
 

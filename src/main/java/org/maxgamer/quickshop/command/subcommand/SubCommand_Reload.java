@@ -27,7 +27,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.nonquickshopstuff.com.rylinaux.plugman.util.PluginUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
 
@@ -36,13 +36,12 @@ import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
 @AllArgsConstructor
-public class SubCommand_Reload implements CommandProcesser {
+public class SubCommand_Reload implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         MsgUtil.sendMessage(sender, "command.reloading");
         PluginManager pluginManager = plugin.getServer().getPluginManager();
         try {

@@ -21,26 +21,21 @@ package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
-public class SubCommand_Export implements CommandProcesser {
+public class SubCommand_Export implements CommandHandler<ConsoleCommandSender> {
 
     private final QuickShop plugin;
 
     @Override
     @SneakyThrows
-    public synchronized void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (!(sender instanceof ConsoleCommandSender)) {
-            return;
-        }
+    public synchronized void onCommand(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         Util.makeExportBackup(null);
         MsgUtil.sendDirectMessage(sender, "Done.");
     }

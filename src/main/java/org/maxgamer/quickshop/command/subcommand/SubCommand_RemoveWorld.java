@@ -25,13 +25,13 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
-public class SubCommand_RemoveWorld implements CommandProcesser {
+public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
 

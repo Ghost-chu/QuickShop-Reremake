@@ -20,11 +20,10 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -33,18 +32,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
-public class SubCommand_Clean implements CommandProcesser {
+public class SubCommand_Clean implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
 
     @Override
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (sender instanceof Server) {
-            MsgUtil.sendDirectMessage(sender, "This command can't be run by the console!");
-            return;
-        }
-
         MsgUtil.sendMessage(sender, "command.cleaning");
 
         final List<Shop> pendingRemoval = new ArrayList<>();

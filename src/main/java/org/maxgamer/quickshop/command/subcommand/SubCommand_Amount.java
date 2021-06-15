@@ -20,48 +20,40 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.Collections;
 import java.util.List;
 
 @AllArgsConstructor
-public class SubCommand_Amount implements CommandProcesser {
+public class SubCommand_Amount implements CommandHandler<Player> {
 
     private final QuickShop plugin;
 
     @Override
     public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
             MsgUtil.sendMessage(sender, "command.wrong-args");
             return;
         }
 
-        if (!(sender instanceof Player)) {
-            MsgUtil.sendDirectMessage(sender, "This command can't be run by the console!");
-            return;
-        }
-
-        final Player player = (Player) sender;
-
-        if (!plugin.getShopManager().getActions().containsKey(player.getUniqueId())) {
+        if (!plugin.getShopManager().getActions().containsKey(sender.getUniqueId())) {
             MsgUtil.sendMessage(sender, "no-pending-action");
             return;
         }
 
-        plugin.getShopManager().handleChat(player, cmdArg[0]);
+        plugin.getShopManager().handleChat(sender, cmdArg[0]);
     }
 
     @NotNull
     @Override
     public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return cmdArg.length == 1 ? Collections.singletonList(MsgUtil.getMessage("tabcomplete.amount", sender)) : Collections.emptyList();
     }
 

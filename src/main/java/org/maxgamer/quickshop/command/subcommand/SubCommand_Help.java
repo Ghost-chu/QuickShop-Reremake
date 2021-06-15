@@ -25,13 +25,13 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandContainer;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.List;
 
 @AllArgsConstructor
-public class SubCommand_Help implements CommandProcesser {
+public class SubCommand_Help implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
 

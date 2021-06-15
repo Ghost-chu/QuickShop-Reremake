@@ -35,7 +35,7 @@ import java.util.function.Function;
 @Builder
 public class CommandContainer {
     @NotNull
-    private CommandProcesser executor;
+    private CommandHandler<?> executor;
 
     private boolean hidden; // Hide from help, tabcomplete
     /*
@@ -52,9 +52,6 @@ public class CommandContainer {
 
     private boolean disabled; //Set command is disabled or not.
 
-    private boolean playerOnly; //Set command is only for player.
-
-    private boolean consoleOnly; //Set command is only for console.
     @Nullable
     private String disablePlaceholder; //Set the text shown if command disabled
     @Nullable

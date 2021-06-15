@@ -31,12 +31,14 @@ import org.maxgamer.quickshop.command.subcommand.*;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 @Data
+@SuppressWarnings("unchecked")
 public class CommandManager implements TabCompleter, CommandExecutor {
     private final Set<CommandContainer> cmds = Sets.newCopyOnWriteArraySet(); //Because we open to allow register, so this should be thread-safe
     private final QuickShop plugin;
@@ -59,14 +61,12 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("unlimited")
-                        .playerOnly(true)
                         .permission("quickshop.unlimited")
                         .executor(new SubCommand_Unlimited(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("silentunlimited")
-                        .playerOnly(true)
                         .hidden(true)
                         .permission("quickshop.unlimited")
                         .executor(new SubCommand_SilentUnlimited(plugin))
@@ -74,7 +74,6 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("slientunlimited")
-                        .playerOnly(true)
                         .hidden(true)
                         .permission("quickshop.unlimited")
                         .executor(new SubCommand_SilentUnlimited(plugin))
@@ -82,14 +81,12 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("transfer")
-                        .playerOnly(true)
                         .permission("quickshop.transfer")
                         .executor(new SubCommand_Transfer(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("setowner")
-                        .playerOnly(true)
                         .permission("quickshop.setowner")
                         .executor(new SubCommand_SetOwner(plugin))
                         .build());
@@ -104,27 +101,23 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 CommandContainer.builder()
                         .prefix("amount")
                         .permission(null)
-                        .playerOnly(true)
                         .executor(new SubCommand_Amount(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("buy")
-                        .playerOnly(true)
                         .permission("quickshop.create.buy")
                         .executor(new SubCommand_Buy(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("sell")
-                        .playerOnly(true)
                         .permission("quickshop.create.sell")
                         .executor(new SubCommand_Sell(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("silentbuy")
-                        .playerOnly(true)
                         .hidden(true)
                         .permission("quickshop.create.buy")
                         .executor(new SubCommand_SilentBuy(plugin))
@@ -132,7 +125,6 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("silentsell")
-                        .playerOnly(true)
                         .hidden(true)
                         .permission("quickshop.create.sell")
                         .executor(new SubCommand_SilentSell(plugin))
@@ -140,21 +132,18 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("price")
-                        .playerOnly(true)
                         .permission("quickshop.create.changeprice")
                         .executor(new SubCommand_Price(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("remove")
-                        .playerOnly(true)
                         .permission(null)
                         .executor(new SubCommand_Remove(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("silentremove")
-                        .playerOnly(true)
                         .hidden(true)
                         .permission(null)
                         .executor(new SubCommand_SilentRemove(plugin))
@@ -162,21 +151,18 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("empty")
-                        .playerOnly(true)
                         .permission("quickshop.empty")
                         .executor(new SubCommand_Empty(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("refill")
-                        .playerOnly(true)
                         .permission("quickshop.refill")
                         .executor(new SubCommand_Refill(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("silentempty")
-                        .playerOnly(true)
                         .hidden(true)
                         .permission("quickshop.empty")
                         .executor(new SubCommand_SilentEmpty(plugin))
@@ -184,7 +170,6 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("silentpreview")
-                        .playerOnly(true)
                         .hidden(true)
                         .permission("quickshop.preview")
                         .executor(new SubCommand_SilentPreview(plugin))
@@ -192,7 +177,6 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("clean")
-                        .playerOnly(true)
                         .permission("quickshop.clean")
                         .executor(new SubCommand_Clean(plugin))
                         .build());
@@ -217,7 +201,6 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("fetchmessage")
-                        .playerOnly(true)
                         .permission("quickshop.fetchmessage")
                         .executor(new SubCommand_FetchMessage(plugin))
                         .build());
@@ -236,14 +219,12 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("staff")
-                        .playerOnly(true)
                         .permission("quickshop.staff")
                         .executor(new SubCommand_Staff(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("create")
-                        .playerOnly(true)
                         .permission("quickshop.create.cmd")
                         .permission("quickshop.create.sell")
                         .executor(new SubCommand_Create(plugin))
@@ -258,14 +239,12 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("find")
-                        .playerOnly(true)
                         .permission("quickshop.find")
                         .executor(new SubCommand_Find(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("supercreate")
-                        .playerOnly(true)
                         .permission("quickshop.create.admin")
                         .permission("quickshop.create.sell")
                         .executor(new SubCommand_SuperCreate(plugin))
@@ -287,7 +266,6 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("recovery")
-                        .consoleOnly(true)
                         .hidden(true)
                         .permission("quickshop.recovery")
                         .executor(new SubCommand_Recovery(plugin))
@@ -295,7 +273,6 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(
                 CommandContainer.builder()
                         .prefix("export")
-                        .consoleOnly(true)
                         .hidden(true)
                         .permission("quickshop.export")
                         .executor(new SubCommand_Export(plugin))
@@ -304,13 +281,11 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 CommandContainer.builder()
                         .prefix("convert")
                         .hidden(true)
-                        .consoleOnly(true)
                         .permission("quickshop.convert")
                         .executor(new SubCommand_Convert(plugin))
                         .build());
         registerCmd(CommandContainer.builder()
                 .prefix("size")
-                .playerOnly(true)
                 .permission("quickshop.create.stacks")
                 .permission("quickshop.create.changeamount")
                 .executor(new SubCommand_Size(plugin))
@@ -319,7 +294,6 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .build());
         registerCmd(CommandContainer.builder()
                 .prefix("item")
-                .playerOnly(true)
                 .permission("quickshop.create.changeitem")
                 .executor(new SubCommand_Item(plugin))
                 .build());
@@ -336,7 +310,6 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .build());
         registerCmd(CommandContainer.builder()
                 .prefix("currency")
-                .playerOnly(true)
                 .permission("quickshop.currency")
                 .executor(new SubCommand_Currency(plugin))
                 .build());
@@ -405,7 +378,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         if (cmdArg.length == 0) {
             //Handle main command
             Util.debugLog("Print help cause no args (/qs)");
-            rootContainer.getExecutor().onCommand(sender, commandLabel, EMPTY_ARGS);
+            ((CommandHandler<CommandSender>) rootContainer.getExecutor()).onCommand(sender, commandLabel, EMPTY_ARGS);
         } else {
             //Handle subcommand
             String[] passThroughArgs = new String[cmdArg.length - 1];
@@ -418,11 +391,9 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                     MsgUtil.sendDirectMessage(sender, container.getDisableText(sender));
                     return true;
                 }
-                if (container.isConsoleOnly() && !isConsole) {
-                    continue;
-                }
-                if (container.isPlayerOnly() && !isPlayer) {
-                    continue;
+                if (!isAdapt(container, sender)) {
+                    MsgUtil.sendMessage(sender, "command-type-mismatch", getContainerType(container).getSimpleName());
+                    return true;
                 }
                 List<String> requirePermissions = container.getPermissions();
                 List<String> selectivePermissions = container.getSelectivePermissions();
@@ -436,11 +407,11 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 }
 
                 Util.debugLog("Execute container: " + container.getPrefix() + " - " + cmdArg[0]);
-                container.getExecutor().onCommand(sender, commandLabel, passThroughArgs);
+                ((CommandHandler<CommandSender>) container.getExecutor()).onCommand(sender, commandLabel, passThroughArgs);
                 return true;
             }
             Util.debugLog("All checks failed, print helps");
-            rootContainer.getExecutor().onCommand(sender, commandLabel, passThroughArgs);
+            ((CommandHandler<CommandSender>) rootContainer.getExecutor()).onCommand(sender, commandLabel, passThroughArgs);
         }
         return true;
     }
@@ -488,6 +459,29 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         }
     }
 
+    @NotNull
+    private Class<?> getContainerType(CommandContainer container) {
+        for (Method declaredMethod : container.getExecutor().getClass().getDeclaredMethods()) {
+            if (!"onCommand".equals(declaredMethod.getName()) && !"onTabComplete".equals(declaredMethod.getName())) {
+                continue;
+            }
+            if (declaredMethod.getParameterCount() != 3) {
+                continue;
+            }
+            return declaredMethod.getParameterTypes()[0];
+        }
+        return Object.class;
+    }
+
+    private boolean isAdapt(CommandContainer container, CommandSender sender) {
+        try {
+            getContainerType(container).cast(sender);
+            return true;
+        } catch (ClassCastException exception) {
+            return false;
+        }
+    }
+
     @Override
     public @Nullable List<String> onTabComplete(
             @NotNull CommandSender sender,
@@ -505,8 +499,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
         }
         if (cmdArg.length <= 1) {
-            // Tab-complete subcommand
-            return getRootContainer().getExecutor().onTabComplete(sender, commandLabel, cmdArg);
+            return ((CommandHandler<CommandSender>) getRootContainer().getExecutor()).onTabComplete(sender, commandLabel, cmdArg);
         } else {
             // Tab-complete subcommand args
             String[] passThroughArgs = new String[cmdArg.length - 1];
@@ -515,11 +508,8 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 if (!container.getPrefix().toLowerCase().startsWith(cmdArg[0])) {
                     continue;
                 }
-                if (container.isConsoleOnly() && !isConsole) {
-                    continue;
-                }
-                if (container.isPlayerOnly() && !isPlayer) {
-                    continue;
+                if (!isAdapt(container, sender)) {
+                    return Collections.emptyList();
                 }
                 List<String> requirePermissions = container.getPermissions();
                 List<String> selectivePermissions = container.getSelectivePermissions();
@@ -530,9 +520,9 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                     return Collections.emptyList();
                 }
                 Util.debugLog("Tab-complete container: " + container.getPrefix());
-                return container.getExecutor().onTabComplete(sender, commandLabel, passThroughArgs);
-            }
+                return ((CommandHandler<CommandSender>) container.getExecutor()).onTabComplete(sender, commandLabel, passThroughArgs);
 
+            }
             return Collections.emptyList();
         }
     }

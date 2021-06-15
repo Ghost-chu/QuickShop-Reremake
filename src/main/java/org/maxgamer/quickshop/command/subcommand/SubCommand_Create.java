@@ -22,16 +22,14 @@ package org.maxgamer.quickshop.command.subcommand;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Info;
 import org.maxgamer.quickshop.shop.ShopAction;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -40,8 +38,9 @@ import org.maxgamer.quickshop.util.holder.Result;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
-public class SubCommand_Create implements CommandProcesser {
+public class SubCommand_Create implements CommandHandler<Player> {
 
     private final QuickShop plugin;
 
@@ -57,7 +56,7 @@ public class SubCommand_Create implements CommandProcesser {
             return material;
         }
         ConfigurationSection section = MsgUtil.getItemi18n().getConfigurationSection("itemi18n");
-        for (String itemKey : section.getKeys(false)) {
+        for (String itemKey : Objects.requireNonNull(section).getKeys(false)) {
             if (itemName.equalsIgnoreCase(section.getString(itemKey))) {
                 material = Material.matchMaterial(itemKey);
                 break;
@@ -74,22 +73,15 @@ public class SubCommand_Create implements CommandProcesser {
     }
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (!(sender instanceof Player)) {
-            MsgUtil.sendDirectMessage(sender, "This command can't be run by the console!");
-            return;
-        }
-
-        final Player p = (Player) sender;
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         ItemStack item;
-        final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
+        final BlockIterator bIt = new BlockIterator(sender, 10);
 
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(p, "command.wrong-args");
+            MsgUtil.sendMessage(sender, "command.wrong-args");
             return;
         } else if (cmdArg.length == 1) {
-            item = p.getInventory().getItemInMainHand();
+            item = sender.getInventory().getItemInMainHand();
             if (Util.isAir(item.getType())) {
                 MsgUtil.sendMessage(sender, "no-anythings-in-your-hand");
                 return;
@@ -125,10 +117,10 @@ public class SubCommand_Create implements CommandProcesser {
                 continue;
             }
 
-            if (p.isOnline()) {
-                Result result = plugin.getPermissionChecker().canBuild(p, b);
+            if (sender.isOnline()) {
+                Result result = plugin.getPermissionChecker().canBuild(sender, b);
                 if (!result.isSuccess()) {
-                    MsgUtil.sendMessage(p, "3rd-plugin-build-check-failed", result.getMessage());
+                    MsgUtil.sendMessage(sender, "3rd-plugin-build-check-failed", result.getMessage());
                     Util.debugLog("Failed to create shop because the protection check has failed! Reason:" + result.getMessage());
                     return;
                 }
@@ -136,12 +128,12 @@ public class SubCommand_Create implements CommandProcesser {
 
             BlockFace blockFace;
             try {
-                blockFace = p.getFacing();
+                blockFace = sender.getFacing();
             } catch (Exception throwable) {
-                blockFace = Util.getYawFace(p.getLocation().getYaw()); //FIXME: Update this when drop 1.13 supports
+                blockFace = Util.getYawFace(sender.getLocation().getYaw()); //FIXME: Update this when drop 1.13 supports
             }
 
-            if (!plugin.getShopManager().canBuildShop(p, b, blockFace)) {
+            if (!plugin.getShopManager().canBuildShop(sender, b, blockFace)) {
                 // As of the new checking system, most plugins will tell the
                 // player why they can't create a shop there.
                 // So telling them a message would cause spam etc.
@@ -150,22 +142,22 @@ public class SubCommand_Create implements CommandProcesser {
             }
 
             if (Util.isDoubleChest(b.getBlockData())
-                    && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
-                MsgUtil.sendMessage(p, "no-double-chests");
+                    && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.double")) {
+                MsgUtil.sendMessage(sender, "no-double-chests");
                 return;
             }
 
             if (Util.isBlacklisted(item)
                     && !QuickShop.getPermissionManager()
-                    .hasPermission(p, "quickshop.bypass." + item.getType().name())) {
-                MsgUtil.sendMessage(p, "blacklisted-item");
+                    .hasPermission(sender, "quickshop.bypass." + item.getType().name())) {
+                MsgUtil.sendMessage(sender, "blacklisted-item");
                 return;
             }
 
             // Send creation menu.
-            plugin.getShopManager().getActions().put(p.getUniqueId(),
-                    new Info(b.getLocation(), ShopAction.CREATE, item, b.getRelative(p.getFacing().getOppositeFace())));
-            plugin.getShopManager().handleChat(p, price);
+            plugin.getShopManager().getActions().put(sender.getUniqueId(),
+                    new Info(b.getLocation(), ShopAction.CREATE, item, b.getRelative(sender.getFacing().getOppositeFace())));
+            plugin.getShopManager().handleChat(sender, price);
             return;
         }
         MsgUtil.sendMessage(sender, "not-looking-at-shop");
@@ -174,7 +166,7 @@ public class SubCommand_Create implements CommandProcesser {
     @NotNull
     @Override
     public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length == 1) {
             return Collections.singletonList(MsgUtil.getMessage("tabcomplete.price", sender));
         }
