@@ -258,7 +258,7 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private WorldEditAdapter worldEditAdapter;
     @Getter
-    private GameVersion gameVersion;
+    private final GameVersion gameVersion = GameVersion.get(Util.getNMSVersion());
 
     @NotNull
     public static QuickShop getInstance() {
@@ -718,9 +718,6 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
         getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
         getLogger().info("Let's start loading the plugin");
-
-        String nmsVersion = Util.getNMSVersion();
-        gameVersion = GameVersion.get(nmsVersion);
 
         getLogger().info("Chat processor selected: " + this.quickChatType.name());
 
