@@ -30,6 +30,7 @@ import org.maxgamer.quickshop.economy.EconomyTransaction;
 import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.PriceLimiter;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.Collections;
@@ -51,57 +52,22 @@ public class SubCommand_Price implements CommandHandler<Player> {
         }
 
         final double price;
-        final double minPrice = plugin.getConfig().getDouble("shop.minimum-price");
 
-        //TODO Migrate to PriceLimiter
-        if (plugin.getConfig().getBoolean("whole-number-prices-only")) {
-            try {
-                price = Long.parseLong(cmdArg[0]);
-            } catch (NumberFormatException ex2) {
-                // input is number, but not Integer
-                Util.debugLog(ex2.getMessage());
-                MsgUtil.sendMessage(sender, "not-a-integer", cmdArg[0]);
-                return;
-            }
-        } else {
-            try {
-                price = Double.parseDouble(cmdArg[0]);
-
-            } catch (NumberFormatException ex) {
-                // No number input
-                Util.debugLog(ex.getMessage());
-                MsgUtil.sendMessage(sender, "not-a-number", cmdArg[0]);
-                return;
-            }
+        try {
+            price = Double.parseDouble(cmdArg[0]);
+        } catch (NumberFormatException ex) {
             // No number input
-            if (Double.isInfinite(price) || Double.isNaN(price)) {
-                MsgUtil.sendMessage(sender, "not-a-number", cmdArg[0]);
-                return;
-            }
+            Util.debugLog(ex.getMessage());
+            MsgUtil.sendMessage(sender, "not-a-number", cmdArg[0]);
+            return;
+        }
+        // No number input
+        if (Double.isInfinite(price) || Double.isNaN(price)) {
+            MsgUtil.sendMessage(sender, "not-a-number", cmdArg[0]);
+            return;
         }
 
         final boolean format = plugin.getConfig().getBoolean("use-decimal-format");
-
-        if (plugin.getConfig().getBoolean("shop.allow-free-shop")) {
-            if (price != 0 && price < minPrice) {
-                MsgUtil.sendMessage(sender, "price-too-cheap", (format) ? MsgUtil.decimalFormat(minPrice) : Double.toString(minPrice));
-                return;
-            }
-        } else {
-            if (price < minPrice) {
-                MsgUtil.sendMessage(sender,
-
-                        "price-too-cheap", (format) ? MsgUtil.decimalFormat(minPrice) : Double.toString(minPrice));
-                return;
-            }
-        }
-
-        final double price_limit = plugin.getConfig().getDouble("shop.maximum-price");
-
-        if (price_limit != -1 && price > price_limit) {
-            MsgUtil.sendMessage(sender, "price-too-high", (format) ? MsgUtil.decimalFormat(price_limit) : Double.toString(price_limit));
-            return;
-        }
 
         double fee = 0;
 
@@ -115,6 +81,12 @@ public class SubCommand_Price implements CommandHandler<Player> {
             MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;
         }
+
+        PriceLimiter limiter = new PriceLimiter(
+                plugin.getConfig().getDouble("shop.minimum-price"),
+                plugin.getConfig().getInt("shop.maximum-price"),
+                plugin.getConfig().getBoolean("shop.allow-free-shop"),
+                plugin.getConfig().getBoolean("whole-number-prices-only"));
 
         while (bIt.hasNext()) {
             final Block b = bIt.next();
@@ -132,6 +104,23 @@ public class SubCommand_Price implements CommandHandler<Player> {
                 MsgUtil.sendMessage(sender, "no-price-change");
                 return;
             }
+
+            PriceLimiter.CheckResult checkResult = limiter.check(shop.getItem(), price);
+            if (checkResult.getStatus() == PriceLimiter.Status.REACHED_PRICE_MIN_LIMIT) {
+                MsgUtil.sendMessage(sender, "price-too-cheap", (format) ? MsgUtil.decimalFormat(checkResult.getMin()) : Double.toString(checkResult.getMin()));
+                return;
+            }
+            if (checkResult.getStatus() == PriceLimiter.Status.REACHED_PRICE_MAX_LIMIT) {
+                MsgUtil.sendMessage(sender, "price-too-high", (format) ? MsgUtil.decimalFormat(checkResult.getMax()) : Double.toString(checkResult.getMax()));
+                return;
+            }
+            if (checkResult.getStatus() == PriceLimiter.Status.PRICE_RESTRICTED) {
+                MsgUtil.sendMessage(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
+                        String.valueOf(checkResult.getMin()),
+                        String.valueOf(checkResult.getMax()));
+                return;
+            }
+
             if (fee > 0) {
                 EconomyTransaction transaction = EconomyTransaction.builder()
                         .allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false))
