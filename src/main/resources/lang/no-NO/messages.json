@@ -322,5 +322,5 @@
   "chest-title": "QuickShop Butikk",
   "command-type-mismatch": "&cDenne kommandoen kan bare utføres av &b{0}.",
   "unlimited-shop-owner-changed": "&eEieren til denne ubegrensede butikken har blitt endret til {0}.",
-  "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself."
+  "unlimited-shop-owner-keeped": "&eOBS: Butikkeieren er fortsatt ubegrenset butikkeier, du trenger å sette ny butikkeier manuelt."
 }
