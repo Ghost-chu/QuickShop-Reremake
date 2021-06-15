@@ -74,16 +74,6 @@ public class Cache {
             setCache(location, shop);
         }
         return shop;
-//        return accessCaching.get(location, update -> {
-//            Shop shop; //Because we need the data from Caffeine, so we cannot direct return WeakReference directly
-//            //Cause we will see 100% load success data :(
-//            if (includeAttached) {
-//                shop = plugin.getShopManager().getShopIncludeAttached(update, false);
-//            } else {
-//                shop = plugin.getShopManager().getShop(update);
-//            }
-//            return shop;
-//        });
     }
 
     /**

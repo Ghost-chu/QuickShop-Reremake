@@ -140,13 +140,13 @@ public class RollbarErrorReporter {
                 String pasteURL;
                 try {
                     Paste paste = new Paste(plugin);
-                    pasteURL = paste.paste(paste.genNewPaste());
+                    pasteURL = paste.paste(paste.genNewPaste(), Paste.PasteType.UBUNTU);
                     if (pasteURL != null && !pasteURL.isEmpty()) {
                         lastPaste = pasteURL;
+                    } else {
+                        lastPaste = paste.paste(paste.genNewPaste());
                     }
-                } catch (Exception ex) {
-                    // Ignore
-                    pasteURL = this.lastPaste;
+                } catch (Exception ignored) {
                 }
             }
             this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
