@@ -359,7 +359,8 @@ public final class EnvironmentChecker {
             if (plugin.getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
                 throwable = VirtualDisplayItem.PacketFactory.testFakeItem();
             } else {
-                throwable = new IllegalStateException("ProtocolLib is not installed.");
+                DisplayItem.setNotSupportVirtualItem(true);
+                return new ResultContainer(CheckResult.WARNING, "ProtocolLib is not installed, virtual DisplayItem seems will not work on your server.");
             }
         }
         if (throwable != null) {
