@@ -24,7 +24,7 @@ import lombok.SneakyThrows;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.io.File;
@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Objects;
 
 @AllArgsConstructor
-public class SubCommand_Reset implements CommandProcesser {
+public class SubCommand_Reset implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
     private final List<String> tabCompleteList = Collections.unmodifiableList(Arrays.asList("lang", "config", "messages"));

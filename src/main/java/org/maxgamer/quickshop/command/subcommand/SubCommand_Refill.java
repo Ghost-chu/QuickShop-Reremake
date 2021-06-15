@@ -22,13 +22,11 @@ package org.maxgamer.quickshop.command.subcommand;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 
@@ -36,17 +34,13 @@ import java.util.Collections;
 import java.util.List;
 
 @AllArgsConstructor
-public class SubCommand_Refill implements CommandProcesser {
+public class SubCommand_Refill implements CommandHandler<Player> {
 
     private final QuickShop plugin;
 
     @Override
     public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (!(sender instanceof Player)) {
-            MsgUtil.sendDirectMessage(sender, "This command can't be run by the console!");
-            return;
-        }
+            @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
 
         if (cmdArg.length < 1) {
             MsgUtil.sendMessage(sender, "command.no-amount-given");
@@ -55,7 +49,7 @@ public class SubCommand_Refill implements CommandProcesser {
 
         int add;
 
-        final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
+        final BlockIterator bIt = new BlockIterator(sender, 10);
 
         if (!bIt.hasNext()) {
             MsgUtil.sendMessage(sender, "not-looking-at-shop");
@@ -87,8 +81,7 @@ public class SubCommand_Refill implements CommandProcesser {
 
     @NotNull
     @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return cmdArg.length == 1 ? Collections.singletonList(MsgUtil.getMessage("tabcomplete.amount", sender)) : Collections.emptyList();
     }
 

@@ -1448,8 +1448,14 @@ public class MsgUtil {
             setAndUpdate("language-version", ++selectedVersion);
         }
         if (selectedVersion == 55) {
-            setAndUpdate("chest-title", "QuickShop Store");
+            setAndUpdate("chest-title");
+            setAndUpdate("language-version", ++selectedVersion);
         }
+        if (selectedVersion == 56) {
+            setAndUpdate("command-type-mismatch");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
+
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
     }
 

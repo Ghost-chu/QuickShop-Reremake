@@ -20,12 +20,12 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -34,7 +34,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-public class SubCommand_Transfer implements CommandProcesser {
+public class SubCommand_Transfer implements CommandHandler<ConsoleCommandSender> {
 
     private final QuickShop plugin;
 
@@ -44,7 +44,7 @@ public class SubCommand_Transfer implements CommandProcesser {
 
 
     @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length == 1) {
             if (!(sender instanceof Player)) {
                 MsgUtil.sendDirectMessage(sender, "This command can't be run by the console!");
@@ -93,7 +93,7 @@ public class SubCommand_Transfer implements CommandProcesser {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public @Nullable List<String> onTabComplete(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return cmdArg.length <= 2 ? Util.getPlayerList() : Collections.emptyList();
     }
 }

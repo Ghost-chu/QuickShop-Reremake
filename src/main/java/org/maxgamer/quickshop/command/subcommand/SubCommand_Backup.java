@@ -23,12 +23,12 @@ import lombok.AllArgsConstructor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
-public class SubCommand_Backup implements CommandProcesser {
+public class SubCommand_Backup implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
 

@@ -29,7 +29,7 @@ import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -41,7 +41,7 @@ import java.util.*;
 import java.util.logging.Level;
 
 @AllArgsConstructor
-public class SubCommand_Debug implements CommandProcesser {
+public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
     private final List<String> tabCompleteList = Collections.unmodifiableList(Arrays.asList("debug", "dev", "devmode", "handlerlist", "jvm", "signs"));

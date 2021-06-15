@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is CommonCommandProcessor.java
+ * This file is a part of project QuickShop, the name is CommandHandler.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,14 +17,20 @@
  *
  */
 
-package org.maxgamer.quickshop.command.processor;
+package org.maxgamer.quickshop.command;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
+import java.util.List;
 
-public abstract class CommonCommandProcessor implements ICommandProcessor {
+public interface CommandHandler<T extends CommandSender> {
+    void onCommand(T sender, @NotNull String commandLabel, @NotNull String[] cmdArg);
 
-    public abstract void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg);
-
+    @Nullable
+    default List<String> onTabComplete(@NotNull T sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return Collections.emptyList();
+    }
 }

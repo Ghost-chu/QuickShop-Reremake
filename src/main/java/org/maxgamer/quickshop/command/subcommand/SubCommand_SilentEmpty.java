@@ -20,11 +20,11 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -33,13 +33,13 @@ import org.maxgamer.quickshop.util.Util;
 import java.util.UUID;
 
 @AllArgsConstructor
-public class SubCommand_SilentEmpty implements CommandProcesser {
+public class SubCommand_SilentEmpty implements CommandHandler<Player> {
 
     private final QuickShop plugin;
 
     @Override
     public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
             Util.debugLog("Exception on command! Canceling!");
             return;
