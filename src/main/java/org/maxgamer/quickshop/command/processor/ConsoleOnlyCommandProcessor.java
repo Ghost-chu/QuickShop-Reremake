@@ -35,6 +35,17 @@ public abstract class ConsoleOnlyCommandProcessor implements ICommandProcessor {
         }
     }
 
+    /**
+     * Accept the onCommand, it will call when have Command Event cmdArg not contains
+     * CommandContainer's prefix. E.g: Register the CommandContainer with Prefix: unlimited
+     * Permission: quickshop.unlimited
+     *
+     * <p>When console type /qs unlimited 123 the content of cmdArg is ["123"]
+     *
+     * @param consoleCommandSender ConsoleCommandSender
+     * @param cmdArg               Args
+     * @param commandLabel         The command prefix /qs is qs
+     */
     abstract public void onCommand(@NotNull ConsoleCommandSender consoleCommandSender, @NotNull String commandLabel, @NotNull String[] cmdArg);
 
 }
