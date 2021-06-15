@@ -5,7 +5,7 @@
   "translation-version": "Tuettu versio: Reremake",
   "translation-contributors": "Avustajat: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Kielialue: Suomi (fi_FI)",
-  "language-version": "56",
+  "language-version": "57",
   "not-looking-at-shop": "&cQuickShoppia ei löytynyt. Sinun täytyy katsoa yhtä.",
   "no-anythings-in-your-hand": "&cKädessäsi ei ole mitään.",
   "no-permission": "&cSinulla ei ole oikeutta tehdä noin.",
@@ -319,5 +319,6 @@
   "clean-warning": "&eTämä komento puhdistaa &ckaikki &ekaupat jotka ovat vahingoittuneita, ovat luotu ei sallituissa maailmoissa, myyvät/ostavat ei sallittuja tavaroita tai &c&lOVAT OLEMASSA EI LADATUISSA MAAILMOISSA&e. Tarkista että otat ensin täydellisen varmuuskopion kauppa datasta jonka jälkeen suorita &b/qs cleanghost confirm &ejatkaaksesi.",
   "shop-creation-failed": "&cKaupan luonti epäonnistui, ota yhteyttä palvelimen järjestelmänvalvojaan.",
   "shop-owner-self-trade": "&eKäyt kauppaa omassa kaupassa, joten et saa lisää rahaa.",
-  "chest-title": "QuickShop Kauppa"
+  "chest-title": "QuickShop Kauppa",
+  "command-type-mismatch": "&cThis command only can executed by &b{0}."
 }
