@@ -31,10 +31,12 @@ import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.event.ShopDisplayItemSpawnEvent;
@@ -72,7 +74,7 @@ public class VirtualDisplayItem extends DisplayItem {
     private volatile boolean initialized = false;
 
     //packets
-    private PacketContainer fakeItemPacket;
+    private PacketContainer fakeItemSpawnPacket;
 
     private PacketContainer fakeItemMetaPacket;
 
@@ -92,120 +94,10 @@ public class VirtualDisplayItem extends DisplayItem {
     }
 
     private void initFakeDropItemPacket() {
-        //First, create a new packet to spawn item
-        fakeItemPacket = protocolManager.createPacket(PacketType.Play.Server.SPAWN_ENTITY);
-
-        //Location
-        Location location = getDisplayLocation();
-
-        //and add data based on packet class in NMS  (global scope variable)
-        //Reference: https://wiki.vg/Protocol#Spawn_Object
-        fakeItemPacket.getIntegers()
-                //Entity ID
-                .write(0, entityID)
-                //Velocity x
-                .write(1, 0)
-                //Velocity y
-                .write(2, 0)
-                //Velocity z
-                .write(3, 0)
-                //Pitch
-                .write(4, 0)
-                //Yaw
-                .write(5, 0);
-
-        switch (version) {
-            case v1_13_R1:
-            case v1_13_R2:
-                fakeItemPacket.getIntegers()
-                        //For 1.13, we should use type id to represent the EntityType
-                        //2 -> minecraft:item (Object ID:https://wiki.vg/Object_Data)
-                        .write(6, 2)
-                        //int data to mark
-                        .write(7, 1);
-                break;
-            //int data to mark
-            default:
-                //For 1.14+, we should use EntityType
-                fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
-                //int data to mark
-                fakeItemPacket.getIntegers().write(6, 1);
-        }
-//        if (version == 13) {
-//            //for 1.13, we should use type id to represent the EntityType
-//            //2->minecraft:item (Object ID:https://wiki.vg/Object_Data)
-//            fakeItemPacket.getIntegers().write(6, 2);
-//            //int data to mark
-//            fakeItemPacket.getIntegers().write(7, 1);
-//        } else {
-//            //for 1.14+, we should use EntityType
-//            fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
-//            //int data to mark
-//            fakeItemPacket.getIntegers().write(6, 1);
-//        }
-        //UUID
-        fakeItemPacket.getUUIDs().write(0, UUID.randomUUID());
-        //Location
-        fakeItemPacket.getDoubles()
-                //X
-                .write(0, location.getX())
-                //Y
-                .write(1, location.getY())
-                //Z
-                .write(2, location.getZ());
-
-        //Next, create a new packet to update item data (default is empty)
-        fakeItemMetaPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_METADATA);
-        //Entity ID
-        fakeItemMetaPacket.getIntegers().write(0, entityID);
-
-        //List<DataWatcher$Item> Type are more complex
-        //Create a DataWatcher
-        WrappedDataWatcher wpw = new WrappedDataWatcher();
-        //https://wiki.vg/index.php?title=Entity_metadata#Entity
-        if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
-            wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromText(Util.getItemStackName(originalItemStack)).getHandle()));
-            wpw.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), true);
-        }
-
-        //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
-        //For 1.13 is 6, and 1.14+ is 7
-        switch (version) {
-            case v1_13_R1:
-            case v1_13_R2:
-                wpw.setObject(6, WrappedDataWatcher.Registry.getItemStackSerializer(false), originalItemStack);
-                break;
-            default:
-                wpw.setObject(7, WrappedDataWatcher.Registry.getItemStackSerializer(false), originalItemStack);
-                break;
-        }
-//        wpw.setObject((version == 13 ? 6 : 7), WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());
-        //Add it
-        fakeItemMetaPacket.getWatchableCollectionModifier().write(0, wpw.getWatchableObjects());
-
-        //And, create a entity velocity packet to make it at a proper location (otherwise it will fly randomly)
-        fakeItemVelocityPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_VELOCITY);
-        fakeItemVelocityPacket.getIntegers()
-                //Entity ID
-                .write(0, entityID)
-                //Velocity x
-                .write(1, 0)
-                //Velocity y
-                .write(2, 0)
-                //Velocity z
-                .write(3, 0);
-
-        //Also make a DestroyPacket to remove it
-        fakeItemDestroyPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_DESTROY);
-        if (GameVersion.v1_17_R1.ordinal() > version.ordinal()) {
-            //On 1.17-, we need to write an integer array
-            //Entity to remove
-            fakeItemDestroyPacket.getIntegerArrays().write(0, new int[]{entityID});
-        } else {
-            //On 1.17 (may be 1.17+?), just need to write a int
-            //Entity to remove
-            fakeItemDestroyPacket.getIntegers().write(0, entityID);
-        }
+        fakeItemSpawnPacket = PacketFactory.createFakeItemSpawnPacket(entityID, getDisplayLocation());
+        fakeItemMetaPacket = PacketFactory.createFakeItemMetaPacket(entityID, getOriginalItemStack().clone());
+        fakeItemVelocityPacket = PacketFactory.createFakeItemVelocityPacket(entityID);
+        fakeItemDestroyPacket = PacketFactory.createFakeItemDestroyPacket(entityID);
         initialized = true;
     }
 
@@ -253,7 +145,6 @@ public class VirtualDisplayItem extends DisplayItem {
         }
     }
 
-
     private void sendPacket(@NotNull Player player, @NotNull PacketContainer packet) {
         try {
             protocolManager.sendServerPacket(player, packet);
@@ -275,7 +166,7 @@ public class VirtualDisplayItem extends DisplayItem {
     }
 
     public void sendFakeItemToAll() {
-        sendPacketToAll(fakeItemPacket);
+        sendPacketToAll(fakeItemSpawnPacket);
         sendPacketToAll(fakeItemMetaPacket);
         sendPacketToAll(fakeItemVelocityPacket);
     }
@@ -400,9 +291,8 @@ public class VirtualDisplayItem extends DisplayItem {
         }
     }
 
-
     public void sendFakeItem(@NotNull Player player) {
-        sendPacket(player, fakeItemPacket);
+        sendPacket(player, fakeItemSpawnPacket);
         sendPacket(player, fakeItemMetaPacket);
         sendPacket(player, fakeItemVelocityPacket);
     }
@@ -422,5 +312,143 @@ public class VirtualDisplayItem extends DisplayItem {
 
         }
         return isDisplay;
+    }
+
+    public static class PacketFactory {
+        public static Throwable testFakeItem() {
+            try {
+                createFakeItemSpawnPacket(0, new Location(plugin.getServer().getWorlds().get(0), 0, 0, 0));
+                createFakeItemMetaPacket(0, new ItemStack(Material.values()[0]));
+                createFakeItemVelocityPacket(0);
+                createFakeItemDestroyPacket(0);
+                return null;
+            } catch (Throwable throwable) {
+                return throwable;
+            }
+        }
+
+        private static PacketContainer createFakeItemSpawnPacket(int entityID, Location displayLocation) {
+            //First, create a new packet to spawn item
+            PacketContainer fakeItemPacket = protocolManager.createPacket(PacketType.Play.Server.SPAWN_ENTITY);
+
+            //and add data based on packet class in NMS  (global scope variable)
+            //Reference: https://wiki.vg/Protocol#Spawn_Object
+            fakeItemPacket.getIntegers()
+                    //Entity ID
+                    .write(0, entityID)
+                    //Velocity x
+                    .write(1, 0)
+                    //Velocity y
+                    .write(2, 0)
+                    //Velocity z
+                    .write(3, 0)
+                    //Pitch
+                    .write(4, 0)
+                    //Yaw
+                    .write(5, 0);
+
+            switch (version) {
+                case v1_13_R1:
+                case v1_13_R2:
+                    fakeItemPacket.getIntegers()
+                            //For 1.13, we should use type id to represent the EntityType
+                            //2 -> minecraft:item (Object ID:https://wiki.vg/Object_Data)
+                            .write(6, 2)
+                            //int data to mark
+                            .write(7, 1);
+                    break;
+                //int data to mark
+                default:
+                    //For 1.14+, we should use EntityType
+                    fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
+                    //int data to mark
+                    fakeItemPacket.getIntegers().write(6, 1);
+            }
+//        if (version == 13) {
+//            //for 1.13, we should use type id to represent the EntityType
+//            //2->minecraft:item (Object ID:https://wiki.vg/Object_Data)
+//            fakeItemPacket.getIntegers().write(6, 2);
+//            //int data to mark
+//            fakeItemPacket.getIntegers().write(7, 1);
+//        } else {
+//            //for 1.14+, we should use EntityType
+//            fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
+//            //int data to mark
+//            fakeItemPacket.getIntegers().write(6, 1);
+//        }
+            //UUID
+            fakeItemPacket.getUUIDs().write(0, UUID.randomUUID());
+            //Location
+            fakeItemPacket.getDoubles()
+                    //X
+                    .write(0, displayLocation.getX())
+                    //Y
+                    .write(1, displayLocation.getY())
+                    //Z
+                    .write(2, displayLocation.getZ());
+            return fakeItemPacket;
+        }
+
+        private static PacketContainer createFakeItemMetaPacket(int entityID, ItemStack itemStack) {
+            //Next, create a new packet to update item data (default is empty)
+            PacketContainer fakeItemMetaPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_METADATA);
+            //Entity ID
+            fakeItemMetaPacket.getIntegers().write(0, entityID);
+
+            //List<DataWatcher$Item> Type are more complex
+            //Create a DataWatcher
+            WrappedDataWatcher wpw = new WrappedDataWatcher();
+            //https://wiki.vg/index.php?title=Entity_metadata#Entity
+            if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
+                wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromText(Util.getItemStackName(itemStack)).getHandle()));
+                wpw.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), true);
+            }
+
+            //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
+            //For 1.13 is 6, and 1.14+ is 7
+            switch (version) {
+                case v1_13_R1:
+                case v1_13_R2:
+                    wpw.setObject(6, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
+                    break;
+                default:
+                    wpw.setObject(7, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
+                    break;
+            }
+//        wpw.setObject((version == 13 ? 6 : 7), WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());
+            //Add it
+            fakeItemMetaPacket.getWatchableCollectionModifier().write(0, wpw.getWatchableObjects());
+            return fakeItemMetaPacket;
+        }
+
+        private static PacketContainer createFakeItemVelocityPacket(int entityID) {
+            //And, create a entity velocity packet to make it at a proper location (otherwise it will fly randomly)
+            PacketContainer fakeItemVelocityPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_VELOCITY);
+            fakeItemVelocityPacket.getIntegers()
+                    //Entity ID
+                    .write(0, entityID)
+                    //Velocity x
+                    .write(1, 0)
+                    //Velocity y
+                    .write(2, 0)
+                    //Velocity z
+                    .write(3, 0);
+            return fakeItemVelocityPacket;
+        }
+
+        private static PacketContainer createFakeItemDestroyPacket(int entityID) {
+            //Also make a DestroyPacket to remove it
+            PacketContainer fakeItemDestroyPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_DESTROY);
+            if (GameVersion.v1_17_R1.ordinal() > version.ordinal()) {
+                //On 1.17-, we need to write an integer array
+                //Entity to remove
+                fakeItemDestroyPacket.getIntegerArrays().write(0, new int[]{entityID});
+            } else {
+                //On 1.17 (may be 1.17+?), just need to write a int
+                //Entity to remove
+                fakeItemDestroyPacket.getIntegers().write(0, entityID);
+            }
+            return fakeItemDestroyPacket;
+        }
     }
 }

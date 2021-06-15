@@ -25,10 +25,8 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.DisplayItem;
 import org.maxgamer.quickshop.shop.DisplayType;
-import org.maxgamer.quickshop.util.GameVersion;
-import org.maxgamer.quickshop.util.JsonUtil;
-import org.maxgamer.quickshop.util.ReflectFactory;
-import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.shop.VirtualDisplayItem;
+import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.security.JarVerifyTool;
 
 import java.io.IOException;
@@ -354,10 +352,26 @@ public final class EnvironmentChecker {
     public ResultContainer virtualDisplaySupportTest() {
         String nmsVersion = Util.getNMSVersion();
         GameVersion gameVersion = GameVersion.get(nmsVersion);
+        Throwable throwable;
         if (!gameVersion.isVirtualDisplaySupports()) {
-            return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem seems to not work on this Minecraft server, Make sure your QuickShop and server builds are up to date.");
+            throwable = new IllegalStateException("Version not supports Virtual DisplayItem.");
+        } else {
+            if (plugin.getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
+                throwable = VirtualDisplayItem.PacketFactory.testFakeItem();
+            } else {
+                throwable = new IllegalStateException("ProtocolLib is not installed.");
+            }
         }
-        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+        if (throwable != null) {
+            Util.debugLog(throwable.getMessage());
+            MsgUtil.debugStackTrace(throwable.getStackTrace());
+            DisplayItem.setNotSupportVirtualItem(true);
+            //do not throw
+            plugin.getLogger().log(Level.SEVERE, "Virtual DisplayItem Support Test: Failed to initialize VirtualDisplayItem", throwable);
+            return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem seems to not work on this Minecraft server, Make sure QuickShop, ProtocolLib and server builds are up to date.");
+        } else {
+            return new ResultContainer(CheckResult.PASSED, "Passed checks");
+        }
     }
 
     @EnvCheckEntry(name = "PersistentStorageApi Support Test", priority = 8)

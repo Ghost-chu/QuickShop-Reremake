@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.shop;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
@@ -32,6 +33,8 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 
+import java.util.logging.Level;
+
 /**
  * @author Netherfoam A display item, that spawns a block above the chest and cannot be interacted
  * with.
@@ -41,6 +44,9 @@ public abstract class DisplayItem {
     protected static final QuickShop plugin = QuickShop.getInstance();
 
     private static final Gson gson = JsonUtil.getGson();
+
+    @Setter
+    private static volatile boolean isNotSupportVirtualItem = false;
 
     protected final ItemStack originalItemStack;
 
@@ -175,7 +181,15 @@ public abstract class DisplayItem {
      */
     @NotNull
     public static DisplayType getNowUsing() {
-        return DisplayType.fromID(plugin.getConfig().getInt("shop.display-type"));
+        DisplayType displayType = DisplayType.fromID(plugin.getConfig().getInt("shop.display-type"));
+        //Falling back to RealDisplayItem when VirtualDisplayItem is unsupported
+        if (isNotSupportVirtualItem && displayType == DisplayType.VIRTUALITEM) {
+            plugin.getConfig().set("shop.display-type", 0);
+            plugin.saveConfig();
+            plugin.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because VirtualDisplayItem is unsupported");
+            return DisplayType.REALITEM;
+        }
+        return displayType;
     }
 
     /**
