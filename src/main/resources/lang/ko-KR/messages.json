@@ -320,5 +320,7 @@
   "shop-creation-failed": "&c상점을 만들지 못했습니다, 서버 관리자에게 문의해주세요.",
   "shop-owner-self-trade": "&e당신은 당신의 상점과 거래중이며 얼마의 돈도 얻지 못합니다.",
   "chest-title": "퀵샵 상점",
-  "command-type-mismatch": "&cThis command only can executed by &b{0}."
+  "command-type-mismatch": "&cThis command only can executed by &b{0}.",
+  "unlimited-shop-owner-changed": "&eThis unlimited shop owner has been changed to {0}.",
+  "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself."
 }
