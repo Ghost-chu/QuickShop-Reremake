@@ -115,6 +115,7 @@ public class MsgUtil {
                 for (String msg : msgs) {
                     if (p.getPlayer() != null) {
                         Util.debugLog("Accepted the msg for player " + p.getName() + " : " + msg);
+                        // TODO: Use json message instead ########## stupid thing
                         String[] msgData = msg.split("##########");
                         if (msgData.length == 3) {
                             try {
