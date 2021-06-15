@@ -320,7 +320,7 @@
   "shop-creation-failed": "&cShop creation failed, please contact with server administrator.",
   "shop-owner-self-trade": "&eYou trade with your own shop, so you might not gain any balance.",
   "chest-title": "QuickShop Store",
-  "command-type-mismatch": "&cThis command only can executed by &b{0}.",
-  "unlimited-shop-owner-changed": "&eThis unlimited shop owner has been changed to {0}.",
-  "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself."
+  "command-type-mismatch": "&cThis command can only be executed by &b{0}.",
+  "unlimited-shop-owner-changed": "&eThe unlimited Shop Owner has been changed to {0}.",
+  "unlimited-shop-owner-keeped": "&eAttention: The Shop Owner is still an unlimited Shop Owner, and you have to re-set the new Shop Owner by yourself."
 }
