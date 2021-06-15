@@ -408,11 +408,11 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 }
 
                 Util.debugLog("Execute container: " + container.getPrefix() + " - " + cmdArg[0]);
-                ((CommandHandler<CommandSender>) container.getExecutor()).onCommand(sender, commandLabel, passThroughArgs);
+                container.getExecutor().onCommand(container.cast(sender), commandLabel, passThroughArgs);
                 return true;
             }
             Util.debugLog("All checks failed, print helps");
-            ((CommandHandler<CommandSender>) rootContainer.getExecutor()).onCommand(sender, commandLabel, passThroughArgs);
+            rootContainer.getExecutor().onCommand(rootContainer.cast(sender), commandLabel, passThroughArgs);
         }
         return true;
     }
@@ -462,13 +462,8 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 
 
     private boolean isAdapt(CommandContainer container, CommandSender sender) {
-        try {
-            sender.getClass().cast(container.getExecutorType());
-            //container.getExecutorType().cast(sender);
-            return true;
-        } catch (ClassCastException exception) {
-            return false;
-        }
+        return container.getExecutorType().isInstance(sender);
+
     }
 
     @Override
@@ -507,7 +502,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                     return Collections.emptyList();
                 }
                 Util.debugLog("Tab-complete container: " + container.getPrefix());
-                return ((CommandHandler<CommandSender>) container.getExecutor()).onTabComplete(sender, commandLabel, passThroughArgs);
+                return container.getExecutor().onTabComplete(container.cast(sender), commandLabel, passThroughArgs);
 
             }
             return Collections.emptyList();
