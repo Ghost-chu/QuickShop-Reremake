@@ -407,17 +407,19 @@ public class VirtualDisplayItem extends DisplayItem {
             }
 
             //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
-            //For 1.13 is 6, and 1.14+ is 7
-            switch (version) {
-                case v1_13_R1:
-                case v1_13_R2:
+            //Is 1.17-?
+            if (GameVersion.v1_17_R1.ordinal() > version.ordinal()) {
+                if (version == GameVersion.v1_13_R1 || version == GameVersion.v1_13_R2) {
+                    //For 1.13 is 6
                     wpw.setObject(6, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
-                    break;
-                default:
+                } else {
+                    //1.14-1.16 is 7
                     wpw.setObject(7, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
-                    break;
+                }
+            } else {
+                //1.17+ is 8
+                wpw.setObject(8, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
             }
-//        wpw.setObject((version == 13 ? 6 : 7), WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());
             //Add it
             fakeItemMetaPacket.getWatchableCollectionModifier().write(0, wpw.getWatchableObjects());
             return fakeItemMetaPacket;
