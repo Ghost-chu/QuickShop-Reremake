@@ -320,7 +320,7 @@
   "shop-creation-failed": "&cShop-Erstellung fehlgeschlagen, Bitte kontaktiere einen Server Administrator.",
   "shop-owner-self-trade": "&eDu handelst mit deinem eigenen Shop, also wirst du keinen extra Saldo erhalten.",
   "chest-title": "QuickShop Laden",
-  "command-type-mismatch": "&cThis command only can executed by &b{0}.",
-  "unlimited-shop-owner-changed": "&eThis unlimited shop owner has been changed to {0}.",
-  "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself."
+  "command-type-mismatch": "&cDieser Befehl kann nur von &b{0}&c ausgeführt werden.",
+  "unlimited-shop-owner-changed": "&eDer Besitzer des unbegrenzten Shops wurde zu {0} geändert.",
+  "unlimited-shop-owner-keeped": "&eAchtung: Der Shopeigentümer ist nach wie vor unlimitiert. Du musst den Besitzer manuell neu setzten."
 }
