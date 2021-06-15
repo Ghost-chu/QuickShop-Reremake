@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.util.MsgUtil;
 
 public abstract class PlayerOnlyCommandProcessor implements ICommandProcessor {
+    @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Player) {
             onCommand((Player) sender, commandLabel, cmdArg);

@@ -26,6 +26,7 @@ import org.maxgamer.quickshop.util.MsgUtil;
 
 public abstract class ConsoleOnlyCommandProcessor implements ICommandProcessor {
 
+    @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof ConsoleCommandSender) {
             onCommand((ConsoleCommandSender) sender, commandLabel, cmdArg);
