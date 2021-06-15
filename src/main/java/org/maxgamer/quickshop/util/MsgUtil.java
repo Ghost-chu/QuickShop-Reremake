@@ -1453,6 +1453,8 @@ public class MsgUtil {
         }
         if (selectedVersion == 56) {
             setAndUpdate("command-type-mismatch");
+            setAndUpdate("unlimited-shop-owner-keeped");
+            setAndUpdate("unlimited-shop-owner-changed");
             setAndUpdate("language-version", ++selectedVersion);
         }
 

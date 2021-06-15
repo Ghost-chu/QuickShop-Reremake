@@ -53,9 +53,16 @@ public class SubCommand_Unlimited implements CommandHandler<Player> {
             shop.update();
             if (shop.isUnlimited()) {
                 MsgUtil.sendMessage(sender, "command.toggle-unlimited.unlimited");
+                if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
+                    shop.migrateOwnerToUnlimitedShopOwner();
+                    MsgUtil.sendMessage(sender, "unlimited-shop-owner-changed");
+                }
                 return;
             }
             MsgUtil.sendMessage(sender, "command.toggle-unlimited.limited");
+            if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
+                MsgUtil.sendMessage(sender, "unlimited-shop-owner-keeped");
+            }
             return;
         }
         MsgUtil.sendMessage(sender, "not-looking-at-shop");
