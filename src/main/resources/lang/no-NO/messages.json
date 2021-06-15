@@ -322,5 +322,6 @@
   "chest-title": "QuickShop Butikk",
   "command-type-mismatch": "&cDenne kommandoen kan bare utføres av &b{0}.",
   "unlimited-shop-owner-changed": "&eEieren til denne ubegrensede butikken har blitt endret til {0}.",
-  "unlimited-shop-owner-keeped": "&eOBS: Butikkeieren er fortsatt ubegrenset butikkeier, du trenger å sette ny butikkeier manuelt."
+  "unlimited-shop-owner-keeped": "&eOBS: Butikkeieren er fortsatt ubegrenset butikkeier, du trenger å sette ny butikkeier manuelt.",
+  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
 }
