@@ -656,10 +656,7 @@ public class MsgUtil {
         //Set amount per bulk
         if (QuickShop.getInstance().isAllowStack()) {
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.amount") || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId()) && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeamount")) {
-                String text = MsgUtil.getMessage(
-                        "controlpanel.stack",
-                        sender,
-                        Integer.toString(shop.getItem().getAmount()));
+                String text = MsgUtil.getMessage("controlpanel.stack", sender, Integer.toString(shop.getItem().getAmount()));
                 String hoverText = MsgUtil.getMessage("controlpanel.stack-hover", sender);
                 String clickCommand = "/qs size ";
                 chatSheetPrinter.printSuggestedCmdLine(text, hoverText, clickCommand);
@@ -677,13 +674,9 @@ public class MsgUtil {
             }
             // Empty
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.empty")) {
-                String text =
-                        MsgUtil.getMessage("controlpanel.empty", sender, String.valueOf(shop.getPrice()));
+                String text = MsgUtil.getMessage("controlpanel.empty", sender, String.valueOf(shop.getPrice()));
                 String hoverText = MsgUtil.getMessage("controlpanel.empty-hover", sender);
-                String clickCommand =
-                        MsgUtil.fillArgs(
-                                "/qs silentempty {0}",
-                                shop.getRuntimeRandomUniqueId().toString());
+                String clickCommand = MsgUtil.fillArgs("/qs silentempty {0}", shop.getRuntimeRandomUniqueId().toString());
                 chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
             }
         }
@@ -718,8 +711,7 @@ public class MsgUtil {
      * @param player The sender will send the message to
      * @return message
      */
-    public static String getMessage(
-            @NotNull String loc, @Nullable CommandSender player, @NotNull String... args) {
+    public static String getMessage(@NotNull String loc, @Nullable CommandSender player, @NotNull String... args) {
         try {
             final String raw = messagei18n.getString(loc);
             if (raw == null) {

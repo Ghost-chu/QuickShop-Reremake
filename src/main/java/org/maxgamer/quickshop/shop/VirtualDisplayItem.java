@@ -318,7 +318,7 @@ public class VirtualDisplayItem extends DisplayItem {
             Collection<Entity> entityCollection = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), plugin.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), plugin.getServer().getViewDistance() * 16);
             for (Entity entity : entityCollection) {
                 if (entity instanceof Player) {
-                    packetSenders.add(entity.getUniqueId()); //TODO Possibly Memory Leaking because this list never remove single object
+                    packetSenders.add(entity.getUniqueId());
                 }
             }
         }
@@ -332,8 +332,8 @@ public class VirtualDisplayItem extends DisplayItem {
         asyncPacketSenderTask.start(plugin);
 
         if (packetAdapter == null) {
-            //TODO: Also should listening UNLOAD_CHUNK packet to send entity destroy packet
-            packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {  //TODO: Possibly memory leaking: The lambda point to memory leaking
+
+            packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
                 @Override
                 public void onPacketSending(@NotNull PacketEvent event) {
                     //is really full chunk data
@@ -353,7 +353,7 @@ public class VirtualDisplayItem extends DisplayItem {
                     int x = integerStructureModifier.read(0);
                     //chunk z
                     int z = integerStructureModifier.read(1);
-                    asyncPacketSenderTask.offer(() -> { //TODO: Possibly memory leaking: The lambda point to memory leaking
+                    asyncPacketSenderTask.offer(() -> {
                         if (chunkLocation == null) {
                             World world = shop.getLocation().getWorld();
                             Chunk chunk;
@@ -373,7 +373,7 @@ public class VirtualDisplayItem extends DisplayItem {
                 }
             };
         }
-        protocolManager.addPacketListener(packetAdapter); //TODO: This may affects performance
+        protocolManager.addPacketListener(packetAdapter);
     }
 
     private void unload() {
