@@ -5,7 +5,7 @@
   "translation-version": "Versiune suport: Reproducere",
   "translation-contributors": "Contribuitori: Turnul, Netherfoam, KaiNoMood, Mgazul, JackTheChicken și Andre_601",
   "translation-country": "Zona de Limbă: Engleză (ro_US)",
-  "language-version": "56",
+  "language-version": "57",
   "not-looking-at-shop": "&cNu am putut gasi un magazin. Trebuie sa te uiti la unul.",
   "no-anythings-in-your-hand": "&cNu este nimic in mana.",
   "no-permission": "&cNu ai permisiunea să faci asta.\".",
@@ -319,5 +319,6 @@
   "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
   "shop-creation-failed": "&cShop creation failed, please contact with server administrator.",
   "shop-owner-self-trade": "&eYou trading with yourself shop, so you might won't gain any balance.",
-  "chest-title": "QuickShop Store"
+  "chest-title": "QuickShop Store",
+  "command-type-mismatch": "&cThis command only can executed by &b{0}."
 }
