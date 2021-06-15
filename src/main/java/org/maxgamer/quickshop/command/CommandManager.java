@@ -463,7 +463,8 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 
     private boolean isAdapt(CommandContainer container, CommandSender sender) {
         try {
-            container.getExecutorType().cast(sender);
+            sender.getClass().cast(container.getExecutorType());
+            //container.getExecutorType().cast(sender);
             return true;
         } catch (ClassCastException exception) {
             return false;
