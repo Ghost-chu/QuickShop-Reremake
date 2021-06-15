@@ -22,5 +22,8 @@ package org.maxgamer.quickshop.util.updater;
 public enum VersionType {
     STABLE,
     SNAPSHOT,
+    EARLY_ACCESS,
+    BETA,
+    RC,
     LTS
 }
