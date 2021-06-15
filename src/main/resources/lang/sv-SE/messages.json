@@ -320,5 +320,5 @@
   "shop-creation-failed": "&cSkapandet av butiken misslyckades, kontakta serveradministratören.",
   "shop-owner-self-trade": "&eYou handlar med din egen butik, så du kanske inte kommer att få något saldo.",
   "chest-title": "QuickShop-butik",
-  "command-type-mismatch": "&cThis command only can executed by &b{0}."
+  "command-type-mismatch": "&cDetta kommando kan endast exekveras av &b{0}."
 }

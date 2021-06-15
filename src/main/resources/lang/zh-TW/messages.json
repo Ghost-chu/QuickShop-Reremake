@@ -320,5 +320,5 @@
   "shop-creation-failed": "&c商店建立失敗，請與伺服器管理員聯繫。",
   "shop-owner-self-trade": "&e你正在跟自己開的商店進行交易 ， 所以你的存款不會改變。",
   "chest-title": "QuickShop 商店",
-  "command-type-mismatch": "&cThis command only can executed by &b{0}."
+  "command-type-mismatch": "&c此指令只能由 &b{0} 執行。"
 }
