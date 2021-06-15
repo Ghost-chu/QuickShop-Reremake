@@ -413,5 +413,4 @@ public class VirtualDisplayItem extends DisplayItem {
         }
         return isDisplay;
     }
-
 }
