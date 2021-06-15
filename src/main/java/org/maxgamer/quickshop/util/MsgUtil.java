@@ -80,6 +80,7 @@ public class MsgUtil {
     @Getter
     private static YamlConfiguration potioni18n;
     private static JsonConfiguration builtInLang;
+    private static JsonConfiguration builtInOriginalLang;
 
     private static DecimalFormat processFormat() {
         try {
@@ -288,6 +289,11 @@ public class MsgUtil {
             Util.debugLog("Cannot load default built-in language file: " + ioException.getMessage());
         }
         builtInLang = HumanReadableJsonConfiguration.loadConfiguration(buildInLangFile);
+        try (InputStreamReader inputStreamReader = new InputStreamReader(Objects.requireNonNull(plugin.getResource("lang-original/messages.json")))) {
+            builtInOriginalLang = HumanReadableJsonConfiguration.loadConfiguration(inputStreamReader);
+        } catch (IOException | NullPointerException exception) {
+            plugin.getLogger().log(Level.WARNING, "Cannot to load built-in original messages, some phrases may missing when upgrading", exception);
+        }
         //Check the i18n language name and backup
         if (StringUtils.isEmpty(messagei18n.getString("language-name"))) {
             setAndUpdate("language-name");
@@ -1471,6 +1477,9 @@ public class MsgUtil {
         Object alt = null;
         if (builtInLang != null) {
             alt = builtInLang.get(path);
+        }
+        if (alt == null && builtInOriginalLang != null) {
+            alt = builtInOriginalLang.get(path);
         }
         if (alt == null) {
             messagei18n.set(path, "Missing no: " + path);
