@@ -22,7 +22,6 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 
 public final class CalculateUtil {
-    // TODO:  MathContext has been deprecated
     private static final MathContext MATH_CONTEXT = MathContext.DECIMAL32;
 
     private CalculateUtil() {
