@@ -39,6 +39,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.util.AsyncPacketSender;
 import org.maxgamer.quickshop.util.GameVersion;
@@ -402,7 +403,14 @@ public class VirtualDisplayItem extends DisplayItem {
             WrappedDataWatcher wpw = new WrappedDataWatcher();
             //https://wiki.vg/index.php?title=Entity_metadata#Entity
             if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
-                wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromText(Util.getItemStackName(itemStack)).getHandle()));
+                String itemName;
+                if (!QuickShop.isLoaded()) {
+                    //Env Testing
+                    itemName = itemStack.getType().name();
+                } else {
+                    itemName = Util.getItemStackName(itemStack);
+                }
+                wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromText(itemName).getHandle()));
                 wpw.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), true);
             }
 
