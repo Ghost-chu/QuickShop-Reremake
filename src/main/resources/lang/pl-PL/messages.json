@@ -320,7 +320,7 @@
   "shop-creation-failed": "&cTworzenie sklepu nie powiodło się, skontaktuj się z administratorem serwera.",
   "shop-owner-self-trade": "&eHandlujesz z własnym sklepem, więc nie będziesz mógł uzyskać żadnych korzyści.",
   "chest-title": "Sklep QuickShop",
-  "command-type-mismatch": "&cThis command only can executed by &b{0}.",
-  "unlimited-shop-owner-changed": "&eThis unlimited shop owner has been changed to {0}.",
-  "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself."
+  "command-type-mismatch": "&cTa komenda może być wykonana tylko przez &b{0}.",
+  "unlimited-shop-owner-changed": "&eTen właściciel sklepu nielimitowanego został zmieniony na {0}.",
+  "unlimited-shop-owner-keeped": "&eUwaga: Właściciel sklepu nadal jest właścicielem nielimitowanego sklepu, musisz ustawić nowego właściciela sklepu samodzielnie."
 }
