@@ -322,5 +322,6 @@
   "chest-title": "QuickShop Store",
   "command-type-mismatch": "&cThis command can only be executed by &b{0}.",
   "unlimited-shop-owner-changed": "&eThe unlimited Shop Owner has been changed to {0}.",
-  "unlimited-shop-owner-keeped": "&eAttention: The Shop Owner is still an unlimited Shop Owner, and you have to re-set the new Shop Owner by yourself."
+  "unlimited-shop-owner-keeped": "&eAttention: The Shop Owner is still an unlimited Shop Owner, and you have to re-set the new Shop Owner by yourself.",
+  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
 }

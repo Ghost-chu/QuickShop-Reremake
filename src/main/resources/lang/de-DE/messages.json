@@ -322,5 +322,6 @@
   "chest-title": "QuickShop Laden",
   "command-type-mismatch": "&cDieser Befehl kann nur von &b{0}&c ausgeführt werden.",
   "unlimited-shop-owner-changed": "&eDer Besitzer des unbegrenzten Shops wurde zu {0} geändert.",
-  "unlimited-shop-owner-keeped": "&eAchtung: Der Shopeigentümer ist nach wie vor unlimitiert. Du musst den Besitzer manuell neu setzten."
+  "unlimited-shop-owner-keeped": "&eAchtung: Der Shopeigentümer ist nach wie vor unlimitiert. Du musst den Besitzer manuell neu setzten.",
+  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
 }
