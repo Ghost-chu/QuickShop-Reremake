@@ -20,6 +20,8 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.InvalidPluginException;
@@ -43,6 +45,10 @@ public class SubCommand_Reload implements CommandHandler<CommandSender> {
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         MsgUtil.sendMessage(sender, "command.reloading");
+        // Force save maps and players to prevent server crashing.
+        Bukkit.savePlayers();
+        Bukkit.getWorlds().forEach(World::save);
+
         PluginManager pluginManager = plugin.getServer().getPluginManager();
         try {
             File file = Paths.get(plugin.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile();
