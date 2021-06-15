@@ -1455,6 +1455,7 @@ public class MsgUtil {
             setAndUpdate("command-type-mismatch");
             setAndUpdate("unlimited-shop-owner-keeped");
             setAndUpdate("unlimited-shop-owner-changed");
+            setAndUpdate("server-crash-warning");
             setAndUpdate("language-version", ++selectedVersion);
         }
 
