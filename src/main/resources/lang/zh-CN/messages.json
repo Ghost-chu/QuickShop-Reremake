@@ -5,7 +5,7 @@
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
   "translation-country": "本地化语言：简体中文 (zh_CN)",
-  "language-version": "56",
+  "language-version": "57",
   "not-looking-at-shop": "&c无法找到商店，您需要注视着你想要操作的商店。",
   "no-anythings-in-your-hand": "&c你的手里没有任何物品。",
   "no-permission": "&c你没有权限这样做。",
@@ -319,5 +319,6 @@
   "clean-warning": "&e这个命令将清理&c所有&e在不允许创建商店的世界的、出售/购买不允许的物品的，以及 &c&l所有在服务器没有加载的世界的商店， 请在确保您的商店数据备份完整后使用 &b/qs cleanghost confirm &e来继续。",
   "shop-creation-failed": "&c商店创建失败，请与服务器管理员联系。",
   "shop-owner-self-trade": "&e你正在和自己的商店进行交易，你可能不会得到任何钱。",
-  "chest-title": "QuickShop商店"
+  "chest-title": "QuickShop商店",
+  "command-type-mismatch": "&cThis command only can executed by &b{0}."
 }
