@@ -322,5 +322,6 @@
   "chest-title": "퀵샵 상점",
   "command-type-mismatch": "&c이 명령어는 &b{0}&c에서만 사용할 수 있습니다.",
   "unlimited-shop-owner-changed": "&e무제한 상점의 주인이 {0}으로 변경되었습니다.",
-  "unlimited-shop-owner-keeped": "&e주의: 상점 주인은 여전히 무제한 상점의 주인입니다, 상점을 소유하려면 상점을 초기화해야합니다."
+  "unlimited-shop-owner-keeped": "&e주의: 상점 주인은 여전히 무제한 상점의 주인입니다, 상점을 소유하려면 상점을 초기화해야합니다.",
+  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
 }
