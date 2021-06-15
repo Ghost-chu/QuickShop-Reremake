@@ -5,7 +5,7 @@
   "translation-version": "Version suportée: Reremake",
   "translation-contributors": "Contributeurs : Timtower, Netherfoam, KaiNoMood, Mgazul, JackThePicken, Andre_601 et brunopaiva15, HiiRaZ",
   "translation-country": "Langue: Français (fr_FR)",
-  "language-version": "56",
+  "language-version": "57",
   "not-looking-at-shop": "&cImpossible de trouver un QuickShop. Vous devez en regarder un.",
   "no-anythings-in-your-hand": "&cVous n'avez aucun objet dans votre main.",
   "no-permission": "&cVous n'avez pas la permission de faire ceci.",
@@ -319,5 +319,6 @@
   "clean-warning": "&eCette commande va purger &appeler &eshops si la boutique est endommagée, a été créée dans des mondes non autorisés, vende/achète des objets non autorisés ou &c&lEXISTS DANS UN MONDE DÉCHARGÉ. Assurez-vous d'abord de créer une sauvegarde complète des données de votre boutique et utilisez &b/qs cleanghost confirmer &epour continuer.",
   "shop-creation-failed": "&cLa création de la boutique a échoué, veuillez contacter l'administrateur du serveur.",
   "shop-owner-self-trade": "&eVous négociez avec vous en magasin, vous ne pourrez donc pas gagner de solde.",
-  "chest-title": "Boutique QuickShop"
+  "chest-title": "Boutique QuickShop",
+  "command-type-mismatch": "&cThis command only can executed by &b{0}."
 }
