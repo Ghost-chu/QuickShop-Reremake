@@ -808,6 +808,28 @@ public class Util {
         }
     }
 
+    /**
+     * Get this method available or not
+     *
+     * @param className class qualifiedName
+     * @param method    the name of method
+     * @param args      the arg of method
+     * @return boolean Available
+     */
+    public static boolean isMethodAvailable(@NotNull String className, String method, Class<?>... args) {
+        try {
+            Class<?> clazz = Class.forName(className);
+            try {
+                clazz.getDeclaredMethod(method, args);
+            } catch (NoSuchMethodException e) {
+                clazz.getMethod(method, args);
+            }
+            return true;
+        } catch (Throwable e) {
+            return false;
+        }
+    }
+
     public static boolean isDisplayAllowBlock(@NotNull Material mat) {
         if (isAir(mat)) {
             return true;

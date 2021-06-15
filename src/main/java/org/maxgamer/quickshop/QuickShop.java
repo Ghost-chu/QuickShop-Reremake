@@ -344,10 +344,15 @@ public class QuickShop extends JavaPlugin {
             }
         }
 
-        if (getConfig().getBoolean("plugin.LWC") && Util.isClassAvailable("com.griefcraft.lwc.LWC")) {
+        if (getConfig().getBoolean("plugin.LWC")) {
             this.lwcPlugin = Bukkit.getPluginManager().getPlugin("LWC");
             if (this.lwcPlugin != null) {
-                getLogger().info("Successfully loaded LWC support!");
+                if (Util.isMethodAvailable("com.griefcraft.lwc.LWC", "findProtection", org.bukkit.Location.class)) {
+                    getLogger().info("Successfully loaded LWC support!");
+                } else {
+                    getLogger().warning("Unsupported LWC version, please make sure you are using the modern version of LWC!");
+                    this.lwcPlugin = null;
+                }
             }
         }
         compatibilityTool.searchAndRegisterPlugins();
