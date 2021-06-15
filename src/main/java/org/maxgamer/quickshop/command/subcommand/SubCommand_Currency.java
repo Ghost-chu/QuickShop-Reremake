@@ -39,10 +39,8 @@ public class SubCommand_Currency implements CommandHandler<Player> {
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-
-        final BlockIterator bIt = new BlockIterator(sender, 10);
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        BlockIterator bIt = new BlockIterator(sender, 10);
 
         while (bIt.hasNext()) {
             final Block b = bIt.next();

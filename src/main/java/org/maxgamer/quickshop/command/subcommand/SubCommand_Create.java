@@ -74,9 +74,8 @@ public class SubCommand_Create implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        BlockIterator bIt = new BlockIterator(sender, 10);
         ItemStack item;
-        final BlockIterator bIt = new BlockIterator(sender, 10);
-
         if (cmdArg.length < 1) {
             MsgUtil.sendMessage(sender, "command.wrong-args");
             return;

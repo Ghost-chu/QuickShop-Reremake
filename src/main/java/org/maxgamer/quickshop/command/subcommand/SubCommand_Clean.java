@@ -37,8 +37,7 @@ public class SubCommand_Clean implements CommandHandler<CommandSender> {
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         MsgUtil.sendMessage(sender, "command.cleaning");
 
         final List<Shop> pendingRemoval = new ArrayList<>();

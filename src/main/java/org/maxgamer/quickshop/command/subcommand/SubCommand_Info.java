@@ -39,8 +39,7 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         int buying, selling, doubles, chunks, worlds, doubleschests;
         buying = 0;
         selling = 0;

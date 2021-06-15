@@ -36,8 +36,7 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
             MsgUtil.sendDirectMessage(sender,
                     ChatColor.YELLOW
@@ -68,13 +67,6 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
                 if (shop == null) {
                     continue; // WTF
                 }
-          /*
-          shop.getItem() is a constant that has NotNull annotations so.
-          if (shop.getItem() == null) {
-              MsgUtil.sendMessage(sender,ChatColor.YELLOW + "Shop " + shop + " removing cause item data is damaged.");
-              shop.delete();
-              continue;
-          }*/
                 if (shop.getItem().getType() == Material.AIR) {
                     MsgUtil.sendDirectMessage(sender,
                             ChatColor.YELLOW + "Deleting shop " + shop + " because of corrupted item data.");
@@ -82,13 +74,6 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
                     Util.mainThreadRun(shop::delete);
                     continue;
                 }
-          /*
-          shop.getLocation() is a constant that has NotNull annotations so.
-          if (shop.getLocation() == null) {
-              MsgUtil.sendMessage(sender,ChatColor.YELLOW + "Deleting shop " + shop + " because of corrupted location data.");
-              shop.delete();
-              continue;
-          }*/
                 if (shop.getLocation().getWorld() == null) {
                     MsgUtil.sendDirectMessage(sender,
                             ChatColor.YELLOW + "Deleting shop " + shop + " because the its world is not loaded.");

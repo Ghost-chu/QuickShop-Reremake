@@ -57,7 +57,6 @@ public class SubCommand_Size implements CommandHandler<Player> {
             MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;
         }
-
         while (bIt.hasNext()) {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());

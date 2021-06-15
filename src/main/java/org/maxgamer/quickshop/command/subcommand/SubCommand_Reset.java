@@ -42,9 +42,7 @@ public class SubCommand_Reset implements CommandHandler<CommandSender> {
 
     @Override
     @SneakyThrows
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
             MsgUtil.sendMessage(sender, "command.no-type-given");
             return;

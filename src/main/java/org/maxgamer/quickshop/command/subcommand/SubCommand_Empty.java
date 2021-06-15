@@ -38,8 +38,7 @@ public class SubCommand_Empty implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-
-        final BlockIterator bIt = new BlockIterator(sender, 10);
+        BlockIterator bIt = new BlockIterator(sender, 10);
 
         if (!bIt.hasNext()) {
             MsgUtil.sendMessage(sender, "not-looking-at-shop");

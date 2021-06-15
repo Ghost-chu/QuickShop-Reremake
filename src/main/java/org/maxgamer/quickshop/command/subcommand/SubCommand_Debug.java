@@ -47,8 +47,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     private final List<String> tabCompleteList = Collections.unmodifiableList(Arrays.asList("debug", "dev", "devmode", "handlerlist", "jvm", "signs"));
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
             switchDebug(sender);
             return;

@@ -38,8 +38,7 @@ public class SubCommand_SilentEmpty implements CommandHandler<Player> {
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
             Util.debugLog("Exception on command! Canceling!");
             return;
