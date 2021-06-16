@@ -62,9 +62,6 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void block(BlockFromToEvent event) {
-//        if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
-//            return;
-//        }
         final Block targetBlock = event.getToBlock();
         final Block shopBlock = targetBlock.getRelative(BlockFace.DOWN);
         final Shop shop = getShopNature(shopBlock.getLocation(), true);
@@ -83,9 +80,6 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void block(BlockPistonExtendEvent event) {
-//        if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
-//            return;
-//        }
         final Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
         Shop shop = getShopRedstone(block.getLocation(), true);
         if (shop != null) {
@@ -120,9 +114,6 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void block(BlockPistonRetractEvent event) {
-//        if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
-//            return;
-//        }
         final Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
         Shop shop = getShopNature(block.getLocation(), true);
         if (shop != null) {
@@ -157,9 +148,6 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void block(BrewingStandFuelEvent event) {
-//        if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
-//            return;
-//        }
         final ItemStack itemStack = event.getFuel();
         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
@@ -172,9 +160,6 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void block(FurnaceBurnEvent event) {
-//        if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
-//            return;
-//        }
         final ItemStack itemStack = event.getFuel();
 
         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
@@ -191,9 +176,6 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void block(FurnaceSmeltEvent event) {
-//        if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
-//            return;
-//        }
         ItemStack itemStack = event.getSource();
         BlockState furnace = PaperLib.getBlockState(event.getBlock(), false).getState();
         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
@@ -224,9 +206,6 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void entity(EntityPickupItemEvent e) {
-//        if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
-//            return;
-//        }
         final ItemStack stack = e.getItem().getItemStack();
         if (!DisplayItem.checkIsGuardItemStack(stack)) {
             return;

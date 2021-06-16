@@ -692,12 +692,6 @@ public class ShopManager {
                 String.valueOf(amount),
                 Util.getItemStackName(shop.getItem()));
 
-//        String msg = MsgUtil.getMessage(buyer, "player-sold-to-your-store",
-//                player != null ? player.getName() : buyer.toString(),
-//                String.valueOf(amount),
-//                "##########" + Util.serialize(shop.getItem()) + "##########");
-
-
         if (space == amount) {
             msg += "\n" + MsgUtil.getMessage(buyer, "shop-out-of-space",
                     Integer.toString(shop.getLocation().getBlockX()),

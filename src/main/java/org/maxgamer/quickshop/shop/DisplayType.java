@@ -66,9 +66,6 @@ public enum DisplayType {
         if (displayItem instanceof RealDisplayItem) {
             return REALITEM;
         }
-//        if (displayItem instanceof ArmorStandDisplayItem) {
-//            return ARMORSTAND;
-//        }
         if (displayItem instanceof VirtualDisplayItem) {
             return VIRTUALITEM;
         }

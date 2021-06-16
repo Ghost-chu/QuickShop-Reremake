@@ -1279,8 +1279,8 @@ public class Util {
                     .forEach((shop -> finalReport.append(shop).append("\n")));
             try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
                 outputStream.write(finalReport.toString());
-            } catch (IOException ignored) {
-                plugin.getLogger().log(Level.WARNING, "Backup failed", ignored);
+            } catch (IOException exception) {
+                plugin.getLogger().log(Level.WARNING, "Backup failed", exception);
             }
 
         });

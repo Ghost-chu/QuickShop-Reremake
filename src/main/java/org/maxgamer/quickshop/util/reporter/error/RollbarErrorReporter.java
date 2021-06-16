@@ -60,7 +60,7 @@ public class RollbarErrorReporter {
     private String lastPaste = null;
     //private final GlobalExceptionFilter globalExceptionFilter;
     @Getter
-    private volatile boolean enabled = false;
+    private volatile boolean enabled;
 
 
     public RollbarErrorReporter(@NotNull QuickShop plugin) {
