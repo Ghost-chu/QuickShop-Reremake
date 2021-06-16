@@ -39,6 +39,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.plugin.*;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
@@ -75,7 +76,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -264,6 +264,22 @@ public class QuickShop extends JavaPlugin {
     private Plugin worldEditPlugin;
     @Getter
     private WorldEditAdapter worldEditAdapter;
+
+    /**
+     * Use for mock bukkit
+     */
+    public QuickShop() {
+        super();
+    }
+
+    /**
+     * Use for mock bukkit
+     */
+    protected QuickShop(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+        super(loader, description, dataFolder, file);
+        System.getProperties().setProperty("org.maxgamer.quickshop.util.envcheck.skip.SIGNATURE_VERIFY", "true");
+
+    }
 
     @NotNull
     public static QuickShop getInstance() {
@@ -980,6 +996,7 @@ public class QuickShop extends JavaPlugin {
             }
             return false;
         } catch (Exception e) {
+            e.printStackTrace();
             getLogger().log(Level.SEVERE, "Error when setup database", e);
             getServer().getPluginManager().disablePlugin(this);
             if (setupDBonEnableding) {
@@ -1864,7 +1881,7 @@ public class QuickShop extends JavaPlugin {
         try {
             ReflectFactory.getCommandMap().register("qs", quickShopCommand);
             ReflectFactory.syncCommands();
-        } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+        } catch (Exception e) {
             getLogger().log(Level.WARNING, "Failed to register command aliases", e);
             return;
         }
