@@ -475,6 +475,14 @@ public class MsgUtil {
         }
     }
 
+    //For backward compatibility
+    @Deprecated
+    public static void sendColoredMessage(@NotNull CommandSender sender, @NotNull ChatColor chatColor, @Nullable String... messages) {
+        for (String message : messages) {
+            sendDirectMessage(sender, chatColor + message);
+        }
+    }
+
     /**
      * @param player             The name of the player to message
      * @param transactionMessage The message to send them Sends the given player a message if they're online.
