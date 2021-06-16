@@ -37,6 +37,4 @@ public class SubCommand_Reload implements CommandHandler<CommandSender> {
         MsgUtil.sendMessage(sender, "command.reloading");
         plugin.reload();
     }
-
-
 }

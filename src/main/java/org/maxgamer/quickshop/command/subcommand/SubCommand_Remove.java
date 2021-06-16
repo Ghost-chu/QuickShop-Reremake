@@ -50,7 +50,6 @@ public class SubCommand_Remove implements CommandHandler<Player> {
             if (shop == null) {
                 continue;
             }
-
             if (shop.getModerator().isModerator(sender.getUniqueId())
                     || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy")) {
                 shop.delete();
