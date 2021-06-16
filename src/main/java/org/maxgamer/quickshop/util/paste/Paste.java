@@ -19,7 +19,7 @@
 
 package org.maxgamer.quickshop.util.paste;
 
-import com.github.benmanes.caffeine.cache.stats.CacheStats;
+import com.google.common.cache.CacheStats;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.bukkit.World;
@@ -234,12 +234,7 @@ public class Paste {
             finalReport.append("\t\tLoad         Count: ").append(stats.loadCount()).append("\n");
             finalReport.append("\t\tLoad Success Count: ").append(stats.loadSuccessCount()).append("\n");
             finalReport.append("\t\t--------------------------").append("\n");
-            finalReport.append("\t\tLoad Failure Rate : ").append(stats.loadFailureRate()).append("\n");
-            finalReport.append("\t\tLoad Failure Count: ").append(stats.loadFailureCount()).append("\n");
-            finalReport.append("\t\tLoad Success Count: ").append(stats.loadSuccessCount()).append("\n");
-            finalReport.append("\t\t--------------------------").append("\n");
             finalReport.append("\t\tEviction     Count: ").append(stats.evictionCount()).append("\n");
-            finalReport.append("\t\tEviction    Weight: ").append(stats.evictionWeight()).append("\n");
             finalReport.append("\t\tEviction     Count: ").append(stats.evictionCount()).append("\n");
             finalReport.append("\t\t--------------------------").append("\n");
             finalReport.append("\t\tRequest      Count: ").append(stats.requestCount()).append("\n");
@@ -419,22 +414,6 @@ public class Paste {
                 finalReport.append("\tpurpur.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
             }
-            try {
-                finalReport.append("\t*********************************\n");
-                finalReport.append("\tairplane.air:\n");
-                finalReport
-                        .append("\t\t\n")
-                        .append(
-                                new String(
-                                        Objects.requireNonNull(
-                                                Util.inputStream2ByteArray(new File(new File("."), "airplane.air").getPath())),
-                                        StandardCharsets.UTF_8))
-                        .append("\n");
-            } catch (Exception th) {
-                finalReport.append("\t*********************************\n");
-                finalReport.append("\tairplane.air:\n");
-                finalReport.append("\t\t\n").append("Read failed.").append("\n");
-            }
         } catch (Exception ignored) {
             finalReport.append("\tFailed to get data\n");
         }
@@ -480,7 +459,14 @@ public class Paste {
     public String paste(@NotNull String content) {
         PasteInterface paster;
         try {
-            // EngineHub Pastebin
+            // Lucko Pastebin
+            paster = new LuckoPastebinPaster();
+            return paster.pasteTheText(content);
+        } catch (Exception ex) {
+            Util.debugLog(ex.getMessage());
+        }
+        try {
+            // Pastebin
             paster = new PastebinPaster();
             return paster.pasteTheText(content);
         } catch (Exception ex) {
@@ -498,24 +484,40 @@ public class Paste {
 
 
     @Nullable
-    public String paste(@NotNull String content, int type) {
+    public String paste(@NotNull String content, PasteType type) {
         PasteInterface paster;
-        if (type == 0) {
-            try {
-                // EngineHub Pastebin
-                paster = new PastebinPaster();
-                return paster.pasteTheText(content);
-            } catch (Exception ignore) {
-            }
-        } else {
-            try {
-                // Ubuntu Pastebin
-                paster = new UbuntuPaster();
-                return paster.pasteTheText(content);
-            } catch (Exception ignore) {
-            }
+        switch (type) {
+            case PASTEBIN:
+                try {
+                    // EngineHub Pastebin
+                    paster = new PastebinPaster();
+                    return paster.pasteTheText(content);
+                } catch (Exception ignore) {
+                }
+                break;
+            case UBUNTU:
+                try {
+                    // Ubuntu Pastebin
+                    paster = new UbuntuPaster();
+                    return paster.pasteTheText(content);
+                } catch (Exception ignore) {
+                }
+                break;
+            default:
+                try {
+                    // Lucko Pastebin
+                    paster = new LuckoPastebinPaster();
+                    return paster.pasteTheText(content);
+                } catch (Exception ignore) {
+                }
+                break;
         }
         return null;
     }
 
+    public enum PasteType {
+        LUCKO,
+        PASTEBIN,
+        UBUNTU
+    }
 }

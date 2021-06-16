@@ -5,7 +5,7 @@
   "translation-version": "Unterstütze Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Sprache: Deutsch (de_DE)",
-  "language-version": "56",
+  "language-version": "57",
   "not-looking-at-shop": "&cKonnte keinen QuickShop finden. Du musst auf einen schauen.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cYou do not have permission to do that.",
@@ -319,5 +319,9 @@
   "clean-warning": "&eDieser Befehl wird &calle &eShops löschen welche entweder beschädigt sind, in nicht erlaubten Welten erstellt wurden, nicht erlaubte Items kaufen/verkaufen oder &c&lIN EINER NICHT GELADENEN WELT EXISTIEREN&e. Stelle sicher, dass du komplette Backups sämtlicher Shopdaten erstellst und vervende &b/qs cleanghost confirm &eum zu fortzufahren.",
   "shop-creation-failed": "&cShop-Erstellung fehlgeschlagen, Bitte kontaktiere einen Server Administrator.",
   "shop-owner-self-trade": "&eDu handelst mit deinem eigenen Shop, also wirst du keinen extra Saldo erhalten.",
-  "chest-title": "QuickShop Laden"
+  "chest-title": "QuickShop Laden",
+  "command-type-mismatch": "&cDieser Befehl kann nur von &b{0}&c ausgeführt werden.",
+  "unlimited-shop-owner-changed": "&eDer Besitzer des unbegrenzten Shops wurde zu {0} geändert.",
+  "unlimited-shop-owner-keeped": "&eAchtung: Der Shopeigentümer ist nach wie vor unlimitiert. Du musst den Besitzer manuell neu setzten.",
+  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
 }

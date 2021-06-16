@@ -129,11 +129,6 @@ public class QSEventManager implements QuickEventManager, Listener {
                 continue;
             }
 
-//            if (this.ignoredListener.stream().anyMatch(listenerContainer -> listenerContainer.matches(regClass, registration.getPlugin()))) {
-//                continue;
-//            }
-
-
             try {
                 registration.callEvent(event);
             } catch (AuthorNagException ex) {

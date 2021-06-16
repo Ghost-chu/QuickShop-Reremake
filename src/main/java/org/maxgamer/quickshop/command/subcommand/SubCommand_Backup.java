@@ -22,23 +22,20 @@ package org.maxgamer.quickshop.command.subcommand;
 import lombok.AllArgsConstructor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
-public class SubCommand_Backup implements CommandProcesser {
+public class SubCommand_Backup implements CommandHandler<CommandSender> {
 
-    private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (Util.backupDatabase()) {
-            MsgUtil.sendMessage(sender, "Backup successful!");
+            MsgUtil.sendDirectMessage(sender, "Backup successful!");
         } else {
-            MsgUtil.sendMessage(sender, "Backup failed!");
+            MsgUtil.sendDirectMessage(sender, "Backup failed!");
         }
 
     }

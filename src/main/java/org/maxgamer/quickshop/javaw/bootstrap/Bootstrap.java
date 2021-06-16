@@ -21,6 +21,11 @@ package org.maxgamer.quickshop.javaw.bootstrap;
 
 import javax.swing.*;
 
+/**
+ * Java default bootstrap if user trying launch QuickShop directly
+ *
+ * @author Ghost_chu
+ */
 public class Bootstrap {
     public static void main(String[] args) {
         System.out.println("QuickShop is a Spigot plugin.");

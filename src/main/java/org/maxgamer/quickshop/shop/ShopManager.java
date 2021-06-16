@@ -65,7 +65,10 @@ public class ShopManager {
     private final Map<UUID, Info> actions = Maps.newConcurrentMap();
 
     private final QuickShop plugin;
+    @Getter
     private final Trader cacheTaxAccount;
+    @Getter
+    private final Trader cacheUnlimitedShopAccount;
     @Getter
     private final PriceLimiter priceLimiter;
     private final boolean useFastShopSearchAlgorithm;
@@ -79,6 +82,7 @@ public class ShopManager {
                     .initialCapacity(50)
                     .build();
 
+
     public ShopManager(@NotNull QuickShop plugin) {
         Util.ensureThread(false);
         this.plugin = plugin;
@@ -87,17 +91,28 @@ public class ShopManager {
         Util.debugLog("Loading caching tax account...");
         String taxAccount = plugin.getConfig().getString("tax-account", "tax");
         if (!taxAccount.isEmpty()) {
-            this.cacheTaxAccount = new Trader(taxAccount,
-                    plugin.getServer().getOfflinePlayer(taxAccount));
+            if (Util.isUUID(taxAccount)) {
+                this.cacheTaxAccount = new Trader(taxAccount,
+                        plugin.getServer().getOfflinePlayer(UUID.fromString(taxAccount)));
+            } else {
+                this.cacheTaxAccount = new Trader(taxAccount,
+                        plugin.getServer().getOfflinePlayer(taxAccount));
+            }
         } else {
             // disable tax account
             cacheTaxAccount = null;
         }
-        this.priceLimiter =
-                new PriceLimiter(
-                        plugin.getConfig().getDouble("shop.minimum-price"),
-                        plugin.getConfig().getInt("shop.maximum-price"),
-                        plugin.getConfig().getBoolean("shop.allow-free-shop"));
+        String uAccount = plugin.getConfig().getString("unlimited-shop-owner-change-account");
+        if (Util.isUUID(uAccount)) {
+            cacheUnlimitedShopAccount = new Trader(uAccount, Bukkit.getOfflinePlayer(UUID.fromString(uAccount)));
+        } else {
+            cacheUnlimitedShopAccount = new Trader(uAccount, Bukkit.getOfflinePlayer(uAccount));
+        }
+        this.priceLimiter = new PriceLimiter(
+                plugin.getConfig().getDouble("shop.minimum-price"),
+                plugin.getConfig().getInt("shop.maximum-price"),
+                plugin.getConfig().getBoolean("shop.allow-free-shop"),
+                plugin.getConfig().getBoolean("whole-number-prices-only"));
         this.useOldCanBuildAlgorithm = plugin.getConfig().getBoolean("limits.old-algorithm");
         this.autoSign = plugin.getConfig().getBoolean("shop.auto-sign");
     }
@@ -125,11 +140,7 @@ public class ShopManager {
             }
             int max = plugin.getShopLimit(p);
             if (owned + 1 > max) {
-                MsgUtil.sendMessage(
-                        p,
-                        MsgUtil.getMessage(
-                                "reached-maximum-can-create", p, String.valueOf(owned),
-                                String.valueOf(max)));
+                MsgUtil.sendMessage(p, "reached-maximum-can-create", String.valueOf(owned), String.valueOf(max));
                 return false;
             }
         }
@@ -252,7 +263,7 @@ public class ShopManager {
                 this.processWaterLoggedSign(shop.getLocation().getBlock(), info.getSignBlock());
             } else {
                 if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
-                    MsgUtil.sendMessage(player, MsgUtil.getMessage("failed-to-put-sign", player));
+                    MsgUtil.sendMessage(player, "failed-to-put-sign");
                     Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
                     return;
                 }
@@ -281,7 +292,7 @@ public class ShopManager {
                     plugin.getDatabaseHelper().createShop(shop, null, e2 -> {
                         plugin.getLogger()
                                 .log(Level.SEVERE, "Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
-                        MsgUtil.sendMessage(player, MsgUtil.getMessage("shop-creation-failed", player));
+                        MsgUtil.sendMessage(player, "shop-creation-failed");
                         Util.mainThreadRun(() -> {
                             shop.onUnload();
                             removeShop(shop);
@@ -468,7 +479,7 @@ public class ShopManager {
             }
             if (info.getLocation().getWorld() != p.getLocation().getWorld()
                     || info.getLocation().distanceSquared(p.getLocation()) > 25) {
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("not-looking-at-shop", p));
+                MsgUtil.sendMessage(p, "not-looking-at-shop");
                 return;
             }
             if (info.getAction() == ShopAction.CREATE) {
@@ -623,30 +634,21 @@ public class ShopManager {
             space = 10000;
         }
         if (space < amount) {
-            MsgUtil.sendMessage(
-                    buyer,
-                    MsgUtil.getMessage(
-                            buyer,
-                            "shop-has-no-space",
-                            Integer.toString(space),
-                            Util.getItemStackName(shop.getItem())));
+            MsgUtil.sendMessage(buyer, "shop-has-no-space", Integer.toString(space), Util.getItemStackName(shop.getItem()));
             return;
         }
         int count = Util.countItems(buyerInventory, shop.getItem());
         // Not enough items
         if (amount > count) {
-            MsgUtil.sendMessage(
-                    buyer,
-                    MsgUtil.getMessage(
-                            buyer,
-                            "you-dont-have-that-many-items",
-                            Integer.toString(count),
-                            Util.getItemStackName(shop.getItem())));
+            MsgUtil.sendMessage(buyer,
+                    "you-dont-have-that-many-items",
+                    Integer.toString(count),
+                    Util.getItemStackName(shop.getItem()));
             return;
         }
         if (amount < 1) {
             // & Dumber
-            MsgUtil.sendMessage(buyer, MsgUtil.getMessage(buyer, "negative-amount"));
+            MsgUtil.sendMessage(buyer, "negative-amount");
             return;
         }
 
@@ -678,12 +680,12 @@ public class ShopManager {
         }
         if (!transaction.failSafeCommit()) {
             if (transaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
-                MsgUtil.sendMessage(buyer, MsgUtil.getMessage(buyer, "the-owner-cant-afford-to-buy-from-you",
+                MsgUtil.sendMessage(buyer, "the-owner-cant-afford-to-buy-from-you",
                         Objects.requireNonNull(format(total, shop.getLocation().getWorld(), shop.getCurrency())),
                         Objects.requireNonNull(format(eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(),
-                                shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency()))));
+                                shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency())));
             } else {
-                MsgUtil.sendMessage(buyer, MsgUtil.getMessage(buyer, "purchase-failed"));
+                MsgUtil.sendMessage(buyer, "purchase-failed");
                 plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
                 QuickShop.getInstance().log("EconomyTransaction Failed, last error:" + transaction.getLastError());
             }
@@ -693,10 +695,11 @@ public class ShopManager {
         // Notify the owner of the purchase. //TODO: move to a standalone method
         Player player = plugin.getServer().getPlayer(buyer);
 
+
         String msg = MsgUtil.getMessage(buyer, "player-sold-to-your-store",
                 player != null ? player.getName() : buyer.toString(),
                 String.valueOf(amount),
-                "##########" + Util.serialize(shop.getItem()) + "##########");
+                Util.getItemStackName(shop.getItem()));
 
         if (space == amount) {
             msg += "\n" + MsgUtil.getMessage(buyer, "shop-out-of-space",
@@ -704,12 +707,15 @@ public class ShopManager {
                     Integer.toString(shop.getLocation().getBlockY()),
                     Integer.toString(shop.getLocation().getBlockZ()));
         }
+
+        MsgUtil.TransactionMessage transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
+
         if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
             for (UUID staff : shop.getModerator().getStaffs()) {
-                MsgUtil.send(shop, staff, msg);
+                MsgUtil.send(shop, staff, transactionMessage);
             }
         }
-        MsgUtil.send(shop, shop.getOwner(), msg);
+        MsgUtil.send(shop, shop.getOwner(), transactionMessage);
         shop.buy(buyer, buyerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
         MsgUtil.sendSellSuccess(buyer, shop, amount);
         ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, taxModifier);
@@ -763,7 +769,7 @@ public class ShopManager {
                              boolean bypassProtectionChecks) {
         Util.ensureThread(false);
         if (plugin.getEconomy() == null) {
-            MsgUtil.sendMessage(p, "Error: Economy system not loaded, type /qs main command to get details.");
+            MsgUtil.sendDirectMessage(p, "Error: Economy system not loaded, type /qs main command to get details.");
             return;
         }
         if (plugin.isAllowStack() && !p.hasPermission("quickshop.create.stacks")) {
@@ -777,23 +783,23 @@ public class ShopManager {
         if (!bypassProtectionChecks) {
             Result result = plugin.getPermissionChecker().canBuild(p, info.getLocation());
             if (!result.isSuccess()) {
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("3rd-plugin-build-check-failed", p, result.getMessage()));
+                MsgUtil.sendMessage(p, "3rd-plugin-build-check-failed", result.getMessage());
                 Util.debugLog("Failed to create shop because protection check failed, found:" + result.getMessage());
                 return;
             }
         }
 
         if (plugin.getShopManager().getShop(info.getLocation()) != null) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-already-owned", p));
+            MsgUtil.sendMessage(p, "shop-already-owned");
             return;
         }
         if (Util.isDoubleChest(info.getLocation().getBlock().getBlockData())
                 && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("no-double-chests", p));
+            MsgUtil.sendMessage(p, "no-double-chests");
             return;
         }
         if (!Util.canBeShop(info.getLocation().getBlock())) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("chest-was-removed", p));
+            MsgUtil.sendMessage(p, "chest-was-removed");
             return;
         }
         if (info.getLocation().getBlock().getType()
@@ -806,7 +812,7 @@ public class ShopManager {
         if (autoSign) {
             if (info.getSignBlock() == null) {
                 if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
-                    MsgUtil.sendMessage(p, MsgUtil.getMessage("failed-to-put-sign", p));
+                    MsgUtil.sendMessage(p, "failed-to-put-sign");
                     return;
                 }
             } else {
@@ -814,7 +820,7 @@ public class ShopManager {
                 if (signType != Material.WATER
                         && !Util.isAir(signType)
                         && !plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
-                    MsgUtil.sendMessage(p, MsgUtil.getMessage("failed-to-put-sign", p));
+                    MsgUtil.sendMessage(p, "failed-to-put-sign");
                     return;
                 }
             }
@@ -822,41 +828,28 @@ public class ShopManager {
 
         // Price per item
         double price;
-
-        // Price parsing
-        if (plugin.getConfig().getBoolean("whole-number-prices-only")) {
-            try {
-                price = Integer.parseInt(message);
-            } catch (NumberFormatException numberFormatException) {
-                Util.debugLog(numberFormatException.getMessage());
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("not-a-integer", p, message));
+        try {
+            price = Double.parseDouble(message);
+            if (Double.isInfinite(price)) {
+                MsgUtil.sendMessage(p, "exceeded-maximum", message);
                 return;
             }
-        } else {
-            try {
-                price = Double.parseDouble(message);
-                if (Double.isInfinite(price)) {
-                    MsgUtil.sendMessage(p, MsgUtil.getMessage("exceeded-maximum", p, message));
+            String strFormat = new DecimalFormat("#.#########").format(Math.abs(price))
+                    .replace(",", ".");
+            String[] processedDouble = strFormat.split("\\.");
+            if (processedDouble.length > 1) {
+                int maximumDigitsLimit = plugin.getConfig()
+                        .getInt("maximum-digits-in-price", -1);
+                if (processedDouble[1].length() > maximumDigitsLimit
+                        && maximumDigitsLimit != -1) {
+                    MsgUtil.sendMessage(p, "digits-reach-the-limit", String.valueOf(maximumDigitsLimit));
                     return;
                 }
-                String strFormat = new DecimalFormat("#.#########").format(Math.abs(price))
-                        .replace(",", ".");
-                String[] processedDouble = strFormat.split("\\.");
-                if (processedDouble.length > 1) {
-                    int maximumDigitsLimit = plugin.getConfig()
-                            .getInt("maximum-digits-in-price", -1);
-                    if (processedDouble[1].length() > maximumDigitsLimit
-                            && maximumDigitsLimit != -1) {
-                        MsgUtil.sendMessage(p, MsgUtil.getMessage("digits-reach-the-limit", p,
-                                String.valueOf(maximumDigitsLimit)));
-                        return;
-                    }
-                }
-            } catch (NumberFormatException ex) {
-                Util.debugLog(ex.getMessage());
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("not-a-number", p, message));
-                return;
             }
+        } catch (NumberFormatException ex) {
+            Util.debugLog(ex.getMessage());
+            MsgUtil.sendMessage(p, "not-a-number", message);
+            return;
         }
 
         // Price limit checking
@@ -866,26 +859,26 @@ public class ShopManager {
 
         switch (priceCheckResult.getStatus()) {
             case REACHED_PRICE_MIN_LIMIT:
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("price-too-cheap", p,
+                MsgUtil.sendMessage(p, "price-too-cheap",
                         (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
-                                : Double.toString(this.priceLimiter.getMinPrice())));
+                                : Double.toString(this.priceLimiter.getMinPrice()));
                 return;
             case REACHED_PRICE_MAX_LIMIT:
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("price-too-high", p,
+                MsgUtil.sendMessage(p, "price-too-high",
                         (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
-                                : Double.toString(this.priceLimiter.getMinPrice())));
+                                : Double.toString(this.priceLimiter.getMinPrice()));
                 return;
             case PRICE_RESTRICTED:
-                Map.Entry<Double, Double> materialLimit = Util
-                        .getPriceRestriction(info.getItem().getType());
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("restricted-prices", p,
+                MsgUtil.sendMessage(p, "restricted-prices",
                         Util.getItemStackName(info.getItem()),
-                        String.valueOf(materialLimit.getKey()),
-                        String.valueOf(materialLimit.getValue())));
+                        String.valueOf(priceCheckResult.getMin()),
+                        String.valueOf(priceCheckResult.getMax()));
                 return;
             case NOT_VALID:
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("not-a-number", p, message));
+                MsgUtil.sendMessage(p, "not-a-number", message);
                 return;
+            default:
+                // Passed
         }
 
         // Set to 1 when disabled stacking shop
@@ -907,8 +900,7 @@ public class ShopManager {
             Result result = plugin.getIntegrationHelper()
                     .callIntegrationsCanCreate(p, info.getLocation());
             if (!result.isSuccess()) {
-                MsgUtil.sendMessage(p,
-                        MsgUtil.getMessage("integrations-check-failed-create", p, result.getMessage()));
+                MsgUtil.sendMessage(p, "integrations-check-failed-create", result.getMessage());
                 Util.debugLog("Cancelled by integrations: " + result);
                 return;
             }
@@ -942,16 +934,13 @@ public class ShopManager {
                             .build();
             if (!economyTransaction.failSafeCommit()) {
                 if (economyTransaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
-                    MsgUtil.sendMessage(p, MsgUtil.getMessage("you-cant-afford-a-new-shop", p,
+                    MsgUtil.sendMessage(p, "you-cant-afford-a-new-shop",
                             Objects.requireNonNull(format(createCost, shop.getLocation().getWorld(),
-                                    shop.getCurrency()))));
+                                    shop.getCurrency())));
                 } else {
-                    MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
-                    plugin.getLogger().severe(
-                            "EconomyTransaction Failed, last error:" + economyTransaction
-                                    .getLastError());
-                    plugin.log("EconomyTransaction Failed, last error:" + economyTransaction
-                            .getLastError());
+                    MsgUtil.sendMessage(p, "purchase-failed");
+                    plugin.getLogger().severe("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
+                    plugin.log("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
                 }
                 return;
             }
@@ -960,7 +949,7 @@ public class ShopManager {
         // The shop about successfully created
         createShop(shop, info);
         if (!plugin.getConfig().getBoolean("shop.lock")) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("shops-arent-locked", p));
+            MsgUtil.sendMessage(p, "shops-arent-locked");
         }
 
         // Figures out which way we should put the sign on and
@@ -970,7 +959,7 @@ public class ShopManager {
             if (Objects.requireNonNull(nextTo).getPrice() > shop.getPrice()) {
                 // The one next to it must always be a
                 // buying shop.
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("buying-more-than-selling", p));
+                MsgUtil.sendMessage(p, "buying-more-than-selling");
             }
         }
 
@@ -1006,24 +995,18 @@ public class ShopManager {
             stock = 10000;
         }
         if (stock < amount) {
-            MsgUtil.sendMessage(
-                    seller,
-                    MsgUtil.getMessage(
-                            seller,
-                            "shop-stock-too-low",
-                            Integer.toString(stock),
-                            Util.getItemStackName(shop.getItem())));
+            MsgUtil.sendMessage(seller, "shop-stock-too-low", Integer.toString(stock),
+                    Util.getItemStackName(shop.getItem()));
             return;
         }
         if (amount < 1) {
             // & Dumber
-            MsgUtil.sendMessage(seller, MsgUtil.getMessage(seller, "negative-amount"));
+            MsgUtil.sendMessage(seller, "negative-amount");
             return;
         }
         int pSpace = Util.countSpace(sellerInventory, shop.getItem());
         if (amount > pSpace) {
-            MsgUtil.sendMessage(
-                    seller, MsgUtil.getMessage(seller, "not-enough-space", String.valueOf(pSpace)));
+            MsgUtil.sendMessage(seller, "not-enough-space", String.valueOf(pSpace));
             return;
         }
 
@@ -1057,15 +1040,15 @@ public class ShopManager {
         }
         if (!transaction.failSafeCommit()) {
             if (transaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
-                MsgUtil.sendMessage(seller, MsgUtil.getMessage(seller, "you-cant-afford-to-buy",
+                MsgUtil.sendMessage(seller, "you-cant-afford-to-buy",
                         Objects.requireNonNull(
                                 format(total, shop.getLocation().getWorld(), shop.getCurrency())),
                         Objects.requireNonNull(format(
                                 eco.getBalance(seller, shop.getLocation().getWorld(),
                                         shop.getCurrency()), shop.getLocation().getWorld(),
-                                shop.getCurrency()))));
+                                shop.getCurrency())));
             } else {
-                MsgUtil.sendMessage(seller, MsgUtil.getMessage(seller, "purchase-failed"));
+                MsgUtil.sendMessage(seller, "purchase-failed");
                 plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
                 QuickShop.getInstance().log("EconomyTransaction Failed, last error:" + transaction.getLastError());
             }
@@ -1079,14 +1062,14 @@ public class ShopManager {
             msg = MsgUtil.getMessage(seller, "player-bought-from-your-store-tax",
                     player != null ? player.getName() : seller.toString(),
                     Integer.toString(amount * shop.getItem().getAmount()),
-                    "##########" + Util.serialize(shop.getItem()) + "##########",
+                    Util.getItemStackName(shop.getItem()),
                     Double.toString(total),
                     Util.format(CalculateUtil.multiply(taxModifier, total), shop));
         } else {
             msg = MsgUtil.getMessage(seller, "player-bought-from-your-store",
                     player != null ? player.getName() : seller.toString(),
                     Integer.toString(amount * shop.getItem().getAmount()),
-                    "##########" + Util.serialize(shop.getItem()) + "##########",
+                    Util.getItemStackName(shop.getItem()),
                     Double.toString(total));
         }
         // Transfers the item from A to B
@@ -1098,10 +1081,12 @@ public class ShopManager {
                     Util.getItemStackName(shop.getItem()));
         }
 
-        MsgUtil.send(shop, shop.getOwner(), msg);
+        MsgUtil.TransactionMessage transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
+
+        MsgUtil.send(shop, shop.getOwner(), transactionMessage);
         if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
             for (UUID staff : shop.getModerator().getStaffs()) {
-                MsgUtil.send(shop, staff, msg);
+                MsgUtil.send(shop, staff, transactionMessage);
             }
         }
         shop.sell(seller, sellerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
@@ -1117,16 +1102,16 @@ public class ShopManager {
 
     private boolean shopIsNotValid(@Nullable Player p, @NotNull Info info, @NotNull Shop shop) {
         if (plugin.getEconomy() == null) {
-            MsgUtil.sendMessage(p,
+            MsgUtil.sendDirectMessage(p,
                     "Error: Economy system not loaded, type /qs main command to get details.");
             return true;
         }
         if (!Util.canBeShop(info.getLocation().getBlock())) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("chest-was-removed", p));
+            MsgUtil.sendMessage(p, "chest-was-removed");
             return true;
         }
         if (info.hasChanged(shop)) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-has-changed", p));
+            MsgUtil.sendMessage(p, "shop-has-changed");
             return true;
         }
         return false;
@@ -1135,14 +1120,13 @@ public class ShopManager {
     private void actionTrade(@NotNull Player p, @NotNull Info info, @NotNull String message) {
         Util.ensureThread(false);
         if (plugin.getEconomy() == null) {
-            MsgUtil.sendMessage(
-                    p, "Error: Economy system not loaded, type /qs main command to get details.");
+            MsgUtil.sendDirectMessage(p, "Error: Economy system not loaded, type /qs main command to get details.");
             return;
         }
         Result result = plugin.getIntegrationHelper()
                 .callIntegrationsCanTrade(p, info.getLocation());
         if (!result.isSuccess()) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("integrations-check-failed-trade", p, result.getMessage()));
+            MsgUtil.sendMessage(p, "integrations-check-failed-trade", result.getMessage());
             Util.debugLog("Cancel by integrations.");
             return;
         }
@@ -1152,20 +1136,19 @@ public class ShopManager {
         Shop shop = plugin.getShopManager().getShop(info.getLocation());
         // It's not valid anymore
         if (shop == null || !Util.canBeShop(info.getLocation().getBlock())) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("chest-was-removed", p));
+            MsgUtil.sendMessage(p, "chest-was-removed");
             return;
         }
         if (p.getGameMode() == GameMode.CREATIVE && plugin.getConfig().getBoolean("shop.disable-creative-mode-trading")) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("trading-in-creative-mode-is-disabled", p));
+            MsgUtil.sendMessage(p, "trading-in-creative-mode-is-disabled");
             return;
         }
         int amount;
         if (info.hasChanged(shop)) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-has-changed", p));
+            MsgUtil.sendMessage(p, "shop-has-changed");
             return;
         }
         if (shop.isBuying()) {
-
             if (StringUtils.isNumeric(message)) {
                 amount = Integer.parseInt(message);
             } else {
@@ -1201,13 +1184,8 @@ public class ShopManager {
                     if (amount < 1) { // typed 'all' but the auto set amount is 0
                         if (shopHaveSpaces == 0) {
                             // when typed 'all' but the shop doesn't have any empty space
-                            MsgUtil.sendMessage(
-                                    p,
-                                    MsgUtil.getMessage(
-                                            "shop-has-no-space",
-                                            p,
-                                            Integer.toString(shopHaveSpaces),
-                                            Util.getItemStackName(shop.getItem())));
+                            MsgUtil.sendMessage(p, "shop-has-no-space", Integer.toString(shopHaveSpaces),
+                                    Util.getItemStackName(shop.getItem()));
                             return;
                         }
                         if (ownerCanAfford == 0
@@ -1215,33 +1193,25 @@ public class ShopManager {
                                 || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners"))) {
                             // when typed 'all' but the shop owner doesn't have enough money to buy at least 1
                             // item (and shop isn't unlimited or pay-unlimited is true)
-                            MsgUtil.sendMessage(
-                                    p,
-                                    MsgUtil.getMessage(
-                                            "the-owner-cant-afford-to-buy-from-you",
-                                            p,
-                                            Objects.requireNonNull(
-                                                    format(shop.getPrice(), shop.getLocation().getWorld(),
-                                                            shop.getCurrency())),
-                                            Objects.requireNonNull(
-                                                    format(ownerBalance, shop.getLocation().getWorld(),
-                                                            shop.getCurrency()))));
+                            MsgUtil.sendMessage(p, "the-owner-cant-afford-to-buy-from-you",
+                                    Objects.requireNonNull(
+                                            format(shop.getPrice(), shop.getLocation().getWorld(),
+                                                    shop.getCurrency())),
+                                    Objects.requireNonNull(
+                                            format(ownerBalance, shop.getLocation().getWorld(),
+                                                    shop.getCurrency())));
                             return;
                         }
                         // when typed 'all' but player doesn't have any items to sell
-                        MsgUtil.sendMessage(
-                                p,
-                                MsgUtil.getMessage(
-                                        "you-dont-have-that-many-items",
-                                        p,
-                                        Integer.toString(amount),
-                                        Util.getItemStackName(shop.getItem())));
+                        MsgUtil.sendMessage(p, "you-dont-have-that-many-items",
+                                Integer.toString(amount),
+                                Util.getItemStackName(shop.getItem()));
                         return;
                     }
                 } else {
                     // instead of output cancelled message (when typed neither integer or 'all'), just let
                     // player know that there should be positive number or 'all'
-                    MsgUtil.sendMessage(p, MsgUtil.getMessage("not-a-integer", p, message));
+                    MsgUtil.sendMessage(p, "not-a-integer", message);
                     Util.debugLog(
                             "Receive the chat " + message + " and it format failed: " + message);
                     return;
@@ -1273,34 +1243,30 @@ public class ShopManager {
                         // when typed 'all' but player can't buy any items
                         if (!shop.isUnlimited() && shopHaveItems < 1) {
                             // but also the shop's stock is 0
-                            MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-stock-too-low", p,
+                            MsgUtil.sendMessage(p, "shop-stock-too-low",
                                     Integer.toString(shop.getRemainingStock()),
-                                    Util.getItemStackName(shop.getItem())));
+                                    Util.getItemStackName(shop.getItem()));
                         } else {
                             // when if player's inventory is full
                             if (invHaveSpaces <= 0) {
-                                MsgUtil.sendMessage(p, MsgUtil.getMessage("not-enough-space", p,
-                                        String.valueOf(invHaveSpaces)));
+                                MsgUtil.sendMessage(p, "not-enough-space",
+                                        String.valueOf(invHaveSpaces));
                                 return;
                             }
-                            MsgUtil.sendMessage(
-                                    p,
-                                    MsgUtil.getMessage(
-                                            "you-cant-afford-to-buy",
-                                            p,
-                                            Objects.requireNonNull(
-                                                    format(price, shop.getLocation().getWorld(),
-                                                            shop.getCurrency())),
-                                            Objects.requireNonNull(
-                                                    format(balance, shop.getLocation().getWorld(),
-                                                            shop.getCurrency()))));
+                            MsgUtil.sendMessage(p, "you-cant-afford-to-buy",
+                                    Objects.requireNonNull(
+                                            format(price, shop.getLocation().getWorld(),
+                                                    shop.getCurrency())),
+                                    Objects.requireNonNull(
+                                            format(balance, shop.getLocation().getWorld(),
+                                                    shop.getCurrency())));
                         }
                         return;
                     }
                 } else {
                     // instead of output cancelled message, just let player know that there should be positive
                     // number or 'all'
-                    MsgUtil.sendMessage(p, MsgUtil.getMessage("not-a-integer", p, message));
+                    MsgUtil.sendMessage(p, "not-a-integer", message);
                     Util.debugLog(
                             "Receive the chat " + message + " and it format failed: " + message);
                     return;
@@ -1308,7 +1274,7 @@ public class ShopManager {
             }
             actionSell(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
         } else {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-purchase-cancelled", p));
+            MsgUtil.sendMessage(p, "shop-purchase-cancelled");
             plugin.getLogger().warning("Shop data broken? Loc:" + shop.getLocation());
         }
     }
@@ -1352,6 +1318,15 @@ public class ShopManager {
         }
 
         return shop;
+    }
+
+    /**
+     * Change the owner to unlimited shop owner.
+     * It defined in configuration.
+     */
+    public void migrateOwnerToUnlimitedShopOwner(Shop shop) {
+        shop.setOwner(this.cacheUnlimitedShopAccount.getUniqueId());
+        shop.setSignText();
     }
 
     public class ShopIterator implements Iterator<Shop> {

@@ -22,12 +22,12 @@ package org.maxgamer.quickshop.command.subcommand;
 import lombok.SneakyThrows;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.database.*;
 
 import java.io.File;
@@ -38,7 +38,7 @@ import java.util.Objects;
 import java.util.logging.Level;
 
 
-public class SubCommand_Convert implements CommandProcesser {
+public class SubCommand_Convert implements CommandHandler<ConsoleCommandSender> {
     private final QuickShop plugin;
     private volatile boolean running;
 
@@ -59,11 +59,7 @@ public class SubCommand_Convert implements CommandProcesser {
      */
     @SneakyThrows
     @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (sender instanceof Player) {
-            sender.sendMessage(ChatColor.RED + "Executing this command can be dangerous! Please execute it in the console.");
-            return;
-        }
+    public void onCommand(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length == 0) {
             sender.sendMessage(ChatColor.RED + "Please select what you want convert to: mysql or sqlite");
             return;
@@ -147,7 +143,7 @@ public class SubCommand_Convert implements CommandProcesser {
      * @return The result for tab-complete lists
      */
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public @Nullable List<String> onTabComplete(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 2) {
             List<String> str = new ArrayList<>();
             str.add("sqlite");

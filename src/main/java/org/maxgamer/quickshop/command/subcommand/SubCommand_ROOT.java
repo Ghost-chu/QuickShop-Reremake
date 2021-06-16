@@ -24,7 +24,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandContainer;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.ArrayList;
@@ -32,20 +32,18 @@ import java.util.Collections;
 import java.util.List;
 
 @AllArgsConstructor
-public class SubCommand_ROOT implements CommandProcesser {
+public class SubCommand_ROOT implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         new SubCommand_Help(plugin).onCommand(sender, commandLabel, cmdArg);
     }
 
     @NotNull
     @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] strings) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] strings) {
         final List<String> candidate = new ArrayList<>();
 
         for (CommandContainer container : plugin.getCommandManager().getCmds()) {

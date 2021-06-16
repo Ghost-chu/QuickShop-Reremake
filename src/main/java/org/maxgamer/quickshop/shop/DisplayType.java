@@ -22,6 +22,10 @@ package org.maxgamer.quickshop.shop;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public enum DisplayType {
     /*
      * UNKNOWN = FALLBACK TO REALITEM
@@ -31,8 +35,18 @@ public enum DisplayType {
      * */
     UNKNOWN(-1),
     REALITEM(0),
-  //  ARMORSTAND(1),
+    //  ARMORSTAND(1),
     VIRTUALITEM(2);
+
+    private static final Map<Integer, DisplayType> displayTypeMap;
+
+    static {
+        Map<Integer, DisplayType> map = new HashMap<>(values().length);
+        for (DisplayType type : values()) {
+            map.put(type.id, type);
+        }
+        displayTypeMap = Collections.unmodifiableMap(map);
+    }
 
     private final int id;
 
@@ -41,12 +55,7 @@ public enum DisplayType {
     }
 
     public static @NotNull DisplayType fromID(int id) {
-        for (DisplayType type : DisplayType.values()) {
-            if (type.id == id) {
-                return type;
-            }
-        }
-        return UNKNOWN;
+        return displayTypeMap.getOrDefault(id, UNKNOWN);
     }
 
     public static int toID(@NotNull DisplayType displayType) {
@@ -57,9 +66,6 @@ public enum DisplayType {
         if (displayItem instanceof RealDisplayItem) {
             return REALITEM;
         }
-//        if (displayItem instanceof ArmorStandDisplayItem) {
-//            return ARMORSTAND;
-//        }
         if (displayItem instanceof VirtualDisplayItem) {
             return VIRTUALITEM;
         }

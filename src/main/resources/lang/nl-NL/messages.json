@@ -1,11 +1,11 @@
 {
-  "_comment": "Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake",
+  "_comment": "Hallo vertaler! Als u dit bewerkt van Github of van code-bronnen, moet u https://crowdin.com/project/quickshop-reremake",
   "file-test": "Dit is een test textfile. We gebruiken dit om te testen of de \"message.json\" kapot is. Je kan dit vullen met elke easter egg die jij leuk vindt",
   "translation-author": "Vertaler",
   "translation-version": "ondersteunende versie: Reremake",
   "translation-contributors": "Medewerkers",
   "translation-country": "Taal Zone: Engels (nl_US)",
-  "language-version": "56",
+  "language-version": "57",
   "not-looking-at-shop": "&cGeen QuickShop gevonden, je moet naar een QuickShop kijken.",
   "no-anythings-in-your-hand": "&cJe hebt niks in je hand.",
   "no-permission": "&cJe hebt hiervoor geen rechten.",
@@ -45,7 +45,7 @@
   "fee-charged-for-price-change": "&aU betaald &c{0}&a om de prijs te wijzigen.",
   "price-is-now": "&aDe nieuwe prijs van de winkel is &e{0}",
   "thats-not-a-number": "&cOngeldig nummer",
-  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consisten with vanilla behaviour",
+  "forbidden-vanilla-behavior": "&cDe bewerking is niet toegestaan omdat deze niet in overeenstemming is met het gedrag van vanilla",
   "no-price-given": "&cGeef een geldige prijs.",
   "average-price-nearby": "&aNabijgelegen gemiddelde prijs: &e{0}",
   "shop-has-changed": "&cDe winkel die u probeerde te gebruiken is veranderd sinds u erop klikt!",
@@ -139,7 +139,7 @@
     "no-amount-given": "&cGeen bedrag verstrekt. Gebruik &a/qs refill <amount>&c",
     "now-debuging": "&aSuccesvol geactiveerd ontwikkelaarsmodus. QuickShop herladen...",
     "now-nolonger-debuging": "&aOntwikkelaarsmodus uitgeschakeld. QuickShop herladen...",
-    "wrong-args": "&cInvalid argument. Use &l/qs help &cto see a list of commands.",
+    "wrong-args": "&cOngeldige argumenten. Gebruik &l/qs help &cvoor een lijst met commando's.",
     "description": {
       "title": "&aQuickShop help",
       "unlimited": "&eGeeft een winkel onbeperkt voorraad.",
@@ -170,10 +170,10 @@
       "removeall": "&eVerwijder ALLE winkels van een bepaalde speler",
       "transfer": "&eTransfer iemands ALLE winkels naar andere",
       "removeworld": "&eVerwijder alle winkels in een bepaalde wereld",
-      "currency": "&eSet or remove the currency setting of the shop",
-      "ban": "&eBans a player from the shop",
-      "unban": "&eUnbans a player from the shop",
-      "freeze": "&eDisable or Enable shop trading",
+      "currency": "&eSet of verwijder de valuta instellingen van de winkel",
+      "ban": "&eVerband een speler van deze winkel",
+      "unban": "&eHeft de ban voor deze speler in deze shop",
+      "freeze": "&eUitschakelen of inschakelen van winkel handelen",
       "lock": "&eSwitch the shop's lock status"
     },
     "disabled": "&cDeze opdracht is uitgeschakeld: &e{0}",
@@ -319,5 +319,9 @@
   "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
   "shop-creation-failed": "&cShop creation failed, please contact with server administrator.",
   "shop-owner-self-trade": "&eYou trading with yourself shop, so you might won't gain any balance.",
-  "chest-title": "QuickShop Store"
+  "chest-title": "QuickShop Store",
+  "command-type-mismatch": "&cThis command only can executed by &b{0}.",
+  "unlimited-shop-owner-changed": "&eThis unlimited shop owner has been changed to {0}.",
+  "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.",
+  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
 }

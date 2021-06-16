@@ -25,13 +25,13 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandContainer;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.List;
 
 @AllArgsConstructor
-public class SubCommand_Help implements CommandProcesser {
+public class SubCommand_Help implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
 
@@ -43,7 +43,7 @@ public class SubCommand_Help implements CommandProcesser {
 
 
     private void sendHelp(@NotNull CommandSender s, @NotNull String commandLabel) {
-        MsgUtil.sendMessage(s, MsgUtil.getMessage("command.description.title", s));
+        MsgUtil.sendMessage(s, "command.description.title");
         commandCheckLoop:
         for (CommandContainer container : plugin.getCommandManager().getCmds()) {
             final List<String> requirePermissions = container.getPermissions();
@@ -61,7 +61,7 @@ public class SubCommand_Help implements CommandProcesser {
                     }
                 }
                 if (!container.isDisabled()) {
-                    MsgUtil.sendMessage(s,
+                    MsgUtil.sendDirectMessage(s,
                             ChatColor.GREEN
                                     + "/"
                                     + commandLabel
@@ -71,7 +71,7 @@ public class SubCommand_Help implements CommandProcesser {
                                     + " - "
                                     + commandDesc);
                 } else if (QuickShop.getPermissionManager().hasPermission(s, "quickshop.showdisabled")) {
-                    MsgUtil.sendMessage(s,
+                    MsgUtil.sendDirectMessage(s,
                             ChatColor.RED
                                     + "/"
                                     + commandLabel

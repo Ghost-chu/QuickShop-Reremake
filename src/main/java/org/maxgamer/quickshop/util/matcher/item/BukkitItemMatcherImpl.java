@@ -26,6 +26,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 
+/**
+ * A simple impl for ItemMatcher
+ *
+ * @author Ghost_chu
+ */
 @AllArgsConstructor
 public class BukkitItemMatcherImpl implements ItemMatcher {
     private final QuickShop plugin;

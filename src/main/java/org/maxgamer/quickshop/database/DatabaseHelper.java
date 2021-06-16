@@ -198,11 +198,7 @@ public class DatabaseHelper {
     public void removeShop(Shop shop) {
         plugin.getShopLoader().removeShopFromShopLoader(shop);
         plugin.log("[DATABASE HELPER] Removing shop in the database: " + shop.toString());
-        if (plugin.getConfig().getBoolean("debug.shop-deletion")) {
-            for (StackTraceElement stackTraceElement : new Exception().getStackTrace()) {
-                plugin.log("at [" + stackTraceElement.getClassName() + "] [" + stackTraceElement.getMethodName() + "] (" + stackTraceElement.getLineNumber() + ") - " + stackTraceElement.getFileName());
-            }
-        }
+        bakeTraceIfNeeded();
         String sqlString = "DELETE FROM "
                 + plugin.getDbPrefix()
                 + "shops WHERE x = ? AND y = ? AND z = ? AND world = ?"
@@ -219,11 +215,7 @@ public class DatabaseHelper {
 
     public void removeShop(String world, int x, int y, int z) {
         plugin.log("[DATABASE HELPER] Removing shop in the database: " + world + "/" + x + "/" + y + "z" + z);
-        if (plugin.getConfig().getBoolean("debug.shop-deletion")) {
-            for (StackTraceElement stackTraceElement : new Exception().getStackTrace()) {
-                plugin.log("at [" + stackTraceElement.getClassName() + "] [" + stackTraceElement.getMethodName() + "] (" + stackTraceElement.getLineNumber() + ") - " + stackTraceElement.getFileName());
-            }
-        }
+        bakeTraceIfNeeded();
         String sqlString = "DELETE FROM "
                 + plugin.getDbPrefix()
                 + "shops WHERE x = ? AND y = ? AND z = ? AND world = ?"
@@ -271,10 +263,6 @@ public class DatabaseHelper {
                 .getDbPrefix() + "shops SET owner = ? WHERE x = ? AND y = ? AND z = ? AND world = ?" + (
                 manager.getDatabase() instanceof MySQLCore ? " LIMIT 1" : "");
         manager.addDelayTask(
-                //plugin.getDB().getConnection().createStatement()
-                //         .executeUpdate("UPDATE " + plugin.getDbPrefix() + "shops SET owner = \"" + ownerUUID.toString()
-                //                 + "\" WHERE x = " + x + " AND y = " + y + " AND z = " + z
-                //                 + " AND world = \"" + worldName + "\" LIMIT 1");
                 new DatabaseTask(sqlString, ps -> {
                     ps.setString(1, ownerUUID);
                     ps.setInt(2, x);
@@ -302,6 +290,14 @@ public class DatabaseHelper {
         }));
         //db.execute(q, owner, Util.serialize(item), unlimited, shopType, price, x, y, z, world);
 
+    }
+
+    private void bakeTraceIfNeeded() {
+        if (plugin.getConfig().getBoolean("debug.shop-deletion")) {
+            for (StackTraceElement stackTraceElement : new Exception().getStackTrace()) {
+                plugin.log("at [" + stackTraceElement.getClassName() + "] [" + stackTraceElement.getMethodName() + "] (" + stackTraceElement.getLineNumber() + ") - " + stackTraceElement.getFileName());
+            }
+        }
     }
 
 }

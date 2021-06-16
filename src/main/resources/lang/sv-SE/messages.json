@@ -4,8 +4,8 @@
   "translation-author": "Översättare: Ghost_chu, Andre_601",
   "translation-version": "Supportversion: Reremake",
   "translation-contributors": "Medhjälpare: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken och Andre_601",
-  "translation-country": "Språkområde: Engelska (en_US)",
-  "language-version": "56",
+  "translation-country": "Språkområde: Svenska (sv_SE)",
+  "language-version": "57",
   "not-looking-at-shop": "&cKunde inte hitta en QuickShop. Du måste titta på en.",
   "no-anythings-in-your-hand": "&cDet finns inget i din hand.",
   "no-permission": "&cDu har inte tillåtelse till att göra detta.",
@@ -319,5 +319,9 @@
   "clean-warning": "&eDetta kommando kommer att rensa &ebutiker som är skadade eller skapade i otillåtna världar eller säljer/köper otillåtna föremål eller &c&lEXISTERAR I OLADDADE VÄRLDAR&e. Se till att du har full säkerhetskopiering av dina butikers data och använd &b/qs cleanghost confirm &eför att fortsätta.",
   "shop-creation-failed": "&cSkapandet av butiken misslyckades, kontakta serveradministratören.",
   "shop-owner-self-trade": "&eYou handlar med din egen butik, så du kanske inte kommer att få något saldo.",
-  "chest-title": "QuickShop-butik"
+  "chest-title": "QuickShop-butik",
+  "command-type-mismatch": "&cDetta kommando kan endast exekveras av &b{0}.",
+  "unlimited-shop-owner-changed": "&eThis unlimited shop owner has been changed to {0}.",
+  "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.",
+  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
 }

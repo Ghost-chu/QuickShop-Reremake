@@ -40,6 +40,11 @@ import org.maxgamer.quickshop.util.Util;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 
+/**
+ * BungeeChat module to send complex chats and impl QuickChat
+ *
+ * @author Ghost_chu
+ */
 public class BungeeQuickChat implements QuickChat {
     private final QuickShop plugin = QuickShop.getInstance();
 
@@ -69,11 +74,11 @@ public class BungeeQuickChat implements QuickChat {
     }
 
     @Override
-    public void sendItemHologramChat(@NotNull Player player, @NotNull String left, @NotNull ItemStack itemStack, @NotNull String right) {
+    public void sendItemHologramChat(@NotNull Player player, @NotNull String text, @NotNull ItemStack itemStack) {
         TextComponent errorComponent = new TextComponent(MsgUtil.getMessage("menu.item-holochat-error", player));
         try {
             String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
-            TextComponent centerItem = new TextComponent(left + Util.getItemStackName(itemStack) + right);
+            TextComponent centerItem = new TextComponent(text);
             ComponentBuilder cBuilder = new ComponentBuilder(json);
             centerItem.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
             player.spigot().sendMessage(centerItem);
@@ -110,7 +115,7 @@ public class BungeeQuickChat implements QuickChat {
     }
 
     @Override
-    public @NotNull QuickComponent getItemTextComponent(@NotNull ItemStack itemStack, @NotNull Player player, @NotNull String normalText) {
+    public @NotNull QuickComponent getItemTextComponent(@NotNull Player player, @NotNull ItemStack itemStack, @NotNull String normalText) {
         TextComponent errorComponent = new TextComponent(MsgUtil.getMessage("menu.item-holochat-error", player));
 
         String json;

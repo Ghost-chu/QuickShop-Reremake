@@ -5,7 +5,7 @@
   "translation-version": "Verze: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: Czech (cs_CZ)",
-  "language-version": "56",
+  "language-version": "57",
   "not-looking-at-shop": "&cNelze najít QuickShop. Musíš se na něj podívat.",
   "no-anythings-in-your-hand": "&cNemáš v ruce žádný předmět.",
   "no-permission": "&cNa tuto akci nemáš práva.",
@@ -319,5 +319,9 @@
   "clean-warning": "&eTento příkaz vyčistí &volání &eshops, pokud je obchod poškozen, byl vytvořen v nepovolených světech, prodává/nakupuje nepovolené položky nebo &c&lEXISTUJE V NENAČTENÉM SVĚTĚ&e. Nezapomeňte nejprve vytvořit úplnou zálohu dat vašch obchodu pro potrvrzení použijte &b/qs cleanghost.",
   "shop-creation-failed": "&cVytvoření ochodu se nezdařilo, kontaktujte prosím správce serveru.",
   "shop-owner-self-trade": "&eObchodujete se svým obchodem, takže nebudete moci získat žádné peníze.",
-  "chest-title": "Obchod QuickShop"
+  "chest-title": "Obchod QuickShop",
+  "command-type-mismatch": "&cThis command only can executed by &b{0}.",
+  "unlimited-shop-owner-changed": "&eThis unlimited shop owner has been changed to {0}.",
+  "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.",
+  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
 }
