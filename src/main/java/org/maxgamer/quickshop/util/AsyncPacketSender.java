@@ -25,6 +25,11 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Async packet sender used for VirtualDisplayItem
+ *
+ * @author sandtechnology
+ */
 public class AsyncPacketSender {
 
     private volatile static AsyncSendingTask instance = null;

@@ -46,6 +46,11 @@ import org.maxgamer.quickshop.shop.ShopAction;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
+/**
+ * BlockListener to listening events about block events
+ *
+ * @author KaiNoMood, Ghost_chu, sandtechnology
+ */
 public class BlockListener extends ProtectionListenerBase {
     private final boolean update_sign_when_inventory_moving;
 

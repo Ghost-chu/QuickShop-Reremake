@@ -26,6 +26,11 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 
+/**
+ * DatabaseCore abstract
+ *
+ * @author sandtechnology
+ */
 public abstract class AbstractDatabaseCore {
     private final ReentrantLock lock = new ReentrantLock(true);
     private final Condition conditionLock = lock.newCondition();
