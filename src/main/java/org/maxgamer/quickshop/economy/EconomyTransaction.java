@@ -48,15 +48,15 @@ public class EconomyTransaction {
     private final boolean allowLoan;
     private final boolean tryingFixBanlanceInsuffient;
     @Getter
-    private TransactionSteps steps; //For rollback
-    @Nullable
-    @Getter
-    private String lastError = null;
-    @Getter
     private final World world;
     @Getter
     private final String currency;
     private final QuickShop plugin = QuickShop.getInstance();
+    @Getter
+    private TransactionSteps steps; //For rollback
+    @Nullable
+    @Getter
+    private String lastError = null;
 
 
     /**

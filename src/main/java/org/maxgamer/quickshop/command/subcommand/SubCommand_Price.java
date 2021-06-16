@@ -45,7 +45,6 @@ public class SubCommand_Price implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-
         if (cmdArg.length < 1) {
             MsgUtil.sendMessage(sender, "no-price-given");
             return;

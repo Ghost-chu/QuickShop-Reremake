@@ -39,31 +39,8 @@ import java.util.logging.Level;
  */
 public class ReflectFactory {
     private static String cachedVersion = null;
-
-    @NotNull
-    public static String getServerVersion() {
-        if (cachedVersion != null) {
-            return cachedVersion;
-        }
-        try {
-            Field consoleField = Bukkit.getServer().getClass().getDeclaredField("console");
-            // protected
-            consoleField.setAccessible(true);
-            // dedicated server
-            Object console = consoleField.get(Bukkit.getServer());
-            cachedVersion = String.valueOf(
-                    console.getClass().getSuperclass().getMethod("getVersion").invoke(console));
-            return cachedVersion;
-        } catch (Exception e) {
-            cachedVersion = "Unknown";
-            return cachedVersion;
-        }
-    }
-
     private static Method craftItemStack_asNMSCopyMethod;
-
     private static Method itemStack_saveMethod;
-
     private static Class<?> nbtTagCompoundClass;
     private static Class<?> craftServerClass;
 
@@ -90,6 +67,26 @@ public class ReflectFactory {
 
         } catch (Exception t) {
             QuickShop.getInstance().getLogger().log(Level.WARNING, "Failed to loading up net.minecraft.server support module, usually this caused by NMS changes but QuickShop not support yet, Did you have up-to-date?", t);
+        }
+    }
+
+    @NotNull
+    public static String getServerVersion() {
+        if (cachedVersion != null) {
+            return cachedVersion;
+        }
+        try {
+            Field consoleField = Bukkit.getServer().getClass().getDeclaredField("console");
+            // protected
+            consoleField.setAccessible(true);
+            // dedicated server
+            Object console = consoleField.get(Bukkit.getServer());
+            cachedVersion = String.valueOf(
+                    console.getClass().getSuperclass().getMethod("getVersion").invoke(console));
+            return cachedVersion;
+        } catch (Exception e) {
+            cachedVersion = "Unknown";
+            return cachedVersion;
         }
     }
 

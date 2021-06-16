@@ -21,6 +21,8 @@
  * The QuickShop API package
  * <p>
  * The interface allow addons register their protection processor in there
+ * <p>
+ * The interface allow addons register their protection processor in there
  */
 /**
  * The interface allow addons register their protection processor in there

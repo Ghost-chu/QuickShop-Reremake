@@ -61,12 +61,11 @@ import java.util.logging.Level;
  * @author Ghost_chu and sandtechnology
  */
 public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements GameLanguage {
+    private final static Lock LOCK = new ReentrantLock();
+    private static final Condition DOWNLOAD_CONDITION = LOCK.newCondition();
     private final QuickShop plugin;
     @Nullable
     private final JsonObject lang;
-
-    private final static Lock LOCK = new ReentrantLock();
-    private static final Condition DOWNLOAD_CONDITION = LOCK.newCondition();
 
     @SneakyThrows
     public MojangGameLanguageImpl(@NotNull QuickShop plugin, @NotNull String languageCode) {

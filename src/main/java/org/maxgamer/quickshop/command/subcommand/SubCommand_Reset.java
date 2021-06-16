@@ -86,8 +86,7 @@ public class SubCommand_Reset implements CommandHandler<CommandSender> {
 
     @NotNull
     @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return tabCompleteList;
     }
 

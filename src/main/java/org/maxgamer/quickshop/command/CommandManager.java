@@ -42,10 +42,10 @@ import java.util.Set;
 @Data
 @SuppressWarnings("unchecked")
 public class CommandManager implements TabCompleter, CommandExecutor {
+    private static final String[] EMPTY_ARGS = new String[0];
     private final Set<CommandContainer> cmds = Sets.newCopyOnWriteArraySet(); //Because we open to allow register, so this should be thread-safe
     private final QuickShop plugin;
     private final CommandContainer rootContainer;
-    private static final String[] EMPTY_ARGS = new String[0];
 
     public CommandManager(QuickShop plugin) {
         this.plugin = plugin;
