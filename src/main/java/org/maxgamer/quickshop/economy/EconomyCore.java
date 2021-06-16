@@ -156,8 +156,18 @@ public interface EconomyCore {
      */
     boolean isValid();
 
+    /**
+     * Getting Economy impl name
+     *
+     * @return Impl name
+     */
     @NotNull String getName();
 
+    /**
+     * Getting Economy impl owned by
+     *
+     * @return Owned by
+     */
     @NotNull Plugin getPlugin();
 
 }

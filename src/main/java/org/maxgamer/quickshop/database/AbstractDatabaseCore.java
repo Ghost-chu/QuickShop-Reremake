@@ -52,6 +52,9 @@ public abstract class AbstractDatabaseCore {
 
     }
 
+    /**
+     * Close all not in-use connections created by DatabaseCore.
+     */
     abstract void close();
 
     /**
@@ -68,8 +71,18 @@ public abstract class AbstractDatabaseCore {
 
     abstract protected DatabaseConnection getConnection0();
 
+    /**
+     * Getting DatabaseCore impl name
+     *
+     * @return Impl name
+     */
     abstract public @NotNull String getName();
 
+    /**
+     * Getting DatabaseCore owned by
+     *
+     * @return Owned by
+     */
     abstract public @NotNull Plugin getPlugin();
 
 }

@@ -244,18 +244,43 @@ public class EconomyTransaction {
     }
 
     interface TransactionCallback {
+        /**
+         * Calling while Transaction commit
+         *
+         * @param economyTransaction Transaction
+         * @return Does commit event has been cancelled
+         */
         default boolean onCommit(@NotNull EconomyTransaction economyTransaction) {
             return !Util.fireCancellableEvent(new EconomyCommitEvent(economyTransaction));
         }
 
+        /**
+         * Calling while Transaction commit successfully
+         *
+         * @param economyTransaction Transaction
+         */
         default void onSuccess(@NotNull EconomyTransaction economyTransaction) {
             Util.debugLog("Transaction succeed.");
         }
 
+        /**
+         * Calling while Transaction commit failed
+         * Use EconomyTransaction#getLastError() to getting reason
+         * Use EconomyTransaction#getSteps() to getting the fail step
+         *
+         * @param economyTransaction Transaction
+         */
         default void onFailed(@NotNull EconomyTransaction economyTransaction) {
             Util.debugLog("Transaction failed: " + economyTransaction.getLastError() + ".");
         }
 
+        /**
+         * Calling while Tax processing failed
+         * Use EconomyTransaction#getLastError() to getting reason
+         * Use EconomyTransaction#getSteps() to getting the fail step
+         *
+         * @param economyTransaction Transaction
+         */
         default void onTaxFailed(@NotNull EconomyTransaction economyTransaction) {
             Util.debugLog("Tax Transaction failed: " + economyTransaction.getLastError() + ".");
         }
