@@ -414,22 +414,6 @@ public class Paste {
                 finalReport.append("\tpurpur.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
             }
-            try {
-                finalReport.append("\t*********************************\n");
-                finalReport.append("\tairplane.air:\n");
-                finalReport
-                        .append("\t\t\n")
-                        .append(
-                                new String(
-                                        Objects.requireNonNull(
-                                                Util.inputStream2ByteArray(new File(new File("."), "airplane.air").getPath())),
-                                        StandardCharsets.UTF_8))
-                        .append("\n");
-            } catch (Exception th) {
-                finalReport.append("\t*********************************\n");
-                finalReport.append("\tairplane.air:\n");
-                finalReport.append("\t\t\n").append("Read failed.").append("\n");
-            }
         } catch (Exception ignored) {
             finalReport.append("\tFailed to get data\n");
         }
