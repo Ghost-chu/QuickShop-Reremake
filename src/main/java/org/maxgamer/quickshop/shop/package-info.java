@@ -18,15 +18,6 @@
  */
 
 /**
- * The QuickShop API package
- * <p>
- * The most important things obout QuickShop in there
- * APIs included
- * <p>
- * The most important things obout QuickShop in there
- * APIs included
- */
-/**
  * The most important things obout QuickShop in there
  * APIs included
  */
