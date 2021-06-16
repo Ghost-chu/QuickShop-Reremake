@@ -1579,9 +1579,20 @@ public class MsgUtil {
                     return JsonUtil.getGson().fromJson(json, TransactionMessage.class);
                 }
             } catch (Exception ignored) {
-                // Legacy transaction message, pass the empty string.
-                // MsgUtil will skip empty message so.
-                return new TransactionMessage("", null, null);
+                // Processing legacy format message
+                // TODO delete me after a while
+                String[] msgData = json.split("##########");
+                if (msgData.length == 3) {
+                    try {
+                        ItemStack data = Util.deserialize(msgData[1]);
+                        if (data != null) {
+                            return new TransactionMessage(msgData[0] + Util.getItemStackName(data) + msgData[2], msgData[1], null);
+                        }
+                    } catch (Throwable ignored1) {
+                    } //Block any possible exception, I really don't care that.
+                    return new TransactionMessage(json, null, null);
+                }
+
             }
             return new TransactionMessage(json, null, null);
         }
