@@ -82,7 +82,8 @@ public class EconomyTransaction {
         this.allowLoan = allowLoan;
         this.world = world;
         this.currency = currency;
-        if (taxModifier != 0.0d) { //Calc total money and apply tax
+
+        if (Double.doubleToLongBits(taxModifier) != Double.doubleToLongBits(0.0d)) { //Calc total money and apply tax
             this.actualAmount = CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), amount);
         } else {
             this.actualAmount = amount;
