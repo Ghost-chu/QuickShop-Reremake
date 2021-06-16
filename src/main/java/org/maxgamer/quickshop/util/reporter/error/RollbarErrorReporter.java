@@ -54,10 +54,10 @@ public class RollbarErrorReporter {
             , LinkageError.class);
     private final QuickShop plugin;
     private final QuickShopExceptionFilter quickShopExceptionFilter;
+    private final GlobalExceptionFilter serverExceptionFilter;
     private boolean disable;
     private boolean tempDisable;
     private String lastPaste = null;
-    private final GlobalExceptionFilter serverExceptionFilter;
     //private final GlobalExceptionFilter globalExceptionFilter;
     @Getter
     private volatile boolean enabled = false;

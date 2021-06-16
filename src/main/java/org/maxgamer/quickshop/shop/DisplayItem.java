@@ -44,20 +44,14 @@ public abstract class DisplayItem {
     protected static final QuickShop plugin = QuickShop.getInstance();
 
     private static final Gson gson = JsonUtil.getGson();
-
+    private static final boolean displayAllowStacks = plugin.getConfig().getBoolean("shop.display-allow-stacks");
     @Setter
     private static volatile boolean isNotSupportVirtualItem = false;
-
     protected final ItemStack originalItemStack;
-
     protected final Shop shop;
-
     @Nullable
     protected ItemStack guardedIstack;
-
     private boolean pendingRemoval;
-
-    private static final boolean displayAllowStacks = plugin.getConfig().getBoolean("shop.display-allow-stacks");
 
     protected DisplayItem(Shop shop) {
         this.shop = shop;
@@ -164,7 +158,7 @@ public abstract class DisplayItem {
                     continue;
                 }
                 if (shopProtectionFlag.getShopLocation().equals(shopLocation)
-                || shopProtectionFlag.getShopLocation().equals(attachedShopLocation)) {
+                        || shopProtectionFlag.getShopLocation().equals(attachedShopLocation)) {
                     return true;
                 }
             } catch (JsonSyntaxException e) {

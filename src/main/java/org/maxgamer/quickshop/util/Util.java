@@ -73,6 +73,8 @@ public class Util {
     private static final List<BlockFace> verticalFacing = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
     private static final List<String> debugLogs = new ArrayList<>();
     private static final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    @Getter
+    private static final Map<String, String> currency2Symbol = new HashMap<>();
     private static int bypassedCustomStackSize = -1;
     private static Yaml yaml = null;
     private static boolean devMode = false;
@@ -86,8 +88,8 @@ public class Util {
     private static String alternateCurrencySymbol;
     private static boolean disableVaultFormat;
     private static boolean useDecimalFormat;
-    @Getter
-    private static final Map<String, String> currency2Symbol = new HashMap<>();
+    @Nullable
+    private static Class<?> cachedNMSClass = null;
 
     /**
      * Convert strArray to String. E.g "Foo, Bar"
@@ -337,7 +339,6 @@ public class Util {
         }
         lock.writeLock().unlock();
     }
-
 
     /**
      * Formats the given number according to how vault would like it. E.g. $50 or 5 dollars.
@@ -1164,7 +1165,6 @@ public class Util {
         return cfg.saveToString();
     }
 
-
     /**
      * Return the Class name.
      *
@@ -1285,10 +1285,6 @@ public class Util {
 
         });
     }
-
-
-    @Nullable
-    private static Class<?> cachedNMSClass = null;
 
     @NotNull
     public static Class<?> getNMSClass(@Nullable String className) {

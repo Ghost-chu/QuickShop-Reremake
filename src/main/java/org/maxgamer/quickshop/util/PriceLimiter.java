@@ -77,19 +77,19 @@ public class PriceLimiter {
         return new CheckResult(Status.PASS, minPrice, maxPrice);
     }
 
-    @AllArgsConstructor
-    @Data
-    public static class CheckResult {
-        private PriceLimiter.Status status;
-        private double min;
-        private double max;
-    }
-
     public enum Status {
         PASS,
         REACHED_PRICE_MAX_LIMIT,
         REACHED_PRICE_MIN_LIMIT,
         PRICE_RESTRICTED,
         NOT_VALID
+    }
+
+    @AllArgsConstructor
+    @Data
+    public static class CheckResult {
+        private PriceLimiter.Status status;
+        private double min;
+        private double max;
     }
 }

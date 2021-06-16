@@ -101,8 +101,8 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
                                         + shop
                                         + " because it is no longer on the target location or it is not allowed to create shops in this location.");
                         shop.delete();
-                                    }
-                                }); // Post to server main thread to check.
+                    }
+                }); // Post to server main thread to check.
                 try {
                     Thread.sleep(20); // Have a rest, don't blow up the main server thread.
                 } catch (InterruptedException e) {

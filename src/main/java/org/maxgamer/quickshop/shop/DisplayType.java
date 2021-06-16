@@ -38,12 +38,6 @@ public enum DisplayType {
     //  ARMORSTAND(1),
     VIRTUALITEM(2);
 
-    private final int id;
-
-    DisplayType(int id) {
-        this.id = id;
-    }
-
     private static final Map<Integer, DisplayType> displayTypeMap;
 
     static {
@@ -52,6 +46,12 @@ public enum DisplayType {
             map.put(type.id, type);
         }
         displayTypeMap = Collections.unmodifiableMap(map);
+    }
+
+    private final int id;
+
+    DisplayType(int id) {
+        this.id = id;
     }
 
     public static @NotNull DisplayType fromID(int id) {

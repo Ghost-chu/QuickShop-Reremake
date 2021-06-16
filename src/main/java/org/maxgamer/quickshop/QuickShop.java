@@ -112,6 +112,10 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private final Map<String, Integer> limits = new HashMap<>(15);
     private final ConfigProvider configProvider = new ConfigProvider(this);
+    @Getter
+    private final List<BukkitTask> timerTaskList = new ArrayList<>(3);
+    @Getter
+    private final GameVersion gameVersion = GameVersion.get(Util.getNMSVersion());
     boolean onLoadCalled = false;
     @Getter
     private IntegrationHelper integrationHelper;
@@ -165,7 +169,6 @@ public class QuickShop extends JavaPlugin {
      */
     @Getter
     private boolean limit = false;
-
     @Nullable
     @Getter
     private LogWatcher logWatcher;
@@ -215,7 +218,6 @@ public class QuickShop extends JavaPlugin {
      */
     @Getter
     private ShopManager shopManager;
-
     @Getter
     private DisplayAutoDespawnWatcher displayAutoDespawnWatcher;
     @Getter
@@ -258,13 +260,9 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private CalendarWatcher calendarWatcher;
     @Getter
-    private final List<BukkitTask> timerTaskList = new ArrayList<>(3);
-    @Getter
     private Plugin worldEditPlugin;
     @Getter
     private WorldEditAdapter worldEditAdapter;
-    @Getter
-    private final GameVersion gameVersion = GameVersion.get(Util.getNMSVersion());
 
     @NotNull
     public static QuickShop getInstance() {

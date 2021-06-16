@@ -137,6 +137,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
             }
         }
     }
+
     @Override
     public void load() {
         this.registerListener();
