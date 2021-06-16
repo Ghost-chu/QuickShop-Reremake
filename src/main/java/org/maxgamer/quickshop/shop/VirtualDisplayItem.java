@@ -404,7 +404,7 @@ public class VirtualDisplayItem extends DisplayItem {
             //https://wiki.vg/index.php?title=Entity_metadata#Entity
             if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
                 String itemName;
-                if (!QuickShop.isLoaded()) {
+                if (QuickShop.isTesting()) {
                     //Env Testing
                     itemName = itemStack.getType().name();
                 } else {

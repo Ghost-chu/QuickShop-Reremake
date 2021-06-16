@@ -99,8 +99,12 @@ public class QuickShop extends JavaPlugin {
      * The manager to check permissions.
      */
     private static PermissionManager permissionManager;
-    @Getter
     private static boolean loaded = false;
+    /**
+     * If running environment test
+     */
+    @Getter
+    private static volatile boolean testing = false;
     /**
      * WIP
      */
@@ -722,8 +726,8 @@ public class QuickShop extends JavaPlugin {
         }
 
     }
-
     private void runtimeCheck(@NotNull EnvCheckEntry.Stage stage) {
+        testing = true;
         environmentChecker = new org.maxgamer.quickshop.util.envcheck.EnvironmentChecker(this);
         ResultReport resultReport = environmentChecker.run(stage);
         if (resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
@@ -737,6 +741,7 @@ public class QuickShop extends JavaPlugin {
             //noinspection ConstantConditions
             Util.mainThreadRun(() -> getCommand("qs").setTabCompleter(this)); //Disable tab completer
         }
+        testing = false;
     }
 
     @Override
