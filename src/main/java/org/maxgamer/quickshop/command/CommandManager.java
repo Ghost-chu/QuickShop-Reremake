@@ -379,7 +379,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         if (cmdArg.length == 0) {
             //Handle main command
             Util.debugLog("Print help cause no args (/qs)");
-            ((CommandHandler<CommandSender>) rootContainer.getExecutor()).onCommand(sender, commandLabel, EMPTY_ARGS);
+            rootContainer.getExecutor().onCommand(capture(sender), commandLabel, EMPTY_ARGS);
         } else {
             //Handle subcommand
             String[] passThroughArgs = new String[cmdArg.length - 1];
