@@ -542,7 +542,7 @@ public class MsgUtil {
             if (p.getPlayer() != null) {
                 if (transactionMessage.getHoverItem() != null) {
                     try {
-                        plugin.getQuickChat().sendItemHologramChat(p.getPlayer(), transactionMessage.getHoverText(), Objects.requireNonNull(Util.deserialize(transactionMessage.getHoverItem())));
+                        plugin.getQuickChat().sendItemHologramChat(p.getPlayer(), transactionMessage.getMessage(), Objects.requireNonNull(Util.deserialize(transactionMessage.getHoverItem())));
                     } catch (Exception any) {
                         Util.debugLog("Unknown error, send by plain text.");
                         // Normal msg
