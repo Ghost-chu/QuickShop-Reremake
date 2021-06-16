@@ -37,15 +37,13 @@ public class SubCommand_ROOT implements CommandHandler<CommandSender> {
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         new SubCommand_Help(plugin).onCommand(sender, commandLabel, cmdArg);
     }
 
     @NotNull
     @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] strings) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] strings) {
         final List<String> candidate = new ArrayList<>();
 
         for (CommandContainer container : plugin.getCommandManager().getCmds()) {
