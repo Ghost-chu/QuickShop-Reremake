@@ -30,6 +30,11 @@ import org.maxgamer.quickshop.QuickShop;
 
 import java.util.Objects;
 
+/**
+ * A simple impl for GameLanguage
+ *
+ * @author Ghost_chu
+ */
 public class BukkitGameLanguageImpl extends InternalGameLanguageImpl implements GameLanguage {
     private final QuickShop plugin;
 

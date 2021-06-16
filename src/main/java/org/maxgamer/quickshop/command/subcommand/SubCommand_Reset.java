@@ -24,7 +24,7 @@ import lombok.SneakyThrows;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.io.File;
@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Objects;
 
 @AllArgsConstructor
-public class SubCommand_Reset implements CommandProcesser {
+public class SubCommand_Reset implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
     private final List<String> tabCompleteList = Collections.unmodifiableList(Arrays.asList("lang", "config", "messages"));
@@ -42,11 +42,9 @@ public class SubCommand_Reset implements CommandProcesser {
 
     @Override
     @SneakyThrows
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.no-type-given", sender));
+            MsgUtil.sendMessage(sender, "command.no-type-given");
             return;
         }
 
@@ -64,7 +62,7 @@ public class SubCommand_Reset implements CommandProcesser {
                 MsgUtil.loadItemi18n();
                 MsgUtil.loadEnchi18n();
                 MsgUtil.loadPotioni18n();
-                MsgUtil.sendMessage(sender, MsgUtil.getMessage("complete", sender));
+                MsgUtil.sendMessage(sender, "complete");
                 break;
             case "config":
                 File config = new File(plugin.getDataFolder(), "config.yml");
@@ -73,23 +71,22 @@ public class SubCommand_Reset implements CommandProcesser {
                 plugin.reloadConfig();
                 plugin.getServer().getPluginManager().disablePlugin(plugin);
                 plugin.getServer().getPluginManager().enablePlugin(plugin);
-                MsgUtil.sendMessage(sender, MsgUtil.getMessage("complete", sender));
+                MsgUtil.sendMessage(sender, "complete");
                 break;
             case "messages":
                 File msgs = new File(plugin.getDataFolder(), "messages.json");
                 msgs.delete();
                 MsgUtil.loadI18nFile();
-                MsgUtil.sendMessage(sender, MsgUtil.getMessage("complete", sender));
+                MsgUtil.sendMessage(sender, "complete");
                 break;
             default:
-                MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.wrong-args", sender));
+                MsgUtil.sendMessage(sender, "command.wrong-args");
         }
     }
 
     @NotNull
     @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return tabCompleteList;
     }
 

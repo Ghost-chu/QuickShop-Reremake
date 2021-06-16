@@ -5,7 +5,7 @@
   "translation-version": "支援版本 ： Reremake （重製版）",
   "translation-contributors": "貢獻人員 ： Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
   "translation-country": "語言 ： &b&l繁體中文 Chinese Traditional （zh_TW）",
-  "language-version": "56",
+  "language-version": "57",
   "not-looking-at-shop": "&c無法找到儲物箱商店，你需要注視著儲物箱。",
   "no-anythings-in-your-hand": "&c手上沒有任何東西。",
   "no-permission": "&4你沒有使用該指令的權限。",
@@ -22,7 +22,7 @@
   "price-too-cheap": "&c價格必須大於 &e${0}",
   "no-price-change": "&c這不會導致價格變動 ！",
   "you-cant-afford-a-new-shop": "&c需要花費 {0} 元才能建立商店。",
-  "player-bought-from-your-store-tax": "&c{0} 從你的商店購買了 {1} {2}，你總共賺了 {3} 元 （{4} 元稅） 。",
+  "player-bought-from-your-store-tax": "&c{0} 從你的商店購買了 {1} {2}，你總共賺了 {3} 元 （{4} 元的稅） 。",
   "you-cant-afford-to-change-price": "&c你需要花費 {0} 元來修改商品價格。",
   "success-created-shop": "&c已建立商店。",
   "success-removed-shop": "&a已刪除商店。",
@@ -113,7 +113,7 @@
   "how-many-sell": "&a在聊天室中輸入你想要 &d出售 &a的數量，你有 &e{0} &a個可以出售。輸入 &bALL &a賣出全部。",
   "not-allowed-to-create": "&c你無法在此建立商店。",
   "blacklisted-item": "&c由於這是黑名單的物品，所以你不能賣。",
-  "how-much-to-trade-for": "&a請在聊天室中輸入你想交易 &e{1}x {0} &a的價格。",
+  "how-much-to-trade-for": "&a請在聊天室中輸入你想買賣 &e{1} 個 {0} &a的價格。",
   "command": {
     "toggle-unlimited": {
       "unlimited": "&a這個商店現在已沒有數量限制",
@@ -315,9 +315,13 @@
   "item-not-exist": "&c物品&e {0}&c不存在，請檢查你的拼寫。 ",
   "backup-success": "&a備份成功。",
   "console-only": "&c該指令只能在控制台執行。",
-  "console-only-danger": "&c由於這個是一個有風險的指令 ， 請你在控制台中執行。",
+  "console-only-danger": "&c由於這個是一個有風險的指令，請你在控制台中執行。",
   "clean-warning": "&e此指令將清除&c&未裝載的世界商店&e及&c所有&e已損壞的、在不允許的世界中建立、或購買/販賣不允許商品的商店，請確保你已完全備份商店數據並使用 &b/qs cleanghost confirm &e以繼續。",
   "shop-creation-failed": "&c商店建立失敗，請與伺服器管理員聯繫。",
   "shop-owner-self-trade": "&e你正在跟自己開的商店進行交易 ， 所以你的存款不會改變。",
-  "chest-title": "QuickShop 商店"
+  "chest-title": "QuickShop 商店",
+  "command-type-mismatch": "&c此指令只能由 &b{0} 執行。",
+  "unlimited-shop-owner-changed": "&e這個無限商店的店主已經更換成 {0}。",
+  "unlimited-shop-owner-keeped": "&e注意 ： 該商店店主還是屬於無限商店店主類型，你需要自己重新設定新的商店店主。",
+  "server-crash-warning": "&c如果你更換或刪除 QuickShop 插件 Jar 檔案後，執行指令 /qs reload 可能導致伺服器崩潰。"
 }

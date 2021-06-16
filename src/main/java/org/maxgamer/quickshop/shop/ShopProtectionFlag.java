@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 @EqualsAndHashCode
 @ToString
 public class ShopProtectionFlag {
-    private static final String mark = "QuickShop DisplayItem";
+    private static final String MARK = "QuickShop DisplayItem";
     private final String itemStackString;
     private final String shopLocation;
 
@@ -40,10 +40,10 @@ public class ShopProtectionFlag {
     }
 
     public static String getDefaultMark() {
-        return mark;
+        return MARK;
     }
 
     public static String getMark() {
-        return mark;
+        return MARK;
     }
 }

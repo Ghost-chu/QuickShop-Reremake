@@ -47,9 +47,9 @@ public class InventoryPreview implements Listener {
 
     private final ItemStack itemStack;
     private final Player player;
+    private final QuickShop plugin = QuickShop.getInstance();
     @Nullable
     private Inventory inventory;
-    private final QuickShop plugin = QuickShop.getInstance();
 
     /**
      * Create a preview item GUI for a player.

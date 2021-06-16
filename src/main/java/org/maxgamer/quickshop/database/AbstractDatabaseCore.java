@@ -26,6 +26,11 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 
+/**
+ * DatabaseCore abstract
+ *
+ * @author sandtechnology
+ */
 public abstract class AbstractDatabaseCore {
     private final ReentrantLock lock = new ReentrantLock(true);
     private final Condition conditionLock = lock.newCondition();
@@ -52,6 +57,9 @@ public abstract class AbstractDatabaseCore {
 
     }
 
+    /**
+     * Close all not in-use connections created by DatabaseCore.
+     */
     abstract void close();
 
     /**
@@ -68,8 +76,18 @@ public abstract class AbstractDatabaseCore {
 
     abstract protected DatabaseConnection getConnection0();
 
+    /**
+     * Getting DatabaseCore impl name
+     *
+     * @return Impl name
+     */
     abstract public @NotNull String getName();
 
+    /**
+     * Getting DatabaseCore owned by
+     *
+     * @return Owned by
+     */
     abstract public @NotNull Plugin getPlugin();
 
 }

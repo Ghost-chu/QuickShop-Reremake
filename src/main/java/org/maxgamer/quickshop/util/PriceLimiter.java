@@ -33,6 +33,7 @@ public class PriceLimiter {
     private double minPrice;
     private double maxPrice;
     private boolean allowFreeShop;
+    private boolean wholeNumberOnly;
 
     @NotNull
     public CheckResult check(@NotNull ItemStack stack, double price) {
@@ -42,6 +43,14 @@ public class PriceLimiter {
         if (allowFreeShop) {
             if (price != 0 && price < minPrice) {
                 return new CheckResult(Status.REACHED_PRICE_MIN_LIMIT, minPrice, maxPrice);
+            }
+        }
+        if (wholeNumberOnly) {
+            try {
+                price = Long.parseLong(String.valueOf(price));
+            } catch (NumberFormatException ex2) {
+                Util.debugLog(ex2.getMessage());
+                return new CheckResult(Status.NOT_VALID, minPrice, maxPrice);
             }
         }
         if (price < minPrice) {
@@ -68,19 +77,19 @@ public class PriceLimiter {
         return new CheckResult(Status.PASS, minPrice, maxPrice);
     }
 
-    @AllArgsConstructor
-    @Data
-    public static class CheckResult {
-        private PriceLimiter.Status status;
-        private double min;
-        private double max;
-    }
-
     public enum Status {
         PASS,
         REACHED_PRICE_MAX_LIMIT,
         REACHED_PRICE_MIN_LIMIT,
         PRICE_RESTRICTED,
         NOT_VALID
+    }
+
+    @AllArgsConstructor
+    @Data
+    public static class CheckResult {
+        private PriceLimiter.Status status;
+        private double min;
+        private double max;
     }
 }

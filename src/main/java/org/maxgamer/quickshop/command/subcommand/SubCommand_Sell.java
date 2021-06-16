@@ -21,35 +21,27 @@ package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopType;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
-public class SubCommand_Sell implements CommandProcesser {
+public class SubCommand_Sell implements CommandHandler<Player> {
 
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, "This command can't be run by the console!");
-            return;
-        }
-
-        final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        BlockIterator bIt = new BlockIterator(sender, 10);
 
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;
         }
 
@@ -58,17 +50,17 @@ public class SubCommand_Sell implements CommandProcesser {
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
 
             if (shop != null) {
-                if (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control")) {
+                if (shop.getModerator().isModerator(sender.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control")) {
                     shop.setShopType(ShopType.SELLING);
                     shop.update();
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
+                    MsgUtil.sendMessage(sender, "command.now-selling", Util.getItemStackName(shop.getItem()));
                 } else {
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-managed-shop", sender));
+                    MsgUtil.sendMessage(sender, "not-managed-shop");
                 }
                 return;
             }
         }
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender, "not-looking-at-shop");
     }
 
 }

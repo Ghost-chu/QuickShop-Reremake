@@ -25,26 +25,25 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
-public class SubCommand_RemoveWorld implements CommandProcesser {
+public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.no-world-given", sender));
+            MsgUtil.sendMessage(sender, "command.no-world-given");
             return;
         }
         World world = Bukkit.getWorld(cmdArg[0]);
         if (world == null) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("world-not-exists", sender, cmdArg[0]));
+            MsgUtil.sendMessage(sender, "world-not-exists", cmdArg[0]);
             return;
         }
         int shopsDeleted = 0;
@@ -56,41 +55,7 @@ public class SubCommand_RemoveWorld implements CommandProcesser {
         }
         Util.debugLog("Successfully deleted all shops in world " + cmdArg[0] + "!");
 
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("shops-removed-in-world", sender, String.valueOf(shopsDeleted), world.getName()));
-//        if (!(sender instanceof Player)) {
-//            MsgUtil.sendMessage(sender, ChatColor.RED + "This command can't be run by the console!");
-//            return;
-//        }
-//
-//        final Player p = (Player) sender;
-//        final BlockIterator bIt = new BlockIterator(p, 10);
-//
-//        if (!bIt.hasNext()) {
-//            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
-//            return;
-//        }
-//
-//        while (bIt.hasNext()) {
-//            final Block b = bIt.next();
-//            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-//
-//            if (shop == null) {
-//                continue;
-//            }
-//
-//            if (shop.getModerator().isModerator(((Player) sender).getUniqueId())
-//                    || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
-//                //shop.onUnload();
-//                shop.delete();
-//                plugin.log("Deleting shop " + shop + " as requested by the /qs remove command.");
-//            } else {
-//                MsgUtil.sendMessage(sender, ChatColor.RED + MsgUtil.getMessage("no-permission", sender));
-//            }
-//
-//            return;
-//        }
-//
-//        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender, "shops-removed-in-world", String.valueOf(shopsDeleted), world.getName());
     }
 
 }

@@ -40,7 +40,7 @@ public class BuildInfo {
     private final String jobUrl;
     private final String gitCommit;
     private final String gitBranch;
-    private final String pomGruopId;
+    private final String pomGroupId;
     private final String pomArtifactId;
     private final String jobName;
 
@@ -51,7 +51,7 @@ public class BuildInfo {
             buildUrl = "Unknown";
             gitCommit = "Custom Build";
             gitBranch = "Unknown";
-            pomGruopId = "Unknown";
+            pomGroupId = "Unknown";
             pomArtifactId = "Unknown";
             jobName = "Unknown";
             jobUrl = "https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/";
@@ -63,7 +63,7 @@ public class BuildInfo {
         buildUrl = buildInfo.getString("build-url", "Unknown");
         gitCommit = buildInfo.getString("git-commit", "Invalid");
         gitBranch = buildInfo.getString("git-branch", "Unknown");
-        pomGruopId = buildInfo.getString("pom-groupid", "Unknown");
+        pomGroupId = buildInfo.getString("pom-groupid", "Unknown");
         pomArtifactId = buildInfo.getString("pom-artifactid", "Unknown");
         jobUrl = buildInfo.getString("job-url", "https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/");
         jobName = buildInfo.getString("job-name", "Unknown");

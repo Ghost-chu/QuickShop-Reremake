@@ -353,6 +353,69 @@ public class ShopLoader {
 
     @Getter
     @Setter
+    static public class ShopDatabaseInfoOrigin {
+        private String item;
+
+        private String moderators;
+
+        private double price;
+
+        private int type;
+
+        private boolean unlimited;
+
+        private String world;
+
+        private int x;
+
+        private int y;
+
+        private int z;
+
+        private String extra;
+
+        ShopDatabaseInfoOrigin(ResultSet rs) throws SQLException {
+            this.x = rs.getInt("x");
+            this.y = rs.getInt("y");
+            this.z = rs.getInt("z");
+            this.world = rs.getString("world");
+            this.item = rs.getString("itemConfig");
+            this.moderators = rs.getString("owner");
+            this.price = rs.getDouble("price");
+            this.type = rs.getInt("type");
+            this.unlimited = rs.getBoolean("unlimited");
+            this.extra = rs.getString("extra");
+            //handle old shops
+            if (extra == null) {
+                extra = "";
+            }
+        }
+
+        ShopDatabaseInfoOrigin(int x, int y, int z, String world, String itemConfig, String owner, double price, int type, boolean unlimited, String extra) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.world = world;
+            this.item = itemConfig;
+            this.moderators = owner;
+            this.price = price;
+            this.type = type;
+            this.unlimited = unlimited;
+            this.extra = extra;
+        }
+
+        ShopDatabaseInfoOrigin() {
+
+        }
+
+        @Override
+        public String toString() {
+            return JsonUtil.getGson().toJson(this);
+        }
+    }
+
+    @Getter
+    @Setter
     public class ShopDatabaseInfo {
         private ItemStack item;
 
@@ -426,69 +489,6 @@ public class ShopLoader {
             return shopModerator;
         }
 
-    }
-
-    @Getter
-    @Setter
-    static public class ShopDatabaseInfoOrigin {
-        private String item;
-
-        private String moderators;
-
-        private double price;
-
-        private int type;
-
-        private boolean unlimited;
-
-        private String world;
-
-        private int x;
-
-        private int y;
-
-        private int z;
-
-        private String extra;
-
-        ShopDatabaseInfoOrigin(ResultSet rs) throws SQLException {
-            this.x = rs.getInt("x");
-            this.y = rs.getInt("y");
-            this.z = rs.getInt("z");
-            this.world = rs.getString("world");
-            this.item = rs.getString("itemConfig");
-            this.moderators = rs.getString("owner");
-            this.price = rs.getDouble("price");
-            this.type = rs.getInt("type");
-            this.unlimited = rs.getBoolean("unlimited");
-            this.extra = rs.getString("extra");
-            //handle old shops
-            if (extra == null) {
-                extra = "";
-            }
-        }
-
-        ShopDatabaseInfoOrigin(int x, int y, int z, String world, String itemConfig, String owner, double price, int type, boolean unlimited, String extra) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.world = world;
-            this.item = itemConfig;
-            this.moderators = owner;
-            this.price = price;
-            this.type = type;
-            this.unlimited = unlimited;
-            this.extra = extra;
-        }
-
-        ShopDatabaseInfoOrigin() {
-
-        }
-
-        @Override
-        public String toString() {
-            return JsonUtil.getGson().toJson(this);
-        }
     }
 
 }

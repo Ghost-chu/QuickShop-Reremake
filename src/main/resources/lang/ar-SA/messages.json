@@ -5,7 +5,7 @@
   "translation-version": "إصدار الدعم: إعادة التشكيل",
   "translation-contributors": "المساهمون: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken و Andre_601",
   "translation-country": "منطقة اللغة: العربية (ar_AR)",
-  "language-version": "56",
+  "language-version": "57",
   "not-looking-at-shop": "&cلا يمكن العثور على QuickShop. تحتاج إلى النظر إلى واحد.",
   "no-anythings-in-your-hand": "&cلا يوجد شيء في يديك.",
   "no-permission": "لا تملك الصلاحيّات للقيام بذلك.",
@@ -319,5 +319,9 @@
   "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
   "shop-creation-failed": "&cShop creation failed, please contact with server administrator.",
   "shop-owner-self-trade": "&eYou trading with yourself shop, so you might won't gain any balance.",
-  "chest-title": "QuickShop Store"
+  "chest-title": "QuickShop Store",
+  "command-type-mismatch": "&cThis command only can executed by &b{0}.",
+  "unlimited-shop-owner-changed": "&eThis unlimited shop owner has been changed to {0}.",
+  "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.",
+  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
 }

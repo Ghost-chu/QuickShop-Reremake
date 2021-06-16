@@ -5,7 +5,7 @@
   "translation-version": "Støttet versjon: Reremake",
   "translation-contributors": "Bidragsytere: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Språksone: Norsk (no_NO)",
-  "language-version": "56",
+  "language-version": "57",
   "not-looking-at-shop": "&cKunne ikke finne en QuickShop. Du må se på en butikk.",
   "no-anythings-in-your-hand": "&cDet er ingenting i hånden din.",
   "no-permission": "&cDu har ikke tillatelse til å gjøre det.",
@@ -319,5 +319,9 @@
   "clean-warning": "&eDenne kommandoen vil fjerne &calle &ebutikker hvis de er skadet, ble opprettet i en verden som ikke er tillatt, selger eller kjøper varer som ikke er tillatt eller &c&lEKSISTERER I EN VERDEN SOM IKKE ER AKTIVERT&e. Sørg for å opprette en fullstendig sikkerhetskopi av butikkdataene først og bruk &b/qs cleanghost confirm &efor å fortsette.",
   "shop-creation-failed": "&cOpprettelse av butikk feilet, vennligst ta kontakt med server administrator.",
   "shop-owner-self-trade": "&eDu handler i din egen butikk, du vil ikke tjene penger på denne måten.",
-  "chest-title": "QuickShop Butikk"
+  "chest-title": "QuickShop Butikk",
+  "command-type-mismatch": "&cDenne kommandoen kan bare utføres av &b{0}.",
+  "unlimited-shop-owner-changed": "&eEieren til denne ubegrensede butikken har blitt endret til {0}.",
+  "unlimited-shop-owner-keeped": "&eOBS: Butikkeieren er fortsatt ubegrenset butikkeier, du trenger å sette ny butikkeier manuelt.",
+  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
 }

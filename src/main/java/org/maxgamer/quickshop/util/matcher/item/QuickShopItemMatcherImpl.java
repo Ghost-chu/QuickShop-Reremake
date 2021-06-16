@@ -516,7 +516,13 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
 
 
         interface Matcher {
-
+            /**
+             * Matches between ItemMeta
+             *
+             * @param meta1 ItemMeta 1
+             * @param meta2 ItemMeta 2
+             * @return is same
+             */
             boolean match(ItemMeta meta1, ItemMeta meta2);
 
         }

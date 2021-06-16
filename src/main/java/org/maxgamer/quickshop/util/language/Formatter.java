@@ -24,5 +24,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface Formatter {
+    /**
+     * Calling while a string need to be formatted
+     *
+     * @param raw    Raw string (but it might formatted by other formatter)
+     * @param sender The command sender
+     * @param args   The args you can use it to fill
+     * @return Formatted string (and it will transfer to other formatters)
+     */
     @NotNull String format(@NotNull String raw, @Nullable CommandSender sender, @Nullable String... args);
 }

@@ -20,11 +20,10 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopType;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -33,14 +32,12 @@ import org.maxgamer.quickshop.util.Util;
 import java.util.UUID;
 
 @AllArgsConstructor
-public class SubCommand_SilentSell implements CommandProcesser {
+public class SubCommand_SilentSell implements CommandHandler<Player> {
 
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
             Util.debugLog("Exception on command! Canceling!");
             return;
@@ -48,8 +45,8 @@ public class SubCommand_SilentSell implements CommandProcesser {
 
         Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(UUID.fromString(cmdArg[0]));
 
-        if (shop == null || !shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+        if (shop == null || !shop.getModerator().isModerator(sender.getUniqueId())) {
+            MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;
         }
 
@@ -57,6 +54,6 @@ public class SubCommand_SilentSell implements CommandProcesser {
         shop.update();
         MsgUtil.sendControlPanelInfo(sender, shop);
         MsgUtil.sendMessage(sender,
-                MsgUtil.getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
+                "command.now-selling", Util.getItemStackName(shop.getItem()));
     }
 }

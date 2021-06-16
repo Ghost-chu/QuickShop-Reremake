@@ -27,6 +27,7 @@ import org.maxgamer.quickshop.util.JsonUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,6 +45,16 @@ public class HumanReadableJsonConfiguration extends JsonConfiguration {
             configuration.load(file);
         } catch (IOException | InvalidConfigurationException var4) {
             logger.log(Level.SEVERE, "Cannot load json file " + file, var4);
+        }
+        return configuration;
+    }
+
+    public static HumanReadableJsonConfiguration loadConfiguration(@NotNull InputStreamReader inputStreamReader) {
+        HumanReadableJsonConfiguration configuration = new HumanReadableJsonConfiguration();
+        try {
+            configuration.load(inputStreamReader);
+        } catch (IOException | InvalidConfigurationException exception) {
+            logger.log(Level.SEVERE, "Cannot load original language file", exception);
         }
         return configuration;
     }

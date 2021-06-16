@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.command.CommandMap;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,6 +39,36 @@ import java.util.logging.Level;
  */
 public class ReflectFactory {
     private static String cachedVersion = null;
+    private static Method craftItemStack_asNMSCopyMethod;
+    private static Method itemStack_saveMethod;
+    private static Class<?> nbtTagCompoundClass;
+    private static Class<?> craftServerClass;
+
+    static {
+        String name = Bukkit.getServer().getClass().getPackage().getName();
+        String nmsVersion = name.substring(name.lastIndexOf('.') + 1);
+
+        try {
+            craftItemStack_asNMSCopyMethod =
+                    Class.forName("org.bukkit.craftbukkit." + nmsVersion + ".inventory.CraftItemStack")
+                            .getDeclaredMethod("asNMSCopy", ItemStack.class);
+
+            GameVersion gameVersion = GameVersion.get(nmsVersion);
+            if (gameVersion.isNewNmsName()) {
+                // 1.17+
+                nbtTagCompoundClass = Class.forName("net.minecraft.nbt.NBTTagCompound");
+                itemStack_saveMethod = Class.forName("net.minecraft.world.item.ItemStack").getDeclaredMethod("save", nbtTagCompoundClass);
+            } else {
+                // Before 1.17
+                nbtTagCompoundClass = Class.forName("net.minecraft.server." + nmsVersion + ".NBTTagCompound");
+                itemStack_saveMethod = Class.forName("net.minecraft.server." + nmsVersion + ".ItemStack").getDeclaredMethod("save", nbtTagCompoundClass);
+            }
+            craftServerClass = Class.forName("org.bukkit.craftbukkit." + nmsVersion + ".CraftServer");
+
+        } catch (Exception t) {
+            QuickShop.getInstance().getLogger().log(Level.WARNING, "Failed to loading up net.minecraft.server support module, usually this caused by NMS changes but QuickShop not support yet, Did you have up-to-date?", t);
+        }
+    }
 
     @NotNull
     public static String getServerVersion() {
@@ -56,34 +87,6 @@ public class ReflectFactory {
         } catch (Exception e) {
             cachedVersion = "Unknown";
             return cachedVersion;
-        }
-    }
-
-    private static Method craftItemStack_asNMSCopyMethod;
-
-    private static Method itemStack_saveMethod;
-
-    private static Class<?> nbtTagCompoundClass;
-
-    static {
-        String name = Bukkit.getServer().getClass().getPackage().getName();
-        String nmsVersion = name.substring(name.lastIndexOf('.') + 1);
-
-        try {
-            craftItemStack_asNMSCopyMethod =
-                    Class.forName("org.bukkit.craftbukkit." + nmsVersion + ".inventory.CraftItemStack")
-                            .getDeclaredMethod("asNMSCopy", ItemStack.class);
-
-            GameVersion gameVersion = GameVersion.get(nmsVersion);
-            if (gameVersion.isNewNmsName()) {
-                nbtTagCompoundClass = Class.forName("net.minecraft.nbt.NBTTagCompound");
-                itemStack_saveMethod = Class.forName("net.minecraft.world.item.ItemStack").getDeclaredMethod("save", nbtTagCompoundClass);
-            } else {
-                nbtTagCompoundClass = Class.forName("net.minecraft.server." + nmsVersion + ".NBTTagCompound");
-                itemStack_saveMethod = Class.forName("net.minecraft.server." + nmsVersion + ".ItemStack").getDeclaredMethod("save", nbtTagCompoundClass);
-            }
-        } catch (Exception t) {
-            QuickShop.getInstance().getLogger().log(Level.WARNING, "Failed to loading up net.minecraft.server support module, usually this caused by NMS changes but QuickShop not support yet, Did you have up-to-date?", t);
         }
     }
 
@@ -129,6 +132,21 @@ public class ReflectFactory {
 
         itemStack_saveMethod.invoke(mcStack, nbtTagCompound);
         return nbtTagCompound.toString();
+    }
+
+    public static CommandMap getCommandMap() throws NoSuchFieldException, IllegalAccessException {
+        Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+        commandMapField.setAccessible(true);
+        return (CommandMap) commandMapField.get(Bukkit.getServer());
+    }
+
+    public static void syncCommands() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method method = craftServerClass.getDeclaredMethod("syncCommands");
+        try {
+            method.setAccessible(true);
+        } catch (Exception ignored) {
+        }
+        method.invoke(Bukkit.getServer(), (Object[]) null);
     }
 
 

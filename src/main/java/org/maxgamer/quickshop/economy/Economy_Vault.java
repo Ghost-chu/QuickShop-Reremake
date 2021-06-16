@@ -41,15 +41,14 @@ import java.util.logging.Level;
 
 public class Economy_Vault implements EconomyCore, Listener {
 
+    private static final String errorMsg =
+            "QuickShop received an error when processing Economy response, THIS NOT A QUICKSHOP FAULT, you might need ask help with your Economy Provider plugin (%s) author.";
     private final QuickShop plugin;
     private final boolean allowLoan;
     @Getter
     @Setter
     @Nullable
     private net.milkbowl.vault.economy.Economy vault;
-
-    private static final String errorMsg =
-            "QuickShop received an error when processing Economy response, THIS NOT A QUICKSHOP FAULT, you might need ask help with your Economy Provider plugin (%s) author.";
 
 
     public Economy_Vault(@NotNull QuickShop plugin) {

@@ -20,11 +20,10 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -32,19 +31,15 @@ import java.io.File;
 import java.util.logging.Level;
 
 @AllArgsConstructor
-public class SubCommand_Recovery implements CommandProcesser {
+public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender> {
 
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (!(sender instanceof ConsoleCommandSender)) {
-            return;
-        }
+    public void onCommand(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         File file = new File(plugin.getDataFolder(), "recovery.txt");
         if (!file.exists()) {
-            MsgUtil.sendMessage(sender, "recovery.txt doesn't exist! Do not execute this command unless you know what are you doing.");
+            MsgUtil.sendDirectMessage(sender, "recovery.txt doesn't exist! Do not execute this command unless you know what are you doing.");
             return;
         }
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {

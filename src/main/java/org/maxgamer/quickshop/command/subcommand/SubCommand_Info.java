@@ -25,7 +25,7 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopChunk;
@@ -34,13 +34,12 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import java.util.Map;
 
 @AllArgsConstructor
-public class SubCommand_Info implements CommandProcesser {
+public class SubCommand_Info implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         int buying, selling, doubles, chunks, worlds, doubleschests;
         buying = 0;
         selling = 0;
@@ -76,9 +75,9 @@ public class SubCommand_Info implements CommandProcesser {
             }
         }
 
-        MsgUtil.sendMessage(sender, ChatColor.RED + "QuickShop Statistics...");
-        MsgUtil.sendMessage(sender, ChatColor.GREEN + "Server UniqueID: " + plugin.getServerUniqueID());
-        MsgUtil.sendMessage(sender,
+        MsgUtil.sendDirectMessage(sender, ChatColor.RED + "QuickShop Statistics...");
+        MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "Server UniqueID: " + plugin.getServerUniqueID());
+        MsgUtil.sendDirectMessage(sender,
                 ChatColor.GREEN
                         + ""
                         + (buying + selling)
@@ -87,19 +86,19 @@ public class SubCommand_Info implements CommandProcesser {
                         + " chunks spread over "
                         + worlds
                         + " worlds.");
-        MsgUtil.sendMessage(sender,
+        MsgUtil.sendDirectMessage(sender,
                 ChatColor.GREEN
                         + ""
                         + doubles
                         + " double shops. ("
                         + doubleschests
                         + " shops created on double chest.)");
-        MsgUtil.sendMessage(sender,
+        MsgUtil.sendDirectMessage(sender,
                 ChatColor.GREEN
                         + ""
                         + nostock
-                        + " nostock selling shops (excluding doubles) which will be removed by /qs clean.");
-        MsgUtil.sendMessage(sender, ChatColor.GREEN + "QuickShop " + QuickShop.getVersion());
+                        + " out-of-stock shops (excluding doubles) which will be removed by /qs clean.");
+        MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "QuickShop " + QuickShop.getVersion());
     }
 
 
