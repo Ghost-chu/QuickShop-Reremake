@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.util;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 
 public class MsgUtilTest {
 
@@ -32,6 +33,25 @@ public class MsgUtilTest {
         } catch (Exception e) {
             Assert.fail("Failed to test null number input");
         }
+    }
+
+    @Test
+    public void fillArgs() {
+        String sample = "I like apple and orange";
+        Assertions.assertEquals(sample, MsgUtil.fillArgs("I like {0} and {1}", "apple", "orange"));
+    }
+
+    @Test
+    public void getSubString() {
+        String sample = "cra";
+        Assertions.assertEquals(sample, MsgUtil.getSubString("Minecraft", "Mine", "ft"));
+    }
+
+    @Test
+    public void isJson() {
+        Assertions.assertTrue(MsgUtil.isJson("{}"));
+        Assertions.assertTrue(MsgUtil.isJson("[]"));
+        Assertions.assertFalse(MsgUtil.isJson("{]"));
     }
 
 }
