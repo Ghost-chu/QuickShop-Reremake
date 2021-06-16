@@ -68,6 +68,8 @@ public class ShopManager {
     @Getter
     private final Trader cacheTaxAccount;
     @Getter
+    private final Trader cacheUnlimitedShopAccount;
+    @Getter
     private final PriceLimiter priceLimiter;
     private final boolean useFastShopSearchAlgorithm;
     private final boolean useOldCanBuildAlgorithm;
@@ -79,6 +81,7 @@ public class ShopManager {
                     .weakValues()
                     .initialCapacity(50)
                     .build();
+
 
     public ShopManager(@NotNull QuickShop plugin) {
         Util.ensureThread(false);
@@ -98,6 +101,12 @@ public class ShopManager {
         } else {
             // disable tax account
             cacheTaxAccount = null;
+        }
+        String uAccount = plugin.getConfig().getString("unlimited-shop-owner-change-account");
+        if (Util.isUUID(uAccount)) {
+            cacheUnlimitedShopAccount = new Trader(uAccount, Bukkit.getOfflinePlayer(UUID.fromString(uAccount)));
+        } else {
+            cacheUnlimitedShopAccount = new Trader(uAccount, Bukkit.getOfflinePlayer(uAccount));
         }
         this.priceLimiter = new PriceLimiter(
                 plugin.getConfig().getDouble("shop.minimum-price"),
@@ -1309,6 +1318,15 @@ public class ShopManager {
         }
 
         return shop;
+    }
+
+    /**
+     * Change the owner to unlimited shop owner.
+     * It defined in configuration.
+     */
+    public void migrateOwnerToUnlimitedShopOwner(Shop shop) {
+        shop.setOwner(this.cacheUnlimitedShopAccount.getUniqueId());
+        shop.setSignText();
     }
 
     public class ShopIterator implements Iterator<Shop> {
