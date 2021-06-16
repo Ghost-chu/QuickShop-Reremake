@@ -1579,6 +1579,9 @@ public class MsgUtil {
                     return JsonUtil.getGson().fromJson(json, TransactionMessage.class);
                 }
             } catch (Exception ignored) {
+                // Legacy transaction message, pass the empty string.
+                // MsgUtil will skip empty message so.
+                return new TransactionMessage("", null, null);
             }
             return new TransactionMessage(json, null, null);
         }
