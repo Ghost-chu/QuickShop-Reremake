@@ -69,11 +69,6 @@ public class CommandContainer {
         return executorType;
     }
 
-    public <T extends CommandSender> T cast(Object type) {
-
-        return (T) type;
-    }
-
     public void bakeExecutorType() {
         for (Method declaredMethod : getExecutor().getClass().getDeclaredMethods()) {
             if (!"onCommand".equals(declaredMethod.getName()) && !"onTabComplete".equals(declaredMethod.getName())) {
