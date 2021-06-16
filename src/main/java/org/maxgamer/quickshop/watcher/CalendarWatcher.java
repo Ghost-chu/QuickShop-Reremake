@@ -33,6 +33,11 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.logging.Level;
 
+/**
+ * CalendarWatcher check-call calendar events related stuffs
+ *
+ * @author Ghost_chu
+ */
 public class CalendarWatcher extends BukkitRunnable {
     @Getter
     private final File calendarFile = new File(Util.getCacheFolder(), "calendar.cache");

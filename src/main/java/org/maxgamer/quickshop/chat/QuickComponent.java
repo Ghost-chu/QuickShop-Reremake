@@ -25,7 +25,17 @@ import org.jetbrains.annotations.NotNull;
  * Pack the MineDown
  */
 public interface QuickComponent {
+    /**
+     * Gets QuickComponent object (BungeeChatComponent or AdventureChatComponent)
+     *
+     * @return The component
+     */
     @NotNull Object get();
 
+    /**
+     * Sets QuickComponent object (BungeeChatComponent or AdventureChatComponent)
+     *
+     * @param component The component
+     */
     void set(@NotNull Object component);
 }

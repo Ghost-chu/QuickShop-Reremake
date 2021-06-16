@@ -21,6 +21,11 @@ package org.maxgamer.quickshop.util;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
+/**
+ * CalculateUtil used for calculate between doubles
+ *
+ * @author sandtechnology
+ */
 public final class CalculateUtil {
     private static final MathContext MATH_CONTEXT = MathContext.DECIMAL32;
 

@@ -55,6 +55,7 @@ public interface Shop {
      *
      * @param buyer          The player buying
      * @param buyerInventory The buyer inventory ( may not a player inventory )
+     * @param loc2Drop       The location to drops items if player inventory are full
      * @param paramInt       How many buyed?
      */
     void buy(@NotNull UUID buyer, @NotNull Inventory buyerInventory, @NotNull Location loc2Drop, int paramInt);
@@ -158,6 +159,7 @@ public interface Shop {
      *
      * @param seller          Seller
      * @param sellerInventory Seller's inventory ( may not a player inventory )
+     * @param loc2Drop        The location to be drop if buyer inventory full ( if player enter a number that < 0, it will turn to buying item)
      * @param paramInt        How many sold?
      */
     void sell(@NotNull UUID seller, @NotNull Inventory sellerInventory, @NotNull Location loc2Drop, int paramInt);
@@ -405,7 +407,12 @@ public interface Shop {
     @NotNull
     String saveExtraToYaml();
 
-
+    /**
+     * Getting ConfigurationSection (extra data) instance of your plugin namespace)
+     *
+     * @param plugin The plugin and plugin name will used for namespace
+     * @return ExtraSection, save it through Shop#setExtra. If you don't save it, it may randomly loose or save
+     */
     @NotNull
     ConfigurationSection getExtra(@NotNull Plugin plugin);
 
