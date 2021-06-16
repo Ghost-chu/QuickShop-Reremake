@@ -591,6 +591,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- Database lib for testing-->
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>

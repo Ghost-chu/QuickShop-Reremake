@@ -6,6 +6,8 @@ import org.junit.BeforeClass;
 
 /**
  * Use for testing related to bukkit api
+ * <p>
+ * If you are writing test which using runtime stuff, just extend it
  */
 public abstract class TestBukkitBase {
     @BeforeClass

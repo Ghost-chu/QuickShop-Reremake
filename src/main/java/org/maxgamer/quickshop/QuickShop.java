@@ -996,7 +996,6 @@ public class QuickShop extends JavaPlugin {
             }
             return false;
         } catch (Exception e) {
-            e.printStackTrace();
             getLogger().log(Level.SEVERE, "Error when setup database", e);
             getServer().getPluginManager().disablePlugin(this);
             if (setupDBonEnableding) {
