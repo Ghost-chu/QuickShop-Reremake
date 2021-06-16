@@ -27,6 +27,7 @@ import java.math.MathContext;
  * @author sandtechnology
  */
 public final class CalculateUtil {
+
     private static final MathContext MATH_CONTEXT = MathContext.DECIMAL32;
 
     private CalculateUtil() {
