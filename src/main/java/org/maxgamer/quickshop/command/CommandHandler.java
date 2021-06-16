@@ -27,8 +27,23 @@ import java.util.Collections;
 import java.util.List;
 
 public interface CommandHandler<T extends CommandSender> {
+    /**
+     * Calling while command executed by specified sender
+     *
+     * @param sender       The command sender but will automatically convert to specified instance
+     * @param commandLabel The command prefix (/qs = qs, /shop = shop)
+     * @param cmdArg       The arguments (/qs create stone will receive stone)
+     */
     void onCommand(T sender, @NotNull String commandLabel, @NotNull String[] cmdArg);
 
+    /**
+     * Calling while sender trying to tab-complete
+     *
+     * @param sender       The command sender but will automatically convert to specified instance
+     * @param commandLabel The command prefix (/qs = qs, /shop = shop)
+     * @param cmdArg       The arguments (/qs create stone [TAB] will receive stone)
+     * @return Candidate list
+     */
     @Nullable
     default List<String> onTabComplete(@NotNull T sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return Collections.emptyList();
