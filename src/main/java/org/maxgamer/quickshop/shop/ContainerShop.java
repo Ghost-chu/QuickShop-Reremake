@@ -93,6 +93,7 @@ public class ContainerShop implements Shop {
     private volatile boolean dirty;
 
 
+    @SuppressWarnings("CopyConstructorMissesField")
     private ContainerShop(@NotNull ContainerShop s) {
         Util.ensureThread(false);
         this.shopType = s.shopType;
@@ -1109,6 +1110,7 @@ public class ContainerShop implements Shop {
      *
      * <p>**NOT A DEEP CLONE**
      */
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     @Override
     public @NotNull ContainerShop clone() {
         return new ContainerShop(this);
