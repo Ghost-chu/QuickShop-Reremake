@@ -120,16 +120,14 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         if (debug) {
             plugin.getConfig().set("dev-mode", false);
             plugin.saveConfig();
-            plugin.getServer().getPluginManager().disablePlugin(plugin);
-            plugin.getServer().getPluginManager().enablePlugin(plugin);
+            plugin.reload();
             MsgUtil.sendMessage(sender, "command.now-nolonger-debuging");
             return;
         }
 
         plugin.getConfig().set("dev-mode", true);
         plugin.saveConfig();
-        plugin.getServer().getPluginManager().disablePlugin(plugin);
-        plugin.getServer().getPluginManager().enablePlugin(plugin);
+        plugin.reload();
         MsgUtil.sendMessage(sender, "command.now-debuging");
     }
 

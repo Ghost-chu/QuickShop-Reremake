@@ -37,8 +37,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.ItemSpawnEvent;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredListener;
+import org.bukkit.plugin.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -58,6 +57,7 @@ import org.maxgamer.quickshop.integration.IntegrationHelper;
 import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
 import org.maxgamer.quickshop.listener.*;
 import org.maxgamer.quickshop.listener.worldedit.WorldEditAdapter;
+import org.maxgamer.quickshop.nonquickshopstuff.com.rylinaux.plugman.util.PluginUtil;
 import org.maxgamer.quickshop.permission.PermissionManager;
 import org.maxgamer.quickshop.shop.*;
 import org.maxgamer.quickshop.util.Timer;
@@ -76,8 +76,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -638,6 +640,26 @@ public class QuickShop extends JavaPlugin {
 
         Util.debugLog("All shutdown work is finished.");
 
+    }
+
+    public void reload() {
+        PluginManager pluginManager = getServer().getPluginManager();
+        try {
+            File file = Paths.get(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile();
+            Throwable throwable = PluginUtil.unload(this);
+            if (throwable != null) {
+                throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Plugin unloading has failed)", throwable);
+            }
+            Plugin plugin = pluginManager.loadPlugin(file);
+            if (plugin != null) {
+                plugin.onLoad();
+                pluginManager.enablePlugin(plugin);
+            } else {
+                throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Plugin loading has failed)");
+            }
+        } catch (URISyntaxException | InvalidDescriptionException | InvalidPluginException e) {
+            throw new RuntimeException("Failed to reload QuickShop! Please consider restarting the server.", e);
+        }
     }
 
     private void initConfiguration() {
