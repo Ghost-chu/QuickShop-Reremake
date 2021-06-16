@@ -488,7 +488,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
         }
         if (cmdArg.length <= 1) {
-            return ((CommandHandler<CommandSender>) getRootContainer().getExecutor()).onTabComplete(sender, commandLabel, cmdArg);
+            return getRootContainer().getExecutor().onTabComplete(capture(sender), commandLabel, cmdArg);
         } else {
             // Tab-complete subcommand args
             String[] passThroughArgs = new String[cmdArg.length - 1];
