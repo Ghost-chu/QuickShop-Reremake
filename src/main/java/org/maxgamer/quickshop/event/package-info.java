@@ -18,13 +18,6 @@
  */
 
 /**
- * The QuickShop API package
- * <p>
- * The QuickShop events that allow addons to listening
- * <p>
- * The QuickShop events that allow addons to listening
- */
-/**
  * The QuickShop events that allow addons to listening
  */
 package org.maxgamer.quickshop.event;
