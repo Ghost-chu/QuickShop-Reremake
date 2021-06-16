@@ -81,11 +81,6 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
         return "Towny";
     }
 
-    private void processEvent(TownRemoveResidentEvent event) {
-
-    }
-
-
     public void deleteShops(UUID owner, Town town) {
         if (!deleteShopOnLeave) {
             return;
