@@ -816,7 +816,7 @@ public class Util {
      * @param args      the arg of method
      * @return boolean Available
      */
-    public static boolean isMethodAvailable(@NotNull String className, String method, Class<?>... args) {
+    public static boolean isMethodAvailable(@NotNull String className, String method, Class<?>... args) {// nosemgrep
         try {
             Class<?> clazz = Class.forName(className);
             try {
