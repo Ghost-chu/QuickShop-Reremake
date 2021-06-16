@@ -321,7 +321,7 @@
   "shop-owner-self-trade": "&eYou handlar med din egen butik, så du kanske inte kommer att få något saldo.",
   "chest-title": "QuickShop-butik",
   "command-type-mismatch": "&cDetta kommando kan endast exekveras av &b{0}.",
-  "unlimited-shop-owner-changed": "&eThis unlimited shop owner has been changed to {0}.",
+  "unlimited-shop-owner-changed": "&eDenna obegränsade butikens ägare har ändrats till {0}.",
   "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.",
   "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
 }
