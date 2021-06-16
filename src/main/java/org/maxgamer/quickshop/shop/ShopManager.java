@@ -874,6 +874,8 @@ public class ShopManager {
             case NOT_VALID:
                 MsgUtil.sendMessage(p, "not-a-number", message);
                 return;
+            default:
+                // Passed
         }
 
         // Set to 1 when disabled stacking shop
