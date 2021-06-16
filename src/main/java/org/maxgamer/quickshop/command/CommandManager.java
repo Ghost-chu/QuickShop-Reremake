@@ -408,13 +408,20 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 }
 
                 Util.debugLog("Execute container: " + container.getPrefix() + " - " + cmdArg[0]);
-                container.getExecutor().onCommand(container.cast(sender), commandLabel, passThroughArgs);
+                container.getExecutor().onCommand(capture(sender), commandLabel, passThroughArgs);
                 return true;
             }
             Util.debugLog("All checks failed, print helps");
-            rootContainer.getExecutor().onCommand(rootContainer.cast(sender), commandLabel, passThroughArgs);
+            rootContainer.getExecutor().onCommand(capture(sender), commandLabel, passThroughArgs);
         }
         return true;
+    }
+
+    /**
+     * Method for capturing generic type
+     */
+    private <T1, T2 extends T1> T2 capture(T1 type) {
+        return (T2) type;
     }
 
     private boolean checkPermissions(CommandSender sender, String commandLabel, String[] cmdArg, List<String> permissionList, PermissionType permissionType, Action action) {
@@ -502,7 +509,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                     return Collections.emptyList();
                 }
                 Util.debugLog("Tab-complete container: " + container.getPrefix());
-                return container.getExecutor().onTabComplete(container.cast(sender), commandLabel, passThroughArgs);
+                return container.getExecutor().onTabComplete(capture(sender), commandLabel, passThroughArgs);
 
             }
             return Collections.emptyList();
