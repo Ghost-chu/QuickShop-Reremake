@@ -34,7 +34,7 @@
   "negative-amount": "&cYou kan inte handla med negativa belopp",
   "not-a-number": "&cDu kan bara ange ett nummer, din inmatning var {0}.",
   "exceeded-maximum": "&cVärdet överskred det maximala värdet i Java.",
-  "not-a-integer": "&cYou must input a integer, your input was {0}.",
+  "not-a-integer": "&cDu måste ange en siffra, din inmatning var {0}.",
   "player-bought-from-your-store": "&c{0} köpte {1} {2} från din butik, och du tjänade {3}.",
   "shop-out-of-stock": "&5Din butik vid {0}, {1}, {2} har fått slut på {3}!",
   "shop-has-no-space": "&cButiken har endast plats för {0} fler {1}.",
