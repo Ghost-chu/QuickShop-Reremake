@@ -877,6 +877,9 @@ public class ShopManager {
             case NOT_VALID:
                 MsgUtil.sendMessage(p, "not-a-number", message);
                 return;
+            case NOT_A_WHOLE_NUMBER:
+                MsgUtil.sendMessage(p, "not-a-integer", message);
+                return;
             default:
                 // Passed
         }
