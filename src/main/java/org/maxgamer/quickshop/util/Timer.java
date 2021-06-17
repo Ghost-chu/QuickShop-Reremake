@@ -32,21 +32,23 @@ import lombok.ToString;
 @ToString
 public class Timer {
     private long startTime;
+    private long passedTime;
+    private boolean isPaused = false;
 
     /**
-     * Create a empty time, use setTimer to start
+     * Create a empty timer, use setTimer to start
      */
     public Timer() {
     }
 
     /**
-     * Create a empty time, auto start if autoSet is true
+     * Create a empty timer, auto start if autoStart is true
      *
-     * @param autoSet Auto set the timer
+     * @param autoStart Auto set the timer
      */
-    public Timer(boolean autoSet) {
-        if (autoSet) {
-            startTime = System.currentTimeMillis();
+    public Timer(boolean autoStart) {
+        if (autoStart) {
+            start();
         }
     }
 
@@ -64,27 +66,47 @@ public class Timer {
      *
      * @return time
      */
-    public long endTimer() {
-        long time = System.currentTimeMillis() - startTime;
+    public long stopAndGetTimePassed() {
+        long time = getPassedTime();
         startTime = 0;
         return time;
     }
 
     /**
-     * Return how long time running after atTimeS. THIS NOT WILL DESTORY AND STOP THE TIMER
+     * Return how long time running after a specified time. THIS NOT WILL DESTORY AND STOP THE TIMER
      *
-     * @param atTime The inited time
+     * @param atTime The specified time
      * @return time
      */
-    public long getTimerAt(long atTime) {
-        return atTime - startTime;
+    public long getPassedTimeOffsetFrom(long atTime) {
+        return (atTime - startTime) + passedTime;
     }
 
     /**
-     * Create a Timer. Time Unit: ms
+     * Start the timer. Time Unit: ms
      */
-    public void setTimer() {
+    public void start() {
         this.startTime = System.currentTimeMillis();
+        isPaused = false;
+    }
+
+    /**
+     * Pause the timer. Time Unit: ms
+     */
+    public void pause() {
+        this.passedTime = getPassedTime();
+        isPaused = true;
+    }
+
+    /**
+     * Resume the timer. Time Unit: ms
+     */
+    public void resume() {
+        if (isPaused) {
+            this.startTime = System.currentTimeMillis() - passedTime;
+            passedTime = 0;
+            isPaused = false;
+        }
     }
 
     /**
@@ -92,8 +114,12 @@ public class Timer {
      *
      * @return time
      */
-    public long getTimer() {
-        return System.currentTimeMillis() - startTime;
+    public long getPassedTime() {
+        if (isPaused) {
+            return passedTime;
+        } else {
+            return System.currentTimeMillis() - startTime;
+        }
     }
 
 }
