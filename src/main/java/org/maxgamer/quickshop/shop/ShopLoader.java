@@ -60,8 +60,6 @@ public class ShopLoader {
     private final List<Shop> shopsInDatabase = new CopyOnWriteArrayList<>();
     private final List<ShopRawDatabaseInfo> shopRawDatabaseInfoList = new CopyOnWriteArrayList<>();
     private int errors;
-    private int loadAfterChunkLoaded = 0;
-    private int loadAfterWorldLoaded = 0;
     private int totalLoaded = 0;
     //private final WarningSender warningSender;
 
@@ -80,15 +78,17 @@ public class ShopLoader {
     }
 
     /**
-     * Load all shops
+     * Load all shops in the specified world
      *
-     * @param worldName The world name
+     * @param worldName The world name, null if load all shops
      */
     public void loadShops(@Nullable String worldName) {
         //boolean backupedDatabaseInDeleteProcess = false;
         Timer totalLoadTimer = new Timer(true);
         this.plugin.getLogger().info("Loading shops from the database...");
         Timer fetchTimer = new Timer(true);
+        int loadAfterChunkLoaded = 0;
+        int loadAfterWorldLoaded = 0;
         try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
             this.plugin
                     .getLogger()
@@ -171,9 +171,9 @@ public class ShopLoader {
                                     + "ms, Avg "
                                     + avgPerShop
                                     + "ms per shop)");
-            this.plugin.getLogger().info(this.loadAfterChunkLoaded
+            this.plugin.getLogger().info(loadAfterChunkLoaded
                     + " shops will load after chunk have loaded, "
-                    + this.loadAfterWorldLoaded
+                    + loadAfterWorldLoaded
                     + " shops will load after the world has loaded.");
         } catch (Exception e) {
             exceptionHandler(e, null);
@@ -198,27 +198,23 @@ public class ShopLoader {
     @SuppressWarnings("ConstantConditions")
     private boolean shopNullCheck(@Nullable Shop shop) {
         if (shop == null) {
-            Util.debugLog("Shop Object is null");
+            Util.debugLog("Shop object is null");
             return true;
         }
         if (shop.getItem() == null) {
-            Util.debugLog("Shop ItemStack is null");
+            Util.debugLog("Shop itemStack is null");
             return true;
         }
         if (shop.getItem().getType() == Material.AIR) {
-            Util.debugLog("Shop ItemStack type can't be AIR");
+            Util.debugLog("Shop itemStack type can't be AIR");
             return true;
         }
         if (shop.getLocation() == null) {
-            Util.debugLog("Shop Location is null");
-            return true;
-        }
-        if (shop.getLocation().getWorld() == null) {
-            Util.debugLog("Shop World is null");
+            Util.debugLog("Shop location is null");
             return true;
         }
         if (shop.getOwner() == null) {
-            Util.debugLog("Shop Owner is null");
+            Util.debugLog("Shop owner is null");
             return true;
         }
         if (plugin.getServer().getOfflinePlayer(shop.getOwner()).getName() == null) {
