@@ -58,7 +58,7 @@ public class ShopLoader {
     private final QuickShop plugin;
     /* This may contains broken shop, must use null check before load it. */
     private final List<Shop> shopsInDatabase = new CopyOnWriteArrayList<>();
-    private final List<ShopDatabaseInfoOrigin> originShopsInDatabase = new CopyOnWriteArrayList<>();
+    private final List<ShopRawDatabaseInfo> shopRawDatabaseInfoList = new CopyOnWriteArrayList<>();
     private int errors;
     private int loadAfterChunkLoaded = 0;
     private int loadAfterWorldLoaded = 0;
@@ -95,13 +95,19 @@ public class ShopLoader {
                     .info("Used " + fetchTimer.stopAndGetTimePassed() + "ms to fetch all shops from the database.");
             while (rs.next()) {
                 Timer singleShopLoadTimer = new Timer(true);
-                ShopDatabaseInfoOrigin origin = new ShopDatabaseInfoOrigin(rs);
-                originShopsInDatabase.add(origin);
+                ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
+                shopRawDatabaseInfoList.add(origin);
                 if (worldName != null && !origin.getWorld().equals(worldName)) {
                     singleShopLoaded(singleShopLoadTimer);
                     continue;
                 }
                 ShopDatabaseInfo data = new ShopDatabaseInfo(origin);
+                //World unloaded and not found
+                if (data.getWorld() == null) {
+                    ++loadAfterWorldLoaded;
+                    singleShopLoaded(singleShopLoadTimer);
+                    continue;
+                }
                 Shop shop =
                         new ContainerShop(plugin,
                                 data.getLocation(),
@@ -124,7 +130,12 @@ public class ShopLoader {
                         Util.debugLog("Trouble database loading debug: " + data);
                         Util.debugLog("Somethings gone wrong, skipping the loading...");
                     }
-                    loadAfterWorldLoaded++;
+                    singleShopLoaded(singleShopLoadTimer);
+                    continue;
+                }
+                //World unloaded but found
+                if (!Util.isWorldLoaded(shop.getLocation())) {
+                    ++loadAfterWorldLoaded;
                     singleShopLoaded(singleShopLoadTimer);
                     continue;
                 }
@@ -294,8 +305,8 @@ public class ShopLoader {
             String shopStr = shopsPlain[i].trim();
             boolean success = false;
             try {
-                ShopDatabaseInfoOrigin shopDatabaseInfoOrigin = gson.fromJson(shopStr, ShopDatabaseInfoOrigin.class);
-                originShopsInDatabase.add(shopDatabaseInfoOrigin);
+                ShopRawDatabaseInfo shopDatabaseInfoOrigin = gson.fromJson(shopStr, ShopRawDatabaseInfo.class);
+                shopRawDatabaseInfoList.add(shopDatabaseInfoOrigin);
                 ShopDatabaseInfo data = new ShopDatabaseInfo(shopDatabaseInfoOrigin);
                 Shop shop =
                         new ContainerShop(plugin,
@@ -331,12 +342,12 @@ public class ShopLoader {
 
     public void removeShopFromShopLoader(Shop shop) {
         if (this.shopsInDatabase.remove(shop)) {
-            for (ShopDatabaseInfoOrigin origin : this.originShopsInDatabase) {
-                if (Objects.equals(shop.getLocation().getWorld().getName(), origin.getWorld())) {
-                    if (shop.getLocation().getBlockX() == origin.getX()) {
-                        if (shop.getLocation().getBlockY() == origin.getY()) {
-                            if (shop.getLocation().getBlockZ() == origin.getZ()) {
-                                this.originShopsInDatabase.remove(origin);
+            for (ShopRawDatabaseInfo rawDatabaseInfo : this.shopRawDatabaseInfoList) {
+                if (Objects.equals(shop.getLocation().getWorld().getName(), rawDatabaseInfo.getWorld())) {
+                    if (shop.getLocation().getBlockX() == rawDatabaseInfo.getX()) {
+                        if (shop.getLocation().getBlockY() == rawDatabaseInfo.getY()) {
+                            if (shop.getLocation().getBlockZ() == rawDatabaseInfo.getZ()) {
+                                this.shopRawDatabaseInfoList.remove(rawDatabaseInfo);
                                 break;
                             }
                         }
@@ -347,13 +358,13 @@ public class ShopLoader {
     }
 
     @NotNull
-    public List<ShopDatabaseInfoOrigin> getOriginShopsInDatabase() {
-        return new ArrayList<>(originShopsInDatabase);
+    public List<ShopRawDatabaseInfo> getOriginShopsInDatabase() {
+        return new ArrayList<>(shopRawDatabaseInfoList);
     }
 
     @Getter
     @Setter
-    static public class ShopDatabaseInfoOrigin {
+    static public class ShopRawDatabaseInfo {
         private String item;
 
         private String moderators;
@@ -374,7 +385,7 @@ public class ShopLoader {
 
         private String extra;
 
-        ShopDatabaseInfoOrigin(ResultSet rs) throws SQLException {
+        ShopRawDatabaseInfo(ResultSet rs) throws SQLException {
             this.x = rs.getInt("x");
             this.y = rs.getInt("y");
             this.z = rs.getInt("z");
@@ -391,7 +402,7 @@ public class ShopLoader {
             }
         }
 
-        ShopDatabaseInfoOrigin(int x, int y, int z, String world, String itemConfig, String owner, double price, int type, boolean unlimited, String extra) {
+        ShopRawDatabaseInfo(int x, int y, int z, String world, String itemConfig, String owner, double price, int type, boolean unlimited, String extra) {
             this.x = x;
             this.y = y;
             this.z = z;
@@ -404,7 +415,7 @@ public class ShopLoader {
             this.extra = extra;
         }
 
-        ShopDatabaseInfoOrigin() {
+        ShopRawDatabaseInfo() {
 
         }
 
@@ -441,7 +452,7 @@ public class ShopLoader {
 
         private AtomicBoolean needUpdate = new AtomicBoolean(false);
 
-        ShopDatabaseInfo(ShopDatabaseInfoOrigin origin) {
+        ShopDatabaseInfo(ShopRawDatabaseInfo origin) {
             try {
                 this.x = origin.getX();
                 this.y = origin.getY();
