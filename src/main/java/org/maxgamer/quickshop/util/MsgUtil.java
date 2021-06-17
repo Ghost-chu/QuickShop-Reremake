@@ -1472,6 +1472,10 @@ public class MsgUtil {
             setAndUpdate("server-crash-warning");
             setAndUpdate("language-version", ++selectedVersion);
         }
+        if (selectedVersion == 57) {
+            setAndUpdate("not-a-integer");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
 
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
     }
