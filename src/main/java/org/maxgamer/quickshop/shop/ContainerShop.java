@@ -1019,6 +1019,8 @@ public class ContainerShop implements Shop {
                     //TEXT SIGN
                     //continue
                 } else {
+                    adminShopHeader = MsgUtil.getMessage("signs.header", null, MsgUtil.getMessage("admin-shop", null), "");
+                    signHeaderUsername = MsgUtil.getMessage("signs.header", null, this.ownerName(true), "");
                     adminShopHeader = ChatColor.stripColor(adminShopHeader).trim();
                     signHeaderUsername = ChatColor.stripColor(signHeaderUsername).trim();
                     if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
