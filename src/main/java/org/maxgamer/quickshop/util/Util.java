@@ -873,13 +873,23 @@ public class Util {
     }
 
     /**
+     * Returns true if the world of given location is loaded or not.
+     *
+     * @param loc The location containing world
+     * @return true if the world of given location is loaded or not.
+     */
+    public static boolean isWorldLoaded(Location loc) {
+        return (getNMSVersion().contains("1_13") && loc.getWorld() != null) || loc.isWorldLoaded();
+    }
+
+    /**
      * Returns true if the given location is loaded or not.
      *
      * @param loc The location
      * @return true if the given location is loaded or not.
      */
     public static boolean isLoaded(@NotNull Location loc) {
-        if ((!getNMSVersion().contains("1_13") && !loc.isWorldLoaded()) || loc.getWorld() == null) {
+        if (!isWorldLoaded(loc)) {
             return false;
         }
         // Calculate the chunks coordinates. These are 1,2,3 for each chunk, NOT
