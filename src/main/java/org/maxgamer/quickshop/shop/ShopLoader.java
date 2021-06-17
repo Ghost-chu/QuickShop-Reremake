@@ -53,7 +53,7 @@ import java.util.logging.Logger;
 public class ShopLoader {
     private final List<Long> loadTimes = new ArrayList<>();
 
-    private final Map<Timer, Double> costCache = new HashMap<>();
+    private final Map<Timer, Double> timeCostCache = new HashMap<>();
 
     private final QuickShop plugin;
     /* This may contains broken shop, must use null check before load it. */
@@ -92,7 +92,7 @@ public class ShopLoader {
         try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
             this.plugin
                     .getLogger()
-                    .info("Used " + fetchTimer.endTimer() + "ms to fetch all shops from the database.");
+                    .info("Used " + fetchTimer.stopAndGetTimePassed() + "ms to fetch all shops from the database.");
             while (rs.next()) {
                 Timer singleShopLoadTimer = new Timer(true);
                 ShopDatabaseInfoOrigin origin = new ShopDatabaseInfoOrigin(rs);
@@ -115,7 +115,7 @@ public class ShopLoader {
                     shop.setDirty();
                 }
                 shopsInDatabase.add(shop);
-                this.costCalc(singleShopLoadTimer);
+                this.calcTimeCost(singleShopLoadTimer);
                 if (shopNullCheck(shop)) {
                     if (plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false)) {
                         plugin.getLogger().warning("Deleting shop " + shop + " caused by corrupted.");
@@ -148,7 +148,7 @@ public class ShopLoader {
                 }
                 singleShopLoaded(singleShopLoadTimer);
             }
-            long totalUsedTime = totalLoadTimer.endTimer();
+            long totalUsedTime = totalLoadTimer.stopAndGetTimePassed();
             long avgPerShop = mean(loadTimes.toArray(new Long[0]));
             this.plugin
                     .getLogger()
@@ -171,7 +171,7 @@ public class ShopLoader {
 
     private void singleShopLoaded(@NotNull Timer singleShopLoadTimer) {
         totalLoaded++;
-        long singleShopLoadTime = singleShopLoadTimer.endTimer();
+        long singleShopLoadTime = singleShopLoadTimer.stopAndGetTimePassed();
         loadTimes.add(singleShopLoadTime);
         Util.debugLog("Loaded shop used time " + singleShopLoadTime + "ms");
 //        if (singleShopLoadTime > 1500) {
@@ -179,9 +179,9 @@ public class ShopLoader {
 //        }
     }
 
-    private double costCalc(@NotNull Timer timer) {
-        costCache.putIfAbsent(timer, (double) timer.getTimer());
-        return timer.getTimer() - costCache.get(timer);
+    private double calcTimeCost(@NotNull Timer timer) {
+        timeCostCache.putIfAbsent(timer, (double) timer.getPassedTime());
+        return timer.getPassedTime() - timeCostCache.get(timer);
     }
 
     @SuppressWarnings("ConstantConditions")
