@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.shop;
 import com.lishid.openinv.OpenInv;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -1001,25 +1002,27 @@ public class ContainerShop implements Shop {
             }
             Sign sign = (Sign) state;
             String[] lines = sign.getLines();
-            if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3]
-                    .isEmpty()) {
+            if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3].isEmpty()) {
                 signs.add(sign); //NEW SIGN
                 continue;
             }
-            String header = lines[0];
 
             if (lines[1].startsWith(shopSignPattern)) {
                 signs.add(sign);
             } else {
-                String adminShopHeader = MsgUtil
-                        .getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
-                                "admin-shop", plugin.getServer().getOfflinePlayer(this.getOwner())));
-                String signHeaderUsername =
-                        MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
+                String header = lines[0];
+                String adminShopHeader = MsgUtil.getMessage("signs.header", null, MsgUtil.getMessage("admin-shop", null));
+                String signHeaderUsername = MsgUtil.getMessage("signs.header", null, this.ownerName(true));
                 if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
                     signs.add(sign);
                     //TEXT SIGN
                     //continue
+                } else {
+                    adminShopHeader = ChatColor.stripColor(adminShopHeader).trim();
+                    signHeaderUsername = ChatColor.stripColor(signHeaderUsername).trim();
+                    if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
+                        signs.add(sign);
+                    }
                 }
             }
         }
