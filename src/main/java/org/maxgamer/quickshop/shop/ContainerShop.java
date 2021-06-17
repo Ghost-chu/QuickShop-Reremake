@@ -820,7 +820,8 @@ public class ContainerShop implements Shop {
             return;
         }
         this.isLoaded = true;
-        plugin.getShopManager().loadShop(this.getLocation().getWorld().getName(), this);
+        //Shop manger done this already
+        //plugin.getShopManager().loadShop(this.getLocation().getWorld().getName(), this);
         plugin.getShopManager().getLoadedShops().add(this);
         plugin.getShopContainerWatcher().scheduleCheck(this);
 
