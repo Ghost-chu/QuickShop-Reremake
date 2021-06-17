@@ -25,6 +25,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -47,10 +49,10 @@ public class PriceLimiter {
         }
         if (wholeNumberOnly) {
             try {
-                price = Long.parseLong(String.valueOf(price));
-            } catch (NumberFormatException ex2) {
-                Util.debugLog(ex2.getMessage());
-                return new CheckResult(Status.NOT_VALID, minPrice, maxPrice);
+                BigDecimal.valueOf(price).setScale(0, RoundingMode.UNNECESSARY);
+            } catch (ArithmeticException exception) {
+                Util.debugLog(exception.getMessage());
+                return new CheckResult(Status.NOT_A_WHOLE_NUMBER, minPrice, maxPrice);
             }
         }
         if (price < minPrice) {
@@ -82,6 +84,7 @@ public class PriceLimiter {
         REACHED_PRICE_MAX_LIMIT,
         REACHED_PRICE_MIN_LIMIT,
         PRICE_RESTRICTED,
+        NOT_A_WHOLE_NUMBER,
         NOT_VALID
     }
 
