@@ -829,11 +829,16 @@ public class ContainerShop implements Shop {
         // check price restriction
         PriceLimiter.CheckResult priceRestriction = plugin.getShopManager().getPriceLimiter().check(item, price);
         if (priceRestriction.getStatus() != PriceLimiter.Status.PASS) {
-            if (priceRestriction.getStatus() == PriceLimiter.Status.NOT_VALID) {
+            if (priceRestriction.getStatus() == PriceLimiter.Status.NOT_A_WHOLE_NUMBER) {
+                setDirty();
+                price = Math.floor(price);
+                this.update();
+            } else if (priceRestriction.getStatus() == PriceLimiter.Status.NOT_VALID) {
                 setDirty();
                 price = priceRestriction.getMin();
                 this.update();
-            } else if (price < priceRestriction.getMin()) {
+            }
+            if (price < priceRestriction.getMin()) {
                 setDirty();
                 price = priceRestriction.getMin();
                 this.update();
