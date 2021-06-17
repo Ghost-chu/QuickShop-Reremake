@@ -171,7 +171,7 @@ public class DatabaseManager {
                     }
 
                     task.run(connection);
-                    long tookTime = timer.endTimer();
+                    long tookTime = timer.stopAndGetTimePassed();
                     if (tookTime > 300) {
                         warningSender.sendWarn(
                                 "Database performance warning: It took too long time ("
@@ -183,7 +183,7 @@ public class DatabaseManager {
                     connection.commit();
                     connection.setAutoCommit(true);
                 }
-                long tookTime = ctimer.endTimer();
+                long tookTime = ctimer.stopAndGetTimePassed();
                 if (tookTime > 5500) {
                     warningSender.sendWarn(
                             "Database performance warning: It took too long time ("
