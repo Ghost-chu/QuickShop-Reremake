@@ -216,7 +216,7 @@ public class CollectorAdapter {
                 .getShopLoader()
                 .getOriginShopsInDatabase()
                 .stream()
-                .map(ShopLoader.ShopDatabaseInfoOrigin::toString)
+                .map(ShopLoader.ShopRawDatabaseInfo::toString)
                 .toArray());
         map.put("memory", plugin.getShopManager().getAllShops().stream().map(Shop::toString).toArray());
         return map;
