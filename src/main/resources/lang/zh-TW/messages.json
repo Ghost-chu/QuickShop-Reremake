@@ -34,7 +34,7 @@
   "negative-amount": "&c我的天啊，沒想到居然有人想要交易負數的數量。",
   "not-a-number": "&c輸入內容只能是數字，但你輸入了 {0}。",
   "exceeded-maximum": "&c該值超出了 Java 中的最大值。 ",
-  "not-a-integer": "&cYou must input a integer, your input was {0}.",
+  "not-a-integer": "&c輸入一定是數字，但你輸入了 {0}。",
   "player-bought-from-your-store": "&c{0} 從你的商店購買了 {1} {2}，你總共賺了 {3}。",
   "shop-out-of-stock": "&5你在 X ： {0} Y ： {1} Z ： {2} 出售 {3} 的商店已售罄一空 ！",
   "shop-has-no-space": "&c這個商店只能再收購 {0} 個 {1} 而已。",
