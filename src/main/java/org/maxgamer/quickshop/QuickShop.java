@@ -665,6 +665,18 @@ public class QuickShop extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
         try {
             File file = Paths.get(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile();
+            //When quickshop was updated, we need to load the new plugin jar
+            if (!file.exists()) {
+                if (getUpdateWatcher() != null) {
+                    File updatedJar = getUpdateWatcher().getUpdater().getUpdatedJar();
+                    if (updatedJar != null && updatedJar.exists()) {
+                        file = updatedJar;
+                    }
+                }
+            }
+            if (!file.exists()) {
+                throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Failed to find plugin jar)");
+            }
             Throwable throwable = PluginUtil.unload(this);
             if (throwable != null) {
                 throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Plugin unloading has failed)", throwable);
