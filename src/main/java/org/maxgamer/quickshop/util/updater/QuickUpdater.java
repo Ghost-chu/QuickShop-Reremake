@@ -20,7 +20,9 @@
 package org.maxgamer.quickshop.util.updater;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.io.IOException;
 
 public interface QuickUpdater {
@@ -70,4 +72,11 @@ public interface QuickUpdater {
      * @throws IOException IOException will throws if copying failed
      */
     void install(byte[] bytes) throws IOException;
+
+    /**
+     * Return the updated jar
+     *
+     * @return null if not updated, or updated file
+     */
+    @Nullable File getUpdatedJar();
 }
