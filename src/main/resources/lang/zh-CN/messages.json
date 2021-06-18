@@ -34,7 +34,7 @@
   "negative-amount": "&c你输入的数字是负数。",
   "not-a-number": "&c您只能输入一个数字，但您的输入是 {0}。",
   "exceeded-maximum": "&c该值超过了Java 中的最大值。",
-  "not-a-integer": "&cYou must input a integer, your input was {0}.",
+  "not-a-integer": "&c您只能输入一个数字，您的输入是 {0}。",
   "player-bought-from-your-store": "&c{0} 从你的商店里购买了 {1} {2}，你因此赚得了 {3}",
   "shop-out-of-stock": "&5你位于 {0}, {1}, {2}, 的商店的 {3} 脱销了。",
   "shop-has-no-space": "&c这个商店只能装下 {0} 个 {1} 了。",
@@ -321,7 +321,7 @@
   "shop-owner-self-trade": "&e你正在和自己的商店进行交易，你可能不会得到任何钱。",
   "chest-title": "QuickShop商店",
   "command-type-mismatch": "&c此命令只能由 &b{0} 执行。",
-  "unlimited-shop-owner-changed": "&eThis unlimited shop owner has been changed to {0}.",
-  "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.",
-  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
+  "unlimited-shop-owner-changed": "&e这个无限制的店主已更改为 {0}。",
+  "unlimited-shop-owner-keeped": "&e请注意: 商店持有人依然是无限商店类型, 你需要重新设置新的商店",
+  "server-crash-warning": "如果服务器运行时替换/删除QuickShop插件 Jar 文件，&c服务器可能在执行 /qs 重新加载命令后崩溃。"
 }
