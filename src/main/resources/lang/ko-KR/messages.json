@@ -34,7 +34,7 @@
   "negative-amount": "&c갯수는 음수일수 없습니다. 양수로 입력해주세요.",
   "not-a-number": "&c당신은 숫자만을 입력해야하지만 {0} 을 입력하였습니다.",
   "exceeded-maximum": "&c자바에서 허용하는 최대 값을 초과했습니다.",
-  "not-a-integer": "&cYou must input a integer, your input was {0}.",
+  "not-a-integer": "&c당신은 숫자만을 입력해야하지만 {0} 을 입력하였습니다.",
   "player-bought-from-your-store": "&c{0} 님이 당신의 상점 에서 {1} {2} 을(를) 구입했으며 당신은 {3} 원 을(를) 얻으셨습니다!",
   "shop-out-of-stock": "&5{0}, {1}, {2} 에 있는 당신의 가게의 물품 {3} 이 (가) 부족합니다.",
   "shop-has-no-space": "&c상점에는 {0} 이상의 {1} 의 공간 만 있습니다.",
@@ -323,5 +323,5 @@
   "command-type-mismatch": "&c이 명령어는 &b{0}&c에서만 사용할 수 있습니다.",
   "unlimited-shop-owner-changed": "&e무제한 상점의 주인이 {0}으로 변경되었습니다.",
   "unlimited-shop-owner-keeped": "&e주의: 상점 주인은 여전히 무제한 상점의 주인입니다, 상점을 소유하려면 상점을 초기화해야합니다.",
-  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
+  "server-crash-warning": "&cQuickShop 플러그인의 자바파일을 지운/이동후 /qs reload를 사용하면 서버가 크래쉬 될수 있습니다"
 }
