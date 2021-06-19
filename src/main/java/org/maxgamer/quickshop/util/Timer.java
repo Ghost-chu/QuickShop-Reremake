@@ -32,6 +32,7 @@ import lombok.ToString;
 @ToString
 public class Timer {
     private long startTime;
+    @EqualsAndHashCode.Exclude
     private long passedTime;
     private boolean isPaused = false;
 
