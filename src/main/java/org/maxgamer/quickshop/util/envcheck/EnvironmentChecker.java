@@ -402,4 +402,13 @@ public final class EnvironmentChecker {
         }
         return new ResultContainer(CheckResult.PASSED, "Passed checks");
     }
+
+
+    @EnvCheckEntry(name = "Permission Manager Test", priority = 10, stage = EnvCheckEntry.Stage.ON_ENABLE)
+    public ResultContainer permManagerConflictTest() {
+        if (plugin.getServer().getPluginManager().isPluginEnabled("GroupManager")) {
+            return new ResultContainer(CheckResult.WARNING, "WARNING: Unsupported plugin management plugin [GroupManager] installed, the permissions may not working.");
+        }
+        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+    }
 }
