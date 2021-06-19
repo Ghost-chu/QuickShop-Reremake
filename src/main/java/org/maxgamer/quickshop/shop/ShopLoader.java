@@ -84,28 +84,20 @@ public class ShopLoader {
      */
     public void loadShops(@Nullable String worldName) {
         //boolean backupedDatabaseInDeleteProcess = false;
-        Timer totalLoadTimer = new Timer(true);
         this.plugin.getLogger().info("Loading shops from the database...");
-        Timer fetchTimer = new Timer(true);
         int loadAfterChunkLoaded = 0;
         int loadAfterWorldLoaded = 0;
         try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
-            this.plugin
-                    .getLogger()
-                    .info("Used " + fetchTimer.stopAndGetTimePassed() + "ms to fetch all shops from the database.");
             while (rs.next()) {
-                Timer singleShopLoadTimer = new Timer(true);
                 ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
                 shopRawDatabaseInfoList.add(origin);
                 if (worldName != null && !origin.getWorld().equals(worldName)) {
-                    singleShopLoaded(singleShopLoadTimer);
                     continue;
                 }
                 ShopDatabaseInfo data = new ShopDatabaseInfo(origin);
                 //World unloaded and not found
                 if (data.getWorld() == null) {
                     ++loadAfterWorldLoaded;
-                    singleShopLoaded(singleShopLoadTimer);
                     continue;
                 }
                 Shop shop =
@@ -121,7 +113,6 @@ public class ShopLoader {
                     shop.setDirty();
                 }
                 shopsInDatabase.add(shop);
-                this.calcTimeCost(singleShopLoadTimer);
                 if (shopNullCheck(shop)) {
                     if (plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false)) {
                         plugin.getLogger().warning("Deleting shop " + shop + " caused by corrupted.");
@@ -130,13 +121,11 @@ public class ShopLoader {
                         Util.debugLog("Trouble database loading debug: " + data);
                         Util.debugLog("Somethings gone wrong, skipping the loading...");
                     }
-                    singleShopLoaded(singleShopLoadTimer);
                     continue;
                 }
                 //World unloaded but found
                 if (!Util.isWorldLoaded(shop.getLocation())) {
                     ++loadAfterWorldLoaded;
-                    singleShopLoaded(singleShopLoadTimer);
                     continue;
                 }
                 // Load to RAM
@@ -149,7 +138,6 @@ public class ShopLoader {
                         plugin.getShopManager().removeShop(shop); // Remove from Mem
                         //TODO: Only remove from memory, so if it actually is a bug, user won't lost all shops.
                         //TODO: Old shop will be deleted when in same location creating new shop.
-                        singleShopLoaded(singleShopLoadTimer);
                         continue;
                     }
                     shop.onLoad();
@@ -157,20 +145,13 @@ public class ShopLoader {
                 } else {
                     loadAfterChunkLoaded++;
                 }
-                singleShopLoaded(singleShopLoadTimer);
             }
-            long totalUsedTime = totalLoadTimer.stopAndGetTimePassed();
-            long avgPerShop = mean(loadTimes.toArray(new Long[0]));
             this.plugin
                     .getLogger()
                     .info(
                             "Successfully loaded "
                                     + totalLoaded
-                                    + " shops! (Used "
-                                    + totalUsedTime
-                                    + "ms, Avg "
-                                    + avgPerShop
-                                    + "ms per shop)");
+                                    + " shops!");
             this.plugin.getLogger().info(loadAfterChunkLoaded
                     + " shops will load after chunk have loaded, "
                     + loadAfterWorldLoaded
