@@ -1,5 +1,5 @@
 {
-  "_comment": "Merhaba çevirmen! Eğer bunu Github'tan ya da kaynak kodundan çeviriyorsan, https://crowdin.com/project/quickshop-reremake adresine gitmelisin.",
+  "_comment": "Merhaba çevirmen! Eğer bunu Github'tan ya da kaynak kodundan çeviriyorsan, https://crowdin.com/project/quickshop-reremake adresine gitmelisin",
   "file-test": "Bu bir deneme metin dosyası. Bu dosyası messages.json dosyasının bozuk mu diye kontrol etmek için kullanıyoruz. Bu dosyaya istediğin gibi sevdiğin easter egg'leri koyabilirsin :)",
   "translation-author": "Çevirmen: Cazcez, NOYB",
   "translation-version": "Destek Versiyonu: Reremake",
@@ -217,9 +217,9 @@
     "stack-hover": "&eYığın başına öğe miktarını ayarlamak için tıklayın. Normal davranış için 1 yapın.",
     "item": "&aMarket Öğesi: {0} &e[&d&lDeğiştir&e]",
     "item-hover": "&eMarket öğesini değiştirmek için tıkla",
-    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
-    "currency-hover": "&eClick to set or remove the currency that this shop is using",
-    "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
+    "currency": "&aPara Birimi: &b{0} &e[&d&lAyarla&e]",
+    "currency-hover": "&eBu mağazanın kullandığı para birimini ayarlamak veya kaldırmak için tıklayınız",
+    "lock": "&eMarket kilidi: &b{0} &e[&d&lDurum&e]",
     "lock-hover": "&eMarketin kilit korumasını aktif/deaktif et.",
     "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
     "freeze-hover": "&eMarketin dondurulma durumunu değiştir."
@@ -317,11 +317,11 @@
   "console-only": "&cBu komut sadece konsolda kullanabilir.",
   "console-only-danger": "&cBu tehlikeli bir komut, yani sadece konsol tarafından kullanılabilir.",
   "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
-  "shop-creation-failed": "&cShop creation failed, please contact with server administrator.",
-  "shop-owner-self-trade": "&eYou trading with yourself shop, so you might won't gain any balance.",
+  "shop-creation-failed": "&cMarket oluşturulurken hata meydana geldi, lütfen sunucu yöneticisi ile iletişime geçiniz.",
+  "shop-owner-self-trade": "&eKendi marketinde alışveriş yapıyorsun, bu nedenle herhangi bir kazan elde edemeyebilirsiniz.",
   "chest-title": "QuickShop Marketi",
   "command-type-mismatch": "&cBu komut sadece &b{0} &ctarafından kullanılabilir.",
-  "unlimited-shop-owner-changed": "&eThis unlimited shop owner has been changed to {0}.",
+  "unlimited-shop-owner-changed": "&eBu sınırsız marketin sahibi {0} olarak değiştirildi.",
   "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.",
-  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
+  "server-crash-warning": "&cEğer QuickShop Jar dosyasını sunucu çalışırken değiştirdiyseniz/sildiyseniz, /qs reload komutunu çalıştırdığınızda sunucu çökebilir."
 }
