@@ -322,6 +322,6 @@
   "chest-title": "QuickShop Kauppa",
   "command-type-mismatch": "&cTämän komennon voi suorittaa vain &b{0}.",
   "unlimited-shop-owner-changed": "&eTämä rajoittamaton kaupan omistaja on muutettu {0}.",
-  "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.",
-  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
+  "unlimited-shop-owner-keeped": "&eHuomio: Kaupan omistajalla on edelleen rajaton kauppa, sinun täytyy asettaa kaupan uusi omistaja itse.",
+  "server-crash-warning": "&cPalvelin voi kaatua /qs reload komennon jälkeen jos vaihdat tai poistat QuickShopin Jar tiedoston kun palvelin on päällä."
 }
