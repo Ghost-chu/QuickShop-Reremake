@@ -234,13 +234,11 @@ public class VirtualDisplayItem extends DisplayItem {
         asyncPacketSenderTask.start(plugin);
 
         if (packetAdapter == null) {
-
             packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
                 @Override
                 public void onPacketSending(@NotNull PacketEvent event) {
                     //is really full chunk data
                     //In 1.17, this value was removed, so read safely
-                    Util.debugLog("SENDING: " + event);
                     Boolean boxedIsFull = event.getPacket().getBooleans().readSafely(0);
                     boolean isFull = boxedIsFull == null || boxedIsFull;
                     if (!shop.isLoaded() || !isDisplay || !isFull || shop.isLeftShop()) {
