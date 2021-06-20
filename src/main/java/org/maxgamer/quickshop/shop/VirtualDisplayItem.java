@@ -43,6 +43,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.util.AsyncPacketSender;
 import org.maxgamer.quickshop.util.GameVersion;
+import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.lang.reflect.InvocationTargetException;
@@ -242,17 +243,18 @@ public class VirtualDisplayItem extends DisplayItem {
                     Boolean boxedIsFull = event.getPacket().getBooleans().readSafely(0);
                     boolean isFull = boxedIsFull == null || boxedIsFull;
                     if (!shop.isLoaded() || !isDisplay || !isFull || shop.isLeftShop()) {
-                        Util.debugLog("MapChunk processing skipped: shop loaded: " + shop.isLoaded() + " isdisplay: " + isDisplay + " isfull: " + isFull + " isleftshop: " + shop.isLeftShop());
                         return;
                     }
                     Player player = event.getPlayer();
                     if (player instanceof TemporaryPlayer) {
-                        Util.debugLog("MapChunk processing skipped: TemporaryPlayer");
                         return;
                     }
                     if (player == null || !player.isOnline()) {
-                        Util.debugLog("MapChunk processing skipped: Invalid player");
                         return;
+                    }
+                    if (player.getName().equals("Ghost_chu")) {
+                        Util.debugLog(JsonUtil.getGson().toJson(event));
+                        Util.debugLog("Preparing to sending fake item for player " + player.getName());
                     }
                     StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
                     //chunk x
@@ -274,6 +276,13 @@ public class VirtualDisplayItem extends DisplayItem {
                         if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
                             packetSenders.add(player.getUniqueId());
                             sendFakeItem(player);
+                            if (player.getName().equals("Ghost_chu")) {
+                                Util.debugLog("Sending fake item " + player.getName());
+                            }
+                        } else {
+                            if (player.getName().equals("Ghost_chu")) {
+                                Util.debugLog("Location incorrect when sending fake item to " + player.getName());
+                            }
                         }
                     });
                 }
