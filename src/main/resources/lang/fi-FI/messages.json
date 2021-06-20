@@ -34,7 +34,7 @@
   "negative-amount": "&cEt voi vaihtaa negatiivisia määriä",
   "not-a-number": "&cVoit ainoastaan antaa numeroita, kirjoitit {0}.",
   "exceeded-maximum": "&cArvo ylitti Javan enimmäisarvon.",
-  "not-a-integer": "&cYou must input a integer, your input was {0}.",
+  "not-a-integer": "&cVoit ainoastaan antaa kokonaislukuja, kirjoitit {0}.",
   "player-bought-from-your-store": "&c{0} osti {1} {2} kaupastasi ja sait siitä {3}.",
   "shop-out-of-stock": "&5Kaupastasi koordinaateissa {0}, {1}, {2} on loppunut {3}!",
   "shop-has-no-space": "&cKaupassa on {1} paikkaa tuotteelle {0}.",
@@ -199,7 +199,7 @@
     "setowner": "&aOmistaja: &b{0} &e[&d&lVaihda&e]",
     "infomation": "&aKaupan asetukset:",
     "setowner-hover": "&eKlikkaa vaihtaaksesi omistaja.",
-    "unlimited": "&aLoputon: {0} &e[&d&lMuuta&e]",
+    "unlimited": "&aRajaton: {0} &e[&d&lMuuta&e]",
     "unlimited-hover": "&eKlikkaa vaihtaaksesi kaupan rajattomuutta.",
     "mode-selling": "&aKaupan tila: &bMyydään &e[&d&lMuuta&e]",
     "mode-selling-hover": "&ePaina asettaaksesi kauppa osto-tilaan.",
@@ -320,8 +320,8 @@
   "shop-creation-failed": "&cKaupan luonti epäonnistui, ota yhteyttä palvelimen järjestelmänvalvojaan.",
   "shop-owner-self-trade": "&eKäyt kauppaa omassa kaupassa, joten et saa lisää rahaa.",
   "chest-title": "QuickShop Kauppa",
-  "command-type-mismatch": "&cThis command only can executed by &b{0}.",
-  "unlimited-shop-owner-changed": "&eThis unlimited shop owner has been changed to {0}.",
-  "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.",
-  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
+  "command-type-mismatch": "&cTämän komennon voi suorittaa vain &b{0}.",
+  "unlimited-shop-owner-changed": "&eTämä rajoittamaton kaupan omistaja on muutettu {0}.",
+  "unlimited-shop-owner-keeped": "&eHuomio: Kaupan omistajalla on edelleen rajaton kauppa, sinun täytyy asettaa kaupan uusi omistaja itse.",
+  "server-crash-warning": "&cPalvelin voi kaatua /qs reload komennon jälkeen jos vaihdat tai poistat QuickShopin Jar tiedoston kun palvelin on päällä."
 }
