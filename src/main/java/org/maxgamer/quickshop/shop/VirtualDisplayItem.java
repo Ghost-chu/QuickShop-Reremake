@@ -240,16 +240,20 @@ public class VirtualDisplayItem extends DisplayItem {
                 public void onPacketSending(@NotNull PacketEvent event) {
                     //is really full chunk data
                     //In 1.17, this value was removed, so read safely
+                    Util.debugLog("SENDING: " + event);
                     Boolean boxedIsFull = event.getPacket().getBooleans().readSafely(0);
                     boolean isFull = boxedIsFull == null || boxedIsFull;
                     if (!shop.isLoaded() || !isDisplay || !isFull || shop.isLeftShop()) {
+                        Util.debugLog("MapChunk processing skipped: shop loaded: " + shop.isLoaded() + " isdisplay: " + isDisplay + " isfull: " + isFull + " isleftshop: " + shop.isLeftShop());
                         return;
                     }
                     Player player = event.getPlayer();
                     if (player instanceof TemporaryPlayer) {
+                        Util.debugLog("MapChunk processing skipped: TemporaryPlayer");
                         return;
                     }
                     if (player == null || !player.isOnline()) {
+                        Util.debugLog("MapChunk processing skipped: Invalid player");
                         return;
                     }
                     StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
