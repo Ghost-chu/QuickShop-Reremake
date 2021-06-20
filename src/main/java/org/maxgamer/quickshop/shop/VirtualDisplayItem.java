@@ -253,7 +253,7 @@ public class VirtualDisplayItem extends DisplayItem {
                         return;
                     }
                     if (player.getName().equals("Ghost_chu")) {
-                        Util.debugLog(JsonUtil.getGson().toJson(event));
+                        Util.debugLog(JsonUtil.getGson().toJson(event.getPacket()));
                         Util.debugLog("Preparing to sending fake item for player " + player.getName());
                     }
                     StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
