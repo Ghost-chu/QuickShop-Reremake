@@ -43,7 +43,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.util.AsyncPacketSender;
 import org.maxgamer.quickshop.util.GameVersion;
-import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.lang.reflect.InvocationTargetException;
@@ -252,10 +251,7 @@ public class VirtualDisplayItem extends DisplayItem {
                     if (player == null || !player.isOnline()) {
                         return;
                     }
-                    if (player.getName().equals("Ghost_chu")) {
-                        Util.debugLog(JsonUtil.getGson().toJson(event.getPacket()));
-                        Util.debugLog("Preparing to sending fake item for player " + player.getName());
-                    }
+
                     StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
                     //chunk x
                     int x = integerStructureModifier.read(0);
@@ -281,7 +277,7 @@ public class VirtualDisplayItem extends DisplayItem {
                             }
                         } else {
                             if (player.getName().equals("Ghost_chu")) {
-                                Util.debugLog("Location incorrect when sending fake item to " + player.getName());
+                                Util.debugLog("Chunk data mismatch: excepted:[" + chunkLocation + "], actual: [world=" + player.getWorld().getName() + ", x=" + x + ", z=" + z + "], skipping...");
                             }
                         }
                     });
