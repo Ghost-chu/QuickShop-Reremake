@@ -365,12 +365,12 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             @NotNull String commandLabel,
             @NotNull String[] cmdArg) {
         if (plugin.getBootError() != null) {
-            if (cmdArg.length == 0 || (cmdArg.length == 1 && !"paste".equalsIgnoreCase(cmdArg[0]))) {
+            if (cmdArg.length >= 1 && !"paste".equalsIgnoreCase(cmdArg[0])) {
                 plugin.getBootError().printErrors(sender);
                 return true;
             }
         }
-        if (sender instanceof Player && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
+        if (sender instanceof Player && plugin.getConfig().getBoolean("effect.sound.oncommand")) {
             Player player = (Player) sender;
             ((Player) sender)
                     .playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
