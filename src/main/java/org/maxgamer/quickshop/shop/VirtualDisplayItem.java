@@ -272,13 +272,6 @@ public class VirtualDisplayItem extends DisplayItem {
                         if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
                             packetSenders.add(player.getUniqueId());
                             sendFakeItem(player);
-                            if (player.getName().equals("Ghost_chu")) {
-                                Util.debugLog("Sending fake item " + player.getName());
-                            }
-                        } else {
-                            if (player.getName().equals("Ghost_chu")) {
-                                Util.debugLog("Chunk data mismatch: excepted:[" + chunkLocation + "], actual: [world=" + player.getWorld().getName() + ", x=" + x + ", z=" + z + "], skipping...");
-                            }
                         }
                     });
                 }
