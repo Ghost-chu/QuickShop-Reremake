@@ -21,47 +21,27 @@ package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.InvalidDescriptionException;
-import org.bukkit.plugin.InvalidPluginException;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
-import org.maxgamer.quickshop.nonquickshopstuff.com.rylinaux.plugman.util.PluginUtil;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
 
-import java.io.File;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
+import java.util.logging.Level;
 
 @AllArgsConstructor
-public class SubCommand_Reload implements CommandProcesser {
+public class SubCommand_Reload implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.reloading", sender));
-        PluginManager pluginManager = plugin.getServer().getPluginManager();
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        MsgUtil.sendMessage(sender, "server-crash-warning");
+        MsgUtil.sendMessage(sender, "command.reloading");
         try {
-            File file = Paths.get(plugin.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile();
-            Throwable throwable = PluginUtil.unload(plugin);
-            if (throwable != null) {
-                throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Plugin unloading has failed)", throwable);
-            }
-            Plugin plugin = pluginManager.loadPlugin(file);
-            if (plugin != null) {
-                plugin.onLoad();
-                pluginManager.enablePlugin(plugin);
-            } else {
-                throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Plugin loading has failed)");
-            }
-        } catch (URISyntaxException | InvalidDescriptionException | InvalidPluginException e) {
-            throw new RuntimeException("Failed to reload QuickShop! Please consider restarting the server.", e);
+            plugin.reload();
+        } catch (Exception e) {
+            MsgUtil.sendDirectMessage(sender, "A error occurred when reloading, please check console: " + e.getMessage());
+            plugin.getLogger().log(Level.SEVERE, "A error occurred when reloading", e);
         }
     }
-
-
 }

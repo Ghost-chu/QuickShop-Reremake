@@ -23,62 +23,50 @@ import lombok.AllArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.BootError;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.logging.Level;
 
 @AllArgsConstructor
-public class SubCommand_Update implements CommandProcesser {
+public class SubCommand_Update implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Checking for updates...");
+            MsgUtil.sendDirectMessage(sender, ChatColor.YELLOW + "Checking for updates...");
 
             if (plugin.getUpdateWatcher() == null) {
-                MsgUtil.sendMessage(sender, ChatColor.RED + "It seems like the Updater has been disabled.");
+                MsgUtil.sendDirectMessage(sender, ChatColor.RED + "It seems like the Updater has been disabled.");
                 return;
             }
 
             if (plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) {
-                MsgUtil.sendMessage(sender, ChatColor.GREEN + "You're running the latest version!.");
+                MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "You're running the latest version!.");
                 return;
             }
 
-            MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Downloading update! This may take a while...");
-
-            //final byte[] pluginBin;
+            MsgUtil.sendDirectMessage(sender, ChatColor.YELLOW + "Downloading update! This may take a while...");
 
             try {
                 plugin.getUpdateWatcher().getUpdater().install(plugin.getUpdateWatcher().getUpdater().update(plugin.getUpdateWatcher().getUpdater().getCurrentRunning()));
             } catch (Exception e) {
-                MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed! Please check your console for more information.");
+                MsgUtil.sendDirectMessage(sender, ChatColor.RED + "Update failed! Please check your console for more information.");
                 plugin.getSentryErrorReporter().ignoreThrow();
                 plugin.getLogger().log(Level.WARNING, "Failed to update QuickShop because of the following error:", e);
                 return;
             }
 
-//                MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Installing update...");
-//
-//                try {
-//                    Updater.replaceTheJar(pluginBin);
-//                } catch (IOException ioe) {
-//                    MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed, get details to look the console.");
-//                    plugin.getSentryErrorReporter().ignoreThrow();
-//                    ioe.printStackTrace();
-//                    return;
-//                } catch (RuntimeException re) {
-//                    MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed, " + re.getMessage());
-//                    return;
-//                }
-
-            MsgUtil.sendMessage(sender,
+            MsgUtil.sendDirectMessage(sender,
                     ChatColor.GREEN + "Successful! Please restart your server to apply the updated version!");
+            MsgUtil.sendDirectMessage(sender,
+                    ChatColor.YELLOW + "Before you restarting the server, QuickShop won't working again.");
+            plugin.setupBootError(new BootError(plugin.getLogger(), "Reboot required after update the plugin."));
+
         });
     }
 

@@ -22,6 +22,11 @@ package org.maxgamer.quickshop.permission;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * A simple impl for PermissionProvider
+ *
+ * @author Ghost_chu
+ */
 public class BukkitPermsProvider implements PermissionProvider {
 
     @Override

@@ -20,30 +20,18 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
-public class SubCommand_FetchMessage implements CommandProcesser {
-
-    @NotNull
-    private final QuickShop plugin;
+public class SubCommand_FetchMessage implements CommandHandler<Player> {
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, ChatColor.RED + "This command can't be run by the console!");
-            return;
-        }
-
-        Util.mainThreadRun(() -> MsgUtil.flush((Player) sender));
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        Util.mainThreadRun(() -> MsgUtil.flush(sender));
     }
 
 

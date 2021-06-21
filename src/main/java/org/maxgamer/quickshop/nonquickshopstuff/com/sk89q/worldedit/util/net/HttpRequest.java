@@ -286,7 +286,7 @@ public class HttpRequest implements Closeable {
 
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            int b = 0;
+            int b;
             while ((b = inputStream.read()) != -1) {
                 bos.write(b);
             }
@@ -342,7 +342,7 @@ public class HttpRequest implements Closeable {
             bis = new BufferedInputStream(inputStream);
 
             byte[] data = new byte[READ_BUFFER_SIZE];
-            int len = 0;
+            int len;
             while ((len = bis.read(data, 0, READ_BUFFER_SIZE)) >= 0) {
                 out.write(data, 0, len);
                 readBytes += len;

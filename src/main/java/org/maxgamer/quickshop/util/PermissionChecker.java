@@ -122,9 +122,6 @@ public class PermissionChecker {
         final Result isCanBuild = new Result();
 
         BlockBreakEvent beMainHand;
-        // beMainHand = new BlockPlaceEvent(block, block.getState(), block.getRelative(0, -1, 0),
-        // player.getInventory()
-        // getItemInMainHand(), player, true, EquipmentSlot.HAND);
 
         beMainHand = new BlockBreakEvent(block, player) {
 

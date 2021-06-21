@@ -67,13 +67,14 @@ import java.util.logging.Level;
 
 public class Util {
     private static final EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
-    private static final EnumMap<Material, Entry<Double, Double>> restrictedPrices =
-            new EnumMap<>(Material.class);
+    private static final EnumMap<Material, Entry<Double, Double>> restrictedPrices = new EnumMap<>(Material.class);
     private static final EnumMap<Material, Integer> customStackSize = new EnumMap<>(Material.class);
     private static final EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
     private static final List<BlockFace> verticalFacing = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
     private static final List<String> debugLogs = new ArrayList<>();
     private static final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    @Getter
+    private static final Map<String, String> currency2Symbol = new HashMap<>();
     private static int bypassedCustomStackSize = -1;
     private static Yaml yaml = null;
     private static boolean devMode = false;
@@ -87,8 +88,8 @@ public class Util {
     private static String alternateCurrencySymbol;
     private static boolean disableVaultFormat;
     private static boolean useDecimalFormat;
-    @Getter
-    private static final Map<String, String> currency2Symbol = new HashMap<>();
+    @Nullable
+    private static Class<?> cachedNMSClass = null;
 
     /**
      * Convert strArray to String. E.g "Foo, Bar"
@@ -338,7 +339,6 @@ public class Util {
         }
         lock.writeLock().unlock();
     }
-
 
     /**
      * Formats the given number according to how vault would like it. E.g. $50 or 5 dollars.
@@ -808,6 +808,28 @@ public class Util {
         }
     }
 
+    /**
+     * Get this method available or not
+     *
+     * @param className class qualifiedName
+     * @param method    the name of method
+     * @param args      the arg of method
+     * @return boolean Available
+     */
+    public static boolean isMethodAvailable(@NotNull String className, String method, Class<?>... args) {// nosemgrep
+        try {
+            Class<?> clazz = Class.forName(className);
+            try {
+                clazz.getDeclaredMethod(method, args);
+            } catch (NoSuchMethodException e) {
+                clazz.getMethod(method, args);
+            }
+            return true;
+        } catch (Throwable e) {
+            return false;
+        }
+    }
+
     public static boolean isDisplayAllowBlock(@NotNull Material mat) {
         if (isAir(mat)) {
             return true;
@@ -851,13 +873,23 @@ public class Util {
     }
 
     /**
+     * Returns true if the world of given location is loaded or not.
+     *
+     * @param loc The location containing world
+     * @return true if the world of given location is loaded or not.
+     */
+    public static boolean isWorldLoaded(Location loc) {
+        return (getNMSVersion().contains("1_13") && loc.getWorld() != null) || loc.isWorldLoaded();
+    }
+
+    /**
      * Returns true if the given location is loaded or not.
      *
      * @param loc The location
      * @return true if the given location is loaded or not.
      */
     public static boolean isLoaded(@NotNull Location loc) {
-        if ((!getNMSVersion().contains("1_13") && !loc.isWorldLoaded()) || loc.getWorld() == null) {
+        if (!isWorldLoaded(loc)) {
             return false;
         }
         // Calculate the chunks coordinates. These are 1,2,3 for each chunk, NOT
@@ -1143,7 +1175,6 @@ public class Util {
         return cfg.saveToString();
     }
 
-
     /**
      * Return the Class name.
      *
@@ -1151,7 +1182,6 @@ public class Util {
      */
     @NotNull
     public static String getClassPrefix() {
-
         String className = Thread.currentThread().getStackTrace()[2].getClassName();
         try {
             Class<?> c = Class.forName(className);
@@ -1259,16 +1289,12 @@ public class Util {
                     .forEach((shop -> finalReport.append(shop).append("\n")));
             try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
                 outputStream.write(finalReport.toString());
-            } catch (IOException ignored) {
-                plugin.getLogger().log(Level.WARNING, "Backup failed", ignored);
+            } catch (IOException exception) {
+                plugin.getLogger().log(Level.WARNING, "Backup failed", exception);
             }
 
         });
     }
-
-
-    @Nullable
-    private static Class<?> cachedNMSClass = null;
 
     @NotNull
     public static Class<?> getNMSClass(@Nullable String className) {

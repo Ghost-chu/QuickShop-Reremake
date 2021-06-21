@@ -157,6 +157,8 @@ public class WorldGuardIntegration extends QSIntegratedPlugin {
                             return false;
                         }
                     }
+                default:
+                    // do nothing
             }
         }
         return true;
@@ -211,6 +213,8 @@ public class WorldGuardIntegration extends QSIntegratedPlugin {
                     } else {
                         return query.getApplicableRegions(wgLoc).isOwnerOfAll(localPlayer);
                     }
+                default:
+                    // do nothing
             }
         }
         return true;

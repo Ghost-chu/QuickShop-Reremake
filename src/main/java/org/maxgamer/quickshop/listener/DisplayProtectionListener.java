@@ -42,7 +42,6 @@ import org.maxgamer.quickshop.shop.DisplayType;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
-@SuppressWarnings("DuplicatedCode")
 public class DisplayProtectionListener extends ProtectionListenerBase {
 
 

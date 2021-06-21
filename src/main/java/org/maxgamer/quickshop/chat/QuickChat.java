@@ -30,24 +30,63 @@ import org.maxgamer.quickshop.shop.Shop;
  * QuickChat is a system to allow us to processing plain text and also MineDown
  */
 public interface QuickChat {
+    /**
+     * Send plain text to specified receiver
+     *
+     * @param receiver The receiver will receive this message
+     * @param message  The plain text to be sent
+     */
     void send(@NotNull CommandSender receiver, @Nullable String message);
 
+    /**
+     * Send QuickComponent to specified receiver
+     *
+     * @param receiver  The receiver will receive this message
+     * @param component The plain text to be sent
+     */
     void send(@NotNull CommandSender receiver, @Nullable QuickComponent component);
 
+    /**
+     * Send chat with hover-item to specified receiver
+     *
+     * @param player    The PLAYER will receive this message
+     * @param text      The text will sent
+     * @param itemStack The ItemStack will append to text in message
+     */
     void sendItemHologramChat(
             @NotNull Player player,
-            @NotNull String left,
-            @NotNull ItemStack itemStack,
-            @NotNull String right);
+            @NotNull String text,
+            @NotNull ItemStack itemStack);
 
-    @NotNull QuickComponent getItemHologramChat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String
-            message);
+    @NotNull QuickComponent getItemHologramChat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String message);
 
+    /**
+     * Create chat with hover-item to specified receiver
+     *
+     * @param player    The PLAYER will receive this message
+     * @param text      The text will sent
+     * @param itemStack The ItemStack will append to text in message
+     * @return The QuickComponent created by this method
+     */
+    @NotNull QuickComponent getItemTextComponent(@NotNull Player player, @NotNull ItemStack itemStack, @NotNull String text);
 
-    @NotNull QuickComponent getItemTextComponent(@NotNull ItemStack itemStack, @NotNull Player player, @NotNull String normalText);
-
+    /**
+     * Send click-run-command chat to specified receiver
+     *
+     * @param receiver  The PLAYER will receive this message
+     * @param message   The text will sent
+     * @param hoverText The will show when hover on chat
+     * @param command   The command when click to be run
+     */
     void sendExecutableChat(@NotNull CommandSender receiver, @NotNull String message, @NotNull String hoverText, @NotNull String command);
 
+    /**
+     * Send click-suggest-command chat to specified receiver
+     *
+     * @param receiver The PLAYER will receive this message
+     * @param message  The text will sent
+     * @param command  The command when click to be suggest
+     */
     void sendSuggestedChat(@NotNull CommandSender receiver, @NotNull String message, @NotNull String hoverText, @NotNull String command);
 
 }

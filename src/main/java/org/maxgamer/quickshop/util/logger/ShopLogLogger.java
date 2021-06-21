@@ -25,7 +25,7 @@ import org.maxgamer.quickshop.economy.EconomyTransaction;
 import org.maxgamer.quickshop.shop.Shop;
 
 import java.util.UUID;
-
+// TODO
 public interface ShopLogLogger {
     void recordPurchase(@NotNull UUID trader, @NotNull Shop shop, @NotNull EconomyTransaction transaction, long timestamp);
 

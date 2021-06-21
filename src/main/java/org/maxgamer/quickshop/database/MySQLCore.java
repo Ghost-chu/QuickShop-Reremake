@@ -60,8 +60,8 @@ public class MySQLCore extends AbstractDatabaseCore {
         info.setProperty("password", pass);
         info.setProperty("useUnicode", "true");
         info.setProperty("characterEncoding", "utf8");
-        info.setProperty("maxReconnects", "65535");
-        info.setProperty("failOverReadOnly", "false");
+        //info.setProperty("maxReconnects", "65535");
+        // info.setProperty("failOverReadOnly", "false");
         info.setProperty("useSSL", String.valueOf(useSSL));
         if (false) { //TODO Option for addBatch to improve performance
             info.setProperty("rewriteBatchedStatements", "true");

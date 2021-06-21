@@ -53,15 +53,13 @@ import java.util.logging.Logger;
 public class ShopLoader {
     private final List<Long> loadTimes = new ArrayList<>();
 
-    private final Map<Timer, Double> costCache = new HashMap<>();
+    private final Map<Timer, Double> timeCostCache = new HashMap<>();
 
     private final QuickShop plugin;
     /* This may contains broken shop, must use null check before load it. */
     private final List<Shop> shopsInDatabase = new CopyOnWriteArrayList<>();
-    private final List<ShopDatabaseInfoOrigin> originShopsInDatabase = new CopyOnWriteArrayList<>();
+    private final List<ShopRawDatabaseInfo> shopRawDatabaseInfoList = new CopyOnWriteArrayList<>();
     private int errors;
-    private int loadAfterChunkLoaded = 0;
-    private int loadAfterWorldLoaded = 0;
     private int totalLoaded = 0;
     //private final WarningSender warningSender;
 
@@ -80,28 +78,28 @@ public class ShopLoader {
     }
 
     /**
-     * Load all shops
+     * Load all shops in the specified world
      *
-     * @param worldName The world name
+     * @param worldName The world name, null if load all shops
      */
     public void loadShops(@Nullable String worldName) {
         //boolean backupedDatabaseInDeleteProcess = false;
-        Timer totalLoadTimer = new Timer(true);
         this.plugin.getLogger().info("Loading shops from the database...");
-        Timer fetchTimer = new Timer(true);
+        int loadAfterChunkLoaded = 0;
+        int loadAfterWorldLoaded = 0;
         try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
-            this.plugin
-                    .getLogger()
-                    .info("Used " + fetchTimer.endTimer() + "ms to fetch all shops from the database.");
             while (rs.next()) {
-                Timer singleShopLoadTimer = new Timer(true);
-                ShopDatabaseInfoOrigin origin = new ShopDatabaseInfoOrigin(rs);
-                originShopsInDatabase.add(origin);
+                ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
+                shopRawDatabaseInfoList.add(origin);
                 if (worldName != null && !origin.getWorld().equals(worldName)) {
-                    singleShopLoaded(singleShopLoadTimer);
                     continue;
                 }
                 ShopDatabaseInfo data = new ShopDatabaseInfo(origin);
+                //World unloaded and not found
+                if (data.getWorld() == null) {
+                    ++loadAfterWorldLoaded;
+                    continue;
+                }
                 Shop shop =
                         new ContainerShop(plugin,
                                 data.getLocation(),
@@ -115,7 +113,6 @@ public class ShopLoader {
                     shop.setDirty();
                 }
                 shopsInDatabase.add(shop);
-                this.costCalc(singleShopLoadTimer);
                 if (shopNullCheck(shop)) {
                     if (plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false)) {
                         plugin.getLogger().warning("Deleting shop " + shop + " caused by corrupted.");
@@ -124,8 +121,11 @@ public class ShopLoader {
                         Util.debugLog("Trouble database loading debug: " + data);
                         Util.debugLog("Somethings gone wrong, skipping the loading...");
                     }
-                    loadAfterWorldLoaded++;
-                    singleShopLoaded(singleShopLoadTimer);
+                    continue;
+                }
+                //World unloaded but found
+                if (!Util.isWorldLoaded(shop.getLocation())) {
+                    ++loadAfterWorldLoaded;
                     continue;
                 }
                 // Load to RAM
@@ -138,7 +138,6 @@ public class ShopLoader {
                         plugin.getShopManager().removeShop(shop); // Remove from Mem
                         //TODO: Only remove from memory, so if it actually is a bug, user won't lost all shops.
                         //TODO: Old shop will be deleted when in same location creating new shop.
-                        singleShopLoaded(singleShopLoadTimer);
                         continue;
                     }
                     shop.onLoad();
@@ -146,23 +145,16 @@ public class ShopLoader {
                 } else {
                     loadAfterChunkLoaded++;
                 }
-                singleShopLoaded(singleShopLoadTimer);
             }
-            long totalUsedTime = totalLoadTimer.endTimer();
-            long avgPerShop = mean(loadTimes.toArray(new Long[0]));
             this.plugin
                     .getLogger()
                     .info(
                             "Successfully loaded "
                                     + totalLoaded
-                                    + " shops! (Used "
-                                    + totalUsedTime
-                                    + "ms, Avg "
-                                    + avgPerShop
-                                    + "ms per shop)");
-            this.plugin.getLogger().info(this.loadAfterChunkLoaded
+                                    + " shops!");
+            this.plugin.getLogger().info(loadAfterChunkLoaded
                     + " shops will load after chunk have loaded, "
-                    + this.loadAfterWorldLoaded
+                    + loadAfterWorldLoaded
                     + " shops will load after the world has loaded.");
         } catch (Exception e) {
             exceptionHandler(e, null);
@@ -171,7 +163,7 @@ public class ShopLoader {
 
     private void singleShopLoaded(@NotNull Timer singleShopLoadTimer) {
         totalLoaded++;
-        long singleShopLoadTime = singleShopLoadTimer.endTimer();
+        long singleShopLoadTime = singleShopLoadTimer.stopAndGetTimePassed();
         loadTimes.add(singleShopLoadTime);
         Util.debugLog("Loaded shop used time " + singleShopLoadTime + "ms");
 //        if (singleShopLoadTime > 1500) {
@@ -179,35 +171,31 @@ public class ShopLoader {
 //        }
     }
 
-    private double costCalc(@NotNull Timer timer) {
-        costCache.putIfAbsent(timer, (double) timer.getTimer());
-        return timer.getTimer() - costCache.get(timer);
+    private double calcTimeCost(@NotNull Timer timer) {
+        timeCostCache.putIfAbsent(timer, (double) timer.getPassedTime());
+        return timer.getPassedTime() - timeCostCache.get(timer);
     }
 
     @SuppressWarnings("ConstantConditions")
     private boolean shopNullCheck(@Nullable Shop shop) {
         if (shop == null) {
-            Util.debugLog("Shop Object is null");
+            Util.debugLog("Shop object is null");
             return true;
         }
         if (shop.getItem() == null) {
-            Util.debugLog("Shop ItemStack is null");
+            Util.debugLog("Shop itemStack is null");
             return true;
         }
         if (shop.getItem().getType() == Material.AIR) {
-            Util.debugLog("Shop ItemStack type can't be AIR");
+            Util.debugLog("Shop itemStack type can't be AIR");
             return true;
         }
         if (shop.getLocation() == null) {
-            Util.debugLog("Shop Location is null");
-            return true;
-        }
-        if (shop.getLocation().getWorld() == null) {
-            Util.debugLog("Shop World is null");
+            Util.debugLog("Shop location is null");
             return true;
         }
         if (shop.getOwner() == null) {
-            Util.debugLog("Shop Owner is null");
+            Util.debugLog("Shop owner is null");
             return true;
         }
         if (plugin.getServer().getOfflinePlayer(shop.getOwner()).getName() == null) {
@@ -294,8 +282,8 @@ public class ShopLoader {
             String shopStr = shopsPlain[i].trim();
             boolean success = false;
             try {
-                ShopDatabaseInfoOrigin shopDatabaseInfoOrigin = gson.fromJson(shopStr, ShopDatabaseInfoOrigin.class);
-                originShopsInDatabase.add(shopDatabaseInfoOrigin);
+                ShopRawDatabaseInfo shopDatabaseInfoOrigin = gson.fromJson(shopStr, ShopRawDatabaseInfo.class);
+                shopRawDatabaseInfoList.add(shopDatabaseInfoOrigin);
                 ShopDatabaseInfo data = new ShopDatabaseInfo(shopDatabaseInfoOrigin);
                 Shop shop =
                         new ContainerShop(plugin,
@@ -331,12 +319,12 @@ public class ShopLoader {
 
     public void removeShopFromShopLoader(Shop shop) {
         if (this.shopsInDatabase.remove(shop)) {
-            for (ShopDatabaseInfoOrigin origin : this.originShopsInDatabase) {
-                if (Objects.equals(shop.getLocation().getWorld().getName(), origin.getWorld())) {
-                    if (shop.getLocation().getBlockX() == origin.getX()) {
-                        if (shop.getLocation().getBlockY() == origin.getY()) {
-                            if (shop.getLocation().getBlockZ() == origin.getZ()) {
-                                this.originShopsInDatabase.remove(origin);
+            for (ShopRawDatabaseInfo rawDatabaseInfo : this.shopRawDatabaseInfoList) {
+                if (Objects.equals(shop.getLocation().getWorld().getName(), rawDatabaseInfo.getWorld())) {
+                    if (shop.getLocation().getBlockX() == rawDatabaseInfo.getX()) {
+                        if (shop.getLocation().getBlockY() == rawDatabaseInfo.getY()) {
+                            if (shop.getLocation().getBlockZ() == rawDatabaseInfo.getZ()) {
+                                this.shopRawDatabaseInfoList.remove(rawDatabaseInfo);
                                 break;
                             }
                         }
@@ -347,8 +335,71 @@ public class ShopLoader {
     }
 
     @NotNull
-    public List<ShopDatabaseInfoOrigin> getOriginShopsInDatabase() {
-        return new ArrayList<>(originShopsInDatabase);
+    public List<ShopRawDatabaseInfo> getOriginShopsInDatabase() {
+        return new ArrayList<>(shopRawDatabaseInfoList);
+    }
+
+    @Getter
+    @Setter
+    static public class ShopRawDatabaseInfo {
+        private String item;
+
+        private String moderators;
+
+        private double price;
+
+        private int type;
+
+        private boolean unlimited;
+
+        private String world;
+
+        private int x;
+
+        private int y;
+
+        private int z;
+
+        private String extra;
+
+        ShopRawDatabaseInfo(ResultSet rs) throws SQLException {
+            this.x = rs.getInt("x");
+            this.y = rs.getInt("y");
+            this.z = rs.getInt("z");
+            this.world = rs.getString("world");
+            this.item = rs.getString("itemConfig");
+            this.moderators = rs.getString("owner");
+            this.price = rs.getDouble("price");
+            this.type = rs.getInt("type");
+            this.unlimited = rs.getBoolean("unlimited");
+            this.extra = rs.getString("extra");
+            //handle old shops
+            if (extra == null) {
+                extra = "";
+            }
+        }
+
+        ShopRawDatabaseInfo(int x, int y, int z, String world, String itemConfig, String owner, double price, int type, boolean unlimited, String extra) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.world = world;
+            this.item = itemConfig;
+            this.moderators = owner;
+            this.price = price;
+            this.type = type;
+            this.unlimited = unlimited;
+            this.extra = extra;
+        }
+
+        ShopRawDatabaseInfo() {
+
+        }
+
+        @Override
+        public String toString() {
+            return JsonUtil.getGson().toJson(this);
+        }
     }
 
     @Getter
@@ -378,7 +429,7 @@ public class ShopLoader {
 
         private AtomicBoolean needUpdate = new AtomicBoolean(false);
 
-        ShopDatabaseInfo(ShopDatabaseInfoOrigin origin) {
+        ShopDatabaseInfo(ShopRawDatabaseInfo origin) {
             try {
                 this.x = origin.getX();
                 this.y = origin.getY();
@@ -426,69 +477,6 @@ public class ShopLoader {
             return shopModerator;
         }
 
-    }
-
-    @Getter
-    @Setter
-    static public class ShopDatabaseInfoOrigin {
-        private String item;
-
-        private String moderators;
-
-        private double price;
-
-        private int type;
-
-        private boolean unlimited;
-
-        private String world;
-
-        private int x;
-
-        private int y;
-
-        private int z;
-
-        private String extra;
-
-        ShopDatabaseInfoOrigin(ResultSet rs) throws SQLException {
-            this.x = rs.getInt("x");
-            this.y = rs.getInt("y");
-            this.z = rs.getInt("z");
-            this.world = rs.getString("world");
-            this.item = rs.getString("itemConfig");
-            this.moderators = rs.getString("owner");
-            this.price = rs.getDouble("price");
-            this.type = rs.getInt("type");
-            this.unlimited = rs.getBoolean("unlimited");
-            this.extra = rs.getString("extra");
-            //handle old shops
-            if (extra == null) {
-                extra = "";
-            }
-        }
-
-        ShopDatabaseInfoOrigin(int x, int y, int z, String world, String itemConfig, String owner, double price, int type, boolean unlimited, String extra) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.world = world;
-            this.item = itemConfig;
-            this.moderators = owner;
-            this.price = price;
-            this.type = type;
-            this.unlimited = unlimited;
-            this.extra = extra;
-        }
-
-        ShopDatabaseInfoOrigin() {
-
-        }
-
-        @Override
-        public String toString() {
-            return JsonUtil.getGson().toJson(this);
-        }
     }
 
 }

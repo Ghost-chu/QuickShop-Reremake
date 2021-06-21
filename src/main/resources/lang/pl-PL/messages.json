@@ -5,7 +5,7 @@
   "translation-version": "Wspierana wersja: Reremake",
   "translation-contributors": "Współtwórcy: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken i Andre_601",
   "translation-country": "Język: Polski (pl_PL)",
-  "language-version": "56",
+  "language-version": "58",
   "not-looking-at-shop": "&cNie można znaleźć QuickShop. Musisz na niego patrzeć.",
   "no-anythings-in-your-hand": "&cW twojej ręce nic nie ma.",
   "no-permission": "&cNie masz uprawnień, aby to zrobić.",
@@ -34,7 +34,7 @@
   "negative-amount": "&cNie możesz handlować ujemnymi kwotami",
   "not-a-number": "Możesz wpisać tylko liczbę, ty wpisałeś {0}.",
   "exceeded-maximum": "&cWartość przekroczyła maksymalną wartość w Java.",
-  "not-a-integer": "Musisz wprowadzić liczbę, ty wpisałeś {0}.",
+  "not-a-integer": "&cMusisz wprowadzić całkowitą liczbę, ty wpisałeś {0}.",
   "player-bought-from-your-store": "&c{0} zakupił {1} {2} w Twoim sklepie, i zarobiłeś {3}.",
   "shop-out-of-stock": "&5W twoim sklepie na {0}, {1}, {2}, zabrakło {3}!",
   "shop-has-no-space": "&cSklep ma miejsce tylko na {0} więcej {1}.",
@@ -319,5 +319,9 @@
   "clean-warning": "&eTa komenda wyczyści &cwszystkie &esklepy, jeśli sklep jest uszkodzony, został utworzony w niedozwolonych światach, sprzedaje/skupuje niedozwolone przedmioty lub &c&lISTNIEJE W NIEZAŁADOWANYM ŚWIECIE&e. Upewnij się, że najpierw utwórzyłeś pełną kopię zapasową danych Twojego sklepu i użyj &b/qs cleanghost confirm &eaby kontynuować.",
   "shop-creation-failed": "&cTworzenie sklepu nie powiodło się, skontaktuj się z administratorem serwera.",
   "shop-owner-self-trade": "&eHandlujesz z własnym sklepem, więc nie będziesz mógł uzyskać żadnych korzyści.",
-  "chest-title": "Sklep QuickShop"
+  "chest-title": "Sklep QuickShop",
+  "command-type-mismatch": "&cTa komenda może być wykonana tylko przez &b{0}.",
+  "unlimited-shop-owner-changed": "&eTen właściciel sklepu nielimitowanego został zmieniony na {0}.",
+  "unlimited-shop-owner-keeped": "&eUwaga: Właściciel sklepu nadal jest właścicielem nielimitowanego sklepu, musisz ustawić nowego właściciela sklepu samodzielnie.",
+  "server-crash-warning": "&cSerwer może się zawiesić po wykonaniu polecenia /qs reload po zastąpieniu/usunięciu pliku Jar pluginu QuickShop podczas uruchamiania serwera."
 }

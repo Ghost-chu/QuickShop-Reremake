@@ -20,10 +20,10 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -31,13 +31,11 @@ import org.maxgamer.quickshop.util.Util;
 import java.util.UUID;
 
 @AllArgsConstructor
-public class SubCommand_SilentUnlimited implements CommandProcesser {
+public class SubCommand_SilentUnlimited implements CommandHandler<Player> {
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
             Util.debugLog("Exception on command! Canceling!");
             return;
@@ -46,7 +44,7 @@ public class SubCommand_SilentUnlimited implements CommandProcesser {
         Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(UUID.fromString(cmdArg[0]));
 
         if (shop == null) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;
         }
 
@@ -55,11 +53,17 @@ public class SubCommand_SilentUnlimited implements CommandProcesser {
         MsgUtil.sendControlPanelInfo(sender, shop);
 
         if (shop.isUnlimited()) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.toggle-unlimited.unlimited", sender));
+            MsgUtil.sendMessage(sender, "command.toggle-unlimited.unlimited");
+            if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
+                plugin.getShopManager().migrateOwnerToUnlimitedShopOwner(shop);
+                MsgUtil.sendMessage(sender, "unlimited-shop-owner-changed", plugin.getShopManager().getCacheUnlimitedShopAccount().getName());
+            }
             return;
         }
-
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.toggle-unlimited.limited", sender));
+        MsgUtil.sendMessage(sender, "command.toggle-unlimited.limited");
+        if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
+            MsgUtil.sendMessage(sender, "unlimited-shop-owner-keeped");
+        }
     }
 
 }

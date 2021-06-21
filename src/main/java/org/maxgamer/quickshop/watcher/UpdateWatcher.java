@@ -39,6 +39,7 @@ import java.util.Random;
 public class UpdateWatcher implements Listener {
 
     private final QuickUpdater updater = new JenkinsUpdater(QuickShop.getInstance().getBuildInfo());
+    private final Random random = new Random();
     private BukkitTask cronTask = null;
 
     public QuickUpdater getUpdater() {
@@ -48,8 +49,6 @@ public class UpdateWatcher implements Listener {
     public BukkitTask getCronTask() {
         return cronTask;
     }
-
-    private final Random random = new Random();
 
     public void init() {
         cronTask = QuickShop.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(QuickShop.getInstance(), () -> {
