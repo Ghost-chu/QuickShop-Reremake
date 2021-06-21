@@ -25,6 +25,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -33,6 +35,7 @@ public class PriceLimiter {
     private double minPrice;
     private double maxPrice;
     private boolean allowFreeShop;
+    private boolean wholeNumberOnly;
 
     @NotNull
     public CheckResult check(@NotNull ItemStack stack, double price) {
@@ -42,6 +45,14 @@ public class PriceLimiter {
         if (allowFreeShop) {
             if (price != 0 && price < minPrice) {
                 return new CheckResult(Status.REACHED_PRICE_MIN_LIMIT, minPrice, maxPrice);
+            }
+        }
+        if (wholeNumberOnly) {
+            try {
+                BigDecimal.valueOf(price).setScale(0, RoundingMode.UNNECESSARY);
+            } catch (ArithmeticException exception) {
+                Util.debugLog(exception.getMessage());
+                return new CheckResult(Status.NOT_A_WHOLE_NUMBER, minPrice, maxPrice);
             }
         }
         if (price < minPrice) {
@@ -68,19 +79,20 @@ public class PriceLimiter {
         return new CheckResult(Status.PASS, minPrice, maxPrice);
     }
 
+    public enum Status {
+        PASS,
+        REACHED_PRICE_MAX_LIMIT,
+        REACHED_PRICE_MIN_LIMIT,
+        PRICE_RESTRICTED,
+        NOT_A_WHOLE_NUMBER,
+        NOT_VALID
+    }
+
     @AllArgsConstructor
     @Data
     public static class CheckResult {
         private PriceLimiter.Status status;
         private double min;
         private double max;
-    }
-
-    public enum Status {
-        PASS,
-        REACHED_PRICE_MAX_LIMIT,
-        REACHED_PRICE_MIN_LIMIT,
-        PRICE_RESTRICTED,
-        NOT_VALID
     }
 }

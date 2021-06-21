@@ -5,7 +5,7 @@
   "translation-version": "Versão de suporte: Remake",
   "translation-contributors": "Contribuidores: Torre de Timor, Netherfoam, KaiNoMood, Mgazul, JackTheChicken e Andre_601",
   "translation-country": "Zona do idioma: Português Brasileiro (pt_BR)",
-  "language-version": "56",
+  "language-version": "58",
   "not-looking-at-shop": "Não conseguimos encontrar uma QuickShop. Você precisa estar olhando para uma.",
   "no-anythings-in-your-hand": "&cNão há nada na sua mão.",
   "no-permission": "&cVocê não tem permissão para fazer isso.",
@@ -34,7 +34,7 @@
   "negative-amount": "&cVocê não pode trocar com valores negativos",
   "not-a-number": "&cVocê só pode inserir um número, sua entrada foi {0}.",
   "exceeded-maximum": "&cO valor excedeu o valor máximo em Java.",
-  "not-a-integer": "&cVocê deve inserir um número, sua entrada foi {0}.",
+  "not-a-integer": "&cYou must input a integer, your input was {0}.",
   "player-bought-from-your-store": "&c{0} comprou {1} {2} da sua loja e você pagou {3} em impostos.",
   "shop-out-of-stock": "&5Sua loja em {0}, {1}, {2} ficou sem {3}!",
   "shop-has-no-space": "&cA loja só tem espaço para mais {0} de {1}.",
@@ -319,5 +319,9 @@
   "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
   "shop-creation-failed": "&cShop creation failed, please contact with server administrator.",
   "shop-owner-self-trade": "&eYou trading with yourself shop, so you might won't gain any balance.",
-  "chest-title": "QuickShop Store"
+  "chest-title": "QuickShop Store",
+  "command-type-mismatch": "&cThis command only can executed by &b{0}.",
+  "unlimited-shop-owner-changed": "&eThis unlimited shop owner has been changed to {0}.",
+  "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.",
+  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
 }

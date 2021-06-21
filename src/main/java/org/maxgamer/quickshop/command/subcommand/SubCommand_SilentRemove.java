@@ -20,12 +20,10 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -33,30 +31,27 @@ import org.maxgamer.quickshop.util.Util;
 import java.util.UUID;
 
 @AllArgsConstructor
-public class SubCommand_SilentRemove implements CommandProcesser {
+public class SubCommand_SilentRemove implements CommandHandler<Player> {
 
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
             Util.debugLog("Exception on command! Canceling!");
             return;
         }
 
         Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(UUID.fromString(cmdArg[0]));
-        final Player p = (Player) sender;
 
         if (shop == null) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender, "not-looking-at-shop");
             return;
         }
 
-        if (!shop.getModerator().isModerator(p.getUniqueId())
+        if (!shop.getModerator().isModerator(sender.getUniqueId())
                 && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy")) {
-            MsgUtil.sendMessage(sender, ChatColor.RED + MsgUtil.getMessage("no-permission", sender));
+            MsgUtil.sendMessage(sender, "no-permission");
             return;
         }
 

@@ -25,42 +25,41 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
-public class SubCommand_CleanGhost implements CommandProcesser {
+public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender,
+            MsgUtil.sendDirectMessage(sender,
                     ChatColor.YELLOW
                             + "This command will purge all shops that: have corrupted data / are created in disallowed or unloaded worlds / trade with blacklisted items! Please make sure you have a backup of your shops data! Use /qs cleanghost to confirm the purge.");
             return;
         }
 
         if (!"confirm".equalsIgnoreCase(cmdArg[0])) {
-            MsgUtil.sendMessage(sender,
+            MsgUtil.sendDirectMessage(sender,
                     ChatColor.YELLOW
                             + "This command will purge all shops that: have corrupted data / are created in disallowed or unloaded worlds / trade with blacklisted items! Please make sure you have a backup of your shops data! Use /qs cleanghost to confirm the purge.");
             return;
         }
 
-        MsgUtil.sendMessage(sender,
+        MsgUtil.sendDirectMessage(sender,
                 ChatColor.GREEN
                         + "Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...");
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            MsgUtil.sendMessage(sender, ChatColor.GREEN + "Starting async thread, please wait...");
+            MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "Starting async thread, please wait...");
             Util.backupDatabase(); // Already warn the user, don't care about backup result.
             for (Shop shop : plugin.getShopLoader().getShopsInDatabase()) {
-                MsgUtil.sendMessage(sender,
+                MsgUtil.sendDirectMessage(sender,
                         ChatColor.GRAY
                                 + "Checking the shop "
                                 + shop
@@ -68,29 +67,15 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                 if (shop == null) {
                     continue; // WTF
                 }
-          /*
-          shop.getItem() is a constant that has NotNull annotations so.
-          if (shop.getItem() == null) {
-              MsgUtil.sendMessage(sender,ChatColor.YELLOW + "Shop " + shop + " removing cause item data is damaged.");
-              shop.delete();
-              continue;
-          }*/
                 if (shop.getItem().getType() == Material.AIR) {
-                    MsgUtil.sendMessage(sender,
+                    MsgUtil.sendDirectMessage(sender,
                             ChatColor.YELLOW + "Deleting shop " + shop + " because of corrupted item data.");
                     plugin.log("Deleting shop " + shop + " as requested by the /qs cleanghost command.");
                     Util.mainThreadRun(shop::delete);
                     continue;
                 }
-          /*
-          shop.getLocation() is a constant that has NotNull annotations so.
-          if (shop.getLocation() == null) {
-              MsgUtil.sendMessage(sender,ChatColor.YELLOW + "Deleting shop " + shop + " because of corrupted location data.");
-              shop.delete();
-              continue;
-          }*/
                 if (shop.getLocation().getWorld() == null) {
-                    MsgUtil.sendMessage(sender,
+                    MsgUtil.sendDirectMessage(sender,
                             ChatColor.YELLOW + "Deleting shop " + shop + " because the its world is not loaded.");
                     Util.mainThreadRun(shop::delete);
                     plugin.log("Deleting shop " + shop + " as requested by the /qs cleanghost command.");
@@ -98,7 +83,7 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                 }
                 //noinspection ConstantConditions
                 if (shop.getOwner() == null) {
-                    MsgUtil.sendMessage(sender,
+                    MsgUtil.sendDirectMessage(sender,
                             ChatColor.YELLOW + "Deleting shop " + shop + " because of corrupted owner data.");
                     Util.mainThreadRun(shop::delete);
                     plugin.log("Deleting shop " + shop + " as requested by the /qs cleanghost command.");
@@ -110,21 +95,21 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                             "Posted to main server thread to continue accessing Bukkit API for shop "
                                     + shop);
                     if (!Util.canBeShop(shop.getLocation().getBlock())) {
-                        MsgUtil.sendMessage(sender,
+                        MsgUtil.sendDirectMessage(sender,
                                 ChatColor.YELLOW
                                         + "Deleting shop "
                                         + shop
                                         + " because it is no longer on the target location or it is not allowed to create shops in this location.");
                         shop.delete();
-                                    }
-                                }); // Post to server main thread to check.
+                    }
+                }); // Post to server main thread to check.
                 try {
                     Thread.sleep(20); // Have a rest, don't blow up the main server thread.
                 } catch (InterruptedException e) {
                     Thread.interrupted();
                 }
             }
-            MsgUtil.sendMessage(sender, ChatColor.GREEN + "All shops have been checked!");
+            MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "All shops have been checked!");
         });
     }
 

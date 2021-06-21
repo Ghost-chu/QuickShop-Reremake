@@ -54,13 +54,13 @@ public class RollbarErrorReporter {
             , LinkageError.class);
     private final QuickShop plugin;
     private final QuickShopExceptionFilter quickShopExceptionFilter;
+    private final GlobalExceptionFilter serverExceptionFilter;
     private boolean disable;
     private boolean tempDisable;
     private String lastPaste = null;
-    private final GlobalExceptionFilter serverExceptionFilter;
     //private final GlobalExceptionFilter globalExceptionFilter;
     @Getter
-    private volatile boolean enabled = false;
+    private volatile boolean enabled;
 
 
     public RollbarErrorReporter(@NotNull QuickShop plugin) {
@@ -140,13 +140,13 @@ public class RollbarErrorReporter {
                 String pasteURL;
                 try {
                     Paste paste = new Paste(plugin);
-                    pasteURL = paste.paste(paste.genNewPaste());
+                    pasteURL = paste.paste(paste.genNewPaste(), Paste.PasteType.UBUNTU);
                     if (pasteURL != null && !pasteURL.isEmpty()) {
                         lastPaste = pasteURL;
+                    } else {
+                        lastPaste = paste.paste(paste.genNewPaste());
                     }
-                } catch (Exception ex) {
-                    // Ignore
-                    pasteURL = this.lastPaste;
+                } catch (Exception ignored) {
                 }
             }
             this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
@@ -210,7 +210,7 @@ public class RollbarErrorReporter {
         }
 
         PossiblyLevel possiblyLevel = checkWasCauseByQS(throwable);
-        if (possiblyLevel == PossiblyLevel.IMPOSSIBLE) {
+        if (possiblyLevel != PossiblyLevel.CONFIRM) {
             return false;
         }
         if (throwable.getMessage().startsWith("#")) {
@@ -372,7 +372,7 @@ public class RollbarErrorReporter {
                     return true;
                 }
                 if (possiblyLevel == PossiblyLevel.MAYBE) {
-                    plugin.getLogger().warning("This seems not a QuickShop but we still sent this error to QuickShop developers. If you have any question, you should ask QuickShop developer.");
+                    plugin.getLogger().warning("This seems not a QuickShop. If you have any question, you should ask QuickShop developer.");
                     return true;
                 }
                 return false;
@@ -422,7 +422,7 @@ public class RollbarErrorReporter {
                     return true;
                 }
                 if (possiblyLevel == PossiblyLevel.MAYBE) {
-                    plugin.getLogger().warning("This seems not a QuickShop error but we still sent this error to QuickShop developers. If you have any question, you may can ask QuickShop developer but don't except any solution.");
+                    plugin.getLogger().warning("This seems not a QuickShop error. If you have any question, you may can ask QuickShop developer but don't except any solution.");
                     return true;
                 }
                 return false;

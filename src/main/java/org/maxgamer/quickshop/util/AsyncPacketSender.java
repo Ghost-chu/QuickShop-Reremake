@@ -25,11 +25,19 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Async packet sender used for VirtualDisplayItem
+ *
+ * @author sandtechnology
+ */
 public class AsyncPacketSender {
 
     private volatile static AsyncSendingTask instance = null;
     private static boolean isUsingGlobal = false;
     private static volatile boolean enabled = false;
+
+    private AsyncPacketSender() {
+    }
 
     public synchronized static void start(QuickShop plugin) {
         isUsingGlobal = plugin.getConfig().getBoolean("use-global-virtual-item-queue");
@@ -37,9 +45,6 @@ public class AsyncPacketSender {
             createAndCancelExistingTask(plugin);
         }
         enabled = true;
-    }
-
-    private AsyncPacketSender() {
     }
 
     private synchronized static void createAndCancelExistingTask(QuickShop plugin) {
@@ -69,8 +74,8 @@ public class AsyncPacketSender {
 
     public static class AsyncSendingTask {
         private final Queue<Runnable> asyncPacketSendQueue = new ArrayBlockingQueue<>(100, true);
-        private volatile BukkitTask asyncSendingTask;
         private final AtomicBoolean taskDone = new AtomicBoolean(true);
+        private volatile BukkitTask asyncSendingTask;
 
         public synchronized void start(QuickShop plugin) {
             //lazy initialize

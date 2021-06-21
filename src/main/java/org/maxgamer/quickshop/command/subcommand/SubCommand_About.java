@@ -24,20 +24,19 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
-public class SubCommand_About implements CommandProcesser {
+public class SubCommand_About implements CommandHandler<CommandSender> {
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        MsgUtil.sendMessage(sender,
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        MsgUtil.sendDirectMessage(sender,
                 ChatColor.AQUA + "QuickShop " + ChatColor.YELLOW + QuickShop.getFork());
-        MsgUtil.sendMessage(sender,
+        MsgUtil.sendDirectMessage(sender,
                 ChatColor.AQUA
                         + "Version "
                         + ChatColor.YELLOW
@@ -45,7 +44,7 @@ public class SubCommand_About implements CommandProcesser {
                         + ChatColor.GREEN
                         + QuickShop.getVersion());
         if (QuickShop.getInstance().getBuildInfo().getGitBranch().toUpperCase().contains("LTS")) {
-            MsgUtil.sendMessage(sender,
+            MsgUtil.sendDirectMessage(sender,
                     ChatColor.AQUA
                             + "Release "
                             + ChatColor.YELLOW
@@ -53,7 +52,7 @@ public class SubCommand_About implements CommandProcesser {
                             + ChatColor.GREEN
                             + MsgUtil.getMessage("updatenotify.label.lts", sender));
         } else if (QuickShop.getInstance().getBuildInfo().getGitBranch().toUpperCase().contains("RELEASE")) {
-            MsgUtil.sendMessage(sender,
+            MsgUtil.sendDirectMessage(sender,
                     ChatColor.AQUA
                             + "Release "
                             + ChatColor.YELLOW
@@ -61,7 +60,7 @@ public class SubCommand_About implements CommandProcesser {
                             + ChatColor.GREEN
                             + MsgUtil.getMessage("updatenotify.label.stable", sender));
         } else {
-            MsgUtil.sendMessage(sender,
+            MsgUtil.sendDirectMessage(sender,
                     ChatColor.AQUA
                             + "Release "
                             + ChatColor.YELLOW
@@ -69,15 +68,15 @@ public class SubCommand_About implements CommandProcesser {
                             + ChatColor.GREEN
                             + MsgUtil.getMessage("updatenotify.label.unstable", sender));
         }
-        MsgUtil.sendMessage(sender,
+        MsgUtil.sendDirectMessage(sender,
                 ChatColor.AQUA
                         + "Developers "
                         + ChatColor.YELLOW
                         + ">> "
                         + ChatColor.GREEN
                         + Util.list2String(plugin.getDescription().getAuthors()));
-        MsgUtil.sendMessage(sender, ChatColor.GOLD + "Powered by PotatoCraft Studio");
-        MsgUtil.sendMessage(sender, ChatColor.RED + "Made with ❤");
+        MsgUtil.sendDirectMessage(sender, ChatColor.GOLD + "Powered by PotatoCraft Studio");
+        MsgUtil.sendDirectMessage(sender, ChatColor.RED + "Made with ❤");
     }
 
 

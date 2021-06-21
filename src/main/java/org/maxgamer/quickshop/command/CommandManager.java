@@ -40,11 +40,12 @@ import java.util.List;
 import java.util.Set;
 
 @Data
+@SuppressWarnings("unchecked")
 public class CommandManager implements TabCompleter, CommandExecutor {
+    private static final String[] EMPTY_ARGS = new String[0];
     private final Set<CommandContainer> cmds = Sets.newCopyOnWriteArraySet(); //Because we open to allow register, so this should be thread-safe
     private final QuickShop plugin;
     private final CommandContainer rootContainer;
-    private static final String[] EMPTY_ARGS = new String[0];
 
     public CommandManager(QuickShop plugin) {
         this.plugin = plugin;
@@ -203,7 +204,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 CommandContainer.builder()
                         .prefix("fetchmessage")
                         .permission("quickshop.fetchmessage")
-                        .executor(new SubCommand_FetchMessage(plugin))
+                        .executor(new SubCommand_FetchMessage())
                         .build());
         registerCmd(
                 CommandContainer.builder()
@@ -276,7 +277,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                         .prefix("export")
                         .hidden(true)
                         .permission("quickshop.export")
-                        .executor(new SubCommand_Export(plugin))
+                        .executor(new SubCommand_Export())
                         .build());
         registerCmd(
                 CommandContainer.builder()
@@ -333,6 +334,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             Util.debugLog("Dupe subcommand registering: " + container);
             return;
         }
+        container.bakeExecutorType();
         cmds.removeIf(commandContainer -> commandContainer.getPrefix().equalsIgnoreCase(container.getPrefix()));
         cmds.add(container);
     }
@@ -363,13 +365,16 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             @NotNull String commandLabel,
             @NotNull String[] cmdArg) {
         if (plugin.getBootError() != null) {
-            if (cmdArg.length != 1 && !"paste".equalsIgnoreCase(cmdArg[0])) {
+            if (cmdArg.length <= 0) {
+                plugin.getBootError().printErrors(sender);
+                return true;
+            }
+            if (!"paste".equalsIgnoreCase(cmdArg[0])) {
                 plugin.getBootError().printErrors(sender);
                 return true;
             }
         }
-
-        if (sender instanceof Player && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
+        if (sender instanceof Player && plugin.getConfig().getBoolean("effect.sound.oncommand")) {
             Player player = (Player) sender;
             ((Player) sender)
                     .playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
@@ -378,7 +383,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         if (cmdArg.length == 0) {
             //Handle main command
             Util.debugLog("Print help cause no args (/qs)");
-            rootContainer.getExecutor().onCommand(sender, commandLabel, EMPTY_ARGS);
+            rootContainer.getExecutor().onCommand(capture(sender), commandLabel, EMPTY_ARGS);
         } else {
             //Handle subcommand
             String[] passThroughArgs = new String[cmdArg.length - 1];
@@ -388,28 +393,39 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                     continue;
                 }
                 if (container.isDisabled()) {
-                    MsgUtil.sendMessage(sender, container.getDisableText(sender));
+                    MsgUtil.sendDirectMessage(sender, container.getDisableText(sender));
+                    return true;
+                }
+                if (!isAdapt(container, sender)) {
+                    MsgUtil.sendMessage(sender, "command-type-mismatch", container.getExecutorType().getSimpleName());
                     return true;
                 }
                 List<String> requirePermissions = container.getPermissions();
                 List<String> selectivePermissions = container.getSelectivePermissions();
                 if (!checkPermissions(sender, commandLabel, passThroughArgs, requirePermissions, PermissionType.REQUIRE, Action.EXECUTE)) {
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-permission", sender));
+                    MsgUtil.sendMessage(sender, "no-permission");
                     return true;
                 }
                 if (!checkPermissions(sender, commandLabel, passThroughArgs, selectivePermissions, PermissionType.SELECTIVE, Action.EXECUTE)) {
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-permission", sender));
+                    MsgUtil.sendMessage(sender, "no-permission");
                     return true;
                 }
 
                 Util.debugLog("Execute container: " + container.getPrefix() + " - " + cmdArg[0]);
-                container.getExecutor().onCommand(sender, commandLabel, passThroughArgs);
+                container.getExecutor().onCommand(capture(sender), commandLabel, passThroughArgs);
                 return true;
             }
             Util.debugLog("All checks failed, print helps");
-            rootContainer.getExecutor().onCommand(sender, commandLabel, passThroughArgs);
+            rootContainer.getExecutor().onCommand(capture(sender), commandLabel, passThroughArgs);
         }
         return true;
+    }
+
+    /**
+     * Method for capturing generic type
+     */
+    private <T1, T2 extends T1> T2 capture(T1 type) {
+        return (T2) type;
     }
 
     private boolean checkPermissions(CommandSender sender, String commandLabel, String[] cmdArg, List<String> permissionList, PermissionType permissionType, Action action) {
@@ -455,6 +471,12 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         }
     }
 
+
+    private boolean isAdapt(CommandContainer container, CommandSender sender) {
+        return container.getExecutorType().isInstance(sender);
+
+    }
+
     @Override
     public @Nullable List<String> onTabComplete(
             @NotNull CommandSender sender,
@@ -470,8 +492,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
         }
         if (cmdArg.length <= 1) {
-            // Tab-complete subcommand
-            return getRootContainer().getExecutor().onTabComplete(sender, commandLabel, cmdArg);
+            return getRootContainer().getExecutor().onTabComplete(capture(sender), commandLabel, cmdArg);
         } else {
             // Tab-complete subcommand args
             String[] passThroughArgs = new String[cmdArg.length - 1];
@@ -479,6 +500,9 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             for (CommandContainer container : cmds) {
                 if (!container.getPrefix().toLowerCase().startsWith(cmdArg[0])) {
                     continue;
+                }
+                if (!isAdapt(container, sender)) {
+                    return Collections.emptyList();
                 }
                 List<String> requirePermissions = container.getPermissions();
                 List<String> selectivePermissions = container.getSelectivePermissions();
@@ -489,9 +513,9 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                     return Collections.emptyList();
                 }
                 Util.debugLog("Tab-complete container: " + container.getPrefix());
-                return container.getExecutor().onTabComplete(sender, commandLabel, passThroughArgs);
-            }
+                return container.getExecutor().onTabComplete(capture(sender), commandLabel, passThroughArgs);
 
+            }
             return Collections.emptyList();
         }
     }

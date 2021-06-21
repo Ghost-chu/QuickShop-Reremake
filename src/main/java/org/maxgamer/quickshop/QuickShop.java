@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import lombok.Getter;
@@ -29,15 +30,16 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.ItemSpawnEvent;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredListener;
+import org.bukkit.plugin.*;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
@@ -56,6 +58,7 @@ import org.maxgamer.quickshop.integration.IntegrationHelper;
 import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
 import org.maxgamer.quickshop.listener.*;
 import org.maxgamer.quickshop.listener.worldedit.WorldEditAdapter;
+import org.maxgamer.quickshop.nonquickshopstuff.com.rylinaux.plugman.util.PluginUtil;
 import org.maxgamer.quickshop.permission.PermissionManager;
 import org.maxgamer.quickshop.shop.*;
 import org.maxgamer.quickshop.util.Timer;
@@ -73,8 +76,10 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -96,6 +101,11 @@ public class QuickShop extends JavaPlugin {
     private static PermissionManager permissionManager;
     private static boolean loaded = false;
     /**
+     * If running environment test
+     */
+    @Getter
+    private static volatile boolean testing = false;
+    /**
      * WIP
      */
     @Getter
@@ -106,6 +116,10 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private final Map<String, Integer> limits = new HashMap<>(15);
     private final ConfigProvider configProvider = new ConfigProvider(this);
+    @Getter
+    private final List<BukkitTask> timerTaskList = new ArrayList<>(3);
+    @Getter
+    private final GameVersion gameVersion = GameVersion.get(Util.getNMSVersion());
     boolean onLoadCalled = false;
     @Getter
     private IntegrationHelper integrationHelper;
@@ -209,7 +223,6 @@ public class QuickShop extends JavaPlugin {
      */
     @Getter
     private ShopManager shopManager;
-
     @Getter
     private DisplayAutoDespawnWatcher displayAutoDespawnWatcher;
     @Getter
@@ -252,13 +265,25 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private CalendarWatcher calendarWatcher;
     @Getter
-    private final List<BukkitTask> timerTaskList = new ArrayList<>(3);
-    @Getter
     private Plugin worldEditPlugin;
     @Getter
     private WorldEditAdapter worldEditAdapter;
-    @Getter
-    private GameVersion gameVersion;
+
+    /**
+     * Use for mock bukkit
+     */
+    public QuickShop() {
+        super();
+    }
+
+    /**
+     * Use for mock bukkit
+     */
+    protected QuickShop(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+        super(loader, description, dataFolder, file);
+        System.getProperties().setProperty("org.maxgamer.quickshop.util.envcheck.skip.SIGNATURE_VERIFY", "true");
+
+    }
 
     @NotNull
     public static QuickShop getInstance() {
@@ -344,10 +369,15 @@ public class QuickShop extends JavaPlugin {
             }
         }
 
-        if (getConfig().getBoolean("plugin.LWC") && Util.isClassAvailable("com.griefcraft.lwc.LWC")) {
+        if (getConfig().getBoolean("plugin.LWC")) {
             this.lwcPlugin = Bukkit.getPluginManager().getPlugin("LWC");
             if (this.lwcPlugin != null) {
-                getLogger().info("Successfully loaded LWC support!");
+                if (Util.isMethodAvailable("com.griefcraft.lwc.LWC", "findProtection", org.bukkit.Location.class)) {
+                    getLogger().info("Successfully loaded LWC support!");
+                } else {
+                    getLogger().warning("Unsupported LWC version, please make sure you are using the modern version of LWC!");
+                    this.lwcPlugin = null;
+                }
             }
         }
         compatibilityTool.searchAndRegisterPlugins();
@@ -631,6 +661,36 @@ public class QuickShop extends JavaPlugin {
 
     }
 
+    public void reload() {
+        PluginManager pluginManager = getServer().getPluginManager();
+        try {
+            File file = Paths.get(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile();
+            //When quickshop was updated, we need to stop reloading
+            if (getUpdateWatcher() != null) {
+                File updatedJar = getUpdateWatcher().getUpdater().getUpdatedJar();
+                if (updatedJar != null) {
+                    throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Plugin was updated)");
+                }
+            }
+            if (!file.exists()) {
+                throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Failed to find plugin jar)");
+            }
+            Throwable throwable = PluginUtil.unload(this);
+            if (throwable != null) {
+                throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Plugin unloading has failed)", throwable);
+            }
+            Plugin plugin = pluginManager.loadPlugin(file);
+            if (plugin != null) {
+                plugin.onLoad();
+                pluginManager.enablePlugin(plugin);
+            } else {
+                throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Plugin loading has failed)");
+            }
+        } catch (URISyntaxException | InvalidDescriptionException | InvalidPluginException e) {
+            throw new RuntimeException("Failed to reload QuickShop! Please consider restarting the server.", e);
+        }
+    }
+
     private void initConfiguration() {
         /* Process the config */
         try {
@@ -676,8 +736,8 @@ public class QuickShop extends JavaPlugin {
         }
 
     }
-
     private void runtimeCheck(@NotNull EnvCheckEntry.Stage stage) {
+        testing = true;
         environmentChecker = new org.maxgamer.quickshop.util.envcheck.EnvironmentChecker(this);
         ResultReport resultReport = environmentChecker.run(stage);
         if (resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
@@ -691,6 +751,7 @@ public class QuickShop extends JavaPlugin {
             //noinspection ConstantConditions
             Util.mainThreadRun(() -> getCommand("qs").setTabCompleter(this)); //Disable tab completer
         }
+        testing = false;
     }
 
     @Override
@@ -718,10 +779,6 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
         getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
         getLogger().info("Let's start loading the plugin");
-
-        String nmsVersion = Util.getNMSVersion();
-        gameVersion = GameVersion.get(nmsVersion);
-
         getLogger().info("Chat processor selected: " + this.quickChatType.name());
 
         /* Process Metrics and Sentry error reporter. */
@@ -775,12 +832,15 @@ public class QuickShop extends JavaPlugin {
             this.displayAutoDespawnWatcher.runTaskTimer(this, 20, getConfig().getInt("shop.display-check-time")); // not worth async
         }
 
+        getLogger().info("Registering commands...");
         /* PreInit for BootError feature */
         commandManager = new CommandManager(this);
         //noinspection ConstantConditions
         getCommand("qs").setExecutor(commandManager);
         //noinspection ConstantConditions
         getCommand("qs").setTabCompleter(commandManager);
+
+        this.registerCustomCommands();
 
         this.shopManager = new ShopManager(this);
 
@@ -897,7 +957,7 @@ public class QuickShop extends JavaPlugin {
         calendarWatcher = new CalendarWatcher(this);
         calendarWatcher.start();
         Util.debugLog("Now using display-type: " + DisplayItem.getNowUsing().name());
-        getLogger().info("QuickShop Loaded! " + enableTimer.endTimer() + " ms.");
+        getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
     }
 
     private void loadItemMatcher() {
@@ -920,6 +980,7 @@ public class QuickShop extends JavaPlugin {
      * @return The setup result
      */
     private boolean setupDatabase() {
+        getLogger().info("Setting up database...");
         try {
             ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
             AbstractDatabaseCore dbCore;
@@ -1785,6 +1846,12 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("plugin.WorldEdit", true);
             getConfig().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 131) {
+            getConfig().set("custom-commands", ImmutableList.of("shop", "chestshop", "cshop"));
+            getConfig().set("unlimited-shop-owner-change", false);
+            getConfig().set("unlimited-shop-owner-change-account", "quickshop");
+            getConfig().set("config-version", ++selectedVersion);
+        }
 
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
@@ -1813,5 +1880,26 @@ public class QuickShop extends JavaPlugin {
     public void setupBootError(BootError bootError) {
         this.bootError = bootError;
         HandlerList.unregisterAll(this);
+        Bukkit.getScheduler().cancelTasks(this);
+    }
+
+    public void registerCustomCommands() {
+        List<String> customCommands = getConfig().getStringList("custom-commands");
+        PluginCommand quickShopCommand = getCommand("qs");
+        if (quickShopCommand == null) {
+            getLogger().warning("Failed to get QuickShop PluginCommand instance.");
+            return;
+        }
+        List<String> aliases = quickShopCommand.getAliases();
+        aliases.addAll(customCommands);
+        quickShopCommand.setAliases(aliases);
+        try {
+            ReflectFactory.getCommandMap().register("qs", quickShopCommand);
+            ReflectFactory.syncCommands();
+        } catch (Exception e) {
+            getLogger().log(Level.WARNING, "Failed to register command aliases", e);
+            return;
+        }
+        Util.debugLog("Command alias successfully registered.");
     }
 }

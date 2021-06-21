@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is MsgUtilTest.java
+ * This file is a part of project QuickShop, the name is PlayerProfileCache.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,21 +17,7 @@
  *
  */
 
-package org.maxgamer.quickshop.util;
+package org.maxgamer.quickshop.util.cache;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-public class MsgUtilTest {
-
-    @Test
-    public void testNullLevelEnchantment() {
-        try {
-            Integer integer = null;
-            RomanNumber.toRoman(integer);
-        } catch (Exception e) {
-            Assert.fail("Failed to test null number input");
-        }
-    }
-
+public class PlayerProfileCache {
 }

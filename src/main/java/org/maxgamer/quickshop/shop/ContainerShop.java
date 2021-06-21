@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.shop;
 import com.lishid.openinv.OpenInv;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -44,7 +45,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.*;
-import org.maxgamer.quickshop.util.*;
+import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.PriceLimiter;
+import org.maxgamer.quickshop.util.Util;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -90,6 +93,7 @@ public class ContainerShop implements Shop {
     private volatile boolean dirty;
 
 
+    @SuppressWarnings("CopyConstructorMissesField")
     private ContainerShop(@NotNull ContainerShop s) {
         Util.ensureThread(false);
         this.shopType = s.shopType;
@@ -173,20 +177,7 @@ public class ContainerShop implements Shop {
                     this.displayItem = new RealDisplayItem(this);
                     break;
                 case VIRTUALITEM:
-                    try {
-                        if (!GameVersion.get(ReflectFactory.getServerVersion()).isVirtualDisplaySupports()) {
-                            throw new IllegalStateException("Version not supports Virtual DisplayItem.");
-                        }
-                        this.displayItem = new VirtualDisplayItem(this);
-                    } catch (Throwable e) {
-                        Util.debugLog(e.getMessage());
-                        MsgUtil.debugStackTrace(e.getStackTrace());
-                        plugin.getConfig().set("shop.display-type", 0);
-                        plugin.saveConfig();
-                        this.displayItem = new RealDisplayItem(this);
-                        //do not throw
-                        plugin.getLogger().log(Level.SEVERE, "Failed to initialize VirtualDisplayItem, fallback to RealDisplayItem, are you using the latest version of ProtocolLib?", e);
-                    }
+                    this.displayItem = new VirtualDisplayItem(this);
                     break;
                 default:
                     Util.debugLog(
@@ -830,18 +821,24 @@ public class ContainerShop implements Shop {
             return;
         }
         this.isLoaded = true;
-        plugin.getShopManager().loadShop(this.getLocation().getWorld().getName(), this);
+        //Shop manger done this already
+        //plugin.getShopManager().loadShop(this.getLocation().getWorld().getName(), this);
         plugin.getShopManager().getLoadedShops().add(this);
         plugin.getShopContainerWatcher().scheduleCheck(this);
 
         // check price restriction
         PriceLimiter.CheckResult priceRestriction = plugin.getShopManager().getPriceLimiter().check(item, price);
         if (priceRestriction.getStatus() != PriceLimiter.Status.PASS) {
-            if (priceRestriction.getStatus() == PriceLimiter.Status.NOT_VALID) {
+            if (priceRestriction.getStatus() == PriceLimiter.Status.NOT_A_WHOLE_NUMBER) {
+                setDirty();
+                price = Math.floor(price);
+                this.update();
+            } else if (priceRestriction.getStatus() == PriceLimiter.Status.NOT_VALID) {
                 setDirty();
                 price = priceRestriction.getMin();
                 this.update();
-            } else if (price < priceRestriction.getMin()) {
+            }
+            if (price < priceRestriction.getMin()) {
                 setDirty();
                 price = priceRestriction.getMin();
                 this.update();
@@ -1011,25 +1008,29 @@ public class ContainerShop implements Shop {
             }
             Sign sign = (Sign) state;
             String[] lines = sign.getLines();
-            if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3]
-                    .isEmpty()) {
+            if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3].isEmpty()) {
                 signs.add(sign); //NEW SIGN
                 continue;
             }
-            String header = lines[0];
 
             if (lines[1].startsWith(shopSignPattern)) {
                 signs.add(sign);
             } else {
-                String adminShopHeader = MsgUtil
-                        .getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
-                                "admin-shop", plugin.getServer().getOfflinePlayer(this.getOwner())));
-                String signHeaderUsername =
-                        MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
+                String header = lines[0];
+                String adminShopHeader = MsgUtil.getMessage("signs.header", null, MsgUtil.getMessage("admin-shop", null));
+                String signHeaderUsername = MsgUtil.getMessage("signs.header", null, this.ownerName(true));
                 if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
                     signs.add(sign);
                     //TEXT SIGN
                     //continue
+                } else {
+                    adminShopHeader = MsgUtil.getMessage("signs.header", null, MsgUtil.getMessage("admin-shop", null), "");
+                    signHeaderUsername = MsgUtil.getMessage("signs.header", null, this.ownerName(true), "");
+                    adminShopHeader = ChatColor.stripColor(adminShopHeader).trim();
+                    signHeaderUsername = ChatColor.stripColor(signHeaderUsername).trim();
+                    if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
+                        signs.add(sign);
+                    }
                 }
             }
         }
@@ -1119,6 +1120,7 @@ public class ContainerShop implements Shop {
      *
      * <p>**NOT A DEEP CLONE**
      */
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     @Override
     public @NotNull ContainerShop clone() {
         return new ContainerShop(this);
@@ -1446,5 +1448,4 @@ public class ContainerShop implements Shop {
     public ShopInfoStorage saveToInfoStorage() {
         return new ShopInfoStorage(ShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml());
     }
-
 }

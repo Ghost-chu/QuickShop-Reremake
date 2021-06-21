@@ -24,6 +24,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.BuildInfo;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
@@ -40,6 +41,7 @@ public class JenkinsUpdater implements QuickUpdater {
     private final BuildInfo pluginBuildInfo;
     private final String jobUrl;
     private BuildInfo lastRemoteBuildInfo;
+    private File updatedJar;
 
     public JenkinsUpdater(BuildInfo pluginBuildInfo) {
         this.pluginBuildInfo = pluginBuildInfo;
@@ -48,7 +50,18 @@ public class JenkinsUpdater implements QuickUpdater {
 
     @Override
     public @NotNull VersionType getCurrentRunning() {
-        return VersionType.STABLE; //TODO LTS
+        switch (pluginBuildInfo.getGitBranch()) {
+            case "release":
+                return VersionType.STABLE;
+            case "rc":
+                return VersionType.RC;
+            case "beta":
+                return VersionType.BETA;
+            case "lts":
+                return VersionType.LTS;
+            default:
+                return VersionType.SNAPSHOT;
+        }
     }
 
     @Override
@@ -83,7 +96,7 @@ public class JenkinsUpdater implements QuickUpdater {
             this.lastRemoteBuildInfo = new BuildInfo(inputStream);
             return lastRemoteBuildInfo.getBuildId() <= pluginBuildInfo.getBuildId() || lastRemoteBuildInfo.getGitCommit().equalsIgnoreCase(pluginBuildInfo.getGitCommit());
         } catch (IOException ioException) {
-            MsgUtil.sendMessage(Bukkit.getConsoleSender(), ChatColor.RED + "[QuickShop] Failed to check for an update on build server! It might be an internet issue or the build server host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often, Error: " + ioException.getMessage());
+            MsgUtil.sendDirectMessage(Bukkit.getConsoleSender(), ChatColor.RED + "[QuickShop] Failed to check for an update on build server! It might be an internet issue or the build server host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often, Error: " + ioException.getMessage());
             return true;
         }
     }
@@ -136,15 +149,22 @@ public class JenkinsUpdater implements QuickUpdater {
                     try (OutputStream outputStream = new FileOutputStream(pluginJar, false)) {
                         outputStream.write(bytes);
                         outputStream.flush();
+                        updatedJar = pluginJar;
                     }
                 } else {
                     try (OutputStream outputStream = new FileOutputStream(newJar, false)) {
                         outputStream.write(bytes);
                         outputStream.flush();
+                        updatedJar = newJar;
                     }
                 }
             } catch (InvalidDescriptionException ignored) {
             }
         }
+    }
+
+    @Override
+    public @Nullable File getUpdatedJar() {
+        return updatedJar;
     }
 }
