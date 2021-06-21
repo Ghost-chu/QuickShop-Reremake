@@ -370,7 +370,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 return true;
             }
         }
-        if (sender instanceof Player && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
+        if (sender instanceof Player && plugin.getConfig().getBoolean("effect.sound.oncommand")) {
             Player player = (Player) sender;
             ((Player) sender)
                     .playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
