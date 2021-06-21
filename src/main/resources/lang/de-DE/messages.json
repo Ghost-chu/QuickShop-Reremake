@@ -34,7 +34,7 @@
   "negative-amount": "&cDu kannst keine negative Anzahl handeln",
   "not-a-number": "&cDu kannst nur eine Zahl eingeben, Deine Eingabe war {0}.",
   "exceeded-maximum": "&cDer Wert hat den Maximalwert in Java überschritten.",
-  "not-a-integer": "&cYou must input a integer, your input was {0}.",
+  "not-a-integer": "&cDu kannst nur eine Zahl eingeben, Deine Eingabe war {0}.",
   "player-bought-from-your-store": "&c{0} hat {1} {2} von deinem Shop gekauft und du hast {3} ( Steuern) verdient.",
   "shop-out-of-stock": "&5Dein Shop bei den Koordinaten {0}, {1}, {2}, verfügt über keine {3} mehr!",
   "shop-has-no-space": "&cDer Shop hat nur noch Platz für {0} weitere {1}.",
@@ -323,5 +323,5 @@
   "command-type-mismatch": "&cDieser Befehl kann nur von &b{0}&c ausgeführt werden.",
   "unlimited-shop-owner-changed": "&eDer Besitzer des unbegrenzten Shops wurde zu {0} geändert.",
   "unlimited-shop-owner-keeped": "&eAchtung: Der Shopeigentümer ist nach wie vor unlimitiert. Du musst den Besitzer manuell neu setzten.",
-  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
+  "server-crash-warning": "&cServer kann nach Ausführung des /qs Reload-Befehls abstürzen, wenn Sie während des Laufens des Servers QuickShop-Plugin-Jar-Datei ersetzen/löschen."
 }
