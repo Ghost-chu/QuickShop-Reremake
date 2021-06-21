@@ -365,7 +365,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             @NotNull String commandLabel,
             @NotNull String[] cmdArg) {
         if (plugin.getBootError() != null) {
-            if (cmdArg.length != 1 && !"paste".equalsIgnoreCase(cmdArg[0])) {
+            if (cmdArg.length == 0 || (cmdArg.length == 1 && !"paste".equalsIgnoreCase(cmdArg[0]))) {
                 plugin.getBootError().printErrors(sender);
                 return true;
             }
