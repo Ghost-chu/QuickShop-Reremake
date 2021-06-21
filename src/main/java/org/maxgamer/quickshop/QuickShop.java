@@ -1880,6 +1880,7 @@ public class QuickShop extends JavaPlugin {
     public void setupBootError(BootError bootError) {
         this.bootError = bootError;
         HandlerList.unregisterAll(this);
+        Bukkit.getScheduler().cancelTasks(this);
     }
 
     public void registerCustomCommands() {
