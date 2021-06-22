@@ -804,6 +804,14 @@
                     <artifactId>guava</artifactId>
                     <groupId>com.google.guava</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>paste-gg-api</artifactId>
+                    <groupId>org.kitteh</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>paperlib</artifactId>
+                    <groupId>io.papermc</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
