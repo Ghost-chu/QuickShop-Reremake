@@ -5,7 +5,7 @@
   "translation-version": "Støttet versjon: Reremake",
   "translation-contributors": "Bidragsytere: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Språksone: Norsk (no_NO)",
-  "language-version": "57",
+  "language-version": "58",
   "not-looking-at-shop": "&cKunne ikke finne en QuickShop. Du må se på en butikk.",
   "no-anythings-in-your-hand": "&cDet er ingenting i hånden din.",
   "no-permission": "&cDu har ikke tillatelse til å gjøre det.",
@@ -323,5 +323,5 @@
   "command-type-mismatch": "&cDenne kommandoen kan bare utføres av &b{0}.",
   "unlimited-shop-owner-changed": "&eEieren til denne ubegrensede butikken har blitt endret til {0}.",
   "unlimited-shop-owner-keeped": "&eOBS: Butikkeieren er fortsatt ubegrenset butikkeier, du trenger å sette ny butikkeier manuelt.",
-  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
+  "server-crash-warning": "&cServeren kan krasje etter å ha utført kommando /qs reload hvis du erstatter/sletter QuickShop plugin Jar filen mens serveren kjører."
 }

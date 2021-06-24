@@ -5,7 +5,7 @@
   "translation-version": "지원 버전: Reremake",
   "translation-contributors": "기여자: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "언어 지역: 한국어 (Ko)",
-  "language-version": "57",
+  "language-version": "58",
   "not-looking-at-shop": "&c퀵샵을 찾을수 없습니다. 상점을 보고있어야만합니다!",
   "no-anythings-in-your-hand": "&c당신의 손에 아무것도 없습니다.",
   "no-permission": "&c당신에게는 이것을 사용할 권한이 없습니다.",
@@ -323,5 +323,5 @@
   "command-type-mismatch": "&c이 명령어는 &b{0}&c에서만 사용할 수 있습니다.",
   "unlimited-shop-owner-changed": "&e무제한 상점의 주인이 {0}으로 변경되었습니다.",
   "unlimited-shop-owner-keeped": "&e주의: 상점 주인은 여전히 무제한 상점의 주인입니다, 상점을 소유하려면 상점을 초기화해야합니다.",
-  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
+  "server-crash-warning": "&cQuickShop 플러그인의 자바파일을 지운/이동후 /qs reload를 사용하면 서버가 크래쉬 될수 있습니다"
 }

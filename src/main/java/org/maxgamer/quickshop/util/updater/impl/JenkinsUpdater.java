@@ -24,6 +24,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.BuildInfo;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
@@ -40,6 +41,7 @@ public class JenkinsUpdater implements QuickUpdater {
     private final BuildInfo pluginBuildInfo;
     private final String jobUrl;
     private BuildInfo lastRemoteBuildInfo;
+    private File updatedJar;
 
     public JenkinsUpdater(BuildInfo pluginBuildInfo) {
         this.pluginBuildInfo = pluginBuildInfo;
@@ -147,15 +149,22 @@ public class JenkinsUpdater implements QuickUpdater {
                     try (OutputStream outputStream = new FileOutputStream(pluginJar, false)) {
                         outputStream.write(bytes);
                         outputStream.flush();
+                        updatedJar = pluginJar;
                     }
                 } else {
                     try (OutputStream outputStream = new FileOutputStream(newJar, false)) {
                         outputStream.write(bytes);
                         outputStream.flush();
+                        updatedJar = newJar;
                     }
                 }
             } catch (InvalidDescriptionException ignored) {
             }
         }
+    }
+
+    @Override
+    public @Nullable File getUpdatedJar() {
+        return updatedJar;
     }
 }
