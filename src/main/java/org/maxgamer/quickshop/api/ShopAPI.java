@@ -122,8 +122,7 @@ public class ShopAPI {
     @Deprecated
     public @Nullable Shop getShopWithCaching(@NotNull Location location) {
         if (plugin.getShopCache() == null) {
-            //noinspection OptionalGetWithoutIsPresent
-            return getShop(location).get();
+            return getShop(location).orElse(null);
         }
         return plugin.getShopCache().getCaching(location, false);
     }
