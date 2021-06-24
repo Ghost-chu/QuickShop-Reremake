@@ -23,6 +23,7 @@ import lombok.AllArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.BootError;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -62,6 +63,10 @@ public class SubCommand_Update implements CommandHandler<CommandSender> {
 
             MsgUtil.sendDirectMessage(sender,
                     ChatColor.GREEN + "Successful! Please restart your server to apply the updated version!");
+            MsgUtil.sendDirectMessage(sender,
+                    ChatColor.YELLOW + "Before you restarting the server, QuickShop won't working again.");
+            plugin.setupBootError(new BootError(plugin.getLogger(), "Reboot required after update the plugin."));
+
         });
     }
 

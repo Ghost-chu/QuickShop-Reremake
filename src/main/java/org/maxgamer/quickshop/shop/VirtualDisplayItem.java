@@ -234,7 +234,6 @@ public class VirtualDisplayItem extends DisplayItem {
         asyncPacketSenderTask.start(plugin);
 
         if (packetAdapter == null) {
-
             packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
                 @Override
                 public void onPacketSending(@NotNull PacketEvent event) {
@@ -252,6 +251,7 @@ public class VirtualDisplayItem extends DisplayItem {
                     if (player == null || !player.isOnline()) {
                         return;
                     }
+
                     StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
                     //chunk x
                     int x = integerStructureModifier.read(0);
