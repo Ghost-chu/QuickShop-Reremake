@@ -904,7 +904,7 @@
         <dependency>
             <groupId>me.lucko</groupId>
             <artifactId>helper</artifactId>
-            <version>5.6.5</version>
+            <version>5.6.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
