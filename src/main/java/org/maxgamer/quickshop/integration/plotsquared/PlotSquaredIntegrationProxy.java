@@ -26,6 +26,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
+import org.maxgamer.quickshop.util.Util;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class PlotSquaredIntegrationProxy extends QSIntegratedPlugin {
@@ -36,8 +37,10 @@ public class PlotSquaredIntegrationProxy extends QSIntegratedPlugin {
         if (plotSquared == null) {
             if (plugin.getServer().getPluginManager().getPlugin("PlotSquared").getClass().getPackage().getName().contains("intellectualsite")) {
                 plotSquared = new PlotSquaredIntegrationV4(instance);
-            } else {
+            } else if (Util.isClassAvailable("com.plotsquared.core.configuration.Caption")) {
                 plotSquared = new PlotSquaredIntegrationV5(instance);
+            } else {
+                plotSquared = new PlotSquaredIntegrationV6(instance);
             }
         }
     }
