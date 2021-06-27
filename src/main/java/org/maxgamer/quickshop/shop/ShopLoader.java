@@ -87,6 +87,7 @@ public class ShopLoader {
         this.plugin.getLogger().info("Loading shops from the database...");
         int loadAfterChunkLoaded = 0;
         int loadAfterWorldLoaded = 0;
+        List<Shop> pendingLoadShops = new ArrayList<>();
         try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
             while (rs.next()) {
                 ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
@@ -140,11 +141,14 @@ public class ShopLoader {
                         //TODO: Old shop will be deleted when in same location creating new shop.
                         continue;
                     }
-                    shop.onLoad();
-                    shop.update();
+                    pendingLoadShops.add(shop);
                 } else {
                     loadAfterChunkLoaded++;
                 }
+            }
+            for (Shop shop : pendingLoadShops) {
+                shop.onLoad();
+                shop.update();
             }
             this.plugin
                     .getLogger()
