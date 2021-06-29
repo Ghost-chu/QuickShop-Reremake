@@ -63,8 +63,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                         this.removeShop(shop);
                     } else {
                         try {
-                            //noinspection ConstantConditions,deprecation
-                            plugin.getEconomy().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax")).getUniqueId(), cost, shop.getLocation().getWorld(), shop.getCurrency());
+                            plugin.getEconomy().deposit(plugin.getShopManager().getCacheTaxAccount().getUniqueId(), cost, shop.getLocation().getWorld(), shop.getCurrency());
                         } catch (Exception ignored) {
                         }
                     }
