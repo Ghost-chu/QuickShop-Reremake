@@ -36,7 +36,7 @@ import java.util.UUID;
  */
 public class OngoingFeeWatcher extends BukkitRunnable {
     private final QuickShop plugin;
-
+    //TODO: Refactor to use EconomyTransaction
     public OngoingFeeWatcher(@NotNull QuickShop plugin) {
         this.plugin = plugin;
     }
