@@ -23,6 +23,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.economy.EconomyTransaction;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -36,7 +37,7 @@ import java.util.UUID;
  */
 public class OngoingFeeWatcher extends BukkitRunnable {
     private final QuickShop plugin;
-    //TODO: Refactor to use EconomyTransaction
+
     public OngoingFeeWatcher(@NotNull QuickShop plugin) {
         this.plugin = plugin;
     }
@@ -55,17 +56,19 @@ public class OngoingFeeWatcher extends BukkitRunnable {
             if ((!shop.isUnlimited() || !ignoreUnlimited) && !shop.isDeleted()) {
                 UUID shopOwner = shop.getOwner();
                 Util.mainThreadRun(() -> {
-                    if (!allowLoan && (plugin.getEconomy().getBalance(shopOwner, shop.getLocation().getWorld(), shop.getCurrency()) < cost)) {// Disallow loan
-                        this.removeShop(shop);
-                    }
-                    boolean success = plugin.getEconomy().withdraw(shop.getOwner(), cost, shop.getLocation().getWorld(), shop.getCurrency());
+
+                    EconomyTransaction transaction = EconomyTransaction.builder()
+                            .allowLoan(allowLoan)
+                            .amount(cost)
+                            .currency(shop.getCurrency())
+                            .core(plugin.getEconomy())
+                            .world(shop.getLocation().getWorld())
+                            .to(plugin.getShopManager().getCacheTaxAccount().getUniqueId())
+                            .from(shopOwner).build();
+
+                    boolean success = transaction.failSafeCommit();
                     if (!success) {
                         this.removeShop(shop);
-                    } else {
-                        try {
-                            plugin.getEconomy().deposit(plugin.getShopManager().getCacheTaxAccount().getUniqueId(), cost, shop.getLocation().getWorld(), shop.getCurrency());
-                        } catch (Exception ignored) {
-                        }
                     }
                 });
             } else {
