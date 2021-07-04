@@ -22,7 +22,7 @@
 #                        TO EDIT QUICKSHOP'S CONFIGURATION, USE THE "config.yml" FILE!
 
 #Do not touch this if you don't know what you're doing!
-config-version: 132
+config-version: 133
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not existant/not supported language, then QuickShop will use en_US.
@@ -264,6 +264,13 @@ shop:
 
   #Should we automatically create the sign for the chest?
   auto-sign: true
+
+  #Sign use glowing effects
+  sign-glowing: false
+
+  #Sign use dye color  https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html
+  sign-dye-color: null
+  #sign-dye-color: WHITE
 
   #Should we pay/take money to/from unlimited shops owners?
   pay-unlimited-shop-owners: false

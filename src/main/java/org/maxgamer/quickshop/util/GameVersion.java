@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.util;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -26,38 +28,40 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Ghost_chu and sandtechnology
  */
+@AllArgsConstructor
+@Getter
 public enum GameVersion {
-    v1_5_R1(false, false, false, false),
-    v1_5_R2(false, false, false, false),
-    v1_5_R3(false, false, false, false),
-    v1_6_R1(false, false, false, false),
-    v1_6_R2(false, false, false, false),
-    v1_6_R3(false, false, false, false),
-    v1_7_R1(false, false, false, false),
-    v1_7_R2(false, false, false, false),
-    v1_7_R3(false, false, false, false),
-    v1_7_R4(false, false, false, false),
-    v1_8_R1(false, false, false, false),
-    v1_8_R2(false, false, false, false),
-    v1_8_R3(false, false, false, false),
-    v1_9_R1(false, false, false, false),
-    v1_9_R2(false, false, false, false),
-    v1_10_R1(false, false, false, false),
-    v1_11_R1(false, false, false, false),
-    v1_12_R1(false, false, false, false),
-    v1_12_R2(false, false, false, false),
-    v1_13_R1(false, false, false, false),
-    v1_13_R2(true, true, false, false),
-    v1_14_R1(true, true, true, false),
-    v1_14_R2(true, true, true, false),
-    v1_15_R1(true, true, true, false),
-    v1_15_R2(true, true, true, false),
-    v1_16_R1(true, true, true, false),
-    v1_16_R2(true, true, true, false),
-    v1_16_R3(true, true, true, false),
-    v1_16_R4(true, true, true, false),
-    v1_17_R1(true, true, true, true),
-    UNKNOWN(true, true, true, true);
+    v1_5_R1(false, false, false, false, false, false),
+    v1_5_R2(false, false, false, false, false, false),
+    v1_5_R3(false, false, false, false, false, false),
+    v1_6_R1(false, false, false, false, false, false),
+    v1_6_R2(false, false, false, false, false, false),
+    v1_6_R3(false, false, false, false, false, false),
+    v1_7_R1(false, false, false, false, false, false),
+    v1_7_R2(false, false, false, false, false, false),
+    v1_7_R3(false, false, false, false, false, false),
+    v1_7_R4(false, false, false, false, false, false),
+    v1_8_R1(false, false, false, false, false, false),
+    v1_8_R2(false, false, false, false, false, false),
+    v1_8_R3(false, false, false, false, false, false),
+    v1_9_R1(false, false, false, false, false, false),
+    v1_9_R2(false, false, false, false, false, false),
+    v1_10_R1(false, false, false, false, false, false),
+    v1_11_R1(false, false, false, false, false, false),
+    v1_12_R1(false, false, false, false, false, false),
+    v1_12_R2(false, false, false, false, false, false),
+    v1_13_R1(false, false, false, false, false, false),
+    v1_13_R2(true, true, false, false, false, false),
+    v1_14_R1(true, true, true, false, false, false),
+    v1_14_R2(true, true, true, false, false, false),
+    v1_15_R1(true, true, true, false, false, false),
+    v1_15_R2(true, true, true, false, false, false),
+    v1_16_R1(true, true, true, false, false, false),
+    v1_16_R2(true, true, true, false, false, false),
+    v1_16_R3(true, true, true, false, false, false),
+    v1_16_R4(true, true, true, false, false, false),
+    v1_17_R1(true, true, true, true, true, true),
+    UNKNOWN(true, true, true, true, true, true);
     /**
      * CoreSupports - Check does QuickShop most features supports this server version
      */
@@ -76,18 +80,15 @@ public enum GameVersion {
     private final boolean newNmsName;
 
     /**
-     * Utilities to help QuickShop quickly check server supported features
-     *
-     * @param coreSupports                 Does QuickShop most features supports this server version
-     * @param virtualDisplaySupports       Does QuickShop VirtualDisplayItem feature this server version
-     * @param persistentStorageApiSupports Does server support PersistentStorage API
+     * Sign Glowing Support
      */
-    GameVersion(boolean coreSupports, boolean virtualDisplaySupports, boolean persistentStorageApiSupports, boolean newNmsName) {
-        this.coreSupports = coreSupports;
-        this.virtualDisplaySupports = virtualDisplaySupports;
-        this.persistentStorageApiSupports = persistentStorageApiSupports;
-        this.newNmsName = newNmsName;
-    }
+    private final boolean signGlowingSupport;
+
+    /**
+     * Sign Glowing Support
+     */
+    private final boolean signTextDyeSupport;
+
 
     /**
      * Matches the version that QuickShop supports or not
@@ -105,19 +106,4 @@ public enum GameVersion {
         return UNKNOWN;
     }
 
-    public boolean isCoreSupports() {
-        return coreSupports;
-    }
-
-    public boolean isVirtualDisplaySupports() {
-        return virtualDisplaySupports;
-    }
-
-    public boolean isPersistentStorageApiSupports() {
-        return persistentStorageApiSupports;
-    }
-
-    public boolean isNewNmsName() {
-        return newNmsName;
-    }
 }
