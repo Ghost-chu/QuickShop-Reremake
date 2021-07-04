@@ -157,7 +157,6 @@ public class BlockListener extends ProtectionListenerBase {
         if (b == null) {
             return null;
         }
-
         return getShopPlayer(b.getLocation(), false);
     }
 
