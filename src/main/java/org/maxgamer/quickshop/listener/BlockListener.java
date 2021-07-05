@@ -34,6 +34,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -156,7 +157,6 @@ public class BlockListener extends ProtectionListenerBase {
         if (b == null) {
             return null;
         }
-
         return getShopPlayer(b.getLocation(), false);
     }
 
@@ -178,6 +178,22 @@ public class BlockListener extends ProtectionListenerBase {
         if (shop != null) {
             super.getPlugin().getSignUpdateWatcher().scheduleSignUpdate(shop);
         }
+    }
+
+    /*
+     * Listens for sign update to prevent other plugin or Purpur to edit the sign
+     */
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    public void onSignUpdate(SignChangeEvent event) {
+        Block posShopBlock = Util.getAttached(event.getBlock());
+        if (posShopBlock == null) {
+            return;
+        }
+        Shop shop = plugin.getShopManager().getShopIncludeAttached(posShopBlock.getLocation());
+        if (shop == null) {
+            return;
+        }
+        event.setCancelled(true);
     }
 
 

@@ -474,7 +474,6 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 
     private boolean isAdapt(CommandContainer container, CommandSender sender) {
         return container.getExecutorType().isInstance(sender);
-
     }
 
     @Override
