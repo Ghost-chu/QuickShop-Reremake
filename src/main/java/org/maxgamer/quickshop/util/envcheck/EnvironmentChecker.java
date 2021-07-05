@@ -216,10 +216,6 @@ public final class EnvironmentChecker {
                 }
             }
         }
-
-        //tool.verify()
-
-
     }
 
     @EnvCheckEntry(name = "EnvChecker SelfTest", priority = 1)
