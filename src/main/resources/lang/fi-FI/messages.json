@@ -78,7 +78,7 @@
   "no-permission-build": "&cEt voi rakentaa kauppaa tähän.",
   "success-change-owner-to-server": "&aOnnistuneesti vaihdettu kaupan omistaja palvelimeen.",
   "flush-finished": "&aViestit päivitettiin onnistuneesti.",
-  "purchase-failed": "&cOsto epäonnistui: Sisäinen ongelme. Ota yhteyttä palvelimen järjestelmänvalvojaan.",
+  "purchase-failed": "&cOsto epäonnistui: Sisäinen virhe. Ota yhteyttä palvelimen ylläpitoon.",
   "no-pending-action": "&cSinulla ei ole mitään odottavia toimintapyyntöjä",
   "permission-denied-3rd-party": "&cOikeus kielletty: kolmannen osapuolen lisäosa [{0}].",
   "shops-removed-in-world": "&eYhteensä &b{0}&e kauppa(a) on poistettu maailmasta &b{1}&e.",
