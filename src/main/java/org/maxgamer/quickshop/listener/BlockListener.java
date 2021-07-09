@@ -193,9 +193,12 @@ public class BlockListener extends ProtectionListenerBase {
         if (shop == null) {
             return;
         }
-        event.setCancelled(true);
+        Player player = event.getPlayer();
+        if (!shop.getModerator().isModerator(player.getUniqueId())) {
+            MsgUtil.sendMessage(player, "not-managed-shop");
+            event.setCancelled(true);
+        }
     }
-
 
     /*
      * Listens for chest placement, so a doublechest shop can't be created.
