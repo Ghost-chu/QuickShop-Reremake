@@ -457,7 +457,7 @@ public class VirtualDisplayItem extends DisplayItem {
                 fakeItemDestroyPacket.getIntegerArrays().write(0, new int[]{entityID});
             } else {
                 //1.17+
-                if (protocolManager.getMinecraftVersion().getMinor() > 1) {
+                if (protocolManager.getMinecraftVersion().getMinor() >= 1) {
                     //On 1.17.1 (may be 1.17.1+? it's enough, Mojang, stop the changes), we need add the int list
                     //Entity to remove
                     try {
