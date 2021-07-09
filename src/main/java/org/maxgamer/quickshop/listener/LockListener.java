@@ -24,6 +24,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -104,6 +105,30 @@ public class LockListener extends ProtectionListenerBase {
                 e.setCancelled(true);
                 MsgUtil.sendMessage(p, "no-permission");
             }
+        }
+    }
+
+    /*
+     * Listens for sign placement to prevent placing sign for creating protection
+     */
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    public void onSignPlace(BlockPlaceEvent event) {
+        Block placedBlock = event.getBlock();
+        if (!(placedBlock.getBlockData() instanceof WallSign)) {
+            return;
+        }
+        Block posShopBlock = Util.getAttached(placedBlock);
+        if (posShopBlock == null) {
+            return;
+        }
+        Shop shop = plugin.getShopManager().getShopIncludeAttached(posShopBlock.getLocation());
+        if (shop == null) {
+            return;
+        }
+        Player player = event.getPlayer();
+        if (!shop.getModerator().isOwner(player.getUniqueId())) {
+            MsgUtil.sendMessage(player, "that-is-locked");
+            event.setCancelled(true);
         }
     }
 
