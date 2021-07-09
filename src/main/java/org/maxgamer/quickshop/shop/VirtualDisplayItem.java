@@ -456,9 +456,20 @@ public class VirtualDisplayItem extends DisplayItem {
                 //Entity to remove
                 fakeItemDestroyPacket.getIntegerArrays().write(0, new int[]{entityID});
             } else {
-                //On 1.17 (may be 1.17+?), just need to write a int
-                //Entity to remove
-                fakeItemDestroyPacket.getIntegers().write(0, entityID);
+                //1.17+
+                if (protocolManager.getMinecraftVersion().getMinor() > 1) {
+                    //On 1.17.1 (may be 1.17.1+? it's enough, Mojang, stop the changes), we need add the int list
+                    //Entity to remove
+                    try {
+                        fakeItemDestroyPacket.getIntLists().write(0, Collections.singletonList(entityID));
+                    } catch (NoSuchMethodError e) {
+                        throw new RuntimeException("Unable to initialize packet, ProtocolLib update needed", e);
+                    }
+                } else {
+                    //On 1.17, just need to write a int
+                    //Entity to remove
+                    fakeItemDestroyPacket.getIntegers().write(0, entityID);
+                }
             }
             return fakeItemDestroyPacket;
         }
