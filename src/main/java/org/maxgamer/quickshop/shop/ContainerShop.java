@@ -689,7 +689,7 @@ public class ContainerShop implements Shop {
             for (int i = 0; i < lines.length; i++) {
                 sign.setLine(i, lines[i]);
             }
-            if (plugin.getGameVersion().isSignTextDyeSupport()) {
+            if (plugin.getGameVersion().isSignTextDyeSupport() && dyeColor != null) {
                 sign.setColor(dyeColor);
             }
             if (signGlowing && plugin.getGameVersion().isSignGlowingSupport()) {
