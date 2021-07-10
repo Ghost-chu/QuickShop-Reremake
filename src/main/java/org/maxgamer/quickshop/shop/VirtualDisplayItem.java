@@ -27,6 +27,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.injector.server.TemporaryPlayer;
 import com.comphenix.protocol.reflect.StructureModifier;
+import com.comphenix.protocol.utility.MinecraftVersion;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import org.bukkit.Chunk;
@@ -457,7 +458,12 @@ public class VirtualDisplayItem extends DisplayItem {
                 fakeItemDestroyPacket.getIntegerArrays().write(0, new int[]{entityID});
             } else {
                 //1.17+
-                if (protocolManager.getMinecraftVersion().getMinor() >= 1) {
+                MinecraftVersion minecraftVersion = protocolManager.getMinecraftVersion();
+                if (minecraftVersion.getMajor() == 1 && minecraftVersion.getMinor() == 17 && minecraftVersion.getBuild() == 0) {
+                    //On 1.17, just need to write a int
+                    //Entity to remove
+                    fakeItemDestroyPacket.getIntegers().write(0, entityID);
+                } else {
                     //On 1.17.1 (may be 1.17.1+? it's enough, Mojang, stop the changes), we need add the int list
                     //Entity to remove
                     try {
@@ -465,10 +471,6 @@ public class VirtualDisplayItem extends DisplayItem {
                     } catch (NoSuchMethodError e) {
                         throw new RuntimeException("Unable to initialize packet, ProtocolLib update needed", e);
                     }
-                } else {
-                    //On 1.17, just need to write a int
-                    //Entity to remove
-                    fakeItemDestroyPacket.getIntegers().write(0, entityID);
                 }
             }
             return fakeItemDestroyPacket;
