@@ -18,8 +18,10 @@ QuickShop-Reremake is a fork of QuickShop NotLikeMe with more features, bug fixe
 QuickShop-Reremake is made by PotatoCraft Studio from [KaiKikuchi's QuickShop upstream repository](https://github.com/KaiKikuchi/QuickShop).
 
 ## Support
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Discord:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Open an issue:</p>
-<a href="https://discord.gg/bfefw2E"/> <img src="/.github/icons/Discord.svg" width="100" height="100" /> <a href="https://github.com/Ghost-chu/QuickShop-Reremake/issues"><img src="/.github/icons/Github.png" width="100" height="100" />
+| <a href="https://discord.gg/bfefw2E"/> <img src="/.github/icons/Discord.svg" width="100" height="100" /> | <a href="https://github.com/Ghost-chu/QuickShop-Reremake/issues"><img src="/.github/icons/Github.png" width="100" height="100" /> |
+| :-: | :-: |
+| **Discord** | **Github Issues** |
+
 
 ## Features
 
@@ -40,13 +42,14 @@ QuickShop-Reremake is made by PotatoCraft Studio from [KaiKikuchi's QuickShop up
 - Powerful API [Reremake]
 - Optimized performance [Reremake]
 
-## Downloads
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Spigot:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BukkitDev:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MCBBS:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jenkins:</p>
-<a href="https://www.spigotmc.org/resources/62575/"/> <img src="/.github/icons/Spigot.png" width="100" height="90" /> <a href="https://dev.bukkit.org/projects/quickshop-reremake"><img src="/.github/icons/Bukkit.png" width="100" height="100" /> <a href="http://www.mcbbs.net/thread-809496-1-1.html"><img src="/.github/icons/MCBBS.png" width="100" height="100" /> <img src="/.github/icons/Transparent.png" width="5" height="100" />
-<a href="https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake-SNAPSHOT/"><img src="/.github/icons/Jenkins.svg" width="85" height="100" />
+## Downloads  
+| <a href="https://www.spigotmc.org/resources/62575/"/><img src="/.github/icons/Spigot.png" width="100" height="90" /> | <a href="https://dev.bukkit.org/projects/quickshop-reremake"><img src="/.github/icons/Bukkit.png" width="100" height="100" /> | <a href="http://www.mcbbs.net/thread-809496-1-1.html"/><img src="/.github/icons/MCBBS.png" width="100" height="100" /> | <a href="https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake-SNAPSHOT/"><img src="/.github/icons/Jenkins.svg" width="85" height="100" />
+| :-: | :-: | :-: | :-: |
+| **Spigot** | **BukkitDev** | **MCBBS** | **Jenkins** |
+
 
 ## Contribute
-[]()If you're a developer, you can contribute to the QuickShop code! Just make a fork and install the Lombok plugin, then make a pull request when you're done! Please try to follow [Google Java Style](https://google.github.io/styleguide/javaguide.html). Also do not increase the plugin version number. Thank you very much!
+If you're a developer, you can contribute to the QuickShop code! Just make a fork and install the Lombok plugin, then make a pull request when you're done! Please try to follow [Google Java Style](https://google.github.io/styleguide/javaguide.html). Also do not increase the plugin version number. Thank you very much!
 
 ## Maven
 ```XML
