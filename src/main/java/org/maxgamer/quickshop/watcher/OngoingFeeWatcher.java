@@ -66,11 +66,10 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                 }
                 World world = location.getWorld();
                 //We must check balance manually to avoid shop missing hell when tax account broken
-                if (plugin.getEconomy().getBalance(shopOwner, Objects.requireNonNull(world), shop.getCurrency()) >= cost) {
+                if (allowLoan || plugin.getEconomy().getBalance(shopOwner, Objects.requireNonNull(world), shop.getCurrency()) >= cost) {
                     Util.mainThreadRun(() -> {
                         EconomyTransaction transaction = EconomyTransaction.builder()
                                 .allowLoan(allowLoan)
-                                .amount(cost)
                                 .currency(shop.getCurrency())
                                 .core(plugin.getEconomy())
                                 .world(world)
