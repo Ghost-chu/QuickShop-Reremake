@@ -115,13 +115,10 @@ public class ShopProtectionListener extends ProtectionListenerBase {
                 plugin.getLogger().log(Level.WARNING, "Failed to automatic disable disable-move-event for world [" + world.getName() + "], please disable it by yourself or player can steal items from shops.", ex);
             }
         });
-
-
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockExplode(BlockExplodeEvent e) {
-
         for (int i = 0, a = e.blockList().size(); i < a; i++) {
             final Block b = e.blockList().get(i);
             Shop shop = getShopNature(b.getLocation(), true);

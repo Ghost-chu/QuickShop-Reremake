@@ -107,6 +107,30 @@ public class LockListener extends ProtectionListenerBase {
         }
     }
 
+    /*
+     * Listens for sign placement to prevent placing sign for creating protection
+     */
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    public void onSignPlace(BlockPlaceEvent event) {
+        Block placedBlock = event.getBlock();
+        if (!(placedBlock.getState() instanceof Sign)) {
+            return;
+        }
+        Block posShopBlock = Util.getAttached(placedBlock);
+        if (posShopBlock == null) {
+            return;
+        }
+        Shop shop = plugin.getShopManager().getShopIncludeAttached(posShopBlock.getLocation());
+        if (shop == null) {
+            return;
+        }
+        Player player = event.getPlayer();
+        if (!shop.getModerator().isOwner(player.getUniqueId())) {
+            MsgUtil.sendMessage(player, "that-is-locked");
+            event.setCancelled(true);
+        }
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
 
