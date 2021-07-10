@@ -20,6 +20,8 @@
 package org.maxgamer.quickshop.watcher;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -27,6 +29,7 @@ import org.maxgamer.quickshop.economy.EconomyTransaction;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.WarningSender;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -37,9 +40,10 @@ import java.util.UUID;
  */
 public class OngoingFeeWatcher extends BukkitRunnable {
     private final QuickShop plugin;
-
+    private final WarningSender warningSender;
     public OngoingFeeWatcher(@NotNull QuickShop plugin) {
         this.plugin = plugin;
+        this.warningSender = new WarningSender(plugin, 6000);
     }
 
     @Override
@@ -55,26 +59,32 @@ public class OngoingFeeWatcher extends BukkitRunnable {
         for (Shop shop : plugin.getShopManager().getAllShops()) {
             if ((!shop.isUnlimited() || !ignoreUnlimited) && !shop.isDeleted()) {
                 UUID shopOwner = shop.getOwner();
-                Util.mainThreadRun(() -> {
+                Location location = shop.getLocation();
+                if (!Util.isWorldLoaded(location)) {
+                    //ignore unloaded world
+                    continue;
+                }
+                World world = location.getWorld();
+                //We must check balance manually to avoid shop missing hell when tax account broken
+                if (plugin.getEconomy().getBalance(shopOwner, Objects.requireNonNull(world), shop.getCurrency()) >= cost) {
+                    Util.mainThreadRun(() -> {
+                        EconomyTransaction transaction = EconomyTransaction.builder()
+                                .allowLoan(allowLoan)
+                                .amount(cost)
+                                .currency(shop.getCurrency())
+                                .core(plugin.getEconomy())
+                                .world(world)
+                                .to(plugin.getShopManager().getCacheTaxAccount().getUniqueId())
+                                .from(shopOwner).build();
 
-                    EconomyTransaction transaction = EconomyTransaction.builder()
-                            .allowLoan(allowLoan)
-                            .amount(cost)
-                            .currency(shop.getCurrency())
-                            .core(plugin.getEconomy())
-                            .world(shop.getLocation().getWorld())
-                            .to(plugin.getShopManager().getCacheTaxAccount().getUniqueId())
-                            .from(shopOwner).build();
-
-                    boolean success = transaction.failSafeCommit();
-                    if (!success) {
-                        this.removeShop(shop);
-                    }
-                });
-            } else {
-                Util.debugLog(
-                        "Shop was ignored for ongoing fee cause it is unlimited and ignoreUnlimited = true : "
-                                + shop);
+                        boolean success = transaction.failSafeCommit();
+                        if (!success) {
+                            warningSender.sendWarn("Unable to deposit ongoing fee to tax account, the last error is " + transaction.getLastError());
+                        }
+                    });
+                } else {
+                    this.removeShop(shop);
+                }
             }
         }
     }
