@@ -1,7 +1,7 @@
 {
-  "_comment": "Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake",
+  "_comment": "Привет переводчик! Если вы редактируете это с Github или из исходных кодов, вы должны перейти сюда https://crowdin.com/project/quickshop-reremake",
   "file-test": "Это тестовый файл. Мы используем его, если файл messages.json поломан. Вы тут можете заполнить любым пасхальными яйцами, которые вам нравятся здесь :)",
-  "translation-author": "Переводчик: Ghost_chu, Andre_601",
+  "translation-author": "Переводчик: Ghost_chu, Andre_601, kyrtion, limbiz86",
   "translation-version": "Поддерживаемая версия: Reremake",
   "translation-contributors": "Участники: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken и Andre_601",
   "translation-country": "Языковой регион: Русский (ru_RU)",
@@ -45,7 +45,7 @@
   "fee-charged-for-price-change": "&aВы заплатили &c{0}&a за изменения цены.",
   "price-is-now": "&aНовая цена магазина &e{0}",
   "thats-not-a-number": "&cНеверное значение",
-  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consisten with vanilla behaviour",
+  "forbidden-vanilla-behavior": "&cОперация отклонена, она не соответствует ванильному поведению",
   "no-price-given": "&cПожалуйста укажите верную цену.",
   "average-price-nearby": "&aСредняя цена: &e{0}",
   "shop-has-changed": "&cМагазин, который вы пытались использовать, изменился с момента нажатия!",
@@ -139,7 +139,7 @@
     "no-amount-given": "&cКоличество не указано. Используйте: &a/qs refill <количество>&c",
     "now-debuging": "&aУспешно включено режим разработчика. Перезагружаю...",
     "now-nolonger-debuging": "&aУспешно выключен режим разработчика. Перезагружаю...",
-    "wrong-args": "&cInvalid argument. Use &l/qs help &cto see a list of commands.",
+    "wrong-args": "&cНедопустимые аргументы. Используйте &l/qs help &cчтобы узнать список командов.",
     "description": {
       "title": "&aQuickShop справка",
       "unlimited": "&eПредоставляет неограниченный запас магазина.",
@@ -170,14 +170,14 @@
       "removeall": "&eУдалить ВСЕ магазины указанного игрока",
       "transfer": "&eПередайте кого-нибудь ВСЕ магазины в другие",
       "removeworld": "&eУдалить ВСЕ магазины в указанном мире",
-      "currency": "&eSet or remove the currency setting of the shop",
-      "ban": "&eBans a player from the shop",
-      "unban": "&eUnbans a player from the shop",
-      "freeze": "&eDisable or Enable shop trading",
-      "lock": "&eSwitch the shop's lock status"
+      "currency": "&eУстанавливает или удаляет настройки валюты магазина",
+      "ban": "&eЗапретить игрока из магазина",
+      "unban": "&eРазрешить игрока из магазина",
+      "freeze": "&eОтключить или включить торговлю в магазине",
+      "lock": "&eПереключить состояние блокировки магазина"
     },
     "disabled": "&cДанная команда недоступна: &e{0}",
-    "feature-not-enabled": "This feature is not enabled in the config file."
+    "feature-not-enabled": "Функция не включена в конфигурации."
   },
   "signs": {
     "selling": "Продаёт {0}",
@@ -191,9 +191,9 @@
     "unlimited": "∞",
     "status-available": "&a",
     "status-unavailable": "&c",
-    "out-of-stock": "Out of Stock",
-    "out-of-space": "Out of Space",
-    "freeze": "Trading disabled"
+    "out-of-stock": "Нет в наличии",
+    "out-of-space": "Не хватает места",
+    "freeze": "Торговля отключена"
   },
   "controlpanel": {
     "setowner": "&aВладелец: &b{0} &e[&d&lИзменить&e]",
@@ -219,10 +219,10 @@
     "item-hover": "&eНажмите, чтобы изменить магазин товара",
     "currency": "&aВалюта: &b{0} &e[&d&lУстановить&e]",
     "currency-hover": "&eНажмите, чтобы установить или удалить валюту, которую этот магазин использует",
-    "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
-    "lock-hover": "&eEnable/Disable the shop's lock protection.",
-    "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
-    "freeze-hover": "&eToggle the shop's freeze status."
+    "lock": "&eМагазин заблокирован: &b{0} &e[&d&lПереключить&e]",
+    "lock-hover": "&eВключить/отключить защиту блокировки магазина.",
+    "freeze": "&eЗаморожен: &b{0} &e[&d&lПереключить&e]",
+    "freeze-hover": "&eПереключить статус заморозки магазина."
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -264,7 +264,7 @@
       "Доктор, QuickShop уже есть новое обновление {0}! Вы должны обновить~",
       "Ко~ко~да~ё~ QuickShop появились новое обновление {0} ~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server's performance.",
+    "remote-disable-warning": "&cТекущая версия QuickShop отмечена как отключенная удалённым сервером, означая, что эта версия может иметь серьезные проблемы, получить подробную информацию с нашей страницы плагина SpigotMC: {0}. Это предупреждение будет отображаться до тех пор, пока вы не переключитесь на стабильную версию, но это не повлияет на перфорирование вашего сервера.",
     "label": {
       "unstable": "[Нестабильный]",
       "stable": "[Стабильный]",
@@ -313,15 +313,15 @@
   "currency-unset": "&aМагазин успешно удалён. Использование настроек теперь по умолчанию.",
   "currency-not-support": "&cПлагин экономики не поддерживает функцию несколько экономики.",
   "item-not-exist": "&cТовар &e{0} &cне существует, проверьте правильность написания.",
-  "backup-success": "&aBackup successfull.",
-  "console-only": "&cThis command can only be executed by Console.",
-  "console-only-danger": "&cThis is a dangerous command, so that only the Console can execute it.",
-  "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
-  "shop-creation-failed": "&cShop creation failed, please contact with server administrator.",
-  "shop-owner-self-trade": "&eYou trading with yourself shop, so you might won't gain any balance.",
-  "chest-title": "QuickShop Store",
-  "command-type-mismatch": "&cThis command only can executed by &b{0}.",
-  "unlimited-shop-owner-changed": "&eThis unlimited shop owner has been changed to {0}.",
-  "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.",
-  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
+  "backup-success": "&aРезервное копирование успешно.",
+  "console-only": "&cЭта команда может быть выполнена только консолью.",
+  "console-only-danger": "&cЭто опасная команда, поэтому только консоль может ее выполнить.",
+  "clean-warning": "&eЭта команда очистит &cвсех &eмагазинов, если магазин повреждён или создан в запрещённых мирах или продажах/покупке запрещенных товаров и &c&lНЕ ЗАГРУЖЕНА МИРА МАГАЗИНОВ&e, убедитесь, что у вас есть полная резервная копия данных ваших магазинов и используйте &b/qs cleanghost confirm &eдля продолжение.",
+  "shop-creation-failed": "&cНе удалось создать новый магазин, свяжитесь с администратором сервера.",
+  "shop-owner-self-trade": "&eВы торгуете с собственным магазином и не получите никакого баланса.",
+  "chest-title": "Магазин QuickShop",
+  "command-type-mismatch": "&cЭта команда может выполнена только &b{0}.",
+  "unlimited-shop-owner-changed": "&eЭтот владелец безлимитного магазина был изменен на {0}.",
+  "unlimited-shop-owner-keeped": "&eВнимание: Владелец магазина все еще является владельцем безлимитного магазина, вам нужно установить нового владельца магазина самостоятельно.",
+  "server-crash-warning": "&cСервер может вызывать сбой после выполнения команды /qs reload, если вы заменяете/удаляете плагина QuickShop во время работы сервера."
 }

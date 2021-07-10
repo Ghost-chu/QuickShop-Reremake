@@ -22,10 +22,7 @@ package org.maxgamer.quickshop.shop;
 import com.lishid.openinv.OpenInv;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -679,12 +676,24 @@ public class ContainerShop implements Shop {
     public void setSignText(@NotNull String[] lines) {
         Util.ensureThread(false);
         List<Sign> signs = this.getSigns();
+        boolean signGlowing = plugin.getConfig().getBoolean("shop.sign-glowing");
+        DyeColor dyeColor = null;
+        try {
+            dyeColor = DyeColor.valueOf(plugin.getConfig().getString("shop.sign-dye-color"));
+        } catch (IllegalArgumentException ignored) {
+        }
         for (Sign sign : signs) {
             if (Arrays.equals(sign.getLines(), lines)) {
                 continue;
             }
             for (int i = 0; i < lines.length; i++) {
                 sign.setLine(i, lines[i]);
+            }
+            if (plugin.getGameVersion().isSignTextDyeSupport() && dyeColor != null) {
+                sign.setColor(dyeColor);
+            }
+            if (signGlowing && plugin.getGameVersion().isSignGlowingSupport()) {
+                sign.setGlowingText(true);
             }
             sign.update(true);
             plugin.getServer().getPluginManager().callEvent(new ShopSignUpdateEvent(this, sign));

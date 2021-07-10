@@ -193,7 +193,7 @@
     "status-unavailable": "&c",
     "out-of-stock": "Out of Stock",
     "out-of-space": "Out of Space",
-    "freeze": "Trading disabled"
+    "freeze": "取引が無効化されました。"
   },
   "controlpanel": {
     "setowner": "&aオーナー: &b{0} &e[&d&l変更&e]",

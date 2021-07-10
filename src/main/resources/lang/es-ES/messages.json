@@ -1,5 +1,5 @@
 {
-  "_comment": "Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake",
+  "_comment": "¡Hola traductor! Si editas esto desde Github o desde código fuente, deberías ir a https://crowdin.com/project/quickshop-reremake",
   "file-test": "Este es un archivo de texto de prueba. Lo usamos para probar si el messages.json está roto. Puedes llenarlo con los huevos de pascua que quieras aquí :)",
   "translation-author": "Traductor: Ghost_chu, Andre_601, MarcosTheFasdox",
   "translation-version": "&c&lVersión soportada: &b&lReremake",
@@ -45,7 +45,7 @@
   "fee-charged-for-price-change": "&aHas pagado &c{0}&a para cambiar de precio.",
   "price-is-now": "&aEl nuevo precio de la tienda es &e{0}",
   "thats-not-a-number": "&cNúmero inválido.",
-  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consisten with vanilla behaviour",
+  "forbidden-vanilla-behavior": "&cLa operación está prohibida por no ser compatible con el comportamiento vainilla",
   "no-price-given": "&cPor favor ingresa un precio válido.",
   "average-price-nearby": "&aPrecio medio en esta zona: &e{0}",
   "shop-has-changed": "&c¡La tienda que trataste de usar ha cambiado desde que hiciste clic!",
@@ -139,7 +139,7 @@
     "no-amount-given": "&cNo se especificó cantidad. Usa &a/qs refill <amount>&c",
     "now-debuging": "&aModo desarrollador habilitado. Recargando QuickShop...",
     "now-nolonger-debuging": "&aModo desarrollador deshabilitado. Recargando QuickShop...",
-    "wrong-args": "&cInvalid argument. Use &l/qs help &cto see a list of commands.",
+    "wrong-args": "&cArgumento no válido. Usa la ayuda &l/qs &cpara ver una lista de comandos.",
     "description": {
       "title": "&aAyuda de QuickShop",
       "unlimited": "&eDa un stock ilimitado a una tienda.",

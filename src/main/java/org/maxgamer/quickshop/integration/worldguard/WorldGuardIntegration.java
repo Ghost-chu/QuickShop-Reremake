@@ -23,6 +23,7 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
@@ -45,9 +46,8 @@ import java.util.logging.Level;
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onLoadAfter)
 public class WorldGuardIntegration extends QSIntegratedPlugin {
-    private static boolean register = false;
-    private final StateFlag createFlag = new StateFlag("quickshop-create", false);
-    private final StateFlag tradeFlag = new StateFlag("quickshop-trade", true);
+    private final StateFlag createFlag = createOrGet("quickshop-create", false);
+    private final StateFlag tradeFlag = createOrGet("quickshop-trade", true);
     private List<WorldGuardFlags> createFlags;
     private List<WorldGuardFlags> tradeFlags;
     private boolean anyOwner;
@@ -56,6 +56,22 @@ public class WorldGuardIntegration extends QSIntegratedPlugin {
 
     public WorldGuardIntegration(QuickShop plugin) {
         super(plugin);
+    }
+
+    private StateFlag createOrGet(String key, boolean def) {
+        FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
+        Flag<?> result = WorldGuard.getInstance().getFlagRegistry().get(key);
+        if (!(result instanceof StateFlag)) {
+            result = new StateFlag(key, def);
+            try {
+                registry.register(result);
+                plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
+                Util.debugLog("Success register " + getName() + " flags.");
+            } catch (FlagConflictException | IllegalStateException e) {
+                plugin.getLogger().log(Level.SEVERE, "Failed to register " + getName() + " flags.", e);
+            }
+        }
+        return (StateFlag) result;
     }
 
     @Override
@@ -71,19 +87,6 @@ public class WorldGuardIntegration extends QSIntegratedPlugin {
         tradeFlags =
                 WorldGuardFlags.deserialize(
                         plugin.getConfig().getStringList("integration.worldguard.trade"));
-        if (!register) {
-            FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
-            try {
-                // create a flag with the name "my-custom-flag", defaulting to true
-                registry.register(this.createFlag);
-                registry.register(this.tradeFlag);
-                plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
-                Util.debugLog("Success register " + getName() + " flags.");
-            } catch (FlagConflictException | IllegalStateException e) {
-                plugin.getLogger().log(Level.SEVERE, "Failed to register " + getName() + " flags.", e);
-            }
-            register = true;
-        }
         load = true;
     }
 
@@ -147,6 +150,7 @@ public class WorldGuardIntegration extends QSIntegratedPlugin {
                     if (query.queryState(wgLoc, localPlayer, Flags.INTERACT) == StateFlag.State.DENY) {
                         return false;
                     }
+                    break;
                 case OWN:
                     if (anyOwner) {
                         if (query.getApplicableRegions(wgLoc).getRegions().stream().noneMatch(region -> region.isOwner(localPlayer))) {

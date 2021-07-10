@@ -321,7 +321,7 @@
   "shop-owner-self-trade": "&e你正在和自己的商店进行交易，你可能不会得到任何钱。",
   "chest-title": "QuickShop商店",
   "command-type-mismatch": "&c此命令只能由 &b{0} 执行。",
-  "unlimited-shop-owner-changed": "&e这个系统商店的店主已更改为 {0}。",
+  "unlimited-shop-owner-changed": "&e这个无限商店的店主已更改为 {0}。",
   "unlimited-shop-owner-keeped": "&e请注意: 商店持有人依然是无限商店类型, 你需要重新设置新的商店",
-  "server-crash-warning": "如果服务器运行时替换/删除QuickShop插件 Jar 文件，&c服务器可能在执行 /qs 重新加载命令后崩溃。"
+  "server-crash-warning": "&c如果服务器运行时替换/删除QuickShop插件 Jar 文件，执行 /qs reload后服务器可能会崩溃。"
 }

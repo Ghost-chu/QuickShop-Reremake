@@ -831,10 +831,7 @@ public class Util {
     }
 
     public static boolean isDisplayAllowBlock(@NotNull Material mat) {
-        if (isAir(mat)) {
-            return true;
-        }
-        return isWallSign(mat);
+        return mat.isTransparent();
     }
 
     public static boolean isAir(@NotNull Material mat) {
