@@ -66,6 +66,7 @@ public class ShopManager {
 
     private final QuickShop plugin;
     @Getter
+    @Nullable
     private final Trader cacheTaxAccount;
     @Getter
     private final Trader cacheUnlimitedShopAccount;

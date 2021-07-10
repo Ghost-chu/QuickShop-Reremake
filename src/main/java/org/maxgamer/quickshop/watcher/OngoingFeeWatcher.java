@@ -26,6 +26,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.economy.EconomyTransaction;
+import org.maxgamer.quickshop.economy.Trader;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -67,13 +68,14 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                 World world = location.getWorld();
                 //We must check balance manually to avoid shop missing hell when tax account broken
                 if (allowLoan || plugin.getEconomy().getBalance(shopOwner, Objects.requireNonNull(world), shop.getCurrency()) >= cost) {
+                    Trader trader = plugin.getShopManager().getCacheTaxAccount();
                     Util.mainThreadRun(() -> {
                         EconomyTransaction transaction = EconomyTransaction.builder()
                                 .allowLoan(allowLoan)
                                 .currency(shop.getCurrency())
                                 .core(plugin.getEconomy())
                                 .world(world)
-                                .to(plugin.getShopManager().getCacheTaxAccount().getUniqueId())
+                                .to(trader == null ? null : trader.getUniqueId())
                                 .from(shopOwner).build();
 
                         boolean success = transaction.failSafeCommit();
