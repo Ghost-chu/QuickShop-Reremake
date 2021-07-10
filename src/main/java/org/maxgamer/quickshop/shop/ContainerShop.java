@@ -676,12 +676,6 @@ public class ContainerShop implements Shop {
     public void setSignText(@NotNull String[] lines) {
         Util.ensureThread(false);
         List<Sign> signs = this.getSigns();
-        boolean signGlowing = plugin.getConfig().getBoolean("shop.sign-glowing");
-        DyeColor dyeColor = null;
-        try {
-            dyeColor = DyeColor.valueOf(plugin.getConfig().getString("shop.sign-dye-color"));
-        } catch (Exception ignored) {
-        }
         for (Sign sign : signs) {
             if (Arrays.equals(sign.getLines(), lines)) {
                 continue;
@@ -689,11 +683,15 @@ public class ContainerShop implements Shop {
             for (int i = 0; i < lines.length; i++) {
                 sign.setLine(i, lines[i]);
             }
-            if (plugin.getGameVersion().isSignTextDyeSupport() && dyeColor != null) {
-                sign.setColor(dyeColor);
+            if (plugin.getGameVersion().isSignTextDyeSupport()) {
+                DyeColor dyeColor = Util.getDyeColor();
+                if (dyeColor != null) {
+                    sign.setColor(dyeColor);
+                }
             }
-            if (signGlowing && plugin.getGameVersion().isSignGlowingSupport()) {
-                sign.setGlowingText(true);
+            if (plugin.getGameVersion().isSignGlowingSupport()) {
+                boolean isGlowing = plugin.getConfig().getBoolean("shop.sign-glowing");
+                sign.setGlowingText(isGlowing);
             }
             sign.update(true);
             plugin.getServer().getPluginManager().callEvent(new ShopSignUpdateEvent(this, sign));
