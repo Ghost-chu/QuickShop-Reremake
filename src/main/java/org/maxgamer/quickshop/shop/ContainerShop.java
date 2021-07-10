@@ -680,7 +680,7 @@ public class ContainerShop implements Shop {
         DyeColor dyeColor = null;
         try {
             dyeColor = DyeColor.valueOf(plugin.getConfig().getString("shop.sign-dye-color"));
-        } catch (IllegalArgumentException ignored) {
+        } catch (Exception ignored) {
         }
         for (Sign sign : signs) {
             if (Arrays.equals(sign.getLines(), lines)) {
