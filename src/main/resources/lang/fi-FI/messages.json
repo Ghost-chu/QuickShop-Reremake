@@ -5,7 +5,7 @@
   "translation-version": "Tuettu versio: Reremake",
   "translation-contributors": "Avustajat: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Kielialue: Suomi (fi_FI)",
-  "language-version": "58",
+  "language-version": "59",
   "not-looking-at-shop": "&cQuickShoppia ei löytynyt. Sinun täytyy katsoa yhtä.",
   "no-anythings-in-your-hand": "&cKädessäsi ei ole mitään.",
   "no-permission": "&cSinulla ei ole oikeutta tehdä noin.",
@@ -115,6 +115,8 @@
   "blacklisted-item": "&cEt voi myydä tätä tavaraa, koska se on mustalla listalla",
   "how-much-to-trade-for": "&aKirjoita chattiin, mihin hintaan haluat vaihtaa &e{1}x {0}&a.",
   "command": {
+    "format": "&a/{0} {1} &e- {2}",
+    "format-disabled": "&c/{0} {1} &7- {2}",
     "toggle-unlimited": {
       "unlimited": "&aKaupassa on nyt rajattomasti tavaroita",
       "limited": "&aKauppa ei ole enää rajaton"
