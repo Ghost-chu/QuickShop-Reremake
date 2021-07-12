@@ -1476,6 +1476,12 @@ public class MsgUtil {
             setAndUpdate("not-a-integer");
             setAndUpdate("language-version", ++selectedVersion);
         }
+        if (selectedVersion == 58) {
+            setAndUpdate("command.format");
+            setAndUpdate("command.format-disabled");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
+
 
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
     }

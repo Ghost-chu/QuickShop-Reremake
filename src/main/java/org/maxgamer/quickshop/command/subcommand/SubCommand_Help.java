@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -61,26 +60,29 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
                     }
                 }
                 if (!container.isDisabled()) {
-                    MsgUtil.sendDirectMessage(s,
-                            ChatColor.GREEN //TODO: Color custom ability
-                                    + "/"
-                                    + commandLabel
-                                    + " "
-                                    + container.getPrefix()
-                                    + ChatColor.YELLOW
-                                    + " - "
-                                    + commandDesc);
-                } else if (QuickShop.getPermissionManager().hasPermission(s, "quickshop.showdisabled")) {
-                    MsgUtil.sendDirectMessage(s,
-                            ChatColor.RED
-                                    + "/"
-                                    + commandLabel
-                                    + " "
-                                    + container.getPrefix()
-                                    + ChatColor.GRAY
-                                    + " - "
-                                    + MsgUtil.getMessage("command.disabled", s, ChatColor.GRAY + container.getDisableText(s)));
+                    MsgUtil.sendDirectMessage(s, MsgUtil.getMessage("command.format", s, commandLabel, container.getPrefix(), commandDesc));
 
+
+//                    MsgUtil.sendDirectMessage(s,
+//                            ChatColor.GREEN //TODO: Color custom ability
+//                                    + "/"
+//                                    + commandLabel
+//                                    + " "
+//                                    + container.getPrefix()
+//                                    + ChatColor.YELLOW
+//                                    + " - "
+//                                    + commandDesc);
+                } else if (QuickShop.getPermissionManager().hasPermission(s, "quickshop.showdisabled")) {
+//                    MsgUtil.sendDirectMessage(s,
+//                            ChatColor.RED
+//                                    + "/"
+//                                    + commandLabel
+//                                    + " "
+//                                    + container.getPrefix()
+//                                    + ChatColor.GRAY
+//                                    + " - "
+//                                    + MsgUtil.getMessage("command.disabled", s, ChatColor.GRAY + container.getDisableText(s)));
+                    MsgUtil.sendDirectMessage(s, MsgUtil.getMessage("command.format", s, commandLabel, container.getPrefix(), container.getDisableText(s)));
                 }
             }
         }
