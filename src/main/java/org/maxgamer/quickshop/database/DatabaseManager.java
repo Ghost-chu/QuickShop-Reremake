@@ -148,7 +148,6 @@ public class DatabaseManager {
      * Internal method, runTasks in queue.
      */
     private synchronized void runTask() { // synchronized for QUICKSHOP-WX
-        synchronized (sqlQueue) {
             if (sqlQueue.isEmpty()) {
                 return;
             }
@@ -199,7 +198,6 @@ public class DatabaseManager {
             } finally {
                 dbconnection.release();
             }
-        }
 
 //        try {
 //            this.database.getConnection().commit();
@@ -229,9 +227,7 @@ public class DatabaseManager {
      */
     public void addDelayTask(DatabaseTask task) {
         if (useQueue) {
-            synchronized (sqlQueue) {
-                sqlQueue.offer(task);
-            }
+            sqlQueue.offer(task);
         } else {
             runInstantTask(task);
         }
