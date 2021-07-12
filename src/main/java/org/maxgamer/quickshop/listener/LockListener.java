@@ -24,7 +24,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
-import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -114,7 +113,7 @@ public class LockListener extends ProtectionListenerBase {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onSignPlace(BlockPlaceEvent event) {
         Block placedBlock = event.getBlock();
-        if (!(placedBlock.getBlockData() instanceof WallSign)) {
+        if (!(placedBlock.getState() instanceof Sign)) {
             return;
         }
         Block posShopBlock = Util.getAttached(placedBlock);
