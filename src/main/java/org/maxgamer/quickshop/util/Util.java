@@ -84,6 +84,9 @@ public class Util {
     private static List<String> worldBlacklist = new ArrayList<>(5);
     @Getter
     private static boolean disableDebugLogger = false;
+    @Getter
+    @Nullable
+    private static DyeColor dyeColor = null;
     private static boolean currencySymbolOnRight;
     private static String alternateCurrencySymbol;
     private static boolean disableVaultFormat;
@@ -675,7 +678,10 @@ public class Util {
         }
         worldBlacklist = plugin.getConfig().getStringList("shop.blacklist-world");
         disableDebugLogger = plugin.getConfig().getBoolean("debug.disable-debuglogger", false);
-
+        try {
+            dyeColor = DyeColor.valueOf(plugin.getConfig().getString("shop.sign-dye-color"));
+        } catch (Exception ignored) {
+        }
         currencySymbolOnRight = plugin.getConfig().getBoolean("shop.currency-symbol-on-right", false);
         alternateCurrencySymbol = plugin.getConfig().getString("shop.alternate-currency-symbol", "$");
         disableVaultFormat = plugin.getConfig().getBoolean("shop.disable-vault-format", false);
