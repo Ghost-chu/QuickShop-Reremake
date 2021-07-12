@@ -5,7 +5,7 @@
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
   "translation-country": "本地化语言：简体中文 (zh_CN)",
-  "language-version": "58",
+  "language-version": "59",
   "not-looking-at-shop": "&c无法找到商店，您需要注视着你想要操作的商店。",
   "no-anythings-in-your-hand": "&c你的手里没有任何物品。",
   "no-permission": "&c你没有权限这样做。",
@@ -115,6 +115,8 @@
   "blacklisted-item": "&c这件物品已经被拉黑，你不能出售它",
   "how-much-to-trade-for": "&a请在聊天中输入交易&e{1}个{0}&a所需的价格。",
   "command": {
+    "format": "&a/{0} {1} &e- {2}",
+    "format-disabled": "&c/{0} {1} &7- {2}",
     "toggle-unlimited": {
       "unlimited": "&a商店已更改为无限模式",
       "limited": "&a商店已更改为普通模式。"
