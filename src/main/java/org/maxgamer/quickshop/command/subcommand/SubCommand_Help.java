@@ -62,7 +62,7 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
                 }
                 if (!container.isDisabled()) {
                     MsgUtil.sendDirectMessage(s,
-                            ChatColor.GREEN
+                            ChatColor.GREEN //TODO: Color custom ability
                                     + "/"
                                     + commandLabel
                                     + " "

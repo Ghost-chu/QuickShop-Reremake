@@ -583,6 +583,7 @@ public class QuickShop extends JavaPlugin {
             }
         }
 
+
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadAfter);
         getLogger().info("QuickShop " + getFork() + " - Early boot step - Booted up...");
     }

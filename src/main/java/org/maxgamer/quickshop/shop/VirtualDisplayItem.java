@@ -269,6 +269,11 @@ public class VirtualDisplayItem extends DisplayItem {
                             }
                             chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
                         }
+
+                        //TODO: X and Z always mismatch with player received
+                        //TODO: Probably the game Protocol changed between 1.16
+                        //TODO: and 1.17.
+
                         if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
                             packetSenders.add(player.getUniqueId());
                             sendFakeItem(player);
