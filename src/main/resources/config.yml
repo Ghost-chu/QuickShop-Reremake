@@ -22,7 +22,7 @@
 #                        TO EDIT QUICKSHOP'S CONFIGURATION, USE THE "config.yml" FILE!
 
 #Do not touch this if you don't know what you're doing!
-config-version: 133
+config-version: 134
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not existant/not supported language, then QuickShop will use en_US.
@@ -693,6 +693,10 @@ integration:
     trade: [ ]
     #Should QuickShop delete shops if the shop owner has been untrusted on the claim?
     delete-on-untrusted: true
+    #Should QuickShop delete shops if claim has been deleted?
+    delete-on-unclaim: false
+    #Should QuickShop delete shops if claim has been expired?
+    delete-on-claim-expired: true
   #Residence Integration
   residence:
     enable: false
