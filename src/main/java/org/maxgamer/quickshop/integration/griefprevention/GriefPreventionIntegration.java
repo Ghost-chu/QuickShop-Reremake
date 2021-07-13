@@ -151,12 +151,17 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
             return;
         }
         Claim claim = event.getClaim();
+        if (event.getClaim().getOwnerID() == null) {
+            return;
+        }
         for (Chunk chunk : claim.getChunks()) {
             Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
             if (shops != null && !shops.isEmpty()) {
                 for (Shop shop : shops.values()) {
                     if (griefPrevention.dataStore.getClaimAt(shop.getLocation(), true, true, null) == null) {
-                        shop.delete();
+                        if (event.getClaim().getOwnerID().equals(shop.getOwner())) {
+                            shop.delete();
+                        }
                     }
                 }
             }
@@ -168,13 +173,18 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
         if (!deleteOnClaimExpired) {
             return;
         }
+        if (event.getClaim().getOwnerID() == null) {
+            return;
+        }
         Claim claim = event.getClaim();
         for (Chunk chunk : claim.getChunks()) {
             Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
             if (shops != null && !shops.isEmpty()) {
                 for (Shop shop : shops.values()) {
                     if (griefPrevention.dataStore.getClaimAt(shop.getLocation(), true, true, null) == null) {
-                        shop.delete();
+                        if (event.getClaim().getOwnerID().equals(shop.getOwner())) {
+                            shop.delete();
+                        }
                     }
                 }
             }
