@@ -109,41 +109,27 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
         if (!deleteOnUntrusted) {
             return;
         }
-        if (event.isGiven()) {
-            return;
-        }
-
         for (Claim claim : event.getClaims()) {
             for (Chunk chunk : claim.getChunks()) {
                 Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
                 if (shops != null) {
                     for (Shop shop : shops.values()) {
-                        if (shop.getOwner().equals(claim.getOwnerID())) {
-                            return;
-                        }
+                        if (!shop.getOwner().equals(claim.getOwnerID())) {
 
-                        Claim shopClaim = griefPrevention.dataStore.getClaimAt(shop.getLocation(), true, true, null);
-                        if(shopClaim == null || shopClaim.getID() != claim.getID()) {
-                            return;
-                        }
+                            Claim shopClaim = griefPrevention.dataStore.getClaimAt(shop.getLocation(), true, false, null);
+                            if(shopClaim != null && shopClaim.getID() == claim.getID()) {
 
-                        //https://github.com/TechFortress/GriefPrevention/blob/e63d1d9e513f48aa0aaa81f154de01626248b7fe/src/main/java/me/ryanhamshire/GriefPrevention/events/TrustChangedEvent.java#L104
-                        if (event.getIdentifier().equals(shop.getOwner().toString())) { //Single
-                            plugin.log("[SHOP DELETE] GP Integration: Single delete #" + event.getIdentifier());
-                            shop.delete();
-                            return;
-                        }
-
-                        if (event.getIdentifier().contains(shop.getOwner().toString())) { //Group
-                            plugin.log("[SHOP DELETE] GP Integration: Group delete #" + event.getIdentifier());
-                            shop.delete();
-                            return;
-                        }
-
-                        if ("all".equals(event.getIdentifier()) || "public".equals(event.getIdentifier())) { //All
-                            plugin.log("[SHOP DELETE] GP Integration: All/Public delete #" + event.getIdentifier());
-                            shop.delete();
-                            return;
+                                if(event.getIdentifier().equals(shop.getOwner().toString())) {
+                                    plugin.log("[SHOP DELETE] GP Integration: Single delete #" + event.getIdentifier());
+                                    shop.delete();
+                                } else if(event.getIdentifier().contains(shop.getOwner().toString())) {
+                                    plugin.log("[SHOP DELETE] GP Integration: Group delete #" + event.getIdentifier());
+                                    shop.delete();
+                                } else if("all".equals(event.getIdentifier()) || "public".equals(event.getIdentifier())) {
+                                    plugin.log("[SHOP DELETE] GP Integration: All/Public delete #" + event.getIdentifier());
+                                    shop.delete();
+                                }
+                            }
                         }
                     }
                 }
@@ -169,7 +155,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
             Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
             if (shops != null) {
                 for (Shop shop : shops.values()) {
-                    if (griefPrevention.dataStore.getClaimAt(shop.getLocation(), true, true, null) == null) {
+                    if (claim.contains(shop.getLocation(), true, false)) {
                         plugin.log("[SHOP DELETE] GP Integration: Single delete (Unclaimed/Expired) #" + shop.getOwner());
                         shop.delete();
                     }
