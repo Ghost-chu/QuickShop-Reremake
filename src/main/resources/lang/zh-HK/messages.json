@@ -5,7 +5,7 @@
   "translation-version": "支援版本: Reremake",
   "translation-contributors": "貢獻者: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken 同埋 Andre_601",
   "translation-country": "語言區域: 中文(zh_HK)",
-  "language-version": "58",
+  "language-version": "59",
   "not-looking-at-shop": "&c我搵唔到一個箱子商店, 唔該望住個箱, 如果唔係我辨認唔到",
   "no-anythings-in-your-hand": "&c 你隻手都冇嘢",
   "no-permission": "&c你冇權啊",
@@ -115,6 +115,8 @@
   "blacklisted-item": "&cYou cannot sell this item because it is on the blacklist",
   "how-much-to-trade-for": "&aEnter in chat, how much you wish to trade &e{1}x {0}&a for.",
   "command": {
+    "format": "&a/{0} {1} &e- {2}",
+    "format-disabled": "&c/{0} {1} &7- {2}",
     "toggle-unlimited": {
       "unlimited": "&aShop is now unlimited",
       "limited": "&aShop is now limited"

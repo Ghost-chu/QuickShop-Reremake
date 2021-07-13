@@ -5,7 +5,7 @@
   "translation-version": "支援版本 ： Reremake （重製版）",
   "translation-contributors": "貢獻人員 ： Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
   "translation-country": "語言 ： &b&l繁體中文 Chinese Traditional （zh_TW）",
-  "language-version": "58",
+  "language-version": "59",
   "not-looking-at-shop": "&c無法找到儲物箱商店，你需要注視著儲物箱。",
   "no-anythings-in-your-hand": "&c手上沒有任何東西。",
   "no-permission": "&4你沒有使用該指令的權限。",
@@ -115,6 +115,8 @@
   "blacklisted-item": "&c由於這是黑名單的物品，所以你不能賣。",
   "how-much-to-trade-for": "&a請在聊天室中輸入你想買賣 &e{1} 個 {0} &a的價格。",
   "command": {
+    "format": "&a/{0} {1} &e- {2}",
+    "format-disabled": "&c/{0} {1} &7- {2}",
     "toggle-unlimited": {
       "unlimited": "&a這個商店現在已沒有數量限制",
       "limited": "&a這個商店現在已恢復數量限制"

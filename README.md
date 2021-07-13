@@ -7,6 +7,7 @@
 ![Contributors](https://img.shields.io/github/contributors/Ghost-chu/QuickShop-Reremake)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Reremake.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Reremake?ref=badge_shield)
 ---
+
 ![Java](https://img.shields.io/badge/java-version%208%2B%20(currently%20is%208--16)-orange)
 ![MC](https://img.shields.io/badge/minecraft-java%20edition%201.13.2%2B-blueviolet)
 ![Ver](https://img.shields.io/spiget/version/62575?label=version)
@@ -23,7 +24,6 @@ QuickShop-Reremake is made by PotatoCraft Studio from [KaiKikuchi's QuickShop up
 | <a href="https://discord.gg/bfefw2E"/> <img src="/.github/icons/Discord.svg" width="100" height="100" /> | <a href="https://github.com/Ghost-chu/QuickShop-Reremake/issues"><img src="/.github/icons/Github.png" width="100" height="100" /> |
 | :-: | :-: |
 | **Discord** | **Github Issues** |
-
 
 ## Features
 
@@ -49,9 +49,8 @@ QuickShop-Reremake is made by PotatoCraft Studio from [KaiKikuchi's QuickShop up
 | :-: | :-: | :-: | :-: |
 | **Spigot** | **BukkitDev** | **MCBBS** | **Jenkins** |
 
-
 ## Contribute
-If you're a developer, you can contribute to the QuickShop code! Just make a fork and install the Lombok plugin, then make a pull request when you're done! Please try to follow [Google Java Style](https://google.github.io/styleguide/javaguide.html). Also do not increase the plugin version number. Thank you very much!
+[]()If you're a developer, you can contribute to the QuickShop code! Just make a fork and install the Lombok plugin, then make a pull request when you're done! Please try to follow [Google Java Style](https://google.github.io/styleguide/javaguide.html). Also do not increase the plugin version number. Thank you very much!
 
 ## Maven
 ```XML

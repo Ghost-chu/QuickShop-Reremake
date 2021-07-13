@@ -5,7 +5,7 @@
   "translation-version": "Wspierana wersja: Reremake",
   "translation-contributors": "Współtwórcy: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken i Andre_601",
   "translation-country": "Język: Polski (pl_PL)",
-  "language-version": "58",
+  "language-version": "59",
   "not-looking-at-shop": "&cNie można znaleźć QuickShop. Musisz na niego patrzeć.",
   "no-anythings-in-your-hand": "&cW twojej ręce nic nie ma.",
   "no-permission": "&cNie masz uprawnień, aby to zrobić.",
@@ -115,6 +115,8 @@
   "blacklisted-item": "&cNie możesz sprzedać tego przedmiotu, ponieważ znajduje się na czarnej liście",
   "how-much-to-trade-for": "&aWpisz na czacie cenę za &e{1}x {0}&a.",
   "command": {
+    "format": "&a/{0} {1} &e- {2}",
+    "format-disabled": "&c/{0} {1} &7- {2}",
     "toggle-unlimited": {
       "unlimited": "&aSklep jest teraz nieograniczony",
       "limited": "&aSklep jest teraz limitowany"
