@@ -36,7 +36,6 @@ import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +47,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
     private final List<Flag> tradeLimits = new ArrayList<>(3);
     private final boolean whiteList;
     private final boolean deleteOnUntrusted;
-    private final boolean deleteOnUnClaim;
+    private final boolean deleteOnUnclaim;
     private final boolean deleteOnClaimExpired;
 
     public GriefPreventionIntegration(QuickShop plugin) {
@@ -56,7 +55,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
         ConfigurationSection configurationSection = plugin.getConfig();
         this.whiteList = configurationSection.getBoolean("integration.griefprevention.whitelist-mode");
         deleteOnUntrusted = configurationSection.getBoolean("integration.griefprevention.delete-on-untrusted");
-        deleteOnUnClaim = configurationSection.getBoolean("integration.griefprevention.delete-on-unclaim");
+        deleteOnUnclaim = configurationSection.getBoolean("integration.griefprevention.delete-on-unclaim");
         deleteOnClaimExpired = configurationSection.getBoolean("integration.griefprevention.delete-on-claim-expired");
         createLimits.addAll(toFlags(configurationSection.getStringList("integration.griefprevention.create")));
         tradeLimits.addAll(toFlags(configurationSection.getStringList("integration.griefprevention.trade")));
@@ -105,7 +104,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
         return true;
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onUntrusted(me.ryanhamshire.GriefPrevention.events.TrustChangedEvent event) {
         if (!deleteOnUntrusted) {
             return;
@@ -122,6 +121,12 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
                         if (shop.getOwner().equals(claim.getOwnerID())) {
                             return;
                         }
+
+                        Claim shopClaim = griefPrevention.dataStore.getClaimAt(shop.getLocation(), true, true, null);
+                        if(shopClaim == null || shopClaim.getID() != claim.getID()) {
+                            return;
+                        }
+
                         //https://github.com/TechFortress/GriefPrevention/blob/e63d1d9e513f48aa0aaa81f154de01626248b7fe/src/main/java/me/ryanhamshire/GriefPrevention/events/TrustChangedEvent.java#L104
                         if (event.getIdentifier().equals(shop.getOwner().toString())) { //Single
                             plugin.log("[SHOP DELETE] GP Integration: Single delete #" + event.getIdentifier());
@@ -134,6 +139,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
                             shop.delete();
                             return;
                         }
+
                         if ("all".equals(event.getIdentifier()) || "public".equals(event.getIdentifier())) { //All
                             plugin.log("[SHOP DELETE] GP Integration: All/Public delete #" + event.getIdentifier());
                             shop.delete();
@@ -146,45 +152,26 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onUnclaimed(ClaimDeletedEvent event) {
-        if (!deleteOnUnClaim) {
-            return;
-        }
-        Claim claim = event.getClaim();
-        if (event.getClaim().getOwnerID() == null) {
-            return;
-        }
-        for (Chunk chunk : claim.getChunks()) {
-            Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
-            if (shops != null && !shops.isEmpty()) {
-                for (Shop shop : shops.values()) {
-                    if (griefPrevention.dataStore.getClaimAt(shop.getLocation(), true, true, null) == null) {
-                        if (event.getClaim().getOwnerID().equals(shop.getOwner())) {
-                            shop.delete();
-                        }
-                    }
-                }
-            }
-        }
+    public void onClaimUnclaimed(ClaimDeletedEvent event) {
+        onUnclaimOrExpiredHelper(event.getClaim(), deleteOnUnclaim);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onUnclaimed(ClaimExpirationEvent event) {
-        if (!deleteOnClaimExpired) {
+    public void onClaimExpired(ClaimExpirationEvent event) {
+        onUnclaimOrExpiredHelper(event.getClaim(), deleteOnClaimExpired);
+    }
+
+    private void onUnclaimOrExpiredHelper(Claim claim, boolean configSectionBoolean) {
+        if (!configSectionBoolean) {
             return;
         }
-        if (event.getClaim().getOwnerID() == null) {
-            return;
-        }
-        Claim claim = event.getClaim();
         for (Chunk chunk : claim.getChunks()) {
             Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
-            if (shops != null && !shops.isEmpty()) {
+            if (shops != null) {
                 for (Shop shop : shops.values()) {
                     if (griefPrevention.dataStore.getClaimAt(shop.getLocation(), true, true, null) == null) {
-                        if (event.getClaim().getOwnerID().equals(shop.getOwner())) {
-                            shop.delete();
-                        }
+                        plugin.log("[SHOP DELETE] GP Integration: Single delete (Unclaimed/Expired) #" + shop.getOwner());
+                        shop.delete();
                     }
                 }
             }
