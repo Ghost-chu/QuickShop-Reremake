@@ -21,12 +21,15 @@ package org.maxgamer.quickshop.integration.griefprevention;
 
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
+import me.ryanhamshire.GriefPrevention.events.ClaimExpirationEvent;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
@@ -45,12 +48,16 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
     private final List<Flag> tradeLimits = new ArrayList<>(3);
     private final boolean whiteList;
     private final boolean deleteOnUntrusted;
+    private final boolean deleteOnUnClaim;
+    private final boolean deleteOnClaimExpired;
 
     public GriefPreventionIntegration(QuickShop plugin) {
         super(plugin);
         ConfigurationSection configurationSection = plugin.getConfig();
         this.whiteList = configurationSection.getBoolean("integration.griefprevention.whitelist-mode");
         deleteOnUntrusted = configurationSection.getBoolean("integration.griefprevention.delete-on-untrusted");
+        deleteOnUnClaim = configurationSection.getBoolean("integration.griefprevention.delete-on-unclaim");
+        deleteOnClaimExpired = configurationSection.getBoolean("integration.griefprevention.delete-on-claim-expired");
         createLimits.addAll(toFlags(configurationSection.getStringList("integration.griefprevention.create")));
         tradeLimits.addAll(toFlags(configurationSection.getStringList("integration.griefprevention.trade")));
     }
@@ -132,6 +139,42 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
                             shop.delete();
                             return;
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onUnclaimed(ClaimDeletedEvent event) {
+        if (!deleteOnUnClaim) {
+            return;
+        }
+        Claim claim = event.getClaim();
+        for (Chunk chunk : claim.getChunks()) {
+            Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
+            if (shops != null && !shops.isEmpty()) {
+                for (Shop shop : shops.values()) {
+                    if (griefPrevention.dataStore.getClaimAt(shop.getLocation(), true, true, null) == null) {
+                        shop.delete();
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onUnclaimed(ClaimExpirationEvent event) {
+        if (!deleteOnClaimExpired) {
+            return;
+        }
+        Claim claim = event.getClaim();
+        for (Chunk chunk : claim.getChunks()) {
+            Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
+            if (shops != null && !shops.isEmpty()) {
+                for (Shop shop : shops.values()) {
+                    if (griefPrevention.dataStore.getClaimAt(shop.getLocation(), true, true, null) == null) {
+                        shop.delete();
                     }
                 }
             }

@@ -1859,6 +1859,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("unlimited-shop-owner-change-account", "quickshop");
             getConfig().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 133) {
+            getConfig().set("integration.griefprevention.delete-on-unclaim", false);
+            getConfig().set("integration.griefprevention.delete-on-claim-expired", false);
+            getConfig().set("config-version", ++selectedVersion);
+        }
 
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
