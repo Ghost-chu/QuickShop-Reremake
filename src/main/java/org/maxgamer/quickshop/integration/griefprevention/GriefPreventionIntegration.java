@@ -23,6 +23,7 @@ import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
 import me.ryanhamshire.GriefPrevention.events.ClaimExpirationEvent;
+import me.ryanhamshire.GriefPrevention.events.ClaimModifiedEvent;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -49,6 +50,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
     private final boolean deleteOnUntrusted;
     private final boolean deleteOnUnclaim;
     private final boolean deleteOnClaimExpired;
+    private final boolean deleteOnClaimResized;
 
     public GriefPreventionIntegration(QuickShop plugin) {
         super(plugin);
@@ -57,6 +59,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
         deleteOnUntrusted = configurationSection.getBoolean("integration.griefprevention.delete-on-untrusted");
         deleteOnUnclaim = configurationSection.getBoolean("integration.griefprevention.delete-on-unclaim");
         deleteOnClaimExpired = configurationSection.getBoolean("integration.griefprevention.delete-on-claim-expired");
+        deleteOnClaimResized = configurationSection.getBoolean("integration.griefprevention.delete-on-claim-resized");
         createLimits.addAll(toFlags(configurationSection.getStringList("integration.griefprevention.create")));
         tradeLimits.addAll(toFlags(configurationSection.getStringList("integration.griefprevention.trade")));
     }
@@ -145,6 +148,26 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onClaimExpired(ClaimExpirationEvent event) {
         onUnclaimOrExpiredHelper(event.getClaim(), deleteOnClaimExpired);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onClaimResized(ClaimModifiedEvent event) {
+        if (!deleteOnClaimResized) {
+            return;
+        }
+        Claim oldClaim = event.getFrom();
+        Claim newClaim = event.getTo();
+        for (Chunk chunk : oldClaim.getChunks()) {
+            Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
+            if (shops != null) {
+                for (Shop shop : shops.values()) {
+                    if (oldClaim.contains(shop.getLocation(), true, false) && !newClaim.contains(shop.getLocation(), true, false)) {
+                        plugin.log("[SHOP DELETE] GP Integration: Single delete (Resized) #" + shop.getOwner());
+                        shop.delete();
+                    }
+                }
+            }
+        }
     }
 
     private void onUnclaimOrExpiredHelper(Claim claim, boolean configSectionBoolean) {
