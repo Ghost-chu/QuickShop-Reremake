@@ -1864,6 +1864,10 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.griefprevention.delete-on-claim-expired", false);
             getConfig().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 134) {
+            getConfig().set("integration.griefprevention.delete-on-claim-resized", false);
+            getConfig().set("config-version", ++selectedVersion);
+        }
 
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
