@@ -5,7 +5,7 @@
   "translation-version": "Destek Versiyonu: Reremake",
   "translation-contributors": "Katkıda Bulunanlar: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Dil Bölgesi: Türkçe (tr_TR)",
-  "language-version": "58",
+  "language-version": "59",
   "not-looking-at-shop": "&sHiç QuickShop bulunamadı. Birine bakman lazım.",
   "no-anythings-in-your-hand": "&cElinde hiçbir şey yok.",
   "no-permission": "&cBunu yapmaya iznin yok.",
@@ -115,6 +115,8 @@
   "blacklisted-item": "&cBu öğeyi satamazsın çünkü kara listede",
   "how-much-to-trade-for": "&e{1} &atane &e{0} &aiçin ne kadar ticaret yapmak istediğini sohbete yaz.",
   "command": {
+    "format": "&a/{0} {1} &e- {2}",
+    "format-disabled": "&c/{0} {1} &7- {2}",
     "toggle-unlimited": {
       "unlimited": "&aMarket şimdi sınırsız",
       "limited": "&aMarket şimdi sınırlı"
