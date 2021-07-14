@@ -149,4 +149,9 @@ public class ShopAPI {
     public @NotNull List<Shop> getShopsInWorld(@NotNull World world) {
         return new ArrayList<>(plugin.getShopManager().getShopsInWorld(world));
     }
+
+    @Deprecated
+    public @NotNull List<Shop> getShop(@NotNull Chunk chunk) {
+        return getShops(chunk);
+    }
 }
