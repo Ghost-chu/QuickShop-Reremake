@@ -29,6 +29,8 @@ softdepend:
   - FabledSkyblock
   - OpenInv
   - WorldEdit
+  - AdvancedRegionMarket
+  - ArmShopBridge
 
 api-version: 1.13
 
