@@ -83,7 +83,10 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
             } else {
                 if (isCountryEmpty || isLanguageEmpty) {
                     languageCode = isLanguageEmpty ? country + '_' + country : language + '_' + language;
-                    plugin.getLogger().warning("Unable to get language code, guessing" + languageCode + " instead, If it's incorrect, please change game-language option in config.yml.");
+                    if (languageCode.equals("en_en")) {
+                        languageCode = "en_US";
+                    }
+                    plugin.getLogger().warning("Unable to get language code, guessing " + languageCode + " instead, If it's incorrect, please change game-language option in config.yml.");
                 } else {
                     languageCode = language + '_' + country;
                 }
