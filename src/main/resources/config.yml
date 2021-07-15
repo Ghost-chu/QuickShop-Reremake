@@ -22,7 +22,7 @@
 #                        TO EDIT QUICKSHOP'S CONFIGURATION, USE THE "config.yml" FILE!
 
 #Do not touch this if you don't know what you're doing!
-config-version: 135
+config-version: 136
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not existant/not supported language, then QuickShop will use en_US.
@@ -765,6 +765,9 @@ integration:
     owner-create-only: false
     #Delete shops when the shop owner got kicked/quited from the island.
     delete-shop-on-member-leave: true
+  #AdvanvedRegionMarket shop deletetion Integration
+  advancedregionmarket:
+    enable: true
 #The protection that a shop should check.
 protect:
   explode: true

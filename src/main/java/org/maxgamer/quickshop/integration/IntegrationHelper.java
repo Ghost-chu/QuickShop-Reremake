@@ -25,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.integration.advancedregionmarket.AdvancedShopRegionMarketIntegration;
 import org.maxgamer.quickshop.integration.factionsuuid.FactionsUUIDIntegration;
 import org.maxgamer.quickshop.integration.griefprevention.GriefPreventionIntegration;
 import org.maxgamer.quickshop.integration.lands.LandsIntegration;
@@ -39,6 +40,7 @@ import org.maxgamer.quickshop.util.holder.Result;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.logging.Level;
 
 
 public class IntegrationHelper extends QuickShopInstanceHolder {
@@ -55,6 +57,7 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
         integratedPluginNameMap.put("WorldGuard", WorldGuardIntegration.class);
         //integratedPluginNameMap.put("FabledSkyblock", FabledIntegration.class);
         integratedPluginNameMap.put("SuperiorSkyblock", SuperiorSkyblock2Integration.class);
+        integratedPluginNameMap.put("AdvancedRegionMarket", AdvancedShopRegionMarketIntegration.class);
     }
 
     private final Map<String, IntegratedPlugin> integrations = new HashMap<>(7);
@@ -76,7 +79,11 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
         for (Map.Entry<String, Class<? extends IntegratedPlugin>> entry : integratedPluginNameMap.entrySet()) {
             String pluginName = entry.getKey();
             if (pluginManager.isPluginEnabled(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
-                register(entry.getValue());
+                try {
+                    register(entry.getValue());
+                } catch (Exception exception) {
+                    plugin.getLogger().log(Level.WARNING, "Failed to register integration " + entry.getKey() + "!", exception);
+                }
             }
         }
     }
