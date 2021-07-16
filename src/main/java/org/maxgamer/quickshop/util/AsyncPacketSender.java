@@ -81,10 +81,11 @@ public class AsyncPacketSender {
             //lazy initialize
             if (asyncSendingTask == null || asyncSendingTask.isCancelled()) {
                 asyncSendingTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-                    if (asyncSendingTask.isCancelled()) {
+                    //Variable haven set yet
+                    if (asyncSendingTask == null) {
                         return;
                     }
-                    if (!taskDone.get()) {
+                    if (!taskDone.get() || asyncSendingTask.isCancelled()) {
                         return;
                     }
                     taskDone.set(false);
