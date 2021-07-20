@@ -38,12 +38,15 @@ import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.integration.IntegrateStage;
+import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
 
 import java.util.*;
 import java.util.logging.Level;
 
+@IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class AdvancedShopRegionMarketIntegration extends QSIntegratedPlugin implements Listener {
     public AdvancedShopRegionMarketIntegration(QuickShop plugin) {
         super(plugin);
