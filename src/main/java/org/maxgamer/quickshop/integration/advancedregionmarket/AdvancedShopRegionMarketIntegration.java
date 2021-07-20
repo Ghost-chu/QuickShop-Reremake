@@ -117,8 +117,7 @@ public class AdvancedShopRegionMarketIntegration extends QSIntegratedPlugin impl
             adapterList.forEach(ArmShopBridge.getInstance().getShopPluginAdapters()::remove);
             Bukkit.getPluginManager().registerEvents(this, plugin);
         } catch (Exception exception) {
-            plugin.getLogger().log(Level.WARNING, "Cannot to handle ARM-ShopBridge handlers, disabling...", exception);
-            unload();
+            plugin.getLogger().log(Level.WARNING, "Cannot to handle ARM-ShopBridge handlers, ignoring...", exception);
         }
     }
 
