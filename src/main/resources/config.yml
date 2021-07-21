@@ -765,7 +765,7 @@ integration:
     owner-create-only: false
     #Delete shops when the shop owner got kicked/quited from the island.
     delete-shop-on-member-leave: true
-  #AdvanvedRegionMarket shop deletetion Integration
+  #AdvanvedRegionMarket shop deletion Integration
   advancedregionmarket:
     enable: false
 #The protection that a shop should check.
