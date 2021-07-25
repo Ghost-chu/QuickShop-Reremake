@@ -869,8 +869,6 @@ public class QuickShop extends JavaPlugin {
         shopContainerWatcher = new ShopContainerWatcher();
         if (display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
-        }
-        if (display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             timerTaskList.add(displayDupeRemoverWatcher.runTaskTimerAsynchronously(this, 0, 1));
         }
         if (display && DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
