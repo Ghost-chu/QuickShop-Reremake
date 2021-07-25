@@ -139,9 +139,9 @@ public class ShopLoader {
                         plugin.getShopManager().removeShop(shop); // Remove from Mem
                         //TODO: Only remove from memory, so if it actually is a bug, user won't lost all shops.
                         //TODO: Old shop will be deleted when in same location creating new shop.
-                        continue;
+                    } else {
+                        pendingLoadShops.add(shop);
                     }
-                    pendingLoadShops.add(shop);
                 } else {
                     loadAfterChunkLoaded++;
                 }
