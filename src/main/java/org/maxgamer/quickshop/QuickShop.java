@@ -425,13 +425,13 @@ public class QuickShop extends JavaPlugin {
      * used.
      */
 
-    private boolean loadEcon() {
+    public boolean loadEcon() {
         try {
             // EconomyCore core = new Economy_Vault();
             EconomyCore core = null;
             switch (EconomyType.fromID(getConfig().getInt("economy-type"))) {
                 case UNKNOWN:
-                    setupBootError(new BootError(this.getLogger(), "Can't load the Economy provider, invaild value in config.yml."));
+                    setupBootError(new BootError(this.getLogger(), "Can't load the Economy provider, invaild value in config.yml."), true);
                     return false;
                 case VAULT:
                     core = new Economy_Vault(this);
@@ -490,7 +490,7 @@ public class QuickShop extends JavaPlugin {
                 return false;
             }
             if (!core.isValid()) {
-                setupBootError(BuiltInSolution.econError());
+                setupBootError(BuiltInSolution.econError(), false);
                 return false;
             } else {
                 this.economy = new Economy(this, ServiceInjector.getEconomyCore(core));
@@ -501,7 +501,7 @@ public class QuickShop extends JavaPlugin {
             getLogger().log(Level.WARNING, "Something going wrong when loading up economy system", e);
             getLogger().severe("QuickShop could not hook into a economy/Not found Vault or Reserve!");
             getLogger().severe("QuickShop CANNOT start!");
-            setupBootError(BuiltInSolution.econError());
+            setupBootError(BuiltInSolution.econError(), false);
             getLogger().severe("Plugin listeners was disabled, please fix the economy issue.");
             return false;
         }
@@ -748,7 +748,7 @@ public class QuickShop extends JavaPlugin {
                     joiner.add(String.format("- [%s/%s] %s", result.getValue().getResult().getDisplay(), result.getKey().name(), result.getValue().getResultMessage()));
                 }
             }
-            setupBootError(new BootError(this.getLogger(), joiner.toString()));
+            setupBootError(new BootError(this.getLogger(), joiner.toString()), true);
             //noinspection ConstantConditions
             Util.mainThreadRun(() -> getCommand("qs").setTabCompleter(this)); //Disable tab completer
         }
@@ -893,6 +893,7 @@ public class QuickShop extends JavaPlugin {
         new CustomInventoryListener(this).register();
         new ShopProtectionListener(this, this.shopCache).register();
         new PluginListener(this).register();
+        new EconomySetupListener(this).register();
         // shopVaildWatcher = new ShopVaildWatcher(this);
         ongoingFeeWatcher = new OngoingFeeWatcher(this);
         InternalListener internalListener = new InternalListener(this);
@@ -1897,9 +1898,11 @@ public class QuickShop extends JavaPlugin {
         }
     }
 
-    public void setupBootError(BootError bootError) {
+    public void setupBootError(BootError bootError, boolean unregisterListeners) {
         this.bootError = bootError;
-        HandlerList.unregisterAll(this);
+        if (unregisterListeners) {
+            HandlerList.unregisterAll(this);
+        }
         Bukkit.getScheduler().cancelTasks(this);
     }
 
