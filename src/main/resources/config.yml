@@ -692,9 +692,9 @@ integration:
     #ACCESS = The Player must have the ability to access the target claim.
     trade: [ ]
     #Should QuickShop delete shops if the shop owner has been untrusted on the claim?
-    delete-on-untrusted: true
+    delete-on-claim-untrusted: true
     #Should QuickShop delete shops if claim has been deleted?
-    delete-on-unclaim: true
+    delete-on-claim-unclaimed: true
     #Should QuickShop delete shops if claim has been expired?
     delete-on-claim-expired: true
     #Should QuickShop delete shops if claim has been resized (claim has become smaller and the shop is now outside claim)?
