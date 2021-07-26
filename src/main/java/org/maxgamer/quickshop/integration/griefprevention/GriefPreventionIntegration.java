@@ -24,6 +24,8 @@ import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
 import me.ryanhamshire.GriefPrevention.events.ClaimExpirationEvent;
 import me.ryanhamshire.GriefPrevention.events.ClaimModifiedEvent;
+import me.ryanhamshire.GriefPrevention.events.TrustChangedEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -43,25 +45,223 @@ import java.util.Map;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class GriefPreventionIntegration extends QSIntegratedPlugin {
+
     final GriefPrevention griefPrevention = GriefPrevention.instance;
-    private final List<Flag> createLimits = new ArrayList<>(3);
-    private final List<Flag> tradeLimits = new ArrayList<>(3);
+
     private final boolean whiteList;
-    private final boolean deleteOnUntrusted;
-    private final boolean deleteOnUnclaim;
+
+    private final boolean deleteOnClaimUntrusted;
+
+    private final boolean deleteOnClaimUnclaimed;
+
     private final boolean deleteOnClaimExpired;
+
     private final boolean deleteOnClaimResized;
+
+    private final List<Flag> createLimits = new ArrayList<>(3);
+
+    private final List<Flag> tradeLimits = new ArrayList<>(3);
 
     public GriefPreventionIntegration(QuickShop plugin) {
         super(plugin);
         ConfigurationSection configurationSection = plugin.getConfig();
         this.whiteList = configurationSection.getBoolean("integration.griefprevention.whitelist-mode");
-        deleteOnUntrusted = configurationSection.getBoolean("integration.griefprevention.delete-on-untrusted");
-        deleteOnUnclaim = configurationSection.getBoolean("integration.griefprevention.delete-on-unclaim");
-        deleteOnClaimExpired = configurationSection.getBoolean("integration.griefprevention.delete-on-claim-expired");
-        deleteOnClaimResized = configurationSection.getBoolean("integration.griefprevention.delete-on-claim-resized");
-        createLimits.addAll(toFlags(configurationSection.getStringList("integration.griefprevention.create")));
-        tradeLimits.addAll(toFlags(configurationSection.getStringList("integration.griefprevention.trade")));
+        this.deleteOnClaimUntrusted = configurationSection.getBoolean("integration.griefprevention.delete-on-claim-untrusted");
+        this.deleteOnClaimUnclaimed = configurationSection.getBoolean("integration.griefprevention.delete-on-claim-unclaimed");
+        this.deleteOnClaimExpired = configurationSection.getBoolean("integration.griefprevention.delete-on-claim-expired");
+        this.deleteOnClaimResized = configurationSection.getBoolean("integration.griefprevention.delete-on-claim-resized");
+        this.createLimits.addAll(toFlags(configurationSection.getStringList("integration.griefprevention.create")));
+        this.tradeLimits.addAll(toFlags(configurationSection.getStringList("integration.griefprevention.trade")));
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "GriefPrevention";
+    }
+
+    @Override
+    public void load() {
+        registerListener();
+    }
+
+    @Override
+    public void unload() {
+        unregisterListener();
+    }
+
+    @Override
+    public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
+        return checkPermission(player, location, createLimits);
+    }
+
+    @Override
+    public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
+        return checkPermission(player, location, tradeLimits);
+    }
+
+    // When player changes trust, we will check if the shops there will be deleted or not.
+    // We will not delete the shops of the claim owner.
+    // The shops will be deleted if the shop owner doesn't have anymore permission to create a shop there.
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onClaimUntrusted(TrustChangedEvent event) {
+        if (!deleteOnClaimUntrusted) {
+            return;
+        }
+        for (Claim claim : event.getClaims()) {
+            for (Chunk chunk : claim.getChunks()) {
+                Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
+                if (shops != null) {
+                    for (Shop shop : shops.values()) {
+                        if (!shop.getOwner().equals(claim.getOwnerID())) {
+                            Claim shopClaim = griefPrevention.dataStore.getClaimAt(shop.getLocation(), false, false, null);
+                            if (shopClaim != null &&
+                                    shopClaim.getID().equals(claim.getID()) &&
+                                    !hasPermissionClaim(shopClaim, Bukkit.getPlayer(shop.getOwner()), createLimits)) {
+                                plugin.log("[SHOP DELETE] GP Integration: Single delete (Untrusted) #" + shop.getOwner());
+                                shop.delete();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Player can unclaim the main claim or the subclaim.
+    // So we need to call either the handleMainClaimUnclaimedOrExpired or the handleSubClaimUnclaimed method.
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onClaimUnclaimed(ClaimDeletedEvent event) {
+        if (!deleteOnClaimUnclaimed) {
+            return;
+        }
+        if (event.getClaim().parent == null) {
+            handleMainClaimUnclaimedOrExpired(event.getClaim(), "[SHOP DELETE] GP Integration: Single delete (Claim Unclaimed) #");
+        } else {
+            handleSubClaimUnclaimed(event.getClaim(), event.getClaim().parent);
+        }
+    }
+
+    // Since only the main claim expires, we will call the handleMainClaimUnclaimedOrExpired method.
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onClaimExpired(ClaimExpirationEvent event) {
+        if (!deleteOnClaimExpired) {
+            return;
+        }
+        handleMainClaimUnclaimedOrExpired(event.getClaim(),"[SHOP DELETE] GP Integration: Single delete (Claim Expired) #");
+    }
+
+    // Player can resize the main claim or the subclaim.
+    // So we need to call either the handleMainClaimResized or the handleSubClaimResized method.
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onClaimResized(ClaimModifiedEvent event) {
+        if (!deleteOnClaimResized) {
+            return;
+        }
+        Claim oldClaim = event.getFrom();
+        Claim newClaim = event.getTo();
+        if (oldClaim.parent == null) {
+            handleMainClaimResized(oldClaim, newClaim);
+        } else {
+            handleSubClaimResized(oldClaim, newClaim, oldClaim.parent);
+        }
+    }
+
+    // If it is the main claim, then we will delete all shops that were inside of it.
+    private void handleMainClaimUnclaimedOrExpired(Claim claim, String logMessage) {
+        for (Chunk chunk : claim.getChunks()) {
+            Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
+            if (shops != null) {
+                for (Shop shop : shops.values()) {
+                    if (claim.contains(shop.getLocation(), false, false)) {
+                        plugin.log(logMessage + shop.getOwner());
+                        shop.delete();
+                    }
+                }
+            }
+        }
+    }
+
+    // If it is a subclaim, then we will not remove the shops of the main claim owner.
+    // Also, we will not remove the shops of the players that have permission to build shops in the main claim.
+    private void handleSubClaimUnclaimed(Claim subClaim, Claim mainClaim) {
+        for (Chunk chunk : subClaim.getChunks()) {
+            Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
+            if (shops != null) {
+                for (Shop shop : shops.values()) {
+                    if (subClaim.contains(shop.getLocation(), false, false)) {
+                        if (!shop.getOwner().equals(mainClaim.getOwnerID()) &&
+                                !hasPermissionClaim(mainClaim, Bukkit.getPlayer(shop.getOwner()), createLimits)) {
+                            plugin.log("[SHOP DELETE] GP Integration: Single delete (SubClaim Unclaimed) #" + shop.getOwner());
+                            shop.delete();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // If it is a main claim, then we will remove the shop if the main claim was resized (size was decreased).
+    // The shop will be removed if the old claim contains the shop but the new claim doesn't have it.
+    private void handleMainClaimResized(Claim oldClaim, Claim newClaim) {
+        for (Chunk chunk : oldClaim.getChunks()) {
+            Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
+            if (shops != null) {
+                for (Shop shop : shops.values()) {
+                    if (oldClaim.contains(shop.getLocation(), false, false) &&
+                            !newClaim.contains(shop.getLocation(), false, false)) {
+                        plugin.log("[SHOP DELETE] GP Integration: Single delete (Claim Resized) #" + shop.getOwner());
+                        shop.delete();
+                    }
+                }
+            }
+        }
+    }
+
+    // If it is a subclaim, then we will remove the shops in 2 situations.
+    // We will never remove shops of the claim owner.
+    // We will remove the shop if the shop is now outside the subclaim and the shop owner doesn't have permission in the main claim.
+    // We will remove the shop if the shop is now inside the subclaim and the shop owner doesn't have permission in the subclaim.
+    private void handleSubClaimResized(Claim oldClaim, Claim newClaim, Claim mainClaim) {
+        handleSubClaimResizedHelper(oldClaim, newClaim, mainClaim);
+        handleSubClaimResizedHelper(newClaim, oldClaim, newClaim);
+    }
+
+    private void handleSubClaimResizedHelper(Claim claimVerifyChunks, Claim claimVerifyShop, Claim claimPermissionCheck) {
+        for (Chunk chunk : claimVerifyChunks.getChunks()) {
+            Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
+            if (shops != null) {
+                for (Shop shop : shops.values()) {
+                    if (!shop.getOwner().equals(claimVerifyChunks.getOwnerID())) {
+                        if (claimVerifyChunks.contains(shop.getLocation(), false, false) &&
+                                !claimVerifyShop.contains(shop.getLocation(), false, false) &&
+                                !hasPermissionClaim(claimPermissionCheck, Bukkit.getPlayer(shop.getOwner()), createLimits)) {
+                            plugin.log("[SHOP DELETE] GP Integration: Single delete (SubClaim Resized) #" + shop.getOwner());
+                            shop.delete();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean checkPermission(@NotNull Player player, @NotNull Location location, List<Flag> limits) {
+        if (!griefPrevention.claimsEnabledForWorld(location.getWorld())) {
+            return true;
+        }
+        Claim claim = griefPrevention.dataStore.getClaimAt(location, false, griefPrevention.dataStore.getPlayerData(player.getUniqueId()).lastClaim);
+        if (claim == null) {
+            return !whiteList;
+        }
+        return hasPermissionClaim(claim, player, limits);
+    }
+
+    private boolean hasPermissionClaim(@NotNull Claim claim, Player player, List<Flag> limits) {
+        for (Flag flag : limits) {
+            if (!flag.check(claim, player)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private List<Flag> toFlags(List<String> flags) {
@@ -75,129 +275,8 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
         return result;
     }
 
-    @Override
-    public @NotNull String getName() {
-        return "GriefPrevention";
-    }
-
-    @Override
-    public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
-        return checkPermission(player, location, createLimits);
-
-    }
-
-    @Override
-    public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
-        return checkPermission(player, location, tradeLimits);
-    }
-
-    private boolean checkPermission(@NotNull Player player, @NotNull Location location, List<Flag> limits) {
-        if (!griefPrevention.claimsEnabledForWorld(location.getWorld())) {
-            return true;
-        }
-        Claim claim = griefPrevention.dataStore.getClaimAt(location, false, griefPrevention.dataStore.getPlayerData(player.getUniqueId()).lastClaim);
-        if (claim == null) {
-            return !whiteList;
-        }
-        for (Flag flag : limits) {
-            if (!flag.check(claim, player)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onUntrusted(me.ryanhamshire.GriefPrevention.events.TrustChangedEvent event) {
-        if (!deleteOnUntrusted) {
-            return;
-        }
-        for (Claim claim : event.getClaims()) {
-            for (Chunk chunk : claim.getChunks()) {
-                Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
-                if (shops != null) {
-                    for (Shop shop : shops.values()) {
-                        if (!shop.getOwner().equals(claim.getOwnerID())) {
-
-                            Claim shopClaim = griefPrevention.dataStore.getClaimAt(shop.getLocation(), true, false, null);
-                            if(shopClaim != null && shopClaim.getID() == claim.getID()) {
-
-                                if(event.getIdentifier().equals(shop.getOwner().toString())) {
-                                    plugin.log("[SHOP DELETE] GP Integration: Single delete #" + event.getIdentifier());
-                                    shop.delete();
-                                } else if(event.getIdentifier().contains(shop.getOwner().toString())) {
-                                    plugin.log("[SHOP DELETE] GP Integration: Group delete #" + event.getIdentifier());
-                                    shop.delete();
-                                } else if("all".equals(event.getIdentifier()) || "public".equals(event.getIdentifier())) {
-                                    plugin.log("[SHOP DELETE] GP Integration: All/Public delete #" + event.getIdentifier());
-                                    shop.delete();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onClaimUnclaimed(ClaimDeletedEvent event) {
-        onUnclaimOrExpiredHelper(event.getClaim(), deleteOnUnclaim);
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onClaimExpired(ClaimExpirationEvent event) {
-        onUnclaimOrExpiredHelper(event.getClaim(), deleteOnClaimExpired);
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onClaimResized(ClaimModifiedEvent event) {
-        if (!deleteOnClaimResized) {
-            return;
-        }
-        Claim oldClaim = event.getFrom();
-        Claim newClaim = event.getTo();
-        for (Chunk chunk : oldClaim.getChunks()) {
-            Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
-            if (shops != null) {
-                for (Shop shop : shops.values()) {
-                    if (oldClaim.contains(shop.getLocation(), true, false) && !newClaim.contains(shop.getLocation(), true, false)) {
-                        plugin.log("[SHOP DELETE] GP Integration: Single delete (Resized) #" + shop.getOwner());
-                        shop.delete();
-                    }
-                }
-            }
-        }
-    }
-
-    private void onUnclaimOrExpiredHelper(Claim claim, boolean configSectionBoolean) {
-        if (!configSectionBoolean) {
-            return;
-        }
-        for (Chunk chunk : claim.getChunks()) {
-            Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
-            if (shops != null) {
-                for (Shop shop : shops.values()) {
-                    if (claim.contains(shop.getLocation(), true, false)) {
-                        plugin.log("[SHOP DELETE] GP Integration: Single delete (Unclaimed/Expired) #" + shop.getOwner());
-                        shop.delete();
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
-    public void load() {
-        this.registerListener();
-    }
-
-    @Override
-    public void unload() {
-        this.unregisterListener();
-    }
-
     enum Flag {
+
         BUILD {
             @Override
             boolean check(Claim claim, Player player) {
@@ -227,4 +306,5 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
 
         abstract boolean check(Claim claim, Player player);
     }
+
 }

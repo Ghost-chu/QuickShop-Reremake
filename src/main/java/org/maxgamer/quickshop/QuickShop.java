@@ -1834,7 +1834,7 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 128) {
             getConfig().set("shop.force-use-item-original-name", false);
-            getConfig().set("integration.griefprevention.delete-on-untrusted", false);
+            getConfig().set("integration.griefprevention.delete-on-claim-untrusted", false);
             getConfig().set("config-version", ++selectedVersion);
         }
 
@@ -1860,7 +1860,7 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 133) {
-            getConfig().set("integration.griefprevention.delete-on-unclaim", false);
+            getConfig().set("integration.griefprevention.delete-on-claim-unclaimed", false);
             getConfig().set("integration.griefprevention.delete-on-claim-expired", false);
             getConfig().set("config-version", ++selectedVersion);
         }
