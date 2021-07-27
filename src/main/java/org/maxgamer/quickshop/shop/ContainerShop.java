@@ -174,7 +174,8 @@ public class ContainerShop implements Shop {
                     this.displayItem = new RealDisplayItem(this);
                     break;
                 case VIRTUALITEM:
-                    this.displayItem = new VirtualDisplayItem(this);
+                    Chunk chunk = getLocation().getChunk();
+                    this.displayItem = new VirtualDisplayItem(this, chunk.getWorld().getName(), chunk.getX(), chunk.getX());
                     break;
                 default:
                     Util.debugLog(
