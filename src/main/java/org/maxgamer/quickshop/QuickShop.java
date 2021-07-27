@@ -638,6 +638,7 @@ public class QuickShop extends JavaPlugin {
                 bukkitTask.cancel();
             }
         }
+        timerTaskList.clear();
         if (calendarWatcher != null) {
             calendarWatcher.stop();
         }
