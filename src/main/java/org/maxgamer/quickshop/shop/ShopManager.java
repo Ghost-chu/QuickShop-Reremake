@@ -612,12 +612,11 @@ public class ShopManager {
     public @NotNull List<Shop> getShopsInWorld(@NotNull World world) {
         final List<Shop> worldShops = new ArrayList<>();
         for (final Shop shop : getAllShops()) {
-            try {
-                if (Objects.equals(shop.getLocation().getWorld(), world)) {
+            Location location = shop.getLocation();
+            if (Util.isWorldLoaded(location)) {
+                if (Objects.equals(location.getWorld(), world)) {
                     worldShops.add(shop);
                 }
-            } catch (IllegalArgumentException ignored) {
-                // Rollbar#335
             }
         }
         return worldShops;
