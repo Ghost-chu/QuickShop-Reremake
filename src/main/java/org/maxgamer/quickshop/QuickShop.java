@@ -1865,6 +1865,10 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.advancedregionmarket.enable", true);
             getConfig().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 136) {
+            getConfig().set("shop.use-global-virtual-item-queue", null);
+            getConfig().set("config-version", ++selectedVersion);
+        }
 
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
