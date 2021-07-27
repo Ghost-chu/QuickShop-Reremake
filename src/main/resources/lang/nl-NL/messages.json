@@ -34,7 +34,7 @@
   "negative-amount": "&cU kan geen negatieve bedragen verhandelen",
   "not-a-number": "&cU kunt alleen een nummer invoeren, uw invoer was {0}.",
   "exceeded-maximum": "&cDe waarde overschrijdt de maximale waarde in Java.",
-  "not-a-integer": "&cYou must input a integer, your input was {0}.",
+  "not-a-integer": "&cU moet een nummer invoeren, uw invoer was {0}.",
   "player-bought-from-your-store": "&c{0} heeft {1} {2} gekocht van uw winkel, en u heeft {3} verdiend.",
   "shop-out-of-stock": "&5Uw winkel op {0}, {1}, {2} heeft geen {3} meer!",
   "shop-has-no-space": "&cDe winkel heeft alleen ruimte voor {0} {1} meer.",
