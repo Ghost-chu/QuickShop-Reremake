@@ -49,10 +49,8 @@ public class RealDisplayItem extends DisplayItem {
      *
      * @param shop The shop (See Shop)
      */
-    RealDisplayItem(@NotNull Shop shop) {
-
-        super(shop);
-
+    RealDisplayItem(@NotNull Shop shop, @NotNull String worldName, int chunkX, int chunkZ) {
+        super(shop, worldName, chunkX, chunkZ);
         // this.displayLoc = shop.getLocation().clone().add(0.5, 1.2, 0.5);
     }
 

@@ -646,8 +646,6 @@ public class QuickShop extends JavaPlugin {
             this.updateWatcher.uninit();
         }
 
-        AsyncPacketSender.stop();
-
         Util.debugLog("Cleanup tasks...");
 
         try {
@@ -871,10 +869,6 @@ public class QuickShop extends JavaPlugin {
             displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
             timerTaskList.add(displayDupeRemoverWatcher.runTaskTimerAsynchronously(this, 0, 1));
         }
-        if (display && DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
-            AsyncPacketSender.start(this);
-        }
-
         /* Load all shops. */
         shopLoader = new ShopLoader(this);
         shopLoader.loadShops();
