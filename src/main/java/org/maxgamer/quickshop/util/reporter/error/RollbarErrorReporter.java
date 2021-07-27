@@ -372,7 +372,7 @@ public class RollbarErrorReporter {
                     return true;
                 }
                 if (possiblyLevel == PossiblyLevel.MAYBE) {
-                    plugin.getLogger().warning("This seems not a QuickShop. If you have any question, you should ask QuickShop developer.");
+                    plugin.getLogger().warning("This seems not a QuickShop error. If you have any question, you should ask QuickShop developer.");
                     return true;
                 }
                 return false;

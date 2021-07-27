@@ -116,13 +116,11 @@ public class SubCommand_Create implements CommandHandler<Player> {
                 continue;
             }
 
-            if (sender.isOnline()) {
-                Result result = plugin.getPermissionChecker().canBuild(sender, b);
-                if (!result.isSuccess()) {
-                    MsgUtil.sendMessage(sender, "3rd-plugin-build-check-failed", result.getMessage());
-                    Util.debugLog("Failed to create shop because the protection check has failed! Reason:" + result.getMessage());
-                    return;
-                }
+            Result result = plugin.getPermissionChecker().canBuild(sender, b);
+            if (!result.isSuccess()) {
+                MsgUtil.sendMessage(sender, "3rd-plugin-build-check-failed", result.getMessage());
+                Util.debugLog("Failed to create shop because the protection check has failed! Reason:" + result.getMessage());
+                return;
             }
 
             BlockFace blockFace;
@@ -169,11 +167,13 @@ public class SubCommand_Create implements CommandHandler<Player> {
         if (cmdArg.length == 1) {
             return Collections.singletonList(MsgUtil.getMessage("tabcomplete.price", sender));
         }
-        if (cmdArg.length == 2) {
-            return Collections.singletonList(MsgUtil.getMessage("tabcomplete.item", sender));
-        }
-        if (cmdArg.length == 3) {
-            return Collections.singletonList(MsgUtil.getMessage("tabcomplete.amount", sender));
+        if (Util.isAir(sender.getInventory().getItemInMainHand().getType())) {
+            if (cmdArg.length == 2) {
+                return Collections.singletonList(MsgUtil.getMessage("tabcomplete.item", sender));
+            }
+            if (cmdArg.length == 3) {
+                return Collections.singletonList(MsgUtil.getMessage("tabcomplete.amount", sender));
+            }
         }
         return Collections.emptyList();
     }

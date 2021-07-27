@@ -44,15 +44,28 @@ QuickShop-Reremake is made by PotatoCraft Studio from [KaiKikuchi's QuickShop up
 - Powerful API [Reremake]
 - Optimized performance [Reremake]
 
-## Downloads  
-| <a href="https://www.spigotmc.org/resources/62575/"/><img src="/.github/icons/Spigot.png" width="100" height="90" /> | <a href="https://dev.bukkit.org/projects/quickshop-reremake"><img src="/.github/icons/Bukkit.png" width="100" height="100" /> | <a href="http://www.mcbbs.net/thread-809496-1-1.html"/><img src="/.github/icons/MCBBS.png" width="100" height="100" /> | <a href="https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake-SNAPSHOT/"><img src="/.github/icons/Jenkins.svg" width="85" height="100" />
-| :-: | :-: | :-: | :-: |
-| **Spigot** | **BukkitDev** | **MCBBS** | **Jenkins** |
+## Downloads
+| <a href="https://www.spigotmc.org/resources/62575/"><img src="/.github/icons/Spigot.png" width="100" height="90" /></a> | <a href="https://dev.bukkit.org/projects/quickshop-reremake"><img src="/.github/icons/Bukkit.png" width="100" height="100" /></a></a> | <a href="http://www.mcbbs.net/thread-809496-1-1.html"><img src="/.github/icons/MCBBS.png" width="100" height="100" /></a> | <a href="https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake-SNAPSHOT/"><img src="/.github/icons/Jenkins.svg" width="85" height="100" /></a>
+ | --- | --- | --- | --- |
+ | **Spigot** | **BukkitDev** | **MCBBS** | **Jenkins** |
 
 ## Contribute
-[]()If you're a developer, you can contribute to the QuickShop code! Just make a fork and install the Lombok plugin, then make a pull request when you're done! Please try to follow [Google Java Style](https://google.github.io/styleguide/javaguide.html). Also do not increase the plugin version number. Thank you very much!
+
+[]()If you're a developer, you can contribute to the QuickShop code! Just make a fork and install the Lombok plugin,
+then make a pull request when you're done! Please try to
+follow [Google Java Style](https://google.github.io/styleguide/javaguide.html). Also do not increase the plugin version
+number. Thank you very much!
+
+To compile the QuickShop and debug it by yourself, please follow these steps:
+
+0. Make sure you're using Java16 JDK in your PATH.
+1. Compile sub-project: `cd ./src/integration/plotsquared/5 && mvn install && cd ../../../../`
+2. Compile main-project without signature by using debug proile: `mvn install -Pdebug`
+3. Start your server with extra flag to skip the QuickShop signature
+   checks: `-Dorg.maxgamer.quickshop.util.envcheck.skip.SIGNATURE_VERIFY`
 
 ## Maven
+
 ```XML
 <repository>
     <id>quickshop-repo</id>
@@ -71,7 +84,6 @@ QuickShop-Reremake is made by PotatoCraft Studio from [KaiKikuchi's QuickShop up
 
 [![BigImage](https://bstats.org/signatures/bukkit/QuickShop-Reremake.svg)](https://bstats.org/plugin/bukkit/QuickShop-Reremake/3320)
 
-
-
 ## License
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Reremake.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Reremake?ref=badge_large)
