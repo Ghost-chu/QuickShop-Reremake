@@ -111,17 +111,19 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
                 Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
                 if (shops != null) {
                     for (Shop shop : shops.values()) {
-                        if (!shop.getOwner().equals(claim.getOwnerID()) &&
-                                claim.contains(shop.getLocation(), false, false)) {
-                            if (event.getIdentifier().equals(shop.getOwner().toString())) {
-                                plugin.log("[SHOP DELETE] GP Integration: Single delete (Claim/Subclaim Trust Changed) #" + shop.ownerName());
-                                shop.delete();
-                            } else if (event.getIdentifier().contains(shop.getOwner().toString())) {
-                                plugin.log("[SHOP DELETE] GP Integration: Group delete (Claim/Subclaim Trust Changed)#" + shop.ownerName());
-                                shop.delete();
-                            } else if ("all".equals(event.getIdentifier()) || "public".equals(event.getIdentifier())) {
-                                plugin.log("[SHOP DELETE] GP Integration: All/Public delete (Claim/Subclaim Trust Changed) #" + shop.ownerName());
-                                shop.delete();
+                        if (!shop.getOwner().equals(claim.getOwnerID())) {
+                            Claim shopClaim = griefPrevention.dataStore.getClaimAt(shop.getLocation(), false, false, null);
+                            if (shopClaim != null && shopClaim.getID().equals(claim.getID())) {
+                                if (event.getIdentifier().equals(shop.getOwner().toString())) {
+                                    plugin.log("[SHOP DELETE] GP Integration: Single delete (Claim/Subclaim Trust Changed) #" + shop.ownerName());
+                                    shop.delete();
+                                } else if (event.getIdentifier().contains(shop.getOwner().toString())) {
+                                    plugin.log("[SHOP DELETE] GP Integration: Group delete (Claim/Subclaim Trust Changed)#" + shop.ownerName());
+                                    shop.delete();
+                                } else if ("all".equals(event.getIdentifier()) || "public".equals(event.getIdentifier())) {
+                                    plugin.log("[SHOP DELETE] GP Integration: All/Public delete (Claim/Subclaim Trust Changed) #" + shop.ownerName());
+                                    shop.delete();
+                                }
                             }
                         }
                     }
