@@ -1764,7 +1764,7 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 115) {
             getConfig().set("integration.griefprevention.enable", false);
             getConfig().set("integration.griefprevention.whitelist-mode", false);
-            getConfig().set("integration.griefprevention.create", Collections.emptyList());
+            getConfig().set("integration.griefprevention.create", "Inventory");
             getConfig().set("integration.griefprevention.trade", Collections.emptyList());
             getConfig().set("config-version", 116);
             selectedVersion = 116;
@@ -1872,7 +1872,10 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.advancedregionmarket.enable", true);
             getConfig().set("config-version", ++selectedVersion);
         }
-
+        if (selectedVersion == 136) {
+            getConfig().set("integration.griefprevention.delete-on-subclaim-created", true);
+            getConfig().set("config-version", ++selectedVersion);
+        }
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");

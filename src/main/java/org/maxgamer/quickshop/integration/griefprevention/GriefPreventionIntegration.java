@@ -20,11 +20,9 @@
 package org.maxgamer.quickshop.integration.griefprevention;
 
 import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
-import me.ryanhamshire.GriefPrevention.events.ClaimExpirationEvent;
-import me.ryanhamshire.GriefPrevention.events.ClaimModifiedEvent;
-import me.ryanhamshire.GriefPrevention.events.TrustChangedEvent;
+import me.ryanhamshire.GriefPrevention.events.*;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -39,6 +37,7 @@ import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +56,9 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
 
     private final boolean deleteOnClaimResized;
 
-    private final List<Flag> createLimits = new ArrayList<>(3);
+    private final boolean deleteOnSubClaimCreated;
+
+    private final Flag createLimit;
 
     private final List<Flag> tradeLimits = new ArrayList<>(3);
 
@@ -69,7 +70,8 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
         this.deleteOnClaimUnclaimed = configurationSection.getBoolean("integration.griefprevention.delete-on-claim-unclaimed");
         this.deleteOnClaimExpired = configurationSection.getBoolean("integration.griefprevention.delete-on-claim-expired");
         this.deleteOnClaimResized = configurationSection.getBoolean("integration.griefprevention.delete-on-claim-resized");
-        this.createLimits.addAll(toFlags(configurationSection.getStringList("integration.griefprevention.create")));
+        this.deleteOnSubClaimCreated = configurationSection.getBoolean("integration.griefprevention.delete-on-subclaim-created");
+        this.createLimit = Flag.getFlag(configurationSection.getString("integration.griefprevention.create"));
         this.tradeLimits.addAll(toFlags(configurationSection.getStringList("integration.griefprevention.trade")));
     }
 
@@ -90,7 +92,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
 
     @Override
     public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
-        return checkPermission(player, location, createLimits);
+        return checkPermission(player, location, Arrays.asList(createLimit));
     }
 
     @Override
@@ -98,12 +100,18 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
         return checkPermission(player, location, tradeLimits);
     }
 
-    // We will check if the shops belong to user/users whose permissions were changed.
-    // If so, we will delete them.
+    // We will check if the shop belongs to user whose permissions were changed.
+    // It will remove a shop if the shop owner no longer has permission to build a shop there.
     // We will not delete the shops of the claim owner.
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onClaimTrustChanged(TrustChangedEvent event) {
         if (!deleteOnClaimTrustChanged) {
+            return;
+        }
+        if (event.isGiven() && event.getClaimPermission() == null) {
+            return;
+        }
+        if (ClaimPermission.valueOf(createLimit.toString()).isGrantedBy(event.getClaimPermission())) {
             return;
         }
         for (Claim claim : event.getClaims()) {
@@ -171,6 +179,30 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
         }
     }
 
+    // Player can create subclaims inside a claim.
+    // So if a subclaim is created that will contain, initially, shops from others players, then we will remove them.
+    // Because they won't have, initially, permission to create a shop in that subclaim.
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onSubClaimCreated(ClaimCreatedEvent event) {
+        if (!deleteOnSubClaimCreated) {
+            return;
+        }
+        if (event.getClaim().parent != null) {
+            for (Chunk chunk : event.getClaim().getChunks()) {
+                Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
+                if (shops != null) {
+                    for (Shop shop : shops.values()) {
+                        if (!shop.getOwner().equals(event.getClaim().getOwnerID()) &&
+                                event.getClaim().contains(shop.getLocation(), false, false)) {
+                            plugin.log("[SHOP DELETE] GP Integration: Single delete (SubClaim Created) #" + shop.ownerName());
+                            shop.delete();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     // If it is the main claim, then we will delete all the shops that were inside of it.
     private void handleMainClaimUnclaimedOrExpired(Claim claim, String logMessage) {
         for (Chunk chunk : claim.getChunks()) {
@@ -204,7 +236,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
     }
 
     // If it is a main claim, then we will remove the shops if the main claim was resized (size was decreased).
-    // A shop will be removed if the old claim contain it but the new claim doesn't.
+    // A shop will be removed if the old claim contains it but the new claim doesn't.
     private void handleMainClaimResized(Claim oldClaim, Claim newClaim) {
         for (Chunk chunk : oldClaim.getChunks()) {
             Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
@@ -274,17 +306,17 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
 
     enum Flag {
 
-        BUILD {
+        Build {
             @Override
             boolean check(Claim claim, Player player) {
                 return claim.allowBuild(player, Material.CHEST) == null;
             }
-        }, CONTAINER_ACCESS {
+        }, Inventory {
             @Override
             boolean check(Claim claim, Player player) {
                 return claim.allowContainers(player) == null;
             }
-        }, ACCESS {
+        }, Access {
             @Override
             boolean check(Claim claim, Player player) {
                 return claim.allowAccess(player) == null;
@@ -292,9 +324,8 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
         };
 
         public static Flag getFlag(String flag) {
-            flag = flag.toUpperCase();
             for (Flag value : Flag.values()) {
-                if (value.name().equals(flag)) {
+                if (value.name().equalsIgnoreCase(flag)) {
                     return value;
                 }
             }
