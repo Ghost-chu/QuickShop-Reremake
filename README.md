@@ -71,7 +71,14 @@ QuickShop-Reremake is made by PotatoCraft Studio from [KaiKikuchi's QuickShop up
 
 [![BigImage](https://bstats.org/signatures/bukkit/QuickShop-Reremake.svg)](https://bstats.org/plugin/bukkit/QuickShop-Reremake/3320)
 
-
-
 ## License
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Reremake.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Reremake?ref=badge_large)
+
+## Special Thanks To
+
+![YourKit](https://camo.githubusercontent.com/81cebad9a613009454b2b36f2d410e5ccc2c8e27b6736f9c7074df8cdf6ebd2a/68747470733a2f2f7777772e796f75726b69742e636f6d2f696d616765732f796b6c6f676f2e706e67)
+
+YourKit, makers of the outstanding java profiler, support open source projects of all kinds with their full featured
+Java and .NET application profilers. We thank them for granting Paper an OSS license so that we can make our software
+the best it can be.
