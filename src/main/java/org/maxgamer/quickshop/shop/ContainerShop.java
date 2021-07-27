@@ -164,23 +164,18 @@ public class ContainerShop implements Shop {
     private void initDisplayItem() {
         Util.ensureThread(false);
         if (plugin.isDisplay()) {
+            Chunk chunk = getLocation().getChunk();
             switch (DisplayItem.getNowUsing()) {
-                case UNKNOWN:
-                    Util.debugLog(
-                            "Failed to create a ContainerShop displayItem, the type is unknown, fallback to RealDisplayItem");
-                    this.displayItem = new RealDisplayItem(this);
-                    break;
                 case REALITEM:
-                    this.displayItem = new RealDisplayItem(this);
+                    this.displayItem = new RealDisplayItem(this, chunk.getWorld().getName(), chunk.getX(), chunk.getX());
                     break;
                 case VIRTUALITEM:
-                    Chunk chunk = getLocation().getChunk();
                     this.displayItem = new VirtualDisplayItem(this, chunk.getWorld().getName(), chunk.getX(), chunk.getX());
                     break;
                 default:
                     Util.debugLog(
                             "Warning: Failed to create a ContainerShop displayItem, the type we didn't know, fallback to RealDisplayItem");
-                    this.displayItem = new RealDisplayItem(this);
+                    this.displayItem = new RealDisplayItem(this, chunk.getWorld().getName(), chunk.getX(), chunk.getX());
                     break;
             }
         }
