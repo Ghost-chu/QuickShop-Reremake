@@ -922,8 +922,8 @@ public class QuickShop extends JavaPlugin {
         Util.debugLog("Registering watchers...");
         calendarWatcher = new CalendarWatcher(this);
         // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
-        signUpdateWatcher.runTaskTimer(this, 0, 10);
-        shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
+        timerTaskList.add(signUpdateWatcher.runTaskTimer(this, 0, 10));
+        timerTaskList.add(shopContainerWatcher.runTaskTimer(this, 0, 5)); // Nobody use it
 
         if (logWatcher != null) {
             timerTaskList.add(logWatcher.runTaskTimerAsynchronously(this, 10, 10));
@@ -933,8 +933,6 @@ public class QuickShop extends JavaPlugin {
             getLogger().info("Ongoing fee feature is enabled.");
             timerTaskList.add(ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks")));
         }
-
-
         integrationHelper.searchAndRegisterPlugins();
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableAfter);
         new BukkitRunnable() {
