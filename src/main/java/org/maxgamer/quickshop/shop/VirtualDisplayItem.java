@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.shop;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.async.AsyncListenerHandler;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
@@ -30,10 +31,8 @@ import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.utility.MinecraftVersion;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -42,18 +41,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.ShopDisplayItemSpawnEvent;
-import org.maxgamer.quickshop.util.AsyncPacketSender;
 import org.maxgamer.quickshop.util.GameVersion;
 import org.maxgamer.quickshop.util.Util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualDisplayItem extends DisplayItem {
-
 
     private static final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
 
@@ -66,9 +62,7 @@ public class VirtualDisplayItem extends DisplayItem {
     private final int entityID = counter.decrementAndGet();
 
     //The List which store packet sender
-    private final Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
-
-    private volatile AsyncPacketSender.AsyncSendingTask asyncPacketSenderTask = null;
+    private final Set<UUID> packetSenders = ConcurrentHashMap.newKeySet();
 
     private volatile boolean isDisplay;
 
@@ -90,9 +84,14 @@ public class VirtualDisplayItem extends DisplayItem {
     //cache chunk x and z
     private volatile ShopChunk chunkLocation;
 
+    private volatile int chunkX;
+    private volatile int chunkZ;
 
-    public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
-        super(shop);
+    private AsyncListenerHandler asyncListenerHandler;
+
+
+    public VirtualDisplayItem(@NotNull Shop shop, @NotNull String worldName, int chunkX, int chunkZ) throws RuntimeException {
+        super(shop, worldName, chunkX, chunkZ);
     }
 
     private void initFakeDropItemPacket() {
@@ -226,14 +225,6 @@ public class VirtualDisplayItem extends DisplayItem {
             }
         }
 
-        if (asyncPacketSenderTask != null) {
-            asyncPacketSenderTask.stop();
-            //Prevent memory leak
-            asyncPacketSenderTask = null;
-        }
-        asyncPacketSenderTask = AsyncPacketSender.create();
-        asyncPacketSenderTask.start(plugin);
-
         if (packetAdapter == null) {
             packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
                 @Override
@@ -258,45 +249,29 @@ public class VirtualDisplayItem extends DisplayItem {
                     int x = integerStructureModifier.read(0);
                     //chunk z
                     int z = integerStructureModifier.read(1);
-                    asyncPacketSenderTask.offer(() -> {
-                        if (chunkLocation == null) {
-                            World world = shop.getLocation().getWorld();
-                            Chunk chunk;
-                            try {
-                                //sync getting chunk
-                                chunk = plugin.getServer().getScheduler().callSyncMethod(plugin, () -> shop.getLocation().getChunk()).get();
-                            } catch (InterruptedException | ExecutionException e) {
-                                throw new RuntimeException("An error occurred when getting chunk from the world", e);
-                            }
-                            chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
-                        }
-
-                        //TODO: X and Z always mismatch with player received
-                        //TODO: Probably the game Protocol changed between 1.16
-                        //TODO: and 1.17.
-
-                        if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
-                            packetSenders.add(player.getUniqueId());
-                            sendFakeItem(player);
-                        }
-                    });
+                    if (chunkLocation == null) {
+                        chunkLocation = new ShopChunk(worldName, chunkX, chunkZ);
+                    }
+                    if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
+                        packetSenders.add(player.getUniqueId());
+                        sendFakeItem(player);
+                    }
                 }
             };
         }
-        protocolManager.addPacketListener(packetAdapter);
+        asyncListenerHandler = protocolManager.getAsynchronousManager().registerAsyncHandler(packetAdapter);
+        asyncListenerHandler.start();
     }
 
     private void unload() {
         packetSenders.clear();
         if (packetAdapter != null) {
-            protocolManager.removePacketListener(packetAdapter);
+            asyncListenerHandler.cancel();
+            asyncListenerHandler.stop();
+            protocolManager.getAsynchronousManager().unregisterAsyncHandler(packetAdapter);
+            //protocolManager.removePacketListener(packetAdapter);
             //Prevent memory leak
             packetAdapter = null;
-        }
-        if (asyncPacketSenderTask != null) {
-            asyncPacketSenderTask.stop();
-            //Prevent memory leak
-            asyncPacketSenderTask = null;
         }
     }
 
