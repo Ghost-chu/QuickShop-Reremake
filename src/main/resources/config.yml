@@ -22,7 +22,7 @@
 #                        TO EDIT QUICKSHOP'S CONFIGURATION, USE THE "config.yml" FILE!
 
 #Do not touch this if you don't know what you're doing!
-config-version: 136
+config-version: 137
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not existant/not supported language, then QuickShop will use en_US.
@@ -288,13 +288,6 @@ shop:
   #1=ArmorStand
   #2=Virtual Item (Requires ProtocolLib, fallback to type 0 if ProtocolLib is not installed)
   display-type: 2
-
-  #Should QS use global virtual item queue?
-  #Virtual item displays need to send fake packets, 
-  #which will create a task for each shop.
-  #Having too many of those tasks can impact performance.
-  #Turn this ONLY on when you think that the amount of tasks from the virtual item displays causes lag!
-  use-global-virtual-item-queue: false
 
   #Allow QuickShop to automatically despawn displays when no players are in range of the shop.
   display-auto-despawn: false
@@ -774,7 +767,7 @@ integration:
     owner-create-only: false
     #Delete shops when the shop owner got kicked/quited from the island.
     delete-shop-on-member-leave: true
-  #AdvanvedRegionMarket shop deletetion Integration
+  #AdvanvedRegionMarket shop deletion Integration
   advancedregionmarket:
     enable: false
 #The protection that a shop should check.

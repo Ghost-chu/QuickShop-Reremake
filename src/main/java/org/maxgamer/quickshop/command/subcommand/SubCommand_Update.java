@@ -65,7 +65,7 @@ public class SubCommand_Update implements CommandHandler<CommandSender> {
                     ChatColor.GREEN + "Successful! Please restart your server to apply the updated version!");
             MsgUtil.sendDirectMessage(sender,
                     ChatColor.YELLOW + "Before you restarting the server, QuickShop won't working again.");
-            plugin.setupBootError(new BootError(plugin.getLogger(), "Reboot required after update the plugin."));
+            plugin.setupBootError(new BootError(plugin.getLogger(), "Reboot required after update the plugin."), true);
 
         });
     }

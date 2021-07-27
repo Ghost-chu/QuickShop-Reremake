@@ -164,22 +164,18 @@ public class ContainerShop implements Shop {
     private void initDisplayItem() {
         Util.ensureThread(false);
         if (plugin.isDisplay()) {
+            Chunk chunk = getLocation().getChunk();
             switch (DisplayItem.getNowUsing()) {
-                case UNKNOWN:
-                    Util.debugLog(
-                            "Failed to create a ContainerShop displayItem, the type is unknown, fallback to RealDisplayItem");
-                    this.displayItem = new RealDisplayItem(this);
-                    break;
                 case REALITEM:
-                    this.displayItem = new RealDisplayItem(this);
+                    this.displayItem = new RealDisplayItem(this, chunk.getWorld().getName(), chunk.getX(), chunk.getX());
                     break;
                 case VIRTUALITEM:
-                    this.displayItem = new VirtualDisplayItem(this);
+                    this.displayItem = new VirtualDisplayItem(this, chunk.getWorld().getName(), chunk.getX(), chunk.getX());
                     break;
                 default:
                     Util.debugLog(
                             "Warning: Failed to create a ContainerShop displayItem, the type we didn't know, fallback to RealDisplayItem");
-                    this.displayItem = new RealDisplayItem(this);
+                    this.displayItem = new RealDisplayItem(this, chunk.getWorld().getName(), chunk.getX(), chunk.getX());
                     break;
             }
         }
@@ -725,7 +721,7 @@ public class ContainerShop implements Shop {
         }
     }
 
-    private synchronized void update0() {
+    private void update0() {
         Util.ensureThread(false);
         ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
         if (Util.fireCancellableEvent(shopUpdateEvent)) {
@@ -739,7 +735,7 @@ public class ContainerShop implements Shop {
         int unlimited = this.isUnlimited() ? 1 : 0;
         try {
             plugin.getDatabaseHelper()
-                    .updateShop(ShopModerator.serialize(this.moderator.clone()), this.getItem(),
+                    .updateShop(ShopModerator.serialize(this.moderator), this.getItem(),
                             unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
                             this.saveExtraToYaml());
         } catch (Exception e) {
