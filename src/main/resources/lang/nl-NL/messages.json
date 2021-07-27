@@ -176,10 +176,10 @@
       "ban": "&eVerband een speler van deze winkel",
       "unban": "&eHeft de ban voor deze speler in deze shop",
       "freeze": "&eUitschakelen of inschakelen van winkel handelen",
-      "lock": "&eSwitch the shop's lock status"
+      "lock": "&eVerander de vergrendelstatus van de winkel"
     },
     "disabled": "&cDeze opdracht is uitgeschakeld: &e{0}",
-    "feature-not-enabled": "This feature is not enabled in the config file."
+    "feature-not-enabled": "De functie niet ingeschakeld in de config."
   },
   "signs": {
     "selling": "Verkopen {0}",
@@ -193,9 +193,9 @@
     "unlimited": "Onbeperkt",
     "status-available": "&a",
     "status-unavailable": "&c",
-    "out-of-stock": "Out of Stock",
-    "out-of-space": "Out of Space",
-    "freeze": "Trading disabled"
+    "out-of-stock": "Niet op voorraad",
+    "out-of-space": "Te weinig ruimte",
+    "freeze": "Ruilen uitgeschakeld"
   },
   "controlpanel": {
     "setowner": "&aEigenaar: &b{0} &e[&d&lChange&e]",
@@ -315,15 +315,15 @@
   "currency-unset": "&aShop valuta verwijderd. Standaard instellingen nu gebruiken.",
   "currency-not-support": "&cThe economy plugin ondersteunt de multi-economy functie niet.",
   "item-not-exist": "&cHet item &e{0} &cbestaat niet, controleer je spelling.",
-  "backup-success": "&aBackup successfull.",
-  "console-only": "&cThis command can only be executed by Console.",
-  "console-only-danger": "&cThis is a dangerous command, so that only the Console can execute it.",
+  "backup-success": "&aBack-up succesvol.",
+  "console-only": "Deze opdracht kan alleen worden gestart vanaf de console!",
+  "console-only-danger": "&cDit is een gevaarlijk commando, zodat alleen de console het kan uitvoeren.",
   "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
-  "shop-creation-failed": "&cShop creation failed, please contact with server administrator.",
-  "shop-owner-self-trade": "&eYou trading with yourself shop, so you might won't gain any balance.",
-  "chest-title": "QuickShop Store",
+  "shop-creation-failed": "Het maken van &cShop is mislukt, neem contact op met de serverbeheerder.",
+  "shop-owner-self-trade": "Je handelt met jezelf. Je zal dan ook geen geld krijgen",
+  "chest-title": "QuickShop Winkel",
   "command-type-mismatch": "&cThis command only can executed by &b{0}.",
-  "unlimited-shop-owner-changed": "&eThis unlimited shop owner has been changed to {0}.",
+  "unlimited-shop-owner-changed": "&eDeze ongelimiteerde winkel is verander van eigenaar. Naar {0}.",
   "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.",
   "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
 }
