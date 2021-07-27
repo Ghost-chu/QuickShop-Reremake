@@ -32,6 +32,14 @@ public abstract class QSEvent extends Event {
         return handlers;
     }
 
+    public QSEvent() {
+
+    }
+
+    public QSEvent(boolean async) {
+        super(async);
+    }
+
     @NotNull
     @Override
     public HandlerList getHandlers() {
