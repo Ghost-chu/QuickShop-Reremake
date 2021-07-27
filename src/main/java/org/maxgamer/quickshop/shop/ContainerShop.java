@@ -721,7 +721,7 @@ public class ContainerShop implements Shop {
         }
     }
 
-    private synchronized void update0() {
+    private void update0() {
         Util.ensureThread(false);
         ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
         if (Util.fireCancellableEvent(shopUpdateEvent)) {
