@@ -39,6 +39,7 @@ public class ShopUpdateEvent extends QSEvent implements Cancellable {
      * @param shop The shop bought from
      */
     public ShopUpdateEvent(@NotNull Shop shop) {
+        super();
         this.shop = shop;
     }
 
