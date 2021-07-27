@@ -735,7 +735,7 @@ public class ContainerShop implements Shop {
         int unlimited = this.isUnlimited() ? 1 : 0;
         try {
             plugin.getDatabaseHelper()
-                    .updateShop(ShopModerator.serialize(this.moderator.clone()), this.getItem(),
+                    .updateShop(ShopModerator.serialize(this.moderator), this.getItem(),
                             unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
                             this.saveExtraToYaml());
         } catch (Exception e) {
