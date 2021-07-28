@@ -266,7 +266,7 @@ public class VirtualDisplayItem extends DisplayItem {
     private void unload() {
         packetSenders.clear();
         if (packetAdapter != null) {
-            asyncListenerHandler.stop();
+            //asyncListenerHandler.stop();
             protocolManager.getAsynchronousManager().unregisterAsyncHandler(packetAdapter);
             //protocolManager.removePacketListener(packetAdapter);
             //Prevent memory leak
