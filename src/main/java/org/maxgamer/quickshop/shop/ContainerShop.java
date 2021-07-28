@@ -711,7 +711,13 @@ public class ContainerShop implements Shop {
      */
     @Override
     public synchronized void update() {
-        Util.mainThreadRun(this::update0);
+        Util.ensureThread(false);
+        ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
+        if (Util.fireCancellableEvent(shopUpdateEvent)) {
+            Util.debugLog("The Shop update action was canceled by a plugin.");
+            return;
+        }
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, this::update0);
     }
 
     private void notifyDisplayItemChange() {
@@ -722,12 +728,8 @@ public class ContainerShop implements Shop {
     }
 
     private void update0() {
-        Util.ensureThread(false);
-        ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
-        if (Util.fireCancellableEvent(shopUpdateEvent)) {
-            Util.debugLog("The Shop update action was canceled by a plugin.");
-            return;
-        }
+        // Make sure this only trigged in async thread, we will start the I/O actions
+        Util.ensureThread(true);
         int x = this.getLocation().getBlockX();
         int y = this.getLocation().getBlockY();
         int z = this.getLocation().getBlockZ();
