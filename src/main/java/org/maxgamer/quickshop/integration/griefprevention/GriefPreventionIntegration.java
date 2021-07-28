@@ -22,7 +22,11 @@ package org.maxgamer.quickshop.integration.griefprevention;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import me.ryanhamshire.GriefPrevention.events.*;
+import me.ryanhamshire.GriefPrevention.events.TrustChangedEvent;
+import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
+import me.ryanhamshire.GriefPrevention.events.ClaimExpirationEvent;
+import me.ryanhamshire.GriefPrevention.events.ClaimModifiedEvent;
+import me.ryanhamshire.GriefPrevention.events.ClaimCreatedEvent;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -37,7 +41,7 @@ import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -92,7 +96,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
 
     @Override
     public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
-        return checkPermission(player, location, Arrays.asList(createLimit));
+        return checkPermission(player, location, Collections.singletonList(createLimit));
     }
 
     @Override
@@ -111,29 +115,32 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
         if (event.isGiven() && event.getClaimPermission() == null) {
             return;
         }
-        if (ClaimPermission.valueOf(createLimit.toString()).isGrantedBy(event.getClaimPermission())) {
+        if (createLimit.toClaimPermission().isGrantedBy(event.getClaimPermission())) {
             return;
         }
         for (Claim claim : event.getClaims()) {
             for (Chunk chunk : claim.getChunks()) {
                 Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
-                if (shops != null) {
-                    for (Shop shop : shops.values()) {
-                        if (!shop.getOwner().equals(claim.getOwnerID())) {
-                            Claim shopClaim = griefPrevention.dataStore.getClaimAt(shop.getLocation(), false, false, null);
-                            if (shopClaim != null && shopClaim.getID().equals(claim.getID())) {
-                                if (event.getIdentifier().equals(shop.getOwner().toString())) {
-                                    plugin.log("[SHOP DELETE] GP Integration: Single delete (Claim/Subclaim Trust Changed) #" + shop.ownerName());
-                                    shop.delete();
-                                } else if (event.getIdentifier().contains(shop.getOwner().toString())) {
-                                    plugin.log("[SHOP DELETE] GP Integration: Group delete (Claim/Subclaim Trust Changed)#" + shop.ownerName());
-                                    shop.delete();
-                                } else if ("all".equals(event.getIdentifier()) || "public".equals(event.getIdentifier())) {
-                                    plugin.log("[SHOP DELETE] GP Integration: All/Public delete (Claim/Subclaim Trust Changed) #" + shop.ownerName());
-                                    shop.delete();
-                                }
-                            }
-                        }
+                if (shops == null) {
+                    continue;
+                }
+                for (Shop shop : shops.values()) {
+                    if (shop.getOwner().equals(claim.getOwnerID())) {
+                        continue;
+                    }
+                    Claim shopClaim = griefPrevention.dataStore.getClaimAt(shop.getLocation(), false, false, null);
+                    if (shopClaim == null || !shopClaim.getID().equals(claim.getID())) {
+                        continue;
+                    }
+                    if (event.getIdentifier().equals(shop.getOwner().toString())) {
+                        plugin.log("[SHOP DELETE] GP Integration: Single delete (Claim/Subclaim Trust Changed) #" + shop.ownerName());
+                        shop.delete();
+                    } else if (event.getIdentifier().contains(shop.getOwner().toString())) {
+                        plugin.log("[SHOP DELETE] GP Integration: Group delete (Claim/Subclaim Trust Changed)#" + shop.ownerName());
+                        shop.delete();
+                    } else if ("all".equals(event.getIdentifier()) || "public".equals(event.getIdentifier())) {
+                        plugin.log("[SHOP DELETE] GP Integration: All/Public delete (Claim/Subclaim Trust Changed) #" + shop.ownerName());
+                        shop.delete();
                     }
                 }
             }
@@ -187,16 +194,17 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
         if (!deleteOnSubClaimCreated) {
             return;
         }
-        if (event.getClaim().parent != null) {
-            for (Chunk chunk : event.getClaim().getChunks()) {
-                Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
-                if (shops != null) {
-                    for (Shop shop : shops.values()) {
-                        if (!shop.getOwner().equals(event.getClaim().getOwnerID()) &&
-                                event.getClaim().contains(shop.getLocation(), false, false)) {
-                            plugin.log("[SHOP DELETE] GP Integration: Single delete (SubClaim Created) #" + shop.ownerName());
-                            shop.delete();
-                        }
+        if(event.getClaim().parent == null) {
+            return;
+        }
+        for (Chunk chunk : event.getClaim().getChunks()) {
+            Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
+            if (shops != null) {
+                for (Shop shop : shops.values()) {
+                    if (!shop.getOwner().equals(event.getClaim().getOwnerID()) &&
+                            event.getClaim().contains(shop.getLocation(), false, false)) {
+                        plugin.log("[SHOP DELETE] GP Integration: Single delete (SubClaim Created) #" + shop.ownerName());
+                        shop.delete();
                     }
                 }
             }
@@ -306,22 +314,38 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
 
     enum Flag {
 
-        Build {
+        BUILD {
             @Override
             boolean check(Claim claim, Player player) {
                 return claim.allowBuild(player, Material.CHEST) == null;
             }
-        }, Inventory {
+            @Override
+            ClaimPermission toClaimPermission() {
+                return ClaimPermission.Build;
+            }
+        }, INVENTORY {
             @Override
             boolean check(Claim claim, Player player) {
                 return claim.allowContainers(player) == null;
             }
-        }, Access {
+            @Override
+            ClaimPermission toClaimPermission() {
+                return ClaimPermission.Inventory;
+            }
+        }, ACCESS {
             @Override
             boolean check(Claim claim, Player player) {
                 return claim.allowAccess(player) == null;
             }
+            @Override
+            ClaimPermission toClaimPermission() {
+                return ClaimPermission.Access;
+            }
         };
+
+        abstract boolean check(Claim claim, Player player);
+
+        abstract ClaimPermission toClaimPermission();
 
         public static Flag getFlag(String flag) {
             for (Flag value : Flag.values()) {
@@ -331,8 +355,6 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
             }
             return null;
         }
-
-        abstract boolean check(Claim claim, Player player);
     }
 
 }
