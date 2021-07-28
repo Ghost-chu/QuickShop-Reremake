@@ -707,25 +707,41 @@ public class ContainerShop implements Shop {
         this.setSignText(getSignText());
     }
 
+    private volatile boolean updating = false;
+
     /**
      * Updates the shop into the database.
      */
     @Override
-    public synchronized void update() {
+    public void update() {
         //TODO: check isDirty()
         Util.ensureThread(false);
+        if (updating) {
+            return;
+        }
         ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
         if (Util.fireCancellableEvent(shopUpdateEvent)) {
             Util.debugLog("The Shop update action was canceled by a plugin.");
             return;
         }
+        updating = true;
         int x = this.getLocation().getBlockX();
         int y = this.getLocation().getBlockY();
         int z = this.getLocation().getBlockZ();
         String world = Objects.requireNonNull(this.getLocation().getWorld()).getName();
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            update0(world, x, y, z);
-        });
+        int unlimited = this.isUnlimited() ? 1 : 0;
+        try {
+            plugin.getDatabaseHelper()
+                    .updateShop(ShopModerator.serialize(this.moderator), this.getItem(),
+                            unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
+                            this.saveExtraToYaml());
+            this.dirty = false;
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.WARNING,
+                    "Could not update a shop in the database! Changes will revert after a reboot!", e);
+        } finally {
+            updating = false;
+        }
     }
 
     private void notifyDisplayItemChange() {
@@ -733,20 +749,6 @@ public class ContainerShop implements Shop {
         if (attachedShop != null && !attachedShop.isDisplayItemChanged) {
             attachedShop.notifyDisplayItemChange();
         }
-    }
-
-    private void update0(String world, int x, int y, int z) {
-        int unlimited = this.isUnlimited() ? 1 : 0;
-        try {
-            plugin.getDatabaseHelper()
-                    .updateShop(ShopModerator.serialize(this.moderator), this.getItem(),
-                            unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
-                            this.saveExtraToYaml());
-        } catch (Exception e) {
-            plugin.getLogger().log(Level.WARNING,
-                    "Could not update a shop in the database! Changes will revert after a reboot!", e);
-        }
-        this.dirty = false;
     }
 
     /**
