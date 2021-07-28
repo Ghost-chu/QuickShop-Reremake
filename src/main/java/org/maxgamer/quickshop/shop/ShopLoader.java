@@ -61,7 +61,6 @@ public class ShopLoader {
     private final List<Shop> shopsInDatabase = new CopyOnWriteArrayList<>();
     private final List<ShopRawDatabaseInfo> shopRawDatabaseInfoList = new CopyOnWriteArrayList<>();
     private int errors;
-    private int totalLoaded = 0;
     //private final WarningSender warningSender;
 
     /**
@@ -89,6 +88,7 @@ public class ShopLoader {
         int loadAfterChunkLoaded = 0;
         int loadAfterWorldLoaded = 0;
         List<Shop> pendingLoadShops = new ArrayList<>();
+        this.plugin.getLogger().info("Loading shops from the database...");
         try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
             while (rs.next()) {
                 ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
@@ -147,19 +147,21 @@ public class ShopLoader {
                     loadAfterChunkLoaded++;
                 }
             }
-            this.plugin.getLogger().info("Enabling the shops in worlds...");
-            for (Shop shop : pendingLoadShops) {
-                shop.onLoad();
-                // Delay update shop data
-                Bukkit.getScheduler().runTaskLater(plugin, shop::update, 1L);
-            }
-            this.plugin
-                    .getLogger()
-                    .info(
-                            "Successfully loaded "
-                                    + totalLoaded
-                                    + " shops!");
-            this.plugin.getLogger().info(loadAfterChunkLoaded
+
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                this.plugin.getLogger().info("Loading the shops in worlds...");
+                for (Shop shop : pendingLoadShops) {
+                    shop.onLoad();
+                    shop.update();
+                }
+                this.plugin
+                        .getLogger()
+                        .info(
+                                "Successfully loaded "
+                                        + pendingLoadShops.size()
+                                        + " shops!");
+            }, 1);
+            this.plugin.getLogger().info("Scheduled " + pendingLoadShops.size() + " shops to load in next tick, " + loadAfterChunkLoaded
                     + " shops will load after chunk have loaded, "
                     + loadAfterWorldLoaded
                     + " shops will load after the world has loaded.");
@@ -168,7 +170,7 @@ public class ShopLoader {
         }
     }
 
-    private void singleShopLoaded(@NotNull Timer singleShopLoadTimer) {
+   /* private void singleShopLoaded(@NotNull Timer singleShopLoadTimer) {
         totalLoaded++;
         long singleShopLoadTime = singleShopLoadTimer.stopAndGetTimePassed();
         loadTimes.add(singleShopLoadTime);
@@ -181,7 +183,7 @@ public class ShopLoader {
     private double calcTimeCost(@NotNull Timer timer) {
         timeCostCache.putIfAbsent(timer, (double) timer.getPassedTime());
         return timer.getPassedTime() - timeCostCache.get(timer);
-    }
+    }*/
 
     @SuppressWarnings("ConstantConditions")
     private boolean shopNullCheck(@Nullable Shop shop) {
