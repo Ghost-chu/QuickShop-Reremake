@@ -736,9 +736,6 @@ public class ContainerShop implements Shop {
     }
 
     private void update0(String world, int x, int y, int z) {
-        // Make sure this only trigged in async thread, we will start the I/O actions
-        Util.ensureThread(true);
-
         int unlimited = this.isUnlimited() ? 1 : 0;
         try {
             plugin.getDatabaseHelper()
