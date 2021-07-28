@@ -22,7 +22,7 @@
 #                        TO EDIT QUICKSHOP'S CONFIGURATION, USE THE "config.yml" FILE!
 
 #Do not touch this if you don't know what you're doing!
-config-version: 137
+config-version: 138
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not existant/not supported language, then QuickShop will use en_US.
@@ -667,39 +667,39 @@ integration:
     whitelist-mode: true
     #Which check does a player need to pass to create a shop?
     #Available fields:
-    #Build = The player must have the ability to build in the target claim.
-    #Inventory = The player must be able to access containers.
-    #Access = The Player must have the ability to access the target claim.
-    create: Inventory
+    #BUILD = The player must have the ability to build in the target claim.
+    #INVENTORY = The player must be able to access containers.
+    #ACCESS = The Player must have the ability to access the target claim.
+    create: INVENTORY
     #Which checks does a player need to pass to trade with a shop?
     #You can use multiple checks at the same time.
     #Priority: UP > DOWN
     #Available fields:
-    #Build = The player must have the ability to build in the target claim.
-    #Inventory = The player must be able to access containers.
-    #Access = The Player must have the ability to access the target claim.
+    #BUILD = The player must have the ability to build in the target claim.
+    #INVENTORY = The player must be able to access containers.
+    #ACCESS = The Player must have the ability to access the target claim.
     trade: [ ]
     #Should QuickShop delete shops if the trust permission of the shop owner has been changed on the claim/subclaim?
-    #It will remove a shop if the shop owner no longer has permission to build a shop there.
-    #It will never remove a shop of the claim owner.
+    #Removes a shop if the shop owner no longer has permission to build a shop there.
+    #Never removes a shop of the claim owner.
     delete-on-claim-trust-changed: true
     #Should QuickShop delete shops if the claim/subclaim has been unclaimed?
-    #It will remove all the shops that were inside the claim/subclaim that was unclaimed.
-    #It will never remove a shop of the claim owner when unclaiming a subclaim.
+    #Removes all the shops that were inside the claim/subclaim that was unclaimed.
+    #Never removes a shop of the claim owner when unclaiming a subclaim.
     delete-on-claim-unclaimed: true
     #Should QuickShop delete shops if the claim has been expired?
-    #It will remove all the shops that were inside the claim.
+    #Removes all the shops that were inside the claim.
     delete-on-claim-expired: true
     #Should QuickShop delete shops if claim/subclaim has been resized?
-    #It will remove a shop that the old claim contains but the new claim doesn't.
-    #It will remove a shop if the shop was inside the subclaim but now it is outside the subclaim.
-    #It will remove a shop if the shop was outside the subclaim but now it is inside the subclaim.
-    #It will never remove a shop of the claim owner when resizing a subclaim.
+    #Removes a shop that the old claim contains but the new claim doesn't.
+    #Removes a shop if the shop was inside the subclaim but now it is outside the subclaim.
+    #Removes a shop if the shop was outside the subclaim but now it is inside the subclaim.
+    #Never removes a shop of the claim owner when resizing a subclaim.
     delete-on-claim-resized: true
     #Should Quickshop delete shops if a subclaim has been created?
-    #So if a subclaim is created that will contain, initially, shops from others players, then we will remove them.
+    #If a subclaim is created that will contain, initially, shops from others players, then we will remove them.
     #Because they won't have, initially, permission to create a shop in that subclaim.
-    #It will never remove a shop of the claim owner.
+    #Never removes a shop of the claim owner.
     delete-on-subclaim-created: true
   #Residence Integration
   residence:
