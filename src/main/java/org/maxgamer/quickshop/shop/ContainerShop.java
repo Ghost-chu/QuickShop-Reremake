@@ -707,10 +707,11 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * Upates the shop into the database.
+     * Updates the shop into the database.
      */
     @Override
     public synchronized void update() {
+        //TODO: check isDirty()
         Util.ensureThread(false);
         ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
         if (Util.fireCancellableEvent(shopUpdateEvent)) {
@@ -833,24 +834,28 @@ public class ContainerShop implements Shop {
 
         // check price restriction
         PriceLimiter.CheckResult priceRestriction = plugin.getShopManager().getPriceLimiter().check(item, price);
+        boolean markUpdate = false;
         if (priceRestriction.getStatus() != PriceLimiter.Status.PASS) {
             if (priceRestriction.getStatus() == PriceLimiter.Status.NOT_A_WHOLE_NUMBER) {
                 setDirty();
                 price = Math.floor(price);
-                this.update();
+                markUpdate = true;
             } else if (priceRestriction.getStatus() == PriceLimiter.Status.NOT_VALID) {
                 setDirty();
                 price = priceRestriction.getMin();
-                this.update();
+                markUpdate = true;
             }
             if (price < priceRestriction.getMin()) {
                 setDirty();
                 price = priceRestriction.getMin();
-                this.update();
+                markUpdate = true;
             } else if (price > priceRestriction.getMax()) {
                 setDirty();
                 price = priceRestriction.getMax();
-                this.update();
+                markUpdate = true;
+            }
+            if (markUpdate) {
+                update();
             }
         }
         checkDisplay();
