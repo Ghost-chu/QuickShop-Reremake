@@ -303,6 +303,7 @@ public class ContainerShop implements Shop {
             return;
         }
 
+        //FIXME: This may affect the performance
         updateAttachedShop();
 
         if (isLeftShop) {
