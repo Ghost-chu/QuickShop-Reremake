@@ -52,9 +52,9 @@ public abstract class DisplayItem {
     @Nullable
     protected ItemStack guardedIstack;
     private boolean pendingRemoval;
-    protected int chunkX;
-    protected int chunkZ;
-    protected String worldName;
+    protected final int chunkX;
+    protected final int chunkZ;
+    protected final String worldName;
 
     protected DisplayItem(Shop shop, String worldName, int chunkX, int chunkZ) {
         this.shop = shop;

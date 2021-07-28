@@ -84,9 +84,6 @@ public class VirtualDisplayItem extends DisplayItem {
     //cache chunk x and z
     private volatile ShopChunk chunkLocation;
 
-    private volatile int chunkX;
-    private volatile int chunkZ;
-
     private AsyncListenerHandler asyncListenerHandler;
 
 
