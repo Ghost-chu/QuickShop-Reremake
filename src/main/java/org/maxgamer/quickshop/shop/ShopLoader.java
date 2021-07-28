@@ -84,12 +84,12 @@ public class ShopLoader {
      */
     public void loadShops(@Nullable String worldName) {
         //boolean backupedDatabaseInDeleteProcess = false;
-        this.plugin.getLogger().info("Loading shops from the database... If plugin stuck there, check your database connection.");
+        this.plugin.getLogger().info("Fetching shops from the database...If plugin stuck there, check your database connection.");
         int loadAfterChunkLoaded = 0;
         int loadAfterWorldLoaded = 0;
         List<Shop> pendingLoadShops = new ArrayList<>();
-        this.plugin.getLogger().info("Loading shops from the database...");
         try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
+            this.plugin.getLogger().info("Loading shops from the database...");
             while (rs.next()) {
                 ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
                 shopRawDatabaseInfoList.add(origin);
