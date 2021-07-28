@@ -45,11 +45,9 @@ QuickShop-Reremake is made by PotatoCraft Studio from [KaiKikuchi's QuickShop up
 - Optimized performance [Reremake]
 
 ## Downloads
-| <a href="https://www.spigotmc.org/resources/62575/"/><img src="/.github/icons/Spigot.png" width="100" height="90" />
-| <a href="https://dev.bukkit.org/projects/quickshop-reremake"><img src="/.github/icons/Bukkit.png" width="100" height="100" />
-| <a href="http://www.mcbbs.net/thread-809496-1-1.html"/><img src="/.github/icons/MCBBS.png" width="100" height="100" />
-| <a href="https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake-SNAPSHOT/"><img src="/.github/icons/Jenkins.svg" width="85" height="100" />
-| :-: | :-: | :-: | :-: | | **Spigot** | **BukkitDev** | **MCBBS** | **Jenkins** |
+| <a href="https://www.spigotmc.org/resources/62575/"><img src="/.github/icons/Spigot.png" width="100" height="90" /></a> | <a href="https://dev.bukkit.org/projects/quickshop-reremake"><img src="/.github/icons/Bukkit.png" width="100" height="100" /></a></a> | <a href="http://www.mcbbs.net/thread-809496-1-1.html"><img src="/.github/icons/MCBBS.png" width="100" height="100" /></a> | <a href="https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake-SNAPSHOT/"><img src="/.github/icons/Jenkins.svg" width="85" height="100" /></a>
+ | --- | --- | --- | --- |
+ | **Spigot** | **BukkitDev** | **MCBBS** | **Jenkins** |
 
 ## Contribute
 
