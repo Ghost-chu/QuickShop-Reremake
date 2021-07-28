@@ -46,7 +46,7 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualDisplayItem extends DisplayItem {
@@ -62,7 +62,7 @@ public class VirtualDisplayItem extends DisplayItem {
     private final int entityID = counter.decrementAndGet();
 
     //The List which store packet sender
-    private final Set<UUID> packetSenders = ConcurrentHashMap.newKeySet();
+    private final Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
 
     private volatile boolean isDisplay;
 
