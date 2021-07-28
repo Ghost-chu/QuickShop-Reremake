@@ -719,7 +719,13 @@ public class ContainerShop implements Shop {
             Util.debugLog("The Shop update action was canceled by a plugin.");
             return;
         }
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, this::update0);
+        int x = this.getLocation().getBlockX();
+        int y = this.getLocation().getBlockY();
+        int z = this.getLocation().getBlockZ();
+        String world = Objects.requireNonNull(this.getLocation().getWorld()).getName();
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            update0(world, x, y, z);
+        });
     }
 
     private void notifyDisplayItemChange() {
@@ -729,13 +735,10 @@ public class ContainerShop implements Shop {
         }
     }
 
-    private void update0() {
+    private void update0(String world, int x, int y, int z) {
         // Make sure this only trigged in async thread, we will start the I/O actions
         Util.ensureThread(true);
-        int x = this.getLocation().getBlockX();
-        int y = this.getLocation().getBlockY();
-        int z = this.getLocation().getBlockZ();
-        String world = Objects.requireNonNull(this.getLocation().getWorld()).getName();
+
         int unlimited = this.isUnlimited() ? 1 : 0;
         try {
             plugin.getDatabaseHelper()
