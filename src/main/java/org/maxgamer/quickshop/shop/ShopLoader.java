@@ -25,6 +25,7 @@ import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -84,7 +85,7 @@ public class ShopLoader {
      */
     public void loadShops(@Nullable String worldName) {
         //boolean backupedDatabaseInDeleteProcess = false;
-        this.plugin.getLogger().info("Loading shops from the database...");
+        this.plugin.getLogger().info("Loading shops from the database... If plugin stuck there, check your database connection.");
         int loadAfterChunkLoaded = 0;
         int loadAfterWorldLoaded = 0;
         List<Shop> pendingLoadShops = new ArrayList<>();
@@ -146,9 +147,11 @@ public class ShopLoader {
                     loadAfterChunkLoaded++;
                 }
             }
+            this.plugin.getLogger().info("Enabling the shops in worlds...");
             for (Shop shop : pendingLoadShops) {
                 shop.onLoad();
-                shop.update();
+                // Delay update shop data
+                Bukkit.getScheduler().runTaskLater(plugin, shop::update, 1L);
             }
             this.plugin
                     .getLogger()
