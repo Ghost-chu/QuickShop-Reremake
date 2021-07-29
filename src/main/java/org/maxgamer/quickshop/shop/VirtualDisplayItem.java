@@ -183,6 +183,14 @@ public class VirtualDisplayItem extends DisplayItem {
         if (shop.isLeftShop() || isDisplay || shop.isDeleted() || !shop.isLoaded()) {
             return;
         }
+        ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.VIRTUALITEM);
+        plugin.getServer().getPluginManager().callEvent(shopDisplayItemSpawnEvent);
+        if (shopDisplayItemSpawnEvent.isCancelled()) {
+            Util.debugLog(
+                    "Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
+            return;
+        }
+
         //lazy initialize
         if (!initialized) {
             initFakeDropItemPacket();
@@ -190,13 +198,6 @@ public class VirtualDisplayItem extends DisplayItem {
         if (chunkLocation == null) {
             Chunk chunk = shop.getLocation().getChunk();
             chunkLocation = new ShopChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
-        }
-        ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.VIRTUALITEM);
-        plugin.getServer().getPluginManager().callEvent(shopDisplayItemSpawnEvent);
-        if (shopDisplayItemSpawnEvent.isCancelled()) {
-            Util.debugLog(
-                    "Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
-            return;
         }
         load();
 
