@@ -164,18 +164,17 @@ public class ContainerShop implements Shop {
     private void initDisplayItem() {
         Util.ensureThread(false);
         if (plugin.isDisplay()) {
-            Chunk chunk = getLocation().getChunk();
             switch (DisplayItem.getNowUsing()) {
                 case REALITEM:
-                    this.displayItem = new RealDisplayItem(this, chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
+                    this.displayItem = new RealDisplayItem(this);
                     break;
                 case VIRTUALITEM:
-                    this.displayItem = new VirtualDisplayItem(this, chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
+                    this.displayItem = new VirtualDisplayItem(this);
                     break;
                 default:
                     Util.debugLog(
                             "Warning: Failed to create a ContainerShop displayItem, the type we didn't know, fallback to RealDisplayItem");
-                    this.displayItem = new RealDisplayItem(this, chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
+                    this.displayItem = new RealDisplayItem(this);
                     break;
             }
         }

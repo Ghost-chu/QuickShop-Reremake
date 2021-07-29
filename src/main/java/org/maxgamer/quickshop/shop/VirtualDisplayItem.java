@@ -31,6 +31,7 @@ import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.utility.MinecraftVersion;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -87,8 +88,8 @@ public class VirtualDisplayItem extends DisplayItem {
     private AsyncListenerHandler asyncListenerHandler;
 
 
-    public VirtualDisplayItem(@NotNull Shop shop, @NotNull String worldName, int chunkX, int chunkZ) throws RuntimeException {
-        super(shop, worldName, chunkX, chunkZ);
+    public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
+        super(shop);
     }
 
     private void initFakeDropItemPacket() {
@@ -126,9 +127,11 @@ public class VirtualDisplayItem extends DisplayItem {
 
     @Override
     public void remove() {
-        sendPacketToAll(fakeItemDestroyPacket);
-        unload();
-        isDisplay = false;
+        if (isDisplay) {
+            sendPacketToAll(fakeItemDestroyPacket);
+            unload();
+            isDisplay = false;
+        }
     }
 
     private void sendPacketToAll(@NotNull PacketContainer packet) {
@@ -177,15 +180,16 @@ public class VirtualDisplayItem extends DisplayItem {
     @Override
     public void spawn() {
         Util.ensureThread(false);
-        if (shop.isLeftShop()) {
+        if (shop.isLeftShop() || isDisplay || shop.isDeleted() || !shop.isLoaded()) {
             return;
         }
         //lazy initialize
         if (!initialized) {
             initFakeDropItemPacket();
         }
-        if (shop.isDeleted() || !shop.isLoaded()) {
-            return;
+        if (chunkLocation == null) {
+            Chunk chunk = shop.getLocation().getChunk();
+            chunkLocation = new ShopChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
         }
         ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.VIRTUALITEM);
         plugin.getServer().getPluginManager().callEvent(shopDisplayItemSpawnEvent);
@@ -246,9 +250,6 @@ public class VirtualDisplayItem extends DisplayItem {
                     int x = integerStructureModifier.read(0);
                     //chunk z
                     int z = integerStructureModifier.read(1);
-                    if (chunkLocation == null) {
-                        chunkLocation = new ShopChunk(worldName, chunkX, chunkZ);
-                    }
                     if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
                         packetSenders.add(player.getUniqueId());
                         sendFakeItem(player);
