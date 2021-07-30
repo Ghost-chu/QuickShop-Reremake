@@ -31,6 +31,7 @@ import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.utility.MinecraftVersion;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -46,7 +47,7 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualDisplayItem extends DisplayItem {
@@ -62,7 +63,7 @@ public class VirtualDisplayItem extends DisplayItem {
     private final int entityID = counter.decrementAndGet();
 
     //The List which store packet sender
-    private final Set<UUID> packetSenders = ConcurrentHashMap.newKeySet();
+    private final Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
 
     private volatile boolean isDisplay;
 
@@ -84,14 +85,11 @@ public class VirtualDisplayItem extends DisplayItem {
     //cache chunk x and z
     private volatile ShopChunk chunkLocation;
 
-    private volatile int chunkX;
-    private volatile int chunkZ;
-
     private AsyncListenerHandler asyncListenerHandler;
 
 
-    public VirtualDisplayItem(@NotNull Shop shop, @NotNull String worldName, int chunkX, int chunkZ) throws RuntimeException {
-        super(shop, worldName, chunkX, chunkZ);
+    public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
+        super(shop);
     }
 
     private void initFakeDropItemPacket() {
@@ -129,9 +127,11 @@ public class VirtualDisplayItem extends DisplayItem {
 
     @Override
     public void remove() {
-        sendPacketToAll(fakeItemDestroyPacket);
-        unload();
-        isDisplay = false;
+        if (isDisplay) {
+            sendPacketToAll(fakeItemDestroyPacket);
+            unload();
+            isDisplay = false;
+        }
     }
 
     private void sendPacketToAll(@NotNull PacketContainer packet) {
@@ -180,14 +180,7 @@ public class VirtualDisplayItem extends DisplayItem {
     @Override
     public void spawn() {
         Util.ensureThread(false);
-        if (shop.isLeftShop()) {
-            return;
-        }
-        //lazy initialize
-        if (!initialized) {
-            initFakeDropItemPacket();
-        }
-        if (shop.isDeleted() || !shop.isLoaded()) {
+        if (shop.isLeftShop() || isDisplay || shop.isDeleted() || !shop.isLoaded()) {
             return;
         }
         ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.VIRTUALITEM);
@@ -196,6 +189,15 @@ public class VirtualDisplayItem extends DisplayItem {
             Util.debugLog(
                     "Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
             return;
+        }
+
+        //lazy initialize
+        if (!initialized) {
+            initFakeDropItemPacket();
+        }
+        if (chunkLocation == null) {
+            Chunk chunk = shop.getLocation().getChunk();
+            chunkLocation = new ShopChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
         }
         load();
 
@@ -249,9 +251,6 @@ public class VirtualDisplayItem extends DisplayItem {
                     int x = integerStructureModifier.read(0);
                     //chunk z
                     int z = integerStructureModifier.read(1);
-                    if (chunkLocation == null) {
-                        chunkLocation = new ShopChunk(worldName, chunkX, chunkZ);
-                    }
                     if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
                         packetSenders.add(player.getUniqueId());
                         sendFakeItem(player);
@@ -267,7 +266,7 @@ public class VirtualDisplayItem extends DisplayItem {
         packetSenders.clear();
         if (packetAdapter != null) {
             asyncListenerHandler.stop();
-            protocolManager.getAsynchronousManager().unregisterAsyncHandler(packetAdapter);
+            protocolManager.getAsynchronousManager().unregisterAsyncHandler(asyncListenerHandler);
             //protocolManager.removePacketListener(packetAdapter);
             //Prevent memory leak
             asyncListenerHandler = null;

@@ -52,15 +52,9 @@ public abstract class DisplayItem {
     @Nullable
     protected ItemStack guardedIstack;
     private boolean pendingRemoval;
-    protected int chunkX;
-    protected int chunkZ;
-    protected String worldName;
 
-    protected DisplayItem(Shop shop, String worldName, int chunkX, int chunkZ) {
+    protected DisplayItem(Shop shop) {
         this.shop = shop;
-        this.worldName = worldName;
-        this.chunkX = chunkX;
-        this.chunkZ = chunkZ;
         this.originalItemStack = shop.getItem().clone();
         if (displayAllowStacks) {
             //Prevent stack over the normal size
