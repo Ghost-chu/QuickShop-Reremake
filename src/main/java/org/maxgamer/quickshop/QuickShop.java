@@ -1884,7 +1884,24 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.use-global-virtual-item-queue", null);
             getConfig().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 137) {
+            getConfig().set("integration.griefprevention.create", null);
+            getConfig().set("integration.griefprevention.create", "INVENTORY");
 
+            getConfig().set("integration.griefprevention.trade", null);
+            getConfig().set("integration.griefprevention.trade", Collections.emptyList());
+
+            boolean oldValueUntrusted  = getConfig().getBoolean("integration.griefprevention.delete-on-untrusted", false);
+            getConfig().set("integration.griefprevention.delete-on-untrusted", null);
+            getConfig().set("integration.griefprevention.delete-on-claim-trust-changed", oldValueUntrusted);
+
+            boolean oldValueUnclaim  = getConfig().getBoolean("integration.griefprevention.delete-on-unclaim", false);
+            getConfig().set("integration.griefprevention.delete-on-unclaim", null);
+            getConfig().set("integration.griefprevention.delete-on-claim-unclaimed", oldValueUnclaim);
+
+            getConfig().set("integration.griefprevention.delete-on-subclaim-created", false);
+            getConfig().set("config-version", ++selectedVersion);
+        }
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
