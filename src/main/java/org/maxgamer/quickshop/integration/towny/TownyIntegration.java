@@ -58,6 +58,7 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
     private final boolean deleteShopOnLeave;
     private final boolean deleteShopOnPlotClear;
     private boolean isNewVersion;
+    private boolean whiteList;
 
 
     public TownyIntegration(QuickShop plugin) {
@@ -67,6 +68,7 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
         ignoreDisabledWorlds = plugin.getConfig().getBoolean("integration.towny.ignore-disabled-worlds");
         deleteShopOnLeave = plugin.getConfig().getBoolean("integration.towny.delete-shop-on-resident-leave");
         deleteShopOnPlotClear = plugin.getConfig().getBoolean("integration.towny.delete-shop-on-plot-clear");
+        whiteList = plugin.getConfig().getBoolean("integration.towny.whitelist-mode");
         //Testing if there have new method
         try {
             Town.class.getDeclaredMethod("getHomeblockWorld");
@@ -183,6 +185,9 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
     private boolean checkFlags(@NotNull Player player, @NotNull Location location, List<TownyFlags> flags) {
         if (ignoreDisabledWorlds && !TownyAPI.getInstance().isTownyWorld(location.getWorld())) {
             Util.debugLog("This world disabled Towny.");
+            return true;
+        }
+        if (!whiteList && !ShopPlotUtil.isShopPlot(location)) {
             return true;
         }
         for (TownyFlags flag : flags) {
