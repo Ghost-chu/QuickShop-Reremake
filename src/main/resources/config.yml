@@ -22,7 +22,7 @@
 #                        TO EDIT QUICKSHOP'S CONFIGURATION, USE THE "config.yml" FILE!
 
 #Do not touch this if you don't know what you're doing!
-config-version: 138
+config-version: 139
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not existant/not supported language, then QuickShop will use en_US.
@@ -600,6 +600,8 @@ integration:
     trade: []
     delete-shop-on-resident-leave: false
     delete-shop-on-plot-clear: true
+    #Should we prevent the creation of a shop or trade with a shop outside Towny's area
+    whitelist-mode: true
   #WorldGuard Integration
   #CHANGES REQUIRE A SERVER RESTART!
   #CHANGES REQUIRE A SERVER RESTART!

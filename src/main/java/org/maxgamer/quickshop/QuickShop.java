@@ -1902,6 +1902,10 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.griefprevention.delete-on-subclaim-created", false);
             getConfig().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 138) {
+            getConfig().set("integration.towny.whitelist-mode", true);
+            getConfig().set("config-version", ++selectedVersion);
+        }
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
