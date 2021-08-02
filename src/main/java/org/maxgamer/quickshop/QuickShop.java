@@ -1885,11 +1885,17 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 137) {
-            boolean oldValueUntrusted = getConfig().getBoolean("integration.griefprevention.delete-on-untrusted", false);
+            getConfig().set("integration.griefprevention.create", null);
+            getConfig().set("integration.griefprevention.create", "INVENTORY");
+
+            getConfig().set("integration.griefprevention.trade", null);
+            getConfig().set("integration.griefprevention.trade", Collections.emptyList());
+
+            boolean oldValueUntrusted  = getConfig().getBoolean("integration.griefprevention.delete-on-untrusted", false);
             getConfig().set("integration.griefprevention.delete-on-untrusted", null);
             getConfig().set("integration.griefprevention.delete-on-claim-trust-changed", oldValueUntrusted);
 
-            boolean oldValueUnclaim = getConfig().getBoolean("integration.griefprevention.delete-on-unclaim", false);
+            boolean oldValueUnclaim  = getConfig().getBoolean("integration.griefprevention.delete-on-unclaim", false);
             getConfig().set("integration.griefprevention.delete-on-unclaim", null);
             getConfig().set("integration.griefprevention.delete-on-claim-unclaimed", oldValueUnclaim);
 
