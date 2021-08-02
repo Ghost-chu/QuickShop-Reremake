@@ -1446,6 +1446,7 @@ public class ContainerShop implements Shop {
         setExtra(plugin, section);
         setDirty();
         this.update();
+
     }
 
     @Override

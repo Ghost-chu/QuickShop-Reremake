@@ -21,7 +21,6 @@ package org.maxgamer.quickshop.shop;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.async.AsyncListenerHandler;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
@@ -85,7 +84,6 @@ public class VirtualDisplayItem extends DisplayItem {
     //cache chunk x and z
     private volatile ShopChunk chunkLocation;
 
-    private AsyncListenerHandler asyncListenerHandler;
 
 
     public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
@@ -258,18 +256,13 @@ public class VirtualDisplayItem extends DisplayItem {
                 }
             };
         }
-        asyncListenerHandler = protocolManager.getAsynchronousManager().registerAsyncHandler(packetAdapter);
-        asyncListenerHandler.start();
+        protocolManager.addPacketListener(packetAdapter);
     }
 
     private void unload() {
         packetSenders.clear();
         if (packetAdapter != null) {
-            asyncListenerHandler.stop();
-            protocolManager.getAsynchronousManager().unregisterAsyncHandler(asyncListenerHandler);
-            //protocolManager.removePacketListener(packetAdapter);
-            //Prevent memory leak
-            asyncListenerHandler = null;
+            protocolManager.removePacketListener(packetAdapter);
             packetAdapter = null;
         }
     }
