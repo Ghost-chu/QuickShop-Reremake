@@ -672,8 +672,7 @@ integration:
     #BUILD = The player must have the ability to build in the target claim.
     #INVENTORY = The player must be able to access containers.
     #ACCESS = The Player must have the ability to access the target claim.
-    create:
-      - INVENTORY
+    create: INVENTORY
     #Which checks does a player need to pass to trade with a shop?
     #You can use multiple checks at the same time.
     #Priority: UP > DOWN
