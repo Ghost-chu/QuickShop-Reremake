@@ -278,12 +278,14 @@ public class VirtualDisplayItem extends DisplayItem {
                         int z = integerStructureModifier.read(1);
 
                         List<VirtualDisplayItem> targetList = chunksMapping.get(new ShopChunk(player.getWorld().getName(), x, z));
-                        for (VirtualDisplayItem target : targetList) {
-                            if (!target.shop.isLoaded() || !target.isDisplay || target.shop.isLeftShop()) {
-                                return;
+                        if (targetList != null) {
+                            for (VirtualDisplayItem target : targetList) {
+                                if (!target.shop.isLoaded() || !target.isDisplay || target.shop.isLeftShop()) {
+                                    return;
+                                }
+                                target.packetSenders.add(player.getUniqueId());
+                                target.sendFakeItem(player);
                             }
-                            target.packetSenders.add(player.getUniqueId());
-                            target.sendFakeItem(player);
                         }
                     }
                 };
