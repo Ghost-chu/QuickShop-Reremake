@@ -99,6 +99,9 @@ public class VirtualDisplayItem extends DisplayItem {
                     //In 1.17, this value was removed, so read safely
                     Boolean boxedIsFull = event.getPacket().getBooleans().readSafely(0);
                     boolean isFull = boxedIsFull == null || boxedIsFull;
+                    if (!isFull) {
+                        return;
+                    }
                     Player player = event.getPlayer();
                     if (player instanceof TemporaryPlayer) {
                         return;
@@ -114,7 +117,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
                     VirtualDisplayItem target = chunksMapping.get(new ShopChunk(player.getWorld().getName(), x, z));
                     if (target != null) {
-                        if (!target.shop.isLoaded() || !target.isDisplay || !isFull || target.shop.isLeftShop()) {
+                        if (!target.shop.isLoaded() || !target.isDisplay || target.shop.isLeftShop()) {
                             return;
                         }
                         target.packetSenders.add(player.getUniqueId());
