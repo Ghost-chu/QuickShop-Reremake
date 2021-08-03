@@ -202,10 +202,6 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
                 if (shop.getOwner().equals(claim.getOwnerID())) {
                     continue;
                 }
-                Claim shopClaim = griefPrevention.dataStore.getClaimAt(shop.getLocation(), false, false, null);
-                if (shopClaim == null || !shopClaim.getID().equals(claim.getID())) {
-                    continue;
-                }
                 if (event.getIdentifier().equals(shop.getOwner().toString())) {
                     plugin.log("[SHOP DELETE] GP Integration: Single delete (Claim/Subclaim Trust Changed) #" + shop.ownerName());
                     shop.delete();
