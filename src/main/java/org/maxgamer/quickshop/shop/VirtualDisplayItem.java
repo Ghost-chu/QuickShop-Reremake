@@ -59,12 +59,11 @@ public class VirtualDisplayItem extends DisplayItem {
     private static final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
     private static PacketAdapter packetAdapter = null;
     //cache chunk x and z
-    private final ShopChunk chunkLocation;
+    private ShopChunk chunkLocation;
 
     public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
         super(shop);
-        Chunk chunk = shop.getLocation().getChunk();
-        chunkLocation = new ShopChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
+
         if (!managerLoaded.get()) {
             loadManager();
         }
@@ -260,6 +259,8 @@ public class VirtualDisplayItem extends DisplayItem {
     private void load() {
         Util.ensureThread(false);
         //some time shop can be loaded when world isn't loaded
+        Chunk chunk = shop.getLocation().getChunk();
+        chunkLocation = new ShopChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
         chunksMapping.put(chunkLocation, this);
         if (Util.isLoaded(shop.getLocation())) {
             //Let nearby player can saw fake item
