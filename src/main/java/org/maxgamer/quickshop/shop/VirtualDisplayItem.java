@@ -46,17 +46,29 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualDisplayItem extends DisplayItem {
-
-    private static final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
-
-    //counter for ensuring ID is unique
     private static final AtomicInteger counter = new AtomicInteger(0);
+    private static final GameVersion version = QuickShop.getInstance().getGameVersion();
+    private static final AtomicBoolean managerLoaded = new AtomicBoolean(false);
+    private static final Map<ShopChunk, VirtualDisplayItem> chunksMapping = new ConcurrentHashMap<>();
+    private static final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
+    private static PacketAdapter packetAdapter = null;
+    //cache chunk x and z
+    private final ShopChunk chunkLocation;
 
-    private static final GameVersion version = plugin.getGameVersion();
+    public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
+        super(shop);
+        Chunk chunk = shop.getLocation().getChunk();
+        chunkLocation = new ShopChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
+        if (!managerLoaded.get()) {
+            loadManager();
+        }
+    }
 
     //unique EntityID
     private final int entityID = counter.decrementAndGet();
@@ -78,16 +90,52 @@ public class VirtualDisplayItem extends DisplayItem {
 
     private PacketContainer fakeItemDestroyPacket;
 
-    //packetListener
-    private PacketAdapter packetAdapter;
+    public static void loadManager() {
+        Util.debugLog("Loading VirtualDisplayItem chunks mapping manager...");
+        if (packetAdapter == null) {
+            packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
+                @Override
+                public void onPacketSending(@NotNull PacketEvent event) {
+                    //is really full chunk data
+                    //In 1.17, this value was removed, so read safely
+                    Boolean boxedIsFull = event.getPacket().getBooleans().readSafely(0);
+                    boolean isFull = boxedIsFull == null || boxedIsFull;
+                    Player player = event.getPlayer();
+                    if (player instanceof TemporaryPlayer) {
+                        return;
+                    }
+                    if (player == null || !player.isOnline()) {
+                        return;
+                    }
+                    StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
+                    //chunk x
+                    int x = integerStructureModifier.read(0);
+                    //chunk z
+                    int z = integerStructureModifier.read(1);
 
-    //cache chunk x and z
-    private volatile ShopChunk chunkLocation;
+                    VirtualDisplayItem target = chunksMapping.get(new ShopChunk(player.getWorld().getName(), x, z));
+                    if (target != null) {
+                        if (!target.shop.isLoaded() || !target.isDisplay || !isFull || target.shop.isLeftShop()) {
+                            return;
+                        }
+                        target.packetSenders.add(player.getUniqueId());
+                        target.sendFakeItem(player);
+                    }
+                }
+            };
+        }
+        Util.debugLog("Registering the packet listener...");
+        protocolManager.addPacketListener(packetAdapter);
+        managerLoaded.set(true);
+    }
 
-
-
-    public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
-        super(shop);
+    public static void unloadManager() {
+        Util.debugLog("Unloading VirtualDisplayItem chunks mapping manager...");
+        if (!managerLoaded.get()) {
+            Util.debugLog("Unregistering the packet listener...");
+            protocolManager.removePacketListener(packetAdapter);
+            managerLoaded.set(false);
+        }
     }
 
     private void initFakeDropItemPacket() {
@@ -193,10 +241,7 @@ public class VirtualDisplayItem extends DisplayItem {
         if (!initialized) {
             initFakeDropItemPacket();
         }
-        if (chunkLocation == null) {
-            Chunk chunk = shop.getLocation().getChunk();
-            chunkLocation = new ShopChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
-        }
+
         load();
 
         // Can't rely on the attachedShop cache to be accurate
@@ -215,6 +260,7 @@ public class VirtualDisplayItem extends DisplayItem {
     private void load() {
         Util.ensureThread(false);
         //some time shop can be loaded when world isn't loaded
+        chunksMapping.put(chunkLocation, this);
         if (Util.isLoaded(shop.getLocation())) {
             //Let nearby player can saw fake item
             Collection<Entity> entityCollection = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), plugin.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), plugin.getServer().getViewDistance() * 16);
@@ -224,47 +270,11 @@ public class VirtualDisplayItem extends DisplayItem {
                 }
             }
         }
-
-        if (packetAdapter == null) {
-            packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
-                @Override
-                public void onPacketSending(@NotNull PacketEvent event) {
-                    //is really full chunk data
-                    //In 1.17, this value was removed, so read safely
-                    Boolean boxedIsFull = event.getPacket().getBooleans().readSafely(0);
-                    boolean isFull = boxedIsFull == null || boxedIsFull;
-                    if (!shop.isLoaded() || !isDisplay || !isFull || shop.isLeftShop()) {
-                        return;
-                    }
-                    Player player = event.getPlayer();
-                    if (player instanceof TemporaryPlayer) {
-                        return;
-                    }
-                    if (player == null || !player.isOnline()) {
-                        return;
-                    }
-
-                    StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
-                    //chunk x
-                    int x = integerStructureModifier.read(0);
-                    //chunk z
-                    int z = integerStructureModifier.read(1);
-                    if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
-                        packetSenders.add(player.getUniqueId());
-                        sendFakeItem(player);
-                    }
-                }
-            };
-        }
-        protocolManager.addPacketListener(packetAdapter);
     }
 
     private void unload() {
         packetSenders.clear();
-        if (packetAdapter != null) {
-            protocolManager.removePacketListener(packetAdapter);
-            packetAdapter = null;
-        }
+        chunksMapping.remove(chunkLocation);
     }
 
     public void sendFakeItem(@NotNull Player player) {
