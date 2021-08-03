@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.chat.platform.minedown;
 
-import de.themoep.minedown.MineDown;
 import net.md_5.bungee.api.chat.*;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -53,7 +52,7 @@ public class BungeeQuickChat implements QuickChat {
         if (StringUtils.isEmpty(message)) {
             return;
         }
-        receiver.spigot().sendMessage(MineDown.parse(message));
+        receiver.spigot().sendMessage(TextComponent.fromLegacyText(message));
     }
 
     @Override
@@ -75,29 +74,29 @@ public class BungeeQuickChat implements QuickChat {
 
     @Override
     public void sendItemHologramChat(@NotNull Player player, @NotNull String text, @NotNull ItemStack itemStack) {
-        BaseComponent[] errorComponents = MineDown.parse((MsgUtil.getMessage("menu.item-holochat-error", player)));
+        TextComponent errorComponent = new TextComponent(MsgUtil.getMessage("menu.item-holochat-error", player));
         try {
             String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
-            TextComponent centerItem = new TextComponent(MineDown.parse(text));
+            TextComponent centerItem = new TextComponent(text);
             ComponentBuilder cBuilder = new ComponentBuilder(json);
             centerItem.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
             player.spigot().sendMessage(centerItem);
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException | InstantiationException e) {
             plugin.getLogger().log(Level.WARNING, "Failed to process chat component", e);
-            player.spigot().sendMessage(errorComponents);
+            player.spigot().sendMessage(errorComponent);
         }
     }
 
     @Override
     public @NotNull QuickComponent getItemHologramChat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String message) {
-        TextComponent errorComponent = new TextComponent(MineDown.parse(MsgUtil.getMessage("menu.item-holochat-error", player)));
+        TextComponent errorComponent = new TextComponent(MsgUtil.getMessage("menu.item-holochat-error", player));
         try {
 
             String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
             if (json == null) {
                 return new QuickComponentImpl(errorComponent);
             }
-            TextComponent normalmessage = new TextComponent(MineDown.parse(message + " " + MsgUtil.getMessage("menu.preview", player)));
+            TextComponent normalmessage = new TextComponent(message + " " + MsgUtil.getMessage("menu.preview", player));
             ComponentBuilder cBuilder = new ComponentBuilder(json);
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
                 normalmessage.setClickEvent(new ClickEvent(
@@ -116,7 +115,7 @@ public class BungeeQuickChat implements QuickChat {
 
     @Override
     public @NotNull QuickComponent getItemTextComponent(@NotNull Player player, @NotNull ItemStack itemStack, @NotNull String normalText) {
-        TextComponent errorComponent = new TextComponent(MineDown.parse(MsgUtil.getMessage("menu.item-holochat-error", player)));
+        TextComponent errorComponent = new TextComponent(MsgUtil.getMessage("menu.item-holochat-error", player));
 
         String json;
         try {
@@ -129,7 +128,7 @@ public class BungeeQuickChat implements QuickChat {
             return new QuickComponentImpl(errorComponent);
         }
 
-        TextComponent component = new TextComponent(MineDown.parse(normalText + " " + MsgUtil.getMessage("menu.preview", player)));
+        TextComponent component = new TextComponent(normalText + " " + MsgUtil.getMessage("menu.preview", player));
         ComponentBuilder cBuilder = new ComponentBuilder(json);
         component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create()));
         return new QuickComponentImpl(component);
@@ -139,7 +138,7 @@ public class BungeeQuickChat implements QuickChat {
     @Override
     public void sendExecutableChat(@NotNull CommandSender receiver, @NotNull String message, @NotNull String hoverText, @NotNull String command) {
         TextComponent component =
-                new TextComponent(MineDown.parse(ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin", receiver) + message));
+                new TextComponent(ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin", receiver) + message);
         component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
         component.setHoverEvent(
                 new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create())); //FIXME: Update this when drop 1.15 supports
@@ -149,7 +148,7 @@ public class BungeeQuickChat implements QuickChat {
     @Override
     public void sendSuggestedChat(@NotNull CommandSender receiver, @NotNull String message, @NotNull String hoverText, @NotNull String command) {
         TextComponent component =
-                new TextComponent(MineDown.parse(ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin", receiver) + message));
+                new TextComponent(ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin", receiver) + message);
         component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command));
         component.setHoverEvent(
                 new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create())); //FIXME: Update this when drop 1.15 supports

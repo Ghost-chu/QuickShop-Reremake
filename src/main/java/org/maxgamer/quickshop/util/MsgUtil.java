@@ -331,8 +331,8 @@ public class MsgUtil {
 
         updateMessages(messagei18n.getInt("language-version"));
 
-        //Color will be handled by minedown
-        messagei18n.loadFromString(messagei18n.saveToString());
+        //Update colors
+        messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
         /* Print to console this language file's author, contributors, and region*/
         if (!inited) {
             plugin.getLogger().info(getMessage("translation-author", null));

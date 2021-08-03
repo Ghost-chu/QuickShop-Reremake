@@ -19,10 +19,12 @@
 
 package org.maxgamer.quickshop.util;
 
+import de.themoep.minedown.MineDown;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -1085,7 +1087,7 @@ public class Util {
         if (StringUtils.isEmpty(text)) {
             return "";
         }
-        text = ChatColor.translateAlternateColorCodes('&', text);
+        text = TextComponent.toLegacyText(MineDown.parse(text));
         return text;
     }
 
