@@ -332,7 +332,7 @@ public class MsgUtil {
         updateMessages(messagei18n.getInt("language-version"));
 
         //Update colors
-        messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
+        Util.parseColours(messagei18n);
         /* Print to console this language file's author, contributors, and region*/
         if (!inited) {
             plugin.getLogger().info(getMessage("translation-author", null));
