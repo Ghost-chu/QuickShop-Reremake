@@ -26,7 +26,6 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
-import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopChunk;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -61,15 +60,8 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
                     } else if (shop.isSelling()) {
                         selling++;
                     }
-
-                    if (shop instanceof ContainerShop && ((ContainerShop) shop).isDoubleShop()) {
-                        doubles++;
-                    } else if (shop.isSelling() && shop.getRemainingStock() == 0) {
+                    if (shop.isSelling() && shop.getRemainingStock() == 0) {
                         nostock++;
-                    }
-
-                    if (shop instanceof ContainerShop && ((ContainerShop) shop).isDoubleChestShop()) {
-                        doubleschests++;
                     }
                 }
             }
