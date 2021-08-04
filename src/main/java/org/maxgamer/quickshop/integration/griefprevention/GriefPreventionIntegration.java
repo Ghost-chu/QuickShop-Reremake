@@ -119,30 +119,10 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
             return;
         }
         for (Claim claim : event.getClaims()) {
-            for (Chunk chunk : claim.getChunks()) {
-                Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
-                if (shops == null) {
-                    continue;
-                }
-                for (Shop shop : shops.values()) {
-                    if (shop.getOwner().equals(claim.getOwnerID())) {
-                        continue;
-                    }
-                    Claim shopClaim = griefPrevention.dataStore.getClaimAt(shop.getLocation(), false, false, null);
-                    if (shopClaim == null || !shopClaim.getID().equals(claim.getID())) {
-                        continue;
-                    }
-                    if (event.getIdentifier().equals(shop.getOwner().toString())) {
-                        plugin.log("[SHOP DELETE] GP Integration: Single delete (Claim/Subclaim Trust Changed) #" + shop.ownerName());
-                        shop.delete();
-                    } else if (event.getIdentifier().contains(shop.getOwner().toString())) {
-                        plugin.log("[SHOP DELETE] GP Integration: Group delete (Claim/Subclaim Trust Changed)#" + shop.ownerName());
-                        shop.delete();
-                    } else if ("all".equals(event.getIdentifier()) || "public".equals(event.getIdentifier())) {
-                        plugin.log("[SHOP DELETE] GP Integration: All/Public delete (Claim/Subclaim Trust Changed) #" + shop.ownerName());
-                        shop.delete();
-                    }
-                }
+            if (claim.parent != null) {
+                handleClaimTrustChanged(claim.parent, event);
+            } else {
+                handleClaimTrustChanged(claim, event);
             }
         }
     }
@@ -209,6 +189,32 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
                 }
             }
         }
+    }
+
+    // Helper to the Claim Trust Changed Event Handler (to avoid duplicate code above)
+    private void handleClaimTrustChanged(Claim claim, TrustChangedEvent event) {
+        for (Chunk chunk : claim.getChunks()) {
+            Map<Location, Shop> shops = plugin.getShopManager().getShops(chunk);
+            if (shops == null) {
+                continue;
+            }
+            for (Shop shop : shops.values()) {
+                if (shop.getOwner().equals(claim.getOwnerID())) {
+                    continue;
+                }
+                if (event.getIdentifier().equals(shop.getOwner().toString())) {
+                    plugin.log("[SHOP DELETE] GP Integration: Single delete (Claim/Subclaim Trust Changed) #" + shop.ownerName());
+                    shop.delete();
+                } else if (event.getIdentifier().contains(shop.getOwner().toString())) {
+                    plugin.log("[SHOP DELETE] GP Integration: Group delete (Claim/Subclaim Trust Changed)#" + shop.ownerName());
+                    shop.delete();
+                } else if ("all".equals(event.getIdentifier()) || "public".equals(event.getIdentifier())) {
+                    plugin.log("[SHOP DELETE] GP Integration: All/Public delete (Claim/Subclaim Trust Changed) #" + shop.ownerName());
+                    shop.delete();
+                }
+            }
+        }
+
     }
 
     // If it is the main claim, then we will delete all the shops that were inside of it.
