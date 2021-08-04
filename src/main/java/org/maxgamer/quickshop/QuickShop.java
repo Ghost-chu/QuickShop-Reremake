@@ -624,7 +624,7 @@ public class QuickShop extends JavaPlugin {
             shopManager.clear();
         }
         if (DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
-            VirtualDisplayItem.unloadManager();
+            VirtualDisplayItem.VirtualDisplayItemManager.unload();
         }
 
         Util.debugLog("Cleaning up database queues...");
