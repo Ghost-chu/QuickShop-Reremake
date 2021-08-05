@@ -41,6 +41,38 @@ commands:
     aliases: [ qsshop,qshop,quickshop ]
 
 permissions:
+  quickshop.player:
+    description: The permission that provide all player need have permissions
+    default: op
+    children:
+      quickshop.use: true
+      quickshop.create.sell: true
+      quickshop.create.buy: true
+      quickshop.create.stacks: true
+      quickshop.create.changeitem: true
+      quickshop.create.changeamount: true
+      quickshop.create.changeprice: true
+      quickshop.create.double: true
+      quickshop.create.cmd: true
+      quickshop.transfer: true
+      quickshop.find: true
+      quickshop.fetchmessage: true
+      quickshop.staff: true
+      quickshop.preview: true
+      quickshop.currency: true
+  quickshop.moderator:
+    description: The permission that provide all moderator need have permissions
+    default: op
+    children:
+      quickshop.other.destroy: true
+      quickshop.other.open: true
+      quickshop.other.price: true
+      quickshop.bypass.*: true
+      quickshop.alerts: true
+      quickshop.create.admin: true
+      quickshop.other.changeitem: true
+      quickshop.other.changeamount: true
+
   quickshop.create.sell:
     description: Allows a player to sell from a shop.
     default: op
