@@ -60,7 +60,7 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
                     } else if (shop.isSelling()) {
                         selling++;
                     }
-                    if (shop.isSelling() && shop.getRemainingStock() == 0) {
+                    if (shop.isSelling() && shop.isLoaded() && shop.getRemainingStock() == 0) {
                         nostock++;
                     }
                 }
@@ -89,7 +89,7 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
                 ChatColor.GREEN
                         + ""
                         + nostock
-                        + " out-of-stock shops (excluding doubles) which will be removed by /qs clean.");
+                        + " out-of-stock loaded shops (excluding doubles) which will be removed by /qs clean.");
         MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "QuickShop " + QuickShop.getVersion());
     }
 
