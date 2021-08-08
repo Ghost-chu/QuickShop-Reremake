@@ -175,7 +175,7 @@
       "currency": "&eAnge eller ta bort valutainställningarna i butiken",
       "ban": "&eBannlyser en spelare från butiken",
       "unban": "&eUnbannar en spelare från butiken",
-      "freeze": "&eDisable or Enable shop trading",
+      "freeze": "&eInaktivera eller aktivera butikshandel",
       "lock": "&eVäxla butikens låsstatus"
     },
     "disabled": "&cDetta kommando är inaktiverat: &e{0}",
@@ -193,8 +193,8 @@
     "unlimited": "Obegränsad",
     "status-available": "&a",
     "status-unavailable": "&c",
-    "out-of-stock": "Out of Stock",
-    "out-of-space": "Out of Space",
+    "out-of-stock": "Slut i Lager",
+    "out-of-space": "Slut på utrymme",
     "freeze": "Handel inaktiverad"
   },
   "controlpanel": {
@@ -221,9 +221,9 @@
     "item-hover": "&eKlicka för att ändra butiksprodukten",
     "currency": "&aValuta: &b{0} &e[&d&lÄndra&e]",
     "currency-hover": "&eKlicka för att ändra eller ta bort den valuta som denna butik använder",
-    "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
+    "lock": "&eButikslås: &b{0} &e[&d&lVäxla&e]",
     "lock-hover": "&eAktivera/Inaktivera butikens låsskydd.",
-    "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
+    "freeze": "&eFryst läge: &b{0} &e[&d&lVäxla&e]",
     "freeze-hover": "&eVäxla butikens frysningsstatus."
   },
   "tableformat": {
@@ -325,5 +325,5 @@
   "command-type-mismatch": "&cDetta kommando kan endast exekveras av &b{0}.",
   "unlimited-shop-owner-changed": "&eDenna obegränsade butikens ägare har ändrats till {0}.",
   "unlimited-shop-owner-keeped": "&eObservera: Butiksägaren är fortfarande ägare av obegränsad butik, du behöver själv byta ny butiksägare igen.",
-  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
+  "server-crash-warning": "&cServer kan krascha efter körning av /qs reload om du ersätter/tar bort QuickShop plugin Jar-fil medan servern körs."
 }
