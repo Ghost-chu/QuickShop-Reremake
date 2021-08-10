@@ -636,12 +636,14 @@ public class QuickShop extends JavaPlugin {
         if (logWatcher != null) {
             logWatcher.close();
         }
-        for (BukkitTask bukkitTask : timerTaskList) {
-            if (!bukkitTask.isCancelled()) {
-                bukkitTask.cancel();
+        Iterator<BukkitTask> taskIterator = timerTaskList.iterator();
+        while (taskIterator.hasNext()) {
+            BukkitTask task = taskIterator.next();
+            if (!task.isCancelled()) {
+                task.cancel();
             }
+            taskIterator.remove();
         }
-        timerTaskList.clear();
         if (calendarWatcher != null) {
             calendarWatcher.stop();
         }
