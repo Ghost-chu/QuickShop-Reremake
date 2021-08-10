@@ -116,7 +116,6 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private final Map<String, Integer> limits = new HashMap<>(15);
     private final ConfigProvider configProvider = new ConfigProvider(this);
-    @Getter
     private final List<BukkitTask> timerTaskList = new ArrayList<>(3);
     @Getter
     private final GameVersion gameVersion = GameVersion.get(Util.getNMSVersion());
