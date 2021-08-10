@@ -676,22 +676,6 @@ public class QuickShop extends JavaPlugin {
                     throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Plugin was updated)");
                 }
             }
-            // Maybe name changed, try search globally
-            if (!file.exists()) {
-                File pluginFolder = new File("plugins");
-                if (pluginFolder.isDirectory()) {
-                    //noinspection ConstantConditions
-                    for (File listFile : pluginFolder.listFiles()) {
-                        if (listFile.getName().endsWith(".jar")) {
-                            if (getPluginLoader().loadPlugin(listFile).getName().equals(getDescription().getName())) {
-                                file = listFile;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
             if (!file.exists()) {
                 throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Failed to find plugin jar)");
             }
