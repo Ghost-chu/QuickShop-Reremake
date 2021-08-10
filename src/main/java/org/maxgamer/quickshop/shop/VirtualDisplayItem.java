@@ -297,7 +297,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
         public static void unload() {
             Util.debugLog("Unloading VirtualDisplayItem chunks mapping manager...");
-            if (!loaded.get()) {
+            if (loaded.get()) {
                 Util.debugLog("Unregistering the packet listener...");
                 protocolManager.removePacketListener(packetAdapter);
                 loaded.set(false);
