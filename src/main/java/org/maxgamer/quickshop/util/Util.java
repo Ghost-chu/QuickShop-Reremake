@@ -1059,7 +1059,7 @@ public class Util {
         return list2.containsAll(list1);
     }
 
-    private static final MineDown mineDown = new MineDown("");
+    private static final ThreadLocal<MineDown> mineDown = ThreadLocal.withInitial(() -> new MineDown(""));
 
     /**
      * Parse colors for the YamlConfiguration.
@@ -1092,7 +1092,7 @@ public class Util {
         if (StringUtils.isEmpty(text)) {
             return "";
         }
-        MineDownParser parser = mineDown.parser();
+        MineDownParser parser = mineDown.get().parser();
         parser.reset();
         StringBuilder builder = new StringBuilder();
         BaseComponent[] components = parser.enable(MineDownParser.Option.LEGACY_COLORS).parse(text).create();
