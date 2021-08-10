@@ -154,9 +154,10 @@ public class AdvancedShopRegionMarketIntegration extends QSIntegratedPlugin impl
                 shopMap.putAll(shopsInChunk);
             }
         }
-        for (Location shopLocation : shopMap.keySet()) {
+        for (Map.Entry<Location, Shop> shopEntry : shopMap.entrySet()) {
+            Location shopLocation = shopEntry.getKey();
             if (region.getRegion().contains(shopLocation.getBlockX(), shopLocation.getBlockY(), shopLocation.getBlockZ())) {
-                Shop shop = shopMap.get(shopLocation);
+                Shop shop = shopEntry.getValue();
                 if (shop != null) {
                     shop.onUnload();
                     shop.delete(false);
