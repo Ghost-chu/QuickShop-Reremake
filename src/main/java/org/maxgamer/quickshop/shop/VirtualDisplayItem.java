@@ -231,21 +231,19 @@ public class VirtualDisplayItem extends DisplayItem {
         private static final Map<ShopChunk, List<VirtualDisplayItem>> chunksMapping = new ConcurrentHashMap<>();
 
         public static void put(@NotNull ShopChunk key, @NotNull VirtualDisplayItem value) {
-            List<VirtualDisplayItem> lists = chunksMapping.get(key);
-            if (lists == null) {
-                List<VirtualDisplayItem> virtualDisplayItems = Collections.synchronizedList(new LinkedList<>());
-                virtualDisplayItems.add(value);
-                chunksMapping.put(key, virtualDisplayItems);
-            } else {
-                lists.add(value);
-            }
+            List<VirtualDisplayItem> virtualDisplayItems = Collections.synchronizedList(new ArrayList<>());
+            virtualDisplayItems.add(value);
+            chunksMapping.merge(key, virtualDisplayItems, (mapOldVal, mapNewVal) -> {
+                mapOldVal.addAll(mapNewVal);
+                return mapOldVal;
+            });
         }
 
         public static void remove(@NotNull ShopChunk key, @NotNull VirtualDisplayItem value) {
-            List<VirtualDisplayItem> lists = chunksMapping.get(key);
-            if (lists != null) {
-                lists.remove(value);
-            }
+            chunksMapping.computeIfPresent(key, (mapOldKey, mapOldVal) -> {
+                mapOldVal.remove(value);
+                return mapOldVal;
+            });
         }
 
         public static void load() {
