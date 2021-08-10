@@ -39,13 +39,11 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        int buying, selling, doubles, chunks, worlds, doubleschests;
+        int buying, selling, chunks, worlds;
         buying = 0;
         selling = 0;
-        doubles = 0;
         chunks = 0;
         worlds = 0;
-        doubleschests = 0;
         int nostock = 0;
 
         for (Map<ShopChunk, Map<Location, Shop>> inWorld :
@@ -78,13 +76,6 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
                         + " chunks spread over "
                         + worlds
                         + " worlds.");
-        MsgUtil.sendDirectMessage(sender,
-                ChatColor.GREEN
-                        + ""
-                        + doubles
-                        + " double shops. ("
-                        + doubleschests
-                        + " shops created on double chest.)");
         MsgUtil.sendDirectMessage(sender,
                 ChatColor.GREEN
                         + ""
