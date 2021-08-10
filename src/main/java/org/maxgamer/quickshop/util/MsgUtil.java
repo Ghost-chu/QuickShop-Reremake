@@ -68,7 +68,7 @@ public class MsgUtil {
     private static final String invaildMsg = "Invaild message";
 
     private static final Map<UUID, List<TransactionMessage>> outGoingPlayerMessages = Maps.newConcurrentMap();
-    private static final DecimalFormat decimalFormat = processFormat();
+    private static DecimalFormat decimalFormat;
     public static GameLanguage gameLanguage;
     private static QuickShop plugin = QuickShop.getInstance();
     @Getter
@@ -81,15 +81,6 @@ public class MsgUtil {
     private static YamlConfiguration potioni18n;
     private static JsonConfiguration builtInLang;
     private static JsonConfiguration builtInOriginalLang;
-
-    private static DecimalFormat processFormat() {
-        try {
-            return new DecimalFormat(Objects.requireNonNull(QuickShop.getInstance().getConfig().getString("decimal-format")));
-        } catch (Exception e) {
-            QuickShop.getInstance().getLogger().log(Level.WARNING, "Error when processing decimal format, using system default: " + e.getMessage());
-            return new DecimalFormat();
-        }
-    }
 
     /**
      * Deletes any messages that are older than a week in the database, to save on space.
@@ -770,6 +761,16 @@ public class MsgUtil {
     }
 
     public static String decimalFormat(double value) {
+        if (decimalFormat == null) {
+            //lazy initialize
+            try {
+                String format = plugin.getConfig().getString("decimal-format");
+                decimalFormat = format == null ? new DecimalFormat() : new DecimalFormat(format);
+            } catch (Exception e) {
+                QuickShop.getInstance().getLogger().log(Level.WARNING, "Error when processing decimal format, using system default: " + e.getMessage());
+                decimalFormat = new DecimalFormat();
+            }
+        }
         return decimalFormat.format(value);
     }
 
