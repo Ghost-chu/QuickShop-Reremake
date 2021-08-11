@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -44,14 +43,35 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
 
     private void sendHelp(@NotNull CommandSender s, @NotNull String commandLabel) {
         MsgUtil.sendMessage(s, "command.description.title");
-        commandCheckLoop:
+
+        commandPrintingLoop:
         for (CommandContainer container : plugin.getCommandManager().getCmds()) {
-            final List<String> requirePermissions = container.getPermissions();
-            if (!container.isHidden() && requirePermissions != null && !requirePermissions.isEmpty()) {
-                for (String requirePermission : requirePermissions) {
-                    if (requirePermission != null && !QuickShop.getPermissionManager().hasPermission(s, requirePermission)) {
-                        continue commandCheckLoop;
+            if (!container.isHidden()) {
+                boolean passed = false;
+                //selectivePermissions
+                final List<String> selectivePermissions = container.getSelectivePermissions();
+                if (selectivePermissions != null) {
+                    for (String selectivePermission : container.getSelectivePermissions()) {
+                        if (selectivePermission != null && !selectivePermission.isEmpty()) {
+                            if (QuickShop.getPermissionManager().hasPermission(s, selectivePermission)) {
+                                passed = true;
+                                break;
+                            }
+                        }
                     }
+                }
+                //requirePermissions
+                final List<String> requirePermissions = container.getPermissions();
+                if (requirePermissions != null) {
+                    for (String requirePermission : requirePermissions) {
+                        if (requirePermission != null && !requirePermission.isEmpty() && !QuickShop.getPermissionManager().hasPermission(s, requirePermission)) {
+                            continue commandPrintingLoop;
+                        }
+                    }
+                    passed = true;
+                }
+                if (!passed) {
+                    continue;
                 }
                 String commandDesc = MsgUtil.getMessage("command.description." + container.getPrefix(), s);
                 if (container.getDescription() != null) {
@@ -60,27 +80,12 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
                         commandDesc = "Error: Subcommand " + container.getPrefix() + " # " + container.getClass().getCanonicalName() + " doesn't register the correct help description.";
                     }
                 }
-                if (!container.isDisabled()) {
-                    MsgUtil.sendDirectMessage(s,
-                            ChatColor.GREEN
-                                    + "/"
-                                    + commandLabel
-                                    + " "
-                                    + container.getPrefix()
-                                    + ChatColor.YELLOW
-                                    + " - "
-                                    + commandDesc);
-                } else if (QuickShop.getPermissionManager().hasPermission(s, "quickshop.showdisabled")) {
-                    MsgUtil.sendDirectMessage(s,
-                            ChatColor.RED
-                                    + "/"
-                                    + commandLabel
-                                    + " "
-                                    + container.getPrefix()
-                                    + ChatColor.GRAY
-                                    + " - "
-                                    + MsgUtil.getMessage("command.disabled", s, ChatColor.GRAY + container.getDisableText(s)));
-
+                if (container.isDisabled()) {
+                    if (QuickShop.getPermissionManager().hasPermission(s, "quickshop.showdisabled")) {
+                        MsgUtil.sendDirectMessage(s, MsgUtil.getMessage("command.format", s, commandLabel, container.getPrefix(), container.getDisableText(s)));
+                    }
+                } else {
+                    MsgUtil.sendDirectMessage(s, MsgUtil.getMessage("command.format", s, commandLabel, container.getPrefix(), commandDesc));
                 }
             }
         }

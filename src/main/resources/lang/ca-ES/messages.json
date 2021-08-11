@@ -5,7 +5,7 @@
   "translation-version": "Versiò suportada: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Zona de l'idioma: Català (ca_ES)",
-  "language-version": "58",
+  "language-version": "59",
   "not-looking-at-shop": "No s'ha trobat cap QuickShop. Has de mirar a una.",
   "no-anythings-in-your-hand": "Ni hi ha res a la teva mà.",
   "no-permission": "No tens permisos per a fer això.",
@@ -115,6 +115,8 @@
   "blacklisted-item": "&cNo pots vendre aquest objecte perquè està a la llista negra.",
   "how-much-to-trade-for": "&aIntrodueix al xat per quant vols intercambiar &e{1}x {0}&a.",
   "command": {
+    "format": "&a/{0} {1} &e- {2}",
+    "format-disabled": "&c/{0} {1} &7- {2}",
     "toggle-unlimited": {
       "unlimited": "&aLa botiga ara és il·limitada.",
       "limited": "&aLa butiga ara és limitada."

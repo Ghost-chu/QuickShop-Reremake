@@ -22,7 +22,7 @@
 #                        TO EDIT QUICKSHOP'S CONFIGURATION, USE THE "config.yml" FILE!
 
 #Do not touch this if you don't know what you're doing!
-config-version: 133
+config-version: 139
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not existant/not supported language, then QuickShop will use en_US.
@@ -288,13 +288,6 @@ shop:
   #1=ArmorStand
   #2=Virtual Item (Requires ProtocolLib, fallback to type 0 if ProtocolLib is not installed)
   display-type: 2
-
-  #Should QS use global virtual item queue?
-  #Virtual item displays need to send fake packets, 
-  #which will create a task for each shop.
-  #Having too many of those tasks can impact performance.
-  #Turn this ONLY on when you think that the amount of tasks from the virtual item displays causes lag!
-  use-global-virtual-item-queue: false
 
   #Allow QuickShop to automatically despawn displays when no players are in range of the shop.
   display-auto-despawn: false
@@ -607,6 +600,8 @@ integration:
     trade: []
     delete-shop-on-resident-leave: false
     delete-shop-on-plot-clear: true
+    #Should we prevent the creation of a shop or trade with a shop outside Towny's area
+    whitelist-mode: true
   #WorldGuard Integration
   #CHANGES REQUIRE A SERVER RESTART!
   #CHANGES REQUIRE A SERVER RESTART!
@@ -670,29 +665,44 @@ integration:
   #GriefPrevention Integration
   griefprevention:
     enable: false
-    #Should we prevent the creation of a shop or trade with a shop outside GriefPrevetion's area?
-    whitelist-mode: false
-    #Which checks does a player need to pass to create a shop?
-    #You can use multiple checks at the same time.
-    #Priority: UP > DOWN
-    #
+    #Should we prevent the creation of a shop or trade with a shop outside GriefPrevention's area?
+    whitelist-mode: true
+    #Which check does a player need to pass to create a shop?
     #Available fields:
     #BUILD = The player must have the ability to build in the target claim.
-    #CONTAINER_ACCESS = The player must be able to access containers.
+    #INVENTORY = The player must be able to access containers.
     #ACCESS = The Player must have the ability to access the target claim.
-    create:
-      - CONTAINER_ACCESS
+    create: INVENTORY
     #Which checks does a player need to pass to trade with a shop?
     #You can use multiple checks at the same time.
     #Priority: UP > DOWN
-    #
     #Available fields:
     #BUILD = The player must have the ability to build in the target claim.
-    #CONTAINER_ACCESS = The player must be able to access containers.
+    #INVENTORY = The player must be able to access containers.
     #ACCESS = The Player must have the ability to access the target claim.
     trade: [ ]
-    #Should QuickShop delete shops if the shop owner has been untrusted on the claim?
-    delete-on-untrusted: true
+    #Should QuickShop delete shops if the trust permission of the shop owner has been changed on the claim/subclaim?
+    #Removes a shop if the shop owner no longer has permission to build a shop there.
+    #Never removes a shop of the claim owner.
+    delete-on-claim-trust-changed: true
+    #Should QuickShop delete shops if the claim/subclaim has been unclaimed?
+    #Removes all the shops that were inside the claim/subclaim that was unclaimed.
+    #Never removes a shop of the claim owner when unclaiming a subclaim.
+    delete-on-claim-unclaimed: true
+    #Should QuickShop delete shops if the claim has been expired?
+    #Removes all the shops that were inside the claim.
+    delete-on-claim-expired: true
+    #Should QuickShop delete shops if claim/subclaim has been resized?
+    #Removes a shop that the old claim contains but the new claim doesn't.
+    #Removes a shop if the shop was inside the subclaim but now it is outside the subclaim.
+    #Removes a shop if the shop was outside the subclaim but now it is inside the subclaim.
+    #Never removes a shop of the claim owner when resizing a subclaim.
+    delete-on-claim-resized: true
+    #Should Quickshop delete shops if a subclaim has been created?
+    #If a subclaim is created that will contain, initially, shops from others players, then we will remove them.
+    #Because they won't have, initially, permission to create a shop in that subclaim.
+    #Never removes a shop of the claim owner.
+    delete-on-subclaim-created: true
   #Residence Integration
   residence:
     enable: false
@@ -759,6 +769,9 @@ integration:
     owner-create-only: false
     #Delete shops when the shop owner got kicked/quited from the island.
     delete-shop-on-member-leave: true
+  #AdvanvedRegionMarket shop deletion Integration
+  advancedregionmarket:
+    enable: false
 #The protection that a shop should check.
 protect:
   explode: true

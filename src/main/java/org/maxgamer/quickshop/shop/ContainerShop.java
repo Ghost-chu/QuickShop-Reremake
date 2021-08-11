@@ -165,11 +165,6 @@ public class ContainerShop implements Shop {
         Util.ensureThread(false);
         if (plugin.isDisplay()) {
             switch (DisplayItem.getNowUsing()) {
-                case UNKNOWN:
-                    Util.debugLog(
-                            "Failed to create a ContainerShop displayItem, the type is unknown, fallback to RealDisplayItem");
-                    this.displayItem = new RealDisplayItem(this);
-                    break;
                 case REALITEM:
                     this.displayItem = new RealDisplayItem(this);
                     break;
@@ -307,6 +302,7 @@ public class ContainerShop implements Shop {
             return;
         }
 
+        //FIXME: This may affect the performance
         updateAttachedShop();
 
         if (isLeftShop) {
@@ -710,28 +706,24 @@ public class ContainerShop implements Shop {
         this.setSignText(getSignText());
     }
 
+    private volatile boolean updating = false;
+
     /**
-     * Upates the shop into the database.
+     * Updates the shop into the database.
      */
     @Override
-    public synchronized void update() {
-        Util.mainThreadRun(this::update0);
-    }
-
-    private void notifyDisplayItemChange() {
-        isDisplayItemChanged = true;
-        if (attachedShop != null && !attachedShop.isDisplayItemChanged) {
-            attachedShop.notifyDisplayItemChange();
-        }
-    }
-
-    private synchronized void update0() {
+    public void update() {
+        //TODO: check isDirty()
         Util.ensureThread(false);
+        if (updating) {
+            return;
+        }
         ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
         if (Util.fireCancellableEvent(shopUpdateEvent)) {
             Util.debugLog("The Shop update action was canceled by a plugin.");
             return;
         }
+        updating = true;
         int x = this.getLocation().getBlockX();
         int y = this.getLocation().getBlockY();
         int z = this.getLocation().getBlockZ();
@@ -739,14 +731,23 @@ public class ContainerShop implements Shop {
         int unlimited = this.isUnlimited() ? 1 : 0;
         try {
             plugin.getDatabaseHelper()
-                    .updateShop(ShopModerator.serialize(this.moderator.clone()), this.getItem(),
+                    .updateShop(ShopModerator.serialize(this.moderator), this.getItem(),
                             unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
                             this.saveExtraToYaml());
+            this.dirty = false;
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING,
                     "Could not update a shop in the database! Changes will revert after a reboot!", e);
+        } finally {
+            updating = false;
         }
-        this.dirty = false;
+    }
+
+    private void notifyDisplayItemChange() {
+        isDisplayItemChanged = true;
+        if (attachedShop != null && !attachedShop.isDisplayItemChanged) {
+            attachedShop.notifyDisplayItemChange();
+        }
     }
 
     /**
@@ -835,24 +836,28 @@ public class ContainerShop implements Shop {
 
         // check price restriction
         PriceLimiter.CheckResult priceRestriction = plugin.getShopManager().getPriceLimiter().check(item, price);
+        boolean markUpdate = false;
         if (priceRestriction.getStatus() != PriceLimiter.Status.PASS) {
             if (priceRestriction.getStatus() == PriceLimiter.Status.NOT_A_WHOLE_NUMBER) {
                 setDirty();
                 price = Math.floor(price);
-                this.update();
+                markUpdate = true;
             } else if (priceRestriction.getStatus() == PriceLimiter.Status.NOT_VALID) {
                 setDirty();
                 price = priceRestriction.getMin();
-                this.update();
+                markUpdate = true;
             }
             if (price < priceRestriction.getMin()) {
                 setDirty();
                 price = priceRestriction.getMin();
-                this.update();
+                markUpdate = true;
             } else if (price > priceRestriction.getMax()) {
                 setDirty();
                 price = priceRestriction.getMax();
-                this.update();
+                markUpdate = true;
+            }
+            if (markUpdate) {
+                update();
             }
         }
         checkDisplay();
@@ -1441,6 +1446,7 @@ public class ContainerShop implements Shop {
         setExtra(plugin, section);
         setDirty();
         this.update();
+
     }
 
     @Override

@@ -612,8 +612,11 @@ public class ShopManager {
     public @NotNull List<Shop> getShopsInWorld(@NotNull World world) {
         final List<Shop> worldShops = new ArrayList<>();
         for (final Shop shop : getAllShops()) {
-            if (Objects.equals(shop.getLocation().getWorld(), world)) {
-                worldShops.add(shop);
+            Location location = shop.getLocation();
+            if (Util.isWorldLoaded(location)) {
+                if (Objects.equals(location.getWorld(), world)) {
+                    worldShops.add(shop);
+                }
             }
         }
         return worldShops;

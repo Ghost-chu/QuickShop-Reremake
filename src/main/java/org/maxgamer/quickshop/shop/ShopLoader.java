@@ -25,6 +25,7 @@ import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -60,7 +61,6 @@ public class ShopLoader {
     private final List<Shop> shopsInDatabase = new CopyOnWriteArrayList<>();
     private final List<ShopRawDatabaseInfo> shopRawDatabaseInfoList = new CopyOnWriteArrayList<>();
     private int errors;
-    private int totalLoaded = 0;
     //private final WarningSender warningSender;
 
     /**
@@ -84,11 +84,12 @@ public class ShopLoader {
      */
     public void loadShops(@Nullable String worldName) {
         //boolean backupedDatabaseInDeleteProcess = false;
-        this.plugin.getLogger().info("Loading shops from the database...");
+        this.plugin.getLogger().info("Fetching shops from the database...If plugin stuck there, check your database connection.");
         int loadAfterChunkLoaded = 0;
         int loadAfterWorldLoaded = 0;
         List<Shop> pendingLoadShops = new ArrayList<>();
         try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
+            this.plugin.getLogger().info("Loading shops from the database...");
             while (rs.next()) {
                 ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
                 shopRawDatabaseInfoList.add(origin);
@@ -139,24 +140,28 @@ public class ShopLoader {
                         plugin.getShopManager().removeShop(shop); // Remove from Mem
                         //TODO: Only remove from memory, so if it actually is a bug, user won't lost all shops.
                         //TODO: Old shop will be deleted when in same location creating new shop.
-                        continue;
+                    } else {
+                        pendingLoadShops.add(shop);
                     }
-                    pendingLoadShops.add(shop);
                 } else {
                     loadAfterChunkLoaded++;
                 }
             }
-            for (Shop shop : pendingLoadShops) {
-                shop.onLoad();
-                shop.update();
-            }
-            this.plugin
-                    .getLogger()
-                    .info(
-                            "Successfully loaded "
-                                    + totalLoaded
-                                    + " shops!");
-            this.plugin.getLogger().info(loadAfterChunkLoaded
+
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                this.plugin.getLogger().info("Loading the shops in worlds...");
+                for (Shop shop : pendingLoadShops) {
+                    shop.onLoad();
+                    shop.update();
+                }
+                this.plugin
+                        .getLogger()
+                        .info(
+                                "Successfully loaded "
+                                        + pendingLoadShops.size()
+                                        + " shops!");
+            }, 1);
+            this.plugin.getLogger().info("Scheduled " + pendingLoadShops.size() + " shops to load in next tick, " + loadAfterChunkLoaded
                     + " shops will load after chunk have loaded, "
                     + loadAfterWorldLoaded
                     + " shops will load after the world has loaded.");
@@ -165,7 +170,7 @@ public class ShopLoader {
         }
     }
 
-    private void singleShopLoaded(@NotNull Timer singleShopLoadTimer) {
+   /* private void singleShopLoaded(@NotNull Timer singleShopLoadTimer) {
         totalLoaded++;
         long singleShopLoadTime = singleShopLoadTimer.stopAndGetTimePassed();
         loadTimes.add(singleShopLoadTime);
@@ -178,7 +183,7 @@ public class ShopLoader {
     private double calcTimeCost(@NotNull Timer timer) {
         timeCostCache.putIfAbsent(timer, (double) timer.getPassedTime());
         return timer.getPassedTime() - timeCostCache.get(timer);
-    }
+    }*/
 
     @SuppressWarnings("ConstantConditions")
     private boolean shopNullCheck(@Nullable Shop shop) {

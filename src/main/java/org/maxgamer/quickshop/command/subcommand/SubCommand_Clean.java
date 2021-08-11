@@ -27,6 +27,7 @@ import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class SubCommand_Clean implements CommandHandler<CommandSender> {
 
         for (Shop shop : plugin.getShopManager().getAllShops()) {
             try {
-                if (shop.getLocation().getWorld() != null
+                if (Util.isLoaded(shop.getLocation())
                         && shop.isSelling()
                         && shop.getRemainingStock() == 0
                         && shop instanceof ContainerShop) {

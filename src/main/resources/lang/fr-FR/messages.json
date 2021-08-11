@@ -5,7 +5,7 @@
   "translation-version": "Version suportée: Reremake",
   "translation-contributors": "Contributeurs : Timtower, Netherfoam, KaiNoMood, Mgazul, JackThePicken, Andre_601 et brunopaiva15, HiiRaZ",
   "translation-country": "Langue: Français (fr_FR)",
-  "language-version": "58",
+  "language-version": "59",
   "not-looking-at-shop": "&cImpossible de trouver un QuickShop. Vous devez en regarder un.",
   "no-anythings-in-your-hand": "&cVous n'avez aucun objet dans votre main.",
   "no-permission": "&cVous n'avez pas la permission de faire ceci.",
@@ -115,6 +115,8 @@
   "blacklisted-item": "&cVous ne pouvez pas vendre cet objet car il se trouve sur la liste noire",
   "how-much-to-trade-for": "&aEntrez dans le chat, combien vous souhaitez échanger &e{1}x {0}&a.",
   "command": {
+    "format": "&a/{0} {1} &e- {2}",
+    "format-disabled": "&c/{0} {1} &7- {2}",
     "toggle-unlimited": {
       "unlimited": "&aCe shop est désormais illimité",
       "limited": "&aCe shop est désormais limité"
