@@ -48,7 +48,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -232,8 +231,8 @@ public class VirtualDisplayItem extends DisplayItem {
         private static final Map<ShopChunk, List<VirtualDisplayItem>> chunksMapping = new ConcurrentHashMap<>();
 
         public static void put(@NotNull ShopChunk key, @NotNull VirtualDisplayItem value) {
-            List<VirtualDisplayItem> virtualDisplayItems = new CopyOnWriteArrayList<>();
-            virtualDisplayItems.add(value);
+            //Thread-safe was ensured by ONLY USE Map method to do something
+            List<VirtualDisplayItem> virtualDisplayItems = new ArrayList<>(Collections.singletonList(value));
             chunksMapping.merge(key, virtualDisplayItems, (mapOldVal, mapNewVal) -> {
                 mapOldVal.addAll(mapNewVal);
                 return mapOldVal;
@@ -276,22 +275,22 @@ public class VirtualDisplayItem extends DisplayItem {
                         //chunk z
                         int z = integerStructureModifier.read(1);
 
-                        List<VirtualDisplayItem> targetList = chunksMapping.get(new ShopChunk(player.getWorld().getName(), x, z));
-                        if (targetList != null) {
+                        chunksMapping.computeIfPresent(new ShopChunk(player.getWorld().getName(), x, z), (chunkLocation, targetList) -> {
                             for (VirtualDisplayItem target : targetList) {
                                 if (!target.shop.isLoaded() || !target.isDisplay || target.shop.isLeftShop()) {
-                                    return;
+                                    continue;
                                 }
                                 target.packetSenders.add(player.getUniqueId());
                                 target.sendFakeItem(player);
                             }
-                        }
+                            return targetList;
+                        });
                     }
                 };
+                Util.debugLog("Registering the packet listener...");
+                protocolManager.addPacketListener(packetAdapter);
+                loaded.set(true);
             }
-            Util.debugLog("Registering the packet listener...");
-            protocolManager.addPacketListener(packetAdapter);
-            loaded.set(true);
         }
 
         public static void unload() {
