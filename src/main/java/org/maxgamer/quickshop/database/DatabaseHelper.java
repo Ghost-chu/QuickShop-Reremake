@@ -66,6 +66,9 @@ public class DatabaseHelper {
 
     private void createShopsTable() {
         String sqlString = "CREATE TABLE " + plugin.getDbPrefix() + "shops (owner  VARCHAR(255) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
+        if (manager.getDatabase() instanceof MySQLCore) {
+            sqlString = "CREATE TABLE " + plugin.getDbPrefix() + "shops (owner  VARCHAR(255) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
+        }
         manager.runInstantTask(new DatabaseTask(sqlString));
     }
 
@@ -87,6 +90,7 @@ public class DatabaseHelper {
      * Verifies that all required columns exist.
      */
     private void checkColumns() {
+        plugin.getLogger().info("Checking and updating database columns, it may take a while...");
         DatabaseTask.Task checkTask = new DatabaseTask.Task() {
             @Override
             public void edit(PreparedStatement ps) {
@@ -133,11 +137,14 @@ public class DatabaseHelper {
             Util.debugLog("Error to create EXTRA column: " + e.getMessage());
             //ignore
         }
+
         if (manager.getDatabase() instanceof MySQLCore) {
             manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
                     .getDbPrefix() + "messages MODIFY COLUMN message text CHARACTER SET utf8mb4 NOT NULL AFTER owner", checkTask));
+            manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
+                    .getDbPrefix() + "shops MODIFY COLUMN itemConfig text CHARACTER SET utf8mb4 NOT NULL AFTER price", checkTask));
         }
-
+        plugin.getLogger().info("Finished!");
     }
 
     public void cleanMessage(long weekAgo) {
@@ -166,7 +173,7 @@ public class DatabaseHelper {
                 ps.setInt(5, location.getBlockY());
                 ps.setInt(6, location.getBlockZ());
                 String worldName = "undefined";
-                if (location.getWorld() != null) {
+                if (Util.isWorldLoaded(location)) {
                     worldName = location.getWorld().getName();
                 } else {
                     plugin.getLogger().warning("Warning: Shop " + shop + " had null world name due we will save it as undefined world to trying keep data.");

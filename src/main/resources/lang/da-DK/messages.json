@@ -1,11 +1,11 @@
 {
-  "_comment": "Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake",
+  "_comment": "Hej oversætter! Hvis du redigerer dette fra Github eller fra kodekilder, bør du gå https://crowdin.com/project/quickshop-reremake",
   "file-test": "This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)",
   "translation-author": "Oversættere: Ghost_chu, Andre_601, notashelf",
   "translation-version": "Supportversion: Reremake",
   "translation-contributors": "Bidragydere: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken og Andre_601",
   "translation-country": "Sprogzone: dansk (da_DA)",
-  "language-version": "58",
+  "language-version": "59",
   "not-looking-at-shop": "&cKunne ikke finde en QuickShop. Du skal kigge på en.",
   "no-anythings-in-your-hand": "&cDer er intet i din hånd.",
   "no-permission": "&cDu har ikke rettighederne til at gøre dette.",
@@ -115,6 +115,8 @@
   "blacklisted-item": "&cYou cannot sell this item because it is on the blacklist",
   "how-much-to-trade-for": "&aEnter in chat, how much you wish to trade &e{1}x {0}&a for.",
   "command": {
+    "format": "&a/{0} {1} &e- {2}",
+    "format-disabled": "&c/{0} {1} &7- {2}",
     "toggle-unlimited": {
       "unlimited": "&aShop is now unlimited",
       "limited": "&aShop is now limited"

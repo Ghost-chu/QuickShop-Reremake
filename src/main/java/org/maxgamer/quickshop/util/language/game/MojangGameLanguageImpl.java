@@ -83,7 +83,10 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
             } else {
                 if (isCountryEmpty || isLanguageEmpty) {
                     languageCode = isLanguageEmpty ? country + '_' + country : language + '_' + language;
-                    plugin.getLogger().warning("Unable to get language code, guessing" + languageCode + " instead, If it's incorrect, please change game-language option in config.yml.");
+                    if (languageCode.equals("en_en")) {
+                        languageCode = "en_US";
+                    }
+                    plugin.getLogger().warning("Unable to get language code, guessing " + languageCode + " instead, If it's incorrect, please change game-language option in config.yml.");
                 } else {
                     languageCode = language + '_' + country;
                 }
@@ -224,7 +227,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 YamlConfiguration yamlConfiguration = new YamlConfiguration();
                 yamlConfiguration.load(cacheFile);
                 /* The cache data, if it all matches, we doesn't need connect to internet to download files again. */
-                //String cacheVersion = yamlConfiguration.getString("ver");
+                String cacheVersion = yamlConfiguration.getString("ver", "ERROR");
                 String cacheSha1 = yamlConfiguration.getString("sha1", "ERROR");
                 String cacheCode = yamlConfiguration.getString("lang");
                 /* If language name is default, use computer language */
@@ -235,13 +238,17 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 File cachedFile = new File(Util.getCacheFolder(), cacheSha1);
                 if (languageCode.equals(cacheCode)) { //Language same
                     if (cachedFile.exists()) { //File exists
-                        if (DigestUtils.sha1Hex(new FileInputStream(cachedFile)).equals(cacheSha1)) { //Check if file broken
-                            isLatest = true;
-                            try (FileReader reader = new FileReader(cachedFile)) {
-                                lang = new JsonParser().parse(reader).getAsJsonObject();
-                                return; //We doesn't need to update it
-                            } catch (Exception e) {
-                                //Keep it empty so continue to update files
+                        try (FileInputStream cacheFileInputSteam = new FileInputStream(cachedFile)) {
+                            if (DigestUtils.sha1Hex(cacheFileInputSteam).equals(cacheSha1)) { //Check if file broken
+                                if (cacheVersion.equals(ReflectFactory.getServerVersion())) {
+                                    isLatest = true;
+                                    try (FileReader reader = new FileReader(cachedFile)) {
+                                        lang = new JsonParser().parse(reader).getAsJsonObject();
+                                        return; //We doesn't need to update it
+                                    } catch (Exception e) {
+                                        //Keep it empty so continue to update files
+                                    }
+                                }
                             }
                         }
                     }

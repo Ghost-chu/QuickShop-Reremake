@@ -35,6 +35,7 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -50,9 +51,7 @@ public class RealDisplayItem extends DisplayItem {
      * @param shop The shop (See Shop)
      */
     RealDisplayItem(@NotNull Shop shop) {
-
         super(shop);
-
         // this.displayLoc = shop.getLocation().clone().add(0.5, 1.2, 0.5);
     }
 
@@ -115,9 +114,7 @@ public class RealDisplayItem extends DisplayItem {
                 if (shop.isLeftShop()) {
                     return;
                 }
-                Util.debugLog(
-                        "Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem
-                                .getLocation());
+                Util.debugLog("Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem.getLocation());
                 PaperLib.teleportAsync(entity, Objects.requireNonNull(getDisplayLocation()), PlayerTeleportEvent.TeleportCause.UNKNOWN);
                 return;
             }
@@ -134,8 +131,7 @@ public class RealDisplayItem extends DisplayItem {
     public void remove() {
         Util.ensureThread(false);
         if (this.item == null) {
-            Util.debugLog(
-                    "Ignore the Item removing because the Item is already gone or it's a left shop.");
+            Util.debugLog("Ignore the Item removing because the Item is already gone or it's a left shop.");
             return;
         }
         this.item.remove();
@@ -159,7 +155,7 @@ public class RealDisplayItem extends DisplayItem {
 
         boolean removed = false;
 
-        ArrayList<Entity> elist = new ArrayList<>(item.getNearbyEntities(1.5, 1.5, 1.5));
+        List<Entity> elist = new ArrayList<>(item.getNearbyEntities(1.5, 1.5, 1.5));
         if (shop.isRealDouble()) {
             elist.addAll(item.getWorld()
                     .getNearbyEntities(Objects.requireNonNull(getDoubleShopDisplayLocations(true)), 1.5,
@@ -177,9 +173,7 @@ public class RealDisplayItem extends DisplayItem {
             UUID displayUUID = this.item.getUniqueId();
             if (!eItem.getUniqueId().equals(displayUUID)) {
                 if (DisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
-                    Util.debugLog(
-                            "Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem
-                                    .getLocation());
+                    Util.debugLog("Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem.getLocation());
                     entity.remove();
                     removed = true;
                 }
@@ -228,8 +222,7 @@ public class RealDisplayItem extends DisplayItem {
             return;
         }
         if (shop.getLocation().getWorld() == null) {
-            Util.debugLog(
-                    "Canceled the displayItem spawning because the location in the world is null.");
+            Util.debugLog("Canceled the displayItem spawning because the location in the world is null.");
             return;
         }
 
@@ -238,14 +231,12 @@ public class RealDisplayItem extends DisplayItem {
             return;
         }
         if (item != null && item.isValid()) {
-            Util.debugLog(
-                    "Warning: Spawning the Dropped Item for DisplayItem when there is already an existing Dropped Item, May cause a duplicated Dropped Item!");
+            Util.debugLog("Warning: Spawning the Dropped Item for DisplayItem when there is already an existing Dropped Item, May cause a duplicated Dropped Item!");
             MsgUtil.debugStackTrace(Thread.currentThread().getStackTrace());
         }
         if (!Util.isDisplayAllowBlock(
                 Objects.requireNonNull(getDisplayLocation()).getBlock().getType())) {
-            Util.debugLog(
-                    "Can't spawn the displayItem because there is not an AIR block above the shopblock.");
+            Util.debugLog("Can't spawn the displayItem because there is not an AIR block above the shopblock.");
             return;
         }
 
@@ -254,8 +245,7 @@ public class RealDisplayItem extends DisplayItem {
         plugin.getServer().getPluginManager().callEvent(shopDisplayItemSpawnEvent);
 
         if (shopDisplayItemSpawnEvent.isCancelled()) {
-            Util.debugLog(
-                    "Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
+            Util.debugLog("Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
             return;
         }
         this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);

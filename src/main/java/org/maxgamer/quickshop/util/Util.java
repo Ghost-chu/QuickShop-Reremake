@@ -19,10 +19,14 @@
 
 package org.maxgamer.quickshop.util;
 
+import de.themoep.minedown.MineDown;
+import de.themoep.minedown.MineDownParser;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -31,6 +35,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.EnderChest;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -841,6 +846,10 @@ public class Util {
     }
 
     public static boolean isAir(@NotNull Material mat) {
+        try {
+            return isAir0(mat); // For newer versions, we had better use Bukkit API
+        } catch (Exception ignored) {
+        }
         if (mat == Material.AIR) {
             return true;
         }
@@ -856,6 +865,11 @@ public class Util {
             // ignore
         }
         return false;
+    }
+
+    @SuppressWarnings("RedundantThrows")
+    private static boolean isAir0(@NotNull Material mat) throws Exception {
+        return mat.isAir();
     }
 
     /**
@@ -1045,12 +1059,14 @@ public class Util {
         return list2.containsAll(list1);
     }
 
+    private static final ThreadLocal<MineDown> mineDown = ThreadLocal.withInitial(() -> new MineDown(""));
+
     /**
      * Parse colors for the YamlConfiguration.
      *
      * @param config yaml config
      */
-    public static void parseColours(@NotNull YamlConfiguration config) {
+    public static void parseColours(@NotNull ConfigurationSection config) {
         Set<String> keys = config.getKeys(true);
         for (String key : keys) {
             String filtered = config.getString(key);
@@ -1076,8 +1092,20 @@ public class Util {
         if (StringUtils.isEmpty(text)) {
             return "";
         }
-        text = ChatColor.translateAlternateColorCodes('&', text);
-        return text;
+        MineDownParser parser = mineDown.get().parser();
+        parser.reset();
+        StringBuilder builder = new StringBuilder();
+        BaseComponent[] components = parser.enable(MineDownParser.Option.LEGACY_COLORS).parse(text).create();
+        for (BaseComponent component : components) {
+            ChatColor color = component.getColorRaw();
+            String legacyText = component.toLegacyText();
+            if (color == null && legacyText.startsWith("§f")) {
+                //Remove redundant §f added by toLegacyText
+                legacyText = legacyText.substring(2);
+            }
+            builder.append(legacyText);
+        }
+        return builder.toString();
     }
 
     /**

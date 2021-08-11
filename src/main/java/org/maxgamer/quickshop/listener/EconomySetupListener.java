@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is QSEvent.java
+ * This file is a part of project QuickShop, the name is EconomySetupListener.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,37 +17,21 @@
  *
  */
 
-package org.maxgamer.quickshop.event;
+package org.maxgamer.quickshop.listener;
 
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.server.PluginEnableEvent;
 import org.maxgamer.quickshop.QuickShop;
 
-public abstract class QSEvent extends Event {
-
-    private static final HandlerList handlers = new HandlerList();
-
-    public static HandlerList getHandlerList() {
-        return handlers;
+public class EconomySetupListener extends QSListener {
+    public EconomySetupListener(QuickShop plugin) {
+        super(plugin);
     }
 
-    public QSEvent() {
-
+    @EventHandler
+    public void onPluginEnable(PluginEnableEvent event) {
+        if (plugin.getEconomy() == null) {
+            plugin.loadEcon();
+        }
     }
-
-    public QSEvent(boolean async) {
-        super(async);
-    }
-
-    @NotNull
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public void callEvent() {
-        QuickShop.getInstance().getServer().getPluginManager().callEvent(this);
-    }
-
 }

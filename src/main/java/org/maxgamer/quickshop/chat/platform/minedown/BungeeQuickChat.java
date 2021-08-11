@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.chat.platform.minedown;
 
-import de.themoep.minedown.MineDown;
 import net.md_5.bungee.api.chat.*;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -53,7 +52,7 @@ public class BungeeQuickChat implements QuickChat {
         if (StringUtils.isEmpty(message)) {
             return;
         }
-        receiver.spigot().sendMessage(new MineDown(message).toComponent());
+        receiver.spigot().sendMessage(TextComponent.fromLegacyText(message));
     }
 
     @Override
@@ -129,7 +128,9 @@ public class BungeeQuickChat implements QuickChat {
             return new QuickComponentImpl(errorComponent);
         }
 
-        BaseComponent[] component = TextComponent.fromLegacyText(normalText + " " + MsgUtil.getMessage("menu.preview", player));
+        TextComponent component = new TextComponent(normalText + " " + MsgUtil.getMessage("menu.preview", player));
+        ComponentBuilder cBuilder = new ComponentBuilder(json);
+        component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create()));
         return new QuickComponentImpl(component);
 
     }
