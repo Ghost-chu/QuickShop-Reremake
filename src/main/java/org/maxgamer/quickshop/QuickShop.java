@@ -733,12 +733,6 @@ public class QuickShop extends JavaPlugin {
         } catch (IOException exception) {
             getLogger().log(Level.WARNING, "Failed to update configuration", exception);
         }
-        try {
-            MsgUtil.loadI18nFile();
-        } catch (Exception e) {
-            getLogger().log(Level.WARNING, "Error when loading translation", e);
-        }
-
     }
     private void runtimeCheck(@NotNull EnvCheckEntry.Stage stage) {
         testing = true;
