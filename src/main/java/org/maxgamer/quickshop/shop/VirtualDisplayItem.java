@@ -48,6 +48,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -231,7 +232,7 @@ public class VirtualDisplayItem extends DisplayItem {
         private static final Map<ShopChunk, List<VirtualDisplayItem>> chunksMapping = new ConcurrentHashMap<>();
 
         public static void put(@NotNull ShopChunk key, @NotNull VirtualDisplayItem value) {
-            List<VirtualDisplayItem> virtualDisplayItems = Collections.synchronizedList(new ArrayList<>());
+            List<VirtualDisplayItem> virtualDisplayItems = new CopyOnWriteArrayList<>();
             virtualDisplayItems.add(value);
             chunksMapping.merge(key, virtualDisplayItems, (mapOldVal, mapNewVal) -> {
                 mapOldVal.addAll(mapNewVal);
