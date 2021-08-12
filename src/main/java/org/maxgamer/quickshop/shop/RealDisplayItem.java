@@ -208,6 +208,7 @@ public class RealDisplayItem extends DisplayItem {
         }
         item.setPickupDelay(Integer.MAX_VALUE);
         item.setSilent(true);
+        item.setInvulnerable(true);
         item.setPortalCooldown(Integer.MAX_VALUE);
         item.setVelocity(new Vector(0, 0.1, 0));
     }
