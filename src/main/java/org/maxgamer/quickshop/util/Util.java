@@ -848,7 +848,7 @@ public class Util {
     public static boolean isAir(@NotNull Material mat) {
         try {
             return isAir0(mat); // For newer versions, we had better use Bukkit API
-        } catch (Exception ignored) {
+        } catch (Throwable ignored) {
         }
         if (mat == Material.AIR) {
             return true;
@@ -861,7 +861,7 @@ public class Util {
             if (mat == Material.VOID_AIR) {
                 return true;
             }
-        } catch (Exception t) {
+        } catch (Throwable t) {
             // ignore
         }
         return false;
