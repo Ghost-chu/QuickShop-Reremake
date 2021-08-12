@@ -105,7 +105,7 @@ public class AdvancedShopRegionMarketIntegration extends QSIntegratedPlugin impl
 
     private void scanAndUnregister() {
         try {
-            if (Bukkit.getPluginManager().getPlugin("ArmShopBridge") == null) {
+            if (Bukkit.getPluginManager().getPlugin("ArmShopBridge") == null || ArmShopBridge.getInstance() == null) {
                 return;
             }
             List<IShopPluginAdapter> adapterList = new ArrayList<>();
