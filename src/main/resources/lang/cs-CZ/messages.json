@@ -34,7 +34,7 @@
   "negative-amount": "&cDerp, nemůžeš obchodovat se zápornými částkami",
   "not-a-number": "&cMůžete zadat pouze číslo, váš vstup byl {0}.",
   "exceeded-maximum": "&cHodnota překročila maximální hodnotu v Javě.",
-  "not-a-integer": "&cYou must input a integer, your input was {0}.",
+  "not-a-integer": "&cMužeš zadat pouze celé číslo, zadal jsi {0}.",
   "player-bought-from-your-store": "&c{0} zakoupen {1} {2} z tvého obchodu a ty jsi zaplatil {3} na daních.",
   "shop-out-of-stock": "&5Váš obchod v {0}, {1}, {2}, vyčerpal {3}!",
   "shop-has-no-space": "&cObchod má pouze místo pro {0} více {1}.",
@@ -323,7 +323,7 @@
   "shop-owner-self-trade": "&eObchodujete se svým obchodem, takže nebudete moci získat žádné peníze.",
   "chest-title": "Obchod QuickShop",
   "command-type-mismatch": "&cTento příkaz může být spuštěn pouze v &b{0}.",
-  "unlimited-shop-owner-changed": "&eThis unlimited shop owner has been changed to {0}.",
+  "unlimited-shop-owner-changed": "&eMajitel tohoto neomezeného obchodu byl změněn na {0}.",
   "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.",
-  "server-crash-warning": "&cServer may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running."
+  "server-crash-warning": "&cServer může spadnout po spustění příkazu /qs reload pokud nahradíš/smažeš jar soubor QuickShop pluginu při spuštěném serveru."
 }
