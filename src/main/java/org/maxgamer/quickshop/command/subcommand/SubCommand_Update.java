@@ -27,6 +27,8 @@ import org.maxgamer.quickshop.BootError;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.updater.QuickUpdater;
+import org.maxgamer.quickshop.util.updater.VersionType;
 
 import java.util.logging.Level;
 
@@ -44,8 +46,9 @@ public class SubCommand_Update implements CommandHandler<CommandSender> {
                 MsgUtil.sendDirectMessage(sender, ChatColor.RED + "It seems like the Updater has been disabled.");
                 return;
             }
-
-            if (plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) {
+            QuickUpdater updater = plugin.getUpdateWatcher().getUpdater();
+            VersionType versionType = updater.getCurrentRunning();
+            if (updater.isLatest(versionType)) {
                 MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "You're running the latest version!");
                 return;
             }
@@ -57,7 +60,7 @@ public class SubCommand_Update implements CommandHandler<CommandSender> {
             }
             MsgUtil.sendDirectMessage(sender, ChatColor.YELLOW + "Downloading update! This may take a while...");
             try {
-                plugin.getUpdateWatcher().getUpdater().install(plugin.getUpdateWatcher().getUpdater().update(plugin.getUpdateWatcher().getUpdater().getCurrentRunning()));
+                updater.install(updater.update(versionType));
             } catch (Exception e) {
                 MsgUtil.sendDirectMessage(sender, ChatColor.RED + "Update failed! Please check your console for more information.");
                 plugin.getSentryErrorReporter().ignoreThrow();
