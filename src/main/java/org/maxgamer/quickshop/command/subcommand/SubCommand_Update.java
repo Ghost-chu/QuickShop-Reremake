@@ -46,12 +46,16 @@ public class SubCommand_Update implements CommandHandler<CommandSender> {
             }
 
             if (plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) {
-                MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "You're running the latest version!.");
+                MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "You're running the latest version!");
                 return;
             }
 
+            if (cmdArg.length == 0 || !cmdArg[0].equalsIgnoreCase("confirm")) {
+                MsgUtil.sendDirectMessage(sender, ChatColor.RED + "You will need to restart the server to complete the update of plugin! Before restarting plugin will stop working!");
+                MsgUtil.sendDirectMessage(sender, ChatColor.RED + "Type " + ChatColor.BOLD + "/qs update confirm" + ChatColor.RESET + ChatColor.RED + " to confirm update");
+                return;
+            }
             MsgUtil.sendDirectMessage(sender, ChatColor.YELLOW + "Downloading update! This may take a while...");
-
             try {
                 plugin.getUpdateWatcher().getUpdater().install(plugin.getUpdateWatcher().getUpdater().update(plugin.getUpdateWatcher().getUpdater().getCurrentRunning()));
             } catch (Exception e) {
@@ -64,7 +68,7 @@ public class SubCommand_Update implements CommandHandler<CommandSender> {
             MsgUtil.sendDirectMessage(sender,
                     ChatColor.GREEN + "Successful! Please restart your server to apply the updated version!");
             MsgUtil.sendDirectMessage(sender,
-                    ChatColor.YELLOW + "Before you restarting the server, QuickShop won't working again.");
+                    ChatColor.RED + "Before you restarting the server, QuickShop won't working again.");
             plugin.setupBootError(new BootError(plugin.getLogger(), "Reboot required after update the plugin."), true);
 
         });
