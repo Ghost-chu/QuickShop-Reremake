@@ -1066,6 +1066,16 @@ public class Util {
      *
      * @param config yaml config
      */
+    @Deprecated
+    public static void parseColours(@NotNull YamlConfiguration config) {
+        parseColours((ConfigurationSection) config);
+    }
+
+    /**
+     * Parse colors for the YamlConfiguration.
+     *
+     * @param config yaml config
+     */
     public static void parseColours(@NotNull ConfigurationSection config) {
         Set<String> keys = config.getKeys(true);
         for (String key : keys) {
