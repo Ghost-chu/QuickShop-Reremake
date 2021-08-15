@@ -20,143 +20,17 @@
 package org.maxgamer.quickshop.eventmanager;
 
 
-import org.bukkit.Server;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginLoader;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.io.File;
-import java.io.InputStream;
-import java.util.List;
-import java.util.logging.Logger;
 
 public class ListenerContainerTest {
 
     @Test
     public void testMatches() {
-        Plugin testPlugin = new Plugin() {
-            @NotNull
-            @Override
-            public File getDataFolder() {
-                return null;
-            }
+        Plugin testPlugin = new JavaPlugin() {
 
-            @NotNull
-            @Override
-            public PluginDescriptionFile getDescription() {
-                return null;
-            }
-
-            @NotNull
-            @Override
-            public FileConfiguration getConfig() {
-                return null;
-            }
-
-            @Nullable
-            @Override
-            public InputStream getResource(@NotNull String filename) {
-                return null;
-            }
-
-            @Override
-            public void saveConfig() {
-
-            }
-
-            @Override
-            public void saveDefaultConfig() {
-
-            }
-
-            @Override
-            public void saveResource(@NotNull String resourcePath, boolean replace) {
-
-            }
-
-            @Override
-            public void reloadConfig() {
-
-            }
-
-            @NotNull
-            @Override
-            public PluginLoader getPluginLoader() {
-                return null;
-            }
-
-            @NotNull
-            @Override
-            public Server getServer() {
-                return null;
-            }
-
-            @Override
-            public boolean isEnabled() {
-                return false;
-            }
-
-            @Override
-            public void onDisable() {
-
-            }
-
-            @Override
-            public void onLoad() {
-
-            }
-
-            @Override
-            public void onEnable() {
-
-            }
-
-            @Override
-            public boolean isNaggable() {
-                return false;
-            }
-
-            @Override
-            public void setNaggable(boolean canNag) {
-
-            }
-
-            @Nullable
-            @Override
-            public ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
-                return null;
-            }
-
-            @NotNull
-            @Override
-            public Logger getLogger() {
-                return null;
-            }
-
-            @NotNull
-            @Override
-            public String getName() {
-                return "QuickTest";
-            }
-
-            @Override
-            public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-                return false;
-            }
-
-            @Nullable
-            @Override
-            public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-                return null;
-            }
         };
         ListenerContainer listenerContainerA = new ListenerContainer(null, "@QuickTest");
         ListenerContainer listenerContainerB = new ListenerContainer(null, "@QuickTestBad");
