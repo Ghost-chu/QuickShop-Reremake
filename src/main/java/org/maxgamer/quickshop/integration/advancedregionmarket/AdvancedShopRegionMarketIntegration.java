@@ -32,7 +32,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.util.Vector;
@@ -94,6 +93,7 @@ public class AdvancedShopRegionMarketIntegration extends QSIntegratedPlugin impl
     @Override
     public void load() {
         scanAndUnregister();
+        registerListener();
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -127,7 +127,7 @@ public class AdvancedShopRegionMarketIntegration extends QSIntegratedPlugin impl
      */
     @Override
     public void unload() {
-        HandlerList.unregisterAll(this);
+        unregisterListener();
     }
 
 
