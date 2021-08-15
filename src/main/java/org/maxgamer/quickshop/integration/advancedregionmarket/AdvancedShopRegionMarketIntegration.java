@@ -135,7 +135,7 @@ public class AdvancedShopRegionMarketIntegration extends QSIntegratedPlugin impl
     public void onShopNeedDeletion(RestoreRegionEvent event) {
         Region region = event.getRegion();
         Vector minPoint = region.getRegion().getMinPoint();
-        Vector maxPoint = region.getRegion().getMinPoint();
+        Vector maxPoint = region.getRegion().getMaxPoint();
         World world = region.getRegionworld();
         Set<Chunk> chuckLocations = new HashSet<>();
 
