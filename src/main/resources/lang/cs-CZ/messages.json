@@ -324,6 +324,6 @@
   "chest-title": "Obchod QuickShop",
   "command-type-mismatch": "&cTento příkaz může být spuštěn pouze v &b{0}.",
   "unlimited-shop-owner-changed": "&eMajitel tohoto neomezeného obchodu byl změněn na {0}.",
-  "unlimited-shop-owner-keeped": "&eAttention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.",
+  "unlimited-shop-owner-keeped": "&eUpozornění: Vlastník obchodu je stále neomezený vlastník obchodu, musíte si nastavit nového vlastníka obchodu sami.",
   "server-crash-warning": "&cServer může spadnout po spustění příkazu /qs reload pokud nahradíš/smažeš jar soubor QuickShop pluginu při spuštěném serveru."
 }
