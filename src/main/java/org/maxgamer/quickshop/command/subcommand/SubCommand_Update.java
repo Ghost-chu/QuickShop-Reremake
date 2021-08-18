@@ -27,6 +27,8 @@ import org.maxgamer.quickshop.BootError;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.updater.QuickUpdater;
+import org.maxgamer.quickshop.util.updater.VersionType;
 
 import java.util.logging.Level;
 
@@ -44,16 +46,21 @@ public class SubCommand_Update implements CommandHandler<CommandSender> {
                 MsgUtil.sendDirectMessage(sender, ChatColor.RED + "It seems like the Updater has been disabled.");
                 return;
             }
-
-            if (plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) {
-                MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "You're running the latest version!.");
+            QuickUpdater updater = plugin.getUpdateWatcher().getUpdater();
+            VersionType versionType = updater.getCurrentRunning();
+            if (updater.isLatest(versionType)) {
+                MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "You're running the latest version!");
                 return;
             }
 
+            if (cmdArg.length == 0 || !cmdArg[0].equalsIgnoreCase("confirm")) {
+                MsgUtil.sendDirectMessage(sender, ChatColor.RED + "You will need to restart the server to complete the update of plugin! Before restarting plugin will stop working!");
+                MsgUtil.sendDirectMessage(sender, ChatColor.RED + "Type " + ChatColor.BOLD + "/qs update confirm" + ChatColor.RESET + ChatColor.RED + " to confirm update");
+                return;
+            }
             MsgUtil.sendDirectMessage(sender, ChatColor.YELLOW + "Downloading update! This may take a while...");
-
             try {
-                plugin.getUpdateWatcher().getUpdater().install(plugin.getUpdateWatcher().getUpdater().update(plugin.getUpdateWatcher().getUpdater().getCurrentRunning()));
+                updater.install(updater.update(versionType));
             } catch (Exception e) {
                 MsgUtil.sendDirectMessage(sender, ChatColor.RED + "Update failed! Please check your console for more information.");
                 plugin.getSentryErrorReporter().ignoreThrow();
@@ -64,7 +71,7 @@ public class SubCommand_Update implements CommandHandler<CommandSender> {
             MsgUtil.sendDirectMessage(sender,
                     ChatColor.GREEN + "Successful! Please restart your server to apply the updated version!");
             MsgUtil.sendDirectMessage(sender,
-                    ChatColor.YELLOW + "Before you restarting the server, QuickShop won't working again.");
+                    ChatColor.RED + "Before you restarting the server, QuickShop won't working again.");
             plugin.setupBootError(new BootError(plugin.getLogger(), "Reboot required after update the plugin."), true);
 
         });

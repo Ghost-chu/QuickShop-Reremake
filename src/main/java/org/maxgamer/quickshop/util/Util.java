@@ -848,7 +848,7 @@ public class Util {
     public static boolean isAir(@NotNull Material mat) {
         try {
             return isAir0(mat); // For newer versions, we had better use Bukkit API
-        } catch (Exception ignored) {
+        } catch (Throwable ignored) {
         }
         if (mat == Material.AIR) {
             return true;
@@ -861,7 +861,7 @@ public class Util {
             if (mat == Material.VOID_AIR) {
                 return true;
             }
-        } catch (Exception t) {
+        } catch (Throwable t) {
             // ignore
         }
         return false;
@@ -1059,7 +1059,17 @@ public class Util {
         return list2.containsAll(list1);
     }
 
-    private static final MineDown mineDown = new MineDown("");
+    private static final ThreadLocal<MineDown> mineDown = ThreadLocal.withInitial(() -> new MineDown(""));
+
+    /**
+     * Parse colors for the YamlConfiguration.
+     *
+     * @param config yaml config
+     */
+    @Deprecated
+    public static void parseColours(@NotNull YamlConfiguration config) {
+        parseColours((ConfigurationSection) config);
+    }
 
     /**
      * Parse colors for the YamlConfiguration.
@@ -1092,7 +1102,7 @@ public class Util {
         if (StringUtils.isEmpty(text)) {
             return "";
         }
-        MineDownParser parser = mineDown.parser();
+        MineDownParser parser = mineDown.get().parser();
         parser.reset();
         StringBuilder builder = new StringBuilder();
         BaseComponent[] components = parser.enable(MineDownParser.Option.LEGACY_COLORS).parse(text).create();
