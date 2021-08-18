@@ -231,21 +231,19 @@ public class VirtualDisplayItem extends DisplayItem {
         private static final Map<ShopChunk, List<VirtualDisplayItem>> chunksMapping = new ConcurrentHashMap<>();
 
         public static void put(@NotNull ShopChunk key, @NotNull VirtualDisplayItem value) {
-            List<VirtualDisplayItem> lists = chunksMapping.get(key);
-            if (lists == null) {
-                List<VirtualDisplayItem> virtualDisplayItems = Collections.synchronizedList(new LinkedList<>());
-                virtualDisplayItems.add(value);
-                chunksMapping.put(key, virtualDisplayItems);
-            } else {
-                lists.add(value);
-            }
+            //Thread-safe was ensured by ONLY USE Map method to do something
+            List<VirtualDisplayItem> virtualDisplayItems = new ArrayList<>(Collections.singletonList(value));
+            chunksMapping.merge(key, virtualDisplayItems, (mapOldVal, mapNewVal) -> {
+                mapOldVal.addAll(mapNewVal);
+                return mapOldVal;
+            });
         }
 
         public static void remove(@NotNull ShopChunk key, @NotNull VirtualDisplayItem value) {
-            List<VirtualDisplayItem> lists = chunksMapping.get(key);
-            if (lists != null) {
-                lists.remove(value);
-            }
+            chunksMapping.computeIfPresent(key, (mapOldKey, mapOldVal) -> {
+                mapOldVal.remove(value);
+                return mapOldVal;
+            });
         }
 
         public static void load() {
@@ -277,27 +275,27 @@ public class VirtualDisplayItem extends DisplayItem {
                         //chunk z
                         int z = integerStructureModifier.read(1);
 
-                        List<VirtualDisplayItem> targetList = chunksMapping.get(new ShopChunk(player.getWorld().getName(), x, z));
-                        if (targetList != null) {
+                        chunksMapping.computeIfPresent(new ShopChunk(player.getWorld().getName(), x, z), (chunkLocation, targetList) -> {
                             for (VirtualDisplayItem target : targetList) {
                                 if (!target.shop.isLoaded() || !target.isDisplay || target.shop.isLeftShop()) {
-                                    return;
+                                    continue;
                                 }
                                 target.packetSenders.add(player.getUniqueId());
                                 target.sendFakeItem(player);
                             }
-                        }
+                            return targetList;
+                        });
                     }
                 };
+                Util.debugLog("Registering the packet listener...");
+                protocolManager.addPacketListener(packetAdapter);
+                loaded.set(true);
             }
-            Util.debugLog("Registering the packet listener...");
-            protocolManager.addPacketListener(packetAdapter);
-            loaded.set(true);
         }
 
         public static void unload() {
             Util.debugLog("Unloading VirtualDisplayItem chunks mapping manager...");
-            if (!loaded.get()) {
+            if (loaded.get()) {
                 Util.debugLog("Unregistering the packet listener...");
                 protocolManager.removePacketListener(packetAdapter);
                 loaded.set(false);

@@ -116,7 +116,6 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private final Map<String, Integer> limits = new HashMap<>(15);
     private final ConfigProvider configProvider = new ConfigProvider(this);
-    @Getter
     private final List<BukkitTask> timerTaskList = new ArrayList<>(3);
     @Getter
     private final GameVersion gameVersion = GameVersion.get(Util.getNMSVersion());
@@ -636,12 +635,14 @@ public class QuickShop extends JavaPlugin {
         if (logWatcher != null) {
             logWatcher.close();
         }
-        for (BukkitTask bukkitTask : timerTaskList) {
-            if (!bukkitTask.isCancelled()) {
-                bukkitTask.cancel();
+        Iterator<BukkitTask> taskIterator = timerTaskList.iterator();
+        while (taskIterator.hasNext()) {
+            BukkitTask task = taskIterator.next();
+            if (!task.isCancelled()) {
+                task.cancel();
             }
+            taskIterator.remove();
         }
-        timerTaskList.clear();
         if (calendarWatcher != null) {
             calendarWatcher.stop();
         }
@@ -675,22 +676,6 @@ public class QuickShop extends JavaPlugin {
                     throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Plugin was updated)");
                 }
             }
-            // Maybe name changed, try search globally
-            if (!file.exists()) {
-                File pluginFolder = new File("plugins");
-                if (pluginFolder.isDirectory()) {
-                    //noinspection ConstantConditions
-                    for (File listFile : pluginFolder.listFiles()) {
-                        if (listFile.getName().endsWith(".jar")) {
-                            if (getPluginLoader().loadPlugin(listFile).getName().equals(getDescription().getName())) {
-                                file = listFile;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
             if (!file.exists()) {
                 throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Failed to find plugin jar)");
             }
@@ -748,12 +733,6 @@ public class QuickShop extends JavaPlugin {
         } catch (IOException exception) {
             getLogger().log(Level.WARNING, "Failed to update configuration", exception);
         }
-        try {
-            MsgUtil.loadI18nFile();
-        } catch (Exception e) {
-            getLogger().log(Level.WARNING, "Error when loading translation", e);
-        }
-
     }
     private void runtimeCheck(@NotNull EnvCheckEntry.Stage stage) {
         testing = true;

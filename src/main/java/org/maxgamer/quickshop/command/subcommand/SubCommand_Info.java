@@ -39,13 +39,11 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        int buying, selling, doubles, chunks, worlds, doubleschests;
+        int buying, selling, chunks, worlds;
         buying = 0;
         selling = 0;
-        doubles = 0;
         chunks = 0;
         worlds = 0;
-        doubleschests = 0;
         int nostock = 0;
 
         for (Map<ShopChunk, Map<Location, Shop>> inWorld :
@@ -60,7 +58,7 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
                     } else if (shop.isSelling()) {
                         selling++;
                     }
-                    if (shop.isSelling() && shop.getRemainingStock() == 0) {
+                    if (shop.isSelling() && shop.isLoaded() && shop.getRemainingStock() == 0) {
                         nostock++;
                     }
                 }
@@ -81,15 +79,8 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
         MsgUtil.sendDirectMessage(sender,
                 ChatColor.GREEN
                         + ""
-                        + doubles
-                        + " double shops. ("
-                        + doubleschests
-                        + " shops created on double chest.)");
-        MsgUtil.sendDirectMessage(sender,
-                ChatColor.GREEN
-                        + ""
                         + nostock
-                        + " out-of-stock shops (excluding doubles) which will be removed by /qs clean.");
+                        + " out-of-stock loaded shops (excluding doubles) which will be removed by /qs clean.");
         MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "QuickShop " + QuickShop.getVersion());
     }
 
