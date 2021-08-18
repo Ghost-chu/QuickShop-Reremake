@@ -72,7 +72,7 @@ permissions:
       quickshop.create.admin: true
       quickshop.other.changeitem: true
       quickshop.other.changeamount: true
-
+      quickshop.other.staff: true
   quickshop.create.sell:
     description: Allows a player to sell from a shop.
     default: op
@@ -132,6 +132,9 @@ permissions:
     default: op
   quickshop.staff:
     description: Allows a shop owner to manage their shop staff.
+    default: op
+  quickshop.other.staff:
+    description: Allows a other player force editing the shop staffs.
     default: op
   quickshop.find:
     description: Allows a player to locate the nearest shop that has a specific item type. Distance configurable in config.
