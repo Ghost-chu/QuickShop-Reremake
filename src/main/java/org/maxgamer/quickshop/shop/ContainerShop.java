@@ -1258,7 +1258,8 @@ public class ContainerShop implements Shop {
 
         Shop preValue = attachedShop;
 
-        if (attachedChest == null) {
+        //Prevent chain chunk loading
+        if (attachedChest == null || !Util.isLoaded(attachedChest.getLocation())) {
             attachedShop = null;
         } else {
             attachedShop = (ContainerShop) plugin.getShopManager().getShop(attachedChest.getLocation());
