@@ -841,35 +841,11 @@ public class Util {
         }
     }
 
+    private static boolean isSupportIsAirMethod = true;
+    private volatile static String nmsVersion;
+
     public static boolean isDisplayAllowBlock(@NotNull Material mat) {
         return mat.isTransparent();
-    }
-
-    public static boolean isAir(@NotNull Material mat) {
-        try {
-            return isAir0(mat); // For newer versions, we had better use Bukkit API
-        } catch (Throwable ignored) {
-        }
-        if (mat == Material.AIR) {
-            return true;
-        }
-        /* For 1.13 new AIR */
-        try {
-            if (mat == Material.CAVE_AIR) {
-                return true;
-            }
-            if (mat == Material.VOID_AIR) {
-                return true;
-            }
-        } catch (Throwable t) {
-            // ignore
-        }
-        return false;
-    }
-
-    @SuppressWarnings("RedundantThrows")
-    private static boolean isAir0(@NotNull Material mat) throws Exception {
-        return mat.isAir();
     }
 
     /**
@@ -1237,10 +1213,38 @@ public class Util {
         return "[" + className + "-" + methodName + "] ";
     }
 
+    public static boolean isAir(@NotNull Material mat) {
+        if (isSupportIsAirMethod) {
+            try {
+                return mat.isAir(); // For newer versions, we had better use Bukkit API
+            } catch (Throwable ignored) {
+                isSupportIsAirMethod = false;
+            }
+        }
+        if (mat == Material.AIR) {
+            return true;
+        }
+        /* For 1.13 new AIR */
+        try {
+            if (mat == Material.CAVE_AIR) {
+                return true;
+            }
+            if (mat == Material.VOID_AIR) {
+                return true;
+            }
+        } catch (Throwable t) {
+            // ignore
+        }
+        return false;
+    }
+
     @NotNull
     public static String getNMSVersion() {
-        String name = Bukkit.getServer().getClass().getPackage().getName();
-        return name.substring(name.lastIndexOf('.') + 1);
+        if (nmsVersion == null) {
+            String name = Bukkit.getServer().getClass().getPackage().getName();
+            nmsVersion = name.substring(name.lastIndexOf('.') + 1);
+        }
+        return nmsVersion;
     }
 
     /**
