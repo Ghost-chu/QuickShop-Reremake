@@ -173,13 +173,13 @@
       "transfer": "&eTransferir TODAS las tiendas de alguien a otros",
       "removeworld": "&ese removieron ALL tiendas en el mundo",
       "currency": "&eSet or remove the currency setting of the shop",
-      "ban": "&eBans a player from the shop",
-      "unban": "&eUnbans a player from the shop",
+      "ban": "&eBanear a un jugador de la tienda",
+      "unban": "&eBanear a un jugador de la tienda",
       "freeze": "&eDesactivar o activar el trading en la tienda",
-      "lock": "&eSwitch the shop's lock status"
+      "lock": "&eCambiar el estado de bloqueo de la tienda"
     },
     "disabled": "&cEste comando esta deshabilitado: &e{0}",
-    "feature-not-enabled": "This feature is not enabled in the config file."
+    "feature-not-enabled": "La característica no está habilitada en la configuración."
   },
   "signs": {
     "selling": "Vendo {0}",
@@ -195,7 +195,7 @@
     "status-unavailable": "&c",
     "out-of-stock": "Agotado",
     "out-of-space": "Sin espacio",
-    "freeze": "Trading disabled"
+    "freeze": "Operación desactivada"
   },
   "controlpanel": {
     "setowner": "&aPropietario: &b{0} &e[&d&lCambiar&e]",
@@ -222,9 +222,9 @@
     "currency": "&aMoneda: &b{0} &e[&d&lSet&e]",
     "currency-hover": "&eClick para establecer o remover la divisa que utiliza la tienda",
     "lock": "&eTienda bloqueada: &b{0} &e[&d&lToggle&e]",
-    "lock-hover": "&eEnable/Disable the shop's lock protection.",
+    "lock-hover": "&eActivar/Desactivar protección contra bloqueo de la tienda.",
     "freeze": "&eTienda bloqueada: &b{0} &e[&d&lToggle&e]",
-    "freeze-hover": "&eToggle the shop's freeze status."
+    "freeze-hover": "&eCambiar estado de congelación de la tienda.,"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -266,7 +266,7 @@
       "¡Doctor, QuickShop tiene una nueva actualización {0}! Debería actualizar~",
       "Ko~ko~da~yo~ QuickShop tiene una nueva actualización {0} ~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server's performance.",
+    "remote-disable-warning": "&cEsta versión de QuickShop ha sido marcada como deshabilitada por el servidor remoto. Esto significa que esta versión puede tener serios problemas. Más detalles en nuestra página de SpigotMC: {0}. Este aviso aparecerá y te advertirá en tu consola hasta que cambies a una versión aceptada. Sin embargo, esto no tiene por qué afectar al rendimiento de tu servidor.",
     "label": {
       "unstable": "[Inestable]",
       "stable": "[Estable]",
