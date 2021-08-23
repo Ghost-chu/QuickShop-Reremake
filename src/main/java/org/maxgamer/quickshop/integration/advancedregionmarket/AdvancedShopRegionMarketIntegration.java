@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.integration.advancedregionmarket;
 
+import net.alex9849.arm.events.RemoveRegionEvent;
 import net.alex9849.arm.events.RestoreRegionEvent;
 import net.alex9849.arm.regions.Region;
 import net.alex9849.armshopbridge.ArmShopBridge;
@@ -32,8 +33,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +46,7 @@ import java.util.*;
 import java.util.logging.Level;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class AdvancedShopRegionMarketIntegration extends QSIntegratedPlugin implements Listener {
+public class AdvancedShopRegionMarketIntegration extends QSIntegratedPlugin {
     public AdvancedShopRegionMarketIntegration(QuickShop plugin) {
         super(plugin);
     }
@@ -94,6 +93,7 @@ public class AdvancedShopRegionMarketIntegration extends QSIntegratedPlugin impl
     @Override
     public void load() {
         scanAndUnregister();
+        registerListener();
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -108,15 +108,17 @@ public class AdvancedShopRegionMarketIntegration extends QSIntegratedPlugin impl
             if (Bukkit.getPluginManager().getPlugin("ArmShopBridge") == null || ArmShopBridge.getInstance() == null) {
                 return;
             }
-            List<IShopPluginAdapter> adapterList = new ArrayList<>();
-            ArmShopBridge.getInstance().getShopPluginAdapters().forEach(adapter -> {
+            Iterator<IShopPluginAdapter> adapterListIterator = ArmShopBridge.getInstance().getShopPluginAdapters().iterator();
+            //noinspection
+            //Use legacy way to prevent lambda internal method causing listener load failed
+            while (adapterListIterator.hasNext()) {
+                IShopPluginAdapter adapter = adapterListIterator.next();
                 if (adapter instanceof QuickShopAdapter || adapter instanceof QuickShop4Adapter) {
-                    adapterList.add(adapter);
+                    adapterListIterator.remove();
+                    plugin.getLogger().log(Level.INFO, "Successfully remove redundant ARM-ShopBridge handlers!");
                 }
-            });
-            adapterList.forEach(ArmShopBridge.getInstance().getShopPluginAdapters()::remove);
-            Bukkit.getPluginManager().registerEvents(this, plugin);
-        } catch (Exception exception) {
+            }
+        } catch (Throwable exception) {
             plugin.getLogger().log(Level.WARNING, "Cannot to handle ARM-ShopBridge handlers, ignoring...", exception);
         }
     }
@@ -127,15 +129,12 @@ public class AdvancedShopRegionMarketIntegration extends QSIntegratedPlugin impl
      */
     @Override
     public void unload() {
-        HandlerList.unregisterAll(this);
+        unregisterListener();
     }
 
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onShopNeedDeletion(RestoreRegionEvent event) {
-        Region region = event.getRegion();
+    private void handleDeletion(Region region) {
         Vector minPoint = region.getRegion().getMinPoint();
-        Vector maxPoint = region.getRegion().getMinPoint();
+        Vector maxPoint = region.getRegion().getMaxPoint();
         World world = region.getRegionworld();
         Set<Chunk> chuckLocations = new HashSet<>();
 
@@ -164,5 +163,15 @@ public class AdvancedShopRegionMarketIntegration extends QSIntegratedPlugin impl
                 }
             }
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onShopNeedDeletion(RestoreRegionEvent event) {
+        handleDeletion(event.getRegion());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onShopNeedDeletion(RemoveRegionEvent event) {
+        handleDeletion(event.getRegion());
     }
 }

@@ -24,6 +24,7 @@ import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -63,7 +64,7 @@ public class ListenerContainerTest {
 
             @Nullable
             @Override
-            public InputStream getResource(@NotNull String filename) {
+            public InputStream getResource(@NotNull String s) {
                 return null;
             }
 
@@ -78,7 +79,7 @@ public class ListenerContainerTest {
             }
 
             @Override
-            public void saveResource(@NotNull String resourcePath, boolean replace) {
+            public void saveResource(@NotNull String s, boolean b) {
 
             }
 
@@ -125,13 +126,19 @@ public class ListenerContainerTest {
             }
 
             @Override
-            public void setNaggable(boolean canNag) {
+            public void setNaggable(boolean b) {
 
             }
 
             @Nullable
             @Override
-            public ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
+            public ChunkGenerator getDefaultWorldGenerator(@NotNull String s, @Nullable String s1) {
+                return null;
+            }
+
+            @Nullable
+            @Override
+            public BiomeProvider getDefaultBiomeProvider(@NotNull String s, @Nullable String s1) {
                 return null;
             }
 
@@ -148,13 +155,13 @@ public class ListenerContainerTest {
             }
 
             @Override
-            public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+            public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
                 return false;
             }
 
             @Nullable
             @Override
-            public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+            public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
                 return null;
             }
         };
