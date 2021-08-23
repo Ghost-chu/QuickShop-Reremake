@@ -126,7 +126,7 @@ public class ShopLoader {
                     continue;
                 }
                 //World unloaded but found
-                if (!Util.isWorldLoaded(shop.getLocation())) {
+                if (!shop.getLocation().isWorldLoaded()) {
                     ++loadAfterWorldLoaded;
                     continue;
                 }

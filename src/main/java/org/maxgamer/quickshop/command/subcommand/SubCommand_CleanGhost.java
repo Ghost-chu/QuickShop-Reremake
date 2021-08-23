@@ -74,7 +74,7 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
                     Util.mainThreadRun(shop::delete);
                     continue;
                 }
-                if (!Util.isWorldLoaded(shop.getLocation())) {
+                if (!shop.getLocation().isWorldLoaded()) {
                     MsgUtil.sendDirectMessage(sender,
                             ChatColor.YELLOW + "Deleting shop " + shop + " because the its world is not loaded.");
                     Util.mainThreadRun(shop::delete);

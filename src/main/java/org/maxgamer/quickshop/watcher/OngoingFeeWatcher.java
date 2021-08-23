@@ -61,7 +61,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
             if ((!shop.isUnlimited() || !ignoreUnlimited) && !shop.isDeleted()) {
                 UUID shopOwner = shop.getOwner();
                 Location location = shop.getLocation();
-                if (!Util.isWorldLoaded(location)) {
+                if (!location.isWorldLoaded()) {
                     //ignore unloaded world
                     continue;
                 }

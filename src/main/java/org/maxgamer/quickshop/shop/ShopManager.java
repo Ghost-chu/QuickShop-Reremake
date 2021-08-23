@@ -260,7 +260,7 @@ public class ShopManager {
             throw new IllegalStateException("The owner creating the shop is offline or not exist");
         }
         if (info.getSignBlock() != null && autoSign) {
-            if (Util.isAir(info.getSignBlock().getType()) || info.getSignBlock().getType() == Material.WATER) {
+            if (info.getSignBlock().getType().isAir() || info.getSignBlock().getType() == Material.WATER) {
                 this.processWaterLoggedSign(shop.getLocation().getBlock(), info.getSignBlock());
             } else {
                 if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
@@ -613,7 +613,7 @@ public class ShopManager {
         final List<Shop> worldShops = new ArrayList<>();
         for (final Shop shop : getAllShops()) {
             Location location = shop.getLocation();
-            if (Util.isWorldLoaded(location)) {
+            if (location.isWorldLoaded()) {
                 if (Objects.equals(location.getWorld(), world)) {
                     worldShops.add(shop);
                 }
@@ -822,7 +822,7 @@ public class ShopManager {
             } else {
                 Material signType = info.getSignBlock().getType();
                 if (signType != Material.WATER
-                        && !Util.isAir(signType)
+                        && !signType.isAir()
                         && !plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
                     MsgUtil.sendMessage(p, "failed-to-put-sign");
                     return;

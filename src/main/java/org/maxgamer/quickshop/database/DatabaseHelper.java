@@ -173,7 +173,7 @@ public class DatabaseHelper {
                 ps.setInt(5, location.getBlockY());
                 ps.setInt(6, location.getBlockZ());
                 String worldName = "undefined";
-                if (Util.isWorldLoaded(location)) {
+                if (location.isWorldLoaded()) {
                     worldName = location.getWorld().getName();
                 } else {
                     plugin.getLogger().warning("Warning: Shop " + shop + " had null world name due we will save it as undefined world to trying keep data.");

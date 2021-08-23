@@ -69,7 +69,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
     }
 
     private boolean isValidMaterial(@Nullable Material material) {
-        return material != null && !Util.isAir(material);
+        return material != null && !material.isAir();
     }
 
     @Override
@@ -81,7 +81,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
             return;
         } else if (cmdArg.length == 1) {
             item = sender.getInventory().getItemInMainHand();
-            if (Util.isAir(item.getType())) {
+            if (item.getType().isAir()) {
                 MsgUtil.sendMessage(sender, "no-anythings-in-your-hand");
                 return;
             }
@@ -123,12 +123,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
                 return;
             }
 
-            BlockFace blockFace;
-            try {
-                blockFace = sender.getFacing();
-            } catch (Exception throwable) {
-                blockFace = Util.getYawFace(sender.getLocation().getYaw()); //FIXME: Update this when drop 1.13 supports
-            }
+            BlockFace blockFace = sender.getFacing();
 
             if (!plugin.getShopManager().canBuildShop(sender, b, blockFace)) {
                 // As of the new checking system, most plugins will tell the
@@ -167,7 +162,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
         if (cmdArg.length == 1) {
             return Collections.singletonList(MsgUtil.getMessage("tabcomplete.price", sender));
         }
-        if (Util.isAir(sender.getInventory().getItemInMainHand().getType())) {
+        if (sender.getInventory().getItemInMainHand().getType().isAir()) {
             if (cmdArg.length == 2) {
                 return Collections.singletonList(MsgUtil.getMessage("tabcomplete.item", sender));
             }
