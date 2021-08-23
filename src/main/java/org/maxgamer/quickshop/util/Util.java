@@ -845,7 +845,7 @@ public class Util {
     private volatile static String nmsVersion;
 
     public static boolean isDisplayAllowBlock(@NotNull Material mat) {
-        return mat.isTransparent() || !mat.isOccluding();
+        return mat.isTransparent() || isWallSign(mat);
     }
 
     /**
