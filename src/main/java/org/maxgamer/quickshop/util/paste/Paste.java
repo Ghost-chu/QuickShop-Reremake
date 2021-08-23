@@ -85,6 +85,7 @@ public class Paste {
         finalReport.append("\tEconomy System: ");
         try {
             EconomyCore economyCore = plugin.getEconomy().getCore();
+            //noinspection SwitchStatementWithTooFewBranches
             switch (Economy.getNowUsing()) {
                 case VAULT:
                     finalReport

@@ -436,10 +436,9 @@ public class QuickShop extends JavaPlugin {
                     core = new Economy_Vault(this);
                     Util.debugLog("Now using the Vault economy system.");
                     if (getConfig().getDouble("tax", 0) > 0) {
-
                         try {
                             String taxAccount = getConfig().getString("tax-account", "tax");
-                            if (!(taxAccount == null || taxAccount.isEmpty())) {
+                            if (!taxAccount.isEmpty()) {
                                 OfflinePlayer tax;
                                 if (Util.isUUID(taxAccount)) {
                                     tax = Bukkit.getOfflinePlayer(UUID.fromString(taxAccount));

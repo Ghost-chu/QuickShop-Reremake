@@ -98,8 +98,6 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
         }
         //For performance, we just check really equals in each index,check isn't contain or match will cost n^n time in most
         for (int i = 0; i < requireStack.length; i++) {
-            //IDEA bug, ignore NPE tips
-            //noinspection ConstantConditions
             if ((requireStack[i] != null) && (givenStack[i] != null) &&
                     (requireStack[i].getAmount() != givenStack[i].getAmount())) {
                 return false;

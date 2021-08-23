@@ -103,7 +103,7 @@ public class ShopManager {
             // disable tax account
             cacheTaxAccount = null;
         }
-        String uAccount = plugin.getConfig().getString("unlimited-shop-owner-change-account");
+        String uAccount = plugin.getConfig().getString("unlimited-shop-owner-change-account", "quickshop");
         if (Util.isUUID(uAccount)) {
             cacheUnlimitedShopAccount = new Trader(uAccount, Bukkit.getOfflinePlayer(UUID.fromString(uAccount)));
         } else {
