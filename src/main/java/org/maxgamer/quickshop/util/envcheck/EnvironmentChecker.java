@@ -371,15 +371,15 @@ public final class EnvironmentChecker {
         }
     }
 
-    @EnvCheckEntry(name = "PersistentStorageApi Support Test", priority = 8)
-    public ResultContainer persistentStorageApiSupportTest() {
-        String nmsVersion = Util.getNMSVersion();
-        GameVersion gameVersion = GameVersion.get(nmsVersion);
-        if (!gameVersion.isPersistentStorageApiSupports()) {
-            return new ResultContainer(CheckResult.WARNING, "PersistentStorageApi seems to not work on this Minecraft server, You may be at risk for an exploit. Make sure your server is running at least 1.13.2.");
-        }
-        return new ResultContainer(CheckResult.PASSED, "Passed checks");
-    }
+//    @EnvCheckEntry(name = "PersistentStorageApi Support Test", priority = 8)
+//    public ResultContainer persistentStorageApiSupportTest() {
+//        String nmsVersion = Util.getNMSVersion();
+//        GameVersion gameVersion = GameVersion.get(nmsVersion);
+//        if (!gameVersion.isPersistentStorageApiSupports()) {
+//            return new ResultContainer(CheckResult.WARNING, "PersistentStorageApi seems to not work on this Minecraft server, You may be at risk for an exploit. Make sure your server is running at least 1.13.2.");
+//        }
+//        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+//    }
 
     @EnvCheckEntry(name = "GameVersion supporting Test", priority = 9)
     public ResultContainer gamerVersionSupportTest() {
