@@ -51,7 +51,7 @@ public enum GameVersion {
     v1_12_R1(false, true, false, false, false, false, false),
     v1_12_R2(false, true, false, false, false, false, false),
     v1_13_R1(false, true, false, false, false, false, false),
-    v1_13_R2(true, true, true, true, false, false, false),
+    v1_13_R2(true, true, true, false, false, false, false),
     v1_14_R1(true, true, true, true, false, false, false),
     v1_14_R2(true, true, true, true, false, false, false),
     v1_15_R1(true, false, true, true, false, false, false),
