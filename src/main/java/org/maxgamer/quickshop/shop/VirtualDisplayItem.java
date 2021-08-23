@@ -359,16 +359,17 @@ public class VirtualDisplayItem extends DisplayItem {
                     //Yaw
                     .write(5, 0);
 
+            //noinspection SwitchStatementWithTooFewBranches
             switch (version) {
-                case v1_13_R1:
-                case v1_13_R2:
-                    fakeItemPacket.getIntegers()
-                            //For 1.13, we should use type id to represent the EntityType
-                            //2 -> minecraft:item (Object ID:https://wiki.vg/Object_Data)
-                            .write(6, 2)
-                            //int data to mark
-                            .write(7, 1);
-                    break;
+//                case v1_13_R1:
+//                case v1_13_R2:
+//                    fakeItemPacket.getIntegers()
+//                            //For 1.13, we should use type id to represent the EntityType
+//                            //2 -> minecraft:item (Object ID:https://wiki.vg/Object_Data)
+//                            .write(6, 2)
+//                            //int data to mark
+//                            .write(7, 1);
+//                    break;
                 //int data to mark
                 default:
                     //For 1.14+, we should use EntityType
@@ -426,13 +427,13 @@ public class VirtualDisplayItem extends DisplayItem {
             //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
             //Is 1.17-?
             if (GameVersion.v1_17_R1.ordinal() > version.ordinal()) {
-                if (version == GameVersion.v1_13_R1 || version == GameVersion.v1_13_R2) {
-                    //For 1.13 is 6
-                    wpw.setObject(6, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
-                } else {
-                    //1.14-1.16 is 7
-                    wpw.setObject(7, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
-                }
+//                if (version == GameVersion.v1_13_R1 || version == GameVersion.v1_13_R2) {
+//                    //For 1.13 is 6
+//                    wpw.setObject(6, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
+//                } else {
+                //1.14-1.16 is 7
+                wpw.setObject(7, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
+                // }
             } else {
                 //1.17+ is 8
                 wpw.setObject(8, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);

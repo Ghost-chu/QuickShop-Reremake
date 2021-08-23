@@ -380,9 +380,6 @@ shop:
   show-owner-uuid-in-controlpanel-if-op: false
 
   #The wall sign material.
-  #For 1.13.2, only WALL_SIGN is available.
-  #
-  #For 1.14, you can use these:
   #ACACIA_WALL_SIGN
   #BIRCH_WALL_SIGN
   #DARK_OAK_WALL_SIGN

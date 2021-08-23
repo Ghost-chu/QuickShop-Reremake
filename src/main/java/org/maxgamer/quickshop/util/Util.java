@@ -1220,11 +1220,10 @@ public class Util {
         if (signMaterial != null) {
             return signMaterial;
         }
-        signMaterial = Material.matchMaterial("OAK_WALL_SIGN"); // Fallback default sign in 1.14
+        signMaterial = Material.matchMaterial("OAK_WALL_SIGN"); // Fallback default sign in 1.14+
         if (signMaterial != null) {
             return signMaterial;
         }
-        // What the fuck!?
         plugin
                 .getLogger()
                 .warning(
