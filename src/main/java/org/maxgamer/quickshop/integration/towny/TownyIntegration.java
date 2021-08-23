@@ -58,7 +58,7 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
     private final boolean deleteShopOnLeave;
     private final boolean deleteShopOnPlotClear;
     private boolean isNewVersion;
-    private boolean whiteList;
+    private final boolean whiteList;
 
 
     public TownyIntegration(QuickShop plugin) {

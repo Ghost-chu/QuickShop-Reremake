@@ -131,7 +131,7 @@ public class InternalListener implements Listener {
                                 + " for"
                                 + Util.getItemStackName(event.getShop().getItem())
                                 + "x" +
-                                +event.getAmount()
+                                event.getAmount()
                                 + " for "
                                 + event.getBalance()
                                 + " ("
