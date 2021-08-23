@@ -1214,21 +1214,11 @@ public class Util {
      */
     @NotNull
     public static Material getSignMaterial() {
-        Material signMaterial =
-                Material.matchMaterial(
-                        Objects.requireNonNull(plugin.getConfig().getString("shop.sign-material")));
+        Material signMaterial = Material.matchMaterial(Objects.requireNonNull(plugin.getConfig().getString("shop.sign-material","OAK_WALL_SIGN")));
         if (signMaterial != null) {
             return signMaterial;
         }
-        signMaterial = Material.matchMaterial("OAK_WALL_SIGN"); // Fallback default sign in 1.14+
-        if (signMaterial != null) {
-            return signMaterial;
-        }
-        plugin
-                .getLogger()
-                .warning(
-                        "QuickShop can't found any usable sign material, we will use default Sign Material.");
-            return Material.OAK_WALL_SIGN;
+        return Material.OAK_WALL_SIGN;
     }
 
     /**
