@@ -169,7 +169,7 @@
       "size": "&e修改每份物品的數量",
       "supercreate": "&e繞過所有保護檢查並建立商店",
       "language": "&e修改正在使用的語言",
-      "removeall": "&e刪除該玩家的所有商店",
+      "removeall": "&e刪除指定玩家的所有商店",
       "transfer": "&e將某人的所有商店轉移給其他人",
       "removeworld": "&e刪除指定世界的商店",
       "currency": "&e設置或移除目前商店的貨幣設定",
