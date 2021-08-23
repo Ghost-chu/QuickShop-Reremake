@@ -9,7 +9,7 @@
 ---
 
 ![Java](https://img.shields.io/badge/java-version%208%2B%20(currently%20is%208--16)-orange)
-![MC](https://img.shields.io/badge/minecraft-java%20edition%201.13.2%2B-blueviolet)
+![MC](https://img.shields.io/badge/minecraft-java%20edition%201.15%2B-blueviolet)
 ![Ver](https://img.shields.io/spiget/version/62575?label=version)
 ![Downloads](https://img.shields.io/spiget/downloads/62575?label=downloads)
 ![Rating](https://img.shields.io/spiget/rating/62575?label=rating)
