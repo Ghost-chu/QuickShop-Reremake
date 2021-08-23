@@ -578,8 +578,8 @@
         <!-- Documentation of MockBukkit: https://github.com/seeseemelk/MockBukkit -->
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
-            <artifactId>MockBukkit-v1.17</artifactId>
-            <version>1.6.0</version>
+            <artifactId>MockBukkit-v1.16</artifactId>
+            <version>0.35.2</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -596,14 +596,14 @@
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.36.0.1</version>
+            <version>3.34.0</version>
             <scope>test</scope>
         </dependency>
         <!-- Database lib for testing-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.25</version>
+            <version>5.1.49</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -832,7 +832,7 @@
         </dependency>
         <dependency>
             <groupId>com.rollbar</groupId>
-            <version>1.7.8</version>
+            <version>[1.0,)</version>
             <artifactId>rollbar-java</artifactId>
         </dependency>
         <dependency>
