@@ -32,7 +32,7 @@ softdepend:
   - AdvancedRegionMarket
   - ArmShopBridge
 
-api-version: 1.13
+api-version: 1.15
 
 commands:
   qs:
