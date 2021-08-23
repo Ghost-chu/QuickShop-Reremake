@@ -27,7 +27,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginBase;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginLoader;
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +43,7 @@ public class ListenerContainerTest {
 
     @Test
     public void testMatches() {
-        Plugin testPlugin = new PluginBase() {
+        Plugin testPlugin = new Plugin() {
             @NotNull
             @Override
             public File getDataFolder() {
@@ -147,6 +146,12 @@ public class ListenerContainerTest {
             @Override
             public Logger getLogger() {
                 return null;
+            }
+
+            @NotNull
+            @Override
+            public String getName() {
+                return "QuickTest";
             }
 
             @Override
