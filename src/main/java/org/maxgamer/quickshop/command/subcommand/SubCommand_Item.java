@@ -30,6 +30,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.PriceLimiter;
 import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
@@ -64,6 +65,18 @@ public class SubCommand_Item implements CommandHandler<Player> {
                 }
                 if (!plugin.isAllowStack() && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.stacks")) {
                     itemStack.setAmount(1);
+                }
+                PriceLimiter limiter = new PriceLimiter(
+                        plugin.getConfig().getDouble("shop.minimum-price"),
+                        plugin.getConfig().getInt("shop.maximum-price"),
+                        plugin.getConfig().getBoolean("shop.allow-free-shop"),
+                        plugin.getConfig().getBoolean("whole-number-prices-only"));
+                PriceLimiter.CheckResult checkResult = limiter.check(itemStack, shop.getPrice());
+                if (checkResult.getStatus() != PriceLimiter.Status.PASS) {
+                    MsgUtil.sendMessage(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
+                            String.valueOf(checkResult.getMin()),
+                            String.valueOf(checkResult.getMax()));
+                    return;
                 }
                 shop.setItem(itemStack);
                 plugin.getQuickChat().send(sender, plugin.getQuickChat().getItemHologramChat(shop, shop.getItem(), sender, MsgUtil.getMessage("command.trade-item-now", sender, Integer.toString(shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()))));
