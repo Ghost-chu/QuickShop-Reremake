@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.command.subcommand;
 import lombok.AllArgsConstructor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,6 +30,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.PriceLimiter;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.Collections;
@@ -66,8 +68,21 @@ public class SubCommand_Size implements CommandHandler<Player> {
                         MsgUtil.sendMessage(sender, "command.invalid-bulk-amount", Integer.toString(amount));
                         return;
                     }
-                    shop.getItem().setAmount(amount);
-                    shop.refresh();
+                    ItemStack pendingItemStack = shop.getItem().clone();
+                    pendingItemStack.setAmount(amount);
+                    PriceLimiter limiter = new PriceLimiter(
+                            plugin.getConfig().getDouble("shop.minimum-price"),
+                            plugin.getConfig().getInt("shop.maximum-price"),
+                            plugin.getConfig().getBoolean("shop.allow-free-shop"),
+                            plugin.getConfig().getBoolean("whole-number-prices-only"));
+                    PriceLimiter.CheckResult checkResult = limiter.check(pendingItemStack, shop.getPrice());
+                    if (checkResult.getStatus() != PriceLimiter.Status.PASS) {
+                        MsgUtil.sendMessage(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
+                                String.valueOf(checkResult.getMin()),
+                                String.valueOf(checkResult.getMax()));
+                        return;
+                    }
+                    shop.setItem(pendingItemStack);
                     MsgUtil.sendMessage(sender, "command.bulk-size-now", Integer.toString(shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()));
                     return;
                 } else {
