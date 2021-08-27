@@ -48,7 +48,10 @@ public class RomanNumber {
     }
 
     public static String toRoman(int number) {
-        int l = MAP.floorKey(number);
+        Integer l = MAP.floorKey(number);
+        if (l == null) {
+            return MAP.get(1);
+        }
         if (number == l) {
             return MAP.get(number);
         }
