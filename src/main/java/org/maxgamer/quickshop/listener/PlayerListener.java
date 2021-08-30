@@ -300,13 +300,14 @@ public class PlayerListener extends QSListener {
             if (e.getInventory() == null) {
                 return;
             }
-            if (e.getInventory().getLocation() == null) {
-                return;
-            }
             location = e.getInventory().getLocation();
-
             if (location == null) {
                 return; /// ignored as workaround, GH-303
+            }
+            //Cannot tick distance manager while unloading playerchunks
+            //https://github.com/pl3xgaming/Purpur/issues/631
+            if (!Util.isLoaded(location)) {
+                return;
             }
             final Shop shop = plugin.getShopManager().getShopIncludeAttached(location);
             if (shop != null) {
