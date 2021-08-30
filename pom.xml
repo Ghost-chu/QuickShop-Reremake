@@ -941,7 +941,7 @@
         <dependency>
             <groupId>com.github.alex9849</groupId>
             <artifactId>advanced-region-market</artifactId>
-            <version>3.3.4</version>
+            <version>3.3.5</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
