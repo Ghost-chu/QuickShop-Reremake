@@ -659,6 +659,11 @@ integration:
     enable: false
     #Should we prevent the creation of a shop or trade with a shop outside FabledSkyblock's area?
     whitelist-mode: false
+  #IridumSkyblock Integration:
+  iridiumskyblock:
+    enable: false
+    #Is only the island owner allowed to create shops?
+    owner-create-only: false
   #GriefPrevention Integration
   griefprevention:
     enable: false
