@@ -31,6 +31,7 @@ softdepend:
   - WorldEdit
   - AdvancedRegionMarket
   - ArmShopBridge
+  - IridiumSkyblock
 
 api-version: 1.15
 
