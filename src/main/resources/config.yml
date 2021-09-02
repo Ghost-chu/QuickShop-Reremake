@@ -22,7 +22,7 @@
 #                        TO EDIT QUICKSHOP'S CONFIGURATION, USE THE "config.yml" FILE!
 
 #Do not touch this if you don't know what you're doing!
-config-version: 139
+config-version: 140
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not existant/not supported language, then QuickShop will use en_US.
@@ -659,6 +659,11 @@ integration:
     enable: false
     #Should we prevent the creation of a shop or trade with a shop outside FabledSkyblock's area?
     whitelist-mode: false
+  #IridumSkyblock Integration:
+  iridiumskyblock:
+    enable: false
+    #Is only the island owner allowed to create shops?
+    owner-create-only: false
   #GriefPrevention Integration
   griefprevention:
     enable: false
