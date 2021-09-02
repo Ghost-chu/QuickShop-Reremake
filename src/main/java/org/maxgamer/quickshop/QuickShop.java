@@ -1891,6 +1891,7 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 139) {
             getConfig().set("integration.iridiumskyblock.enable", false);
             getConfig().set("integration.iridiumskyblock.owner-create-only", false);
+            getConfig().set("config-version", ++selectedVersion);
         }
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
