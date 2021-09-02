@@ -412,6 +412,10 @@
             <id>enginehub-repo</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
+        <repository>
+            <id>savagelabs</id>
+            <url>https://nexus.savagelabs.net/repository/maven-releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -943,6 +947,11 @@
             <artifactId>advanced-region-market</artifactId>
             <version>3.3.5</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.iridium</groupId>
+            <artifactId>IridiumSkyblock</artifactId>
+            <version>3.0.8</version>
         </dependency>
     </dependencies>
 </project>
