@@ -1,7 +1,7 @@
 {
   "_comment": "안녕하세요 번역가님! 만약 당신이 깃헙이나 소스코드에서 번역 중이라면 다음 사이트를 가보시기 바래요! https://crowdin.com/project/quickshop-reremake",
   "file-test": "이것은텍스트파일일까요? 한국어 일까yo? :)",
-  "translation-author": "번역: Ghost_chu, Chicki_yeah(번역에 이상한 부분이 있다면 치키이예#0032로 연락해주시면 수정하겠습니다.), jho5245, Kim dong kwon, Ppag",
+  "translation-author": "번역: Chicki_yeah(번역에 이상한 부분이 있다면 치키이예#0032로 연락해주시면 수정하겠습니다.), jho5245, Kim dong kwon, Ppag",
   "translation-version": "지원 버전: Reremake",
   "translation-contributors": "기여자: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "언어 지역: 한국어 (Ko)",
@@ -129,7 +129,7 @@
     "now-buying": "&a이제 &e{0}&a를 구매합니다.",
     "now-selling": "&a이제 &e{0}&a를 판매합니다.",
     "cleaning": "&a어떤 물량도 없는 상점들을 제거하는중입니다...",
-    "reloading": "&aConfiguration reloaded. &eSome changes may require reboot to affect. \n&7(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won't crashed.)",
+    "reloading": "&a컨피드를 다시 불러왔습니다. &e일부 변경사항은 서버를 완전히 껏다켜야 적용됩니다.\n&7(참고: 4.0.9.10 이후 리로드 방식이 변경되었습니다. 서버가 손상되지 않도록 컨피그만 리로드하고 전체 플러그인은 다시 불러오지 않습니다.)",
     "cleaned": "&e{0}개&a의 상점을 제거했습니다.",
     "no-type-given": "&c사용법: /qs find <아이템 이름>",
     "no-world-given": "&c월드이름을 입력해주세요.",
