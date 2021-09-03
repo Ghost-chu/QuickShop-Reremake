@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.util.matcher.item;
 
+import com.google.common.base.Objects;
 import lombok.AllArgsConstructor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -65,12 +66,21 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
      */
     @Override
     public boolean matches(@Nullable ItemStack original, @Nullable ItemStack tester) {
-        if (original == null && tester == null) {
-            return true;
+        return Objects.equal(original, tester);
+        /*
+        @Override
+        @Utility
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (!(obj instanceof ItemStack)) {
+                return false;
+            }
+
+            ItemStack stack = (ItemStack) obj;
+            return getAmount() == stack.getAmount() && isSimilar(stack);
         }
-        if ((original == null) != (tester == null)) {
-            return false;
-        }
-        return tester.isSimilar(original);
+         */
     }
 }
