@@ -69,6 +69,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 public class Util {
     private static final EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
@@ -547,12 +548,6 @@ public class Util {
         }
         org.bukkit.block.data.type.Chest chestBlockData = (org.bukkit.block.data.type.Chest) blockData;
         return chestBlockData.getType() != org.bukkit.block.data.type.Chest.Type.SINGLE;
-        //String blockDataStr = state.getBlockData().getAsString();
-        //Black magic for detect double chest
-        //minecraft:chest[facing=north,type=right,waterlogged=false]
-        //minecraft:chest[facing=north,type=left,waterlogged=false]
-        //minecraft:chest[facing=north,type=single,waterlogged=false]
-        //return !blockDataStr.contains("type=single");
     }
 
     /**
@@ -836,7 +831,7 @@ public class Util {
                 clazz.getMethod(method, args);
             }
             return true;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             return false;
         }
     }
@@ -960,14 +955,17 @@ public class Util {
      */
     @NotNull
     public static String list2String(@NotNull List<String> strList) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < strList.size(); i++) {
-            builder.append(strList.get(i));
-            if (i + 1 != strList.size()) {
-                builder.append(", ");
-            }
-        }
-        return builder.toString();
+        StringJoiner joiner = new StringJoiner(", ", "", "");
+        strList.forEach(joiner::add);
+        return joiner.toString();
+//        StringBuilder builder = new StringBuilder();
+//        for (int i = 0; i < strList.size(); i++) {
+//            builder.append(strList.get(i));
+//            if (i + 1 != strList.size()) {
+//                builder.append(", ");
+//            }
+//        }
+//        return builder.toString();
     }
 
     /**
@@ -1006,18 +1004,6 @@ public class Util {
         // But pitch angles are normal
         loc.setPitch(pitch * 180f / (float) Math.PI);
         return loc;
-    }
-
-    /**
-     * Match the list1 and list2
-     *
-     * @param list1 requireList
-     * @param list2 givenList
-     * @return Map1 match Map2
-     */
-    @Deprecated
-    public static boolean listMatches(@NotNull List<?> list1, @NotNull List<?> list2) {
-        return list2.containsAll(list1);
     }
 
     private static final ThreadLocal<MineDown> mineDown = ThreadLocal.withInitial(() -> new MineDown(""));
@@ -1188,11 +1174,8 @@ public class Util {
         try {
             Class<?> c = Class.forName(className);
             className = c.getSimpleName();
-            if (!c.getSimpleName().isEmpty()) {
-                className = c.getSimpleName();
-            }
-        } catch (ClassNotFoundException e) {
-            // Ignore
+            if (!c.getSimpleName().isEmpty()) className = c.getSimpleName();
+        } catch (ClassNotFoundException ignored) {
         }
         String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
         return "[" + className + "-" + methodName + "] ";
@@ -1214,7 +1197,7 @@ public class Util {
      */
     @NotNull
     public static Material getSignMaterial() {
-        Material signMaterial = Material.matchMaterial(Objects.requireNonNull(plugin.getConfig().getString("shop.sign-material","OAK_WALL_SIGN")));
+        Material signMaterial = Material.matchMaterial(plugin.getConfig().getString("shop.sign-material", "OAK_WALL_SIGN"));
         if (signMaterial != null) {
             return signMaterial;
         }
@@ -1268,8 +1251,7 @@ public class Util {
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             StringBuilder finalReport = new StringBuilder();
-            plugin
-                    .getShopLoader()
+            plugin.getShopLoader()
                     .getOriginShopsInDatabase()
                     .forEach((shop -> finalReport.append(shop).append("\n")));
             try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
@@ -1370,17 +1352,11 @@ public class Util {
      */
     @NotNull
     public static List<String> getPlayerList() {
-        List<String> tabList = new ArrayList<>();
+        List<String> tabList;
         if (plugin.getConfig().getBoolean("include-offlineplayer-list")) {
-            // Include
-            for (OfflinePlayer offlinePlayer : plugin.getServer().getOfflinePlayers()) {
-                tabList.add(offlinePlayer.getName());
-            }
+            tabList = Arrays.stream(plugin.getServer().getOfflinePlayers()).map(OfflinePlayer::getName).collect(Collectors.toList());
         } else {
-            // Not Include
-            for (OfflinePlayer offlinePlayer : plugin.getServer().getOnlinePlayers()) {
-                tabList.add(offlinePlayer.getName());
-            }
+            tabList = plugin.getServer().getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
         }
         return tabList;
     }
@@ -1393,11 +1369,11 @@ public class Util {
      */
     @NotNull
     public static String mergeArgs(@NotNull String[] args) {
-        StringBuilder builder = new StringBuilder();
+        StringJoiner joiner = new StringJoiner(" ", "", "");
         for (String arg : args) {
-            builder.append(arg).append(" ");
+            joiner.add(arg);
         }
-        return builder.toString().trim();
+        return joiner.toString();
     }
 
     /**
