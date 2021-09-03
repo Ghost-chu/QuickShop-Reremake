@@ -32,6 +32,7 @@ import java.util.UUID;
 
 /**
  * Contains shop's moderators infomations, owner, staffs etc.
+ * You must save the ContainerShop after modify this
  */
 @EqualsAndHashCode
 public class ShopModerator implements Cloneable {

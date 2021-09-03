@@ -55,18 +55,25 @@ import java.util.logging.Level;
 @EqualsAndHashCode
 public class ContainerShop implements Shop {
 
+    @EqualsAndHashCode.Exclude
     private static final String shopSignPrefix = "§d§o §r";
+    @EqualsAndHashCode.Exclude
     private static final String shopSignPattern = "§d§o ";
     @NotNull
     private final Location location;
-    @EqualsAndHashCode.Exclude
-    private final QuickShop plugin;
     private final YamlConfiguration extra;
-    @EqualsAndHashCode.Exclude
-    private final UUID runtimeRandomUniqueId = UUID.randomUUID();
+    private ShopModerator moderator;
+    private double price;
+    private ShopType shopType;
+    private boolean unlimited;
     @NotNull
     private ItemStack item;
+    @EqualsAndHashCode.Exclude
+    private final QuickShop plugin;
+    @EqualsAndHashCode.Exclude
+    private final UUID runtimeRandomUniqueId = UUID.randomUUID();
     @Nullable
+    @EqualsAndHashCode.Exclude
     private DisplayItem displayItem;
     @EqualsAndHashCode.Exclude
     private volatile boolean isLoaded = false;
@@ -78,10 +85,6 @@ public class ContainerShop implements Shop {
     private volatile boolean createBackup = false;
     @EqualsAndHashCode.Exclude
     private InventoryPreview inventoryPreview = null;
-    private ShopModerator moderator;
-    private double price;
-    private ShopType shopType;
-    private boolean unlimited;
     @EqualsAndHashCode.Exclude
     private volatile ContainerShop attachedShop;
     @EqualsAndHashCode.Exclude
@@ -172,9 +175,8 @@ public class ContainerShop implements Shop {
                     this.displayItem = new VirtualDisplayItem(this);
                     break;
                 default:
-                    Util.debugLog(
-                            "Warning: Failed to create a ContainerShop displayItem, the type we didn't know, fallback to RealDisplayItem");
-                    this.displayItem = new RealDisplayItem(this);
+                    Util.debugLog("Warning: Failed to create a ContainerShop displayItem, the type we didn't know, fallback to VirualDisplayItem");
+                    this.displayItem = new VirtualDisplayItem(this);
                     break;
             }
         }
@@ -260,7 +262,7 @@ public class ContainerShop implements Shop {
                                 + amount
                                 + ", item: "
                                 + Util.getItemStackName(this.getItem())
-                                + "!");
+                                + "!", buyer, amount, Util.getItemStackName(this.getItem()));
             }
         } else {
             Inventory chestInv = this.getInventory();
