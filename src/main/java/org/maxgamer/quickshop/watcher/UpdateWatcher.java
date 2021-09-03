@@ -58,7 +58,7 @@ public class UpdateWatcher implements Listener {
             QuickShop.getInstance()
                     .getLogger()
                     .info(
-                            "A new version of QuickShop has been released! [" + updater.getRemoteServerVersion() + "]");
+                            "A new version of QuickShop has been released! [{0}]", updater.getRemoteServerVersion());
             QuickShop.getInstance()
                     .getLogger()
                     .info("Update here: https://www.spigotmc.org/resources/62575/");
