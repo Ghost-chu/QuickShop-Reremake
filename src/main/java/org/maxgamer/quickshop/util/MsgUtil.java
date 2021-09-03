@@ -1452,8 +1452,10 @@ public class MsgUtil {
             setAndUpdate("command.format-disabled");
             setAndUpdate("language-version", ++selectedVersion);
         }
-
-
+        if (selectedVersion == 59) {
+            setAndUpdate("command.reloading");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
     }
 
