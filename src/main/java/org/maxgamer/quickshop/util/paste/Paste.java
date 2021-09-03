@@ -200,11 +200,7 @@ public class Paste {
             String packageName;
             Class<?> pluginClass = bplugin.getClass();
             Package pluginPackage = pluginClass.getPackage();
-            if (pluginClass == null) {
-                className = "[Null Class]";
-            } else {
-                className = pluginClass.getName();
-            }
+            className = pluginClass.getName();
             if (pluginPackage == null) {
                 packageName = "[Default Package]";
             } else {
