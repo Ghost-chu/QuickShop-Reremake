@@ -21,12 +21,13 @@ package org.maxgamer.quickshop;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.util.Copied;
 import org.maxgamer.quickshop.util.Util;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.logging.Level;
 
 public class Language {
@@ -55,7 +56,11 @@ public class Language {
         }
 
         try (InputStream is = getFile(language, type)) {
-            new Copied(targetFile).accept(is);
+            if (is == null) {
+                plugin.getLogger().log(Level.WARNING, "Failed to save translation files (InputStream not exist).");
+                return;
+            }
+            Files.copy(is, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception err) {
             plugin.getLogger().log(Level.WARNING, "Failed to save translation files.", err);
         }
