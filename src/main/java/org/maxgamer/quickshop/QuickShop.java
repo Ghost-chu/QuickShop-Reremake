@@ -584,7 +584,7 @@ public class QuickShop extends JavaPlugin {
 
 
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadAfter);
-        getLogger().info("QuickShop " + getFork() + " - Early boot step - Booted up...");
+        getLogger().info("QuickShop {0} - Early boot step - Booted up...", getFork());
     }
 
     @Override
@@ -774,10 +774,10 @@ public class QuickShop extends JavaPlugin {
 
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
-        getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
+        getLogger().info("Developers: {0}", Util.list2String(this.getDescription().getAuthors()));
         getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
         getLogger().info("Let's start loading the plugin");
-        getLogger().info("Chat processor selected: " + this.quickChatType.name());
+        getLogger().info("Chat processor selected: {0}", this.quickChatType.name());
 
         /* Process Metrics and Sentry error reporter. */
         metrics = new Metrics(this, 3320);
@@ -789,7 +789,7 @@ public class QuickShop extends JavaPlugin {
                 sentryErrorReporter = new RollbarErrorReporter(this);
             }
         } catch (Throwable th) {
-            getLogger().warning("Cannot load the Sentry Error Reporter: " + th.getMessage());
+            getLogger().warning("Cannot load the Sentry Error Reporter: {0}", th.getMessage());
             getLogger().warning("Because our error reporter doesn't work, please report this error to developer, thank you!");
         }
 
@@ -851,9 +851,6 @@ public class QuickShop extends JavaPlugin {
             for (String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
                 limits.put(key, limitCfg.getInt(key));
             }
-        }
-        if (getConfig().getInt("shop.finding.distance") > 100) {
-            getLogger().severe("Shop find distance is too high! It may cause lag! Pick a number under 100!");
         }
 
         if (getConfig().getBoolean("use-caching")) {
@@ -947,8 +944,8 @@ public class QuickShop extends JavaPlugin {
         }
         calendarWatcher = new CalendarWatcher(this);
         calendarWatcher.start();
-        Util.debugLog("Now using display-type: " + DisplayItem.getNowUsing().name());
-        getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
+        Util.debugLog("Now using display-type: {0}", DisplayItem.getNowUsing().name());
+        getLogger().info("QuickShop Loaded! {0} ms.", enableTimer.stopAndGetTimePassed());
     }
 
     private void loadItemMatcher() {

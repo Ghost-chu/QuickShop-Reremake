@@ -58,7 +58,7 @@ public class ConfigurationFixer {
             Object value = plugin.getConfig().get(key);
             Object buildInValue = builtInConfig.get(key);
             if (value == null || !value.getClass().getTypeName().equals(Objects.requireNonNull(buildInValue).getClass().getTypeName())) {
-                plugin.getLogger().warning("Fixing configuration use default value: " + key);
+                plugin.getLogger().warning("Fixing configuration use default value: {0}", key);
                 plugin.getConfig().set(key, buildInValue);
             }
         }
