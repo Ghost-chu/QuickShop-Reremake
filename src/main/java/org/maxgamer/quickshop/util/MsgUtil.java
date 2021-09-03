@@ -241,17 +241,14 @@ public class MsgUtil {
             plugin.getLogger().info("Converting the old format message.yml to message.json...");
             plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
             YamlConfiguration oldMsgI18n = YamlConfiguration.loadConfiguration(oldMsgFile);
-            for (String key : oldMsgI18n.getKeys(true)) {
-                messageFile.set(key, oldMsgI18n.get(key));
-            }
+            oldMsgI18n.getKeys(true).forEach(key -> messageFile.set(key, oldMsgI18n.get(key)));
             try {
                 messageFile.save(extractedMessageFile);
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
             try {
-                Files.move(
-                        oldMsgFile.toPath(), new File(plugin.getDataFolder(), "messages.yml.bak").toPath());
+                Files.move(oldMsgFile.toPath(), new File(plugin.getDataFolder(), "messages.yml.bak").toPath());
             } catch (IOException ignore) {
             }
             if (oldMsgFile.exists()) {
@@ -304,8 +301,6 @@ public class MsgUtil {
                 plugin.getLogger().log(Level.SEVERE, "Failed to backup and save language file", e);
             }
         }
-
-
         /* Set default language vesion and update messages.yml */
         int ver = 0;
         String strVer = messagei18n.getString("language-version");
@@ -428,7 +423,7 @@ public class MsgUtil {
                 continue;
             }
             String potionI18n = potioni18n.getString("potioni18n." + potion.getName());
-            if (potionI18n != null && !potionI18n.isEmpty()) {
+            if (StringUtils.isEmpty(potionI18n)) {
                 continue;
             }
             String potionName = gameLanguage.getPotion(potion);
@@ -545,28 +540,6 @@ public class MsgUtil {
                 }
             }
         }
-    }
-
-    public static @NotNull String getSubString(
-            @NotNull String text, @NotNull String left, @NotNull String right) {
-        String result;
-        int zLen;
-        if (left.isEmpty()) {
-            zLen = 0;
-        } else {
-            zLen = text.indexOf(left);
-            if (zLen > -1) {
-                zLen += left.length();
-            } else {
-                zLen = 0;
-            }
-        }
-        int yLen = text.indexOf(right, zLen);
-        if (yLen < 0 || right.isEmpty()) {
-            yLen = text.length();
-        }
-        result = text.substring(zLen, yLen);
-        return result;
     }
 
     /**
@@ -719,7 +692,6 @@ public class MsgUtil {
             if (raw == null) {
                 Util.debugLog("ERR: MsgUtil cannot find the the phrase at " + loc + ", printing the all readed datas: " + messagei18n);
                 // TODO: Remove me after we confirm all code about sendMessage has been correctly migrated.
-
                 return fillArgs(loc, args);
             }
             String filled = fillArgs(raw, args);
