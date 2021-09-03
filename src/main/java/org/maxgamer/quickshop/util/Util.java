@@ -87,16 +87,11 @@ public class Util {
     private static QuickShop plugin;
     private static Object serverInstance;
     private static Field tpsField;
-    private static List<String> worldBlacklist = new ArrayList<>(5);
     @Getter
     private static boolean disableDebugLogger = false;
     @Getter
     @Nullable
     private static DyeColor dyeColor = null;
-    private static boolean currencySymbolOnRight;
-    private static String alternateCurrencySymbol;
-    private static boolean disableVaultFormat;
-    private static boolean useDecimalFormat;
     @Nullable
     private static Class<?> cachedNMSClass = null;
 
@@ -188,7 +183,7 @@ public class Util {
     }
 
     public static boolean isBlacklistWorld(@NotNull World world) {
-        return worldBlacklist.contains(world.getName());
+        return plugin.getConfig().getStringList("shop.blacklist-world").contains(world.getName());
     }
 
     /**
@@ -359,7 +354,7 @@ public class Util {
         if (shop == null) {
             return "Error: Shop null";
         }
-        return format(n, disableVaultFormat, shop.getLocation().getWorld(), shop);
+        return format(n, plugin.getConfig().getBoolean("shop.disable-vault-format", false), shop.getLocation().getWorld(), shop);
     }
 
     @NotNull
@@ -405,13 +400,13 @@ public class Util {
     private static String getInternalFormat(double amount, @Nullable String currency) {
         if (StringUtils.isEmpty(currency)) {
             Util.debugLog("Format: Currency is null");
-            String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
-            return currencySymbolOnRight ? formatted + alternateCurrencySymbol : alternateCurrencySymbol + formatted;
+            String formatted = plugin.getConfig().getBoolean("use-decimal-format", false) ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
+            return plugin.getConfig().getBoolean("shop.currency-symbol-on-right", false) ? formatted + plugin.getConfig().getString("shop.alternate-currency-symbol", "$") : plugin.getConfig().getString("shop.alternate-currency-symbol", "$") + formatted;
         } else {
             Util.debugLog("Format: Currency is: [" + currency + "]");
-            String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
+            String formatted = plugin.getConfig().getBoolean("use-decimal-format", false) ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
             String symbol = currency2Symbol.getOrDefault(currency, currency);
-            return currencySymbolOnRight ? formatted + symbol : symbol + formatted;
+            return plugin.getConfig().getBoolean("shop.currency-symbol-on-right", false) ? formatted + symbol : symbol + formatted;
         }
     }
 
@@ -612,7 +607,6 @@ public class Util {
         blacklist.clear();
         shoppables.clear();
         restrictedPrices.clear();
-        worldBlacklist.clear();
         customStackSize.clear();
         currency2Symbol.clear();
         plugin = QuickShop.getInstance();
@@ -672,21 +666,13 @@ public class Util {
                 continue;
             }
             customStackSize.put(mat, Integer.parseInt(data[1]));
-
         }
-        worldBlacklist = plugin.getConfig().getStringList("shop.blacklist-world");
         disableDebugLogger = plugin.getConfig().getBoolean("debug.disable-debuglogger", false);
         try {
             dyeColor = DyeColor.valueOf(plugin.getConfig().getString("shop.sign-dye-color"));
         } catch (Exception ignored) {
         }
-        currencySymbolOnRight = plugin.getConfig().getBoolean("shop.currency-symbol-on-right", false);
-        alternateCurrencySymbol = plugin.getConfig().getString("shop.alternate-currency-symbol", "$");
-        disableVaultFormat = plugin.getConfig().getBoolean("shop.disable-vault-format", false);
-        useDecimalFormat = plugin.getConfig().getBoolean("use-decimal-format", false);
-
         List<String> symbols = plugin.getConfig().getStringList("shop.alternate-currency-symbol-list");
-
         symbols.forEach(entry -> {
             String[] splits = entry.split(";", 2);
             if (splits.length < 2) {
@@ -694,7 +680,6 @@ public class Util {
             }
             currency2Symbol.put(splits[0], splits[1]);
         });
-
         InteractUtil.init(plugin.getConfig());
     }
 
