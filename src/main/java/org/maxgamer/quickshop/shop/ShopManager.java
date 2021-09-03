@@ -391,8 +391,7 @@ public class ShopManager {
             }
             // Ooops, not founded that shop in this chunk.
         }
-        @Nullable Block secondHalfShop = Util
-                .getSecondHalf(loc.getBlock());
+        @Nullable Block secondHalfShop = Util.getSecondHalf(loc.getBlock());
         if (secondHalfShop != null) {
             inChunk = getShops(secondHalfShop.getChunk());
             if (inChunk != null) {
@@ -884,8 +883,6 @@ public class ShopManager {
             case NOT_A_WHOLE_NUMBER:
                 MsgUtil.sendMessage(p, "not-a-integer", message);
                 return;
-            default:
-                // Passed
         }
 
         // Set to 1 when disabled stacking shop

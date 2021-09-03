@@ -39,14 +39,13 @@ import java.util.logging.Logger;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class ConfigProvider extends QuickShopInstanceHolder {
-
-
-    private final File configFile = new File(plugin.getDataFolder(), "config.yml");
+    private final File configFile;
     private final Logger logger = plugin.getLogger();
     private FileConfiguration config = null;
 
-    public ConfigProvider(QuickShop plugin) {
+    public ConfigProvider(QuickShop plugin, File configFile) {
         super(plugin);
+        this.configFile = configFile;
     }
 
     public @NotNull FileConfiguration get() {
@@ -60,7 +59,7 @@ public class ConfigProvider extends QuickShopInstanceHolder {
         try {
             get().save(configFile);
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Failed to save configuration!", e);
+            logger.log(Level.SEVERE, "Failed to save configuration " + configFile.getName(), e);
         }
     }
 
@@ -80,7 +79,7 @@ public class ConfigProvider extends QuickShopInstanceHolder {
         if (config == null) {
             config = new YamlConfiguration();
         }
-        try (InputStream defaultConfigStream = plugin.getResource("config.yml")) {
+        try (InputStream defaultConfigStream = plugin.getResource(configFile.getName())) {
             config.load(configFile);
             if (defaultConfigStream != null) {
                 try (InputStreamReader reader = new InputStreamReader(defaultConfigStream, StandardCharsets.UTF_8)) {
@@ -89,18 +88,16 @@ public class ConfigProvider extends QuickShopInstanceHolder {
             }
         } catch (IOException | InvalidConfigurationException exception) {
             if (!defaults) {
-                logger.log(Level.SEVERE, "Cannot reading the configuration, doing backup configuration and use default", exception);
+                logger.log(Level.SEVERE, "Cannot reading the configuration " + configFile.getName() + ", doing backup configuration and use default", exception);
                 try {
-                    Files.copy(configFile.toPath(), plugin.getDataFolder().toPath().resolve("config-broken-" + UUID.randomUUID() + ".yml"), REPLACE_EXISTING);
+                    Files.copy(configFile.toPath(), plugin.getDataFolder().toPath().resolve(configFile.getName() + "-broken-" + UUID.randomUUID() + ".yml"), REPLACE_EXISTING);
                 } catch (IOException fatalException) {
-                    logger.log(Level.SEVERE, "Failed to backup plugin config! Disabling plugin....", fatalException);
-                    throw new IllegalStateException("Failed to backup plugin config!", fatalException);
+                    throw new IllegalStateException("Failed to backup configuration " + configFile.getName(), fatalException);
                 }
-                plugin.saveResource("config.yml", true);
+                plugin.saveResource(configFile.getName(), true);
                 reload(true);
             } else {
-                logger.log(Level.SEVERE, "Failed to load default configuration! Disabling plugin....", exception);
-                throw new IllegalStateException("Failed to load default configuration!", exception);
+                throw new IllegalStateException("Failed to load default configuration " + configFile.getName(), exception);
             }
         }
 

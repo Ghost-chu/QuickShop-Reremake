@@ -115,7 +115,7 @@ public class QuickShop extends JavaPlugin {
      */
     @Getter
     private final Map<String, Integer> limits = new HashMap<>(15);
-    private final ConfigProvider configProvider = new ConfigProvider(this);
+    private final ConfigProvider configProvider = new ConfigProvider(this, new File(getDataFolder(), "config.yml"));
     private final List<BukkitTask> timerTaskList = new ArrayList<>(3);
     @Getter
     private final GameVersion gameVersion = GameVersion.get(Util.getNMSVersion());
@@ -267,6 +267,7 @@ public class QuickShop extends JavaPlugin {
     private Plugin worldEditPlugin;
     @Getter
     private WorldEditAdapter worldEditAdapter;
+    private EnchancedLogger logger;
 
     /**
      * Use for mock bukkit
@@ -1943,5 +1944,14 @@ public class QuickShop extends JavaPlugin {
             return;
         }
         Util.debugLog("Command alias successfully registered.");
+    }
+
+    private EnchancedLogger enchancedLogger = null;
+
+    @NotNull
+    @Override
+    public EnchancedLogger getLogger() { //Replace with our logger
+        if (enchancedLogger == null) enchancedLogger = new EnchancedLogger(this);
+        return this.enchancedLogger;
     }
 }

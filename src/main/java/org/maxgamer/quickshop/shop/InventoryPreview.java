@@ -69,6 +69,7 @@ public class InventoryPreview implements Listener {
         } else {
             itemMeta = plugin.getServer().getItemFactory().getItemMeta(itemStack.getType());
         }
+        // TODO use persis data storage container
         if (itemMeta != null) {
             if (itemMeta.hasLore()) {
                 itemMeta.getLore().add(plugin.getPreviewProtectionLore());
@@ -87,6 +88,7 @@ public class InventoryPreview implements Listener {
         if (!stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
             return false;
         }
+
         for (String string : stack.getItemMeta().getLore()) {
             if (QuickShop.instance.getPreviewProtectionLore().equals(string)) {
                 return true;
