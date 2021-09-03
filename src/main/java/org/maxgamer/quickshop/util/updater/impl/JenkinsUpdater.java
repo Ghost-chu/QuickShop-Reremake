@@ -92,7 +92,7 @@ public class JenkinsUpdater implements QuickUpdater {
             return true;
         }
         try (InputStream inputStream = HttpRequest.get(new URL(jobUrl + "lastSuccessfulBuild/artifact/target/BUILDINFO"))
-                .header("User-Agent", "QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion())
+                .header("User-Agent", "Java-QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion())
                 .execute()
                 .expectResponseCode(200)
                 .getInputStream()) {
