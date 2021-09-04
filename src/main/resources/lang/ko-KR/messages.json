@@ -318,7 +318,7 @@
   "backup-success": "&a백업 완료.",
   "console-only": "&c이 명령어는 콘솔에서만 사용할 수 있습니다.",
   "console-only-danger": "&c이 명령어는 위험하기에 콘솔에서만 실행할 수 있습니다.",
-  "clean-warning": "&eThis command will purge &call &eshops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
+  "clean-warning": "&e이 명령어는 &c손상된 상점과 허용되지 않는 아이템을 판매/구매중인 상점과 &c&l로드되지 않은 월드의 모든 샵을 삭제합니다 &e상점 데이터를 전체 백업하고 &b/qs cleanhost를 사용하여 &e계속 진행하십시오.",
   "shop-creation-failed": "&c상점을 만들지 못했습니다, 서버 관리자에게 문의해주세요.",
   "shop-owner-self-trade": "&e당신은 당신의 상점과 거래중이며 얼마의 돈도 얻지 못합니다.",
   "chest-title": "퀵샵 상점",
