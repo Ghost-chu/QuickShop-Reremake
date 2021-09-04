@@ -318,7 +318,7 @@
   "backup-success": "&aS'ha fet la còpia de seguretat.",
   "console-only": "&cAquesta comanda només es pot executar des de la consola.",
   "console-only-danger": "&cAquesta comanda és perillosa, així que només es pot executar des de la consola.",
-  "clean-warning": "&eAquesta comanda purgarà &ctotes &eles botiguqes si la botiga rep dany, es va crear en un món no permès, està venent/comprant ítems prohibits o &c&lÉS EN UN MÓN NO CARREGAT&e. Assegura't de crear una còpia de seguretat completa de la teca botiga abans i fes servir &b/qs cleanghost confirm &eper continuar.",
+  "clean-warning": "&eThis command will purge &call &eshops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
   "shop-creation-failed": "&cNo s'ha pogut crear la botiga, si us plau, posa't en contacte amb un administrador.",
   "shop-owner-self-trade": "&eEstàs intercanviant amb la teva pròpia botiga, així que pot ser que no hi guanyis res.",
   "chest-title": "QuickShop Store",
