@@ -99,8 +99,8 @@ public class PlotSquaredIntegrationV5 extends QSIntegratedPlugin {
         this.createFlag = new QuickshopCreateFlag();
         this.tradeFlag = new QuickshopTradeFlag();
         GlobalFlagContainer.getInstance().addAll(Arrays.asList(createFlag, tradeFlag));
-        plugin.getLogger().info("{0} flags register successfully.",getName());
-        Util.debugLog("Success register flags.",getName());
+        plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
+        Util.debugLog("Success register " + getName() + " flags.");
         PlotSquared.get().getEventDispatcher().registerListener(this);
     }
 
