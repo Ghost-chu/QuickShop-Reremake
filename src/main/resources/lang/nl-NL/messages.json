@@ -318,7 +318,7 @@
   "backup-success": "&aBack-up succesvol.",
   "console-only": "Deze opdracht kan alleen worden gestart vanaf de console!",
   "console-only-danger": "&cDit is een gevaarlijk commando, zodat alleen de console het kan uitvoeren.",
-  "clean-warning": "&eThis command will purge &call &eshops if the shop is damaged, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
+  "clean-warning": "&eThis command will purge &call &eshops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
   "shop-creation-failed": "Het maken van &cShop is mislukt, neem contact op met de serverbeheerder.",
   "shop-owner-self-trade": "Je handelt met jezelf. Je zal dan ook geen geld krijgen",
   "chest-title": "QuickShop Winkel",
