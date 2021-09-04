@@ -249,9 +249,8 @@ public class RealDisplayItem extends DisplayItem {
             return;
         }
         this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
-        this.item = this.shop.getLocation().getWorld()
-                .dropItem(getDisplayLocation(), this.guardedIstack);
-        this.item.setItemStack(this.guardedIstack);
+        this.item = this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack);
+        //this.item.setItemStack(this.guardedIstack);
         safeGuard(this.item);
     }
 

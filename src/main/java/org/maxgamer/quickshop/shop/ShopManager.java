@@ -1223,10 +1223,8 @@ public class ShopManager {
             if (StringUtils.isNumeric(message)) {
                 amount = Integer.parseInt(message);
             } else {
-                if (message.equalsIgnoreCase(
-                        plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
-                    int shopHaveItems = Util
-                            .countItems(((ContainerShop) shop).getInventory(), shop.getItem());
+                if (message.equalsIgnoreCase(plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
+                    int shopHaveItems = Util.countItems(((ContainerShop) shop).getInventory(), shop.getItem());
                     int invHaveSpaces = Util.countSpace(p.getInventory(), shop.getItem());
                     if (!shop.isUnlimited()) {
                         amount = Math.min(shopHaveItems, invHaveSpaces);
@@ -1295,10 +1293,8 @@ public class ShopManager {
                 if (Util.isWallSign(currentBlock.getType())) {
                     final Block attached = Util.getAttached(currentBlock);
                     if (attached != null) {
-                        shop = this
-                                .getShopIncludeAttached_Fast(attached.getLocation(), true, writeCache);
+                        shop = this.getShopIncludeAttached_Fast(attached.getLocation(), true, writeCache);
                     }
-                    // double chest
                 } else {
                     // optimize for performance
                     BlockState state = PaperLib.getBlockState(currentBlock, false).getState();
@@ -1316,7 +1312,6 @@ public class ShopManager {
         if (plugin.getShopCache() != null && writeCache) {
             plugin.getShopCache().setCache(loc, shop);
         }
-
         return shop;
     }
 

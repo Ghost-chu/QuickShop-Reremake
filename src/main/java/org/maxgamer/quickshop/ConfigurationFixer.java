@@ -36,37 +36,42 @@ import java.util.logging.Level;
 @AllArgsConstructor
 public class ConfigurationFixer {
     private final QuickShop plugin;
+    private final File externalConfigFile;
+    private final FileConfiguration externalConfig;
     private final FileConfiguration builtInConfig;
 
-    public void fix() {
+
+    public boolean fix() {
         // There read the default value as true but we should set default value as false in config.yml
         // So that we can check the configuration may broken or other else.
-        if (!plugin.getConfig().getBoolean("config-damaged", true)) {
-            return;
+        if (!externalConfig.getBoolean("config-damaged", true)) {
+            return false;
         }
 
-        plugin.getLogger().warning("Warning! QuickShop detected the config.yml has been damaged.");
-        plugin.getLogger().warning("Backup - Creating backup for file config.yml...");
+        plugin.getLogger().warning("Warning! QuickShop detected the configuration has been damaged.");
+        plugin.getLogger().warning("Backup - Creating backup for configuration...");
         try {
-            Files.copy(new File(plugin.getDataFolder(), "config.yml").toPath(), new File(plugin.getDataFolder(), "config.yml." + System.currentTimeMillis()).toPath());
+            Files.copy(externalConfigFile.toPath(), new File(externalConfigFile.getParent(), externalConfigFile.getName() + "." + System.currentTimeMillis()).toPath());
         } catch (IOException ioException) {
-            plugin.getLogger().log(Level.WARNING, "Failed to create config.yml backup.", ioException);
+            plugin.getLogger().log(Level.WARNING, "Failed to create file backup.", ioException);
         }
         plugin.getLogger().warning("Fix - Fixing the configuration, this may take a while...");
-
         for (String key : builtInConfig.getKeys(true)) {
-            Object value = plugin.getConfig().get(key);
+            Object value = externalConfig.get(key);
             Object buildInValue = builtInConfig.get(key);
             if (value == null || !value.getClass().getTypeName().equals(Objects.requireNonNull(buildInValue).getClass().getTypeName())) {
                 plugin.getLogger().warning("Fixing configuration use default value: {0}", key);
-                plugin.getConfig().set(key, buildInValue);
+                externalConfig.set(key, buildInValue);
             }
         }
         plugin.getLogger().info("QuickShop fixed the damaged parts in configuration that we can found. We recommend you restart the server and make fix apply.");
-        plugin.getConfig().set("config-damaged", false);
-        plugin.saveConfig();
-        plugin.reloadConfig();
-
+        externalConfig.set("config-damaged", false);
+        try {
+            externalConfig.save(externalConfigFile);
+        } catch (IOException e) {
+            plugin.getLogger().log(Level.WARNING, "Couldn't save fixed configuration!", e);
+        }
+        return true;
     }
 }
 
