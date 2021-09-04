@@ -318,7 +318,7 @@
   "backup-success": "&a备份成功",
   "console-only": "&c该命令只能由控制台执行",
   "console-only-danger": "&c这是一个危险的命令，只有控制台才能执行它。",
-  "clean-warning": "&eThis command will purge &call &eshops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
+  "clean-warning": "&e这个命令将清理&c所有&e在不允许创建商店的世界的、出售/购买不允许的物品的，以及 &c&l所有在服务器没有加载的世界的商店， 请在确保您的商店数据备份完整后使用 &b/qs cleanghost confirm &e来继续。",
   "shop-creation-failed": "&c商店创建失败，请与服务器管理员联系。",
   "shop-owner-self-trade": "&e你正在和自己的商店进行交易，你可能不会得到任何钱。",
   "chest-title": "QuickShop商店",
