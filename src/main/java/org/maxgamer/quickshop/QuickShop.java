@@ -598,8 +598,8 @@ public class QuickShop extends JavaPlugin {
         }
         Util.debugLog("Unloading all shops...");
         try {
-            if (this.getShopManager() != null) {
-                this.getShopManager().getLoadedShops().forEach(Shop::onUnload);
+            if (getShopManager() != null) {
+                getShopManager().getLoadedShops().forEach(Shop::onUnload);
             }
         } catch (Exception ignored) {
         }
