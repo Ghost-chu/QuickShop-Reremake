@@ -318,7 +318,7 @@
   "backup-success": "&aРезервное копирование успешно.",
   "console-only": "&cЭта команда может быть выполнена только консолью.",
   "console-only-danger": "&cЭто опасная команда, поэтому только консоль может ее выполнить.",
-  "clean-warning": "&eЭта команда очистит &cвсех &eмагазинов, если магазин повреждён или создан в запрещённых мирах или продажах/покупке запрещенных товаров и &c&lНЕ ЗАГРУЖЕНА МИРА МАГАЗИНОВ&e, убедитесь, что у вас есть полная резервная копия данных ваших магазинов и используйте &b/qs cleanghost confirm &eдля продолжение.",
+  "clean-warning": "&eThis command will purge &call &eshops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
   "shop-creation-failed": "&cНе удалось создать новый магазин, свяжитесь с администратором сервера.",
   "shop-owner-self-trade": "&eВы торгуете с собственным магазином и не получите никакого баланса.",
   "chest-title": "Магазин QuickShop",
