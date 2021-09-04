@@ -48,7 +48,7 @@ public class ConfigurationFixer {
             return false;
         }
 
-        plugin.getLogger().warning("Warning! QuickShop detected the configuration has been damaged.");
+        plugin.getLogger().warning("Warning! QuickShop detected the configuration has been corrupted.");
         plugin.getLogger().warning("Backup - Creating backup for configuration...");
         try {
             Files.copy(externalConfigFile.toPath(), new File(externalConfigFile.getParent(), externalConfigFile.getName() + "." + System.currentTimeMillis()).toPath());
@@ -64,7 +64,7 @@ public class ConfigurationFixer {
                 externalConfig.set(key, buildInValue);
             }
         }
-        plugin.getLogger().info("QuickShop fixed the damaged parts in configuration that we can found. We recommend you restart the server and make fix apply.");
+        plugin.getLogger().info("QuickShop fixed the corrupted parts in configuration that we can found. We recommend you restart the server and make fix apply.");
         externalConfig.set("config-damaged", false);
         try {
             externalConfig.save(externalConfigFile);

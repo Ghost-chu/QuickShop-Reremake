@@ -698,7 +698,7 @@ public class QuickShop extends JavaPlugin {
         try {
             saveDefaultConfig();
         } catch (IllegalArgumentException resourceNotFoundException) {
-            getLogger().severe("Failed to save config.yml from jar, The binary file of QuickShop may damaged. Please re-download from our website.");
+            getLogger().severe("Failed to save config.yml from jar, The binary file of QuickShop may corrupted. Please re-download from our website.");
         }
         reloadConfig();
         /*
