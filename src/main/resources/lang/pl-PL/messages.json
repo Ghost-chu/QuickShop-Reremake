@@ -318,7 +318,7 @@
   "backup-success": "&aKopia zapasowa powiodła się.",
   "console-only": "&cTo polecenie może być wykonane tylko przez konsolę.",
   "console-only-danger": "&cJest to niebezpieczne polecenie, więc tylko konsola może go wykonać.",
-  "clean-warning": "&eTa komenda wyczyści &cwszystkie &esklepy, jeśli sklep jest uszkodzony, został utworzony w niedozwolonych światach, sprzedaje/skupuje niedozwolone przedmioty lub &c&lISTNIEJE W NIEZAŁADOWANYM ŚWIECIE&e. Upewnij się, że najpierw utwórzyłeś pełną kopię zapasową danych Twojego sklepu i użyj &b/qs cleanghost confirm &eaby kontynuować.",
+  "clean-warning": "&eThis command will purge &call &eshops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
   "shop-creation-failed": "&cTworzenie sklepu nie powiodło się, skontaktuj się z administratorem serwera.",
   "shop-owner-self-trade": "&eHandlujesz z własnym sklepem, więc nie będziesz mógł uzyskać żadnych korzyści.",
   "chest-title": "Sklep QuickShop",
