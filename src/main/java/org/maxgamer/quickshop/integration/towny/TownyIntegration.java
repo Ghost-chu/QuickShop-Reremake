@@ -184,7 +184,7 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
 
     private boolean checkFlags(@NotNull Player player, @NotNull Location location, List<TownyFlags> flags) {
         if (ignoreDisabledWorlds && !TownyAPI.getInstance().isTownyWorld(location.getWorld())) {
-            Util.debugLog("This world disabled Towny.");
+            Util.debugLog("World {0} disabled Towny.", location.getWorld().getName());
             return true;
         }
         if (!whiteList && !ShopPlotUtil.isShopPlot(location)) {

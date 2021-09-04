@@ -36,7 +36,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.mojangapi.MojangAPI;
@@ -274,18 +273,16 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                     plugin.getLogger().warning("Failed to update game assets from MojangAPI server, This may caused by Mojang servers down, connection issue or invalid language code.");
                     return;
                 }
-                Util.debugLog(MsgUtil.fillArgs("Assets file loaded! id:[{0}], sha1:[{1}], Content Length:[{2}]",
+                Util.debugLog("Assets file loaded! id:[{0}], sha1:[{1}], Content Length:[{2}]",
                         assetsFileData.get().getId(),
                         assetsFileData.get().getSha1(),
-                        String.valueOf(assetsFileData.get().getContent().length())));
+                        String.valueOf(assetsFileData.get().getContent().length()));
 
 
                 String indexSha1Hex = DigestUtils.sha1Hex(assetsFileData.get().getContent());
 
                 if (!assetsFileData.get().getSha1().equals(indexSha1Hex)) {
-                    Util.debugLog(MsgUtil.fillArgs("File hashing equals failed! excepted:[{0}], file:[{1}]",
-                            assetsFileData.get().getSha1(),
-                            indexSha1Hex));
+                    Util.debugLog("File hashing equals failed! excepted:[{0}], file:[{1}]", assetsFileData.get().getSha1(), indexSha1Hex);
                     plugin.getLogger().warning("Failed to update game assets from MojangAPI server because the file seems invalid, please try again later.");
                     return;
                 }

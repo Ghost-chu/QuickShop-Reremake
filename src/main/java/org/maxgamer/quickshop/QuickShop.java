@@ -474,19 +474,18 @@ public class QuickShop extends JavaPlugin {
                     break;
                 case GEMS_ECONOMY:
                     core = new Economy_GemsEconomy(this);
-                    Util.debugLog("Now using the GemsEconomy economy system.");
                     break;
                 case TNE:
                     core = new Economy_TNE(this);
-                    Util.debugLog("Now using the TNE economy system.");
                     break;
                 default:
-                    Util.debugLog("No any economy provider selected.");
                     break;
             }
+
             if (core == null) {
                 return false;
             }
+            Util.debugLog("Now using the {0} economy system.", core.getName());
             if (!core.isValid()) {
                 setupBootError(BuiltInSolution.econError(), false);
                 return false;
@@ -511,7 +510,7 @@ public class QuickShop extends JavaPlugin {
      * @param s The string to log. It will be prefixed with the date and time.
      */
     public void log(@NotNull String s) {
-        Util.debugLog("[SHOP LOG] " + s);
+        Util.debugLog("[SHOP LOG] {0}", s);
         if (this.getLogWatcher() == null) {
             return;
         }

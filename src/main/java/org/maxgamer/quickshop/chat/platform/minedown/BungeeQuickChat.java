@@ -68,7 +68,7 @@ public class BungeeQuickChat implements QuickChat {
             receiver.spigot().sendMessage((BaseComponent) component.get());
             return;
         }
-        Util.debugLog("Illegal component " + component.get().getClass().getName() + " sending to " + this.getClass().getName() + " processor, trying force sending.");
+        Util.debugLog("Illegal component {0} sending to {1} processor, trying force sending.", component.get().getClass().getName(), this.getClass().getName());
 
     }
 

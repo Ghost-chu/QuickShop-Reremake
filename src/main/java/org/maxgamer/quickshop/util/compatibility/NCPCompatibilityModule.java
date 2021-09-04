@@ -52,15 +52,12 @@ public class NCPCompatibilityModule extends QSCompatibilityModule {
     @Override
     public void toggle(@NotNull Player player, boolean checking) {
         if (checking) {
-            Util.debugLog(
-                    "Calling NoCheatPlus ignore "
-                            + player.getName()
-                            + " cheats detection until we finished permission checks.");
+            Util.debugLog("Calling NoCheatPlus ignore {0} cheats detection until we finished permission checks.", player.getName());
 
             NCPExemptionManager.unexempt(player);
         } else {
             Util.debugLog(
-                    "Calling NoCheatPlus continue follow " + player.getName() + " cheats detection.");
+                    "Calling NoCheatPlus continue follow {0} cheats detection.", player.getName());
             NCPExemptionManager.exemptPermanently(player);
         }
     }

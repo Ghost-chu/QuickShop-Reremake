@@ -198,8 +198,7 @@ public class VirtualDisplayItem extends DisplayItem {
         ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.VIRTUALITEM);
         plugin.getServer().getPluginManager().callEvent(shopDisplayItemSpawnEvent);
         if (shopDisplayItemSpawnEvent.isCancelled()) {
-            Util.debugLog(
-                    "Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
+            Util.debugLog("Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
             return;
         }
 

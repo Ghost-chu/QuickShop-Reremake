@@ -147,7 +147,7 @@ public class ContainerShop implements Shop {
         if (item.hasItemMeta()) {
             ItemMeta meta = item.getItemMeta();
             if (meta.hasDisplayName()) {
-                Util.debugLog("Shop item display is: " + meta.getDisplayName());
+                Util.debugLog("Shop item display is: {0}", meta.getDisplayName());
                 //https://hub.spigotmc.org/jira/browse/SPIGOT-5964
                 if (meta.getDisplayName().matches("\\{.*}")) {
                     meta.setDisplayName(meta.getDisplayName());
@@ -320,7 +320,7 @@ public class ContainerShop implements Shop {
         if (this.displayItem == null) {
             Util.debugLog("Warning: DisplayItem is null, this shouldn't happened...");
             StackTraceElement traceElements = Thread.currentThread().getStackTrace()[2];
-            Util.debugLog("Call from: " + traceElements.getClassName() + "#" + traceElements.getMethodName() + "%" + traceElements.getLineNumber());
+            MsgUtil.debugStackTrace(new StackTraceElement[]{traceElements});
             return;
         }
 
@@ -982,8 +982,7 @@ public class ContainerShop implements Shop {
         }
         setDirty();
         if (Util.fireCancellableEvent(new ShopTypeChangeEvent(this, this.shopType, newShopType))) {
-            Util.debugLog(
-                    "Some addon cancelled shop type changes, target shop: " + this);
+            Util.debugLog("Some addon cancelled shop type changes, target shop: {0}", this);
             return;
         }
         this.shopType = newShopType;
@@ -1212,13 +1211,12 @@ public class ContainerShop implements Shop {
                 if (createBackup) {
                     plugin.log("Deleting shop " + this + " request by invalid inventory.");
                     this.delete();
-                    Util.debugLog(
-                            "Inventory doesn't exist anymore: " + this + " shop was removed.");
+                    Util.debugLog("Inventory doesn't exist anymore: {0} shop was removed.", this);
                 }
             } else {
                 plugin.log("Deleting shop " + this + " request by invalid inventory.");
                 this.delete();
-                Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was removed.");
+                Util.debugLog("Inventory doesn't exist anymore: {0} shop was removed.", this);
             }
             return null;
         }
@@ -1362,8 +1360,7 @@ public class ContainerShop implements Shop {
             return;
         }
         if (!Util.canBeShop(this.getLocation().getBlock())) {
-            Util.debugLog("Shop at " + this.getLocation() + "@" + this.getLocation().getBlock()
-                    + " container was missing, unload from memory...");
+            Util.debugLog("Shop at {0}@{1} container was missing, unload from memory...", this.getLocation(), this.getLocation().getBlock());
             this.onUnload();
             this.delete(true);
         }

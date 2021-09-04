@@ -118,7 +118,7 @@ public class EconomyTransaction {
      * @return The transaction success.
      */
     public boolean failSafeCommit() {
-        Util.debugLog("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + ", EconomyCore: " + core.getName());
+        Util.debugLog("Transaction begin: FailSafe Commit --> {0} => {1}; Amount: {2}, EconomyCore: {3}", from, to, amount, core.getName());
         boolean result = commit();
         if (!result) {
             rollback(true);
@@ -155,7 +155,7 @@ public class EconomyTransaction {
      * @return The transaction success.
      */
     public boolean commit(@NotNull TransactionCallback callback) {
-        Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(include tax): " + actualAmount + " Tax: " + tax + ", EconomyCore: " + core.getName());
+        Util.debugLog("Transaction begin: Commit --> {0} => {1}; Amount: {2}, EconomyCore: {3}", from, to, amount, core.getName());
         steps = TransactionSteps.CHECK;
         if (!callback.onCommit(this)) {
             this.lastError = "Plugin cancelled this transaction.";
@@ -271,7 +271,7 @@ public class EconomyTransaction {
          * @param economyTransaction Transaction
          */
         default void onFailed(@NotNull EconomyTransaction economyTransaction) {
-            Util.debugLog("Transaction failed: " + economyTransaction.getLastError() + ".");
+            Util.debugLog("Transaction failed: {0}.", economyTransaction.getLastError());
         }
 
         /**
@@ -282,7 +282,7 @@ public class EconomyTransaction {
          * @param economyTransaction Transaction
          */
         default void onTaxFailed(@NotNull EconomyTransaction economyTransaction) {
-            Util.debugLog("Tax Transaction failed: " + economyTransaction.getLastError() + ".");
+            Util.debugLog("Tax Transaction failed: {0}.", economyTransaction.getLastError());
         }
 
     }

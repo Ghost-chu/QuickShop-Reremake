@@ -1,3 +1,22 @@
+/*
+ * This file is a part of project QuickShop, the name is PlotSquaredIntegrationV6.java
+ *  Copyright (C) PotatoCraft Studio and contributors
+ *
+ *  This program is free software: you can redistribute it and/or modify it
+ *  under the terms of the GNU General Public License as published by the
+ *  Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT
+ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ *  for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 package org.maxgamer.quickshop.integration.plotsquared;/*
  * This file is a part of project QuickShop, the name is PlotSquaredIntegrationV5.java
  *  Copyright (C) PotatoCraft Studio and contributors
@@ -26,7 +45,6 @@ import com.plotsquared.core.plot.Plot;
 import com.plotsquared.core.plot.flag.GlobalFlagContainer;
 import com.plotsquared.core.plot.flag.types.BooleanFlag;
 import com.sk89q.worldedit.regions.CuboidRegion;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -96,8 +114,8 @@ public class PlotSquaredIntegrationV6 extends QSIntegratedPlugin {
         this.createFlag = new QuickshopCreateFlag();
         this.tradeFlag = new QuickshopTradeFlag();
         GlobalFlagContainer.getInstance().addAll(Arrays.asList(createFlag, tradeFlag));
-        plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
-        Util.debugLog("Success register " + getName() + " flags.");
+        plugin.getLogger().info("{0} flags register successfully.", getName());
+        Util.debugLog("Success register {0} flags.", getName());
         PlotSquared.get().getEventDispatcher().registerListener(this);
     }
 

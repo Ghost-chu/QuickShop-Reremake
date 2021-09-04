@@ -53,7 +53,7 @@ public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
                 shopsDeleted++;
             }
         }
-        Util.debugLog("Successfully deleted all shops in world " + cmdArg[0] + "!");
+        Util.debugLog("Successfully deleted all shops in world {0}!", cmdArg[0]);
 
         MsgUtil.sendMessage(sender, "shops-removed-in-world", String.valueOf(shopsDeleted), world.getName());
     }

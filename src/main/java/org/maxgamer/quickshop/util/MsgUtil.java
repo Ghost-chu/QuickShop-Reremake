@@ -107,7 +107,7 @@ public class MsgUtil {
             if (msgs != null) {
                 for (TransactionMessage msg : msgs) {
                     if (p.getPlayer() != null) {
-                        Util.debugLog("Accepted the msg for player " + p.getName() + " : " + msg);
+                        Util.debugLog("Accepted the msg for player {0}: {1}", p.getName(), msg);
                         if (msg.getHoverItem() != null) {
                             try {
                                 ItemStack data = Util.deserialize(msg.getHoverItem());
@@ -164,14 +164,14 @@ public class MsgUtil {
         try {
             String raw = messagei18n.getString(loc);
             if (raw == null) {
-                Util.debugLog("Missing language key: " + loc);
+                Util.debugLog("Missing language key: {0}", loc);
                 return invaildMsg + ": " + loc;
             }
-            String filled = fillArgs(raw, args);
+            String filled = fillArgs(raw, (Object[]) args);
             if (player != null) {
                 if (plugin.getConfig().getBoolean("plugin.PlaceHolderAPI") && plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
                     filled = PlaceholderAPI.setPlaceholders(player, filled);
-                    Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
+                    Util.debugLog("Processed message {0} by PlaceHolderAPI.", filled);
                 }
             }
             return filled;
@@ -189,13 +189,13 @@ public class MsgUtil {
      * @param args args
      * @return filled text
      */
-    public static String fillArgs(@Nullable String raw, @Nullable String... args) {
+    public static String fillArgs(@Nullable String raw, @Nullable Object... args) {
         if (StringUtils.isEmpty(raw)) {
             return "";
         }
         if (args != null) {
             for (int i = 0; i < args.length; i++) {
-                raw = StringUtils.replace(raw, "{" + i + "}", args[i] == null ? "" : args[i]);
+                raw = StringUtils.replace(raw, "{" + i + "}", args[i] == null ? "null" : args[i].toString());
             }
         }
         return raw;
@@ -274,7 +274,7 @@ public class MsgUtil {
             }
             Files.copy(Objects.requireNonNull(plugin.getResource(buildInMessageFilePath)), buildInLangFile.toPath());
         } catch (IOException ioException) {
-            Util.debugLog("Cannot load default built-in language file: " + ioException.getMessage());
+            Util.debugLog("Cannot load default built-in language file: {0}", ioException.getMessage());
         }
         builtInLang = HumanReadableJsonConfiguration.loadConfiguration(buildInLangFile);
         try (InputStreamReader inputStreamReader = new InputStreamReader(Objects.requireNonNull(plugin.getResource("lang-original/messages.json")))) {
@@ -289,8 +289,8 @@ public class MsgUtil {
         String messageCodeInFile = messagei18n.getString("language-name");
         if (!Objects.equals(messageCodeInFile, languageCode)) {
             String backupFileName = "messages-bak-" + UUID.randomUUID() + ".json";
-            Util.debugLog("Language name " + messageCodeInFile + " not matched with " + languageCode + ", replacing with build-in files and renaming current file to " + backupFileName);
-            plugin.getLogger().warning("Language name " + messageCodeInFile + " not matched with " + languageCode + ", replacing with build-in files and renaming current file to " + backupFileName);
+            Util.debugLog("Language name {0} not matched with {1}, replacing with build-in files and renaming current file to {2}", messageCodeInFile, languageCode, backupFileName);
+            plugin.getLogger().warning("Language name {0} not matched with {1}, replacing with build-in files and renaming current file to {2}", messageCodeInFile, languageCode, backupFileName);
             File pending = new File(plugin.getDataFolder(), "messages.json");
             try {
                 Files.move(pending.toPath(), new File(plugin.getDataFolder(), backupFileName).toPath());
@@ -688,7 +688,7 @@ public class MsgUtil {
         try {
             final String raw = messagei18n.getString(loc);
             if (raw == null) {
-                Util.debugLog("ERR: MsgUtil cannot find the the phrase at " + loc + ", printing the all readed datas: " + messagei18n);
+                Util.debugLog("ERR: MsgUtil cannot find the the phrase at {0}, printing the all readed datas: {1}", loc, messagei18n);
                 // TODO: Remove me after we confirm all code about sendMessage has been correctly migrated.
                 return fillArgs(loc, args);
             }
@@ -969,13 +969,7 @@ public class MsgUtil {
         if (Util.isDisableDebugLogger()) {
             return;
         }
-        for (StackTraceElement stackTraceElement : traces) {
-            final String className = stackTraceElement.getClassName();
-            final String methodName = stackTraceElement.getMethodName();
-            final int codeLine = stackTraceElement.getLineNumber();
-            final String fileName = stackTraceElement.getFileName();
-            Util.debugLog("[TRACE]  [" + className + "] [" + methodName + "] (" + fileName + ":" + codeLine + ") ");
-        }
+        MsgUtil.debugStackTrace(traces);
     }
 
     @SneakyThrows
