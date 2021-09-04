@@ -71,7 +71,7 @@ public class CompatibilityManager extends QuickShopInstanceHolder {
                 module.toggle(player, status);
             } catch (Throwable e) {
                 unregister(module);
-                Util.debugLog("Unregistered module " + module.getName() + " for an error: " + e.getMessage());
+                Util.debugLog("Unregistered module {0} for an error: {1}", module.getName(), e.getMessage());
             }
         }
     }
@@ -82,7 +82,7 @@ public class CompatibilityManager extends QuickShopInstanceHolder {
 
     public void register(@NotNull CompatibilityModule module) {
         if (!registeredModules.containsKey(module.getName())) {
-            plugin.getLogger().info("Registering " + module.getName() + " Compatibility Module");
+            plugin.getLogger().info("Registering {0} Compatibility Module", module.getName());
             registeredModules.put(module.getName(), module);
         }
     }

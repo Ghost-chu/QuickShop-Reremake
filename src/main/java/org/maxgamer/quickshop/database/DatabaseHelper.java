@@ -128,13 +128,13 @@ public class DatabaseHelper {
 
                     @Override
                     public void onFailed(SQLException e) {
-                        Util.debugLog("Error to create EXTRA column: " + e.getMessage());
+                        Util.debugLog("Error to create EXTRA column: {0}", e.getMessage());
                     }
                 }));
                 Util.debugLog("Setting up the column EXTRA...");
             }
         } catch (SQLException e) {
-            Util.debugLog("Error to create EXTRA column: " + e.getMessage());
+            Util.debugLog("Error to create EXTRA column: {0}", e.getMessage());
             //ignore
         }
 

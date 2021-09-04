@@ -744,11 +744,11 @@ public class ShopManager {
         if (player != null) {
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.tax")) {
                 tax = 0;
-                Util.debugLog("Disable the Tax for player " + player + " cause they have permission quickshop.tax");
+                Util.debugLog("Disable the Tax for player {0} cause they have permission quickshop.tax", player);
             }
             if (shop.isUnlimited() && QuickShop.getPermissionManager().hasPermission(player, "quickshop.tax.bypassunlimited")) {
                 tax = 0;
-                Util.debugLog("Disable the Tax for player " + player + " cause they have permission quickshop.tax.bypassunlimited and shop is unlimited.");
+                Util.debugLog("Disable the Tax for player {0} cause they have permission quickshop.tax.bypassunlimited and shop is unlimited.", player);
             }
         }
         if (tax >= 1.0) {
@@ -774,7 +774,7 @@ public class ShopManager {
             return;
         }
         if (plugin.isAllowStack() && !p.hasPermission("quickshop.create.stacks")) {
-            Util.debugLog("Player " + p + " no permission to create stacks shop, forcing creating single item shop");
+            Util.debugLog("Player {0} no permission to create stacks shop, forcing creating single item shop", p.getName());
             info.getItem().setAmount(1);
         }
 
@@ -785,7 +785,7 @@ public class ShopManager {
             Result result = plugin.getPermissionChecker().canBuild(p, info.getLocation());
             if (!result.isSuccess()) {
                 MsgUtil.sendMessage(p, "3rd-plugin-build-check-failed", result.getMessage());
-                Util.debugLog("Failed to create shop because protection check failed, found:" + result.getMessage());
+                Util.debugLog("Failed to create shop because protection check failed, found: {0}", result.getMessage());
                 return;
             }
         }
@@ -903,7 +903,7 @@ public class ShopManager {
                     .callIntegrationsCanCreate(p, info.getLocation());
             if (!result.isSuccess()) {
                 MsgUtil.sendMessage(p, "integrations-check-failed-create", result.getMessage());
-                Util.debugLog("Cancelled by integrations: " + result);
+                Util.debugLog("Cancelled by integrations: {0}", result);
                 return;
             }
         }
@@ -1214,8 +1214,7 @@ public class ShopManager {
                     // instead of output cancelled message (when typed neither integer or 'all'), just let
                     // player know that there should be positive number or 'all'
                     MsgUtil.sendMessage(p, "not-a-integer", message);
-                    Util.debugLog(
-                            "Receive the chat " + message + " and it format failed: " + message);
+                    Util.debugLog("Receive the chat but format it failed: ", message);
                     return;
                 }
             }
@@ -1269,8 +1268,7 @@ public class ShopManager {
                     // instead of output cancelled message, just let player know that there should be positive
                     // number or 'all'
                     MsgUtil.sendMessage(p, "not-a-integer", message);
-                    Util.debugLog(
-                            "Receive the chat " + message + " and it format failed: " + message);
+                    Util.debugLog("Receive the chat but format it failed: ", message);
                     return;
                 }
             }

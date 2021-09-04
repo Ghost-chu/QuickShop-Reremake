@@ -114,7 +114,7 @@ public class RealDisplayItem extends DisplayItem {
                 if (shop.isLeftShop()) {
                     return;
                 }
-                Util.debugLog("Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem.getLocation());
+                Util.debugLog("Fixing moved Item displayItem {0} at {1}", eItem.getUniqueId(), eItem.getLocation());
                 PaperLib.teleportAsync(entity, Objects.requireNonNull(getDisplayLocation()), PlayerTeleportEvent.TeleportCause.UNKNOWN);
                 return;
             }
@@ -173,7 +173,7 @@ public class RealDisplayItem extends DisplayItem {
             UUID displayUUID = this.item.getUniqueId();
             if (!eItem.getUniqueId().equals(displayUUID)) {
                 if (DisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
-                    Util.debugLog("Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem.getLocation());
+                    Util.debugLog("Removing a duped ItemEntity {0} at {1}", eItem.getUniqueId(), eItem.getLocation());
                     entity.remove();
                     removed = true;
                 }
@@ -193,8 +193,7 @@ public class RealDisplayItem extends DisplayItem {
     public void safeGuard(@NotNull Entity entity) {
         Util.ensureThread(false);
         if (!(entity instanceof Item)) {
-            Util.debugLog(
-                    "Failed to safeGuard " + entity.getLocation() + ", cause target not a Item");
+            Util.debugLog("Failed to safeguard {0}, cause target not a Item", entity.getLocation());
             return;
         }
         Item item = (Item) entity;

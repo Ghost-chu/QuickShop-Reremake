@@ -331,7 +331,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
      */
     public void registerCmd(@NotNull CommandContainer container) {
         if (cmds.contains(container)) {
-            Util.debugLog("Dupe subcommand registering: " + container);
+            Util.debugLog("Dupe subcommand registering: {0}", container);
             return;
         }
         container.bakeExecutorType();
@@ -382,7 +382,6 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 
         if (cmdArg.length == 0) {
             //Handle main command
-            Util.debugLog("Print help cause no args (/qs)");
             rootContainer.getExecutor().onCommand(capture(sender), commandLabel, EMPTY_ARGS);
         } else {
             //Handle subcommand
@@ -411,11 +410,10 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                     return true;
                 }
 
-                Util.debugLog("Execute container: " + container.getPrefix() + " - " + cmdArg[0]);
+                Util.debugLog("Execute container: {0} - {1}", container.getPrefix(), cmdArg[0]);
                 container.getExecutor().onCommand(capture(sender), commandLabel, passThroughArgs);
                 return true;
             }
-            Util.debugLog("All checks failed, print helps");
             rootContainer.getExecutor().onCommand(capture(sender), commandLabel, passThroughArgs);
         }
         return true;
@@ -437,15 +435,8 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 if (requirePermission != null
                         && !requirePermission.isEmpty()
                         && !QuickShop.getPermissionManager().hasPermission(sender, requirePermission)) {
-                    Util.debugLog(
-                            "Sender "
-                                    + sender.getName()
-                                    + " trying " + action.name + " the command: "
-                                    + commandLabel
-                                    + " "
-                                    + Util.array2String(cmdArg)
-                                    + ", but no permission "
-                                    + requirePermission);
+                    Util.debugLog("Sender {0} trying {1} the command: {2} {3}, but no permission {3}",
+                            sender.getName(), action.name, commandLabel, Util.array2String(cmdArg), requirePermission);
                     return false;
                 }
             }
@@ -511,7 +502,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 if (!checkPermissions(sender, commandLabel, passThroughArgs, selectivePermissions, PermissionType.SELECTIVE, Action.TAB_COMPLETE)) {
                     return Collections.emptyList();
                 }
-                Util.debugLog("Tab-complete container: " + container.getPrefix());
+                Util.debugLog("Tab-complete container: {0}", container.getPrefix());
                 return container.getExecutor().onTabComplete(capture(sender), commandLabel, passThroughArgs);
 
             }

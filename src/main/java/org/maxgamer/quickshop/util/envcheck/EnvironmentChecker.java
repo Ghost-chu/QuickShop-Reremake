@@ -100,7 +100,7 @@ public final class EnvironmentChecker {
             try {
                 EnvCheckEntry envCheckEntry = declaredMethod.getAnnotation(EnvCheckEntry.class);
                 if (Arrays.stream(envCheckEntry.stage()).noneMatch(entry -> entry == stage)) {
-                    Util.debugLog("Skip test: " + envCheckEntry.name() + ": Except stage: " + Arrays.toString(envCheckEntry.stage()) + " Current stage: " + stage);
+                    Util.debugLog("Skip test: {0} -> Except stage: {1} Current stage: {2}", envCheckEntry.name(), Arrays.toString(envCheckEntry.stage()), stage);
                     continue;
                 }
                 if (!properties.containsKey("org.maxgamer.quickshop.util.envcheck.skip." + envCheckEntry.name().toUpperCase(Locale.ROOT).replace(" ", "_"))) {
@@ -113,32 +113,32 @@ public final class EnvironmentChecker {
                 }
                 switch (result) {
                     case SKIPPED:
-                        plugin.getLogger().info("[SKIP] " + envCheckEntry.name());
-                        Util.debugLog("Runtime check [" + envCheckEntry.name() + "] has been skipped (Startup Flag).");
+                        plugin.getLogger().info("[SKIP] {0}", envCheckEntry.name());
+                        Util.debugLog("Runtime check [{0}] has been skipped (Startup Flag).", envCheckEntry.name());
                         break;
                     case PASSED:
                         if (Util.isDevEdition() || Util.isDevMode()) {
-                            plugin.getLogger().info("[OK] " + envCheckEntry.name());
-                            Util.debugLog("[Pass] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                            plugin.getLogger().info("[OK] {0}", envCheckEntry.name());
+                            Util.debugLog("[Pass] {0}: {1}", envCheckEntry.name(), executeResult.getResultMessage());
                         }
                         break;
                     case WARNING:
-                        plugin.getLogger().warning("[WARN] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                        Util.debugLog("[Warning] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        plugin.getLogger().warning("[WARN] {0}: {1}", envCheckEntry.name(), executeResult.getResultMessage());
+                        Util.debugLog("[Warning] {0}: {1}", envCheckEntry.name(), executeResult.getResultMessage());
                         break;
                     case STOP_WORKING:
-                        plugin.getLogger().warning("[STOP] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                        Util.debugLog("[Stop-Freeze] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        plugin.getLogger().warning("[STOP] {0}: {1}", envCheckEntry.name(), executeResult.getResultMessage());
+                        Util.debugLog("[Stop-Freeze] {0}: {1}", envCheckEntry.name(), executeResult.getResultMessage());
                         //It's okay, QuickShop should continue executing checks to collect more data.
                         //And show user all errors at once.
                         break;
                     case DISABLE_PLUGIN:
-                        plugin.getLogger().warning("[FATAL] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                        Util.debugLog("[Fatal-Disable] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        plugin.getLogger().warning("[FATAL] {0}: {1}", envCheckEntry.name(), executeResult.getResultMessage());
+                        Util.debugLog("[Fatal-Disable] {0}: {1}", envCheckEntry.name(), executeResult.getResultMessage());
                         skipAllTest = true; //We need to disable the plugin NOW! Some HUGE exception is happening here, hurry up!
                         break;
                     default:
-                        plugin.getLogger().warning("[UNDEFINED] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        plugin.getLogger().warning("[UNDEFINED] {0}: {1}", envCheckEntry.name(), executeResult.getResultMessage());
                 }
                 if (executeResult != null) {
                     results.put(envCheckEntry, executeResult);
@@ -147,7 +147,7 @@ public final class EnvironmentChecker {
                 }
             } catch (Exception e) {
                 plugin.getLogger().log(Level.WARNING, "Failed to execute EnvCheckEntry [" + declaredMethod.getName() + "]: Exception thrown out without getting caught. Something went wrong!", e);
-                plugin.getLogger().warning("[FAIL] " + declaredMethod.getName());
+                plugin.getLogger().warning("[FAIL] {0}", declaredMethod.getName());
             }
         }
         return new ResultReport(result, results);
@@ -157,14 +157,14 @@ public final class EnvironmentChecker {
         String jvmVersion = System.getProperty("java.version"); //Use java version not jvm version.
         String[] splitVersion = jvmVersion.split("\\.");
         if (splitVersion.length < 1) {
-            Util.debugLog("Failed to parse jvm version to check: " + jvmVersion);
+            Util.debugLog("Failed to parse jvm version to check: {0}", jvmVersion);
             return false;
         }
         try {
             int majorVersion = Integer.parseInt(splitVersion[0]);
             return majorVersion < 16; //Target JDK/JRE version
         } catch (NumberFormatException ignored) {
-            Util.debugLog("Failed to parse jvm major version to check: " + splitVersion[0]);
+            Util.debugLog("Failed to parse jvm major version to check: {0}", splitVersion[0]);
             return false;
         }
     }
@@ -188,7 +188,7 @@ public final class EnvironmentChecker {
 
             String jarPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
             jarPath = URLDecoder.decode(jarPath, "UTF-8");
-            Util.debugLog("JarPath selected: " + jarPath);
+            Util.debugLog("JarPath selected: {0}", jarPath);
             jarFile = new JarFile(jarPath);
             List<JarEntry> modifiedEntry = tool.verify(jarFile);
             if (modifiedEntry.isEmpty()) {

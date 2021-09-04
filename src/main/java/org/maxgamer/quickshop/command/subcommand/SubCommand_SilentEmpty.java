@@ -55,7 +55,7 @@ public class SubCommand_SilentEmpty implements CommandHandler<Player> {
         final Inventory inventory = cs.getInventory();
 
         if (inventory == null) {
-            Util.debugLog("Inventory is empty! " + cs);
+            Util.debugLog("Inventory is empty! {0}", cs);
             return;
         }
 

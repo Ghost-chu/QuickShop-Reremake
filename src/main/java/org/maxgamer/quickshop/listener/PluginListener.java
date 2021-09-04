@@ -48,7 +48,7 @@ public class PluginListener extends QSListener {
         if (pluginIntegrationList.contains(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
             IntegratedPlugin integratedPlugin = integrationHelper.getIntegrationMap().get(pluginName);
             if (integratedPlugin != null) {
-                Util.debugLog("[Hot Load] Calling for unloading " + integratedPlugin.getName());
+                Util.debugLog("[Hot Load] Calling for unloading {0}", integratedPlugin.getName());
                 integratedPlugin.unload();
                 integrationHelper.unregister(integratedPlugin);
             }
@@ -65,7 +65,7 @@ public class PluginListener extends QSListener {
             integrationHelper.register(pluginName);
             IntegratedPlugin integratedPlugin = integrationHelper.getIntegrationMap().get(pluginName);
             if (integratedPlugin != null) {
-                Util.debugLog("[Hot Load] Calling for loading " + integratedPlugin.getName());
+                Util.debugLog("[Hot Load] Calling for loading {0}", integratedPlugin.getName());
                 integratedPlugin.load();
             }
         }

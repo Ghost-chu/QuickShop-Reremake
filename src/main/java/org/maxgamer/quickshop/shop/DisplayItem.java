@@ -199,7 +199,7 @@ public abstract class DisplayItem {
             iMeta = plugin.getServer().getItemFactory().getItemMeta(itemStack.getType());
         }
         if (iMeta == null) {
-            Util.debugLog("ItemStack " + itemStack + " cannot getting or creating ItemMeta, failed to create guarded ItemStack.");
+            Util.debugLog("ItemStack {0} cannot getting or creating ItemMeta, failed to create guarded ItemStack.", itemStack);
             return itemStack;
         }
         if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {

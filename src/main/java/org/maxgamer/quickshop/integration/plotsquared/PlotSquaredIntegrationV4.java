@@ -25,7 +25,6 @@ import com.github.intellectualsites.plotsquared.plot.flag.BooleanFlag;
 import com.github.intellectualsites.plotsquared.plot.flag.Flags;
 import com.github.intellectualsites.plotsquared.plot.object.Plot;
 import com.sk89q.worldedit.regions.CuboidRegion;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -102,9 +101,9 @@ public class PlotSquaredIntegrationV4 extends QSIntegratedPlugin implements List
         this.tradeFlag = new BooleanFlag("quickshop-trade");
         Flags.registerFlag(this.createFlag);
         Flags.registerFlag(this.tradeFlag);
-        plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
+        plugin.getLogger().info("{0} flags register successfully.", getName());
         this.registerListener();
-        Util.debugLog("Success register " + getName() + " flags.");
+        Util.debugLog("Success register {0} flags.", getName());
     }
 
     @Override

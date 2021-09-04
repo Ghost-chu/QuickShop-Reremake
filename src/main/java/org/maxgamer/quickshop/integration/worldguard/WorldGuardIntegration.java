@@ -66,7 +66,7 @@ public class WorldGuardIntegration extends QSIntegratedPlugin {
             try {
                 registry.register(result);
                 plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
-                Util.debugLog("Success register " + getName() + " flags.");
+                Util.debugLog("Success register {0} flags.", getName());
             } catch (FlagConflictException | IllegalStateException e) {
                 plugin.getLogger().log(Level.SEVERE, "Failed to register " + getName() + " flags.", e);
             }
@@ -98,7 +98,7 @@ public class WorldGuardIntegration extends QSIntegratedPlugin {
     private void checkIfLoaded() {
         if (!load) {
             load();
-            Util.debugLog(getName() + " Integration not loaded, loading...");
+            Util.debugLog("{0} integration not loaded, loading...", getName());
         }
     }
 
@@ -118,10 +118,7 @@ public class WorldGuardIntegration extends QSIntegratedPlugin {
                         .getSessionManager()
                         .hasBypass(localPlayer, BukkitAdapter.adapt(location.getWorld()));
         if (canBypass) {
-            Util.debugLog(
-                    "Player "
-                            + player.getName()
-                            + " bypassing the protection checks, because player have bypass permission in WorldGuard");
+            Util.debugLog("Player {0} bypassing the protection checks, because player have bypass permission in WorldGuard", player.getName());
             return true;
         }
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
@@ -180,9 +177,7 @@ public class WorldGuardIntegration extends QSIntegratedPlugin {
                         .hasBypass(localPlayer, BukkitAdapter.adapt(location.getWorld()));
         if (canBypass) {
             Util.debugLog(
-                    "Player "
-                            + player.getName()
-                            + " bypassing the protection checks, because player have bypass permission in WorldGuard");
+                    "Player {0} bypassing the protection checks, because player have bypass permission in WorldGuard", player.getName());
             return true;
         }
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();

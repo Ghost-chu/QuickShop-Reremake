@@ -116,7 +116,7 @@ public class JenkinsUpdater implements QuickUpdater {
             while ((len = is.read(buff)) != -1) {
                 os.write(buff, 0, len);
                 downloaded += len;
-                Util.debugLog("File Downloader: " + downloaded + " bytes.");
+                Util.debugLog("File Downloader: {0} bytes.", downloaded);
             }
             is.close();
             byte[] file = os.toByteArray();
@@ -146,7 +146,7 @@ public class JenkinsUpdater implements QuickUpdater {
                 if (!desc.getName().equals(QuickShop.getInstance().getDescription().getName())) {
                     continue;
                 }
-                Util.debugLog("Deleting: " + pluginJar.getPath());
+                Util.debugLog("Deleting: {0}", pluginJar.getPath());
                 if (!pluginJar.delete()) {
                     Util.debugLog("Delete failed, using replacing method");
                     try (OutputStream outputStream = new FileOutputStream(pluginJar, false)) {
