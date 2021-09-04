@@ -1894,7 +1894,9 @@ public class QuickShop extends JavaPlugin {
         }
 
         try (InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(getResource("config.yml"))))) {
-            new ConfigurationFixer(this, YamlConfiguration.loadConfiguration(buildInConfigReader)).fix();
+            if (new ConfigurationFixer(this, new File(getDataFolder(), "config.yml"), getConfig(), YamlConfiguration.loadConfiguration(buildInConfigReader)).fix()) {
+                reloadConfig();
+            }
         }
 
         saveConfig();
