@@ -318,7 +318,7 @@
   "backup-success": "&aBackup framgångsrik.",
   "console-only": "&cDetta kommando kan endast exekveras av Konsolen.",
   "console-only-danger": "&cDetta är ett farligt kommando, varför endast konsolen kan exekvera det.",
-  "clean-warning": "&eDetta kommando kommer att rensa &ebutiker som är skadade eller skapade i otillåtna världar eller säljer/köper otillåtna föremål eller &c&lEXISTERAR I OLADDADE VÄRLDAR&e. Se till att du har full säkerhetskopiering av dina butikers data och använd &b/qs cleanghost confirm &eför att fortsätta.",
+  "clean-warning": "&eThis command will purge &call &eshops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
   "shop-creation-failed": "&cSkapandet av butiken misslyckades, kontakta serveradministratören.",
   "shop-owner-self-trade": "&eYou handlar med din egen butik, så du kanske inte kommer att få något saldo.",
   "chest-title": "QuickShop-butik",
