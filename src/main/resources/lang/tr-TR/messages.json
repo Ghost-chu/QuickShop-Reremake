@@ -318,7 +318,7 @@
   "backup-success": "&aYedekleme başarılı.",
   "console-only": "&cBu komut sadece konsolda kullanabilir.",
   "console-only-danger": "&cBu tehlikeli bir komut, yani sadece konsol tarafından kullanılabilir.",
-  "clean-warning": "&eBu komut, market hasar görmüşse, izin verilmeyen dünyalarda yaratılmışsa, izin verilmeyen öğeleri satıyor/satın alıyorsa veya &c&lYÜKLENMEMİŞ BİR DÜNYADA MEVCUTSA&e marketleri temizleyecektir. Öncelikle market verilerinizin tam bir yedeğini oluşturduğunuzdan emin olun ve devam etmek için &b/qs cleanghost confirm &ekomudunu kullanınız.",
+  "clean-warning": "&eThis command will purge &call &eshops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
   "shop-creation-failed": "&cMarket oluşturulurken hata meydana geldi, lütfen sunucu yöneticisi ile iletişime geçiniz.",
   "shop-owner-self-trade": "&eKendi marketinde alışveriş yapıyorsun, bu nedenle herhangi bir kazan elde edemeyebilirsiniz.",
   "chest-title": "QuickShop Marketi",
