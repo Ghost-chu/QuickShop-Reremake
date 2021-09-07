@@ -129,7 +129,7 @@
     "now-buying": "&aTeraz &dSKUPUJESZ&a &e{0}",
     "now-selling": "&aTeraz &dSPRZEDAJESZ&a &e{0}",
     "cleaning": "&aUsuwanie sklepów bez zapasów...",
-    "reloading": "&aConfiguration reloaded. &eSome changes may require reboot to affect. \n&7(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won't crashed.)",
+    "reloading": "&aKonfiguracja przeładowana. &eNiektóre zmiany mogą wymagać ponownego uruchomienia. \n&7(Uwaga: zachowanie przeładowania zostało zmienione po 4.0.9.10, teraz przeładowujemy tylko konfigurację, ale nie całą wtyczkę, aby serwer nie uległ awarii)",
     "cleaned": "&aUsunięto &e{0}&a sklepy.",
     "no-type-given": "&cUżycie: /qs find <item>",
     "no-world-given": "&cProszę podać nazwę świata",
