@@ -25,7 +25,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
+import org.maxgamer.quickshop.util.holder.QuickShopPreviewGUIHolder;
 
 public class CustomInventoryListener extends QSListener {
 
@@ -35,28 +35,28 @@ public class CustomInventoryListener extends QSListener {
 
     @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryInteractEvent e) {
-        if (e.getInventory().getHolder() instanceof QuickShopPreviewInventoryHolder) {
+        if (e.getInventory().getHolder() instanceof QuickShopPreviewGUIHolder) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryMoveItemEvent e) {
-        if (e.getDestination().getHolder() instanceof QuickShopPreviewInventoryHolder || e.getSource().getHolder() instanceof QuickShopPreviewInventoryHolder) {
+        if (e.getDestination().getHolder() instanceof QuickShopPreviewGUIHolder || e.getSource().getHolder() instanceof QuickShopPreviewGUIHolder) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryClickEvent e) {
-        if (e.getInventory().getHolder() instanceof QuickShopPreviewInventoryHolder) {
+        if (e.getInventory().getHolder() instanceof QuickShopPreviewGUIHolder) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryDragEvent e) {
-        if (e.getInventory().getHolder() instanceof QuickShopPreviewInventoryHolder) {
+        if (e.getInventory().getHolder() instanceof QuickShopPreviewGUIHolder) {
             e.setCancelled(true);
         }
     }

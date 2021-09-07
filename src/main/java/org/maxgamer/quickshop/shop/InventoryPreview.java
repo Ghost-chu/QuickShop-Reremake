@@ -33,7 +33,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.ShopInventoryPreviewEvent;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
+import org.maxgamer.quickshop.util.holder.QuickShopPreviewGUIHolder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -113,7 +113,7 @@ public class InventoryPreview implements Listener {
         }
         final int size = 9;
 
-        inventory = plugin.getServer().createInventory(new QuickShopPreviewInventoryHolder(), size, MsgUtil.getMessage("menu.preview", player));
+        inventory = plugin.getServer().createInventory(new QuickShopPreviewGUIHolder(), size, MsgUtil.getMessage("menu.preview", player));
         for (int i = 0; i < size; i++) {
             inventory.setItem(i, itemStack);
         }

@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is QuickShopPreviewInventoryHolder.java
+ * This file is a part of project QuickShop, the name is QuickShopPreviewGUIHolder.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -23,8 +23,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 
-public class QuickShopPreviewInventoryHolder implements InventoryHolder {
-    //private final UUID random = UUID.randomUUID(); //To let java know this is different with InventoryHolder (regular) in some stupid JDK/JRE
+public class QuickShopPreviewGUIHolder implements InventoryHolder {
     @Override
     public @NotNull Inventory getInventory() {
         return null;
