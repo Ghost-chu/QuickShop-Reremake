@@ -267,7 +267,6 @@ public class QuickShop extends JavaPlugin {
     private Plugin worldEditPlugin;
     @Getter
     private WorldEditAdapter worldEditAdapter;
-    private EnchancedLogger logger;
 
     /**
      * Use for mock bukkit
@@ -551,13 +550,14 @@ public class QuickShop extends JavaPlugin {
         } else {
             logWatcher = null;
         }
+        Bukkit.getPluginManager().callEvent(new QSReloadEvent(this));
     }
 
     /**
      * Early than onEnable, make sure instance was loaded in first time.
      */
     @Override
-    public void onLoad() {
+    public final void onLoad() {
         this.onLoadCalled = true;
         getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up...");
         //BEWARE THESE ONLY RUN ONCE
@@ -580,15 +580,12 @@ public class QuickShop extends JavaPlugin {
                 this.integrationHelper.register(new WorldGuardIntegration(this));
             }
         }
-
-
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadAfter);
         getLogger().info("QuickShop " + getFork() + " - Early boot step - Booted up...");
     }
 
     @Override
-    public void onDisable() {
-
+    public final void onDisable() {
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
         if (sentryErrorReporter != null) {
             sentryErrorReporter.unregister();
@@ -658,8 +655,10 @@ public class QuickShop extends JavaPlugin {
         }
 
         Util.debugLog("Cleanup listeners...");
-        HandlerList.unregisterAll(this);
 
+        HandlerList.unregisterAll(this);
+        Util.debugLog("Unregistering plugin services...");
+        getServer().getServicesManager().unregisterAll(this);
         Util.debugLog("All shutdown work is finished.");
 
     }
@@ -752,7 +751,7 @@ public class QuickShop extends JavaPlugin {
     }
 
     @Override
-    public void onEnable() {
+    public final void onEnable() {
         if (!this.onLoadCalled) {
             getLogger().severe("FATAL: onLoad not called and QuickShop trying patching them... Some Integrations will won't work or work incorrectly!");
             try {
@@ -1944,14 +1943,5 @@ public class QuickShop extends JavaPlugin {
             return;
         }
         Util.debugLog("Command alias successfully registered.");
-    }
-
-    private EnchancedLogger enchancedLogger = null;
-
-    @NotNull
-    @Override
-    public EnchancedLogger getLogger() { //Replace with our logger
-        if (enchancedLogger == null) enchancedLogger = new EnchancedLogger(this);
-        return this.enchancedLogger;
     }
 }
