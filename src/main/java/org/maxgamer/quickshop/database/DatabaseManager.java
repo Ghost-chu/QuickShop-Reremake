@@ -28,6 +28,9 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.WarningSender;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.sql.*;
 import java.util.Queue;
@@ -37,7 +40,7 @@ import java.util.logging.Level;
 /**
  * Queued database manager. Use queue to solve run SQL make server lagg issue.
  */
-public class DatabaseManager {
+public class DatabaseManager implements Reloadable {
 
     private final Queue<DatabaseTask> sqlQueue = new LinkedBlockingQueue<>();
 
@@ -64,7 +67,18 @@ public class DatabaseManager {
     public DatabaseManager(@NotNull QuickShop plugin, @NotNull AbstractDatabaseCore dbCore) throws ConnectionException {
         this.plugin = plugin;
         this.warningSender = new WarningSender(plugin, 600000);
-        DatabaseConnection connection = dbCore.getConnection();
+        this.database = dbCore;
+        this.useQueue = plugin.getConfig().getBoolean("database.queue");
+        init();
+
+    }
+
+    private void init() throws ConnectionException {
+        if (task != null) {
+            task.cancel();
+            plugin.getDatabaseManager().runTask();
+        }
+        DatabaseConnection connection = database.getConnection();
         try {
             if (!connection.isValid()) {
                 throw new DatabaseManager.ConnectionException("The database does not appear to be valid!");
@@ -72,10 +86,6 @@ public class DatabaseManager {
         } finally {
             connection.release();
         }
-
-        this.database = dbCore;
-        this.useQueue = plugin.getConfig().getBoolean("database.queue");
-
         if (useQueue) {
             try {
                 task = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
@@ -243,6 +253,17 @@ public class DatabaseManager {
         plugin.getLogger().info("Please wait for the data to flush its data...");
         runTask();
         database.close();
+    }
+
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 
 

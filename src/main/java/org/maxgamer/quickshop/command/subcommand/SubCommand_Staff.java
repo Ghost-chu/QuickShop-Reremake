@@ -42,7 +42,9 @@ import java.util.UUID;
 public class SubCommand_Staff implements CommandHandler<Player> {
 
     private final QuickShop plugin;
-    private final List<String> tabCompleteList = Collections.unmodifiableList(Arrays.asList("add", "del", "list", "clear"));
+    private final List<String> tabCompleteList = Collections.unmodifiableList(
+            Arrays.asList("add", "del", "list", "clear")
+    );
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
