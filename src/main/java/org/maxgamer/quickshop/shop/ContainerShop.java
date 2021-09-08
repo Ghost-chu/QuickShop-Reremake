@@ -262,7 +262,7 @@ public class ContainerShop implements Shop {
                                 + amount
                                 + ", item: "
                                 + Util.getItemStackName(this.getItem())
-                                + "!", buyer, amount, Util.getItemStackName(this.getItem()));
+                                + "!");
             }
         } else {
             Inventory chestInv = this.getInventory();
