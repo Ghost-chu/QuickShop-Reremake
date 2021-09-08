@@ -24,6 +24,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 /**
  * @author Netherfoam
@@ -50,4 +52,13 @@ public class ChatListener extends QSListener {
         e.setCancelled(true);
     }
 
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
 }

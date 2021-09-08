@@ -41,14 +41,13 @@ import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.List;
 import java.util.logging.Level;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onLoadAfter)
-public class WorldGuardIntegration extends QSIntegratedPlugin implements Reloadable {
+public class WorldGuardIntegration extends QSIntegratedPlugin {
     private final StateFlag createFlag = createOrGet("quickshop-create", false);
     private final StateFlag tradeFlag = createOrGet("quickshop-trade", true);
     private List<WorldGuardFlags> createFlags;

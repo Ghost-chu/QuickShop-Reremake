@@ -38,7 +38,6 @@ import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,7 +45,7 @@ import java.util.List;
 import java.util.Map;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class GriefPreventionIntegration extends QSIntegratedPlugin implements Reloadable {
+public class GriefPreventionIntegration extends QSIntegratedPlugin {
 
     final GriefPrevention griefPrevention = GriefPrevention.instance;
 

@@ -39,13 +39,12 @@ import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.List;
 import java.util.Optional;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class IridiumSkyblockIntegration extends QSIntegratedPlugin implements Listener, Reloadable {
+public class IridiumSkyblockIntegration extends QSIntegratedPlugin implements Listener {
 
     private boolean onlyOwnerCanCreateShop;
 

@@ -22,12 +22,14 @@ package org.maxgamer.quickshop.listener;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
-public abstract class QSListener implements Listener {
+public abstract class QSListener implements Listener, Reloadable {
     protected final QuickShop plugin;
 
     public QSListener(QuickShop plugin) {
         this.plugin = plugin;
+        plugin.getReloadManager().register(this);
     }
 
     public void register() {

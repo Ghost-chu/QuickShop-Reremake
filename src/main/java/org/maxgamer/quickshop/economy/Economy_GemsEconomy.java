@@ -32,11 +32,10 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.UUID;
 
-public class Economy_GemsEconomy implements EconomyCore, Reloadable {
+public class Economy_GemsEconomy implements EconomyCore {
 
     private final QuickShop plugin;
     private boolean allowLoan;

@@ -46,13 +46,26 @@ import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 public class DisplayProtectionListener extends ProtectionListenerBase {
 
+    private final boolean useEnhanceProtection;
 
     public DisplayProtectionListener(QuickShop plugin, Cache cache) {
         super(plugin, cache);
-        boolean useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-display-protect");
+        useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-display-protect");
         if (useEnhanceProtection) {
             plugin.getServer().getPluginManager().registerEvents(new EnhanceDisplayProtectionListener(plugin, cache), plugin);
         }
+    }
+
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        if (useEnhanceProtection == plugin.getConfig().getBoolean("shop.enchance-display-protect"))
+            return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+        return ReloadResult.builder().status(ReloadStatus.REQUIRE_RESTART).build();
     }
 
 
@@ -166,13 +179,4 @@ public class DisplayProtectionListener extends ProtectionListenerBase {
                         + " trying mainipulate armorstand contains displayItem.");
     }
 
-    /**
-     * Callback for reloading
-     *
-     * @return Reloading success
-     */
-    @Override
-    public ReloadResult reloadModule() throws Exception {
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
-    }
 }

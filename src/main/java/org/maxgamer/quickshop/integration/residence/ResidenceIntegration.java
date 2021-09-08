@@ -32,14 +32,13 @@ import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class ResidenceIntegration extends QSIntegratedPlugin implements Reloadable {
+public class ResidenceIntegration extends QSIntegratedPlugin {
     private static final String createFlag = "quickshop-create";
     private static final String tradeFlag = "quickshop-trade";
     private List<String> createLimits;

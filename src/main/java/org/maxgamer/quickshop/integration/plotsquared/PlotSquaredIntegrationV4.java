@@ -39,7 +39,6 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +46,7 @@ import java.util.Map;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class PlotSquaredIntegrationV4 extends QSIntegratedPlugin implements Listener, Reloadable {
+public class PlotSquaredIntegrationV4 extends QSIntegratedPlugin implements Listener {
     private boolean whiteList;
     private boolean deleteUntrusted;
     private BooleanFlag createFlag;

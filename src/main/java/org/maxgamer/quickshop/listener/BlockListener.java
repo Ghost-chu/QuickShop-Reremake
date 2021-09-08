@@ -48,14 +48,13 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 /**
  * BlockListener to listening events about block events
  *
  * @author KaiNoMood, Ghost_chu, sandtechnology
  */
-public class BlockListener extends ProtectionListenerBase implements Reloadable {
+public class BlockListener extends ProtectionListenerBase {
     private boolean update_sign_when_inventory_moving;
 
     public BlockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
