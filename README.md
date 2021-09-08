@@ -15,15 +15,17 @@
 ![Rating](https://img.shields.io/spiget/rating/62575?label=rating)
 ---
 
-QuickShop is a shop plugin that allows players to easily sell/buy any items from a chest without any commands.
-In fact, none of the commands that QuickShop provides are ever needed by a player.
-QuickShop-Reremake is a fork of QuickShop NotLikeMe with more features, bug fixes and other improvements.  
-QuickShop-Reremake is made by PotatoCraft Studio from [KaiKikuchi's QuickShop upstream repository](https://github.com/KaiKikuchi/QuickShop).
+QuickShop is a shop plugin that allows players to easily sell/buy any items from a chest without any commands. In fact,
+none of the commands that QuickShop provides are ever needed by a player. QuickShop-Reremake is a fork of QuickShop
+NotLikeMe with more features, bug fixes and other improvements.  
+QuickShop-Reremake is made by PotatoCraft Studio
+from [KaiKikuchi's QuickShop upstream repository](https://github.com/KaiKikuchi/QuickShop).
 
 ## Support
-| <a href="https://discord.gg/bfefw2E"/> <img src="/.github/icons/Discord.svg" width="100" height="100" /> | <a href="https://github.com/Ghost-chu/QuickShop-Reremake/issues"><img src="/.github/icons/Github.png" width="100" height="100" /> |
-| :-: | :-: |
-| **Discord** | **Github Issues** |
+
+| <a href="https://discord.gg/bfefw2E"/> <img src="/.github/icons/Discord.svg" width="100" height="100" />
+| <a href="https://github.com/Ghost-chu/QuickShop-Reremake/issues"><img src="/.github/icons/Github.png" width="100" height="100" />
+| | :-: | :-: | | **Discord** | **Github Issues** |
 
 ## Features
 
@@ -45,9 +47,10 @@ QuickShop-Reremake is made by PotatoCraft Studio from [KaiKikuchi's QuickShop up
 - Optimized performance [Reremake]
 
 ## Downloads
+
 | <a href="https://www.spigotmc.org/resources/62575/"><img src="/.github/icons/Spigot.png" width="100" height="90" /></a> | <a href="https://dev.bukkit.org/projects/quickshop-reremake"><img src="/.github/icons/Bukkit.png" width="100" height="100" /></a></a> | <a href="http://www.mcbbs.net/thread-809496-1-1.html"><img src="/.github/icons/MCBBS.png" width="100" height="100" /></a> | <a href="https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake-SNAPSHOT/"><img src="/.github/icons/Jenkins.svg" width="85" height="100" /></a>
  | --- | --- | --- | --- |
- | **Spigot** | **BukkitDev** | **MCBBS** | **Jenkins** |
+| **Spigot** | **BukkitDev** | **MCBBS** | **Jenkins** |
 
 ## Contribute
 

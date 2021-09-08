@@ -369,7 +369,7 @@ shop:
   #Format: <itemname>;<minprice>;<maxprice>
   #e.g:
   # - DIAMOND;100;200
-  price-restriction: []
+  price-restriction: [ ]
 
   #The maximum number of digits after the decimal. 
   #Set this to -1 to disable it. (Unlimited maximum digits)
@@ -594,7 +594,7 @@ integration:
     #OWN = The player must own the plot to trade with a shop.
     #MODIFY = The player must have the ability to build on the target plot to trade with a shop.
     #SHOPTYPE = The player must trade with the shop on a SHOP type plot.
-    trade: []
+    trade: [ ]
     delete-shop-on-resident-leave: false
     delete-shop-on-plot-clear: true
     #Should we prevent the creation of a shop or trade with a shop outside Towny's area
@@ -631,7 +631,7 @@ integration:
     #BUILD = The player must have the ability to build in the target region.
     #CHEST_ACCESS = The player must be able to access chests.
     #INTERACT = The player must have the ability to interact in the target region.
-    trade: []
+    trade: [ ]
   #PlotSquared Integration
   plotsquared:
     #If a player wants to create a shop, the player must have the quickshop-create flag.
@@ -721,14 +721,14 @@ integration:
       - FLAG
       - interact
       - use
-    #Which checks does a player need to pass to trade with a shop?
-    #You can use multiple checks at the same time.
-    #Priority: UP > DOWN
-     #
+      #Which checks does a player need to pass to trade with a shop?
+      #You can use multiple checks at the same time.
+      #Priority: UP > DOWN
+      #
     #Available fields:
     #FLAG = The region must have the quickshop.trade flag set.
     #<OTHER> = Other available registered flags in the Residence plugin or addons.
-    trade: []
+    trade: [ ]
   #Factions Integration
   factions:
     enable: false

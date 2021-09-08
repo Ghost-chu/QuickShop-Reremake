@@ -68,6 +68,13 @@ public class ShopManager implements Reloadable {
     private final Map<UUID, Info> actions = Maps.newConcurrentMap();
 
     private final QuickShop plugin;
+    private final Cache<UUID, Shop> shopRuntimeUUIDCaching =
+            CacheBuilder.newBuilder()
+                    .expireAfterAccess(10, TimeUnit.MINUTES)
+                    .maximumSize(50)
+                    .weakValues()
+                    .initialCapacity(50)
+                    .build();
     @Getter
     @Nullable
     private Trader cacheTaxAccount;
@@ -78,13 +85,6 @@ public class ShopManager implements Reloadable {
     private boolean useFastShopSearchAlgorithm;
     private boolean useOldCanBuildAlgorithm;
     private boolean autoSign;
-    private final Cache<UUID, Shop> shopRuntimeUUIDCaching =
-            CacheBuilder.newBuilder()
-                    .expireAfterAccess(10, TimeUnit.MINUTES)
-                    .maximumSize(50)
-                    .weakValues()
-                    .initialCapacity(50)
-                    .build();
 
 
     public ShopManager(@NotNull QuickShop plugin) {

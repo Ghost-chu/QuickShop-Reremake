@@ -56,33 +56,25 @@ public class VirtualDisplayItem extends DisplayItem {
     private static final GameVersion version = QuickShop.getInstance().getGameVersion();
     private static final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
     private static PacketAdapter packetAdapter = null;
+    //unique EntityID
+    private final int entityID = counter.decrementAndGet();
+    //The List which store packet sender
+    private final Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
     //cache chunk x and z
     private ShopChunk chunkLocation;
+    private volatile boolean isDisplay;
+    //If packet initialized
+    private volatile boolean initialized = false;
+    //packets
+    private PacketContainer fakeItemSpawnPacket;
+    private PacketContainer fakeItemMetaPacket;
+    private PacketContainer fakeItemVelocityPacket;
+    private PacketContainer fakeItemDestroyPacket;
 
     public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
         super(shop);
         VirtualDisplayItemManager.load();
     }
-
-    //unique EntityID
-    private final int entityID = counter.decrementAndGet();
-
-    //The List which store packet sender
-    private final Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
-
-    private volatile boolean isDisplay;
-
-    //If packet initialized
-    private volatile boolean initialized = false;
-
-    //packets
-    private PacketContainer fakeItemSpawnPacket;
-
-    private PacketContainer fakeItemMetaPacket;
-
-    private PacketContainer fakeItemVelocityPacket;
-
-    private PacketContainer fakeItemDestroyPacket;
 
     //Due to the delay task in ChunkListener
     //We must move load task to first spawn to prevent some bug and make the check lesser
@@ -225,6 +217,29 @@ public class VirtualDisplayItem extends DisplayItem {
         VirtualDisplayItemManager.remove(chunkLocation, this);
     }
 
+    public void sendFakeItem(@NotNull Player player) {
+        sendPacket(player, fakeItemSpawnPacket);
+        sendPacket(player, fakeItemMetaPacket);
+        sendPacket(player, fakeItemVelocityPacket);
+    }
+
+    @Override
+    public @Nullable Entity getDisplay() {
+        return null;
+    }
+
+    @Override
+    public boolean isSpawned() {
+        if (shop.isLeftShop()) {
+            Shop aShop = shop.getAttachedShop();
+            if (aShop instanceof ContainerShop) {
+                return (Objects.requireNonNull(((ContainerShop) aShop).getDisplayItem())).isSpawned();
+            }
+
+        }
+        return isDisplay;
+    }
+
     public static class VirtualDisplayItemManager {
         private static final AtomicBoolean loaded = new AtomicBoolean(false);
         private static final Map<ShopChunk, List<VirtualDisplayItem>> chunksMapping = new ConcurrentHashMap<>();
@@ -300,29 +315,6 @@ public class VirtualDisplayItem extends DisplayItem {
                 loaded.set(false);
             }
         }
-    }
-
-    public void sendFakeItem(@NotNull Player player) {
-        sendPacket(player, fakeItemSpawnPacket);
-        sendPacket(player, fakeItemMetaPacket);
-        sendPacket(player, fakeItemVelocityPacket);
-    }
-
-    @Override
-    public @Nullable Entity getDisplay() {
-        return null;
-    }
-
-    @Override
-    public boolean isSpawned() {
-        if (shop.isLeftShop()) {
-            Shop aShop = shop.getAttachedShop();
-            if (aShop instanceof ContainerShop) {
-                return (Objects.requireNonNull(((ContainerShop) aShop).getDisplayItem())).isSpawned();
-            }
-
-        }
-        return isDisplay;
     }
 
     public static class PacketFactory {

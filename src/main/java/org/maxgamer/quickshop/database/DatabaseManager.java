@@ -159,56 +159,56 @@ public class DatabaseManager implements Reloadable {
      * Internal method, runTasks in queue.
      */
     private synchronized void runTask() { // synchronized for QUICKSHOP-WX
-            if (sqlQueue.isEmpty()) {
-                return;
-            }
-            DatabaseConnection dbconnection = this.database.getConnection();
+        if (sqlQueue.isEmpty()) {
+            return;
+        }
+        DatabaseConnection dbconnection = this.database.getConnection();
 
-            try (Connection connection = dbconnection.get()) {
-                //start our commit
-                connection.setAutoCommit(false);
-                Timer ctimer = new Timer(true);
-                while (true) {
-                    if (!dbconnection.isValid()) {
-                        warningSender.sendWarn("Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).");
-                        return; // Waiting next crycle and hope it success reconnected.
-                    }
-
-                    Timer timer = new Timer(true);
-                    DatabaseTask task = sqlQueue.poll();
-                    if (task == null) {
-                        break;
-                    }
-
-                    task.run(connection);
-                    long tookTime = timer.stopAndGetTimePassed();
-                    if (tookTime > 300) {
-                        warningSender.sendWarn(
-                                "Database performance warning: It took too long time ("
-                                        + tookTime
-                                        + "ms) to execute the task, it may cause the network connection with MySQL server or just MySQL server too slow, change to a better MySQL server or switch to a local SQLite database!");
-                    }
+        try (Connection connection = dbconnection.get()) {
+            //start our commit
+            connection.setAutoCommit(false);
+            Timer ctimer = new Timer(true);
+            while (true) {
+                if (!dbconnection.isValid()) {
+                    warningSender.sendWarn("Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).");
+                    return; // Waiting next crycle and hope it success reconnected.
                 }
-                if (!connection.getAutoCommit()) {
-                    connection.commit();
-                    connection.setAutoCommit(true);
+
+                Timer timer = new Timer(true);
+                DatabaseTask task = sqlQueue.poll();
+                if (task == null) {
+                    break;
                 }
-                long tookTime = ctimer.stopAndGetTimePassed();
-                if (tookTime > 5500) {
+
+                task.run(connection);
+                long tookTime = timer.stopAndGetTimePassed();
+                if (tookTime > 300) {
                     warningSender.sendWarn(
                             "Database performance warning: It took too long time ("
                                     + tookTime
                                     + "ms) to execute the task, it may cause the network connection with MySQL server or just MySQL server too slow, change to a better MySQL server or switch to a local SQLite database!");
                 }
-
-            } catch (SQLException sqle) {
-                plugin.getSentryErrorReporter().ignoreThrow();
-                this.plugin
-                        .getLogger()
-                        .log(Level.WARNING, "Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).", sqle);
-            } finally {
-                dbconnection.release();
             }
+            if (!connection.getAutoCommit()) {
+                connection.commit();
+                connection.setAutoCommit(true);
+            }
+            long tookTime = ctimer.stopAndGetTimePassed();
+            if (tookTime > 5500) {
+                warningSender.sendWarn(
+                        "Database performance warning: It took too long time ("
+                                + tookTime
+                                + "ms) to execute the task, it may cause the network connection with MySQL server or just MySQL server too slow, change to a better MySQL server or switch to a local SQLite database!");
+            }
+
+        } catch (SQLException sqle) {
+            plugin.getSentryErrorReporter().ignoreThrow();
+            this.plugin
+                    .getLogger()
+                    .log(Level.WARNING, "Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).", sqle);
+        } finally {
+            dbconnection.release();
+        }
 
 //        try {
 //            this.database.getConnection().commit();

@@ -42,6 +42,7 @@ import java.util.UUID;
 public class OngoingFeeWatcher extends BukkitRunnable {
     private final QuickShop plugin;
     private final WarningSender warningSender;
+
     public OngoingFeeWatcher(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         this.warningSender = new WarningSender(plugin, 6000);

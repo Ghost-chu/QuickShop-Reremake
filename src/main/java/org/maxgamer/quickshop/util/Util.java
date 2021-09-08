@@ -81,6 +81,7 @@ public class Util {
     private static final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     @Getter
     private static final Map<String, String> currency2Symbol = new HashMap<>();
+    private static final ThreadLocal<MineDown> mineDown = ThreadLocal.withInitial(() -> new MineDown(""));
     private static int bypassedCustomStackSize = -1;
     private static Yaml yaml = null;
     private static boolean devMode = false;
@@ -94,6 +95,7 @@ public class Util {
     private static DyeColor dyeColor = null;
     @Nullable
     private static Class<?> cachedNMSClass = null;
+    private volatile static String nmsVersion;
 
     /**
      * Convert strArray to String. E.g "Foo, Bar"
@@ -545,6 +547,27 @@ public class Util {
         return chestBlockData.getType() != org.bukkit.block.data.type.Chest.Type.SINGLE;
     }
 
+//    /**
+//     * Use yaw to calc the BlockFace
+//     *
+//     * @param yaw Yaw (Player.getLocation().getYaw())
+//     * @return BlockFace blockFace
+//     * @deprecated Use Bukkit util not this one.
+//     */
+//    @Deprecated
+//    @NotNull
+//    public static BlockFace getYawFace(float yaw) {
+//        if (yaw > 315 && yaw <= 45) {
+//            return BlockFace.NORTH;
+//        } else if (yaw > 45 && yaw <= 135) {
+//            return BlockFace.EAST;
+//        } else if (yaw > 135 && yaw <= 225) {
+//            return BlockFace.SOUTH;
+//        } else {
+//            return BlockFace.WEST;
+//        }
+//    }
+
     /**
      * Get how many shop in the target world.
      *
@@ -580,27 +603,6 @@ public class Util {
         DecimalFormat formatter = new DecimalFormat("0");
         return formatter.format((1 - dura / max) * 100.0);
     }
-
-//    /**
-//     * Use yaw to calc the BlockFace
-//     *
-//     * @param yaw Yaw (Player.getLocation().getYaw())
-//     * @return BlockFace blockFace
-//     * @deprecated Use Bukkit util not this one.
-//     */
-//    @Deprecated
-//    @NotNull
-//    public static BlockFace getYawFace(float yaw) {
-//        if (yaw > 315 && yaw <= 45) {
-//            return BlockFace.NORTH;
-//        } else if (yaw > 45 && yaw <= 135) {
-//            return BlockFace.EAST;
-//        } else if (yaw > 135 && yaw <= 225) {
-//            return BlockFace.SOUTH;
-//        } else {
-//            return BlockFace.WEST;
-//        }
-//    }
 
     /**
      * Initialize the Util tools.
@@ -826,8 +828,6 @@ public class Util {
         }
     }
 
-    private volatile static String nmsVersion;
-
     public static boolean isDisplayAllowBlock(@NotNull Material mat) {
         return mat.isTransparent() || isWallSign(mat);
     }
@@ -995,8 +995,6 @@ public class Util {
         loc.setPitch(pitch * 180f / (float) Math.PI);
         return loc;
     }
-
-    private static final ThreadLocal<MineDown> mineDown = ThreadLocal.withInitial(() -> new MineDown(""));
 
     /**
      * Parse colors for the YamlConfiguration.

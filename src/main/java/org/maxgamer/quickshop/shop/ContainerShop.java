@@ -62,16 +62,16 @@ public class ContainerShop implements Shop {
     @NotNull
     private final Location location;
     private final YamlConfiguration extra;
+    @EqualsAndHashCode.Exclude
+    private final QuickShop plugin;
+    @EqualsAndHashCode.Exclude
+    private final UUID runtimeRandomUniqueId = UUID.randomUUID();
     private ShopModerator moderator;
     private double price;
     private ShopType shopType;
     private boolean unlimited;
     @NotNull
     private ItemStack item;
-    @EqualsAndHashCode.Exclude
-    private final QuickShop plugin;
-    @EqualsAndHashCode.Exclude
-    private final UUID runtimeRandomUniqueId = UUID.randomUUID();
     @Nullable
     @EqualsAndHashCode.Exclude
     private DisplayItem displayItem;
@@ -91,7 +91,7 @@ public class ContainerShop implements Shop {
     private volatile boolean isDisplayItemChanged = false;
     @EqualsAndHashCode.Exclude
     private volatile boolean dirty;
-
+    private volatile boolean updating = false;
 
     @SuppressWarnings("CopyConstructorMissesField")
     private ContainerShop(@NotNull ContainerShop s) {
@@ -433,13 +433,13 @@ public class ContainerShop implements Shop {
      */
     @Override
     public boolean matches(@Nullable ItemStack item) {
-        if(item == null)
+        if (item == null)
             return false;
         ItemStack guest = item.clone();
         guest.setAmount(1);
         ItemStack owner = this.item.clone();
         owner.setAmount(1);
-        return plugin.getItemMatcher().matches(guest,owner);
+        return plugin.getItemMatcher().matches(guest, owner);
     }
 
     @Override
@@ -713,8 +713,6 @@ public class ContainerShop implements Shop {
         }
         this.setSignText(getSignText());
     }
-
-    private volatile boolean updating = false;
 
     /**
      * Updates the shop into the database.
@@ -1198,10 +1196,10 @@ public class ContainerShop implements Shop {
                     && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
                 OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
                 return openInv.getSpecialEnderChest(
-                        Objects.requireNonNull(
-                                openInv.loadPlayer(
-                                        plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
-                        plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
+                                Objects.requireNonNull(
+                                        openInv.loadPlayer(
+                                                plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
+                                plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
                         .getBukkitInventory();
             }
         } catch (Exception e) {
