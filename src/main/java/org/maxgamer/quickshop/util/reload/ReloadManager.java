@@ -22,10 +22,7 @@ package org.maxgamer.quickshop.util.reload;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * ReloadManager controls modules to reloading while needed
@@ -33,7 +30,7 @@ import java.util.Map;
  * Register order is reloading order preventing unexpected behavior.
  */
 public class ReloadManager {
-    private final List<Reloadable> registry = new ArrayList<>();
+    private final List<ReloadableContainer> registry = new ArrayList<>();
 
     /**
      * Register a reloadable module into reloading registery
@@ -42,7 +39,7 @@ public class ReloadManager {
      */
     public void register(@NotNull Reloadable reloadable) {
         unregister(reloadable);
-        this.registry.add(reloadable);
+        this.registry.add(new ReloadableContainer(reloadable, null));
     }
 
     /**
@@ -51,7 +48,7 @@ public class ReloadManager {
      * @param reloadable Reloadable module
      */
     public void unregister(@NotNull Reloadable reloadable) {
-        this.registry.remove(reloadable);
+        this.registry.removeIf(reloadableContainer -> reloadableContainer != null && Objects.equals(reloadableContainer.getReloadable(), reloadable));
     }
 
     /**
@@ -60,7 +57,13 @@ public class ReloadManager {
      * @param clazz Class that impl reloadable
      */
     public void unregister(@NotNull Class<Reloadable> clazz) {
-        this.registry.removeIf(reloadable -> reloadable.getClass().equals(clazz));
+        this.registry.removeIf(reloadable -> {
+            if (reloadable.getReloadable() != null)
+                return clazz.equals(reloadable.getReloadable().getClass());
+            if (reloadable.getReloadableMethod() != null)
+                return clazz.equals(reloadable.getReloadableMethod().getDeclaringClass());
+            return false;
+        });
     }
 
     /**
@@ -69,7 +72,7 @@ public class ReloadManager {
      * @return Reloading results
      */
     @NotNull
-    public Map<Reloadable, ReloadResult> reload() {
+    public Map<ReloadableContainer, ReloadResult> reload() {
         return reload(null);
     }
 
@@ -80,15 +83,23 @@ public class ReloadManager {
      * @return Reloading results
      */
     @NotNull
-    public Map<Reloadable, ReloadResult> reload(@Nullable Class<Reloadable> clazz) {
-        Map<Reloadable, ReloadResult> reloadResultMap = new HashMap<>();
-        for (Reloadable reloadable : this.registry) {
-            if (clazz != null && !reloadable.getClass().equals(clazz)) continue;
+    public Map<ReloadableContainer, ReloadResult> reload(@Nullable Class<Reloadable> clazz) {
+        Map<ReloadableContainer, ReloadResult> reloadResultMap = new HashMap<>();
+        for (ReloadableContainer reloadable : this.registry) {
+            if (clazz != null) {
+                if (reloadable.getReloadable() != null)
+                    if (!clazz.equals(reloadable.getReloadable().getClass())) continue;
+                if (reloadable.getReloadableMethod() != null)
+                    if (!clazz.equals(reloadable.getReloadableMethod().getDeclaringClass())) continue;
+            }
             ReloadResult reloadResult;
             try {
-                reloadResult = reloadable.reloadModule();
-                if (reloadResult.getStatus() == ReloadStatus.REDIRECT_STATIC)
-                    reloadResult = (ReloadResult) reloadable.getClass().getDeclaredMethod("reloadModule").invoke(null);
+
+                if (reloadable.getReloadable() != null)
+                    reloadResult = reloadable.getReloadable().reloadModule();
+                else
+                    //noinspection ConstantConditions
+                    reloadResult = (ReloadResult) reloadable.getReloadableMethod().invoke(null);
             } catch (Exception exception) {
                 reloadResult = new ReloadResult(ReloadStatus.EXCEPTION, "Reloading failed", exception);
             }

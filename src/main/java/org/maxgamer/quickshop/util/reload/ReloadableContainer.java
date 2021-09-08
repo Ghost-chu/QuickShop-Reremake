@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is ReloadStatus.java
+ * This file is a part of project QuickShop, the name is ReloadableContainer.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -19,21 +19,23 @@
 
 package org.maxgamer.quickshop.util.reload;
 
-public enum ReloadStatus {
-    /**
-     * Reload successes
-     */
-    SUCCESS,
-    /**
-     * Reload require the server restart
-     */
-    REQUIRE_RESTART,
-    /**
-     * Reload has been scheduled, waiting next call to affect
-     */
-    SCHEDULED,
-    /**
-     * Oof, reloading exploded, wtf
-     */
-    EXCEPTION,
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import org.jetbrains.annotations.Nullable;
+
+import java.lang.reflect.Method;
+
+@Data
+@Builder
+@AllArgsConstructor
+public class ReloadableContainer {
+    @Nullable
+    private Reloadable reloadable;
+    @Nullable
+    private Method reloadableMethod;
+
+    public boolean isObject() {
+        return reloadable != null;
+    }
 }
