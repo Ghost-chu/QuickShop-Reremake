@@ -433,7 +433,13 @@ public class ContainerShop implements Shop {
      */
     @Override
     public boolean matches(@Nullable ItemStack item) {
-        return plugin.getItemMatcher().matches(this.item, item);
+        if(item == null)
+            return false;
+        ItemStack guest = item.clone();
+        guest.setAmount(1);
+        ItemStack owner = this.item.clone();
+        owner.setAmount(1);
+        return plugin.getItemMatcher().matches(guest,owner);
     }
 
     @Override
