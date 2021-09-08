@@ -30,21 +30,29 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class ResidenceIntegration extends QSIntegratedPlugin {
+public class ResidenceIntegration extends QSIntegratedPlugin implements Reloadable {
     private static final String createFlag = "quickshop-create";
     private static final String tradeFlag = "quickshop-trade";
-    private final List<String> createLimits;
-    private final List<String> tradeLimits;
-    private final boolean whiteList;
+    private List<String> createLimits;
+    private List<String> tradeLimits;
+    private boolean whiteList;
 
     public ResidenceIntegration(QuickShop plugin) {
         super(plugin);
+        plugin.getReloadManager().register(this);
+        init();
+    }
+
+    private void init() {
         this.whiteList = plugin.getConfig().getBoolean("integration.residence.whitelist-mode");
         this.createLimits = plugin.getConfig().getStringList("integration.residence.create");
         this.tradeLimits = plugin.getConfig().getStringList("integration.residence.trade");
@@ -159,4 +167,14 @@ public class ResidenceIntegration extends QSIntegratedPlugin {
     public void unload() {
     }
 
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
 }

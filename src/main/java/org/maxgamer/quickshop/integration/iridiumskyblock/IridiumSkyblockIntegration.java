@@ -37,17 +37,25 @@ import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.List;
 import java.util.Optional;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class IridiumSkyblockIntegration extends QSIntegratedPlugin implements Listener {
+public class IridiumSkyblockIntegration extends QSIntegratedPlugin implements Listener, Reloadable {
 
-    private final boolean onlyOwnerCanCreateShop;
+    private boolean onlyOwnerCanCreateShop;
 
     public IridiumSkyblockIntegration(QuickShop plugin) {
         super(plugin);
+        plugin.getReloadManager().register(this);
+        init();
+    }
+
+    private void init() {
         onlyOwnerCanCreateShop = plugin.getConfig().getBoolean("integration.iridiumskyblock.owner-create-only");
     }
 
@@ -154,11 +162,21 @@ public class IridiumSkyblockIntegration extends QSIntegratedPlugin implements Li
     @EventHandler
     public void deleteShopWhenMemberKicked(UserKickEvent event) {
         Island island = event.getIsland();
-        for (Shop shop: plugin.getShopManager().getPlayerAllShops(event.getUser().getUuid())) {
+        for (Shop shop : plugin.getShopManager().getPlayerAllShops(event.getUser().getUuid())) {
             if (!island.isInIsland(shop.getLocation())) continue;
             plugin.log(String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop));
             shop.delete();
         }
     }
 
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
 }

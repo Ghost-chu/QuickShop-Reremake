@@ -42,6 +42,8 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -51,15 +53,25 @@ import java.util.logging.Level;
 
 public class ShopProtectionListener extends ProtectionListenerBase {
 
-    private final boolean useEnhanceProtection;
+    private boolean useEnhanceProtection;
 
-    private final boolean sendProtectionAlert;
+    private boolean sendProtectionAlert;
 
     public ShopProtectionListener(@NotNull QuickShop plugin, @Nullable Cache cache) {
         super(plugin, cache);
+        init();
+    }
+
+    private void init() {
         this.sendProtectionAlert = plugin.getConfig().getBoolean("send-shop-protection-alert", false);
         useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-shop-protect");
         scanAndFixPaperListener();
+    }
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

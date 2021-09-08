@@ -28,15 +28,29 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 @AllArgsConstructor
-public class DisplayAutoDespawnWatcher extends BukkitRunnable {
+public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloadable {
     private final QuickShop plugin;
-    private final int range;
+    private int range;
 
     public DisplayAutoDespawnWatcher(@NotNull QuickShop plugin) {
         this.plugin = plugin;
+        plugin.getReloadManager().register(this);
+
+    }
+
+    private void init() {
         this.range = plugin.getConfig().getInt("shop.display-despawn-range");
+    }
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 
     @Override

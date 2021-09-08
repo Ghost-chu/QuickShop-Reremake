@@ -46,17 +46,23 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopAction;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 /**
  * BlockListener to listening events about block events
  *
  * @author KaiNoMood, Ghost_chu, sandtechnology
  */
-public class BlockListener extends ProtectionListenerBase {
-    private final boolean update_sign_when_inventory_moving;
+public class BlockListener extends ProtectionListenerBase implements Reloadable {
+    private boolean update_sign_when_inventory_moving;
 
     public BlockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
         super(plugin, cache);
+    }
+
+    private void init() {
         this.update_sign_when_inventory_moving = super.getPlugin().getConfig().getBoolean("shop.update-sign-when-inventory-moving", true);
     }
 
@@ -265,4 +271,14 @@ public class BlockListener extends ProtectionListenerBase {
         }
     }
 
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
 }

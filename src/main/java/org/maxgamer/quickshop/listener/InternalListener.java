@@ -17,7 +17,7 @@
  *
  */
 
-package org.maxgamer.quickshop.builtinlistener;
+package org.maxgamer.quickshop.listener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -31,21 +31,28 @@ import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.shop.ShopType;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.Objects;
 
 
-public class InternalListener implements Listener {
+public class InternalListener implements Listener, Reloadable {
     private final QuickShop plugin;
-    private final boolean loggingBalance;
-    private final boolean loggingAction;
+    private boolean loggingBalance;
+    private boolean loggingAction;
 
     public InternalListener(QuickShop plugin) {
         this.plugin = plugin;
+        plugin.getReloadManager().register(this);
+        readConfig();
+    }
+
+    private void readConfig() {
         this.loggingBalance = plugin.getConfig().getBoolean("logging.log-balance");
         this.loggingAction = plugin.getConfig().getBoolean("logging.log-actions");
     }
-
 
     public boolean isForbidden(@NotNull Material shopMaterial, @NotNull Material itemMaterial) {
         if (!Objects.equals(shopMaterial, itemMaterial)) {
@@ -170,4 +177,14 @@ public class InternalListener implements Listener {
         }
     }
 
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        readConfig();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
 }

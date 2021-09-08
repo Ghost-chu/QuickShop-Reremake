@@ -56,7 +56,6 @@ public class CalendarWatcher extends BukkitRunnable {
             }
         }
         configuration = YamlConfiguration.loadConfiguration(calendarFile);
-
     }
 
     public void start() {

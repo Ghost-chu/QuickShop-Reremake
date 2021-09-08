@@ -53,7 +53,7 @@ public class DatabaseManager implements Reloadable {
 
     @NotNull
     private final WarningSender warningSender;
-    private final boolean useQueue;
+    private boolean useQueue;
     @Nullable
     private BukkitTask task;
 
@@ -68,12 +68,13 @@ public class DatabaseManager implements Reloadable {
         this.plugin = plugin;
         this.warningSender = new WarningSender(plugin, 600000);
         this.database = dbCore;
-        this.useQueue = plugin.getConfig().getBoolean("database.queue");
+        plugin.getReloadManager().register(this);
         init();
 
     }
 
     private void init() throws ConnectionException {
+        this.useQueue = plugin.getConfig().getBoolean("database.queue");
         if (task != null) {
             task.cancel();
             plugin.getDatabaseManager().runTask();

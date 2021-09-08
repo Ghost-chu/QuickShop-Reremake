@@ -47,6 +47,9 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.PriceLimiter;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.holder.Result;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -56,7 +59,7 @@ import java.util.logging.Level;
 /**
  * Manage a lot of shops.
  */
-public class ShopManager {
+public class ShopManager implements Reloadable {
 
     private final Map<String, Map<ShopChunk, Map<Location, Shop>>> shops = Maps.newConcurrentMap();
 
@@ -67,14 +70,14 @@ public class ShopManager {
     private final QuickShop plugin;
     @Getter
     @Nullable
-    private final Trader cacheTaxAccount;
+    private Trader cacheTaxAccount;
     @Getter
-    private final Trader cacheUnlimitedShopAccount;
+    private Trader cacheUnlimitedShopAccount;
     @Getter
-    private final PriceLimiter priceLimiter;
-    private final boolean useFastShopSearchAlgorithm;
-    private final boolean useOldCanBuildAlgorithm;
-    private final boolean autoSign;
+    private PriceLimiter priceLimiter;
+    private boolean useFastShopSearchAlgorithm;
+    private boolean useOldCanBuildAlgorithm;
+    private boolean autoSign;
     private final Cache<UUID, Shop> shopRuntimeUUIDCaching =
             CacheBuilder.newBuilder()
                     .expireAfterAccess(10, TimeUnit.MINUTES)
@@ -87,6 +90,11 @@ public class ShopManager {
     public ShopManager(@NotNull QuickShop plugin) {
         Util.ensureThread(false);
         this.plugin = plugin;
+        plugin.getReloadManager().register(this);
+        init();
+    }
+
+    private void init() {
         this.useFastShopSearchAlgorithm =
                 plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
         Util.debugLog("Loading caching tax account...");
@@ -116,6 +124,12 @@ public class ShopManager {
                 plugin.getConfig().getBoolean("whole-number-prices-only"));
         this.useOldCanBuildAlgorithm = plugin.getConfig().getBoolean("limits.old-algorithm");
         this.autoSign = plugin.getConfig().getBoolean("shop.auto-sign");
+    }
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, this::init);
+        return ReloadResult.builder().status(ReloadStatus.SCHEDULED).build();
     }
 
     /**

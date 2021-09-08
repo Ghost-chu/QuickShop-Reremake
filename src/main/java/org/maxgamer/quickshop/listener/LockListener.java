@@ -38,6 +38,8 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 public class LockListener extends ProtectionListenerBase {
     public LockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
@@ -51,6 +53,17 @@ public class LockListener extends ProtectionListenerBase {
         } else {
             super.unregister();
         }
+    }
+
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        register();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 
     /*

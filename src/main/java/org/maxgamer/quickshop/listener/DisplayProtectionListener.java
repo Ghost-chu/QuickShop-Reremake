@@ -41,6 +41,8 @@ import org.maxgamer.quickshop.shop.DisplayItem;
 import org.maxgamer.quickshop.shop.DisplayType;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 public class DisplayProtectionListener extends ProtectionListenerBase {
 
@@ -164,4 +166,13 @@ public class DisplayProtectionListener extends ProtectionListenerBase {
                         + " trying mainipulate armorstand contains displayItem.");
     }
 
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
 }

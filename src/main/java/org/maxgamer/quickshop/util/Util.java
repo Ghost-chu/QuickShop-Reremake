@@ -606,12 +606,17 @@ public class Util {
      * Initialize the Util tools.
      */
     public static void initialize() {
+        plugin = QuickShop.getInstance();
+        try {
+            plugin.getReloadManager().register(Util.class.getDeclaredMethod("initialize"));
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
         blacklist.clear();
         shoppables.clear();
         restrictedPrices.clear();
         customStackSize.clear();
         currency2Symbol.clear();
-        plugin = QuickShop.getInstance();
         devMode = plugin.getConfig().getBoolean("dev-mode");
 
         for (String s : plugin.getConfig().getStringList("shop-blocks")) {

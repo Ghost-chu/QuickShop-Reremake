@@ -42,6 +42,9 @@ import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopChunk;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.List;
 import java.util.Map;
@@ -49,26 +52,22 @@ import java.util.UUID;
 
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class TownyIntegration extends QSIntegratedPlugin implements Listener {
-    private final List<TownyFlags> createFlags;
+public class TownyIntegration extends QSIntegratedPlugin implements Listener, Reloadable {
+    private List<TownyFlags> createFlags;
 
-    private final List<TownyFlags> tradeFlags;
+    private List<TownyFlags> tradeFlags;
 
-    private final boolean ignoreDisabledWorlds;
-    private final boolean deleteShopOnLeave;
-    private final boolean deleteShopOnPlotClear;
+    private boolean ignoreDisabledWorlds;
+    private boolean deleteShopOnLeave;
+    private boolean deleteShopOnPlotClear;
     private boolean isNewVersion;
-    private final boolean whiteList;
+    private boolean whiteList;
 
 
     public TownyIntegration(QuickShop plugin) {
         super(plugin);
-        createFlags = TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.create"));
-        tradeFlags = TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.trade"));
-        ignoreDisabledWorlds = plugin.getConfig().getBoolean("integration.towny.ignore-disabled-worlds");
-        deleteShopOnLeave = plugin.getConfig().getBoolean("integration.towny.delete-shop-on-resident-leave");
-        deleteShopOnPlotClear = plugin.getConfig().getBoolean("integration.towny.delete-shop-on-plot-clear");
-        whiteList = plugin.getConfig().getBoolean("integration.towny.whitelist-mode");
+        plugin.getReloadManager().register(this);
+        init();
         //Testing if there have new method
         try {
             Town.class.getDeclaredMethod("getHomeblockWorld");
@@ -76,6 +75,15 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
         } catch (NoSuchMethodException exception) {
             isNewVersion = false;
         }
+    }
+
+    private void init() {
+        createFlags = TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.create"));
+        tradeFlags = TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.trade"));
+        ignoreDisabledWorlds = plugin.getConfig().getBoolean("integration.towny.ignore-disabled-worlds");
+        deleteShopOnLeave = plugin.getConfig().getBoolean("integration.towny.delete-shop-on-resident-leave");
+        deleteShopOnPlotClear = plugin.getConfig().getBoolean("integration.towny.delete-shop-on-plot-clear");
+        whiteList = plugin.getConfig().getBoolean("integration.towny.whitelist-mode");
     }
 
     @Override
@@ -228,4 +236,9 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
         HandlerList.unregisterAll(this);
     }
 
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
 }

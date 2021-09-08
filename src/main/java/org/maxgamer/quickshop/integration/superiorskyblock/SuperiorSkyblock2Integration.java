@@ -36,19 +36,26 @@ import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.Map;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class SuperiorSkyblock2Integration extends QSIntegratedPlugin implements Listener {
-    private final boolean onlyOwnerCanCreateShop;
-    private final boolean deleteShopOnMemberLeave;
+public class SuperiorSkyblock2Integration extends QSIntegratedPlugin implements Listener, Reloadable {
+    private boolean onlyOwnerCanCreateShop;
+    private boolean deleteShopOnMemberLeave;
 
     public SuperiorSkyblock2Integration(QuickShop plugin) {
         super(plugin);
+        plugin.getReloadManager().register(this);
+        init();
+    }
+
+    private void init() {
         onlyOwnerCanCreateShop = plugin.getConfig().getBoolean("integration.superiorskyblock.owner-create-only");
         deleteShopOnMemberLeave = plugin.getConfig().getBoolean("integration.superiorskyblock.delete-shop-on-member-leave");
-
     }
 
     /**
@@ -162,4 +169,14 @@ public class SuperiorSkyblock2Integration extends QSIntegratedPlugin implements 
         }
     }
 
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
 }

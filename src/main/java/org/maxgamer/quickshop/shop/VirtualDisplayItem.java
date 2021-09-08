@@ -61,8 +61,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
     public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
         super(shop);
-
-            VirtualDisplayItemManager.load();
+        VirtualDisplayItemManager.load();
     }
 
     //unique EntityID
