@@ -318,7 +318,7 @@
   "backup-success": "&aVarmuuskopiointi onnistui.",
   "console-only": "&cTämä komento voidaan suorittaa vain Konsolista.",
   "console-only-danger": "&cTämä on vaarallinen komento, joten sen voi suorittaa vain Konsolista.",
-  "clean-warning": "&eThis command will purge &call &eshops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
+  "clean-warning": "&eTämä komento poista &ckaikki &ekaupat jotka ovat korruptoituneita, ovat luotu ei-sallituissa maailmoissa, ostavat/myyvät ei-sallittuja tavaroita tai &c&lOVAT OLEMASSA EI-LADATUISSA MAAILMASSA&e. Tarkista, että otat ensin varmuuskopion kauppojen datasta jonka jälkeen suorita &b/qs cleanghost confirm &ejatkaaksesi.",
   "shop-creation-failed": "&cKaupan luonti epäonnistui, ota yhteyttä palvelimen järjestelmänvalvojaan.",
   "shop-owner-self-trade": "&eKäyt kauppaa omassa kaupassa, joten et saa lisää rahaa.",
   "chest-title": "QuickShop Kauppa",
