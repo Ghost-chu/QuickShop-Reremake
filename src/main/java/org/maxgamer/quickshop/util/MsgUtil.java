@@ -1458,6 +1458,10 @@ public class MsgUtil {
             setAndUpdate("command.reloading");
             setAndUpdate("language-version", ++selectedVersion);
         }
+        if (selectedVersion == 60) {
+            setAndUpdate("reloading-status");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
     }
 
