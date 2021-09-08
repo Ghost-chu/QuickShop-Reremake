@@ -88,7 +88,7 @@ public class ReloadManager {
                 ReloadResult reloadResult = reloadable.reloadModule();
                 reloadResultMap.put(reloadable, reloadResult);
             } catch (Exception exception) {
-                reloadResultMap.put(reloadable, new ReloadResult(ReloadStatus.EXCEPTION, "Restarting failed", exception));
+                reloadResultMap.put(reloadable, new ReloadResult(ReloadStatus.EXCEPTION, "Reloading failed", exception));
             }
         }
         return reloadResultMap;
