@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.util.reload;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class ReloadManager {
      *
      * @param reloadable Reloadable module
      */
-    public void register(Reloadable reloadable) {
+    public void register(@NotNull Reloadable reloadable) {
         unregister(reloadable);
         this.registry.add(reloadable);
     }
@@ -49,7 +50,7 @@ public class ReloadManager {
      *
      * @param reloadable Reloadable module
      */
-    public void unregister(Reloadable reloadable) {
+    public void unregister(@NotNull Reloadable reloadable) {
         this.registry.remove(reloadable);
     }
 
@@ -58,7 +59,7 @@ public class ReloadManager {
      *
      * @param clazz Class that impl reloadable
      */
-    public void unregister(Class<Reloadable> clazz) {
+    public void unregister(@NotNull Class<Reloadable> clazz) {
         this.registry.removeIf(reloadable -> reloadable.getClass().equals(clazz));
     }
 
@@ -67,6 +68,7 @@ public class ReloadManager {
      *
      * @return Reloading results
      */
+    @NotNull
     public Map<Reloadable, ReloadResult> reload() {
         return reload(null);
     }
@@ -77,6 +79,7 @@ public class ReloadManager {
      * @param clazz The class that impl reloadable
      * @return Reloading results
      */
+    @NotNull
     public Map<Reloadable, ReloadResult> reload(@Nullable Class<Reloadable> clazz) {
         Map<Reloadable, ReloadResult> reloadResultMap = new HashMap<>();
         for (Reloadable reloadable : this.registry) {
