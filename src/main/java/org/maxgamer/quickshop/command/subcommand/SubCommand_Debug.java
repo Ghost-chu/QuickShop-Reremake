@@ -44,7 +44,9 @@ import java.util.logging.Level;
 public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
-    private final List<String> tabCompleteList = Collections.unmodifiableList(Arrays.asList("debug", "dev", "devmode", "handlerlist", "jvm", "signs"));
+    private final List<String> tabCompleteList = Collections.unmodifiableList(
+            Arrays.asList("debug", "dev", "devmode", "handlerlist", "jvm", "signs")
+    );
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

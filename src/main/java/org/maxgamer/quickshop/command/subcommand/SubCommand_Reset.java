@@ -37,7 +37,9 @@ import java.util.Objects;
 public class SubCommand_Reset implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
-    private final List<String> tabCompleteList = Collections.unmodifiableList(Arrays.asList("lang", "config", "messages"));
+    private final List<String> tabCompleteList = Collections.unmodifiableList(
+            Arrays.asList("lang", "config", "messages")
+    );
 
 
     @Override

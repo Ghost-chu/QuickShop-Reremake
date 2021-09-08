@@ -31,14 +31,17 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class Economy_TNE implements EconomyCore {
+public class Economy_TNE implements EconomyCore, Reloadable {
 
     private final QuickShop plugin;
-    private final boolean allowLoan;
+    private boolean allowLoan;
 
     @Getter
     @Setter
@@ -46,8 +49,12 @@ public class Economy_TNE implements EconomyCore {
 
     public Economy_TNE(@NotNull QuickShop plugin) {
         this.plugin = plugin;
-        this.allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
+        init();
         setupEconomy();
+    }
+
+    private void init() {
+        this.allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
     }
 
     private void setupEconomy() {
@@ -224,5 +231,16 @@ public class Economy_TNE implements EconomyCore {
     @Override
     public @NotNull Plugin getPlugin() {
         return this.plugin;
+    }
+
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 }

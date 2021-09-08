@@ -72,6 +72,7 @@ public class MySQLCore extends AbstractDatabaseCore {
         }
     }
 
+
     @Override
     synchronized void close() {
         for (DatabaseConnection databaseConnection : POOL) {
