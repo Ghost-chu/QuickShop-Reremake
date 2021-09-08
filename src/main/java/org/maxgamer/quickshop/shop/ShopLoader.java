@@ -117,7 +117,7 @@ public class ShopLoader {
                 shopsInDatabase.add(shop);
                 if (shopNullCheck(shop)) {
                     if (plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false)) {
-                        plugin.getLogger().warning("Deleting shop {0} caused by corrupted.", shop);
+                        plugin.getLogger().warning("Deleting shop " + shop + " caused by corrupted.");
                         plugin.getDatabaseHelper().removeShop(origin.getWorld(), origin.getX(), origin.getY(), origin.getZ());
                     } else {
                         Util.debugLog("Trouble database loading debug: " + data);
@@ -161,10 +161,10 @@ public class ShopLoader {
                                         + pendingLoadShops.size()
                                         + " shops!");
             }, 1);
-            this.plugin.getLogger().info("Scheduled {0} shops to load in next tick, " +
-                            "{1} shops will load after chunk have loaded, " +
-                            "{2} shops will load after the world has loaded.",
-                    pendingLoadShops.size(), loadAfterChunkLoaded, loadAfterWorldLoaded);
+            this.plugin.getLogger().info("Scheduled " + pendingLoadShops.size() + " shops to load in next tick, " + loadAfterChunkLoaded
+                    + " shops will load after chunk have loaded, "
+                    + loadAfterWorldLoaded
+                    + " shops will load after the world has loaded.");
         } catch (Exception e) {
             exceptionHandler(e, null);
         }
@@ -271,7 +271,7 @@ public class ShopLoader {
         logger.warning("  >> Error Trace");
         ex.printStackTrace();
         logger.warning("  >> Target Location Info");
-        logger.warning("Location: {0}" + ((shopLocation == null) ? "NULL" : shopLocation.toString()));
+        logger.warning("Location: " + ((shopLocation == null) ? "NULL" : shopLocation.toString()));
         logger.warning(
                 "Block: " + ((shopLocation == null) ? "NULL" : shopLocation.getBlock().getType().name()));
         logger.warning("#######################################");
@@ -317,8 +317,7 @@ public class ShopLoader {
                 success = true;
             } catch (JsonSyntaxException ignore) {
             }
-            //plugin.getLogger().info("Processed " + i + "/" + total + " - [" + success + "]");
-            plugin.getLogger().info("Processed {0}/{1} - [{3}]", i, total, success);
+            plugin.getLogger().info("Processed " + i + "/" + total + " - [" + success + "]");
         }
     }
 

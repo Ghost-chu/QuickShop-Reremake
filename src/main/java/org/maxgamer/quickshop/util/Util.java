@@ -269,11 +269,11 @@ public class Util {
             // Try load the itemDataVersion to do some checks.
             //noinspection deprecation
             if (itemDataVersion > Bukkit.getUnsafe().getDataVersion()) {
-                Util.debugLog("WARNING: DataVersion not matched with ItemStack: {0}", config);
+                Util.debugLog("WARNING: DataVersion not matched with ItemStack: " + config);
                 // okay we need some things to do
                 if (plugin.getConfig().getBoolean("shop.force-load-downgrade-items.enable")) {
                     // okay it enabled
-                    Util.debugLog("QuickShop is trying force loading {0}", config);
+                    Util.debugLog("QuickShop is trying force loading " + config);
                     if (plugin.getConfig().getInt("shop.force-load-downgrade-items.method") == 0) { // Mode 0
                         //noinspection deprecation
                         item.put("v", Bukkit.getUnsafe().getDataVersion() - 1);
@@ -284,12 +284,14 @@ public class Util {
                     // Okay we have hacked the dataVersion, now put it back
                     root.put("item", item);
                     config = yaml.dump(root);
-                    Util.debugLog("Updated, we will try load as hacked ItemStack: {0}", config);
+                    Util.debugLog("Updated, we will try load as hacked ItemStack: " + config);
                 } else {
                     plugin
                             .getLogger()
                             .warning(
-                                    "Cannot load ItemStack {0} because it saved from higher Minecraft server version, the action will fail and you will receive a exception, PLELASE DON'T REPORT TO QUICKSHOP!", config);
+                                    "Cannot load ItemStack "
+                                            + config
+                                            + " because it saved from higher Minecraft server version, the action will fail and you will receive a exception, PLELASE DON'T REPORT TO QUICKSHOP!");
                     plugin
                             .getLogger()
                             .warning(
@@ -337,7 +339,7 @@ public class Util {
         final int codeLine = stackTraceElement.getLineNumber();
         for (String log : logs) {
             debugLogs.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
-            QuickShop.getInstance().getLogger().info("[DEBUG] [{0}] [{1}] ({2}) {3}", className, methodName, codeLine, log);
+            QuickShop.getInstance().getLogger().info("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
         }
         lock.writeLock().unlock();
     }
@@ -642,12 +644,12 @@ public class Util {
                 try {
                     Material mat = Material.matchMaterial(sp[0]);
                     if (mat == null) {
-                        plugin.getLogger().warning("Material {0} in config.yml can't match with a valid Materials, check your config.yml!", sp[0]);
+                        plugin.getLogger().warning("Material " + sp[0] + " in config.yml can't match with a valid Materials, check your config.yml!");
                         continue;
                     }
                     restrictedPrices.put(mat, new SimpleEntry<>(Double.valueOf(sp[1]), Double.valueOf(sp[2])));
                 } catch (Exception e) {
-                    plugin.getLogger().warning("Invalid price restricted material: {0}", s);
+                    plugin.getLogger().warning("Invalid price restricted material: " + s);
                 }
             }
         }
@@ -662,7 +664,7 @@ public class Util {
             }
             Material mat = Material.matchMaterial(data[0]);
             if (mat == null || mat == Material.AIR) {
-                plugin.getLogger().warning("{0} not a valid material type in custom-item-stacksize section.", material);
+                plugin.getLogger().warning(material + " not a valid material type in custom-item-stacksize section.");
                 continue;
             }
             customStackSize.put(mat, Integer.parseInt(data[1]));
@@ -676,7 +678,7 @@ public class Util {
         symbols.forEach(entry -> {
             String[] splits = entry.split(";", 2);
             if (splits.length < 2) {
-                plugin.getLogger().warning("Invalid entry in alternate-currency-symbol-list: {0}", entry);
+                plugin.getLogger().warning("Invalid entry in alternate-currency-symbol-list: " + entry);
             }
             currency2Symbol.put(splits[0], splits[1]);
         });

@@ -240,7 +240,9 @@ public class ShopManager {
             }
         } else {
             plugin.getLogger().warning(
-                    "Sign material {0} not a WallSign, make sure you using correct sign material.", signBlockState.getType().name());
+                    "Sign material "
+                            + signBlockState.getType().name()
+                            + " not a WallSign, make sure you using correct sign material.");
         }
         signBlockState.update(true);
     }
@@ -687,8 +689,8 @@ public class ShopManager {
                                 shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency())));
             } else {
                 MsgUtil.sendMessage(buyer, "purchase-failed");
-                plugin.getLogger().severe("EconomyTransaction Failed, last error: {0}", transaction.getLastError());
-                QuickShop.getInstance().log("EconomyTransaction Failed, last error: " + transaction.getLastError());
+                plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
+                QuickShop.getInstance().log("EconomyTransaction Failed, last error:" + transaction.getLastError());
             }
             return;
         }
@@ -752,7 +754,7 @@ public class ShopManager {
             }
         }
         if (tax >= 1.0) {
-            plugin.getLogger().warning("Disable tax due to is invalid, it should be in 0.0-1.0 (current value is {0})", tax);
+            plugin.getLogger().warning("Disable tax due to is invalid, it should be in 0.0-1.0 (current value is " + tax + ")");
             tax = 0;
         }
         if (tax < 0) {
@@ -941,8 +943,8 @@ public class ShopManager {
                                     shop.getCurrency())));
                 } else {
                     MsgUtil.sendMessage(p, "purchase-failed");
-                    plugin.getLogger().severe("EconomyTransaction Failed, last error: {0}", economyTransaction.getLastError());
-                    plugin.log("EconomyTransaction Failed, last error: " + economyTransaction.getLastError());
+                    plugin.getLogger().severe("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
+                    plugin.log("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
                 }
                 return;
             }
@@ -1051,8 +1053,8 @@ public class ShopManager {
                                 shop.getCurrency())));
             } else {
                 MsgUtil.sendMessage(seller, "purchase-failed");
-                plugin.getLogger().severe("EconomyTransaction Failed, last error: ", transaction.getLastError());
-                QuickShop.getInstance().log("EconomyTransaction Failed, last error: " + transaction.getLastError());
+                plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
+                QuickShop.getInstance().log("EconomyTransaction Failed, last error:" + transaction.getLastError());
             }
             return;
         }
@@ -1275,7 +1277,7 @@ public class ShopManager {
             actionSell(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
         } else {
             MsgUtil.sendMessage(p, "shop-purchase-cancelled");
-            plugin.getLogger().warning("Shop data broken? Loc: {0}", shop.getLocation());
+            plugin.getLogger().warning("Shop data broken? Loc:" + shop.getLocation());
         }
     }
 

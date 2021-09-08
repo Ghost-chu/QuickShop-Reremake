@@ -60,8 +60,13 @@ public class ConfigurationFixer {
             Object value = externalConfig.get(key);
             Object buildInValue = builtInConfig.get(key);
             if (value == null || !value.getClass().getTypeName().equals(Objects.requireNonNull(buildInValue).getClass().getTypeName())) {
+<<<<<<<HEAD
                 plugin.getLogger().warning("Fixing configuration use default value: {0}", key);
                 externalConfig.set(key, buildInValue);
+=======
+                plugin.getLogger().warning("Fixing configuration use default value: " + key);
+                plugin.getConfig().set(key, buildInValue);
+>>>>>>>parent of bcd7c6540(switch to use enhanced logger)
             }
         }
         plugin.getLogger().info("QuickShop fixed the corrupted parts in configuration that we can found. We recommend you restart the server and make fix apply.");

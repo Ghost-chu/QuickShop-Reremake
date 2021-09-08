@@ -155,8 +155,8 @@ public class RollbarErrorReporter {
                     .warning(
                             "A exception was thrown, QuickShop already caught this exception and reported it. This error will only shown once before next restart.");
             plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
-            plugin.getLogger().warning("Description: {0}", throwable.getMessage());
-            plugin.getLogger().warning("Server   ID: {0}", plugin.getServerUniqueID());
+            plugin.getLogger().warning("Description: " + throwable.getMessage());
+            plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID());
             plugin.getLogger().warning("Exception  : ");
             ignoreThrows();
             throwable.printStackTrace();

@@ -392,7 +392,9 @@ public class MsgUtil {
             }
             String itemName = gameLanguage.getItem(material);
             itemi18n.set("itemi18n." + material.name(), itemName);
-            plugin.getLogger().info("Found new items/blocks [{0}] , adding it to the config...", itemName);
+            plugin
+                    .getLogger()
+                    .info("Found new items/blocks [" + itemName + "] , adding it to the config...");
         }
         try {
             itemi18n.save(itemi18nFile);
@@ -425,7 +427,7 @@ public class MsgUtil {
                 continue;
             }
             String potionName = gameLanguage.getPotion(potion);
-            plugin.getLogger().info("Found new potion [{0}] , adding it to the config...", potionName);
+            plugin.getLogger().info("Found new potion [" + potionName + "] , adding it to the config...");
             potioni18n.set("potioni18n." + potion.getName(), potionName);
         }
         try {
@@ -737,7 +739,7 @@ public class MsgUtil {
                 String format = plugin.getConfig().getString("decimal-format");
                 decimalFormat = format == null ? new DecimalFormat() : new DecimalFormat(format);
             } catch (Exception e) {
-                QuickShop.getInstance().getLogger().log(Level.WARNING, "Error when processing decimal format, using system default: {0}", e.getMessage());
+                QuickShop.getInstance().getLogger().log(Level.WARNING, "Error when processing decimal format, using system default: " + e.getMessage());
                 decimalFormat = new DecimalFormat();
             }
         }
