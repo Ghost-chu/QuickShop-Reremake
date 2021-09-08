@@ -84,12 +84,15 @@ public class ReloadManager {
         Map<Reloadable, ReloadResult> reloadResultMap = new HashMap<>();
         for (Reloadable reloadable : this.registry) {
             if (clazz != null && !reloadable.getClass().equals(clazz)) continue;
+            ReloadResult reloadResult;
             try {
-                ReloadResult reloadResult = reloadable.reloadModule();
-                reloadResultMap.put(reloadable, reloadResult);
+                reloadResult = reloadable.reloadModule();
+                if (reloadResult.getStatus() == ReloadStatus.REDIRECT_STATIC)
+                    reloadResult = (ReloadResult) reloadable.getClass().getDeclaredMethod("reloadModule").invoke(null);
             } catch (Exception exception) {
-                reloadResultMap.put(reloadable, new ReloadResult(ReloadStatus.EXCEPTION, "Reloading failed", exception));
+                reloadResult = new ReloadResult(ReloadStatus.EXCEPTION, "Reloading failed", exception);
             }
+            reloadResultMap.put(reloadable, reloadResult);
         }
         return reloadResultMap;
     }

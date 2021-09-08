@@ -36,4 +36,8 @@ public enum ReloadStatus {
      * Oof, reloading exploded, wtf
      */
     EXCEPTION,
+    /**
+     * Require ReloadManager redirect reloading request to static reload method
+     */
+    REDIRECT_STATIC
 }

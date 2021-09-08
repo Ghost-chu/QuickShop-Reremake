@@ -45,7 +45,6 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.QuickShopAPI;
-import org.maxgamer.quickshop.builtinlistener.InternalListener;
 import org.maxgamer.quickshop.chat.QuickChat;
 import org.maxgamer.quickshop.chat.QuickChatType;
 import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
@@ -69,6 +68,7 @@ import org.maxgamer.quickshop.util.envcheck.*;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
+import org.maxgamer.quickshop.util.reload.ReloadManager;
 import org.maxgamer.quickshop.util.reporter.error.RollbarErrorReporter;
 import org.maxgamer.quickshop.watcher.*;
 
@@ -267,6 +267,8 @@ public class QuickShop extends JavaPlugin {
     private Plugin worldEditPlugin;
     @Getter
     private WorldEditAdapter worldEditAdapter;
+    @Getter
+    private final ReloadManager reloadManager = new ReloadManager();
 
     /**
      * Use for mock bukkit
