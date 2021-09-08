@@ -31,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.JsonUtil;
-import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.logging.Level;
@@ -147,9 +146,10 @@ public abstract class DisplayItem {
         }
         //noinspection ConstantConditions
         for (String lore : iMeta.getLore()) {
-            if (!MsgUtil.isJson(lore)) {
-                continue;
-            }
+            try {
+                if (!lore.startsWith("{")) {
+                    continue;
+                }
                 ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
                 if (shopProtectionFlag == null) {
                     continue;
@@ -161,7 +161,9 @@ public abstract class DisplayItem {
                         || shopProtectionFlag.getShopLocation().equals(attachedShopLocation)) {
                     return true;
                 }
-
+            } catch (JsonSyntaxException e) {
+                // Ignore
+            }
         }
         return false;
     }
