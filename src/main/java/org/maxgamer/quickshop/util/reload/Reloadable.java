@@ -28,7 +28,7 @@ public interface Reloadable {
      *
      * @return Reloading success
      */
-    ReloadResult reloadModule();
+    ReloadResult reloadModule() throws Exception;
 
 
 }
