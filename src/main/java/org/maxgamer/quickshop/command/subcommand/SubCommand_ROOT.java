@@ -60,8 +60,12 @@ public class SubCommand_ROOT implements CommandHandler<CommandSender> {
                             && !requirePermission.isEmpty()
                             && !QuickShop.getPermissionManager().hasPermission(sender, requirePermission)) {
                         Util.debugLog(
-                                "Player {0} is trying to tab-complete the command: {1}, but doesn't have the permission: {2}"
-                                , sender.getName(), commandLabel, requirePermission);
+                                "Player "
+                                        + sender.getName()
+                                        + " is trying to tab-complete the command: "
+                                        + commandLabel
+                                        + ", but doesn't have the permission: "
+                                        + requirePermission);
                         return Collections.emptyList();
                     }
                 }

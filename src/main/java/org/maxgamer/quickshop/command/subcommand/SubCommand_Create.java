@@ -105,7 +105,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
                 item = new ItemStack(material, 1);
             }
         }
-        Util.debugLog("Pending task for material: {0}", item);
+        Util.debugLog("Pending task for material: " + item);
 
         String price = cmdArg[0];
 
@@ -119,7 +119,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
             Result result = plugin.getPermissionChecker().canBuild(sender, b);
             if (!result.isSuccess()) {
                 MsgUtil.sendMessage(sender, "3rd-plugin-build-check-failed", result.getMessage());
-                Util.debugLog("Failed to create shop because the protection check has failed! Reason: {0}", result.getMessage());
+                Util.debugLog("Failed to create shop because the protection check has failed! Reason:" + result.getMessage());
                 return;
             }
 

@@ -351,10 +351,11 @@ public class PlayerListener extends QSListener {
         if (loc1.getWorld() != loc2.getWorld() || loc1.distanceSquared(loc2) > 25) {
             if (info.getAction() == ShopAction.BUY) {
                 MsgUtil.sendMessage(p, "shop-purchase-cancelled");
+                Util.debugLog(p.getName() + " too far with the shop location.");
             } else if (info.getAction() == ShopAction.CREATE) {
                 MsgUtil.sendMessage(p, "shop-creation-cancelled");
+                Util.debugLog(p.getName() + " too far with the shop location.");
             }
-            Util.debugLog("{0} too far with the shop location.", p.getName());
             plugin.getShopManager().getActions().remove(p.getUniqueId());
         }
     }
@@ -373,6 +374,6 @@ public class PlayerListener extends QSListener {
             return;
         }
         e.setCancelled(true);
-        Util.debugLog("Disallow {0} dye the shop sign.", e.getPlayer().getName());
+        Util.debugLog("Disallow " + e.getPlayer().getName() + " dye the shop sign.");
     }
 }

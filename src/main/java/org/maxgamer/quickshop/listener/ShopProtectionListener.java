@@ -260,7 +260,7 @@ public class ShopProtectionListener extends ProtectionListenerBase {
         } else if (holder instanceof Block) {
             location.getBlock().breakNaturally();
         } else {
-            Util.debugLog("Unknown location = {0}", loc);
+            Util.debugLog("Unknown location = " + loc);
         }
 
         if (sendProtectionAlert) {

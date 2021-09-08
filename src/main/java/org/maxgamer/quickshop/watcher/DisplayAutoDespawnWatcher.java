@@ -58,7 +58,10 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable {
                 }
                 if (anyPlayerInRegion) {
                     if (!shop.getDisplay().isSpawned()) {
-                        Util.debugLog("Respawning the shop {0} the display, cause it was despawned and a player close to it", shop);
+                        Util.debugLog(
+                                "Respawning the shop "
+                                        + shop
+                                        + " the display, cause it was despawned and a player close to it");
                         Util.mainThreadRun(() -> shop.getDisplay().spawn());
                     }
                 } else if (shop.getDisplay().isSpawned()) {
@@ -72,12 +75,12 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable {
         if (shop.getDisplay() != null) {
             if (shop.getDisplay().isPendingRemoval()) {
                 // Actually remove the pending display
-                Util.debugLog("Removing the shop {0} the display, cause nobody can see it", shop);
+                Util.debugLog("Removing the shop " + shop + " the display, cause nobody can see it");
                 Util.mainThreadRun(() -> shop.getDisplay().remove());
                 return true;
             } else {
                 // Delayed to next calling
-                Util.debugLog("Pending to remove the shop {0} the display, cause nobody can see it", shop);
+                Util.debugLog("Pending to remove the shop " + shop + " the display, cause nobody can see it");
                 shop.getDisplay().pendingRemoval();
                 return false;
             }

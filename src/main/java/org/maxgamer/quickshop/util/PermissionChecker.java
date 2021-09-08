@@ -86,7 +86,7 @@ public class PermissionChecker {
     public Result canBuild(@NotNull Player player, @NotNull Block block) {
 
         if (plugin.getConfig().getStringList("shop.protection-checking-blacklist").contains(block.getWorld().getName())) {
-            Util.debugLog("Skipping protection checking in world {0} causing it in blacklist.", block.getWorld().getName());
+            Util.debugLog("Skipping protection checking in world " + block.getWorld().getName() + " causing it in blacklist.");
             return Result.SUCCESS;
         }
 
@@ -107,7 +107,7 @@ public class PermissionChecker {
             BlocksHubBukkit blocksHubBukkit = (BlocksHubBukkit) plugin.getBlockHubPlugin();
             boolean bhCanBuild = blocksHubBukkit.getApi().hasAccess(player.getUniqueId(), blocksHubBukkit.getApi().getWorld(block.getWorld().getName()), block.getX(), block.getY(), block.getZ());
             if (plugin.getConfig().getBoolean("plugin.BlockHub.only")) {
-                Util.debugLog("BlockHub only mode response: {0}", bhCanBuild);
+                Util.debugLog("BlockHub only mode response: " + bhCanBuild);
                 return new Result("BlockHub");
             } else {
                 if (!bhCanBuild) {
@@ -130,7 +130,9 @@ public class PermissionChecker {
                 //tracking cancel plugin
                 if (cancel && !isCancelled()) {
                     Util.debugLog("An plugin blocked the protection checking event! See this stacktrace:");
-                    MsgUtil.debugStackTrace(Thread.currentThread().getStackTrace());
+                    for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+                        Util.debugLog(element.getClassName() + "." + element.getMethodName() + "(" + element.getLineNumber() + ")");
+                    }
                     isCanBuild.setMessage(Thread.currentThread().getStackTrace()[2].getClassName());
                     out:
                     for (StackTraceElement element : Thread.currentThread().getStackTrace()) {

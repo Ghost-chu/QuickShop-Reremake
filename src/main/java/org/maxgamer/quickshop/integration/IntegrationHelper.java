@@ -101,7 +101,7 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
         }
         if (!integrations.containsKey(integratedPlugin.getName())) {
             plugin.getLogger().info("Registering " + integratedPlugin.getName() + " integration");
-            Util.debugLog("Registering {0} integration", integratedPlugin.getName());
+            Util.debugLog("Registering " + integratedPlugin.getName() + " integration");
             integrations.put(integratedPlugin.getName(), integratedPlugin);
         }
     }
@@ -172,7 +172,7 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
         }
 
         plugin.getLogger().info("Unregistering " + integratedPlugin.getName() + " integration");
-        Util.debugLog("Unregistering {0} integration", integratedPlugin.getName());
+        Util.debugLog("Unregistering " + integratedPlugin.getName() + " integration");
         integrations.remove(integratedPlugin.getName());
     }
 
@@ -181,12 +181,15 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
                 integratedPlugin -> {
                     if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage()
                             == stage) {
-                        Util.debugLog("Calling for load {0}", integratedPlugin.getName());
+                        Util.debugLog("Calling for load " + integratedPlugin.getName());
                         integratedPlugin.load();
                     } else {
                         Util.debugLog(
-                                "Ignored calling because {0} stage is {1}",
-                                integratedPlugin.getName(), integratedPlugin.getClass()
+                                "Ignored calling because "
+                                        + integratedPlugin.getName()
+                                        + " stage is "
+                                        + integratedPlugin
+                                        .getClass()
                                         .getDeclaredAnnotation(IntegrationStage.class)
                                         .loadStage());
                     }
@@ -198,13 +201,14 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
                 integratedPlugin -> {
                     if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).unloadStage()
                             == stage) {
-                        Util.debugLog("Calling for unload {0}", integratedPlugin.getName());
+                        Util.debugLog("Calling for unload " + integratedPlugin.getName());
                         integratedPlugin.unload();
                     } else {
                         Util.debugLog(
-                                "Ignored calling because {0} stage is {1}"
-                                , integratedPlugin.getName(),
-                                integratedPlugin
+                                "Ignored calling because "
+                                        + integratedPlugin.getName()
+                                        + " stage is "
+                                        + integratedPlugin
                                         .getClass()
                                         .getDeclaredAnnotation(IntegrationStage.class)
                                         .loadStage());
@@ -215,7 +219,7 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
     public Result callIntegrationsCanCreate(@NotNull Player player, @NotNull Location location) {
         for (IntegratedPlugin plugin : integrations.values()) {
             if (!plugin.canCreateShopHere(player, location)) {
-                Util.debugLog("Cancelled by {0}", plugin.getName());
+                Util.debugLog("Cancelled by " + plugin.getName());
                 return new Result(plugin.getName());
             }
         }
@@ -225,7 +229,7 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
     public Result callIntegrationsCanTrade(@NotNull Player player, @NotNull Location location) {
         for (IntegratedPlugin plugin : integrations.values()) {
             if (!plugin.canTradeShopHere(player, location)) {
-                Util.debugLog("Cancelled by {0}", plugin.getName());
+                Util.debugLog("Cancelled by " + plugin.getName());
                 return new Result(plugin.getName());
             }
         }

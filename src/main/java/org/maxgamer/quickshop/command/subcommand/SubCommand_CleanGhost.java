@@ -92,7 +92,8 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
                 // Shop exist check
                 Util.mainThreadRun(() -> {
                     Util.debugLog(
-                            "Posted to main server thread to continue accessing Bukkit API for shop {0}", shop);
+                            "Posted to main server thread to continue accessing Bukkit API for shop "
+                                    + shop);
                     if (!Util.canBeShop(shop.getLocation().getBlock())) {
                         MsgUtil.sendDirectMessage(sender,
                                 ChatColor.YELLOW
