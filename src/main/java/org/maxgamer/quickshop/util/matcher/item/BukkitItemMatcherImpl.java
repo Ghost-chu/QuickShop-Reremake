@@ -19,13 +19,14 @@
 
 package org.maxgamer.quickshop.util.matcher.item;
 
-import com.google.common.base.Objects;
 import lombok.AllArgsConstructor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+
+import java.util.Objects;
 
 /**
  * A simple impl for ItemMatcher
@@ -66,7 +67,7 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
      */
     @Override
     public boolean matches(@Nullable ItemStack original, @Nullable ItemStack tester) {
-        return Objects.equal(original, tester);
+        return Objects.equals(original, tester);
         /*
         @Override
         @Utility
