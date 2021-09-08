@@ -150,6 +150,6 @@ public class Economy implements EconomyCore {
      */
     @Override
     public ReloadResult reloadModule() throws Exception {
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build()
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 }
