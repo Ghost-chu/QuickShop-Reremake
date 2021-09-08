@@ -33,12 +33,11 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class Economy_TNE implements EconomyCore, Reloadable {
+public class Economy_TNE implements EconomyCore {
 
     private final QuickShop plugin;
     private boolean allowLoan;

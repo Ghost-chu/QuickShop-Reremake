@@ -36,13 +36,12 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Level;
 
-public class Economy_Vault implements EconomyCore, Listener, Reloadable {
+public class Economy_Vault implements EconomyCore, Listener {
 
     private static final String errorMsg =
             "QuickShop received an error when processing Economy response, THIS NOT A QUICKSHOP FAULT, you might need ask help with your Economy Provider plugin (%s) author.";

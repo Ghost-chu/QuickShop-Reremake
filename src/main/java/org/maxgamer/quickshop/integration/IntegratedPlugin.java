@@ -22,8 +22,9 @@ package org.maxgamer.quickshop.integration;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
-public interface IntegratedPlugin {
+public interface IntegratedPlugin extends Reloadable {
     /**
      * Return the integrated plugin name.
      * For example, Residence

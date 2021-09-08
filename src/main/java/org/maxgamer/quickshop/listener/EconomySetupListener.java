@@ -22,6 +22,8 @@ package org.maxgamer.quickshop.listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 public class EconomySetupListener extends QSListener {
     public EconomySetupListener(QuickShop plugin) {
@@ -33,5 +35,15 @@ public class EconomySetupListener extends QSListener {
         if (plugin.getEconomy() == null) {
             plugin.loadEcon();
         }
+    }
+
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 }

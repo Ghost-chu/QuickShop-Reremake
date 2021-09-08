@@ -24,13 +24,14 @@ import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.UUID;
 
 /**
  * @author netherfoam Represents an economy.
  */
-public interface EconomyCore {
+public interface EconomyCore extends Reloadable {
     /**
      * Deposits a given amount of money from thin air to the given username.
      *

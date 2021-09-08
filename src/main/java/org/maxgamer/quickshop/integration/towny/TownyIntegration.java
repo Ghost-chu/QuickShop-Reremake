@@ -44,7 +44,6 @@ import org.maxgamer.quickshop.shop.ShopChunk;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.List;
 import java.util.Map;
@@ -52,7 +51,7 @@ import java.util.UUID;
 
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class TownyIntegration extends QSIntegratedPlugin implements Listener, Reloadable {
+public class TownyIntegration extends QSIntegratedPlugin implements Listener {
     private List<TownyFlags> createFlags;
 
     private List<TownyFlags> tradeFlags;

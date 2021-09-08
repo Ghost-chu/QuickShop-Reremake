@@ -41,6 +41,8 @@ import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -173,5 +175,15 @@ public class AdvancedShopRegionMarketIntegration extends QSIntegratedPlugin {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onShopNeedDeletion(RemoveRegionEvent event) {
         handleDeletion(event.getRegion());
+    }
+
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 }

@@ -33,12 +33,11 @@ import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.List;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class FactionsUUIDIntegration extends QSIntegratedPlugin implements Reloadable {
+public class FactionsUUIDIntegration extends QSIntegratedPlugin {
     private List<String> createFlags;
 
     private List<String> tradeFlags;

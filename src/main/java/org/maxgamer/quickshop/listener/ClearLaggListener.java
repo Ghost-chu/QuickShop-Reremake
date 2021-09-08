@@ -26,6 +26,8 @@ import org.bukkit.event.EventPriority;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.DisplayItem;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,4 +58,13 @@ public class ClearLaggListener extends QSListener {
         Util.debugLog("Prevent " + pendingExclude.size() + " displays removal by ClearLagg.");
     }
 
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
 }

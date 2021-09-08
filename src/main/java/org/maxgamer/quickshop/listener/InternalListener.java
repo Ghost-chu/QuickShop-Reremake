@@ -24,7 +24,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.*;
@@ -33,20 +32,21 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.Objects;
 
 
-public class InternalListener implements Listener, Reloadable {
+public class InternalListener extends QSListener {
     private final QuickShop plugin;
     private boolean loggingBalance;
     private boolean loggingAction;
 
     public InternalListener(QuickShop plugin) {
+        super(plugin);
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
         readConfig();
+        this.register();
     }
 
     private void readConfig() {

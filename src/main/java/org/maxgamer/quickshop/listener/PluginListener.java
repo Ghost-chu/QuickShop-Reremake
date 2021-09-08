@@ -28,6 +28,8 @@ import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationHelper;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.Set;
 
@@ -35,12 +37,19 @@ public class PluginListener extends QSListener {
 
     private static final Set<String> pluginCompatibilityModuleList = CompatibilityManager.getCompatibilityModuleNameMap().keySet();
     private static final Set<String> pluginIntegrationList = IntegrationHelper.getIntegratedPluginNameMap().keySet();
-    private final IntegrationHelper integrationHelper = plugin.getIntegrationHelper();
-    private final CompatibilityManager compatibilityManager = plugin.getCompatibilityTool();
+    private IntegrationHelper integrationHelper;
+    private CompatibilityManager compatibilityManager;
 
     public PluginListener(QuickShop plugin) {
         super(plugin);
+        init();
     }
+
+    private void init() {
+        integrationHelper = plugin.getIntegrationHelper();
+        compatibilityManager = plugin.getCompatibilityTool();
+    }
+
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginDisabled(PluginDisableEvent event) {
@@ -74,4 +83,13 @@ public class PluginListener extends QSListener {
         }
     }
 
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
 }

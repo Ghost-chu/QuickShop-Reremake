@@ -45,6 +45,8 @@ import org.maxgamer.quickshop.shop.ShopAction;
 import org.maxgamer.quickshop.util.InteractUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.Map;
 import java.util.Objects;
@@ -375,5 +377,15 @@ public class PlayerListener extends QSListener {
         }
         e.setCancelled(true);
         Util.debugLog("Disallow " + e.getPlayer().getName() + " dye the shop sign.");
+    }
+
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 }

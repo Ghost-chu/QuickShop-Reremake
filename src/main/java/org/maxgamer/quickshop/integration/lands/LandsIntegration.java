@@ -38,13 +38,12 @@ import org.maxgamer.quickshop.shop.ShopChunk;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.Map;
 import java.util.UUID;
 
 @IntegrationStage
-public class LandsIntegration extends QSIntegratedPlugin implements Listener, Reloadable {
+public class LandsIntegration extends QSIntegratedPlugin implements Listener {
 
     private boolean ignoreDisabledWorlds;
     private boolean whitelist;
