@@ -63,22 +63,6 @@ public abstract class DisplayItem implements Reloadable {
         init();
     }
 
-    protected void init() {
-        displayAllowStacks = plugin.getConfig().getBoolean("shop.display-allow-stacks");
-        if (displayAllowStacks) {
-            //Prevent stack over the normal size
-            originalItemStack.setAmount(Math.min(originalItemStack.getAmount(), originalItemStack.getMaxStackSize()));
-        } else {
-            this.originalItemStack.setAmount(1);
-        }
-    }
-
-    @Override
-    public ReloadResult reloadModule() throws Exception {
-        init();
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
-    }
-
     /**
      * Check the itemStack is contains protect flag.
      *
@@ -246,6 +230,22 @@ public abstract class DisplayItem implements Reloadable {
     public static ShopProtectionFlag createShopProtectionFlag(
             @NotNull ItemStack itemStack, @NotNull Shop shop) {
         return new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
+    }
+
+    protected void init() {
+        displayAllowStacks = plugin.getConfig().getBoolean("shop.display-allow-stacks");
+        if (displayAllowStacks) {
+            //Prevent stack over the normal size
+            originalItemStack.setAmount(Math.min(originalItemStack.getAmount(), originalItemStack.getMaxStackSize()));
+        } else {
+            this.originalItemStack.setAmount(1);
+        }
+    }
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 
     /**

@@ -48,22 +48,14 @@ import java.util.Map;
 public class GriefPreventionIntegration extends QSIntegratedPlugin {
 
     final GriefPrevention griefPrevention = GriefPrevention.instance;
-
-    private boolean whiteList;
-
-    private boolean deleteOnClaimTrustChanged;
-
-    private boolean deleteOnClaimUnclaimed;
-
-    private boolean deleteOnClaimExpired;
-
-    private boolean deleteOnClaimResized;
-
-    private boolean deleteOnSubClaimCreated;
-
-    private Flag createLimit;
-
     private final List<Flag> tradeLimits = new ArrayList<>(3);
+    private boolean whiteList;
+    private boolean deleteOnClaimTrustChanged;
+    private boolean deleteOnClaimUnclaimed;
+    private boolean deleteOnClaimExpired;
+    private boolean deleteOnClaimResized;
+    private boolean deleteOnSubClaimCreated;
+    private Flag createLimit;
 
     public GriefPreventionIntegration(QuickShop plugin) {
         super(plugin);
@@ -151,7 +143,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
         if (!deleteOnClaimExpired) {
             return;
         }
-        handleMainClaimUnclaimedOrExpired(event.getClaim(),"[SHOP DELETE] GP Integration: Single delete (Claim Expired) #");
+        handleMainClaimUnclaimedOrExpired(event.getClaim(), "[SHOP DELETE] GP Integration: Single delete (Claim Expired) #");
     }
 
     // Player can resize the main claim or the subclaim.
@@ -178,7 +170,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
         if (!deleteOnSubClaimCreated) {
             return;
         }
-        if(event.getClaim().parent == null) {
+        if (event.getClaim().parent == null) {
             return;
         }
         for (Chunk chunk : event.getClaim().getChunks()) {
@@ -350,6 +342,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
             boolean check(Claim claim, Player player) {
                 return claim.allowContainers(player) == null;
             }
+
             @Override
             ClaimPermission toClaimPermission() {
                 return ClaimPermission.Inventory;
@@ -359,15 +352,12 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
             boolean check(Claim claim, Player player) {
                 return claim.allowAccess(player) == null;
             }
+
             @Override
             ClaimPermission toClaimPermission() {
                 return ClaimPermission.Access;
             }
         };
-
-        abstract boolean check(Claim claim, Player player);
-
-        abstract ClaimPermission toClaimPermission();
 
         public static Flag getFlag(String flag) {
             for (Flag value : Flag.values()) {
@@ -377,6 +367,10 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
             }
             return null;
         }
+
+        abstract boolean check(Claim claim, Player player);
+
+        abstract ClaimPermission toClaimPermission();
     }
 
 }

@@ -50,13 +50,13 @@ public class CompatibilityManager extends QuickShopInstanceHolder implements Lis
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
+    public static Map<String, Class<? extends CompatibilityModule>> getCompatibilityModuleNameMap() {
+        return compatibilityModuleNameMap;
+    }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void scan(PluginEnableEvent event) {
         searchAndRegisterPlugins();
-    }
-
-    public static Map<String, Class<? extends CompatibilityModule>> getCompatibilityModuleNameMap() {
-        return compatibilityModuleNameMap;
     }
 
     public void searchAndRegisterPlugins() {

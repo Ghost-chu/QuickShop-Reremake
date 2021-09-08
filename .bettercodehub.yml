@@ -1,10 +1,10 @@
 component_depth: 100
 languages:
-- java
-- script
+  - java
+  - script
 exclude:
-- /src/main/resources
-- /src/test/
-- /.github
-- /.idea
-- /lib
+  - /src/main/resources
+  - /src/test/
+  - /.github
+  - /.idea
+  - /lib

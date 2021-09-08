@@ -1,9 +1,6 @@
 ---
-name: Wiki Contribute
-about: Contributing the wiki
-title: "[Contribute WIKI]"
-labels: 'wiki'
-assignees: ''
+name: Wiki Contribute about: Contributing the wiki title: "[Contribute WIKI]"
+labels: 'wiki' assignees: ''
 
 ---
 **Repository Address**

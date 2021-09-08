@@ -28,16 +28,16 @@ public abstract class QSEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
     public QSEvent() {
 
     }
 
     public QSEvent(boolean async) {
         super(async);
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
     @NotNull

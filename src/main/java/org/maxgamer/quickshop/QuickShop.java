@@ -119,6 +119,8 @@ public class QuickShop extends JavaPlugin {
     private final List<BukkitTask> timerTaskList = new ArrayList<>(3);
     @Getter
     private final GameVersion gameVersion = GameVersion.get(Util.getNMSVersion());
+    @Getter
+    private final ReloadManager reloadManager = new ReloadManager();
     boolean onLoadCalled = false;
     @Getter
     private IntegrationHelper integrationHelper;
@@ -172,7 +174,6 @@ public class QuickShop extends JavaPlugin {
      */
     @Getter
     private boolean limit = false;
-
     @Nullable
     @Getter
     private LogWatcher logWatcher;
@@ -267,8 +268,6 @@ public class QuickShop extends JavaPlugin {
     private Plugin worldEditPlugin;
     @Getter
     private WorldEditAdapter worldEditAdapter;
-    @Getter
-    private final ReloadManager reloadManager = new ReloadManager();
 
     /**
      * Use for mock bukkit
@@ -734,6 +733,7 @@ public class QuickShop extends JavaPlugin {
             getLogger().log(Level.WARNING, "Failed to update configuration", exception);
         }
     }
+
     private void runtimeCheck(@NotNull EnvCheckEntry.Stage stage) {
         testing = true;
         environmentChecker = new org.maxgamer.quickshop.util.envcheck.EnvironmentChecker(this);
@@ -1872,11 +1872,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.griefprevention.trade", null);
             getConfig().set("integration.griefprevention.trade", Collections.emptyList());
 
-            boolean oldValueUntrusted  = getConfig().getBoolean("integration.griefprevention.delete-on-untrusted", false);
+            boolean oldValueUntrusted = getConfig().getBoolean("integration.griefprevention.delete-on-untrusted", false);
             getConfig().set("integration.griefprevention.delete-on-untrusted", null);
             getConfig().set("integration.griefprevention.delete-on-claim-trust-changed", oldValueUntrusted);
 
-            boolean oldValueUnclaim  = getConfig().getBoolean("integration.griefprevention.delete-on-unclaim", false);
+            boolean oldValueUnclaim = getConfig().getBoolean("integration.griefprevention.delete-on-unclaim", false);
             getConfig().set("integration.griefprevention.delete-on-unclaim", null);
             getConfig().set("integration.griefprevention.delete-on-claim-unclaimed", oldValueUnclaim);
 
