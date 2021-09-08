@@ -194,7 +194,7 @@
                         <!--                        </relocation>-->
                         <relocation>
                             <pattern>de.themoep.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.shade.de.themoep.minedown.</shadedPattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.de.themoep.</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>io.papermc.lib.</pattern>
@@ -845,12 +845,12 @@
             <version>1.7.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>de.themoep</groupId>
-            <artifactId>minedown-adventure</artifactId>
-            <version>1.7.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>de.themoep</groupId>-->
+        <!--            <artifactId>minedown-adventure</artifactId>-->
+        <!--            <version>1.7.1-SNAPSHOT</version>-->
+        <!--            <scope>compile</scope>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>me.xanium</groupId>
             <artifactId>GemsEconomy</artifactId>
