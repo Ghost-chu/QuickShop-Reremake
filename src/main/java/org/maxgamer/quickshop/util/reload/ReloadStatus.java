@@ -20,9 +20,20 @@
 package org.maxgamer.quickshop.util.reload;
 
 public enum ReloadStatus {
+    /**
+     * Reload successes
+     */
     SUCCESS,
+    /**
+     * Reload require the server restart
+     */
     REQUIRE_RESTART,
+    /**
+     * Reload has been scheduled, waiting next call to affect
+     */
     SCHEDULED,
+    /**
+     * Oof, reloading exploded, wtf
+     */
     EXCEPTION,
-    UNSUPPORTED,
 }
