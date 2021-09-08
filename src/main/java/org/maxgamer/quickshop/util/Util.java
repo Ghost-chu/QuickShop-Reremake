@@ -314,10 +314,9 @@ public class Util {
     /**
      * Print debug log when plugin running on dev mode.
      *
-     * @param msg   Log text
-     * @param param Params
+     * @param logs logs
      */
-    public static void debugLog(@NotNull String msg, Object... param) {
+    public static void debugLog(@NotNull String... logs) {
         if (disableDebugLogger) {
             return;
         }
@@ -325,10 +324,10 @@ public class Util {
         if (debugLogs.size() >= 2000) {
             debugLogs.clear();
         }
-
-        String log = MsgUtil.fillArgs(msg, param);
         if (!devMode) {
-            debugLogs.add("[DEBUG] " + log);
+            for (String log : logs) {
+                debugLogs.add("[DEBUG] " + log);
+            }
             lock.writeLock().unlock();
             return;
         }
@@ -336,8 +335,10 @@ public class Util {
         final String className = stackTraceElement.getClassName();
         final String methodName = stackTraceElement.getMethodName();
         final int codeLine = stackTraceElement.getLineNumber();
-        debugLogs.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
-        QuickShop.getInstance().getLogger().info("[DEBUG] [{0}] [{1}] ({2}) {3}", className, methodName, codeLine, log);
+        for (String log : logs) {
+            debugLogs.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
+            QuickShop.getInstance().getLogger().info("[DEBUG] [{0}] [{1}] ({2}) {3}", className, methodName, codeLine, log);
+        }
         lock.writeLock().unlock();
     }
 
@@ -382,24 +383,28 @@ public class Util {
         try {
             String formatted = plugin.getEconomy().format(n, world, currency);
             if (StringUtils.isEmpty(formatted)) {
-                Util.debugLog("Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
+                Util.debugLog(
+                        "Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
                 return getInternalFormat(n, currency);
             } else {
                 return formatted;
             }
         } catch (NumberFormatException e) {
-            Util.debugLog(e.getMessage());
-            Util.debugLog("Use alternate-currency-symbol to formatting, Cause NumberFormatException");
+            Util.debugLog("format", e.getMessage());
+            Util.debugLog(
+                    "format", "Use alternate-currency-symbol to formatting, Cause NumberFormatException");
             return getInternalFormat(n, currency);
         }
     }
 
     private static String getInternalFormat(double amount, @Nullable String currency) {
-        Util.debugLog("Format: Currency is: [{0}]", currency);
-        String formatted = plugin.getConfig().getBoolean("use-decimal-format", false) ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
         if (StringUtils.isEmpty(currency)) {
+            Util.debugLog("Format: Currency is null");
+            String formatted = plugin.getConfig().getBoolean("use-decimal-format", false) ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
             return plugin.getConfig().getBoolean("shop.currency-symbol-on-right", false) ? formatted + plugin.getConfig().getString("shop.alternate-currency-symbol", "$") : plugin.getConfig().getString("shop.alternate-currency-symbol", "$") + formatted;
         } else {
+            Util.debugLog("Format: Currency is: [" + currency + "]");
+            String formatted = plugin.getConfig().getBoolean("use-decimal-format", false) ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
             String symbol = currency2Symbol.getOrDefault(currency, currency);
             return plugin.getConfig().getBoolean("shop.currency-symbol-on-right", false) ? formatted + symbol : symbol + formatted;
         }
@@ -565,7 +570,7 @@ public class Util {
     @NotNull
     public static String getToolPercentage(@NotNull ItemStack item) {
         if (!(item.getItemMeta() instanceof Damageable)) {
-            Util.debugLog("{0} not Damageable.", item.getType().name());
+            Util.debugLog(item.getType().name() + " not Damageable.");
             return "Error: NaN";
         }
         double dura = ((Damageable) item.getItemMeta()).getDamage();
@@ -1203,7 +1208,7 @@ public class Util {
                 plugin.getLogger().log(Level.WARNING, "Failed to getting server TPS, please report to QuickShop.", e);
                 serverInstance = null;
                 tpsField = null;
-                Util.debugLog("Failed to get TPS {0}", e.getMessage());
+                Util.debugLog("Failed to get TPS " + e.getMessage());
                 return 20.0;
             }
         }

@@ -53,7 +53,7 @@ public class ClearLaggListener extends QSListener {
         for (final Entity entity : pendingExclude) {
             clearlaggEvent.removeEntity(entity);
         }
-        Util.debugLog("Prevent {0} displays removal by ClearLagg.", pendingExclude.size());
+        Util.debugLog("Prevent " + pendingExclude.size() + " displays removal by ClearLagg.");
     }
 
 }

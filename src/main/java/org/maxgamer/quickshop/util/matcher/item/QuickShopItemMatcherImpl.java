@@ -125,7 +125,13 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
         }
 
         if (requireStack == null || givenStack == null) {
-            Util.debugLog("Match failed: A stack is null: requireStack[{0}] givenStack[{1}]", requireStack, givenStack);
+            Util.debugLog(
+                    "Match failed: A stack is null: "
+                            + "requireStack["
+                            + requireStack
+                            + "] givenStack["
+                            + givenStack
+                            + "]");
             return false; // One of them is null (Can't be both, see above)
         }
 

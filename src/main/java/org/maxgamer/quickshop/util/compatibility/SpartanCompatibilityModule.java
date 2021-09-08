@@ -42,14 +42,16 @@ public class SpartanCompatibilityModule extends QSCompatibilityModule {
     public void toggle(@NotNull Player player, boolean checking) {
         if (checking) {
             Util.debugLog(
-                    "Calling Spartan ignore {0} cheats detection until we finished permission checks.", player.getName());
+                    "Calling Spartan ignore "
+                            + player.getName()
+                            + " cheats detection until we finished permission checks.");
 
             for (Enums.HackType value : Enums.HackType.values()) {
                 API.startCheck(player, value);
             }
         } else {
             Util.debugLog(
-                    "Calling Spartan continue follow {0} cheats detection.", player.getName());
+                    "Calling Spartan continue follow " + player.getName() + " cheats detection.");
             for (Enums.HackType value : Enums.HackType.values()) {
                 API.stopCheck(player, value);
             }

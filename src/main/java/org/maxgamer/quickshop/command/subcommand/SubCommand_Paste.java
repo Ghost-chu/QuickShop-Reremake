@@ -87,12 +87,12 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
         final String pasteText = paste.genNewPaste();
         try {
             boolean createResult = file.createNewFile();
-            Util.debugLog("Create paste file: {0} {1}", file.getCanonicalPath(), createResult);
+            Util.debugLog("Create paste file: " + file.getCanonicalPath() + " " + createResult);
             try (FileWriter fwriter = new FileWriter(file)) {
                 fwriter.write(pasteText);
                 fwriter.flush();
             }
-            sender.sendMessage("The paste was saved to {0}", file.getAbsolutePath());
+            sender.sendMessage("The paste was saved to " + file.getAbsolutePath());
             return true;
         } catch (IOException e) {
             plugin.getSentryErrorReporter().ignoreThrow();

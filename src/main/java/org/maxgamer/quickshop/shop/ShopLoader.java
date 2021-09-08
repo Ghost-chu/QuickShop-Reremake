@@ -120,7 +120,7 @@ public class ShopLoader {
                         plugin.getLogger().warning("Deleting shop {0} caused by corrupted.", shop);
                         plugin.getDatabaseHelper().removeShop(origin.getWorld(), origin.getX(), origin.getY(), origin.getZ());
                     } else {
-                        Util.debugLog("Trouble database loading debug: {0}", data);
+                        Util.debugLog("Trouble database loading debug: " + data);
                         Util.debugLog("Somethings gone wrong, skipping the loading...");
                     }
                     continue;
@@ -227,7 +227,7 @@ public class ShopLoader {
     @NotNull
     private YamlConfiguration extraUpgrade(@NotNull String extraString) {
         if (!StringUtils.isEmpty(extraString) && !"QuickShop: {}".equalsIgnoreCase(extraString)) {
-            Util.debugLog("Extra API -> Upgrading -> {0}", extraString.replaceAll("\n", ""));
+            Util.debugLog("Extra API -> Upgrading -> " + extraString.replaceAll("\n", ""));
         }
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
         JsonConfiguration jsonConfiguration = new JsonConfiguration();
@@ -462,7 +462,7 @@ public class ShopLoader {
                 return Util.deserialize(itemConfig);
             } catch (InvalidConfigurationException e) {
                 plugin.getLogger().log(Level.WARNING, "Failed load shop data, because target config can't deserialize the ItemStack", e);
-                Util.debugLog("Failed to load data to the ItemStack: {0}", itemConfig);
+                Util.debugLog("Failed to load data to the ItemStack: " + itemConfig);
                 return null;
             }
         }
@@ -470,14 +470,14 @@ public class ShopLoader {
         private @Nullable ShopModerator deserializeModerator(@NotNull String moderatorJson, AtomicBoolean needUpdate) {
             ShopModerator shopModerator;
             if (Util.isUUID(moderatorJson)) {
-                Util.debugLog("Updating old shop data... for {0}", moderatorJson);
+                Util.debugLog("Updating old shop data... for " + moderatorJson);
                 shopModerator = new ShopModerator(UUID.fromString(moderatorJson)); // New one
                 needUpdate.set(true);
             } else {
                 try {
                     shopModerator = ShopModerator.deserialize(moderatorJson);
                 } catch (JsonSyntaxException ex) {
-                    Util.debugLog("Updating old shop data... for {0}", moderatorJson);
+                    Util.debugLog("Updating old shop data... for " + moderatorJson);
                     //noinspection deprecation
                     moderatorJson = plugin.getServer().getOfflinePlayer(moderatorJson).getUniqueId().toString();
                     shopModerator = new ShopModerator(UUID.fromString(moderatorJson)); // New one
