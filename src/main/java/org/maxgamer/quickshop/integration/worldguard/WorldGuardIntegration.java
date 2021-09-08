@@ -39,13 +39,16 @@ import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.List;
 import java.util.logging.Level;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onLoadAfter)
-public class WorldGuardIntegration extends QSIntegratedPlugin {
+public class WorldGuardIntegration extends QSIntegratedPlugin implements Reloadable {
     private final StateFlag createFlag = createOrGet("quickshop-create", false);
     private final StateFlag tradeFlag = createOrGet("quickshop-trade", true);
     private List<WorldGuardFlags> createFlags;
@@ -79,6 +82,11 @@ public class WorldGuardIntegration extends QSIntegratedPlugin {
         if (load) {
             return;
         }
+        init();
+        load = true;
+    }
+
+    private void init() {
         this.whiteList = plugin.getConfig().getBoolean("integration.worldguard.whitelist-mode");
         this.anyOwner = plugin.getConfig().getBoolean("integration.worldguard.any-owner");
         createFlags =
@@ -87,7 +95,6 @@ public class WorldGuardIntegration extends QSIntegratedPlugin {
         tradeFlags =
                 WorldGuardFlags.deserialize(
                         plugin.getConfig().getStringList("integration.worldguard.trade"));
-        load = true;
     }
 
     @Override
@@ -224,4 +231,14 @@ public class WorldGuardIntegration extends QSIntegratedPlugin {
         return true;
     }
 
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.REQUIRE_RESTART).build();
+    }
 }

@@ -49,6 +49,7 @@ public class Economy_TNE implements EconomyCore, Reloadable {
 
     public Economy_TNE(@NotNull QuickShop plugin) {
         this.plugin = plugin;
+        plugin.getReloadManager().register(this);
         init();
         setupEconomy();
     }

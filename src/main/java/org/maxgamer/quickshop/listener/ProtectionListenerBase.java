@@ -26,13 +26,15 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Cache;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 @Getter
-public class ProtectionListenerBase extends QSListener {
+public abstract class ProtectionListenerBase extends QSListener implements Reloadable {
     private final Cache cache;
 
     public ProtectionListenerBase(@NotNull QuickShop plugin, @Nullable Cache cache) {
         super(plugin);
+        plugin.getReloadManager().register(this);
         this.cache = cache;
     }
 

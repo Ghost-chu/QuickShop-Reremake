@@ -47,6 +47,7 @@ public class Economy_GemsEconomy implements EconomyCore, Reloadable {
 
     public Economy_GemsEconomy(@NotNull QuickShop plugin) {
         this.plugin = plugin;
+        plugin.getReloadManager().register(this);
         init();
         setupEconomy();
     }

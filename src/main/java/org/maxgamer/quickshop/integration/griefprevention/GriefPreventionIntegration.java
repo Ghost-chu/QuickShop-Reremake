@@ -22,11 +22,7 @@ package org.maxgamer.quickshop.integration.griefprevention;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import me.ryanhamshire.GriefPrevention.events.TrustChangedEvent;
-import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
-import me.ryanhamshire.GriefPrevention.events.ClaimExpirationEvent;
-import me.ryanhamshire.GriefPrevention.events.ClaimModifiedEvent;
-import me.ryanhamshire.GriefPrevention.events.ClaimCreatedEvent;
+import me.ryanhamshire.GriefPrevention.events.*;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -40,34 +36,43 @@ import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class GriefPreventionIntegration extends QSIntegratedPlugin {
+public class GriefPreventionIntegration extends QSIntegratedPlugin implements Reloadable {
 
     final GriefPrevention griefPrevention = GriefPrevention.instance;
 
-    private final boolean whiteList;
+    private boolean whiteList;
 
-    private final boolean deleteOnClaimTrustChanged;
+    private boolean deleteOnClaimTrustChanged;
 
-    private final boolean deleteOnClaimUnclaimed;
+    private boolean deleteOnClaimUnclaimed;
 
-    private final boolean deleteOnClaimExpired;
+    private boolean deleteOnClaimExpired;
 
-    private final boolean deleteOnClaimResized;
+    private boolean deleteOnClaimResized;
 
-    private final boolean deleteOnSubClaimCreated;
+    private boolean deleteOnSubClaimCreated;
 
-    private final Flag createLimit;
+    private Flag createLimit;
 
     private final List<Flag> tradeLimits = new ArrayList<>(3);
 
     public GriefPreventionIntegration(QuickShop plugin) {
         super(plugin);
+        plugin.getReloadManager().register(this);
+        init();
+    }
+
+    private void init() {
         ConfigurationSection configurationSection = plugin.getConfig();
         this.whiteList = configurationSection.getBoolean("integration.griefprevention.whitelist-mode");
         this.deleteOnClaimTrustChanged = configurationSection.getBoolean("integration.griefprevention.delete-on-claim-trust-changed");
@@ -318,6 +323,17 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
         return result;
     }
 
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
+
     enum Flag {
 
         BUILD {
@@ -325,6 +341,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
             boolean check(Claim claim, Player player) {
                 return claim.allowBuild(player, Material.CHEST) == null;
             }
+
             @Override
             ClaimPermission toClaimPermission() {
                 return ClaimPermission.Build;

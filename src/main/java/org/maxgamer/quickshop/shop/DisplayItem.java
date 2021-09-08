@@ -32,6 +32,9 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.logging.Level;
 
@@ -39,12 +42,12 @@ import java.util.logging.Level;
  * @author Netherfoam A display item, that spawns a block above the chest and cannot be interacted
  * with.
  */
-public abstract class DisplayItem {
+public abstract class DisplayItem implements Reloadable {
 
     protected static final QuickShop plugin = QuickShop.getInstance();
 
     private static final Gson gson = JsonUtil.getGson();
-    private static final boolean displayAllowStacks = plugin.getConfig().getBoolean("shop.display-allow-stacks");
+    private static boolean displayAllowStacks;
     @Setter
     private static volatile boolean isNotSupportVirtualItem = false;
     protected final ItemStack originalItemStack;
@@ -56,12 +59,24 @@ public abstract class DisplayItem {
     protected DisplayItem(Shop shop) {
         this.shop = shop;
         this.originalItemStack = shop.getItem().clone();
+        plugin.getReloadManager().register(this);
+        init();
+    }
+
+    protected void init() {
+        displayAllowStacks = plugin.getConfig().getBoolean("shop.display-allow-stacks");
         if (displayAllowStacks) {
             //Prevent stack over the normal size
             originalItemStack.setAmount(Math.min(originalItemStack.getAmount(), originalItemStack.getMaxStackSize()));
         } else {
             this.originalItemStack.setAmount(1);
         }
+    }
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 
     /**

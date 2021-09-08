@@ -19,7 +19,12 @@
 
 package org.maxgamer.quickshop.util.compatibility;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -30,7 +35,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CompatibilityManager extends QuickShopInstanceHolder {
+public class CompatibilityManager extends QuickShopInstanceHolder implements Listener {
     private static final Map<String, Class<? extends CompatibilityModule>> compatibilityModuleNameMap = new HashMap<>(2);
 
     static {
@@ -42,6 +47,12 @@ public class CompatibilityManager extends QuickShopInstanceHolder {
 
     public CompatibilityManager(QuickShop plugin) {
         super(plugin);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void scan(PluginEnableEvent event) {
+        searchAndRegisterPlugins();
     }
 
     public static Map<String, Class<? extends CompatibilityModule>> getCompatibilityModuleNameMap() {
@@ -52,10 +63,14 @@ public class CompatibilityManager extends QuickShopInstanceHolder {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
         for (Map.Entry<String, Class<? extends CompatibilityModule>> entry : compatibilityModuleNameMap.entrySet()) {
             String pluginName = entry.getKey();
-            if (pluginManager.isPluginEnabled(pluginName)) {
+            if (pluginManager.isPluginEnabled(pluginName) && !isRegistered(pluginName)) {
                 register(entry.getValue());
             }
         }
+    }
+
+    public boolean isRegistered(String pluginName) {
+        return compatibilityModuleNameMap.containsKey(pluginName);
     }
 
     /**

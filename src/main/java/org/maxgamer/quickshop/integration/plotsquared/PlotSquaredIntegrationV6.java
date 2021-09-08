@@ -1,3 +1,22 @@
+/*
+ * This file is a part of project QuickShop, the name is PlotSquaredIntegrationV6.java
+ *  Copyright (C) PotatoCraft Studio and contributors
+ *
+ *  This program is free software: you can redistribute it and/or modify it
+ *  under the terms of the GNU General Public License as published by the
+ *  Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT
+ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ *  for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 package org.maxgamer.quickshop.integration.plotsquared;/*
  * This file is a part of project QuickShop, the name is PlotSquaredIntegrationV5.java
  *  Copyright (C) PotatoCraft Studio and contributors
@@ -36,6 +55,9 @@ import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,17 +66,21 @@ import java.util.Map;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class PlotSquaredIntegrationV6 extends QSIntegratedPlugin {
-    private final boolean whiteList;
-    private final boolean deleteUntrusted;
+public class PlotSquaredIntegrationV6 extends QSIntegratedPlugin implements Reloadable {
+    private boolean whiteList;
+    private boolean deleteUntrusted;
     private QuickshopCreateFlag createFlag;
     private QuickshopTradeFlag tradeFlag;
 
     public PlotSquaredIntegrationV6(QuickShop plugin) {
         super(plugin);
+        plugin.getReloadManager().register(this);
+        init();
+    }
+
+    private void init() {
         this.whiteList = plugin.getConfig().getBoolean("integration.plotsquared.whitelist-mode");
         this.deleteUntrusted = plugin.getConfig().getBoolean("integration.plotsquared.delete-when-user-untrusted");
-
     }
 
     @Override
@@ -137,6 +163,17 @@ public class PlotSquaredIntegrationV6 extends QSIntegratedPlugin {
             return; // We only check untrusted
         }
         getShops(event.getPlot()).stream().filter(shop -> shop.getOwner().equals(event.getPlayer())).forEach(Shop::delete);
+    }
+
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 
 

@@ -31,51 +31,59 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.List;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class FactionsUUIDIntegration extends QSIntegratedPlugin {
-    private final List<String> createFlags;
+public class FactionsUUIDIntegration extends QSIntegratedPlugin implements Reloadable {
+    private List<String> createFlags;
 
-    private final List<String> tradeFlags;
+    private List<String> tradeFlags;
 
-    private final boolean createRequireOpen;
+    private boolean createRequireOpen;
 
-    private final boolean createRequireNormal;
+    private boolean createRequireNormal;
 
-    private final boolean createRequireWilderness;
+    private boolean createRequireWilderness;
 
-    private final boolean createRequirePeaceful;
+    private boolean createRequirePeaceful;
 
-    private final boolean createRequirePermanent;
+    private boolean createRequirePermanent;
 
-    private final boolean createRequireSafeZone;
+    private boolean createRequireSafeZone;
 
-    private final boolean createRequireOwn;
+    private boolean createRequireOwn;
 
-    private final boolean createRequireWarZone;
+    private boolean createRequireWarZone;
 
-    private final boolean tradeRequireOpen;
+    private boolean tradeRequireOpen;
 
-    private final boolean tradeRequireNormal;
+    private boolean tradeRequireNormal;
 
-    private final boolean tradeRequireWilderness;
+    private boolean tradeRequireWilderness;
 
-    private final boolean tradeRequirePeaceful;
+    private boolean tradeRequirePeaceful;
 
-    private final boolean tradeRequirePermanent;
+    private boolean tradeRequirePermanent;
 
-    private final boolean tradeRequireSafeZone;
+    private boolean tradeRequireSafeZone;
 
-    private final boolean tradeRequireOwn;
+    private boolean tradeRequireOwn;
 
-    private final boolean tradeRequireWarZone;
+    private boolean tradeRequireWarZone;
 
-    private final boolean whiteList;
+    private boolean whiteList;
 
     public FactionsUUIDIntegration(QuickShop plugin) {
         super(plugin);
+        plugin.getReloadManager().register(this);
+        init();
+    }
+
+    private void init() {
         this.createFlags = plugin.getConfig().getStringList("integration.factions.create.flags");
         this.tradeFlags = plugin.getConfig().getStringList("integration.factions.trade.flags");
 
@@ -114,7 +122,7 @@ public class FactionsUUIDIntegration extends QSIntegratedPlugin {
                 plugin.getConfig().getBoolean("integration.factions.trade.require.warzone");
     }
 
-    private static boolean check(@NotNull Player player, @NotNull Location location, boolean createRequireOpen, boolean createRequireSafeZone, boolean createRequirePermanent, boolean createRequirePeaceful, boolean createRequireWilderness, boolean createRequireWarZone, boolean createRequireNormal, boolean createRequireOwn, List<String> createFlags, boolean whiteList) {
+    private boolean check(@NotNull Player player, @NotNull Location location, boolean createRequireOpen, boolean createRequireSafeZone, boolean createRequirePermanent, boolean createRequirePeaceful, boolean createRequireWilderness, boolean createRequireWarZone, boolean createRequireNormal, boolean createRequireOwn, List<String> createFlags, boolean whiteList) {
         Faction faction = Board.getInstance().getFactionAt(new FLocation(location));
         if (faction == null) {
             return !whiteList;
@@ -179,4 +187,14 @@ public class FactionsUUIDIntegration extends QSIntegratedPlugin {
     public void unload() {
     }
 
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
 }

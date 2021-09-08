@@ -37,6 +37,9 @@ import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,14 +47,19 @@ import java.util.Map;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class PlotSquaredIntegrationV4 extends QSIntegratedPlugin implements Listener {
-    private final boolean whiteList;
-    private final boolean deleteUntrusted;
+public class PlotSquaredIntegrationV4 extends QSIntegratedPlugin implements Listener, Reloadable {
+    private boolean whiteList;
+    private boolean deleteUntrusted;
     private BooleanFlag createFlag;
     private BooleanFlag tradeFlag;
 
     public PlotSquaredIntegrationV4(QuickShop plugin) {
         super(plugin);
+        init();
+        plugin.getReloadManager().register(this);
+    }
+
+    private void init() {
         this.whiteList = plugin.getConfig().getBoolean("integration.plotsquared.whitelist-mode");
         this.deleteUntrusted = plugin.getConfig().getBoolean("integration.plotsquared.delete-when-user-untrusted");
     }
@@ -143,5 +151,16 @@ public class PlotSquaredIntegrationV4 extends QSIntegratedPlugin implements List
             return; // We only check untrusted
         }
         getShops(event.getPlot()).stream().filter(shop -> shop.getOwner().equals(event.getPlayer())).forEach(Shop::delete);
+    }
+
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 }

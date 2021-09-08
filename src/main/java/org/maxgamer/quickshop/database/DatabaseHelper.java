@@ -54,6 +54,7 @@ public class DatabaseHelper implements Reloadable {
     public DatabaseHelper(@NotNull QuickShop plugin, @NotNull DatabaseManager manager) throws SQLException {
         this.plugin = plugin;
         this.manager = manager;
+        plugin.getReloadManager().register(this);
         init();
     }
 

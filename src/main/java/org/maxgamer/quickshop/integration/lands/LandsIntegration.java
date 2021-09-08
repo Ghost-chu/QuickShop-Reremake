@@ -36,20 +36,28 @@ import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopChunk;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.Map;
 import java.util.UUID;
 
 @IntegrationStage
-public class LandsIntegration extends QSIntegratedPlugin implements Listener {
+public class LandsIntegration extends QSIntegratedPlugin implements Listener, Reloadable {
 
-    private final boolean ignoreDisabledWorlds;
-    private final boolean whitelist;
-    private final me.angeschossen.lands.api.integration.LandsIntegration landsIntegration;
-    private final boolean deleteWhenLosePermission;
+    private boolean ignoreDisabledWorlds;
+    private boolean whitelist;
+    private me.angeschossen.lands.api.integration.LandsIntegration landsIntegration;
+    private boolean deleteWhenLosePermission;
 
     public LandsIntegration(QuickShop plugin) {
         super(plugin);
+        plugin.getReloadManager().register(this);
+        init();
+    }
+
+    private void init() {
         landsIntegration = new me.angeschossen.lands.api.integration.LandsIntegration(plugin);
         ignoreDisabledWorlds = plugin.getConfig().getBoolean("integration.lands.ignore-disabled-worlds");
         whitelist = plugin.getConfig().getBoolean("integration.lands.whitelist-mode");
@@ -130,5 +138,11 @@ public class LandsIntegration extends QSIntegratedPlugin implements Listener {
     @Override
     public void unload() {
         HandlerList.unregisterAll(this);
+    }
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 }

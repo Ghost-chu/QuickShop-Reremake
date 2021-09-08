@@ -46,6 +46,8 @@ import org.maxgamer.quickshop.shop.DisplayItem;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 public class EnhanceDisplayProtectionListener extends ProtectionListenerBase implements Listener {
 
@@ -359,5 +361,15 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
                 "[DisplayGuard] Player  "
                         + event.getPlayer().getName()
                         + " trying use water to move somethings on the shop top, QuickShop already remove it.");
+    }
+
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 }

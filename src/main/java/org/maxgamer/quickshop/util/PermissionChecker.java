@@ -40,6 +40,9 @@ import org.maxgamer.quickshop.eventmanager.BukkitEventManager;
 import org.maxgamer.quickshop.eventmanager.QSEventManager;
 import org.maxgamer.quickshop.eventmanager.QuickEventManager;
 import org.maxgamer.quickshop.util.holder.Result;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 import org.primesoft.blockshub.BlocksHubBukkit;
 
 /**
@@ -47,15 +50,20 @@ import org.primesoft.blockshub.BlocksHubBukkit;
  *
  * @author Ghost_chu and sandtechnology
  */
-public class PermissionChecker {
+public class PermissionChecker implements Reloadable {
     private final QuickShop plugin;
 
-    private final boolean usePermissionChecker;
+    private boolean usePermissionChecker;
 
-    private final QuickEventManager eventManager;
+    private QuickEventManager eventManager;
 
     public PermissionChecker(@NotNull QuickShop plugin) {
         this.plugin = plugin;
+        plugin.getReloadManager().register(this);
+        init();
+    }
+
+    private void init() {
         usePermissionChecker = this.plugin.getConfig().getBoolean("shop.protection-checking");
         if (plugin.getConfig().getInt("shop.protection-checking-handler") == 1) {
             this.eventManager = new QSEventManager(plugin);
@@ -179,4 +187,14 @@ public class PermissionChecker {
         return isCanBuild;
     }
 
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
 }

@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.util.reload;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -41,6 +42,27 @@ public class ReloadManager {
         unregister(reloadable);
         this.registry.add(new ReloadableContainer(reloadable, null));
     }
+
+    /**
+     * Register a reloadable module into reloading registery
+     *
+     * @param reloadable Reloadable module
+     */
+    public void register(@NotNull Method reloadMethod) {
+        unregister(reloadMethod);
+        this.registry.add(new ReloadableContainer(null, reloadMethod));
+    }
+
+    /**
+     * Register a reloadable module into reloading registery
+     *
+     * @param reloadable Reloadable module
+     */
+    public void unregister(@NotNull Method reloadMethod) {
+        this.registry.removeIf(reloadableContainer -> reloadableContainer.getReloadableMethod() != null
+                && reloadableContainer.getReloadableMethod().equals(reloadMethod));
+    }
+
 
     /**
      * Unregister a reloadable module from reloading registry
