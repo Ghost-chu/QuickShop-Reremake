@@ -200,14 +200,14 @@ public final class EnvironmentChecker {
                     plugin.getLogger().warning("CRC: " + jarEntry.getCrc());
                     plugin.getLogger().warning(JsonUtil.getGson().toJson(jarEntry));
                 });
-                plugin.getLogger().severe("QuickShop detected that the jar has been modified! This is usually caused by the file being corrupted or virus infected.");
+                plugin.getLogger().severe("QuickShop detected that the jar has been moCdified! This is usually caused by the file being corrupted or virus infected.");
                 plugin.getLogger().severe("To prevent severe server failure, QuickShop has been disabled.");
                 plugin.getLogger().severe("For further information, Please join our support Discord server: https://discord.com/invite/bfefw2E.");
                 return new ResultContainer(CheckResult.STOP_WORKING, "Security risk detected, QuickShop jar has been modified.");
             }
-        } catch (IOException ioException) {
+        } catch (Exception ioException) {
             plugin.getLogger().log(Level.WARNING, "ALERT: QuickShop cannot validate itself. This may be caused by you having deleted QuickShop's jar while the server is running.", ioException);
-            return new ResultContainer(CheckResult.WARNING, "Failed to validate digital signature! Security may be compromised!");
+            return new ResultContainer(CheckResult.STOP_WORKING, "Failed to validate digital signature! Security may be compromised!");
         } finally {
             if (jarFile != null) {
                 try {
