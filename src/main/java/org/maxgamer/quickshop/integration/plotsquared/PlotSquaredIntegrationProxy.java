@@ -27,6 +27,8 @@ import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class PlotSquaredIntegrationProxy extends QSIntegratedPlugin {
@@ -34,13 +36,16 @@ public class PlotSquaredIntegrationProxy extends QSIntegratedPlugin {
 
     public PlotSquaredIntegrationProxy(QuickShop instance) {
         super(instance);
+    }
+
+    private void initInstance() {
         if (plotSquared == null) {
             if (plugin.getServer().getPluginManager().getPlugin("PlotSquared").getClass().getPackage().getName().contains("intellectualsite")) {
-                plotSquared = new PlotSquaredIntegrationV4(instance);
+                plotSquared = new PlotSquaredIntegrationV4(plugin);
             } else if (Util.isClassAvailable("com.plotsquared.core.configuration.Caption")) {
-                plotSquared = new PlotSquaredIntegrationV5(instance);
+                plotSquared = new PlotSquaredIntegrationV5(plugin);
             } else {
-                plotSquared = new PlotSquaredIntegrationV6(instance);
+                plotSquared = new PlotSquaredIntegrationV6(plugin);
             }
         }
     }
@@ -73,5 +78,11 @@ public class PlotSquaredIntegrationProxy extends QSIntegratedPlugin {
     @Override
     public void unload() {
         plotSquared.unload();
+    }
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        initInstance();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 }
