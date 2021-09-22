@@ -413,10 +413,12 @@
             <id>enginehub-repo</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
+        <!-- IridiumSkyblock  -->
+        <!-- Repo was down temporary, using jar directly as workaround
         <repository>
             <id>savagelabs</id>
             <url>https://nexus.savagelabs.net/repository/maven-releases/</url>
-        </repository>
+        </repository>-->
     </repositories>
 
     <dependencies>
@@ -966,8 +968,9 @@
         <dependency>
             <groupId>com.iridium</groupId>
             <artifactId>IridiumSkyblock</artifactId>
-            <version>3.0.8</version>
-            <scope>provided</scope>
+            <version>3.1.1</version>
+            <systemPath>${project.basedir}/lib/IridiumSkyblock-3.1.1.jar</systemPath>
+            <scope>system</scope>
         </dependency>
     </dependencies>
 </project>
