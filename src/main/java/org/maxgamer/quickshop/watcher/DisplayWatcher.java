@@ -45,6 +45,10 @@ public class DisplayWatcher {
                     plugin.getLogger().severe("Shop.display-items-check-ticks is too low! It may cause HUGE lag! Pick a number > 3000");
                 }
                 for (Shop shop : plugin.getShopManager().getLoadedShops()) {
+                    //Shop may be deleted or unloaded when iterating
+                    if (shop.isDeleted() || !shop.isLoaded()) {
+                        continue;
+                    }
                     shop.checkDisplay();
                 }
             }, 1L, plugin.getDisplayItemCheckTicks());
