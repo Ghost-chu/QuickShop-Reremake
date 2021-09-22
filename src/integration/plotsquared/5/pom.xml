@@ -45,6 +45,13 @@
             <groupId>org.maxgamer</groupId>
             <artifactId>QuickShop</artifactId>
             <version>4.0.9.2</version>
+            <!--We just need the core jar-->
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
             <scope>provided</scope>
         </dependency>
         <dependency>
