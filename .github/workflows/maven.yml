@@ -23,7 +23,7 @@ jobs:
           distribution: 'adopt'
       - name: Build JsonConfiguration
         run: |
-          git clone https://github.com/dumptruckman/JsonConfiguration.git
+          git clone https://github.com/sandtechnology/JsonConfiguration.git
           mvn -B install --file JsonConfiguration/pom.xml
       - name: Build Integration
         run: mvn -B install --file src/integration/plotsquared/5/pom.xml
