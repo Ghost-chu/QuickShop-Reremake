@@ -385,11 +385,14 @@
             <url>https://jitpack.io</url>
         </repository>
         <!-- JsonConfiguration  -->
+        <!-- Repo was down temporary, building this as workaround
         <repository>
             <id>onarandombox</id>
             <url>https://repo.onarandombox.com/content/groups/public</url>
-        </repository>
-        <repository> <!-- for development builds -->
+        </repository>-->
+
+        <!-- for development builds -->
+        <repository>
             <id>sonatype-oss</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
