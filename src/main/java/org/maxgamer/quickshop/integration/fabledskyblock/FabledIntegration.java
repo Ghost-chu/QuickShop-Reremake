@@ -40,6 +40,7 @@ public class FabledIntegration extends QSIntegratedPlugin {
 
     public FabledIntegration(QuickShop plugin) {
         super(plugin);
+        plugin.getReloadManager().register(this);
         loadConfiguration();
         registerListener();
     }

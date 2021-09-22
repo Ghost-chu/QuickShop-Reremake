@@ -47,16 +47,19 @@ import java.util.Map;
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class PlotSquaredIntegrationV5 extends QSIntegratedPlugin {
-    private final boolean whiteList;
-    private final boolean deleteUntrusted;
+    private boolean whiteList;
+    private boolean deleteUntrusted;
     private QuickshopCreateFlag createFlag;
     private QuickshopTradeFlag tradeFlag;
 
     public PlotSquaredIntegrationV5(QuickShop plugin) {
         super(plugin);
+        loadConfiguration();
+    }
+
+    protected void loadConfiguration() {
         this.whiteList = plugin.getConfig().getBoolean("integration.plotsquared.whitelist-mode");
         this.deleteUntrusted = plugin.getConfig().getBoolean("integration.plotsquared.delete-when-user-untrusted");
-
     }
 
     @Override
