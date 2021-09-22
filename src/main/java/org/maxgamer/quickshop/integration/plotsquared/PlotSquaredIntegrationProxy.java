@@ -28,25 +28,27 @@ import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class PlotSquaredIntegrationProxy extends QSIntegratedPlugin {
-    private static QSIntegratedPlugin plotSquared;
+    private final QSIntegratedPlugin plotSquared;
 
     public PlotSquaredIntegrationProxy(QuickShop instance) {
         super(instance);
-    }
-
-    private void initInstance() {
-        if (plotSquared == null) {
-            if (plugin.getServer().getPluginManager().getPlugin("PlotSquared").getClass().getPackage().getName().contains("intellectualsite")) {
-                plotSquared = new PlotSquaredIntegrationV4(plugin);
-            } else if (Util.isClassAvailable("com.plotsquared.core.configuration.Caption")) {
-                plotSquared = new PlotSquaredIntegrationV5(plugin);
-            } else {
-                plotSquared = new PlotSquaredIntegrationV6(plugin);
-            }
+        if (plugin.getServer().getPluginManager().getPlugin("PlotSquared").getClass().getPackage().getName().contains("intellectualsite")) {
+            plotSquared = new PlotSquaredIntegrationV4(plugin);
+        } else if (Util.isClassAvailable("com.plotsquared.core.configuration.Caption")) {
+            //Write reload logic for it
+            plotSquared = new PlotSquaredIntegrationV5(plugin) {
+                @Override
+                public ReloadResult reloadModule() throws Exception {
+                    loadConfiguration();
+                    return super.reloadModule();
+                }
+            };
+            plugin.getReloadManager().register(plotSquared);
+        } else {
+            plotSquared = new PlotSquaredIntegrationV6(plugin);
         }
     }
 
@@ -82,7 +84,6 @@ public class PlotSquaredIntegrationProxy extends QSIntegratedPlugin {
 
     @Override
     public ReloadResult reloadModule() throws Exception {
-        initInstance();
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+        return plotSquared.reloadModule();
     }
 }

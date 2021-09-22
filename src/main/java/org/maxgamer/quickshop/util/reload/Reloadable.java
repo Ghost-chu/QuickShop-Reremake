@@ -28,7 +28,9 @@ public interface Reloadable {
      *
      * @return Reloading success
      */
-    ReloadResult reloadModule() throws Exception;
+    default ReloadResult reloadModule() throws Exception {
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
 
 
 }

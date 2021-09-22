@@ -58,6 +58,7 @@ public class WorldGuardIntegration extends QSIntegratedPlugin {
 
     public WorldGuardIntegration(QuickShop plugin) {
         super(plugin);
+        plugin.getReloadManager().register(this);
     }
 
     private StateFlag createOrGet(String key, boolean def) {
