@@ -110,16 +110,17 @@ public class DatabaseManager implements Reloadable {
      */
     boolean hasTable(@NotNull String table) throws SQLException {
         DatabaseConnection connection = database.getConnection();
-        ResultSet rs = connection.get().getMetaData().getTables(null, null, "%", null);
         boolean match = false;
-        while (rs.next()) {
-            if (table.equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
-                match = true;
-                break;
+        try (ResultSet rs = connection.get().getMetaData().getTables(null, null, "%", null)) {
+            while (rs.next()) {
+                if (table.equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
+                    match = true;
+                    break;
+                }
             }
+        } finally {
+            connection.release();
         }
-        rs.close();
-        connection.release();
         return match;
     }
 
@@ -163,8 +164,9 @@ public class DatabaseManager implements Reloadable {
             return;
         }
         DatabaseConnection dbconnection = this.database.getConnection();
-
-        try (Connection connection = dbconnection.get()) {
+        //We do not close the connection since is reusable
+        Connection connection = dbconnection.get();
+        try {
             //start our commit
             connection.setAutoCommit(false);
             Timer ctimer = new Timer(true);
