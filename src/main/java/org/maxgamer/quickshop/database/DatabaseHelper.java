@@ -211,7 +211,6 @@ public class DatabaseHelper implements Reloadable {
     }
 
     public void removeShop(Shop shop) {
-        plugin.getShopLoader().removeShopFromShopLoader(shop);
         plugin.log("[DATABASE HELPER] Removing shop in the database: " + shop.toString());
         bakeTraceIfNeeded();
         String sqlString = "DELETE FROM "

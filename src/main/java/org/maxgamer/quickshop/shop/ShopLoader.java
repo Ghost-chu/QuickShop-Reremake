@@ -43,7 +43,6 @@ import org.maxgamer.quickshop.util.Util;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,8 +57,6 @@ public class ShopLoader {
 
     private final QuickShop plugin;
     /* This may contains broken shop, must use null check before load it. */
-    private final List<Shop> shopsInDatabase = new CopyOnWriteArrayList<>();
-    private final List<ShopRawDatabaseInfo> shopRawDatabaseInfoList = new CopyOnWriteArrayList<>();
     private int errors;
     //private final WarningSender warningSender;
 
@@ -92,11 +89,16 @@ public class ShopLoader {
             this.plugin.getLogger().info("Loading shops from the database...");
             while (rs.next()) {
                 ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
-                shopRawDatabaseInfoList.add(origin);
                 if (worldName != null && !origin.getWorld().equals(worldName)) {
                     continue;
                 }
-                ShopDatabaseInfo data = new ShopDatabaseInfo(origin);
+                ShopDatabaseInfo data;
+                try {
+                    data = new ShopDatabaseInfo(origin);
+                } catch (Exception e) {
+                    exceptionHandler(e, null);
+                    continue;
+                }
                 //World unloaded and not found
                 if (data.getWorld() == null) {
                     ++loadAfterWorldLoaded;
@@ -114,7 +116,6 @@ public class ShopLoader {
                 if (data.needUpdate.get()) {
                     shop.setDirty();
                 }
-                shopsInDatabase.add(shop);
                 if (shopNullCheck(shop)) {
                     if (plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false)) {
                         plugin.getLogger().warning("Deleting shop " + shop + " caused by corrupted.");
@@ -292,7 +293,6 @@ public class ShopLoader {
             boolean success = false;
             try {
                 ShopRawDatabaseInfo shopDatabaseInfoOrigin = gson.fromJson(shopStr, ShopRawDatabaseInfo.class);
-                shopRawDatabaseInfoList.add(shopDatabaseInfoOrigin);
                 ShopDatabaseInfo data = new ShopDatabaseInfo(shopDatabaseInfoOrigin);
                 Shop shop =
                         new ContainerShop(plugin,
@@ -303,7 +303,6 @@ public class ShopLoader {
                                 data.isUnlimited(),
                                 data.getType(),
                                 data.getExtra());
-                shopsInDatabase.add(shop);
                 if (shopNullCheck(shop)) {
                     continue;
                 }
@@ -323,29 +322,43 @@ public class ShopLoader {
 
     @NotNull
     public List<Shop> getShopsInDatabase() {
-        return new ArrayList<>(shopsInDatabase);
-    }
-
-    public void removeShopFromShopLoader(Shop shop) {
-        if (this.shopsInDatabase.remove(shop)) {
-            for (ShopRawDatabaseInfo rawDatabaseInfo : this.shopRawDatabaseInfoList) {
-                if (Objects.equals(shop.getLocation().getWorld().getName(), rawDatabaseInfo.getWorld())) {
-                    if (shop.getLocation().getBlockX() == rawDatabaseInfo.getX()) {
-                        if (shop.getLocation().getBlockY() == rawDatabaseInfo.getY()) {
-                            if (shop.getLocation().getBlockZ() == rawDatabaseInfo.getZ()) {
-                                this.shopRawDatabaseInfoList.remove(rawDatabaseInfo);
-                                break;
-                            }
-                        }
-                    }
-                }
+        errors = 0;
+        List<Shop> shopsInDatabaseList = new ArrayList<>();
+        this.plugin.getLogger().info("Loading shops from the database...");
+        for (ShopRawDatabaseInfo shopRawDatabaseInfo : getOriginShopsInDatabase()) {
+            try {
+                ShopDatabaseInfo databaseInfo = new ShopDatabaseInfo(shopRawDatabaseInfo);
+                Shop shop = new ContainerShop(plugin,
+                        databaseInfo.getLocation(),
+                        databaseInfo.getPrice(),
+                        databaseInfo.getItem(),
+                        databaseInfo.getModerators(),
+                        databaseInfo.isUnlimited(),
+                        databaseInfo.getType(),
+                        databaseInfo.getExtra());
+                shopsInDatabaseList.add(shop);
+            } catch (Exception e) {
+                exceptionHandler(e, null);
             }
         }
+        return shopsInDatabaseList;
     }
 
     @NotNull
     public List<ShopRawDatabaseInfo> getOriginShopsInDatabase() {
-        return new ArrayList<>(shopRawDatabaseInfoList);
+        errors = 0;
+        List<ShopRawDatabaseInfo> shopRawDatabaseInfoList = new ArrayList<>();
+        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
+            this.plugin.getLogger().info("Getting shops from the database...");
+            while (rs.next()) {
+                ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
+                shopRawDatabaseInfoList.add(origin);
+            }
+        } catch (SQLException e) {
+            exceptionHandler(e, null);
+            return Collections.emptyList();
+        }
+        return shopRawDatabaseInfoList;
     }
 
     @Getter
