@@ -50,7 +50,6 @@ import org.maxgamer.quickshop.api.QuickShopAPI;
 import org.maxgamer.quickshop.chat.QuickChat;
 import org.maxgamer.quickshop.chat.QuickChatType;
 import org.maxgamer.quickshop.chat.platform.minedown.AdventureQuickChat;
-import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
 import org.maxgamer.quickshop.command.CommandManager;
 import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.*;
