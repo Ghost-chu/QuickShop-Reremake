@@ -1464,6 +1464,7 @@ public class MsgUtil {
         }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
     }
+    public static final int languageVersion = 61;
 
 
     private static void setAndUpdate(@NotNull String path, @Nullable Object object) {
