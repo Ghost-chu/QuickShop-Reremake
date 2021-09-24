@@ -60,25 +60,6 @@
     <profiles>
         <profile>
             <id>debug</id>
-            <activation>
-                <property>
-                    <name>idea.maven.embedder.version</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <configuration>
-                            <release>16</release>
-                            <compilerArgs>
-                                <arg>--enable-preview</arg>
-                            </compilerArgs>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
             <properties>
                 <mvn.build.ver>${pluginver}-SNAPSHOT</mvn.build.ver>
                 <!-- Disable signature in local env, deploy phrase never will running in local env -->
@@ -122,15 +103,11 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <release>8</release>
-                    <source>16</source>
-                    <target>16</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <encoding>UTF-8</encoding>
                     <!--Use this comments args when compiler is NullPointerException-->
                     <!--<forceJavacCompilerUse>true</forceJavacCompilerUse>-->
-                    <compilerArgs>
-                        <arg>-Xplugin:jabel</arg>
-                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
@@ -970,34 +947,6 @@
             <version>3.1.1</version>
             <systemPath>${project.basedir}/lib/IridiumSkyblock-3.1.1.jar</systemPath>
             <scope>system</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.bsideup.jabel</groupId>
-            <artifactId>jabel-javac-plugin</artifactId>
-            <version>0.4.1</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>net.bytebuddy</groupId>
-                    <artifactId>byte-buddy</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>net.bytebuddy</groupId>
-                    <artifactId>byte-buddy-agent</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>net.bytebuddy</groupId>
-            <artifactId>byte-buddy</artifactId>
-            <version>1.11.17</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.bytebuddy</groupId>
-            <artifactId>byte-buddy-agent</artifactId>
-            <version>1.11.17</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
