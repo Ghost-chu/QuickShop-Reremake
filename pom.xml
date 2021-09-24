@@ -205,9 +205,14 @@
                             <shadedPattern>org.maxgamer.quickshop.shade.com.github.ben-manes.caffeine.</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>org.enginehub:squirrelid.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.shade.org.enginehub:squirrelid.</shadedPattern>
+                            <pattern>org.enginehub.squirrelid.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.org.enginehub.squirrelid.</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>net.kyori.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.org.net.kyori.</shadedPattern>
+                        </relocation>
+
 
                         <!--                        <relocation>-->
                         <!--                            <pattern>de.leonhard</pattern>-->
@@ -341,10 +346,6 @@
         <repository>
             <id>CodeMC</id>
             <url>https://repo.codemc.io/repository/maven-public/</url>
-        </repository>
-        <repository>
-            <id>fanciful-repo</id>
-            <url>https://github.com/mkremins/fanciful/tree/mvn-repo</url>
         </repository>
         <!--        <repository>-->
         <!--            <id>dmulloy2-repo</id>-->
@@ -832,18 +833,18 @@
             <version>[1.0,)</version>
             <artifactId>rollbar-java</artifactId>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>de.themoep</groupId>-->
+<!--            <artifactId>minedown</artifactId>-->
+<!--            <version>1.7.1-SNAPSHOT</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>de.themoep</groupId>
-            <artifactId>minedown</artifactId>
+            <artifactId>minedown-adventure</artifactId>
             <version>1.7.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>de.themoep</groupId>-->
-        <!--            <artifactId>minedown-adventure</artifactId>-->
-        <!--            <version>1.7.1-SNAPSHOT</version>-->
-        <!--            <scope>compile</scope>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>me.xanium</groupId>
             <artifactId>GemsEconomy</artifactId>
@@ -947,6 +948,12 @@
             <version>3.1.1</version>
             <systemPath>${project.basedir}/lib/IridiumSkyblock-3.1.1.jar</systemPath>
             <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-bukkit</artifactId>
+            <version>4.0.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

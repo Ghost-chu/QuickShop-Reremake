@@ -20,15 +20,15 @@
 package org.maxgamer.quickshop.chat;
 
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
+import org.maxgamer.quickshop.chat.platform.minedown.AdventureQuickChat;
 
 public enum QuickChatType {
     /*
      * BUNGEECHAT = Use the chat lib that Spigot offered.
      * ADVENTURE  = Use the chat lib Adventure, it can resolve player disconnected issue but have no message output bug.
      */
-    BUNGEECHAT(0);
-    //ADVENTURE(1);
+    //BUNGEECHAT(0),
+    ADVENTURE(1);
 
     private final int id;
 
@@ -42,7 +42,7 @@ public enum QuickChatType {
                 return type;
             }
         }
-        return BUNGEECHAT;
+        return ADVENTURE;
     }
 
     public static int toID(@NotNull QuickChatType type) {
@@ -50,20 +50,20 @@ public enum QuickChatType {
     }
 
     public static QuickChat createById(int id) {
-//        QuickChatType type = fromID(id);
-//        if (type == QuickChatType.ADVENTURE) {
-//            return new AdventureQuickChat();
-//        }
-        return new BungeeQuickChat();
+        QuickChatType type = fromID(id);
+        if (type == QuickChatType.ADVENTURE) {
+            return new AdventureQuickChat();
+        }
+        return new AdventureQuickChat();
+      //  return new BungeeQuickChat();
     }
 
     public static QuickChat createByType(QuickChatType type) {
-//        if (type == QuickChatType.ADVENTURE) {
-//            return new AdventureQuickChat();
-//        }
-        return new BungeeQuickChat();
+        if (type == QuickChatType.ADVENTURE) {
+            return new AdventureQuickChat();
+        }
+        return new AdventureQuickChat();
     }
-
     public int toID() {
         return id;
     }
