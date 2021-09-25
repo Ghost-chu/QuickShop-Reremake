@@ -27,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.util.MsgUtil;
 
 @AllArgsConstructor
 public class SubCommand_Remove implements CommandHandler<Player> {
@@ -39,7 +38,7 @@ public class SubCommand_Remove implements CommandHandler<Player> {
         BlockIterator bIt = new BlockIterator(sender, 10);
 
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, "not-looking-at-shop");
+            plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
 
@@ -55,13 +54,13 @@ public class SubCommand_Remove implements CommandHandler<Player> {
                 shop.delete();
                 plugin.log("Deleting shop " + shop + " as requested by the /qs remove command.");
             } else {
-                MsgUtil.sendMessage(sender, "no-permission");
+                plugin.text().of(sender, "no-permission").send();
             }
 
             return;
         }
 
-        MsgUtil.sendMessage(sender, "not-looking-at-shop");
+        plugin.text().of(sender, "not-looking-at-shop").send();
     }
 
 }

@@ -155,7 +155,8 @@ public class ShopManager implements Reloadable {
             }
             int max = plugin.getShopLimit(p);
             if (owned + 1 > max) {
-                MsgUtil.sendMessage(p, "reached-maximum-can-create", String.valueOf(owned), String.valueOf(max));
+                plugin.text().of(p,"reached-maximum-can-create", String.valueOf(owned), String.valueOf(max)).send();
+                //MsgUtil.sendMessage(p, "reached-maximum-can-create", String.valueOf(owned), String.valueOf(max));
                 return false;
             }
         }
@@ -278,7 +279,8 @@ public class ShopManager implements Reloadable {
                 this.processWaterLoggedSign(shop.getLocation().getBlock(), info.getSignBlock());
             } else {
                 if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
-                    MsgUtil.sendMessage(player, "failed-to-put-sign");
+                    plugin.text().of(player, "failed-to-put-sign").send();
+                   // MsgUtil.sendMessage(player, "failed-to-put-sign");
                     Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
                     return;
                 }
@@ -307,7 +309,8 @@ public class ShopManager implements Reloadable {
                     plugin.getDatabaseHelper().createShop(shop, null, e2 -> {
                         plugin.getLogger()
                                 .log(Level.SEVERE, "Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
-                        MsgUtil.sendMessage(player, "shop-creation-failed");
+                       // MsgUtil.sendMessage(player, "shop-creation-failed");
+                        plugin.text().of(player,"shop-creation-failed").send();
                         Util.mainThreadRun(() -> {
                             shop.onUnload();
                             removeShop(shop);
@@ -493,7 +496,7 @@ public class ShopManager implements Reloadable {
             }
             if (info.getLocation().getWorld() != p.getLocation().getWorld()
                     || info.getLocation().distanceSquared(p.getLocation()) > 25) {
-                MsgUtil.sendMessage(p, "not-looking-at-shop");
+               plugin.text().of(p, "not-looking-at-shop").send();
                 return;
             }
             if (info.getAction() == ShopAction.CREATE) {
@@ -651,21 +654,21 @@ public class ShopManager implements Reloadable {
             space = 10000;
         }
         if (space < amount) {
-            MsgUtil.sendMessage(buyer, "shop-has-no-space", Integer.toString(space), Util.getItemStackName(shop.getItem()));
+            plugin.text().of(buyer, "shop-has-no-space", Integer.toString(space), Util.getItemStackName(shop.getItem())).send();
             return;
         }
         int count = Util.countItems(buyerInventory, shop.getItem());
         // Not enough items
         if (amount > count) {
-            MsgUtil.sendMessage(buyer,
+            plugin.text().of(buyer,
                     "you-dont-have-that-many-items",
                     Integer.toString(count),
-                    Util.getItemStackName(shop.getItem()));
+                    Util.getItemStackName(shop.getItem())).send();
             return;
         }
         if (amount < 1) {
             // & Dumber
-            MsgUtil.sendMessage(buyer, "negative-amount");
+            plugin.text().of(buyer, "negative-amount").send();
             return;
         }
 
@@ -697,12 +700,12 @@ public class ShopManager implements Reloadable {
         }
         if (!transaction.failSafeCommit()) {
             if (transaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
-                MsgUtil.sendMessage(buyer, "the-owner-cant-afford-to-buy-from-you",
+                plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you",
                         Objects.requireNonNull(format(total, shop.getLocation().getWorld(), shop.getCurrency())),
                         Objects.requireNonNull(format(eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(),
-                                shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency())));
+                                shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency()))).send();
             } else {
-                MsgUtil.sendMessage(buyer, "purchase-failed");
+                plugin.text().of(buyer, "purchase-failed").send();
                 plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
                 QuickShop.getInstance().log("EconomyTransaction Failed, last error:" + transaction.getLastError());
             }
@@ -800,23 +803,23 @@ public class ShopManager implements Reloadable {
         if (!bypassProtectionChecks) {
             Result result = plugin.getPermissionChecker().canBuild(p, info.getLocation());
             if (!result.isSuccess()) {
-                MsgUtil.sendMessage(p, "3rd-plugin-build-check-failed", result.getMessage());
+                plugin.text().of(p, "3rd-plugin-build-check-failed", result.getMessage()).send();
                 Util.debugLog("Failed to create shop because protection check failed, found:" + result.getMessage());
                 return;
             }
         }
 
         if (plugin.getShopManager().getShop(info.getLocation()) != null) {
-            MsgUtil.sendMessage(p, "shop-already-owned");
+            plugin.text().of(p, "shop-already-owned").send();
             return;
         }
         if (Util.isDoubleChest(info.getLocation().getBlock().getBlockData())
                 && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
-            MsgUtil.sendMessage(p, "no-double-chests");
+            plugin.text().of(p, "no-double-chests").send();
             return;
         }
         if (!Util.canBeShop(info.getLocation().getBlock())) {
-            MsgUtil.sendMessage(p, "chest-was-removed");
+            plugin.text().of(p, "chest-was-removed").send();
             return;
         }
         if (info.getLocation().getBlock().getType()
@@ -829,7 +832,7 @@ public class ShopManager implements Reloadable {
         if (autoSign) {
             if (info.getSignBlock() == null) {
                 if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
-                    MsgUtil.sendMessage(p, "failed-to-put-sign");
+                    plugin.text().of(p, "failed-to-put-sign").send();
                     return;
                 }
             } else {
@@ -837,7 +840,7 @@ public class ShopManager implements Reloadable {
                 if (signType != Material.WATER
                         && !signType.isAir()
                         && !plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
-                    MsgUtil.sendMessage(p, "failed-to-put-sign");
+                    plugin.text().of(p, "failed-to-put-sign").send();
                     return;
                 }
             }
@@ -848,7 +851,7 @@ public class ShopManager implements Reloadable {
         try {
             price = Double.parseDouble(message);
             if (Double.isInfinite(price)) {
-                MsgUtil.sendMessage(p, "exceeded-maximum", message);
+                plugin.text().of(p, "exceeded-maximum", message).send();
                 return;
             }
             String strFormat = new DecimalFormat("#.#########").format(Math.abs(price))
@@ -859,13 +862,13 @@ public class ShopManager implements Reloadable {
                         .getInt("maximum-digits-in-price", -1);
                 if (processedDouble[1].length() > maximumDigitsLimit
                         && maximumDigitsLimit != -1) {
-                    MsgUtil.sendMessage(p, "digits-reach-the-limit", String.valueOf(maximumDigitsLimit));
+                    plugin.text().of(p, "digits-reach-the-limit", String.valueOf(maximumDigitsLimit)).send();
                     return;
                 }
             }
         } catch (NumberFormatException ex) {
             Util.debugLog(ex.getMessage());
-            MsgUtil.sendMessage(p, "not-a-number", message);
+            plugin.text().of(p, "not-a-number", message).send();
             return;
         }
 
@@ -876,26 +879,26 @@ public class ShopManager implements Reloadable {
 
         switch (priceCheckResult.getStatus()) {
             case REACHED_PRICE_MIN_LIMIT:
-                MsgUtil.sendMessage(p, "price-too-cheap",
+                plugin.text().of(p, "price-too-cheap",
                         (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
                                 : Double.toString(this.priceLimiter.getMinPrice()));
                 return;
             case REACHED_PRICE_MAX_LIMIT:
-                MsgUtil.sendMessage(p, "price-too-high",
+                plugin.text().of(p, "price-too-high",
                         (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
                                 : Double.toString(this.priceLimiter.getMinPrice()));
                 return;
             case PRICE_RESTRICTED:
-                MsgUtil.sendMessage(p, "restricted-prices",
+                plugin.text().of(p, "restricted-prices",
                         Util.getItemStackName(info.getItem()),
                         String.valueOf(priceCheckResult.getMin()),
-                        String.valueOf(priceCheckResult.getMax()));
+                        String.valueOf(priceCheckResult.getMax())).send();
                 return;
             case NOT_VALID:
-                MsgUtil.sendMessage(p, "not-a-number", message);
+                plugin.text().of(p, "not-a-number", message).send();
                 return;
             case NOT_A_WHOLE_NUMBER:
-                MsgUtil.sendMessage(p, "not-a-integer", message);
+                plugin.text().of(p, "not-a-integer", message).send();
                 return;
         }
 
@@ -918,7 +921,7 @@ public class ShopManager implements Reloadable {
             Result result = plugin.getIntegrationHelper()
                     .callIntegrationsCanCreate(p, info.getLocation());
             if (!result.isSuccess()) {
-                MsgUtil.sendMessage(p, "integrations-check-failed-create", result.getMessage());
+                plugin.text().of(p, "integrations-check-failed-create", result.getMessage()).send();
                 Util.debugLog("Cancelled by integrations: " + result);
                 return;
             }
@@ -952,11 +955,11 @@ public class ShopManager implements Reloadable {
                             .build();
             if (!economyTransaction.failSafeCommit()) {
                 if (economyTransaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
-                    MsgUtil.sendMessage(p, "you-cant-afford-a-new-shop",
+                    plugin.text().of(p, "you-cant-afford-a-new-shop",
                             Objects.requireNonNull(format(createCost, shop.getLocation().getWorld(),
-                                    shop.getCurrency())));
+                                    shop.getCurrency()))).send();
                 } else {
-                    MsgUtil.sendMessage(p, "purchase-failed");
+                    plugin.text().of(p, "purchase-failed").send();
                     plugin.getLogger().severe("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
                     plugin.log("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
                 }
@@ -967,7 +970,7 @@ public class ShopManager implements Reloadable {
         // The shop about successfully created
         createShop(shop, info);
         if (!plugin.getConfig().getBoolean("shop.lock")) {
-            MsgUtil.sendMessage(p, "shops-arent-locked");
+            plugin.text().of(p, "shops-arent-locked").send();
         }
 
         // Figures out which way we should put the sign on and
@@ -977,7 +980,7 @@ public class ShopManager implements Reloadable {
             if (Objects.requireNonNull(nextTo).getPrice() > shop.getPrice()) {
                 // The one next to it must always be a
                 // buying shop.
-                MsgUtil.sendMessage(p, "buying-more-than-selling");
+                plugin.text().of(p, "buying-more-than-selling").send();
             }
         }
 
@@ -1013,18 +1016,18 @@ public class ShopManager implements Reloadable {
             stock = 10000;
         }
         if (stock < amount) {
-            MsgUtil.sendMessage(seller, "shop-stock-too-low", Integer.toString(stock),
-                    Util.getItemStackName(shop.getItem()));
+            plugin.text().of(seller, "shop-stock-too-low", Integer.toString(stock),
+                    Util.getItemStackName(shop.getItem())).send();
             return;
         }
         if (amount < 1) {
             // & Dumber
-            MsgUtil.sendMessage(seller, "negative-amount");
+            plugin.text().of(seller, "negative-amount").send();
             return;
         }
         int pSpace = Util.countSpace(sellerInventory, shop.getItem());
         if (amount > pSpace) {
-            MsgUtil.sendMessage(seller, "not-enough-space", String.valueOf(pSpace));
+            plugin.text().of(seller, "not-enough-space", String.valueOf(pSpace)).send();
             return;
         }
 
@@ -1058,15 +1061,15 @@ public class ShopManager implements Reloadable {
         }
         if (!transaction.failSafeCommit()) {
             if (transaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
-                MsgUtil.sendMessage(seller, "you-cant-afford-to-buy",
+                plugin.text().of(seller, "you-cant-afford-to-buy",
                         Objects.requireNonNull(
                                 format(total, shop.getLocation().getWorld(), shop.getCurrency())),
                         Objects.requireNonNull(format(
                                 eco.getBalance(seller, shop.getLocation().getWorld(),
                                         shop.getCurrency()), shop.getLocation().getWorld(),
-                                shop.getCurrency())));
+                                shop.getCurrency()))).send();
             } else {
-                MsgUtil.sendMessage(seller, "purchase-failed");
+                plugin.text().of(seller, "purchase-failed").send();
                 plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
                 QuickShop.getInstance().log("EconomyTransaction Failed, last error:" + transaction.getLastError());
             }
@@ -1125,11 +1128,11 @@ public class ShopManager implements Reloadable {
             return true;
         }
         if (!Util.canBeShop(info.getLocation().getBlock())) {
-            MsgUtil.sendMessage(p, "chest-was-removed");
+            plugin.text().of(p, "chest-was-removed").send();
             return true;
         }
         if (info.hasChanged(shop)) {
-            MsgUtil.sendMessage(p, "shop-has-changed");
+            plugin.text().of(p, "shop-has-changed").send();
             return true;
         }
         return false;
@@ -1144,7 +1147,7 @@ public class ShopManager implements Reloadable {
         Result result = plugin.getIntegrationHelper()
                 .callIntegrationsCanTrade(p, info.getLocation());
         if (!result.isSuccess()) {
-            MsgUtil.sendMessage(p, "integrations-check-failed-trade", result.getMessage());
+            plugin.text().of(p, "integrations-check-failed-trade", result.getMessage()).send();
             Util.debugLog("Cancel by integrations.");
             return;
         }
@@ -1154,16 +1157,16 @@ public class ShopManager implements Reloadable {
         Shop shop = plugin.getShopManager().getShop(info.getLocation());
         // It's not valid anymore
         if (shop == null || !Util.canBeShop(info.getLocation().getBlock())) {
-            MsgUtil.sendMessage(p, "chest-was-removed");
+            plugin.text().of(p, "chest-was-removed").send();
             return;
         }
         if (p.getGameMode() == GameMode.CREATIVE && plugin.getConfig().getBoolean("shop.disable-creative-mode-trading")) {
-            MsgUtil.sendMessage(p, "trading-in-creative-mode-is-disabled");
+            plugin.text().of(p, "trading-in-creative-mode-is-disabled").send();
             return;
         }
         int amount;
         if (info.hasChanged(shop)) {
-            MsgUtil.sendMessage(p, "shop-has-changed");
+            plugin.text().of(p, "shop-has-changed").send();
             return;
         }
         if (shop.isBuying()) {
@@ -1202,8 +1205,8 @@ public class ShopManager implements Reloadable {
                     if (amount < 1) { // typed 'all' but the auto set amount is 0
                         if (shopHaveSpaces == 0) {
                             // when typed 'all' but the shop doesn't have any empty space
-                            MsgUtil.sendMessage(p, "shop-has-no-space", Integer.toString(shopHaveSpaces),
-                                    Util.getItemStackName(shop.getItem()));
+                            plugin.text().of(p, "shop-has-no-space", Integer.toString(shopHaveSpaces),
+                                    Util.getItemStackName(shop.getItem())).send();
                             return;
                         }
                         if (ownerCanAfford == 0
@@ -1211,25 +1214,25 @@ public class ShopManager implements Reloadable {
                                 || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners"))) {
                             // when typed 'all' but the shop owner doesn't have enough money to buy at least 1
                             // item (and shop isn't unlimited or pay-unlimited is true)
-                            MsgUtil.sendMessage(p, "the-owner-cant-afford-to-buy-from-you",
+                            plugin.text().of(p, "the-owner-cant-afford-to-buy-from-you",
                                     Objects.requireNonNull(
                                             format(shop.getPrice(), shop.getLocation().getWorld(),
                                                     shop.getCurrency())),
                                     Objects.requireNonNull(
                                             format(ownerBalance, shop.getLocation().getWorld(),
-                                                    shop.getCurrency())));
+                                                    shop.getCurrency()))).send();
                             return;
                         }
                         // when typed 'all' but player doesn't have any items to sell
-                        MsgUtil.sendMessage(p, "you-dont-have-that-many-items",
+                        plugin.text().of(p, "you-dont-have-that-many-items",
                                 Integer.toString(amount),
-                                Util.getItemStackName(shop.getItem()));
+                                Util.getItemStackName(shop.getItem())).send();
                         return;
                     }
                 } else {
                     // instead of output cancelled message (when typed neither integer or 'all'), just let
                     // player know that there should be positive number or 'all'
-                    MsgUtil.sendMessage(p, "not-a-integer", message);
+                    plugin.text().of(p, "not-a-integer", message).send();
                     Util.debugLog(
                             "Receive the chat " + message + " and it format failed: " + message);
                     return;
@@ -1259,30 +1262,30 @@ public class ShopManager implements Reloadable {
                         // when typed 'all' but player can't buy any items
                         if (!shop.isUnlimited() && shopHaveItems < 1) {
                             // but also the shop's stock is 0
-                            MsgUtil.sendMessage(p, "shop-stock-too-low",
+                            plugin.text().of(p, "shop-stock-too-low",
                                     Integer.toString(shop.getRemainingStock()),
-                                    Util.getItemStackName(shop.getItem()));
+                                    Util.getItemStackName(shop.getItem())).send();
                         } else {
                             // when if player's inventory is full
                             if (invHaveSpaces <= 0) {
-                                MsgUtil.sendMessage(p, "not-enough-space",
-                                        String.valueOf(invHaveSpaces));
+                                plugin.text().of(p, "not-enough-space",
+                                        String.valueOf(invHaveSpaces)).send();
                                 return;
                             }
-                            MsgUtil.sendMessage(p, "you-cant-afford-to-buy",
+                            plugin.text().of(p, "you-cant-afford-to-buy",
                                     Objects.requireNonNull(
                                             format(price, shop.getLocation().getWorld(),
                                                     shop.getCurrency())),
                                     Objects.requireNonNull(
                                             format(balance, shop.getLocation().getWorld(),
-                                                    shop.getCurrency())));
+                                                    shop.getCurrency()))).send();
                         }
                         return;
                     }
                 } else {
                     // instead of output cancelled message, just let player know that there should be positive
                     // number or 'all'
-                    MsgUtil.sendMessage(p, "not-a-integer", message);
+                    plugin.text().of(p, "not-a-integer", message).send();
                     Util.debugLog(
                             "Receive the chat " + message + " and it format failed: " + message);
                     return;
@@ -1290,7 +1293,7 @@ public class ShopManager implements Reloadable {
             }
             actionSell(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
         } else {
-            MsgUtil.sendMessage(p, "shop-purchase-cancelled");
+            plugin.text().of(p, "shop-purchase-cancelled").send();
             plugin.getLogger().warning("Shop data broken? Loc:" + shop.getLocation());
         }
     }

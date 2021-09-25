@@ -488,14 +488,13 @@ public class ContainerShop implements Shop {
         OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
         String name = player.getName();
         if (name == null || name.isEmpty()) {
-            name = MsgUtil.getMessageOfflinePlayer(
-                    "unknown-owner", player);
+            name = plugin.text().of( "unknown-owner").forLocale();
         }
         if (forceUsername) {
             return name;
         }
         if (isUnlimited()) {
-            return MsgUtil.getMessageOfflinePlayer("admin-shop", player);
+            return plugin.text().of("admin-shop").forLocale();
         }
         return name;
     }
@@ -615,7 +614,7 @@ public class ContainerShop implements Shop {
         //Line 1
         OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
         String statusStringKey = inventoryAvailable() ? "signs.status-available" : "signs.status-unavailable";
-        lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", player, this.ownerName(false), MsgUtil.getMessageOfflinePlayer(statusStringKey, player));
+        lines[0] = plugin.text().of("signs.header", this.ownerName(false), plugin.text().of(statusStringKey).forLocale()).forLocale();
 
         //Line 2
         String tradingStringKey;
@@ -641,27 +640,27 @@ public class ContainerShop implements Shop {
         switch (shopRemaining) {
             //Unlimited
             case -1:
-                lines[1] = MsgUtil.getMessageOfflinePlayer(tradingStringKey, player, MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
+                lines[1] = plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale()).forLocale();
                 break;
             //No remaining
             case 0:
-                lines[1] = MsgUtil.getMessageOfflinePlayer(noRemainingStringKey, player);
+                lines[1] =plugin.text().of(noRemainingStringKey).forLocale();
                 break;
             //Has remaining
             default:
-                lines[1] = MsgUtil.getMessageOfflinePlayer(tradingStringKey, player, Integer.toString(shopRemaining));
+                lines[1] = plugin.text().of(tradingStringKey, Integer.toString(shopRemaining)).forLocale();
         }
 
         //line 3
-        lines[2] = MsgUtil.getMessageOfflinePlayer("signs.item", player, Util.getItemStackName(this.getItem()));
+        lines[2] = plugin.text().of("signs.item", Util.getItemStackName(this.getItem())).forLocale();
 
         //line 4
         if (this.isStackingShop()) {
-            lines[3] = MsgUtil.getMessageOfflinePlayer("signs.stack-price", player,
+            lines[3] =  plugin.text().of("signs.stack-price",
                     Util.format(this.getPrice(), this), Integer.toString(item.getAmount()),
-                    Util.getItemStackName(item));
+                    Util.getItemStackName(item)).forLocale();
         } else {
-            lines[3] = MsgUtil.getMessageOfflinePlayer("signs.price", player, Util.format(this.getPrice(), this));
+            lines[3] =  plugin.text().of("signs.price",  Util.format(this.getPrice(), this)).forLocale();
         }
 
         //New pattern for recognizing shop sign

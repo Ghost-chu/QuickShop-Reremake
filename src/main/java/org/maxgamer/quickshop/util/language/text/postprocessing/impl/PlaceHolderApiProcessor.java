@@ -11,11 +11,12 @@ import org.maxgamer.quickshop.util.language.text.postprocessing.PostProcessor;
 public class PlaceHolderApiProcessor implements PostProcessor {
     @Override
     public @NotNull String process(@NotNull String text, @Nullable CommandSender sender, String... args) {
-        if(sender instanceof OfflinePlayer) {
+        if (sender instanceof OfflinePlayer) {
             if (Bukkit.getPluginManager().isPluginEnabled("PlaceHolderAPI")) {
-                return PlaceholderAPI.setPlaceholders((OfflinePlayer) sender,text);
+                return PlaceholderAPI.setPlaceholders((OfflinePlayer) sender, text);
             }
         }
         return text;
     }
+
 }

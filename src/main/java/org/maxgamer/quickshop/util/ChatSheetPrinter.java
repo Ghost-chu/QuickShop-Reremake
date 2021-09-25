@@ -22,6 +22,9 @@ package org.maxgamer.quickshop.util;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -49,7 +52,11 @@ public class ChatSheetPrinter {
 
     public void printExecutableCmdLine(
             @NotNull String text, @NotNull String hoverText, @NotNull String executeCmd) {
-        QuickShop.getInstance().getQuickChat().sendExecutableChat(p, text, hoverText, executeCmd);
+        QuickShop.getInstance().adventure().sender(p).sendMessage(Component.text(text)
+                .hoverEvent(HoverEvent.showText(Component.text(text)))
+                .clickEvent(ClickEvent.runCommand(executeCmd))
+        );
+     //   QuickShop.getInstance().getQuickChat().sendExecutableChat(p, text, hoverText, executeCmd);
     }
 
     public void printFooter() {
@@ -71,8 +78,11 @@ public class ChatSheetPrinter {
 
     public void printSuggestedCmdLine(
             @NotNull String text, @NotNull String hoverText, @NotNull String suggestCmd) {
-        QuickShop.getInstance().getQuickChat().sendSuggestedChat(p, text, hoverText, suggestCmd);
-
+        QuickShop.getInstance().adventure().sender(p)
+                .sendMessage(Component.text(text)
+                        .hoverEvent(HoverEvent.showText(Component.text(hoverText)))
+                        .clickEvent(ClickEvent.suggestCommand(suggestCmd)));
+       // QuickShop.getInstance().getQuickChat().sendSuggestedChat(p, text, hoverText, suggestCmd);
     }
 
 }

@@ -61,10 +61,10 @@ public class SubCommand_Transfer implements CommandHandler<ConsoleCommandSender>
             for (Shop shop : shopList) {
                 shop.setOwner(targetPlayerUUID);
             }
-            MsgUtil.sendMessage(sender, "command.transfer-success", Integer.toString(shopList.size()), targetPlayerName);
+            plugin.text().of(sender, "command.transfer-success", Integer.toString(shopList.size()), targetPlayerName).send();
         } else if (cmdArg.length == 2) {
             if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.transfer.other")) {
-                MsgUtil.sendMessage(sender, "no-permission");
+                plugin.text().of(sender, "no-permission").send();
                 return;
             }
             //noinspection deprecation
@@ -85,10 +85,10 @@ public class SubCommand_Transfer implements CommandHandler<ConsoleCommandSender>
             for (Shop shop : shopList) {
                 shop.setOwner(targetPlayerUUID);
             }
-            MsgUtil.sendMessage(sender, "command.transfer-success-other", Integer.toString(shopList.size()), fromPlayerName, targetPlayerName);
+            plugin.text().of(sender, "command.transfer-success-other", Integer.toString(shopList.size()), fromPlayerName, targetPlayerName).send();
 
         } else {
-            MsgUtil.sendMessage(sender, "command.wrong-args");
+            plugin.text().of(sender, "command.wrong-args").send();
         }
     }
 

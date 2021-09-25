@@ -26,7 +26,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.UUID;
@@ -47,7 +46,8 @@ public class SubCommand_SilentPreview implements CommandHandler<Player> {
 
 
         if (!(shop instanceof ContainerShop)) {
-            MsgUtil.sendMessage(sender, "not-looking-at-shop");
+            // This should never happen
+            plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
         shop.openPreview(sender);

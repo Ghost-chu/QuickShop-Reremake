@@ -24,7 +24,6 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
-import org.maxgamer.quickshop.util.MsgUtil;
 
 @AllArgsConstructor
 public class SubCommand_Reload implements CommandHandler<CommandSender> {
@@ -34,7 +33,7 @@ public class SubCommand_Reload implements CommandHandler<CommandSender> {
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         //MsgUtil.sendMessage(sender, "server-crash-warning");
-        MsgUtil.sendMessage(sender, "command.reloading");
+        plugin.text().of(sender, "command.reloading").send();
         plugin.reloadConfig();
     }
 }

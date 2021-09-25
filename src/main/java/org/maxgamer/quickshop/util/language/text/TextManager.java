@@ -1,12 +1,15 @@
 package org.maxgamer.quickshop.util.language.text;
 
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.language.text.distributions.Distribution;
 import org.maxgamer.quickshop.util.language.text.distributions.crowdin.CrowdinOTA;
@@ -19,11 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 public class TextManager {
@@ -66,7 +65,7 @@ public class TextManager {
                 JsonConfiguration override = new JsonConfiguration();
                 File localOverrideFile = new File(overrideFilesFolder, availableLanguage + ".json");
                 if (localOverrideFile.exists()) {
-                    override.loadFromString(Files.readString(localOverrideFile.toPath()));
+                    override.loadFromString(Util.readToString(localOverrideFile));
                     for (String key : override.getKeys(true)) {
                         configuration.set(key, override.get(key));
                     }
@@ -80,11 +79,107 @@ public class TextManager {
         postProcessors.add(new PlaceHolderApiProcessor());
     }
 
-    public Text of(CommandSender sender, String path, String... args) {
-        return new Text(this, sender, locale2ContentMapping.get(languageFileCrowdin), path, args);
+    public Text of(@NotNull String path, String... args) {
+        return new Text(this,  (CommandSender)null, locale2ContentMapping.get(languageFileCrowdin), path, args);
     }
 
-    static class Text {
+    public Text of(@Nullable CommandSender sender, @NotNull String path, String... args) {
+        return new Text(this, sender, locale2ContentMapping.get(languageFileCrowdin), path, args);
+    }
+    public Text of(@Nullable UUID sender, @NotNull String path, String... args) {
+        return new Text(this, sender, locale2ContentMapping.get(languageFileCrowdin), path, args);
+    }
+    public TextList ofList(@NotNull String path, String... args) {
+        return new TextList(this, (CommandSender) null, locale2ContentMapping.get(languageFileCrowdin), path, args);
+    }
+
+    public TextList ofList(@Nullable UUID sender, @NotNull String path, String... args) {
+        return new TextList(this, sender, locale2ContentMapping.get(languageFileCrowdin), path, args);
+    }
+    public TextList ofList(@Nullable CommandSender sender, @NotNull String path, String... args) {
+        return new TextList(this, sender, locale2ContentMapping.get(languageFileCrowdin), path, args);
+    }
+
+    public static class TextList {
+        private final TextManager manager;
+        private final String path;
+        private final QuickShop plugin;
+        private final Map<String, JsonConfiguration> mapping;
+        private final CommandSender sender;
+        private final String[] args;
+
+        private TextList(TextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, String path, String... args) {
+            this.plugin = manager.plugin;
+            this.manager = manager;
+            this.sender = sender;
+            this.mapping = mapping;
+            this.path = path;
+            this.args = args;
+        }
+
+        private TextList(TextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, String path, String... args) {
+            this.plugin = manager.plugin;
+            this.manager = manager;
+            if(sender != null)
+                this.sender = Bukkit.getPlayer(sender);
+            else
+                this.sender = null;
+            this.mapping = mapping;
+            this.path = path;
+            this.args = args;
+        }
+
+        private @NotNull List<String> fallbackLocal() {
+            return manager.bundledLang.getStringList(path);
+        }
+
+        @NotNull
+        private List<String> postProcess(@NotNull List<String> text) {
+            List<String> texts = new ArrayList<>();
+            for (PostProcessor postProcessor : this.manager.postProcessors)
+                for (String s : text) {
+                    texts.add(postProcessor.process(s, sender, args));
+                }
+            return texts;
+        }
+
+        @NotNull
+        public List<String> forLocale(@NotNull String locale) {
+            JsonConfiguration index = mapping.get(locale);
+            if (index == null && locale.equals("en")) {
+                List<String> str = fallbackLocal();
+                if (str.isEmpty())
+                    return Collections.singletonList("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+            }
+            if (index == null)
+                return forLocale("en");
+            List<String> str = index.getStringList(locale);
+            if (str.isEmpty())
+                return Collections.singletonList("Missing Language Key: " + path);
+            return postProcess(str);
+        }
+
+        @NotNull
+        public List<String> forLocale() {
+            if (sender instanceof Player) {
+                return forLocale(((Player) sender).getLocale());
+            } else {
+                return forLocale("en");
+            }
+        }
+
+        public void send() {
+            if(sender == null)
+                return;
+            for (String s : forLocale()) {
+                if (StringUtils.isEmpty(s))
+                    continue;
+                MsgUtil.sendDirectMessage(sender, s);
+            }
+        }
+    }
+
+    public static class Text {
         private final TextManager manager;
         private final String path;
         private final QuickShop plugin;
@@ -96,6 +191,18 @@ public class TextManager {
             this.plugin = manager.plugin;
             this.manager = manager;
             this.sender = sender;
+            this.mapping = mapping;
+            this.path = path;
+            this.args = args;
+        }
+
+        private Text(TextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, String path, String... args) {
+            this.plugin = manager.plugin;
+            this.manager = manager;
+            if(sender != null)
+                this.sender = Bukkit.getPlayer(sender);
+            else
+                this.sender = null;
             this.mapping = mapping;
             this.path = path;
             this.args = args;
@@ -130,8 +237,22 @@ public class TextManager {
         }
 
         @NotNull
-        public String forLocale(@NotNull Player player){
-            return forLocale(player.getLocale());
+        public String forLocale() {
+            if (sender instanceof Player) {
+                return forLocale(((Player) sender).getLocale());
+            } else {
+                return forLocale("en");
+            }
+        }
+
+        public void send() {
+            if(sender == null)
+                return;
+            String lang = forLocale();
+            if (StringUtils.isEmpty(lang))
+                return;
+           MsgUtil.sendDirectMessage(sender,lang);
+           // plugin.getQuickChat().send(sender, lang);
         }
     }
 }

@@ -50,7 +50,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         BlockIterator bIt = new BlockIterator(sender, 10);
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, "not-looking-at-shop");
+            plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
         while (bIt.hasNext()) {
@@ -64,7 +64,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                     switch (cmdArg[0]) {
                         case "clear":
                             shop.clearStaffs();
-                            MsgUtil.sendMessage(sender, "shop-staff-cleared");
+                            plugin.text().of(sender, "shop-staff-cleared").send();
                             return;
                         case "list":
                             final List<UUID> staffs = shop.getStaffs();
@@ -85,7 +85,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                         case "add":
                         case "del":
                         default:
-                            MsgUtil.sendMessage(sender, "command.wrong-args");
+                            plugin.text().of(sender, "command.wrong-args").send();
                             return;
                     }
                 case 2:
@@ -99,24 +99,24 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                     switch (cmdArg[0]) {
                         case "add":
                             shop.addStaff(offlinePlayer.getUniqueId());
-                            MsgUtil.sendMessage(sender, "shop-staff-added", offlinePlayerName);
+                            plugin.text().of(sender, "shop-staff-added", offlinePlayerName).send();
                             return;
                         case "del":
                             shop.delStaff(offlinePlayer.getUniqueId());
-                            MsgUtil.sendMessage(sender,
-                                    "shop-staff-deleted", offlinePlayerName);
+                            plugin.text().of(sender,
+                                    "shop-staff-deleted", offlinePlayerName).send();
                             return;
                         default:
-                            MsgUtil.sendMessage(sender, "command.wrong-args");
+                            plugin.text().of(sender, "command.wrong-args").send();
                             return;
                     }
                 default:
-                    MsgUtil.sendMessage(sender, "command.wrong-args");
+                    plugin.text().of(sender, "command.wrong-args").send();
                     return;
             }
         }
         //no match shop
-        MsgUtil.sendMessage(sender, "not-looking-at-shop");
+        plugin.text().of(sender, "not-looking-at-shop").send();
     }
 
     @NotNull

@@ -39,7 +39,7 @@ public class SubCommand_Clean implements CommandHandler<CommandSender> {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        MsgUtil.sendMessage(sender, "command.cleaning");
+        plugin.text().of(sender, "command.cleaning").send();
 
         final List<Shop> pendingRemoval = new ArrayList<>();
         int i = 0;
@@ -70,7 +70,7 @@ public class SubCommand_Clean implements CommandHandler<CommandSender> {
         }
 
         MsgUtil.clean();
-        MsgUtil.sendMessage(sender, "command.cleaned", Integer.toString(i));
+        plugin.text().of(sender, "command.cleaned", Integer.toString(i)).send();
     }
 
 

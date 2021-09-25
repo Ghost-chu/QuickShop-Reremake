@@ -27,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
@@ -38,12 +37,12 @@ public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender, "command.no-world-given");
+            plugin.text().of(sender, "command.no-world-given").send();
             return;
         }
         World world = Bukkit.getWorld(cmdArg[0]);
         if (world == null) {
-            MsgUtil.sendMessage(sender, "world-not-exists", cmdArg[0]);
+            plugin.text().of(sender, "world-not-exists", cmdArg[0]).send();
             return;
         }
         int shopsDeleted = 0;
@@ -55,7 +54,7 @@ public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
         }
         Util.debugLog("Successfully deleted all shops in world " + cmdArg[0] + "!");
 
-        MsgUtil.sendMessage(sender, "shops-removed-in-world", String.valueOf(shopsDeleted), world.getName());
+        plugin.text().of(sender, "shops-removed-in-world", String.valueOf(shopsDeleted), world.getName()).send();
     }
 
 }

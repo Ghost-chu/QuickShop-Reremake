@@ -46,7 +46,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender, "no-price-given");
+            plugin.text().of(sender, "no-price-given").send();
             return;
         }
 
@@ -57,12 +57,12 @@ public class SubCommand_Price implements CommandHandler<Player> {
         } catch (NumberFormatException ex) {
             // No number input
             Util.debugLog(ex.getMessage());
-            MsgUtil.sendMessage(sender, "not-a-number", cmdArg[0]);
+            plugin.text().of(sender, "not-a-number", cmdArg[0]).send();
             return;
         }
         // No number input
         if (Double.isInfinite(price) || Double.isNaN(price)) {
-            MsgUtil.sendMessage(sender, "not-a-number", cmdArg[0]);
+            plugin.text().of(sender, "not-a-number", cmdArg[0]).send();
             return;
         }
 
@@ -77,7 +77,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
         final BlockIterator bIt = new BlockIterator(sender, 10);
         // Loop through every block they're looking at upto 10 blocks away
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, "not-looking-at-shop");
+            plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
 
@@ -100,23 +100,23 @@ public class SubCommand_Price implements CommandHandler<Player> {
 
             if (shop.getPrice() == price) {
                 // Stop here if there isn't a price change
-                MsgUtil.sendMessage(sender, "no-price-change");
+                plugin.text().of(sender, "no-price-change").send();
                 return;
             }
 
             PriceLimiter.CheckResult checkResult = limiter.check(shop.getItem(), price);
             if (checkResult.getStatus() == PriceLimiter.Status.REACHED_PRICE_MIN_LIMIT) {
-                MsgUtil.sendMessage(sender, "price-too-cheap", (format) ? MsgUtil.decimalFormat(checkResult.getMin()) : Double.toString(checkResult.getMin()));
+                plugin.text().of(sender, "price-too-cheap", (format) ? MsgUtil.decimalFormat(checkResult.getMin()) : Double.toString(checkResult.getMin())).send();
                 return;
             }
             if (checkResult.getStatus() == PriceLimiter.Status.REACHED_PRICE_MAX_LIMIT) {
-                MsgUtil.sendMessage(sender, "price-too-high", (format) ? MsgUtil.decimalFormat(checkResult.getMax()) : Double.toString(checkResult.getMax()));
+                plugin.text().of(sender, "price-too-high", (format) ? MsgUtil.decimalFormat(checkResult.getMax()) : Double.toString(checkResult.getMax())).send();
                 return;
             }
             if (checkResult.getStatus() == PriceLimiter.Status.PRICE_RESTRICTED) {
-                MsgUtil.sendMessage(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
+                plugin.text().of(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
                         String.valueOf(checkResult.getMin()),
-                        String.valueOf(checkResult.getMax()));
+                        String.valueOf(checkResult.getMax())).send();
                 return;
             }
 
@@ -132,13 +132,11 @@ public class SubCommand_Price implements CommandHandler<Player> {
                 if (!transaction.failSafeCommit()) {
                     EconomyTransaction.TransactionSteps steps = transaction.getSteps();
                     if (steps == EconomyTransaction.TransactionSteps.CHECK) {
-                        MsgUtil.sendMessage(sender,
-
-                                "you-cant-afford-to-change-price", plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency()));
+                        plugin.text().of(sender,
+                                "you-cant-afford-to-change-price", plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency())).send();
                     } else {
-                        MsgUtil.sendMessage(sender,
-
-                                "fee-charged-for-price-change", plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency()));
+                        plugin.text().of(sender,
+                                "fee-charged-for-price-change", plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency())).send();
                         plugin.getLogger().log(Level.WARNING, "QuickShop can't pay taxes to the configured tax account! Please set the tax account name in the config.yml to an existing player: " + transaction.getLastError());
                     }
                     return;
@@ -147,8 +145,8 @@ public class SubCommand_Price implements CommandHandler<Player> {
             // Update the shop
             shop.setPrice(price);
             shop.update();
-            MsgUtil.sendMessage(sender,
-                    "price-is-now", plugin.getEconomy().format(shop.getPrice(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency()));
+            plugin.text().of(sender,
+                    "price-is-now", plugin.getEconomy().format(shop.getPrice(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency())).send();
             // Chest shops can be double shops.
             if (!(shop instanceof ContainerShop)) {
                 return;
@@ -169,17 +167,17 @@ public class SubCommand_Price implements CommandHandler<Player> {
 
             if (cs.isSelling()) {
                 if (cs.getPrice() < nextTo.getPrice()) {
-                    MsgUtil.sendMessage(sender, "buying-more-than-selling");
+                    plugin.text().of(sender, "buying-more-than-selling").send();
                 }
             }
             // Buying
             else if (cs.getPrice() > nextTo.getPrice()) {
-                MsgUtil.sendMessage(sender, "buying-more-than-selling");
+                plugin.text().of(sender, "buying-more-than-selling").send();
             }
 
             return;
         }
-        MsgUtil.sendMessage(sender, "not-looking-at-shop");
+        plugin.text().of(sender, "not-looking-at-shop").send();
     }
 
     @NotNull

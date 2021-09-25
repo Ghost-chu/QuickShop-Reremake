@@ -45,7 +45,7 @@ public class SubCommand_SuperCreate implements CommandHandler<Player> {
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         ItemStack item = sender.getInventory().getItemInMainHand();
         if (item.getType() == Material.AIR) {
-            MsgUtil.sendMessage(sender, "no-anythings-in-your-hand");
+            plugin.text().of(sender, "no-anythings-in-your-hand").send();
             return;
         }
 
@@ -66,10 +66,10 @@ public class SubCommand_SuperCreate implements CommandHandler<Player> {
             final Info info = new Info(b.getLocation(), ShopAction.CREATE, sender.getInventory().getItemInMainHand(), b.getRelative(sender.getFacing().getOppositeFace()));
 
             plugin.getShopManager().getActions().put(sender.getUniqueId(), info);
-            MsgUtil.sendMessage(sender, "how-much-to-trade-for", Util.getItemStackName(item), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.stacks") ? item.getAmount() : 1));
+            plugin.text().of(sender, "how-much-to-trade-for", Util.getItemStackName(item), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.stacks") ? item.getAmount() : 1)).send();
             return;
         }
-        MsgUtil.sendMessage(sender, "not-looking-at-shop");
+        plugin.text().of(sender, "not-looking-at-shop").send();
     }
 
     @NotNull

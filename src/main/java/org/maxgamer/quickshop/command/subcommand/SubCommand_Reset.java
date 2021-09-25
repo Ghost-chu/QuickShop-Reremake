@@ -46,7 +46,7 @@ public class SubCommand_Reset implements CommandHandler<CommandSender> {
     @SneakyThrows
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender, "command.no-type-given");
+            plugin.text().of(sender, "command.no-type-given").send();
             return;
         }
 
@@ -64,7 +64,7 @@ public class SubCommand_Reset implements CommandHandler<CommandSender> {
                 MsgUtil.loadItemi18n();
                 MsgUtil.loadEnchi18n();
                 MsgUtil.loadPotioni18n();
-                MsgUtil.sendMessage(sender, "complete");
+                plugin.text().of(sender, "complete").send();
                 break;
             case "config":
                 File config = new File(plugin.getDataFolder(), "config.yml");
@@ -73,16 +73,16 @@ public class SubCommand_Reset implements CommandHandler<CommandSender> {
                 plugin.reloadConfig();
                 plugin.getServer().getPluginManager().disablePlugin(plugin);
                 plugin.getServer().getPluginManager().enablePlugin(plugin);
-                MsgUtil.sendMessage(sender, "complete");
+                plugin.text().of(sender, "complete").send();
                 break;
             case "messages":
                 File msgs = new File(plugin.getDataFolder(), "messages.json");
                 msgs.delete();
                 MsgUtil.loadI18nFile();
-                MsgUtil.sendMessage(sender, "complete");
+                plugin.text().of(sender, "complete").send();
                 break;
             default:
-                MsgUtil.sendMessage(sender, "command.wrong-args");
+                plugin.text().of(sender, "command.wrong-args").send();
         }
     }
 

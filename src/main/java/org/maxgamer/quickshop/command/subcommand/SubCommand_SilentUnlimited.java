@@ -44,7 +44,7 @@ public class SubCommand_SilentUnlimited implements CommandHandler<Player> {
         Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(UUID.fromString(cmdArg[0]));
 
         if (shop == null) {
-            MsgUtil.sendMessage(sender, "not-looking-at-shop");
+            plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
 
@@ -53,16 +53,16 @@ public class SubCommand_SilentUnlimited implements CommandHandler<Player> {
         MsgUtil.sendControlPanelInfo(sender, shop);
 
         if (shop.isUnlimited()) {
-            MsgUtil.sendMessage(sender, "command.toggle-unlimited.unlimited");
+            plugin.text().of(sender, "command.toggle-unlimited.unlimited").send();
             if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
                 plugin.getShopManager().migrateOwnerToUnlimitedShopOwner(shop);
-                MsgUtil.sendMessage(sender, "unlimited-shop-owner-changed", plugin.getShopManager().getCacheUnlimitedShopAccount().getName());
+                plugin.text().of(sender, "unlimited-shop-owner-changed", plugin.getShopManager().getCacheUnlimitedShopAccount().getName()).send();
             }
             return;
         }
-        MsgUtil.sendMessage(sender, "command.toggle-unlimited.limited");
+        plugin.text().of(sender, "command.toggle-unlimited.limited").send();
         if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
-            MsgUtil.sendMessage(sender, "unlimited-shop-owner-keeped");
+            plugin.text().of(sender, "unlimited-shop-owner-keeped").send();
         }
     }
 

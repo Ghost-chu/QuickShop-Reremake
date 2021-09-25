@@ -16,7 +16,6 @@ import org.maxgamer.quickshop.util.language.text.distributions.crowdin.bean.Mani
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -97,7 +96,7 @@ public class CrowdinOTA implements Distribution {
         File metadataFile = new File(Util.getCacheFolder(), "i18n.metadata");
         YamlConfiguration cacheMetadata = YamlConfiguration.loadConfiguration(metadataFile);
         long localeTimestamp = cacheMetadata.getLong(pathHash + ".timestamp");
-        String data = Files.readString(new File(Util.getCacheFolder(), pathHash).toPath());
+        String data = Util.readToString(new File(Util.getCacheFolder(), pathHash));
         // invalidate cache, flush it
         if (localeTimestamp != manifest.getTimestamp() || forceFlush) {
             String url = CROWDIN_OTA_HOST + "content/" + fileCrowdinPath.replace("%locale%", postProcessingPath);

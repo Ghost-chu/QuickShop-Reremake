@@ -25,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.UUID;
@@ -45,13 +44,13 @@ public class SubCommand_SilentRemove implements CommandHandler<Player> {
         Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(UUID.fromString(cmdArg[0]));
 
         if (shop == null) {
-            MsgUtil.sendMessage(sender, "not-looking-at-shop");
+            plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
 
         if (!shop.getModerator().isModerator(sender.getUniqueId())
                 && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy")) {
-            MsgUtil.sendMessage(sender, "no-permission");
+            plugin.text().of(sender, "no-permission").send();
             return;
         }
 

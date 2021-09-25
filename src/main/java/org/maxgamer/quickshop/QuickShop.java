@@ -30,7 +30,6 @@ import me.minebuilders.clearlag.listeners.ItemMergeListener;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
@@ -47,9 +46,9 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.QuickShopAPI;
-import org.maxgamer.quickshop.chat.QuickChat;
-import org.maxgamer.quickshop.chat.QuickChatType;
-import org.maxgamer.quickshop.chat.platform.minedown.AdventureQuickChat;
+//import org.maxgamer.quickshop.chat.QuickChat;
+//import org.maxgamer.quickshop.chat.QuickChatType;
+//import org.maxgamer.quickshop.chat.platform.minedown.AdventureQuickChat;
 import org.maxgamer.quickshop.command.CommandManager;
 import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.*;
@@ -67,6 +66,7 @@ import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.util.config.ConfigProvider;
 import org.maxgamer.quickshop.util.envcheck.*;
+import org.maxgamer.quickshop.util.language.text.TextManager;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
@@ -238,8 +238,8 @@ public class QuickShop extends JavaPlugin {
     DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
     @Getter
     private boolean enabledAsyncDisplayDespawn;
-    @Getter
-    private String previewProtectionLore;
+//    @Getter
+//    private String previewProtectionLore;
     @Getter
     private Plugin blockHubPlugin;
     @Getter
@@ -255,15 +255,15 @@ public class QuickShop extends JavaPlugin {
     private UpdateWatcher updateWatcher;
     @Getter
     private BuildInfo buildInfo;
-    @Getter
-    private QuickChatType quickChatType = QuickChatType.ADVENTURE;
-    @Getter
-    private QuickChat quickChat = new AdventureQuickChat();
+//    @Getter
+//    private QuickChatType quickChatType = QuickChatType.ADVENTURE;
+//    @Getter
+//    private QuickChat quickChat = new AdventureQuickChat();
     @Getter
     @Nullable
     private String currency = null;
-    @Getter
-    private ShopControlPanel shopControlPanelManager;
+//    @Getter
+//    private ShopControlPanel shopControlPanelManager;
     @Getter
     private CalendarWatcher calendarWatcher;
     @Getter
@@ -271,6 +271,8 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private WorldEditAdapter worldEditAdapter;
     private BukkitAudiences adventure;
+    @Getter
+    private final TextManager textManager = new TextManager(this);
 
     /**
      * Use for mock bukkit
@@ -542,8 +544,8 @@ public class QuickShop extends JavaPlugin {
         this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
         this.displayItemCheckTicks = this.getConfig().getInt("shop.display-items-check-ticks");
         this.allowStack = this.getConfig().getBoolean("shop.allow-stacks");
-        this.quickChatType = QuickChatType.fromID(this.getConfig().getInt("chat-type"));
-        this.quickChat = QuickChatType.createByType(this.quickChatType);
+//        this.quickChatType = QuickChatType.fromID(this.getConfig().getInt("chat-type"));
+//        this.quickChat = QuickChatType.createByType(this.quickChatType);
         this.currency = this.getConfig().getString("currency");
         if (StringUtils.isEmpty(this.currency)) {
             this.currency = null;
@@ -787,8 +789,8 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
         getLogger().info("Let's start loading the plugin");
         this.adventure = BukkitAudiences.create(this);
-        getLogger().info("Chat processor selected: " + this.quickChatType.name());
-
+        //getLogger().info("Chat processor selected: " + this.quickChatType.name());
+        getLogger().info("Chat processor selected: Hardcoded Adventure Lib");
         /* Process Metrics and Sentry error reporter. */
         metrics = new Metrics(this, 3320);
 
@@ -814,11 +816,11 @@ public class QuickShop extends JavaPlugin {
         MsgUtil.loadItemi18n();
         MsgUtil.loadEnchi18n();
         MsgUtil.loadPotioni18n();
-        shopControlPanelManager = new ShopControlPanel(this);
-        this.previewProtectionLore = MsgUtil.getMessageOfflinePlayer("quickshop-gui-preview", null);
-        if (this.previewProtectionLore == null || this.previewProtectionLore.isEmpty()) {
-            this.previewProtectionLore = ChatColor.RED + "FIXME: DON'T SET THIS TO EMPTY STRING";
-        }
+    //    shopControlPanelManager = new ShopControlPanel(this);
+//        this.previewProtectionLore = MsgUtil.getMessageOfflinePlayer("quickshop-gui-preview", null);
+//        if (this.previewProtectionLore == null || this.previewProtectionLore.isEmpty()) {
+//            this.previewProtectionLore = ChatColor.RED + "FIXME: DON'T SET THIS TO EMPTY STRING";
+//        }
 
         /* Load 3rd party supports */
         load3rdParty();
@@ -1059,7 +1061,7 @@ public class QuickShop extends JavaPlugin {
             metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> DisplayItem.getNowUsing().name()));
             metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> this.getItemMatcher().getName()));
             metrics.addCustomChart(new Metrics.SimplePie("use_stack_item", () -> String.valueOf(this.isAllowStack())));
-            metrics.addCustomChart(new Metrics.SimplePie("chat_adapter", () -> this.getQuickChatType().name()));
+            metrics.addCustomChart(new Metrics.SimplePie("chat_adapter", () -> "Hardcoded Adventure"));
             metrics.addCustomChart(new Metrics.SimplePie("event_adapter", () -> eventAdapter));
             metrics.addCustomChart(new Metrics.SingleLineChart("shops_created_on_all_servers", () -> this.getShopManager().getAllShops().size()));
             // Exp for stats, maybe i need improve this, so i add this.// Submit now!
@@ -1962,5 +1964,9 @@ public class QuickShop extends JavaPlugin {
             throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
         }
         return this.adventure;
+    }
+
+    public @NotNull TextManager text(){
+        return textManager;
     }
 }

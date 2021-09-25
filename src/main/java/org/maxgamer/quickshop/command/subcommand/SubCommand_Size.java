@@ -43,20 +43,20 @@ public class SubCommand_Size implements CommandHandler<Player> {
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender, "command.bulk-size-not-set");
+            plugin.text().of(sender, "command.bulk-size-not-set").send();
             return;
         }
         int amount;
         try {
             amount = Integer.parseInt(cmdArg[0]);
         } catch (NumberFormatException e) {
-            MsgUtil.sendMessage(sender, "not-a-integer", cmdArg[0]);
+            plugin.text().of(sender, "not-a-integer", cmdArg[0]).send();
             return;
         }
         final BlockIterator bIt = new BlockIterator(sender, 10);
         // Loop through every block they're looking at upto 10 blocks away
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, "not-looking-at-shop");
+            plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
         while (bIt.hasNext()) {
@@ -65,7 +65,7 @@ public class SubCommand_Size implements CommandHandler<Player> {
             if (shop != null) {
                 if (shop.getModerator().isModerator(sender.getUniqueId()) || sender.hasPermission("quickshop.other.amount")) {
                     if (amount <= 0 || amount > Util.getItemMaxStackSize(shop.getItem().getType())) {
-                        MsgUtil.sendMessage(sender, "command.invalid-bulk-amount", Integer.toString(amount));
+                        plugin.text().of(sender, "command.invalid-bulk-amount", Integer.toString(amount)).send();
                         return;
                     }
                     ItemStack pendingItemStack = shop.getItem().clone();
@@ -77,20 +77,20 @@ public class SubCommand_Size implements CommandHandler<Player> {
                             plugin.getConfig().getBoolean("whole-number-prices-only"));
                     PriceLimiter.CheckResult checkResult = limiter.check(pendingItemStack, shop.getPrice());
                     if (checkResult.getStatus() != PriceLimiter.Status.PASS) {
-                        MsgUtil.sendMessage(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
+                        plugin.text().of(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
                                 String.valueOf(checkResult.getMin()),
-                                String.valueOf(checkResult.getMax()));
+                                String.valueOf(checkResult.getMax())).send();
                         return;
                     }
                     shop.setItem(pendingItemStack);
-                    MsgUtil.sendMessage(sender, "command.bulk-size-now", Integer.toString(shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()));
+                    plugin.text().of(sender, "command.bulk-size-now", Integer.toString(shop.getItem().getAmount()), Util.getItemStackName(shop.getItem())).send();
                     return;
                 } else {
-                    MsgUtil.sendMessage(sender, "not-managed-shop");
+                    plugin.text().of(sender, "not-managed-shop").send();
                 }
             }
         }
-        MsgUtil.sendMessage(sender, "not-looking-at-shop");
+        plugin.text().of(sender, "not-looking-at-shop").send();
 
 
     }
