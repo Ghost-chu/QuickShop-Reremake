@@ -28,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,14 +43,14 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
 
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender, "command.no-owner-given");
+            plugin.text().of(sender, "command.no-owner-given").send();
             return;
         }
 
         final BlockIterator bIt = new BlockIterator(sender, 10);
 
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, "not-looking-at-shop");
+            plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
 
@@ -65,15 +64,15 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
 
             @SuppressWarnings("deprecation") final OfflinePlayer newShopOwner = plugin.getServer().getOfflinePlayer(cmdArg[0]);
             if (newShopOwner.getName() == null) {
-                MsgUtil.sendMessage(sender, "unknown-player");
+                plugin.text().of(sender, "unknown-player").send();
                 return;
             }
             shop.setOwner(newShopOwner.getUniqueId());
-            MsgUtil.sendMessage(sender, "command.new-owner", newShopOwner.getName());
+            plugin.text().of(sender, "command.new-owner", newShopOwner.getName()).send();
             return;
         }
 
-        MsgUtil.sendMessage(sender, "not-looking-at-shop");
+        plugin.text().of(sender, "not-looking-at-shop").send();
     }
 
     @NotNull

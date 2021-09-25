@@ -19,12 +19,18 @@
 
 package org.maxgamer.quickshop.util;
 
-import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
-import lombok.*;
-import me.clip.placeholderapi.PlaceholderAPI;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.nbt.api.BinaryTagHolder;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -47,7 +53,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.ServiceInjector;
 import org.maxgamer.quickshop.database.WarpedResultSet;
 import org.maxgamer.quickshop.event.ShopControlPanelOpenEvent;
-import org.maxgamer.quickshop.file.HumanReadableJsonConfiguration;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.language.game.GameLanguage;
 import org.maxgamer.quickshop.util.language.game.MojangGameLanguageImpl;
@@ -55,7 +60,7 @@ import org.maxgamer.quickshop.util.language.game.MojangGameLanguageImpl;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -73,14 +78,14 @@ public class MsgUtil {
     private static QuickShop plugin = QuickShop.getInstance();
     @Getter
     private static YamlConfiguration enchi18n;
-    private static boolean inited;
+ //   private static boolean inited;
     @Getter
     private static YamlConfiguration itemi18n;
-    private static JsonConfiguration messagei18n;
+  //  private static JsonConfiguration messagei18n;
     @Getter
     private static YamlConfiguration potioni18n;
-    private static JsonConfiguration builtInLang;
-    private static JsonConfiguration builtInOriginalLang;
+  //  private static JsonConfiguration builtInLang;
+  //  private static JsonConfiguration builtInOriginalLang;
 
     /**
      * Deletes any messages that are older than a week in the database, to save on space.
@@ -114,10 +119,26 @@ public class MsgUtil {
                                 if (data == null) {
                                     MsgUtil.sendDirectMessage(p.getPlayer(), msg.getMessage());
                                 } else {
-                                    plugin.getQuickChat().sendItemHologramChat(player, msg.getMessage(), data);
+                                    plugin.adventure().sender(player).sendMessage(
+                                            Component.text(msg.getMessage())
+                                                    .hoverEvent(HoverEvent.showItem(
+                                                            HoverEvent.ShowItem.of(
+                                                                    Key.key(data.getType().getKey().getNamespace(),data.getType().getKey().getKey()),
+                                                                    data.getAmount(),
+                                                                    BinaryTagHolder.of(ReflectFactory.convertBukkitItemStackToJson(data))))));
+
+                                    //plugin.getQuickChat().sendItemHologramChat(player, msg.getMessage(), data);
                                 }
                             } catch (InvalidConfigurationException e) {
                                 MsgUtil.sendDirectMessage(p.getPlayer(), msg.getMessage());
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchMethodException e) {
+                                e.printStackTrace();
+                            } catch (InstantiationException e) {
+                                e.printStackTrace();
                             }
                         }
                     }
@@ -151,36 +172,36 @@ public class MsgUtil {
         return Util.prettifyText(material.name());
     }
 
-    /**
-     * getMessage in messages.yml
-     *
-     * @param loc    location
-     * @param player The sender will send the message to
-     * @param args   args
-     * @return message
-     */
-    public static String getMessageOfflinePlayer(
-            @NotNull String loc, @Nullable OfflinePlayer player, @NotNull String... args) {
-        try {
-            String raw = messagei18n.getString(loc);
-            if (raw == null) {
-                Util.debugLog("Missing language key: " + loc);
-                return invaildMsg + ": " + loc;
-            }
-            String filled = fillArgs(raw, args);
-            if (player != null) {
-                if (plugin.getConfig().getBoolean("plugin.PlaceHolderAPI") && plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
-                    filled = PlaceholderAPI.setPlaceholders(player, filled);
-                    Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
-                }
-            }
-            return filled;
-        } catch (Exception th) {
-            plugin.getSentryErrorReporter().ignoreThrow();
-            plugin.getLogger().log(Level.WARNING, "Failed to process messages", th);
-            return "Cannot load language key: " + loc + " because something not right, check the console for details.";
-        }
-    }
+//    /**
+//     * getMessage in messages.yml
+//     *
+//     * @param loc    location
+//     * @param player The sender will send the message to
+//     * @param args   args
+//     * @return message
+//     */
+//    public static String getMessageOfflinePlayer(
+//            @NotNull String loc, @Nullable OfflinePlayer player, @NotNull String... args) {
+//        try {
+//            String raw = messagei18n.getString(loc);
+//            if (raw == null) {
+//                Util.debugLog("Missing language key: " + loc);
+//                return invaildMsg + ": " + loc;
+//            }
+//            String filled = fillArgs(raw, args);
+//            if (player != null) {
+//                if (plugin.getConfig().getBoolean("plugin.PlaceHolderAPI") && plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
+//                    filled = PlaceholderAPI.setPlaceholders(player, filled);
+//                    Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
+//                }
+//            }
+//            return filled;
+//        } catch (Exception th) {
+//            plugin.getSentryErrorReporter().ignoreThrow();
+//            plugin.getLogger().log(Level.WARNING, "Failed to process messages", th);
+//            return "Cannot load language key: " + loc + " because something not right, check the console for details.";
+//        }
+//    }
 
     /**
      * Replace args in raw to args
@@ -216,122 +237,122 @@ public class MsgUtil {
         /* Check & Load & Create default messages.yml */
         // Use try block to hook any possible exception, make sure not effect our cfgMessnages code.
         //en-US
-        String languageCode = plugin.getConfig().getString("language", "en-US").replace("_", "-");
-
-        // Init message file instance
-        JsonConfiguration messageFile;
-        File extractedMessageFile = new File(plugin.getDataFolder(), "messages.json");
-        String buildInMessageFilePath = "lang/" + languageCode + "/messages.json";
-        if (plugin.getResource(buildInMessageFilePath) == null) {
-            //Use default
-            buildInMessageFilePath = "lang-original/messages.json";
-        }
-        if (!extractedMessageFile.exists()) {
-            try {
-                Files.copy(Objects.requireNonNull(plugin.getResource(buildInMessageFilePath)), extractedMessageFile.toPath());
-            } catch (IOException ioException) {
-                plugin.getLogger().log(Level.WARNING, "Cannot extract the messages.json file", ioException);
-            }
-        }
-        messageFile = HumanReadableJsonConfiguration.loadConfiguration(extractedMessageFile);
-        //Handle old message file and load it up
-        File oldMsgFile = new File(plugin.getDataFolder(), "messages.yml");
-        if (oldMsgFile.exists()) {
-            // Old messages file convert.
-            plugin.getLogger().info("Converting the old format message.yml to message.json...");
-            plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
-            YamlConfiguration oldMsgI18n = YamlConfiguration.loadConfiguration(oldMsgFile);
-            oldMsgI18n.getKeys(true).forEach(key -> messageFile.set(key, oldMsgI18n.get(key)));
-            try {
-                messageFile.save(extractedMessageFile);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-            try {
-                Files.move(oldMsgFile.toPath(), new File(plugin.getDataFolder(), "messages.yml.bak").toPath());
-            } catch (IOException ignore) {
-            }
-            if (oldMsgFile.exists()) {
-                oldMsgFile.delete();
-            }
-            plugin.getLogger().info("Successfully converted, Continue loading...");
-        } else {
-            //Load the new files If not exists
-            Util.debugLog("Loading language file from exist file...");
-            if (!extractedMessageFile.exists()) {
-                plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
-                messageFile.loadFromString(Util.readToString(new File(plugin.getDataFolder(), "messages.json").getAbsolutePath()));
-                messageFile.set("language-name", languageCode);
-            }
-        }
-
-        //Init global instance
-        File buildInLangFile = new File(Util.getCacheFolder(), "bulitin-messages.json");
-        messagei18n = messageFile;
-        try {
-            if (buildInLangFile.exists()) {
-                buildInLangFile.delete();
-            }
-            Files.copy(Objects.requireNonNull(plugin.getResource(buildInMessageFilePath)), buildInLangFile.toPath());
-        } catch (IOException ioException) {
-            Util.debugLog("Cannot load default built-in language file: " + ioException.getMessage());
-        }
-        builtInLang = HumanReadableJsonConfiguration.loadConfiguration(buildInLangFile);
-        try (InputStreamReader inputStreamReader = new InputStreamReader(Objects.requireNonNull(plugin.getResource("lang-original/messages.json")))) {
-            builtInOriginalLang = HumanReadableJsonConfiguration.loadConfiguration(inputStreamReader);
-        } catch (IOException | NullPointerException exception) {
-            plugin.getLogger().log(Level.WARNING, "Cannot to load built-in original messages, some phrases may missing when upgrading", exception);
-        }
-        //Check the i18n language name and backup
-        if (StringUtils.isEmpty(messagei18n.getString("language-name"))) {
-            setAndUpdate("language-name");
-        }
-        String messageCodeInFile = messagei18n.getString("language-name");
-        if (!Objects.equals(messageCodeInFile, languageCode)) {
-            String backupFileName = "messages-bak-" + UUID.randomUUID() + ".json";
-            Util.debugLog("Language name " + messageCodeInFile + " not matched with " + languageCode + ", replacing with build-in files and renaming current file to " + backupFileName);
-            plugin.getLogger().warning("Language name " + messageCodeInFile + " not matched with " + languageCode + ", replacing with build-in files and renaming current file to " + backupFileName);
-            File pending = new File(plugin.getDataFolder(), "messages.json");
-            try {
-                Files.move(pending.toPath(), new File(plugin.getDataFolder(), backupFileName).toPath());
-                plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
-                messagei18n.loadFromString(Util.readToString(new File(plugin.getDataFolder(), "messages.json").getAbsolutePath()));
-                messagei18n.set("language-name", languageCode);
-            } catch (IOException e) {
-                plugin.getLogger().log(Level.SEVERE, "Failed to backup and save language file", e);
-            }
-        }
-        /* Set default language vesion and update messages.yml */
-        int ver = 0;
-        String strVer = messagei18n.getString("language-version");
-
-        if (StringUtils.isNumeric(strVer) && !StringUtils.isEmpty(strVer)) {
-            ver = Integer.parseInt(strVer);
-        }
-
-        if (ver == 0) {
-            messagei18n.set("language-version", 1);
-        } else {
-            messagei18n.set("language-version", ver);
-        }
-
-        updateMessages(messagei18n.getInt("language-version"));
-
-        //Update colors
-        Util.parseColours(messagei18n);
-        /* Print to console this language file's author, contributors, and region*/
-        if (!inited) {
-            plugin.getLogger().info(getMessage("translation-author", null));
-            plugin.getLogger().info(getMessage("translation-contributors", null));
-            plugin.getLogger().info(getMessage("translation-country", null));
-            inited = true;
-        }
-        /* Save the upgraded messages.yml */
-        try {
-            messagei18n.save(extractedMessageFile);
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        }
+//        String languageCode = plugin.getConfig().getString("language", "en-US").replace("_", "-");
+//
+//        // Init message file instance
+//        JsonConfiguration messageFile;
+//        File extractedMessageFile = new File(plugin.getDataFolder(), "messages.json");
+//        String buildInMessageFilePath = "lang/" + languageCode + "/messages.json";
+//        if (plugin.getResource(buildInMessageFilePath) == null) {
+//            //Use default
+//            buildInMessageFilePath = "lang-original/messages.json";
+//        }
+//        if (!extractedMessageFile.exists()) {
+//            try {
+//                Files.copy(Objects.requireNonNull(plugin.getResource(buildInMessageFilePath)), extractedMessageFile.toPath());
+//            } catch (IOException ioException) {
+//                plugin.getLogger().log(Level.WARNING, "Cannot extract the messages.json file", ioException);
+//            }
+//        }
+//        messageFile = HumanReadableJsonConfiguration.loadConfiguration(extractedMessageFile);
+//        //Handle old message file and load it up
+//        File oldMsgFile = new File(plugin.getDataFolder(), "messages.yml");
+//        if (oldMsgFile.exists()) {
+//            // Old messages file convert.
+//            plugin.getLogger().info("Converting the old format message.yml to message.json...");
+//            plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
+//            YamlConfiguration oldMsgI18n = YamlConfiguration.loadConfiguration(oldMsgFile);
+//            oldMsgI18n.getKeys(true).forEach(key -> messageFile.set(key, oldMsgI18n.get(key)));
+//            try {
+//                messageFile.save(extractedMessageFile);
+//            } catch (IOException ioException) {
+//                ioException.printStackTrace();
+//            }
+//            try {
+//                Files.move(oldMsgFile.toPath(), new File(plugin.getDataFolder(), "messages.yml.bak").toPath());
+//            } catch (IOException ignore) {
+//            }
+//            if (oldMsgFile.exists()) {
+//                oldMsgFile.delete();
+//            }
+//            plugin.getLogger().info("Successfully converted, Continue loading...");
+//        } else {
+//            //Load the new files If not exists
+//            Util.debugLog("Loading language file from exist file...");
+//            if (!extractedMessageFile.exists()) {
+//                plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
+//                messageFile.loadFromString(Util.readToString(new File(plugin.getDataFolder(), "messages.json").getAbsolutePath()));
+//                messageFile.set("language-name", languageCode);
+//            }
+//        }
+//
+//        //Init global instance
+//        File buildInLangFile = new File(Util.getCacheFolder(), "bulitin-messages.json");
+//        messagei18n = messageFile;
+//        try {
+//            if (buildInLangFile.exists()) {
+//                buildInLangFile.delete();
+//            }
+//            Files.copy(Objects.requireNonNull(plugin.getResource(buildInMessageFilePath)), buildInLangFile.toPath());
+//        } catch (IOException ioException) {
+//            Util.debugLog("Cannot load default built-in language file: " + ioException.getMessage());
+//        }
+//        builtInLang = HumanReadableJsonConfiguration.loadConfiguration(buildInLangFile);
+//        try (InputStreamReader inputStreamReader = new InputStreamReader(Objects.requireNonNull(plugin.getResource("lang-original/messages.json")))) {
+//            builtInOriginalLang = HumanReadableJsonConfiguration.loadConfiguration(inputStreamReader);
+//        } catch (IOException | NullPointerException exception) {
+//            plugin.getLogger().log(Level.WARNING, "Cannot to load built-in original messages, some phrases may missing when upgrading", exception);
+//        }
+//        //Check the i18n language name and backup
+//        if (StringUtils.isEmpty(messagei18n.getString("language-name"))) {
+//            setAndUpdate("language-name");
+//        }
+//        String messageCodeInFile = messagei18n.getString("language-name");
+//        if (!Objects.equals(messageCodeInFile, languageCode)) {
+//            String backupFileName = "messages-bak-" + UUID.randomUUID() + ".json";
+//            Util.debugLog("Language name " + messageCodeInFile + " not matched with " + languageCode + ", replacing with build-in files and renaming current file to " + backupFileName);
+//            plugin.getLogger().warning("Language name " + messageCodeInFile + " not matched with " + languageCode + ", replacing with build-in files and renaming current file to " + backupFileName);
+//            File pending = new File(plugin.getDataFolder(), "messages.json");
+//            try {
+//                Files.move(pending.toPath(), new File(plugin.getDataFolder(), backupFileName).toPath());
+//                plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
+//                messagei18n.loadFromString(Util.readToString(new File(plugin.getDataFolder(), "messages.json").getAbsolutePath()));
+//                messagei18n.set("language-name", languageCode);
+//            } catch (IOException e) {
+//                plugin.getLogger().log(Level.SEVERE, "Failed to backup and save language file", e);
+//            }
+//        }
+//        /* Set default language vesion and update messages.yml */
+//        int ver = 0;
+//        String strVer = messagei18n.getString("language-version");
+//
+//        if (StringUtils.isNumeric(strVer) && !StringUtils.isEmpty(strVer)) {
+//            ver = Integer.parseInt(strVer);
+//        }
+//
+//        if (ver == 0) {
+//            messagei18n.set("language-version", 1);
+//        } else {
+//            messagei18n.set("language-version", ver);
+//        }
+//
+//        updateMessages(messagei18n.getInt("language-version"));
+//
+//        //Update colors
+//        Util.parseColours(messagei18n);
+//        /* Print to console this language file's author, contributors, and region*/
+//        if (!inited) {
+//            plugin.getLogger().info(getMessage("translation-author", null));
+//            plugin.getLogger().info(getMessage("translation-contributors", null));
+//            plugin.getLogger().info(getMessage("translation-country", null));
+//            inited = true;
+//        }
+//        /* Save the upgraded messages.yml */
+//        try {
+//            messagei18n.save(extractedMessageFile);
+//        } catch (IOException ioException) {
+//            ioException.printStackTrace();
+//        }
     }
 
     public static void loadEnchi18n() {
@@ -493,7 +514,15 @@ public class MsgUtil {
             if (p.getPlayer() != null) {
                 if (transactionMessage.getHoverItem() != null) {
                     try {
-                        plugin.getQuickChat().sendItemHologramChat(p.getPlayer(), transactionMessage.getMessage(), Objects.requireNonNull(Util.deserialize(transactionMessage.getHoverItem())));
+                        ItemStack data = Util.deserialize(transactionMessage.getHoverItem());
+                        plugin.adventure().sender(p.getPlayer()).sendMessage(
+                                Component.text(transactionMessage.getMessage())
+                                        .hoverEvent(HoverEvent.showItem(
+                                                HoverEvent.ShowItem.of(
+                                                        Key.key(data.getType().getKey().getNamespace(),data.getType().getKey().getKey()),
+                                                        data.getAmount(),
+                                                        BinaryTagHolder.of(ReflectFactory.convertBukkitItemStackToJson(data))))));
+                       // plugin.getQuickChat().sendItemHologramChat(p.getPlayer(), transactionMessage.getMessage(), Objects.requireNonNull(Util.deserialize(transactionMessage.getHoverItem())));
                     } catch (Exception any) {
                         Util.debugLog("Unknown error, send by plain text.");
                         // Normal msg
@@ -528,7 +557,25 @@ public class MsgUtil {
             if (p.getPlayer() != null) {
                 if (transactionMessage.getHoverItem() != null) {
                     try {
-                        plugin.getQuickChat().sendItemHologramChat(p.getPlayer(), transactionMessage.getMessage(), Objects.requireNonNull(Util.deserialize(transactionMessage.getHoverItem())));
+                        try {
+                            ItemStack data = Util.deserialize(transactionMessage.getHoverItem());
+                            plugin.adventure().sender(p.getPlayer()).sendMessage(
+                                    Component.text(transactionMessage.getMessage())
+                                            .hoverEvent(HoverEvent.showItem(
+                                                    HoverEvent.ShowItem.of(
+                                                            Key.key(data.getType().getKey().getNamespace(),data.getType().getKey().getKey()),
+                                                            data.getAmount(),
+                                                            BinaryTagHolder.of(ReflectFactory.convertBukkitItemStackToJson(data))))));
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        } catch (NoSuchMethodException e) {
+                            e.printStackTrace();
+                        } catch (InstantiationException e) {
+                            e.printStackTrace();
+                        }
+                       // plugin.getQuickChat().sendItemHologramChat(p.getPlayer(), transactionMessage.getMessage(), Objects.requireNonNull(Util.deserialize(transactionMessage.getHoverItem())));
                     } catch (Exception any) {
                         Util.debugLog("Unknown error, send by plain text.");
                         // Normal msg
@@ -563,21 +610,20 @@ public class MsgUtil {
         plugin.getShopManager().bakeShopRuntimeRandomUniqueIdCache(shop);
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(MsgUtil.getMessage("controlpanel.infomation", sender));
+        chatSheetPrinter.printLine(plugin.text().of(sender,"controlpanel.infomation").forLocale());
         // Owner
         if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.setowner")) {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", sender, shop.ownerName()));
+            chatSheetPrinter.printLine(plugin.text().of(sender,"menu.owner", shop.ownerName()).forLocale());
         } else {
             chatSheetPrinter.printSuggestedCmdLine(
-                    MsgUtil.getMessage(
+                    plugin.text().of(sender,
                             "controlpanel.setowner",
-                            sender,
                             shop.ownerName()
                                     + ((plugin.getConfig().getBoolean("shop.show-owner-uuid-in-controlpanel-if-op")
                                     && shop.isUnlimited())
                                     ? (" (" + shop.getOwner() + ")")
-                                    : "")),
-                    MsgUtil.getMessage("controlpanel.setowner-hover", sender),
+                                    : "")).forLocale(),
+                    plugin.text().of(sender,"controlpanel.setowner-hover").forLocale(),
                     "/qs setowner ");
         }
 
@@ -585,8 +631,8 @@ public class MsgUtil {
         // Unlimited
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.unlimited")) {
             String text =
-                    MsgUtil.getMessage("controlpanel.unlimited", sender, bool2String(shop.isUnlimited()));
-            String hoverText = MsgUtil.getMessage("controlpanel.unlimited-hover", sender);
+                    plugin.text().of(sender,"controlpanel.unlimited",bool2String(shop.isUnlimited())).forLocale();
+            String hoverText = plugin.text().of(sender,"controlpanel.unlimited-hover").forLocale();
             String clickCommand =
                     MsgUtil.fillArgs(
                             "/qs silentunlimited {0}",
@@ -597,16 +643,16 @@ public class MsgUtil {
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.buy")
                 && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.sell")) {
             if (shop.isSelling()) {
-                String text = MsgUtil.getMessage("controlpanel.mode-selling", sender);
-                String hoverText = MsgUtil.getMessage("controlpanel.mode-selling-hover", sender);
+                String text = plugin.text().of(sender,"controlpanel.mode-selling").forLocale();
+                String hoverText = plugin.text().of(sender,"controlpanel.mode-selling-hover").forLocale();
                 String clickCommand =
                         MsgUtil.fillArgs(
                                 "/qs silentbuy {0}",
                                 shop.getRuntimeRandomUniqueId().toString());
                 chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
             } else if (shop.isBuying()) {
-                String text = MsgUtil.getMessage("controlpanel.mode-buying", sender);
-                String hoverText = MsgUtil.getMessage("controlpanel.mode-buying-hover", sender);
+                String text = plugin.text().of(sender,"controlpanel.mode-buying").forLocale();
+                String hoverText = plugin.text().of(sender,"controlpanel.mode-buying-hover").forLocale();
                 String clickCommand =
                         MsgUtil.fillArgs(
                                 "/qs silentsell {0}",
@@ -619,19 +665,19 @@ public class MsgUtil {
                 || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
             String text =
                     MsgUtil.fillArgs(
-                            MsgUtil.getMessage("controlpanel.price", sender),
+                            plugin.text().of(sender,"controlpanel.price").forLocale(),
                             (plugin.getConfig().getBoolean("use-decimal-format"))
                                     ? decimalFormat(shop.getPrice())
                                     : Double.toString(shop.getPrice()));
-            String hoverText = MsgUtil.getMessage("controlpanel.price-hover", sender);
+            String hoverText = plugin.text().of(sender,"controlpanel.price-hover").forLocale();
             String clickCommand = "/qs price ";
             chatSheetPrinter.printSuggestedCmdLine(text, hoverText, clickCommand);
         }
         //Set amount per bulk
         if (QuickShop.getInstance().isAllowStack()) {
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.amount") || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId()) && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeamount")) {
-                String text = MsgUtil.getMessage("controlpanel.stack", sender, Integer.toString(shop.getItem().getAmount()));
-                String hoverText = MsgUtil.getMessage("controlpanel.stack-hover", sender);
+                String text = plugin.text().of(sender,"controlpanel.stack", Integer.toString(shop.getItem().getAmount())).forLocale();
+                String hoverText = plugin.text().of(sender,"controlpanel.stack-hover").forLocale();
                 String clickCommand = "/qs size ";
                 chatSheetPrinter.printSuggestedCmdLine(text, hoverText, clickCommand);
 
@@ -641,15 +687,15 @@ public class MsgUtil {
             // Refill
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.refill")) {
                 String text =
-                        MsgUtil.getMessage("controlpanel.refill", sender, String.valueOf(shop.getPrice()));
-                String hoverText = MsgUtil.getMessage("controlpanel.refill-hover", sender);
+                        plugin.text().of(sender,"controlpanel.refill", String.valueOf(shop.getPrice())).forLocale();
+                String hoverText = plugin.text().of(sender,"controlpanel.refill-hover").forLocale();
                 String clickCommand = "/qs refill ";
                 chatSheetPrinter.printSuggestedCmdLine(text, hoverText, clickCommand);
             }
             // Empty
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.empty")) {
-                String text = MsgUtil.getMessage("controlpanel.empty", sender, String.valueOf(shop.getPrice()));
-                String hoverText = MsgUtil.getMessage("controlpanel.empty-hover", sender);
+                String text = plugin.text().of(sender,"controlpanel.empty", String.valueOf(shop.getPrice())).forLocale();
+                String hoverText = plugin.text().of(sender,"controlpanel.empty-hover").forLocale();
                 String clickCommand = MsgUtil.fillArgs("/qs silentempty {0}", shop.getRuntimeRandomUniqueId().toString());
                 chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
             }
@@ -657,66 +703,66 @@ public class MsgUtil {
         // Remove
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy")
                 || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
-            String text = MsgUtil.getMessage("controlpanel.remove", sender, String.valueOf(shop.getPrice()));
-            String hoverText = MsgUtil.getMessage("controlpanel.remove-hover", sender);
+            String text = plugin.text().of(sender,"controlpanel.remove",String.valueOf(shop.getPrice())).forLocale();
+            String hoverText =plugin.text().of(sender,"controlpanel.remove-hover").forLocale();
             String clickCommand = MsgUtil.fillArgs("/qs silentremove {0}", shop.getRuntimeRandomUniqueId().toString());
             chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
         }
         chatSheetPrinter.printFooter();
     }
 
-    public static String getMessage(@NotNull String loc, @Nullable CommandSender player, @NotNull Object... args) {
-        String[] strings = new String[args.length];
-        for (int i = 0; i < strings.length; i++) {
-            strings[i] = Objects.toString(args[i]);
-        }
-        return getMessage(loc, player, strings);
-    }
+//    public static String getMessage(@NotNull String loc, @Nullable CommandSender player, @NotNull Object... args) {
+//        String[] strings = new String[args.length];
+//        for (int i = 0; i < strings.length; i++) {
+//            strings[i] = Objects.toString(args[i]);
+//        }
+//        return getMessage(loc, player, strings);
+//    }
+//
+//    public static String getMessage(@NotNull UUID uuid, @NotNull String loc, @NotNull String... args) {
+//        return getMessage(loc, Bukkit.getPlayer(uuid), args);
+//    }
 
-    public static String getMessage(@NotNull UUID uuid, @NotNull String loc, @NotNull String... args) {
-        return getMessage(loc, Bukkit.getPlayer(uuid), args);
-    }
-
-    /**
-     * getMessage in messages.yml
-     *
-     * @param loc    location
-     * @param args   args
-     * @param player The sender will send the message to
-     * @return message
-     */
-
-    public static String getMessage(@NotNull String loc, @Nullable CommandSender player, @NotNull String... args) {
-        try {
-            final String raw = messagei18n.getString(loc);
-            if (raw == null) {
-                Util.debugLog("ERR: MsgUtil cannot find the the phrase at " + loc + ", printing the all readed datas: " + messagei18n);
-                // TODO: Remove me after we confirm all code about sendMessage has been correctly migrated.
-                return fillArgs(loc, args);
-            }
-            String filled = fillArgs(raw, args);
-            if (player instanceof OfflinePlayer) {
-                if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled() && plugin.getConfig().getBoolean("plugin.PlaceHolderAPI")) {
-                    try {
-                        filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
-                    } catch (Exception ignored) {
-                        if (((OfflinePlayer) player).getPlayer() != null) {
-                            try {
-                                filled = PlaceholderAPI.setPlaceholders(((OfflinePlayer) player).getPlayer(), filled);
-                            } catch (Exception ignore) {
-                            }
-                        }
-                    }
-                }
-            }
-            return filled;
-        } catch (Throwable th) {
-            th.printStackTrace();
-            plugin.getSentryErrorReporter().ignoreThrow();
-            plugin.getLogger().log(Level.WARNING, "Failed to load language key", th);
-            return "Cannot load language key: " + loc + " because something not right, check the console for details.";
-        }
-    }
+//    /**
+//     * getMessage in messages.yml
+//     *
+//     * @param loc    location
+//     * @param args   args
+//     * @param player The sender will send the message to
+//     * @return message
+//     */
+//
+//    public static String getMessage(@NotNull String loc, @Nullable CommandSender player, @NotNull String... args) {
+//        try {
+//            final String raw = messagei18n.getString(loc);
+//            if (raw == null) {
+//                Util.debugLog("ERR: MsgUtil cannot find the the phrase at " + loc + ", printing the all readed datas: " + messagei18n);
+//                // TODO: Remove me after we confirm all code about sendMessage has been correctly migrated.
+//                return fillArgs(loc, args);
+//            }
+//            String filled = fillArgs(raw, args);
+//            if (player instanceof OfflinePlayer) {
+//                if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled() && plugin.getConfig().getBoolean("plugin.PlaceHolderAPI")) {
+//                    try {
+//                        filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
+//                    } catch (Exception ignored) {
+//                        if (((OfflinePlayer) player).getPlayer() != null) {
+//                            try {
+//                                filled = PlaceholderAPI.setPlaceholders(((OfflinePlayer) player).getPlayer(), filled);
+//                            } catch (Exception ignore) {
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//            return filled;
+//        } catch (Throwable th) {
+//            th.printStackTrace();
+//            plugin.getSentryErrorReporter().ignoreThrow();
+//            plugin.getLogger().log(Level.WARNING, "Failed to load language key", th);
+//            return "Cannot load language key: " + loc + " because something not right, check the console for details.";
+//        }
+//    }
 
     /**
      * Translate boolean value to String, the symbon is changeable by language file.
@@ -726,9 +772,9 @@ public class MsgUtil {
      */
     public static String bool2String(boolean bool) {
         if (bool) {
-            return MsgUtil.getMessage("booleanformat.success", null);
+            return QuickShop.getInstance().text().of("booleanformat.success").forLocale();
         } else {
-            return MsgUtil.getMessage("booleanformat.failed", null);
+            return QuickShop.getInstance().text().of("booleanformat.failed").forLocale();
         }
     }
 
@@ -791,8 +837,8 @@ public class MsgUtil {
         }
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successful-purchase", sender));
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.item-name-and-price", sender, Integer.toString(amount * shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()), Util.format(amount * shop.getPrice(), shop)));
+        chatSheetPrinter.printLine(plugin.text().of(sender,"menu.successful-purchase").forLocale());
+        chatSheetPrinter.printLine(plugin.text().of(sender,"menu.item-name-and-price", Integer.toString(amount * shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()), Util.format(amount * shop.getPrice(), shop)).forLocale());
         printEnchantment(sender, shop, chatSheetPrinter);
         chatSheetPrinter.printFooter();
     }
@@ -829,23 +875,22 @@ public class MsgUtil {
         }
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successfully-sold", sender));
+        chatSheetPrinter.printLine(plugin.text().of(sender,"menu.successfully-sold").forLocale());
         chatSheetPrinter.printLine(
-                MsgUtil.getMessage(
+                plugin.text().of(sender,
                         "menu.item-name-and-price",
-                        sender,
                         Integer.toString(amount),
                         Util.getItemStackName(shop.getItem()),
-                        Util.format(amount * shop.getPrice(), shop)));
+                        Util.format(amount * shop.getPrice(), shop)).forLocale());
         if (plugin.getConfig().getBoolean("show-tax")) {
             double tax = plugin.getConfig().getDouble("tax");
             double total = amount * shop.getPrice();
             if (tax != 0) {
                 if (!seller.equals(shop.getOwner())) {
                     chatSheetPrinter.printLine(
-                            MsgUtil.getMessage("menu.sell-tax", sender, Util.format(tax * total, shop)));
+                            plugin.text().of(sender,"menu.sell-tax", Util.format(tax * total, shop)).forLocale());
                 } else {
-                    chatSheetPrinter.printLine(MsgUtil.getMessage("menu.sell-tax-self", sender));
+                    chatSheetPrinter.printLine( plugin.text().of(sender,"menu.sell-tax-self").forLocale());
                 }
             }
         }
@@ -862,7 +907,7 @@ public class MsgUtil {
             enchs = shop.getItem().getItemMeta().getEnchants();
         }
         if (!enchs.isEmpty()) {
-            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants", p));
+            chatSheetPrinter.printCenterLine( plugin.text().of(p,"menu.enchants").forLocale());
             printEnchantment(chatSheetPrinter, enchs);
         }
         if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta) {
@@ -870,7 +915,7 @@ public class MsgUtil {
             stor.getStoredEnchants();
             enchs = stor.getStoredEnchants();
             if (!enchs.isEmpty()) {
-                chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.stored-enchants", p));
+                chatSheetPrinter.printCenterLine(plugin.text().of(p,"menu.stored-enchants").forLocale());
                 printEnchantment(chatSheetPrinter, enchs);
             }
         }
@@ -895,47 +940,67 @@ public class MsgUtil {
         ItemStack items = shop.getItem();
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
         chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.shop-information", p));
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", p, shop.ownerName()));
+        chatSheetPrinter.printLine(plugin.text().of(p,"menu.shop-information").forLocale());
+        chatSheetPrinter.printLine(plugin.text().of(p,"menu.owner", shop.ownerName()).forLocale());
         // Enabled
-        plugin.getQuickChat().send(p, plugin.getQuickChat().getItemHologramChat(shop, items, p, ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin", p) + MsgUtil.getMessage("menu.item", p, Util.getItemStackName(items)) + "  "));
+
+        try {
+            plugin.adventure().sender(p).sendMessage(
+                    Component.text(ChatColor.DARK_PURPLE + plugin.text().of(p,"tableformat.left_begin").forLocale() +  plugin.text().of(p,"menu.item", Util.getItemStackName(items)) + "  ")
+                            .hoverEvent(HoverEvent.showItem(
+                                    HoverEvent.ShowItem.of(
+                                            Key.key(items.getType().getKey().getNamespace(),items.getType().getKey().getKey()),
+                                            items.getAmount(),
+                                            BinaryTagHolder.of(ReflectFactory.convertBukkitItemStackToJson(items))))));
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+        //plugin.getQuickChat().sendItemHologramChat(player, msg.getMessage(), data);
+
+        //plugin.getQuickChat().send(p, plugin.getQuickChat().getItemHologramChat(shop, items, p);
         if (Util.isTool(items.getType())) {
             chatSheetPrinter.printLine(
-                    MsgUtil.getMessage("menu.damage-percent-remaining", p, Util.getToolPercentage(items)));
+                    plugin.text().of(p,"menu.damage-percent-remaining", Util.getToolPercentage(items)).forLocale());
         }
         if (shop.isSelling()) {
             if (shop.getRemainingStock() == -1) {
                 chatSheetPrinter.printLine(
-                        MsgUtil.getMessage("menu.stock", p, MsgUtil.getMessage("signs.unlimited", p)));
+                        plugin.text().of(p,"menu.stock",plugin.text().of(p,"signs.unlimited").forLocale()).forLocale());
             } else {
                 chatSheetPrinter.printLine(
-                        MsgUtil.getMessage("menu.stock", p, Integer.toString(shop.getRemainingStock())));
+                        plugin.text().of(p,"menu.stock", Integer.toString(shop.getRemainingStock())).forLocale());
             }
         } else {
             if (shop.getRemainingSpace() == -1) {
                 chatSheetPrinter.printLine(
-                        MsgUtil.getMessage("menu.space", p, MsgUtil.getMessage("signs.unlimited", p)));
+                        plugin.text().of(p,"menu.space",plugin.text().of(p,"signs.unlimited").forLocale()).forLocale());
             } else {
                 chatSheetPrinter.printLine(
-                        MsgUtil.getMessage("menu.space", p, Integer.toString(shop.getRemainingSpace())));
+                        plugin.text().of(p,"menu.space",  Integer.toString(shop.getRemainingSpace())).forLocale());
             }
         }
         if (shop.getItem().getAmount() == 1) {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.price-per", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice(), shop)));
+            chatSheetPrinter.printLine(plugin.text().of(p,"menu.price-per",  Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice(), shop)).forLocale());
         } else {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.price-per-stack", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice(), shop), Integer.toString(shop.getItem().getAmount())));
+            chatSheetPrinter.printLine(plugin.text().of(p,"menu.price-per-stack",  Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice(), shop), Integer.toString(shop.getItem().getAmount())).forLocale());
         }
         if (shop.isBuying()) {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-buying", p));
+            chatSheetPrinter.printLine(plugin.text().of(p,"menu.this-shop-is-buying").forLocale());
         } else {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-selling", p));
+            chatSheetPrinter.printLine(plugin.text().of(p,"menu.this-shop-is-selling").forLocale());
         }
         printEnchantment(p, shop, chatSheetPrinter);
         if (items.getItemMeta() instanceof PotionMeta) {
             PotionMeta potionMeta = (PotionMeta) items.getItemMeta();
             PotionEffectType potionEffectType = potionMeta.getBasePotionData().getType().getEffectType();
             if (potionEffectType != null) {
-                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.effects", p));
+                chatSheetPrinter.printLine(plugin.text().of(p,"menu.effects").forLocale());
                 chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getPotioni18n(potionEffectType));
             }
             for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
@@ -963,9 +1028,9 @@ public class MsgUtil {
         return Util.prettifyText(potionString);
     }
 
-    public static JsonConfiguration getI18nFile() {
-        return messagei18n;
-    }
+  //  public static JsonConfiguration getI18nFile() {
+  //      return messagei18n;
+    // }
 
     public static void debugStackTrace(StackTraceElement[] traces) {
         if (Util.isDisableDebugLogger()) {
@@ -979,513 +1044,513 @@ public class MsgUtil {
             Util.debugLog("[TRACE]  [" + className + "] [" + methodName + "] (" + fileName + ":" + codeLine + ") ");
         }
     }
-
-    @SneakyThrows
-    private static void updateMessages(int selectedVersion) {
-        if (selectedVersion == 0) {
-            selectedVersion = 1;
-        }
-        if (selectedVersion == 1) {
-            setAndUpdate("shop-not-exist");
-            setAndUpdate("controlpanel.infomation");
-            setAndUpdate("controlpanel.setowner");
-            setAndUpdate("controlpanel.setowner-hover");
-            setAndUpdate("controlpanel.unlimited");
-            setAndUpdate("controlpanel.unlimited-hover");
-            setAndUpdate("controlpanel.mode-selling");
-            setAndUpdate("controlpanel.mode-selling-hover");
-            setAndUpdate("controlpanel.mode-buying");
-            setAndUpdate("controlpanel.mode-buying-hover");
-            setAndUpdate("controlpanel.price");
-            setAndUpdate("controlpanel.price-hover");
-            setAndUpdate("controlpanel.refill");
-            setAndUpdate("controlpanel.refill-hover");
-            setAndUpdate("controlpanel.empty");
-            setAndUpdate("controlpanel.empty-hover");
-            setAndUpdate("controlpanel.remove");
-            setAndUpdate("controlpanel.remove-hover");
-            setAndUpdate("language-version", 2);
-            selectedVersion = 2;
-        }
-        if (selectedVersion == 2) {
-            setAndUpdate("command.no-target-given");
-            setAndUpdate("command.description.debug");
-            setAndUpdate("no-permission-remove-shop");
-            setAndUpdate("language-version", 3);
-            selectedVersion = 3;
-        }
-        if (selectedVersion == 3) {
-            setAndUpdate("signs.unlimited");
-            setAndUpdate("controlpanel.sign.owner.line1");
-            setAndUpdate("controlpanel.sign.owner.line2");
-            setAndUpdate("controlpanel.sign.owner.line3");
-            setAndUpdate("controlpanel.sign.owner.line4");
-            setAndUpdate("controlpanel.sign.price.line1");
-            setAndUpdate("controlpanel.sign.price.line2");
-            setAndUpdate("controlpanel.sign.price.line3");
-            setAndUpdate("controlpanel.sign.price.line4");
-            setAndUpdate("controlpanel.sign.refill.line1");
-            setAndUpdate("controlpanel.sign.refill.line2");
-            setAndUpdate("controlpanel.sign.refill.line3");
-            setAndUpdate("controlpanel.sign.refill.line4");
-            setAndUpdate("language-version", 4);
-            selectedVersion = 4;
-        }
-        if (selectedVersion == 4) {
-            setAndUpdate("signs.unlimited");
-            setAndUpdate("controlpanel.sign", null);
-            setAndUpdate("language-version", 5);
-            selectedVersion = 5;
-        }
-        if (selectedVersion == 5) {
-            setAndUpdate("command.description.fetchmessage");
-            setAndUpdate("nothing-to-flush");
-            setAndUpdate("language-version", 6);
-            selectedVersion = 6;
-        }
-        if (selectedVersion == 6) {
-            setAndUpdate("command.description.info");
-            setAndUpdate("command.description.debug");
-            setAndUpdate("break-shop-use-supertool");
-            setAndUpdate("no-creative-break");
-            setAndUpdate("command.now-debuging");
-            setAndUpdate("command.now-nolonger-debuging");
-            setAndUpdate("language-version", 7);
-            selectedVersion = 7;
-        }
-        if (selectedVersion == 7) {
-            setAndUpdate("failed-to-put-sign");
-            setAndUpdate("language-version", 8);
-            selectedVersion = 8;
-        }
-        if (selectedVersion == 8) {
-            setAndUpdate("failed-to-paste");
-            setAndUpdate("warn-to-paste");
-            setAndUpdate("command.description.paste");
-            setAndUpdate("language-version", 9);
-            selectedVersion = 9;
-        }
-        if (selectedVersion == 9) {
-            setAndUpdate("controlpanel.commands.setowner");
-            setAndUpdate("controlpanel.commands.unlimited");
-            setAndUpdate("controlpanel.commands.buy");
-            setAndUpdate("controlpanel.commands.sell");
-            setAndUpdate("controlpanel.commands.price");
-            setAndUpdate("controlpanel.commands.refill");
-            setAndUpdate("controlpanel.commands.empty");
-            setAndUpdate("controlpanel.commands.remove");
-            setAndUpdate("tableformat.full_line");
-            setAndUpdate("tableformat.left_half_line");
-            setAndUpdate("tableformat.right_half_line");
-            setAndUpdate("tableformat.left_begin");
-            setAndUpdate("booleanformat.success");
-            setAndUpdate("booleanformat.failed");
-            setAndUpdate("language-version", 10);
-            selectedVersion = 10;
-        }
-        if (selectedVersion == 10) {
-            setAndUpdate("price-too-high");
-            setAndUpdate("language-version", 11);
-            selectedVersion = 11;
-        }
-        if (selectedVersion == 11) {
-            setAndUpdate("unknown-player");
-            setAndUpdate("shop-staff-cleared");
-            setAndUpdate("shop-staff-added");
-            setAndUpdate("shop-staff-deleted");
-            setAndUpdate("command.wrong-args");
-            setAndUpdate("command.description.staff");
-            setAndUpdate("unknown-player");
-            setAndUpdate("language-version", 12);
-            selectedVersion = 12;
-        }
-        if (selectedVersion == 12) {
-            setAndUpdate("menu.commands.preview");
-            setAndUpdate("shop-staff-cleared");
-            setAndUpdate("shop-staff-added");
-            setAndUpdate("shop-staff-deleted");
-            setAndUpdate("command.wrong-args");
-            setAndUpdate("command.description.staff");
-            setAndUpdate("unknown-player");
-            setAndUpdate("language-version", 13);
-            selectedVersion = 13;
-        }
-        if (selectedVersion == 13) {
-            setAndUpdate("no-permission-build");
-            setAndUpdate("success-change-owner-to-server");
-            setAndUpdate("updatenotify.buttontitle");
-            setAndUpdate("updatenotify.list");
-            setAndUpdate("language-version", 14);
-            selectedVersion = 14;
-        }
-        if (selectedVersion == 14) {
-            setAndUpdate("flush-finished");
-            setAndUpdate("language-version", 15);
-            selectedVersion = 15;
-        }
-        if (selectedVersion == 15) {
-            setAndUpdate("purchase-failed");
-            setAndUpdate("language-version", 16);
-            selectedVersion = 16;
-        }
-        if (selectedVersion == 16) {
-            setAndUpdate("command.description.owner");
-            setAndUpdate("command.description.remove");
-            setAndUpdate("command.description.amount");
-            setAndUpdate("command.description.about");
-            setAndUpdate("command.description.help");
-            setAndUpdate("no-pending-action");
-            setAndUpdate("language-version", 17);
-            selectedVersion = 17;
-        }
-        if (selectedVersion == 17) {
-            setAndUpdate("updatenotify.onekeybuttontitle");
-            setAndUpdate("language-version", 18);
-            selectedVersion = 18;
-        }
-        if (selectedVersion == 18) {
-            setAndUpdate("command.description.supercreate");
-            setAndUpdate("language-version", 19);
-            selectedVersion = 19;
-        }
-        if (selectedVersion == 19) {
-            setAndUpdate("permission-denied-3rd-party");
-            setAndUpdate("updatenotify.remote-disable-warning");
-            setAndUpdate("language-version", 20);
-            selectedVersion = 20;
-        }
-        if (selectedVersion == 20) {
-            setAndUpdate("how-many-buy");
-            setAndUpdate("how-many-sell");
-            setAndUpdate("updatenotify.label.unstable");
-            setAndUpdate("updatenotify.label.stable");
-            setAndUpdate("updatenotify.label.lts");
-            setAndUpdate("updatenotify.label.qualityverifyed");
-            setAndUpdate("updatenotify.label.github");
-            setAndUpdate("updatenotify.label.spigotmc");
-            setAndUpdate("updatenotify.label.bukkitdev");
-            setAndUpdate("language-version", 21);
-            selectedVersion = 21;
-        }
-        if (selectedVersion == 21) {
-            setAndUpdate("shop-removed-cause-ongoing-fee");
-            setAndUpdate("language-version", 22);
-            selectedVersion = 22;
-        }
-        if (selectedVersion == 22) {
-            setAndUpdate("not-a-number");
-            setAndUpdate("not-a-integer");
-            setAndUpdate("language-version", 23);
-            selectedVersion = 23;
-        }
-        if (selectedVersion == 23) {
-            setAndUpdate("command.toggle-unlimited.unlimited");
-            setAndUpdate("command.toggle-unlimited.limited");
-            setAndUpdate("language-version", 24);
-            selectedVersion = 24;
-        }
-        if (selectedVersion == 24) {
-            setAndUpdate("digits-reach-the-limit");
-            setAndUpdate("language-version", 25);
-            selectedVersion = 25;
-        }
-        if (selectedVersion == 25) {
-            setAndUpdate("complete");
-            setAndUpdate("language-version", 26);
-            selectedVersion = 26;
-        }
-        if (selectedVersion == 26) {
-            setAndUpdate("updatenotify.label.master");
-            setAndUpdate("language-version", 27);
-            selectedVersion = 27;
-        }
-        if (selectedVersion == 27) {
-            setAndUpdate("quickshop-gui-preview");
-            setAndUpdate("shops-recovering");
-            setAndUpdate("shops-backingup");
-            setAndUpdate("saved-to-path");
-            setAndUpdate("backup-failed");
-            setAndUpdate("translate-not-completed-yet-click");
-            setAndUpdate("translate-not-completed-yet-url");
-            setAndUpdate("language-info-panel.name");
-            setAndUpdate("language-info-panel.code");
-            setAndUpdate("language-info-panel.progress");
-            setAndUpdate("language-info-panel.help");
-            setAndUpdate("language-info-panel.translate-on-crowdin");
-            setAndUpdate("not-managed-shop");
-            setAndUpdate("language-version", 28);
-            selectedVersion = 28;
-        }
-        if (selectedVersion == 28) {
-            setAndUpdate("quickshop-gui-preview");
-            setAndUpdate("shops-recovering");
-            setAndUpdate("shops-backingup");
-            setAndUpdate("saved-to-path");
-            setAndUpdate("backup-failed");
-            setAndUpdate("translate-not-completed-yet-click");
-            setAndUpdate("translate-not-completed-yet-url");
-            setAndUpdate("language-info-panel.name");
-            setAndUpdate("language-info-panel.code");
-            setAndUpdate("language-info-panel.progress");
-            setAndUpdate("language-info-panel.help");
-            setAndUpdate("language-info-panel.translate-on-crowdin");
-            setAndUpdate("not-managed-shop");
-            setAndUpdate("language-version", 29);
-            selectedVersion = 29;
-        }
-        if (selectedVersion == 29) {
-            setAndUpdate("3rd-plugin-build-check-failed");
-            setAndUpdate("language-version", 30);
-            selectedVersion = 30;
-        }
-        if (selectedVersion == 30) {
-            setAndUpdate("no-creative-break");
-            setAndUpdate("trading-in-creative-mode-is-disabled");
-            setAndUpdate("supertool-is-disabled");
-            setAndUpdate("language-version", 31);
-            selectedVersion = 31;
-        }
-        if (selectedVersion == 31) {
-            setAndUpdate("menu.shop-stack");
-            setAndUpdate("command.description.language");
-            setAndUpdate("signs.stack-price");
-            setAndUpdate("controlpanel.commands.stack");
-            setAndUpdate("controlpanel.stack");
-            setAndUpdate("controlpanel.stack-hover");
-            setAndUpdate("shop-now-freezed");
-            setAndUpdate("shop-nolonger-freezed");
-            setAndUpdate("shop-freezed-at-location");
-            setAndUpdate("shop-cannot-trade-when-freezing");
-            setAndUpdate("denied-put-in-item");
-            setAndUpdate("how-many-buy-stack");
-            setAndUpdate("how-many-sell-stack");
-            setAndUpdate("lang.name");
-            setAndUpdate("lang.code");
-            setAndUpdate("lang.translate-progress");
-            setAndUpdate("lang.approval-progress");
-            setAndUpdate("lang.qa-issues");
-            setAndUpdate("lang.help-us");
-            setAndUpdate("language-version", 32);
-            selectedVersion = 32;
-        }
-        if (selectedVersion == 32) {
-            setAndUpdate("signs.stack-selling");
-            setAndUpdate("signs.stack-buying");
-            setAndUpdate("menu.price-per-stack");
-            setAndUpdate("menu.shop-stack");
-            setAndUpdate("language-version", 33);
-            selectedVersion = 33;
-        }
-        if (selectedVersion == 33) {
-            setAndUpdate("integrations-check-failed-create");
-            setAndUpdate("integrations-check-failed-trade");
-            setAndUpdate("language-version", 34);
-            selectedVersion = 34;
-        }
-        if (selectedVersion == 34) {
-            setAndUpdate("how-many-buy-stack");
-            setAndUpdate("how-many-sell-stack");
-            setAndUpdate("language-version", 35);
-            selectedVersion = 35;
-        }
-        if (selectedVersion == 35) {
-            setAndUpdate("menu.price-per-stack");
-            setAndUpdate("signs.stack-price");
-            setAndUpdate("controlpanel.stack");
-            setAndUpdate("controlpanel.stack-hover");
-            setAndUpdate("controlpanel.commands.stack");
-            setAndUpdate("controlpanel.item");
-            setAndUpdate("controlpanel.item-hover");
-            setAndUpdate("controlpanel.commands.item");
-            setAndUpdate("how-much-to-trade-for");
-            setAndUpdate("command.bulk-size-not-set");
-            setAndUpdate("command.bulk-size-now");
-            setAndUpdate("command.invalid-bulk-amount");
-            setAndUpdate("command.description.size");
-            setAndUpdate("command.no-trade-item");
-            setAndUpdate("command.trade-item-now");
-            setAndUpdate("command.description.item");
-            setAndUpdate("item-holochat-error");
-            setAndUpdate("shop-stack");
-            setAndUpdate("language-version", 36);
-            selectedVersion = 36;
-        }
-        if (selectedVersion == 36) {
-            setAndUpdate("menu.price-per-stack");
-            setAndUpdate("command.trade-item-now");
-            setAndUpdate("command.bulk-size-now");
-            setAndUpdate("how-much-to-trade-for");
-            setAndUpdate("language-version", 37);
-            selectedVersion = 37;
-        }
-        if (selectedVersion == 37) {
-            setAndUpdate("signs.stack-price");
-            setAndUpdate("command.some-shops-removed");
-            setAndUpdate("command.description.removeall");
-            setAndUpdate("command.no-owner-given");
-            setAndUpdate("language-version", 38);
-            selectedVersion = 38;
-        }
-        if (selectedVersion == 38) {
-            setAndUpdate("integrations-check-failed-create");
-            setAndUpdate("integrations-check-failed-trade");
-            setAndUpdate("3rd-plugin-build-check-failed");
-            setAndUpdate("language-version", 39);
-            selectedVersion = 39;
-        }
-        if (selectedVersion == 39) {
-            setAndUpdate("command.transfer-success");
-            setAndUpdate("command.transfer-success-other");
-            setAndUpdate("command.description.transfer");
-            setAndUpdate("language-version", 40);
-            selectedVersion = 40;
-        }
-        if (selectedVersion == 40) {
-            setAndUpdate("controlpanel.commands", null);
-            setAndUpdate("menu.commands", null);
-            setAndUpdate("language-version", 41);
-            selectedVersion = 41;
-        }
-
-        if (selectedVersion == 41) {
-            setAndUpdate("shops-removed-in-world");
-            setAndUpdate("command.description.removeworld");
-            setAndUpdate("command.no-world-given");
-            setAndUpdate("world-not-exists");
-            setAndUpdate("language-version", 42);
-            selectedVersion = 42;
-        }
-        if (selectedVersion == 42) {
-            setAndUpdate("player-bought-from-your-store-tax");
-            setAndUpdate("player-bought-from-your-store");
-            setAndUpdate("language-version", 43);
-            selectedVersion = 43;
-        }
-        if (selectedVersion == 43) {
-            setAndUpdate("nearby-shop-this-way", null);
-            setAndUpdate("nearby-shop-header");
-            setAndUpdate("nearby-shop-entry");
-            setAndUpdate("language-version", ++selectedVersion);
-        }
-        if (selectedVersion == 44) {
-            setAndUpdate("nearby-shop-this-way");
-            setAndUpdate("language-version", ++selectedVersion);
-        }
-        if (selectedVersion == 45) {
-            setAndUpdate("exceeded-maximum");
-            setAndUpdate("language-version", ++selectedVersion);
-        }
-        if (selectedVersion == 46) {
-            setAndUpdate("currency-not-exists");
-            setAndUpdate("currency-set");
-            setAndUpdate("currency-unset");
-            setAndUpdate("command.description.currency");
-            setAndUpdate("controlpanel.currency");
-            setAndUpdate("controlpanel.currency-hover");
-            setAndUpdate("currency-not-support");
-            setAndUpdate("language-version", ++selectedVersion);
-        }
-        if (selectedVersion == 47) {
-            setAndUpdate("forbidden-vanilla-behavior");
-            setAndUpdate("language-version", ++selectedVersion);
-        }
-        if (selectedVersion == 48) {
-            setAndUpdate("tabcomplete.currency");
-            setAndUpdate("tabcomplete.item");
-            setAndUpdate("item-not-exist");
-            setAndUpdate("language-version", ++selectedVersion);
-        }
-        if (selectedVersion == 49) {
-            setAndUpdate("backup-success");
-            setAndUpdate("console-only");
-            setAndUpdate("console-only-danger");
-            setAndUpdate("clean-warning");
-            setAndUpdate("command.disabled");
-            setAndUpdate("command.feature-not-enabled");
-            setAndUpdate("language-version", ++selectedVersion);
-        }
-        if (selectedVersion == 50) {
-            setAndUpdate("signs.header");
-            setAndUpdate("signs.status-available");
-            setAndUpdate("signs.status-unavailable");
-            setAndUpdate("language-version", ++selectedVersion);
-        }
-        if (selectedVersion == 51) {
-            setAndUpdate("signs.out-of-stock");
-            setAndUpdate("signs.out-of-space");
-            setAndUpdate("command.description.ban");
-            setAndUpdate("command.description.unban");
-            setAndUpdate("command.description.freeze");
-            setAndUpdate("command.description.lock");
-            setAndUpdate("controlpanel.lock");
-            setAndUpdate("controlpanel.lock-hover");
-            setAndUpdate("controlpanel.freeze");
-            setAndUpdate("controlpanel.freeze-hover");
-            setAndUpdate("language-version", ++selectedVersion);
-        }
-        if (selectedVersion == 52) {
-            setAndUpdate("shop-creation-failed");
-            setAndUpdate("language-version", ++selectedVersion);
-        }
-        if (selectedVersion == 53) {
-            setAndUpdate("language-version", ++selectedVersion);
-        }
-        if (selectedVersion == 54) {
-            setAndUpdate("shop-owner-self-trade");
-            setAndUpdate("language-version", ++selectedVersion);
-        }
-        if (selectedVersion == 55) {
-            setAndUpdate("chest-title");
-            setAndUpdate("language-version", ++selectedVersion);
-        }
-        if (selectedVersion == 56) {
-            setAndUpdate("command-type-mismatch");
-            setAndUpdate("unlimited-shop-owner-keeped");
-            setAndUpdate("unlimited-shop-owner-changed");
-            setAndUpdate("server-crash-warning");
-            setAndUpdate("language-version", ++selectedVersion);
-        }
-        if (selectedVersion == 57) {
-            setAndUpdate("not-a-integer");
-            setAndUpdate("language-version", ++selectedVersion);
-        }
-        if (selectedVersion == 58) {
-            setAndUpdate("command.format");
-            setAndUpdate("command.format-disabled");
-            setAndUpdate("language-version", ++selectedVersion);
-        }
-        if (selectedVersion == 59) {
-            setAndUpdate("command.reloading");
-            setAndUpdate("language-version", ++selectedVersion);
-        }
-        if (selectedVersion == 60) {
-            setAndUpdate("reloading-status");
-            setAndUpdate("language-version", ++selectedVersion);
-        }
-        setAndUpdate("_comment", "Please edit this file after format with json formatter");
-    }
+//
+//    @SneakyThrows
+//    private static void updateMessages(int selectedVersion) {
+//        if (selectedVersion == 0) {
+//            selectedVersion = 1;
+//        }
+//        if (selectedVersion == 1) {
+//            setAndUpdate("shop-not-exist");
+//            setAndUpdate("controlpanel.infomation");
+//            setAndUpdate("controlpanel.setowner");
+//            setAndUpdate("controlpanel.setowner-hover");
+//            setAndUpdate("controlpanel.unlimited");
+//            setAndUpdate("controlpanel.unlimited-hover");
+//            setAndUpdate("controlpanel.mode-selling");
+//            setAndUpdate("controlpanel.mode-selling-hover");
+//            setAndUpdate("controlpanel.mode-buying");
+//            setAndUpdate("controlpanel.mode-buying-hover");
+//            setAndUpdate("controlpanel.price");
+//            setAndUpdate("controlpanel.price-hover");
+//            setAndUpdate("controlpanel.refill");
+//            setAndUpdate("controlpanel.refill-hover");
+//            setAndUpdate("controlpanel.empty");
+//            setAndUpdate("controlpanel.empty-hover");
+//            setAndUpdate("controlpanel.remove");
+//            setAndUpdate("controlpanel.remove-hover");
+//            setAndUpdate("language-version", 2);
+//            selectedVersion = 2;
+//        }
+//        if (selectedVersion == 2) {
+//            setAndUpdate("command.no-target-given");
+//            setAndUpdate("command.description.debug");
+//            setAndUpdate("no-permission-remove-shop");
+//            setAndUpdate("language-version", 3);
+//            selectedVersion = 3;
+//        }
+//        if (selectedVersion == 3) {
+//            setAndUpdate("signs.unlimited");
+//            setAndUpdate("controlpanel.sign.owner.line1");
+//            setAndUpdate("controlpanel.sign.owner.line2");
+//            setAndUpdate("controlpanel.sign.owner.line3");
+//            setAndUpdate("controlpanel.sign.owner.line4");
+//            setAndUpdate("controlpanel.sign.price.line1");
+//            setAndUpdate("controlpanel.sign.price.line2");
+//            setAndUpdate("controlpanel.sign.price.line3");
+//            setAndUpdate("controlpanel.sign.price.line4");
+//            setAndUpdate("controlpanel.sign.refill.line1");
+//            setAndUpdate("controlpanel.sign.refill.line2");
+//            setAndUpdate("controlpanel.sign.refill.line3");
+//            setAndUpdate("controlpanel.sign.refill.line4");
+//            setAndUpdate("language-version", 4);
+//            selectedVersion = 4;
+//        }
+//        if (selectedVersion == 4) {
+//            setAndUpdate("signs.unlimited");
+//            setAndUpdate("controlpanel.sign", null);
+//            setAndUpdate("language-version", 5);
+//            selectedVersion = 5;
+//        }
+//        if (selectedVersion == 5) {
+//            setAndUpdate("command.description.fetchmessage");
+//            setAndUpdate("nothing-to-flush");
+//            setAndUpdate("language-version", 6);
+//            selectedVersion = 6;
+//        }
+//        if (selectedVersion == 6) {
+//            setAndUpdate("command.description.info");
+//            setAndUpdate("command.description.debug");
+//            setAndUpdate("break-shop-use-supertool");
+//            setAndUpdate("no-creative-break");
+//            setAndUpdate("command.now-debuging");
+//            setAndUpdate("command.now-nolonger-debuging");
+//            setAndUpdate("language-version", 7);
+//            selectedVersion = 7;
+//        }
+//        if (selectedVersion == 7) {
+//            setAndUpdate("failed-to-put-sign");
+//            setAndUpdate("language-version", 8);
+//            selectedVersion = 8;
+//        }
+//        if (selectedVersion == 8) {
+//            setAndUpdate("failed-to-paste");
+//            setAndUpdate("warn-to-paste");
+//            setAndUpdate("command.description.paste");
+//            setAndUpdate("language-version", 9);
+//            selectedVersion = 9;
+//        }
+//        if (selectedVersion == 9) {
+//            setAndUpdate("controlpanel.commands.setowner");
+//            setAndUpdate("controlpanel.commands.unlimited");
+//            setAndUpdate("controlpanel.commands.buy");
+//            setAndUpdate("controlpanel.commands.sell");
+//            setAndUpdate("controlpanel.commands.price");
+//            setAndUpdate("controlpanel.commands.refill");
+//            setAndUpdate("controlpanel.commands.empty");
+//            setAndUpdate("controlpanel.commands.remove");
+//            setAndUpdate("tableformat.full_line");
+//            setAndUpdate("tableformat.left_half_line");
+//            setAndUpdate("tableformat.right_half_line");
+//            setAndUpdate("tableformat.left_begin");
+//            setAndUpdate("booleanformat.success");
+//            setAndUpdate("booleanformat.failed");
+//            setAndUpdate("language-version", 10);
+//            selectedVersion = 10;
+//        }
+//        if (selectedVersion == 10) {
+//            setAndUpdate("price-too-high");
+//            setAndUpdate("language-version", 11);
+//            selectedVersion = 11;
+//        }
+//        if (selectedVersion == 11) {
+//            setAndUpdate("unknown-player");
+//            setAndUpdate("shop-staff-cleared");
+//            setAndUpdate("shop-staff-added");
+//            setAndUpdate("shop-staff-deleted");
+//            setAndUpdate("command.wrong-args");
+//            setAndUpdate("command.description.staff");
+//            setAndUpdate("unknown-player");
+//            setAndUpdate("language-version", 12);
+//            selectedVersion = 12;
+//        }
+//        if (selectedVersion == 12) {
+//            setAndUpdate("menu.commands.preview");
+//            setAndUpdate("shop-staff-cleared");
+//            setAndUpdate("shop-staff-added");
+//            setAndUpdate("shop-staff-deleted");
+//            setAndUpdate("command.wrong-args");
+//            setAndUpdate("command.description.staff");
+//            setAndUpdate("unknown-player");
+//            setAndUpdate("language-version", 13);
+//            selectedVersion = 13;
+//        }
+//        if (selectedVersion == 13) {
+//            setAndUpdate("no-permission-build");
+//            setAndUpdate("success-change-owner-to-server");
+//            setAndUpdate("updatenotify.buttontitle");
+//            setAndUpdate("updatenotify.list");
+//            setAndUpdate("language-version", 14);
+//            selectedVersion = 14;
+//        }
+//        if (selectedVersion == 14) {
+//            setAndUpdate("flush-finished");
+//            setAndUpdate("language-version", 15);
+//            selectedVersion = 15;
+//        }
+//        if (selectedVersion == 15) {
+//            setAndUpdate("purchase-failed");
+//            setAndUpdate("language-version", 16);
+//            selectedVersion = 16;
+//        }
+//        if (selectedVersion == 16) {
+//            setAndUpdate("command.description.owner");
+//            setAndUpdate("command.description.remove");
+//            setAndUpdate("command.description.amount");
+//            setAndUpdate("command.description.about");
+//            setAndUpdate("command.description.help");
+//            setAndUpdate("no-pending-action");
+//            setAndUpdate("language-version", 17);
+//            selectedVersion = 17;
+//        }
+//        if (selectedVersion == 17) {
+//            setAndUpdate("updatenotify.onekeybuttontitle");
+//            setAndUpdate("language-version", 18);
+//            selectedVersion = 18;
+//        }
+//        if (selectedVersion == 18) {
+//            setAndUpdate("command.description.supercreate");
+//            setAndUpdate("language-version", 19);
+//            selectedVersion = 19;
+//        }
+//        if (selectedVersion == 19) {
+//            setAndUpdate("permission-denied-3rd-party");
+//            setAndUpdate("updatenotify.remote-disable-warning");
+//            setAndUpdate("language-version", 20);
+//            selectedVersion = 20;
+//        }
+//        if (selectedVersion == 20) {
+//            setAndUpdate("how-many-buy");
+//            setAndUpdate("how-many-sell");
+//            setAndUpdate("updatenotify.label.unstable");
+//            setAndUpdate("updatenotify.label.stable");
+//            setAndUpdate("updatenotify.label.lts");
+//            setAndUpdate("updatenotify.label.qualityverifyed");
+//            setAndUpdate("updatenotify.label.github");
+//            setAndUpdate("updatenotify.label.spigotmc");
+//            setAndUpdate("updatenotify.label.bukkitdev");
+//            setAndUpdate("language-version", 21);
+//            selectedVersion = 21;
+//        }
+//        if (selectedVersion == 21) {
+//            setAndUpdate("shop-removed-cause-ongoing-fee");
+//            setAndUpdate("language-version", 22);
+//            selectedVersion = 22;
+//        }
+//        if (selectedVersion == 22) {
+//            setAndUpdate("not-a-number");
+//            setAndUpdate("not-a-integer");
+//            setAndUpdate("language-version", 23);
+//            selectedVersion = 23;
+//        }
+//        if (selectedVersion == 23) {
+//            setAndUpdate("command.toggle-unlimited.unlimited");
+//            setAndUpdate("command.toggle-unlimited.limited");
+//            setAndUpdate("language-version", 24);
+//            selectedVersion = 24;
+//        }
+//        if (selectedVersion == 24) {
+//            setAndUpdate("digits-reach-the-limit");
+//            setAndUpdate("language-version", 25);
+//            selectedVersion = 25;
+//        }
+//        if (selectedVersion == 25) {
+//            setAndUpdate("complete");
+//            setAndUpdate("language-version", 26);
+//            selectedVersion = 26;
+//        }
+//        if (selectedVersion == 26) {
+//            setAndUpdate("updatenotify.label.master");
+//            setAndUpdate("language-version", 27);
+//            selectedVersion = 27;
+//        }
+//        if (selectedVersion == 27) {
+//            setAndUpdate("quickshop-gui-preview");
+//            setAndUpdate("shops-recovering");
+//            setAndUpdate("shops-backingup");
+//            setAndUpdate("saved-to-path");
+//            setAndUpdate("backup-failed");
+//            setAndUpdate("translate-not-completed-yet-click");
+//            setAndUpdate("translate-not-completed-yet-url");
+//            setAndUpdate("language-info-panel.name");
+//            setAndUpdate("language-info-panel.code");
+//            setAndUpdate("language-info-panel.progress");
+//            setAndUpdate("language-info-panel.help");
+//            setAndUpdate("language-info-panel.translate-on-crowdin");
+//            setAndUpdate("not-managed-shop");
+//            setAndUpdate("language-version", 28);
+//            selectedVersion = 28;
+//        }
+//        if (selectedVersion == 28) {
+//            setAndUpdate("quickshop-gui-preview");
+//            setAndUpdate("shops-recovering");
+//            setAndUpdate("shops-backingup");
+//            setAndUpdate("saved-to-path");
+//            setAndUpdate("backup-failed");
+//            setAndUpdate("translate-not-completed-yet-click");
+//            setAndUpdate("translate-not-completed-yet-url");
+//            setAndUpdate("language-info-panel.name");
+//            setAndUpdate("language-info-panel.code");
+//            setAndUpdate("language-info-panel.progress");
+//            setAndUpdate("language-info-panel.help");
+//            setAndUpdate("language-info-panel.translate-on-crowdin");
+//            setAndUpdate("not-managed-shop");
+//            setAndUpdate("language-version", 29);
+//            selectedVersion = 29;
+//        }
+//        if (selectedVersion == 29) {
+//            setAndUpdate("3rd-plugin-build-check-failed");
+//            setAndUpdate("language-version", 30);
+//            selectedVersion = 30;
+//        }
+//        if (selectedVersion == 30) {
+//            setAndUpdate("no-creative-break");
+//            setAndUpdate("trading-in-creative-mode-is-disabled");
+//            setAndUpdate("supertool-is-disabled");
+//            setAndUpdate("language-version", 31);
+//            selectedVersion = 31;
+//        }
+//        if (selectedVersion == 31) {
+//            setAndUpdate("menu.shop-stack");
+//            setAndUpdate("command.description.language");
+//            setAndUpdate("signs.stack-price");
+//            setAndUpdate("controlpanel.commands.stack");
+//            setAndUpdate("controlpanel.stack");
+//            setAndUpdate("controlpanel.stack-hover");
+//            setAndUpdate("shop-now-freezed");
+//            setAndUpdate("shop-nolonger-freezed");
+//            setAndUpdate("shop-freezed-at-location");
+//            setAndUpdate("shop-cannot-trade-when-freezing");
+//            setAndUpdate("denied-put-in-item");
+//            setAndUpdate("how-many-buy-stack");
+//            setAndUpdate("how-many-sell-stack");
+//            setAndUpdate("lang.name");
+//            setAndUpdate("lang.code");
+//            setAndUpdate("lang.translate-progress");
+//            setAndUpdate("lang.approval-progress");
+//            setAndUpdate("lang.qa-issues");
+//            setAndUpdate("lang.help-us");
+//            setAndUpdate("language-version", 32);
+//            selectedVersion = 32;
+//        }
+//        if (selectedVersion == 32) {
+//            setAndUpdate("signs.stack-selling");
+//            setAndUpdate("signs.stack-buying");
+//            setAndUpdate("menu.price-per-stack");
+//            setAndUpdate("menu.shop-stack");
+//            setAndUpdate("language-version", 33);
+//            selectedVersion = 33;
+//        }
+//        if (selectedVersion == 33) {
+//            setAndUpdate("integrations-check-failed-create");
+//            setAndUpdate("integrations-check-failed-trade");
+//            setAndUpdate("language-version", 34);
+//            selectedVersion = 34;
+//        }
+//        if (selectedVersion == 34) {
+//            setAndUpdate("how-many-buy-stack");
+//            setAndUpdate("how-many-sell-stack");
+//            setAndUpdate("language-version", 35);
+//            selectedVersion = 35;
+//        }
+//        if (selectedVersion == 35) {
+//            setAndUpdate("menu.price-per-stack");
+//            setAndUpdate("signs.stack-price");
+//            setAndUpdate("controlpanel.stack");
+//            setAndUpdate("controlpanel.stack-hover");
+//            setAndUpdate("controlpanel.commands.stack");
+//            setAndUpdate("controlpanel.item");
+//            setAndUpdate("controlpanel.item-hover");
+//            setAndUpdate("controlpanel.commands.item");
+//            setAndUpdate("how-much-to-trade-for");
+//            setAndUpdate("command.bulk-size-not-set");
+//            setAndUpdate("command.bulk-size-now");
+//            setAndUpdate("command.invalid-bulk-amount");
+//            setAndUpdate("command.description.size");
+//            setAndUpdate("command.no-trade-item");
+//            setAndUpdate("command.trade-item-now");
+//            setAndUpdate("command.description.item");
+//            setAndUpdate("item-holochat-error");
+//            setAndUpdate("shop-stack");
+//            setAndUpdate("language-version", 36);
+//            selectedVersion = 36;
+//        }
+//        if (selectedVersion == 36) {
+//            setAndUpdate("menu.price-per-stack");
+//            setAndUpdate("command.trade-item-now");
+//            setAndUpdate("command.bulk-size-now");
+//            setAndUpdate("how-much-to-trade-for");
+//            setAndUpdate("language-version", 37);
+//            selectedVersion = 37;
+//        }
+//        if (selectedVersion == 37) {
+//            setAndUpdate("signs.stack-price");
+//            setAndUpdate("command.some-shops-removed");
+//            setAndUpdate("command.description.removeall");
+//            setAndUpdate("command.no-owner-given");
+//            setAndUpdate("language-version", 38);
+//            selectedVersion = 38;
+//        }
+//        if (selectedVersion == 38) {
+//            setAndUpdate("integrations-check-failed-create");
+//            setAndUpdate("integrations-check-failed-trade");
+//            setAndUpdate("3rd-plugin-build-check-failed");
+//            setAndUpdate("language-version", 39);
+//            selectedVersion = 39;
+//        }
+//        if (selectedVersion == 39) {
+//            setAndUpdate("command.transfer-success");
+//            setAndUpdate("command.transfer-success-other");
+//            setAndUpdate("command.description.transfer");
+//            setAndUpdate("language-version", 40);
+//            selectedVersion = 40;
+//        }
+//        if (selectedVersion == 40) {
+//            setAndUpdate("controlpanel.commands", null);
+//            setAndUpdate("menu.commands", null);
+//            setAndUpdate("language-version", 41);
+//            selectedVersion = 41;
+//        }
+//
+//        if (selectedVersion == 41) {
+//            setAndUpdate("shops-removed-in-world");
+//            setAndUpdate("command.description.removeworld");
+//            setAndUpdate("command.no-world-given");
+//            setAndUpdate("world-not-exists");
+//            setAndUpdate("language-version", 42);
+//            selectedVersion = 42;
+//        }
+//        if (selectedVersion == 42) {
+//            setAndUpdate("player-bought-from-your-store-tax");
+//            setAndUpdate("player-bought-from-your-store");
+//            setAndUpdate("language-version", 43);
+//            selectedVersion = 43;
+//        }
+//        if (selectedVersion == 43) {
+//            setAndUpdate("nearby-shop-this-way", null);
+//            setAndUpdate("nearby-shop-header");
+//            setAndUpdate("nearby-shop-entry");
+//            setAndUpdate("language-version", ++selectedVersion);
+//        }
+//        if (selectedVersion == 44) {
+//            setAndUpdate("nearby-shop-this-way");
+//            setAndUpdate("language-version", ++selectedVersion);
+//        }
+//        if (selectedVersion == 45) {
+//            setAndUpdate("exceeded-maximum");
+//            setAndUpdate("language-version", ++selectedVersion);
+//        }
+//        if (selectedVersion == 46) {
+//            setAndUpdate("currency-not-exists");
+//            setAndUpdate("currency-set");
+//            setAndUpdate("currency-unset");
+//            setAndUpdate("command.description.currency");
+//            setAndUpdate("controlpanel.currency");
+//            setAndUpdate("controlpanel.currency-hover");
+//            setAndUpdate("currency-not-support");
+//            setAndUpdate("language-version", ++selectedVersion);
+//        }
+//        if (selectedVersion == 47) {
+//            setAndUpdate("forbidden-vanilla-behavior");
+//            setAndUpdate("language-version", ++selectedVersion);
+//        }
+//        if (selectedVersion == 48) {
+//            setAndUpdate("tabcomplete.currency");
+//            setAndUpdate("tabcomplete.item");
+//            setAndUpdate("item-not-exist");
+//            setAndUpdate("language-version", ++selectedVersion);
+//        }
+//        if (selectedVersion == 49) {
+//            setAndUpdate("backup-success");
+//            setAndUpdate("console-only");
+//            setAndUpdate("console-only-danger");
+//            setAndUpdate("clean-warning");
+//            setAndUpdate("command.disabled");
+//            setAndUpdate("command.feature-not-enabled");
+//            setAndUpdate("language-version", ++selectedVersion);
+//        }
+//        if (selectedVersion == 50) {
+//            setAndUpdate("signs.header");
+//            setAndUpdate("signs.status-available");
+//            setAndUpdate("signs.status-unavailable");
+//            setAndUpdate("language-version", ++selectedVersion);
+//        }
+//        if (selectedVersion == 51) {
+//            setAndUpdate("signs.out-of-stock");
+//            setAndUpdate("signs.out-of-space");
+//            setAndUpdate("command.description.ban");
+//            setAndUpdate("command.description.unban");
+//            setAndUpdate("command.description.freeze");
+//            setAndUpdate("command.description.lock");
+//            setAndUpdate("controlpanel.lock");
+//            setAndUpdate("controlpanel.lock-hover");
+//            setAndUpdate("controlpanel.freeze");
+//            setAndUpdate("controlpanel.freeze-hover");
+//            setAndUpdate("language-version", ++selectedVersion);
+//        }
+//        if (selectedVersion == 52) {
+//            setAndUpdate("shop-creation-failed");
+//            setAndUpdate("language-version", ++selectedVersion);
+//        }
+//        if (selectedVersion == 53) {
+//            setAndUpdate("language-version", ++selectedVersion);
+//        }
+//        if (selectedVersion == 54) {
+//            setAndUpdate("shop-owner-self-trade");
+//            setAndUpdate("language-version", ++selectedVersion);
+//        }
+//        if (selectedVersion == 55) {
+//            setAndUpdate("chest-title");
+//            setAndUpdate("language-version", ++selectedVersion);
+//        }
+//        if (selectedVersion == 56) {
+//            setAndUpdate("command-type-mismatch");
+//            setAndUpdate("unlimited-shop-owner-keeped");
+//            setAndUpdate("unlimited-shop-owner-changed");
+//            setAndUpdate("server-crash-warning");
+//            setAndUpdate("language-version", ++selectedVersion);
+//        }
+//        if (selectedVersion == 57) {
+//            setAndUpdate("not-a-integer");
+//            setAndUpdate("language-version", ++selectedVersion);
+//        }
+//        if (selectedVersion == 58) {
+//            setAndUpdate("command.format");
+//            setAndUpdate("command.format-disabled");
+//            setAndUpdate("language-version", ++selectedVersion);
+//        }
+//        if (selectedVersion == 59) {
+//            setAndUpdate("command.reloading");
+//            setAndUpdate("language-version", ++selectedVersion);
+//        }
+//        if (selectedVersion == 60) {
+//            setAndUpdate("reloading-status");
+//            setAndUpdate("language-version", ++selectedVersion);
+//        }
+//        setAndUpdate("_comment", "Please edit this file after format with json formatter");
+//    }
     public static final int languageVersion = 61;
 
 
-    private static void setAndUpdate(@NotNull String path, @Nullable Object object) {
-        messagei18n.set(path, object);
-    }
-
-    private static void setAndUpdate(@NotNull String path) {
-        Object alt = null;
-        if (builtInLang != null) {
-            alt = builtInLang.get(path);
-        }
-        if (alt == null && builtInOriginalLang != null) {
-            alt = builtInOriginalLang.get(path);
-        }
-        if (alt == null) {
-            messagei18n.set(path, "Missing no: " + path);
-        } else {
-            messagei18n.set(path, alt);
-        }
-    }
-
+//    private static void setAndUpdate(@NotNull String path, @Nullable Object object) {
+//        messagei18n.set(path, object);
+//    }
+//
+//    private static void setAndUpdate(@NotNull String path) {
+//        Object alt = null;
+//        if (builtInLang != null) {
+//            alt = builtInLang.get(path);
+//        }
+//        if (alt == null && builtInOriginalLang != null) {
+//            alt = builtInOriginalLang.get(path);
+//        }
+//        if (alt == null) {
+//            messagei18n.set(path, "Missing no: " + path);
+//        } else {
+//            messagei18n.set(path, alt);
+//        }
+//    }
+//
     public static void sendDirectMessage(@NotNull UUID sender, @Nullable String... messages) {
         sendDirectMessage(Bukkit.getPlayer(sender), messages);
     }
@@ -1504,7 +1569,8 @@ public class MsgUtil {
                 if (StringUtils.isEmpty(msg)) {
                     continue;
                 }
-                plugin.getQuickChat().send(sender, msg);
+                plugin.adventure().sender(sender).sendMessage(LegacyComponentSerializer.legacySection().deserialize(msg));
+             //   plugin.getQuickChat().send(sender, msg);
             } catch (Throwable throwable) {
                 Util.debugLog("Failed to send formatted text.");
                 if (!StringUtils.isEmpty(msg)) {
@@ -1513,35 +1579,34 @@ public class MsgUtil {
             }
         }
     }
-
-    public static void sendMessage(@Nullable CommandSender sender, @Nullable String key, @NotNull String... args) {
-        if (sender == null) {
-            Util.debugLog("INFO: Sending message to null sender.");
-            return;
-        }
-        if (StringUtils.isEmpty(key)) {
-            Util.debugLog("INFO: Message key is empty.");
-            return;
-        }
-        String message = MsgUtil.getMessage(key, sender, args);
-        if (StringUtils.isEmpty(message)) {
-            return;
-        }
-        try {
-            plugin.getQuickChat().send(sender, message);
-        } catch (Throwable throwable) {
-            Util.debugLog("Failed to send formatted text.");
-            sender.sendMessage(message);
-        }
-    }
-
-    public static void sendMessage(@Nullable UUID uuid, @Nullable String key, @NotNull String... args) {
-        if (uuid == null) {
-            return;
-        }
-        sendMessage(Bukkit.getPlayer(uuid), key, args);
-    }
-
+//
+//    public static void sendMessage(@Nullable CommandSender sender, @Nullable String key, @NotNull String... args) {
+//        if (sender == null) {
+//            Util.debugLog("INFO: Sending message to null sender.");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(key)) {
+//            Util.debugLog("INFO: Message key is empty.");
+//            return;
+//        }
+//        String message = MsgUtil.getMessage(key, sender, args);
+//        if (StringUtils.isEmpty(message)) {
+//            return;
+//        }
+//        try {
+//            plugin.getQuickChat().send(sender, message);
+//        } catch (Throwable throwable) {
+//            Util.debugLog("Failed to send formatted text.");
+//            sender.sendMessage(message);
+//        }
+//    }
+//
+//    public static void sendMessage(@Nullable UUID uuid, @Nullable String key, @NotNull String... args) {
+//        if (uuid == null) {
+//            return;
+//        }
+//        sendMessage(Bukkit.getPlayer(uuid), key, args);
+//    }
     public static boolean isJson(String str) {
         try {
             new JsonParser().parse(str);

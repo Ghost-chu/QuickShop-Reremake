@@ -28,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.shop.ShopType;
-import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
@@ -65,7 +64,7 @@ public class InternalListener extends QSListener {
     public void shopCreate(ShopCreateEvent event) {
         if (isForbidden(event.getShop().getLocation().getBlock().getType(), event.getShop().getItem().getType())) {
             event.setCancelled(true);
-            MsgUtil.sendMessage(event.getCreator(), "forbidden-vanilla-behavior");
+            plugin.text().of(event.getCreator(), "forbidden-vanilla-behavior").send();
             return;
         }
         if (loggingAction) {
@@ -113,7 +112,7 @@ public class InternalListener extends QSListener {
     public void shopPrePurchase(ShopPurchaseEvent event) {
         if (isForbidden(event.getShop().getLocation().getBlock().getType(), event.getShop().getItem().getType())) {
             event.setCancelled(true);
-            MsgUtil.sendMessage(event.getPurchaser(), "forbidden-vanilla-behavior");
+            plugin.text().of(event.getPurchaser(), "forbidden-vanilla-behavior").send();
             return;
         }
         if (loggingBalance) {
@@ -172,7 +171,7 @@ public class InternalListener extends QSListener {
         if (event.getPurchaser().equals(event.getShop().getOwner())) {
             Player player = Bukkit.getPlayer(event.getPurchaser());
             if (player != null) {
-                MsgUtil.sendMessage(player, "shop-owner-self-trade");
+                plugin.text().of(player, "shop-owner-self-trade").send();
             }
         }
     }

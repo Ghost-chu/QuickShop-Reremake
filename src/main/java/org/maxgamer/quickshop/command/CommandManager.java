@@ -397,17 +397,17 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                     return true;
                 }
                 if (!isAdapt(container, sender)) {
-                    MsgUtil.sendMessage(sender, "command-type-mismatch", container.getExecutorType().getSimpleName());
+                    plugin.text().of(sender, "command-type-mismatch", container.getExecutorType().getSimpleName()).send();
                     return true;
                 }
                 List<String> requirePermissions = container.getPermissions();
                 List<String> selectivePermissions = container.getSelectivePermissions();
                 if (!checkPermissions(sender, commandLabel, passThroughArgs, requirePermissions, PermissionType.REQUIRE, Action.EXECUTE)) {
-                    MsgUtil.sendMessage(sender, "no-permission");
+                    plugin.text().of(sender, "no-permission").send();
                     return true;
                 }
                 if (!checkPermissions(sender, commandLabel, passThroughArgs, selectivePermissions, PermissionType.SELECTIVE, Action.EXECUTE)) {
-                    MsgUtil.sendMessage(sender, "no-permission");
+                    plugin.text().of(sender, "no-permission").send();
                     return true;
                 }
 

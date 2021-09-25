@@ -28,7 +28,6 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,14 +53,14 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
                 }
             }
             if (shopOwner == null) {
-                MsgUtil.sendMessage(sender, "unknown-player");
+                plugin.text().of(sender, "unknown-player").send();
                 return;
             }
 
             int i = 0;
             if (!shopOwner.equals(sender)) { //Non-self shop
                 if (!sender.hasPermission("quickshop.removeall.other")) {
-                    MsgUtil.sendMessage(sender, "no-permission");
+                    plugin.text().of(sender, "no-permission").send();
                     return;
                 }
                 for (Shop shop : tempList) {
@@ -73,7 +72,7 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
                 }
             } else { //Self shop
                 if (!sender.hasPermission("quickshop.removeall.self")) {
-                    MsgUtil.sendMessage(sender, "no-permission");
+                    plugin.text().of(sender, "no-permission").send();
                     return;
                 }
                 if (!(sender instanceof OfflinePlayer)) {
@@ -88,9 +87,9 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
                     }
                 }
             }
-            MsgUtil.sendMessage(sender, "command.some-shops-removed", Integer.toString(i));
+            plugin.text().of(sender, "command.some-shops-removed", Integer.toString(i)).send();
         } else {
-            MsgUtil.sendMessage(sender, "command.no-owner-given");
+            plugin.text().of(sender, "command.no-owner-given").send();
         }
     }
 

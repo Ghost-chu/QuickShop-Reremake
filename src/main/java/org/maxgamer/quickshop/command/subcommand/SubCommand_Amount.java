@@ -37,12 +37,12 @@ public class SubCommand_Amount implements CommandHandler<Player> {
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender, "command.wrong-args");
+            plugin.text().of(sender, "command.wrong-args").send();
             return;
         }
 
         if (!plugin.getShopManager().getActions().containsKey(sender.getUniqueId())) {
-            MsgUtil.sendMessage(sender, "no-pending-action");
+            plugin.text().of(sender, "no-pending-action").send();
             return;
         }
 

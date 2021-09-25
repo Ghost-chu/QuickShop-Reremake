@@ -27,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.util.MsgUtil;
 
 @AllArgsConstructor
 public class SubCommand_Unlimited implements CommandHandler<Player> {
@@ -39,7 +38,7 @@ public class SubCommand_Unlimited implements CommandHandler<Player> {
         BlockIterator bIt = new BlockIterator(sender, 10);
 
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, "not-looking-at-shop");
+            plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
 
@@ -52,20 +51,20 @@ public class SubCommand_Unlimited implements CommandHandler<Player> {
             shop.setUnlimited(!shop.isUnlimited());
             shop.update();
             if (shop.isUnlimited()) {
-                MsgUtil.sendMessage(sender, "command.toggle-unlimited.unlimited");
+                plugin.text().of(sender, "command.toggle-unlimited.unlimited").send();
                 if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
                     plugin.getShopManager().migrateOwnerToUnlimitedShopOwner(shop);
-                    MsgUtil.sendMessage(sender, "unlimited-shop-owner-changed", plugin.getShopManager().getCacheUnlimitedShopAccount().getName());
+                    plugin.text().of(sender, "unlimited-shop-owner-changed", plugin.getShopManager().getCacheUnlimitedShopAccount().getName()).send();
                 }
                 return;
             }
-            MsgUtil.sendMessage(sender, "command.toggle-unlimited.limited");
+            plugin.text().of(sender, "command.toggle-unlimited.limited").send();
             if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
-                MsgUtil.sendMessage(sender, "unlimited-shop-owner-keeped");
+                plugin.text().of(sender, "unlimited-shop-owner-keeped").send();
             }
             return;
         }
-        MsgUtil.sendMessage(sender, "not-looking-at-shop");
+        plugin.text().of(sender, "not-looking-at-shop").send();
     }
 
 }

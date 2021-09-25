@@ -46,14 +46,14 @@ public class SubCommand_SilentSell implements CommandHandler<Player> {
         Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(UUID.fromString(cmdArg[0]));
 
         if (shop == null || !shop.getModerator().isModerator(sender.getUniqueId())) {
-            MsgUtil.sendMessage(sender, "not-looking-at-shop");
+            plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
 
         shop.setShopType(ShopType.SELLING);
         shop.update();
         MsgUtil.sendControlPanelInfo(sender, shop);
-        MsgUtil.sendMessage(sender,
-                "command.now-selling", Util.getItemStackName(shop.getItem()));
+        plugin.text().of(sender,
+                "command.now-selling", Util.getItemStackName(shop.getItem())).send();
     }
 }

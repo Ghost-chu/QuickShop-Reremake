@@ -42,7 +42,7 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
 
 
     private void sendHelp(@NotNull CommandSender s, @NotNull String commandLabel) {
-        MsgUtil.sendMessage(s, "command.description.title");
+        plugin.text().of(s, "command.description.title").send();
 
         commandPrintingLoop:
         for (CommandContainer container : plugin.getCommandManager().getCmds()) {

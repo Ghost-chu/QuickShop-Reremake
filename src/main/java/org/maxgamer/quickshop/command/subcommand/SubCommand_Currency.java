@@ -27,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -51,28 +50,28 @@ public class SubCommand_Currency implements CommandHandler<Player> {
                 if (shop.getModerator().isModerator(sender.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.currency")) {
                     if (cmdArg.length < 1) {
                         shop.setCurrency(null);
-                        MsgUtil.sendMessage(sender, "currency-unset");
+                        plugin.text().of(sender, "currency-unset").send();
                         return;
                     }
                     if (!plugin.getEconomy().supportCurrency()) {
-                        MsgUtil.sendMessage(sender, "currency-not-support");
+                        plugin.text().of(sender, "currency-not-support").send();
                         return;
                     }
                     if (!plugin.getEconomy().hasCurrency(Objects.requireNonNull(shop.getLocation().getWorld()), cmdArg[0])) {
-                        MsgUtil.sendMessage(sender, "currency-not-exists");
+                        plugin.text().of(sender, "currency-not-exists").send();
                         return;
                     }
                     shop.setCurrency(cmdArg[0]);
-                    MsgUtil.sendMessage(sender, "currency-set", cmdArg[0]);
+                    plugin.text().of(sender, "currency-set", cmdArg[0]).send();
                     return;
 
                 } else {
-                    MsgUtil.sendMessage(sender, "not-managed-shop");
+                    plugin.text().of(sender, "not-managed-shop").send();
                 }
                 return;
             }
         }
-        MsgUtil.sendMessage(sender, "not-looking-at-shop");
+        plugin.text().of(sender, "not-looking-at-shop").send();
     }
 
     @NotNull

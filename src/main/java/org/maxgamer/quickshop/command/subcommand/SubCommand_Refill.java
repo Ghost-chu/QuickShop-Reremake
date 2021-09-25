@@ -41,7 +41,7 @@ public class SubCommand_Refill implements CommandHandler<Player> {
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender, "command.no-amount-given");
+            plugin.text().of(sender, "command.no-amount-given").send();
             return;
         }
 
@@ -50,7 +50,7 @@ public class SubCommand_Refill implements CommandHandler<Player> {
         final BlockIterator bIt = new BlockIterator(sender, 10);
 
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, "not-looking-at-shop");
+            plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
         while (bIt.hasNext()) {
@@ -65,16 +65,15 @@ public class SubCommand_Refill implements CommandHandler<Player> {
                 if (cmdArg[0].equals(plugin.getConfig().getString("shop.word-for-trade-all-items"))) {
                     add = shop.getRemainingSpace();
                 } else {
-                    MsgUtil.sendMessage(sender, "thats-not-a-number");
+                    plugin.text().of(sender, "thats-not-a-number").send();
                     return;
                 }
             }
             shop.add(shop.getItem(), add);
-            MsgUtil.sendMessage(sender, "refill-success");
+            plugin.text().of(sender, "refill-success").send();
             return;
         }
-
-        MsgUtil.sendMessage(sender, "not-looking-at-shop");
+        plugin.text().of(sender, "not-looking-at-shop").send();
     }
 
     @NotNull

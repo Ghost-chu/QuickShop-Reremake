@@ -11,4 +11,5 @@ public class ColorProcessor implements PostProcessor {
     public @NotNull String process(@NotNull String text, @Nullable CommandSender sender, String... args) {
         return Util.parseColours(text);
     }
+
 }

@@ -77,18 +77,18 @@ public class SubCommand_Create implements CommandHandler<Player> {
         BlockIterator bIt = new BlockIterator(sender, 10);
         ItemStack item;
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender, "command.wrong-args");
+            plugin.text().of(sender, "command.wrong-args").send();
             return;
         } else if (cmdArg.length == 1) {
             item = sender.getInventory().getItemInMainHand();
             if (item.getType().isAir()) {
-                MsgUtil.sendMessage(sender, "no-anythings-in-your-hand");
+                plugin.text().of(sender, "no-anythings-in-your-hand").send();
                 return;
             }
         } else {
             Material material = matchMaterial(cmdArg[1]);
             if (material == null) {
-                MsgUtil.sendMessage(sender, "item-not-exist", cmdArg[1]);
+                plugin.text().of(sender, "item-not-exist", cmdArg[1]).send();
                 return;
             }
             if (cmdArg.length > 2 && QuickShop.getPermissionManager().hasPermission(sender, "quicshop.create.stack") && plugin.isAllowStack()) {
@@ -118,7 +118,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
 
             Result result = plugin.getPermissionChecker().canBuild(sender, b);
             if (!result.isSuccess()) {
-                MsgUtil.sendMessage(sender, "3rd-plugin-build-check-failed", result.getMessage());
+                plugin.text().of(sender, "3rd-plugin-build-check-failed", result.getMessage()).send();
                 Util.debugLog("Failed to create shop because the protection check has failed! Reason:" + result.getMessage());
                 return;
             }
@@ -135,14 +135,14 @@ public class SubCommand_Create implements CommandHandler<Player> {
 
             if (Util.isDoubleChest(b.getBlockData())
                     && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.double")) {
-                MsgUtil.sendMessage(sender, "no-double-chests");
+                plugin.text().of(sender, "no-double-chests").send();
                 return;
             }
 
             if (Util.isBlacklisted(item)
                     && !QuickShop.getPermissionManager()
                     .hasPermission(sender, "quickshop.bypass." + item.getType().name())) {
-                MsgUtil.sendMessage(sender, "blacklisted-item");
+                plugin.text().of(sender, "blacklisted-item").send();
                 return;
             }
 
@@ -152,7 +152,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
             plugin.getShopManager().handleChat(sender, price);
             return;
         }
-        MsgUtil.sendMessage(sender, "not-looking-at-shop");
+        plugin.text().of(sender, "not-looking-at-shop").send();
     }
 
     @NotNull

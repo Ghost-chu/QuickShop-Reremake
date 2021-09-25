@@ -84,14 +84,14 @@ public class BlockListener extends ProtectionListenerBase {
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
                     if (getPlugin().getConfig().getBoolean("shop.disable-super-tool")) {
                         e.setCancelled(true);
-                        MsgUtil.sendMessage(p, "supertool-is-disabled");
+                        plugin.text().of(p, "supertool-is-disabled").send();
                         return;
                     }
-                    MsgUtil.sendMessage(p, "break-shop-use-supertool");
+                    plugin.text().of(p, "break-shop-use-supertool").send();
                     return;
                 }
                 e.setCancelled(true);
-                MsgUtil.sendMessage(p, "no-creative-break", MsgUtil.getItemi18n(Material.GOLDEN_AXE.name()));
+                plugin.text().of(p, "no-creative-break", MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())).send();
                 return;
             }
 
@@ -104,7 +104,7 @@ public class BlockListener extends ProtectionListenerBase {
 
             plugin.log("Deleting shop " + shop + " request by block break.");
             shop.delete();
-            MsgUtil.sendMessage(p, "success-removed-shop");
+            plugin.text().of(p, "success-removed-shop").send();
         } else if (Util.isWallSign(b.getType())) {
             BlockState state = PaperLib.getBlockState(b, false).getState();
             if (state instanceof Sign) {
@@ -128,16 +128,16 @@ public class BlockListener extends ProtectionListenerBase {
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
                     if (getPlugin().getConfig().getBoolean("shop.disable-super-tool")) {
                         e.setCancelled(true);
-                        MsgUtil.sendMessage(p, "supertool-is-disabled");
+                        plugin.text().of(p, "supertool-is-disabled").send();
                         return;
                     }
-                    MsgUtil.sendMessage(p, "break-shop-use-supertool");
+                    plugin.text().of(p, "break-shop-use-supertool").send();
                     plugin.log("Deleting shop " + shop + " request by block break (super tool).");
                     shop.delete();
                     return;
                 }
                 e.setCancelled(true);
-                MsgUtil.sendMessage(p, "no-creative-break", MsgUtil.getItemi18n(Material.GOLDEN_AXE.name()));
+                plugin.text().of(p, "no-creative-break", MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())).send();
                 return;
             }
             //Allow Shop owner break the shop sign(for sign replacement)
@@ -200,7 +200,7 @@ public class BlockListener extends ProtectionListenerBase {
         }
         Player player = event.getPlayer();
         if (!shop.getModerator().isModerator(player.getUniqueId())) {
-            MsgUtil.sendMessage(player, "not-managed-shop");
+            plugin.text().of(player, "not-managed-shop").send();
             event.setCancelled(true);
         }
     }
@@ -261,11 +261,11 @@ public class BlockListener extends ProtectionListenerBase {
         if (shop != null) {
             if (!QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.double")) {
                 e.setCancelled(true);
-                MsgUtil.sendMessage(player, "no-double-chests");
+                plugin.text().of(player, "no-double-chests").send();
 
             } else if (!shop.getModerator().isModerator(player.getUniqueId())) {
                 e.setCancelled(true);
-                MsgUtil.sendMessage(player, "not-managed-shop");
+                plugin.text().of(player, "not-managed-shop").send();
             }
         }
     }

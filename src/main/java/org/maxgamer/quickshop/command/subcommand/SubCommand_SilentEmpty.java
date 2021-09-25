@@ -47,7 +47,7 @@ public class SubCommand_SilentEmpty implements CommandHandler<Player> {
         Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(UUID.fromString(cmdArg[0]));
 
         if (!(shop instanceof ContainerShop)) {
-            MsgUtil.sendMessage(sender, "not-looking-at-shop");
+            plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
 
@@ -61,7 +61,7 @@ public class SubCommand_SilentEmpty implements CommandHandler<Player> {
 
         inventory.clear();
         MsgUtil.sendControlPanelInfo(sender, shop);
-        MsgUtil.sendMessage(sender, "empty-success");
+        plugin.text().of(sender, "empty-success").send();
     }
 
 }

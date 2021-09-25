@@ -43,7 +43,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length == 0) {
-            MsgUtil.sendMessage(sender, "command.no-type-given");
+            plugin.text().of(sender, "command.no-type-given").send();
             return;
         }
 
@@ -109,7 +109,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
         }
         //Check if no shops found
         if (aroundShops.isEmpty()) {
-            MsgUtil.sendMessage(sender, "no-nearby-shop", lookFor);
+            plugin.text().of(sender, "no-nearby-shop", lookFor).send();
             return;
         }
 
@@ -124,7 +124,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
             Location lookAt = closest.getKey().getLocation().clone().add(0.5, 0.5, 0.5);
             PaperLib.teleportAsync(sender, Util.lookAt(sender.getEyeLocation(), lookAt).add(0, -1.62, 0),
                     PlayerTeleportEvent.TeleportCause.UNKNOWN);
-            MsgUtil.sendMessage(sender, "nearby-shop-this-way", String.valueOf(closest.getValue().intValue()));
+            plugin.text().of(sender, "nearby-shop-this-way", String.valueOf(closest.getValue().intValue())).send();
         } else {
             StringBuilder stringBuilder = new StringBuilder(MsgUtil.getMessage("nearby-shop-header", sender, lookFor)).append("\n");
             for (Map.Entry<Shop, Double> shopDoubleEntry : sortedShops) {

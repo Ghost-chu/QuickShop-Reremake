@@ -29,7 +29,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.util.MsgUtil;
 
 @AllArgsConstructor
 public class SubCommand_Empty implements CommandHandler<Player> {
@@ -41,7 +40,7 @@ public class SubCommand_Empty implements CommandHandler<Player> {
         BlockIterator bIt = new BlockIterator(sender, 10);
 
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, "not-looking-at-shop");
+            plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
 
@@ -62,15 +61,14 @@ public class SubCommand_Empty implements CommandHandler<Player> {
                 }
 
                 cs.getInventory().clear();
-                MsgUtil.sendMessage(sender, "empty-success");
+                plugin.text().of(sender, "empty-success").send();
             } else {
-                MsgUtil.sendMessage(sender, "not-looking-at-shop");
+                plugin.text().of(sender, "not-looking-at-shop").send();
             }
 
             return;
         }
-
-        MsgUtil.sendMessage(sender, "not-looking-at-shop");
+        plugin.text().of(sender, "not-looking-at-shop").send();
     }
 
 

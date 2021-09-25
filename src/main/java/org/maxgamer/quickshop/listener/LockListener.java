@@ -36,7 +36,6 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Cache;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
@@ -95,7 +94,7 @@ public class LockListener extends ProtectionListenerBase {
             if (!shop.getOwner().equals(p.getUniqueId())
                     && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
-                MsgUtil.sendMessage(p, "no-permission");
+                plugin.text().of(p, "no-permission").send();
             }
         } else if (Util.isWallSign(b.getType())) {
             if (b instanceof Sign) {
@@ -123,7 +122,7 @@ public class LockListener extends ProtectionListenerBase {
             if (!shop.getOwner().equals(p.getUniqueId())
                     && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
-                MsgUtil.sendMessage(p, "no-permission");
+                plugin.text().of(p, "no-permission").send();
             }
         }
     }
@@ -147,7 +146,7 @@ public class LockListener extends ProtectionListenerBase {
         }
         Player player = event.getPlayer();
         if (!shop.getModerator().isOwner(player.getUniqueId())) {
-            MsgUtil.sendMessage(player, "that-is-locked");
+            plugin.text().of(player, "that-is-locked").send();
             event.setCancelled(true);
         }
     }
@@ -179,10 +178,10 @@ public class LockListener extends ProtectionListenerBase {
 
         if (!shop.getModerator().isModerator(p.getUniqueId())) {
             if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.open")) {
-                MsgUtil.sendMessage(p, "bypassing-lock");
+                plugin.text().of(p, "bypassing-lock").send();
                 return;
             }
-            MsgUtil.sendMessage(p, "that-is-locked");
+            plugin.text().of(p, "that-is-locked").send();
             e.setCancelled(true);
         }
     }
@@ -206,11 +205,11 @@ public class LockListener extends ProtectionListenerBase {
         }
 
         if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.open")) {
-            MsgUtil.sendMessage(p, "bypassing-lock");
+            plugin.text().of(p, "bypassing-lock").send();
             return;
         }
 
-        MsgUtil.sendMessage(p, "that-is-locked");
+        plugin.text().of(p, "that-is-locked").send();
         e.setCancelled(true);
     }
 

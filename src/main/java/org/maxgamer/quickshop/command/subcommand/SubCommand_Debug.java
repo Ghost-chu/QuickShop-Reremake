@@ -91,7 +91,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             case "signs":
                 final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
                 if (!bIt.hasNext()) {
-                    MsgUtil.sendMessage(sender, "not-looking-at-shop");
+                    plugin.text().of(sender, "not-looking-at-shop").send();
                     return;
                 }
                 while (bIt.hasNext()) {
@@ -123,14 +123,14 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             plugin.getConfig().set("dev-mode", false);
             plugin.saveConfig();
             plugin.reload();
-            MsgUtil.sendMessage(sender, "command.now-nolonger-debuging");
+            plugin.text().of(sender, "command.now-nolonger-debuging").send();
             return;
         }
 
         plugin.getConfig().set("dev-mode", true);
         plugin.saveConfig();
         plugin.reload();
-        MsgUtil.sendMessage(sender, "command.now-debuging");
+        plugin.text().of(sender, "command.now-debuging").send();
     }
 
     public void printHandlerList(@NotNull CommandSender sender, String event) {

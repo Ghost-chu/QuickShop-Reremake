@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.shop;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -37,6 +38,7 @@ import org.maxgamer.quickshop.util.holder.QuickShopPreviewGUIHolder;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.UUID;
 
 /**
  * A class to create a GUI item preview quickly
@@ -50,6 +52,9 @@ public class InventoryPreview implements Listener {
     private final QuickShop plugin = QuickShop.getInstance();
     @Nullable
     private Inventory inventory;
+    private final String previewStr;
+    private static final NamespacedKey key = new NamespacedKey(QuickShop.getInstance(), "preview-item");
+    ;
 
     /**
      * Create a preview item GUI for a player.
@@ -62,20 +67,21 @@ public class InventoryPreview implements Listener {
         Util.ensureThread(false);
         this.itemStack = itemStack.clone();
         this.player = player;
-
         ItemMeta itemMeta;
         if (itemStack.hasItemMeta()) {
             itemMeta = this.itemStack.getItemMeta();
         } else {
             itemMeta = plugin.getServer().getItemFactory().getItemMeta(itemStack.getType());
         }
-        // TODO use persis data storage container
+        previewStr = plugin.text().of(player, "quickshop-gui-preview").forLocale();
         if (itemMeta != null) {
             if (itemMeta.hasLore()) {
-                itemMeta.getLore().add(plugin.getPreviewProtectionLore());
+                itemMeta.getLore().add(previewStr);
             } else {
-                itemMeta.setLore(Collections.singletonList(plugin.getPreviewProtectionLore()));
+                itemMeta.setLore(Collections.singletonList(previewStr));
             }
+
+            itemMeta.getPersistentDataContainer().set(key, PreviewGuiPersistentDataType.INSTANCE, UUID.randomUUID());
             this.itemStack.setItemMeta(itemMeta);
         }
     }
@@ -88,13 +94,7 @@ public class InventoryPreview implements Listener {
         if (!stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
             return false;
         }
-
-        for (String string : stack.getItemMeta().getLore()) {
-            if (QuickShop.instance.getPreviewProtectionLore().equals(string)) {
-                return true;
-            }
-        }
-        return false;
+        return stack.getItemMeta().getPersistentDataContainer().get(key, PreviewGuiPersistentDataType.INSTANCE) != null;
     }
 
     /**

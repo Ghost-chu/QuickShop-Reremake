@@ -19,14 +19,14 @@
 
 package org.maxgamer.quickshop.util;
 
-import de.themoep.minedown.MineDown;
-import de.themoep.minedown.MineDownParser;
+import de.themoep.minedown.adventure.MineDown;
+import de.themoep.minedown.adventure.MineDownParser;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -1039,18 +1039,19 @@ public class Util {
         }
         MineDownParser parser = mineDown.get().parser();
         parser.reset();
-        StringBuilder builder = new StringBuilder();
-        BaseComponent[] components = parser.enable(MineDownParser.Option.LEGACY_COLORS).parse(text).create();
-        for (BaseComponent component : components) {
-            ChatColor color = component.getColorRaw();
-            String legacyText = component.toLegacyText();
-            if (color == null && legacyText.startsWith("§f")) {
-                //Remove redundant §f added by toLegacyText
-                legacyText = legacyText.substring(2);
-            }
-            builder.append(legacyText);
-        }
-        return builder.toString();
+       // StringBuilder builder = new StringBuilder();
+        Component components = parser.enable(MineDownParser.Option.LEGACY_COLORS).parse(text).asComponent();
+       return LegacyComponentSerializer.builder().hexColors().build().serialize(components);
+//        for (Component component : components.children()) {
+//            ChatColor color = component.getColorRaw();
+//            String legacyText = component.toLegacyText();
+//            if (color == null && legacyText.startsWith("§f")) {
+//                //Remove redundant §f added by toLegacyText
+//                legacyText = legacyText.substring(2);
+//            }
+//            builder.append(legacyText);
+//        }
+     //   return builder.toString();
     }
 
     /**

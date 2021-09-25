@@ -28,7 +28,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopType;
-import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
@@ -41,7 +40,7 @@ public class SubCommand_Buy implements CommandHandler<Player> {
         BlockIterator bIt = new BlockIterator(sender, 10);
 
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, "not-looking-at-shop");
+            plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
 
@@ -53,14 +52,14 @@ public class SubCommand_Buy implements CommandHandler<Player> {
                 if (shop.getModerator().isModerator(sender.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control")) {
                     shop.setShopType(ShopType.BUYING);
                     shop.update();
-                    MsgUtil.sendMessage(sender, "command.now-buying", Util.getItemStackName(shop.getItem()));
+                    plugin.text().of(sender, "command.now-buying", Util.getItemStackName(shop.getItem())).send();
                 } else {
-                    MsgUtil.sendMessage(sender, "not-managed-shop");
+                    plugin.text().of(sender, "not-managed-shop").send();
                 }
                 return;
             }
         }
-        MsgUtil.sendMessage(sender, "not-looking-at-shop");
+        plugin.text().of(sender, "not-looking-at-shop").send();
     }
 
 

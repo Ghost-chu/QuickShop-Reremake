@@ -29,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.PriceLimiter;
 import org.maxgamer.quickshop.util.Util;
 
@@ -42,7 +41,7 @@ public class SubCommand_Item implements CommandHandler<Player> {
         BlockIterator bIt = new BlockIterator(sender, 10);
         // Loop through every block they're looking at upto 10 blocks away
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, "not-looking-at-shop");
+            plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
         while (bIt.hasNext()) {
@@ -51,16 +50,16 @@ public class SubCommand_Item implements CommandHandler<Player> {
 
             if (shop != null) {
                 if (!shop.getModerator().isModerator(sender.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.item")) {
-                    MsgUtil.sendMessage(sender, "not-managed-shop");
+                    plugin.text().of(sender, "not-managed-shop").send();
                     return;
                 }
                 ItemStack itemStack = sender.getInventory().getItemInMainHand().clone();
                 if (itemStack.getType() == Material.AIR) {
-                    MsgUtil.sendMessage(sender, "command.no-trade-item");
+                    plugin.text().of(sender, "command.no-trade-item").send();
                     return;
                 }
                 if (Util.isBlacklisted(itemStack) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.bypass." + itemStack.getType().name())) {
-                    MsgUtil.sendMessage(sender, "blacklisted-item");
+                    plugin.text().of(sender, "blacklisted-item").send();
                     return;
                 }
                 if (!plugin.isAllowStack() && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.stacks")) {
@@ -73,17 +72,17 @@ public class SubCommand_Item implements CommandHandler<Player> {
                         plugin.getConfig().getBoolean("whole-number-prices-only"));
                 PriceLimiter.CheckResult checkResult = limiter.check(itemStack, shop.getPrice());
                 if (checkResult.getStatus() != PriceLimiter.Status.PASS) {
-                    MsgUtil.sendMessage(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
+                    plugin.text().of(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
                             String.valueOf(checkResult.getMin()),
-                            String.valueOf(checkResult.getMax()));
+                            String.valueOf(checkResult.getMax())).send();
                     return;
                 }
                 shop.setItem(itemStack);
-                plugin.getQuickChat().send(sender, plugin.getQuickChat().getItemHologramChat(shop, shop.getItem(), sender, MsgUtil.getMessage("command.trade-item-now", sender, Integer.toString(shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()))));
+               plugin.text().of(sender,"command.trade-item-now",  Integer.toString(shop.getItem().getAmount()),Util.getItemStackName(shop.getItem())).send();
                 return;
             }
         }
-        MsgUtil.sendMessage(sender, "not-looking-at-shop");
+        plugin.text().of(sender, "not-looking-at-shop").send();
     }
 
 }
