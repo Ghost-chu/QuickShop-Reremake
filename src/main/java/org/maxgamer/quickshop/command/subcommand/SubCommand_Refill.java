@@ -28,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -79,7 +78,7 @@ public class SubCommand_Refill implements CommandHandler<Player> {
     @NotNull
     @Override
     public List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return cmdArg.length == 1 ? Collections.singletonList(MsgUtil.getMessage("tabcomplete.amount", sender)) : Collections.emptyList();
+        return cmdArg.length == 1 ? Collections.singletonList(QuickShop.getInstance().text().of(sender,"tabcomplete.amount").forLocale()) : Collections.emptyList();
     }
 
 }

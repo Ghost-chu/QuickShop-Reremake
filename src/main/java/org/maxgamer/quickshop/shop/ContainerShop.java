@@ -42,7 +42,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.*;
-import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.PriceLimiter;
 import org.maxgamer.quickshop.util.Util;
 
@@ -1033,15 +1032,15 @@ public class ContainerShop implements Shop {
                 signs.add(sign);
             } else {
                 String header = lines[0];
-                String adminShopHeader = MsgUtil.getMessage("signs.header", null, MsgUtil.getMessage("admin-shop", null));
-                String signHeaderUsername = MsgUtil.getMessage("signs.header", null, this.ownerName(true));
+                String adminShopHeader = plugin.text().of("signs.header",plugin.text().of("admin-shop").forLocale()).forLocale();
+                String signHeaderUsername = plugin.text().of("signs.header", this.ownerName(true)).forLocale();
                 if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
                     signs.add(sign);
                     //TEXT SIGN
                     //continue
                 } else {
-                    adminShopHeader = MsgUtil.getMessage("signs.header", null, MsgUtil.getMessage("admin-shop", null), "");
-                    signHeaderUsername = MsgUtil.getMessage("signs.header", null, this.ownerName(true), "");
+                    adminShopHeader = plugin.text().of("signs.header",  plugin.text().of("admin-shop").forLocale(), "").forLocale();
+                    signHeaderUsername = plugin.text().of("signs.header",  this.ownerName(true), "").forLocale();
                     adminShopHeader = ChatColor.stripColor(adminShopHeader).trim();
                     signHeaderUsername = ChatColor.stripColor(signHeaderUsername).trim();
                     if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {

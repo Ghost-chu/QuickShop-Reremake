@@ -71,14 +71,14 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                             if (staffs.isEmpty()) {
                                 MsgUtil.sendDirectMessage(sender,
                                         ChatColor.GREEN
-                                                + MsgUtil.getMessage("tableformat.left_begin", sender)
+                                                + plugin.text().of(sender,"tableformat.left_begin").forLocale()
                                                 + "Empty");
                                 return;
                             }
                             for (UUID uuid : staffs) {
                                 MsgUtil.sendDirectMessage(sender,
                                         ChatColor.GREEN
-                                                + MsgUtil.getMessage("tableformat.left_begin", sender)
+                                                + plugin.text().of(sender,"tableformat.left_begin").forLocale()
                                                 + Bukkit.getOfflinePlayer(uuid).getName());
                             }
                             return;

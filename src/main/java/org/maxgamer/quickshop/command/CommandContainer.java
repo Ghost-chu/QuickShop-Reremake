@@ -26,7 +26,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.QuickShop;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -87,7 +87,7 @@ public class CommandContainer {
         } else if (StringUtils.isNotEmpty(this.getDisablePlaceholder())) {
             return this.getDisablePlaceholder();
         } else {
-            return MsgUtil.getMessage("command.feature-not-enabled", null);
+            return QuickShop.getInstance().text().of(sender,"command.feature-not-enabled").forLocale();
         }
     }
 }

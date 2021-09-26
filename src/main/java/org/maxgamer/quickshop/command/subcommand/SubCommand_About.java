@@ -50,7 +50,7 @@ public class SubCommand_About implements CommandHandler<CommandSender> {
                             + ChatColor.YELLOW
                             + ">> "
                             + ChatColor.GREEN
-                            + MsgUtil.getMessage("updatenotify.label.lts", sender));
+                            +plugin.text().of(sender,"updatenotify.label.lts").forLocale());
         } else if (QuickShop.getInstance().getBuildInfo().getGitBranch().toUpperCase().contains("RELEASE")) {
             MsgUtil.sendDirectMessage(sender,
                     ChatColor.AQUA
@@ -58,7 +58,7 @@ public class SubCommand_About implements CommandHandler<CommandSender> {
                             + ChatColor.YELLOW
                             + ">> "
                             + ChatColor.GREEN
-                            + MsgUtil.getMessage("updatenotify.label.stable", sender));
+                            +plugin.text().of(sender,"updatenotify.label.stable").forLocale());
         } else {
             MsgUtil.sendDirectMessage(sender,
                     ChatColor.AQUA
@@ -66,7 +66,7 @@ public class SubCommand_About implements CommandHandler<CommandSender> {
                             + ChatColor.YELLOW
                             + ">> "
                             + ChatColor.GREEN
-                            + MsgUtil.getMessage("updatenotify.label.unstable", sender));
+                            + plugin.text().of(sender,"updatenotify.label.unstable").forLocale());
         }
         MsgUtil.sendDirectMessage(sender,
                 ChatColor.AQUA

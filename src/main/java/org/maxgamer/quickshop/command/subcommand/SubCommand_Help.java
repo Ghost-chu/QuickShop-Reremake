@@ -25,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandContainer;
 import org.maxgamer.quickshop.command.CommandHandler;
-import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.List;
 
@@ -73,7 +72,7 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
                 if (!passed) {
                     continue;
                 }
-                String commandDesc = MsgUtil.getMessage("command.description." + container.getPrefix(), s);
+                String commandDesc = plugin.text().of(s, "command.description." + container.getPrefix()).forLocale();
                 if (container.getDescription() != null) {
                     commandDesc = container.getDescription();
                     if (commandDesc == null) {
@@ -82,10 +81,10 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
                 }
                 if (container.isDisabled()) {
                     if (QuickShop.getPermissionManager().hasPermission(s, "quickshop.showdisabled")) {
-                        MsgUtil.sendDirectMessage(s, MsgUtil.getMessage("command.format", s, commandLabel, container.getPrefix(), container.getDisableText(s)));
+                        plugin.text().of(s, "command.format", commandLabel, container.getPrefix(), container.getDisableText(s));
                     }
                 } else {
-                    MsgUtil.sendDirectMessage(s, MsgUtil.getMessage("command.format", s, commandLabel, container.getPrefix(), commandDesc));
+                    plugin.text().of(s, "command.format", commandLabel, container.getPrefix(), commandDesc);
                 }
             }
         }

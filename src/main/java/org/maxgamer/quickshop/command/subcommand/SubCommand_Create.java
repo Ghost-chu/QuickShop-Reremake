@@ -160,14 +160,14 @@ public class SubCommand_Create implements CommandHandler<Player> {
     public List<String> onTabComplete(
             @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length == 1) {
-            return Collections.singletonList(MsgUtil.getMessage("tabcomplete.price", sender));
+            return Collections.singletonList(plugin.text().of(sender,"tabcomplete.price").forLocale());
         }
         if (sender.getInventory().getItemInMainHand().getType().isAir()) {
             if (cmdArg.length == 2) {
-                return Collections.singletonList(MsgUtil.getMessage("tabcomplete.item", sender));
+                return Collections.singletonList(plugin.text().of(sender,"tabcomplete.item").forLocale());
             }
             if (cmdArg.length == 3) {
-                return Collections.singletonList(MsgUtil.getMessage("tabcomplete.amount", sender));
+                return Collections.singletonList(plugin.text().of(sender,"tabcomplete.amount").forLocale());
             }
         }
         return Collections.emptyList();

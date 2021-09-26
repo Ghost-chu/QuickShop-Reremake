@@ -716,16 +716,16 @@ public class ShopManager implements Reloadable {
         Player player = plugin.getServer().getPlayer(buyer);
 
 
-        String msg = MsgUtil.getMessage(buyer, "player-sold-to-your-store",
+        String msg = plugin.text().of(buyer, "player-sold-to-your-store",
                 player != null ? player.getName() : buyer.toString(),
                 String.valueOf(amount),
-                Util.getItemStackName(shop.getItem()));
+                Util.getItemStackName(shop.getItem())).forLocale();
 
         if (space == amount) {
-            msg += "\n" + MsgUtil.getMessage(buyer, "shop-out-of-space",
+            msg += "\n" + plugin.text().of(buyer, "shop-out-of-space",
                     Integer.toString(shop.getLocation().getBlockX()),
                     Integer.toString(shop.getLocation().getBlockY()),
-                    Integer.toString(shop.getLocation().getBlockZ()));
+                    Integer.toString(shop.getLocation().getBlockZ())).forLocale();
         }
 
         MsgUtil.TransactionMessage transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
@@ -1080,26 +1080,26 @@ public class ShopManager implements Reloadable {
         // Notify the shop owner //TODO: move to a standalone method
         Player player = plugin.getServer().getPlayer(seller);
         if (plugin.getConfig().getBoolean("show-tax")) {
-            msg = MsgUtil.getMessage(seller, "player-bought-from-your-store-tax",
+            msg = plugin.text().of(seller, "player-bought-from-your-store-tax",
                     player != null ? player.getName() : seller.toString(),
                     Integer.toString(amount * shop.getItem().getAmount()),
                     Util.getItemStackName(shop.getItem()),
                     Double.toString(total),
-                    Util.format(CalculateUtil.multiply(taxModifier, total), shop));
+                    Util.format(CalculateUtil.multiply(taxModifier, total), shop)).forLocale();
         } else {
-            msg = MsgUtil.getMessage(seller, "player-bought-from-your-store",
+            msg = plugin.text().of(seller, "player-bought-from-your-store",
                     player != null ? player.getName() : seller.toString(),
                     Integer.toString(amount * shop.getItem().getAmount()),
                     Util.getItemStackName(shop.getItem()),
-                    Double.toString(total));
+                    Double.toString(total)).forLocale();
         }
         // Transfers the item from A to B
         if (stock == amount) {
-            msg += "\n" + MsgUtil.getMessage(seller, "shop-out-of-stock",
+            msg += "\n" +plugin.text().of(seller, "shop-out-of-stock",
                     Integer.toString(shop.getLocation().getBlockX()),
                     Integer.toString(shop.getLocation().getBlockY()),
                     Integer.toString(shop.getLocation().getBlockZ()),
-                    Util.getItemStackName(shop.getItem()));
+                    Util.getItemStackName(shop.getItem())).forLocale();
         }
 
         MsgUtil.TransactionMessage transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
