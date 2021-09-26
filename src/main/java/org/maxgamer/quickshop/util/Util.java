@@ -1406,17 +1406,11 @@ public class Util {
                                             Key.key(stack.getType().getKey().getNamespace(), stack.getType().getKey().getKey()),
                                             stack.getAmount(),
                                             BinaryTagHolder.of(ReflectFactory.convertBukkitItemStackToJson(stack))));
-        } catch (InvocationTargetException e) {
+        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }finally {
-            return HoverEvent.showText(Component.text("Failed to generate item preview. Consider switch to Paper."));
         }
+        return HoverEvent.showText(Component.text("Failed to generate item preview. Consider switch to Paper."));
+
     }
 
 }
