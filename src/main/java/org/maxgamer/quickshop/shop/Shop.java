@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.shop;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -164,6 +165,7 @@ public interface Shop {
      */
     void sell(@NotNull UUID seller, @NotNull Inventory sellerInventory, @NotNull Location loc2Drop, int paramInt);
 
+
     /**
      * Generate new sign texts on shop's sign.
      */
@@ -180,7 +182,7 @@ public interface Shop {
      * Line 3: Price
      */
     @NotNull
-    default String[] getSignText() {
+    default Component[] getSignText() {
         //backward support
         throw new UnsupportedOperationException();
     }
@@ -188,9 +190,9 @@ public interface Shop {
     /**
      * Set texts on shop's sign
      *
-     * @param paramArrayOfString The texts you want set
+     * @param contents The texts you want set
      */
-    void setSignText(@NotNull String[] paramArrayOfString);
+    void setSignText(@NotNull Component[] contents);
 
     /**
      * Update shop data to database
