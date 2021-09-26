@@ -24,6 +24,7 @@ import de.themoep.minedown.adventure.MineDownParser;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.nbt.api.BinaryTagHolder;
@@ -90,6 +91,7 @@ public class Util {
     private static int bypassedCustomStackSize = -1;
     private static Yaml yaml = null;
     private static boolean devMode = false;
+    @Setter
     private static QuickShop plugin;
     private static Object serverInstance;
     private static Field tpsField;
@@ -1410,7 +1412,6 @@ public class Util {
             e.printStackTrace();
         }
         return HoverEvent.showText(Component.text("Failed to generate item preview. Consider switch to Paper."));
-
     }
 
 }

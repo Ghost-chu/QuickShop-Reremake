@@ -272,7 +272,7 @@ public class QuickShop extends JavaPlugin {
     private WorldEditAdapter worldEditAdapter;
     private BukkitAudiences adventure;
     @Getter
-    private final TextManager textManager = new TextManager(this);
+    private TextManager textManager ;
 
     /**
      * Use for mock bukkit
@@ -384,6 +384,7 @@ public class QuickShop extends JavaPlugin {
                 }
             }
         }
+        Bukkit.getPluginManager().registerEvents(this.compatibilityTool,this);
         compatibilityTool.searchAndRegisterPlugins();
         if (this.display) {
             //VirtualItem support
@@ -564,10 +565,12 @@ public class QuickShop extends JavaPlugin {
      */
     @Override
     public final void onLoad() {
+        instance = this;
+        Util.setPlugin(this);
         this.onLoadCalled = true;
         getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up...");
         //BEWARE THESE ONLY RUN ONCE
-        instance = this;
+        this.textManager = new TextManager(this);
         this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
         runtimeCheck(EnvCheckEntry.Stage.ON_LOAD);
         getLogger().info("Reading the configuration...");

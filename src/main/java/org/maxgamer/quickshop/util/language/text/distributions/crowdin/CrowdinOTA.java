@@ -89,7 +89,7 @@ public class CrowdinOTA implements Distribution {
             throw new IllegalStateException("Failed to get project manifest");
         if (!manifest.getFiles().contains(fileCrowdinPath))
             throw new IllegalArgumentException("The file " + fileCrowdinPath + " not exists on Crowdin");
-        if (!manifest.getCustomLanguages().contains(crowdinLocale))
+        if (manifest.getCustomLanguages() != null && !manifest.getCustomLanguages().contains(crowdinLocale))
             throw new IllegalArgumentException("The locale " + crowdinLocale + " not exists on Crowdin");
         String postProcessingPath = fileCrowdinPath.replace("%locale%", crowdinLocale);
         String pathHash = DigestUtils.sha1Hex(postProcessingPath);
