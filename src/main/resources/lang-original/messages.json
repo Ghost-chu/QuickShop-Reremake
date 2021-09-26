@@ -331,5 +331,7 @@
     "require-restart": "&aReload completed. &e(Some changes require server restart to affect)",
     "failed": "&cReload failed, check the server console",
     "scheduled": "&aReload completed. &7(Some changes required a while to affect)"
-  }
+  },
+  "client-language-changed": "&aQuickShop detected your client language setting has been changed, we're now using {0} locale for you.",
+  "client-language-unsupported": "&eQuickShop doesn't support your client language, we're fallback to {0} locale now."
 }

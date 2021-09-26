@@ -96,9 +96,13 @@ public class CrowdinOTA implements Distribution {
         File metadataFile = new File(Util.getCacheFolder(), "i18n.metadata");
         YamlConfiguration cacheMetadata = YamlConfiguration.loadConfiguration(metadataFile);
         long localeTimestamp = cacheMetadata.getLong(pathHash + ".timestamp");
-        String data = Util.readToString(new File(Util.getCacheFolder(), pathHash));
+        File cachedDataFile = new File(Util.getCacheFolder(), pathHash);
+        String data = null;
+        if(cachedDataFile.exists()){
+            data = Util.readToString(cachedDataFile);
+        }
         // invalidate cache, flush it
-        if (localeTimestamp != manifest.getTimestamp() || forceFlush) {
+        if (forceFlush || data == null ||localeTimestamp != manifest.getTimestamp()) {
             String url = CROWDIN_OTA_HOST + "content/" + fileCrowdinPath.replace("%locale%", postProcessingPath);
             data = requestWithCache(url);
             if (data == null)
@@ -107,11 +111,11 @@ public class CrowdinOTA implements Distribution {
             cacheMetadata.set(pathHash + ".timestamp", manifest.getTimestamp());
             cacheMetadata.save(metadataFile);
         }
-        if (data == null) {
-            cacheMetadata.set(pathHash, null);
-            cacheMetadata.save(metadataFile);
-            throw new IOException("Couldn't read translation from local cache, please try again");
-        }
+//        if (data == null) {
+//            cacheMetadata.set(pathHash, null);
+//            cacheMetadata.save(metadataFile);
+//            throw new IOException("Couldn't read translation from local cache, please try again");
+//        }
         return data;
     }
 }
