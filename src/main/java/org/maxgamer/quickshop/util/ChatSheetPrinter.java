@@ -44,9 +44,9 @@ public class ChatSheetPrinter {
         if (!text.isEmpty()) {
             MsgUtil.sendDirectMessage(p,
                     ChatColor.DARK_PURPLE
-                            + MsgUtil.getMessage("tableformat.left_half_line", p)
+                            + QuickShop.getInstance().text().of(p,"tableformat.left_half_line").forLocale()
                             + text
-                            + MsgUtil.getMessage("tableformat.right_half_line", p));
+                            + QuickShop.getInstance().text().of(p,"tableformat.right_half_line").forLocale());
         }
     }
 
@@ -60,18 +60,18 @@ public class ChatSheetPrinter {
     }
 
     public void printFooter() {
-        MsgUtil.sendDirectMessage(p, ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.full_line", p));
+        MsgUtil.sendDirectMessage(p, ChatColor.DARK_PURPLE +QuickShop.getInstance().text().of(p,"tableformat.full_line").forLocale());
     }
 
     public void printHeader() {
-        MsgUtil.sendDirectMessage(p, ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.full_line", p));
+        MsgUtil.sendDirectMessage(p, ChatColor.DARK_PURPLE + QuickShop.getInstance().text().of(p,"tableformat.full_line").forLocale());
     }
 
     public void printLine(@NotNull String text) {
         String[] texts = text.split("\n");
         for (String str : texts) {
             if (!str.isEmpty()) {
-                MsgUtil.sendDirectMessage(p, ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin", p) + str);
+                MsgUtil.sendDirectMessage(p, ChatColor.DARK_PURPLE + QuickShop.getInstance().text().of(p,"tableformat.left_begin").forLocale() + str);
             }
         }
     }

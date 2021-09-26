@@ -32,7 +32,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.ShopInventoryPreviewEvent;
-import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.holder.QuickShopPreviewGUIHolder;
 
@@ -113,7 +112,7 @@ public class InventoryPreview implements Listener {
         }
         final int size = 9;
 
-        inventory = plugin.getServer().createInventory(new QuickShopPreviewGUIHolder(), size, MsgUtil.getMessage("menu.preview", player));
+        inventory = plugin.getServer().createInventory(new QuickShopPreviewGUIHolder(), size, plugin.text().of(player,"menu.preview").forLocale());
         for (int i = 0; i < size; i++) {
             inventory.setItem(i, itemStack);
         }

@@ -126,14 +126,14 @@ public class SubCommand_Find implements CommandHandler<Player> {
                     PlayerTeleportEvent.TeleportCause.UNKNOWN);
             plugin.text().of(sender, "nearby-shop-this-way", String.valueOf(closest.getValue().intValue())).send();
         } else {
-            StringBuilder stringBuilder = new StringBuilder(MsgUtil.getMessage("nearby-shop-header", sender, lookFor)).append("\n");
+            StringBuilder stringBuilder = new StringBuilder(plugin.text().of(sender, "nearby-shop-header", lookFor).forLocale()).append("\n");
             for (Map.Entry<Shop, Double> shopDoubleEntry : sortedShops) {
                 Shop shop = shopDoubleEntry.getKey();
                 Location location = shop.getLocation();
                 //  "nearby-shop-entry": "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)"
-                stringBuilder.append(MsgUtil.getMessage("nearby-shop-entry", sender, shop.getSignText()[1], shop.getSignText()[3], location.getBlockX(), location.getBlockY(), location.getBlockZ(), shopDoubleEntry.getValue().intValue())).append("\n");
+                stringBuilder.append(plugin.text().of(sender, "nearby-shop-entry", shop.getSignText()[1], shop.getSignText()[3], String.valueOf(location.getBlockX()), String.valueOf(location.getBlockY()), String.valueOf(location.getBlockZ()), String.valueOf(shopDoubleEntry.getValue().intValue())).forLocale()).append("\n");
+                MsgUtil.sendDirectMessage(sender, stringBuilder.toString());
             }
-            MsgUtil.sendDirectMessage(sender, stringBuilder.toString());
         }
     }
 }

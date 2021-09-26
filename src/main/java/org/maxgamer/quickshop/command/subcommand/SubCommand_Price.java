@@ -184,7 +184,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
     @Override
     public List<String> onTabComplete(
             @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return cmdArg.length == 1 ? Collections.singletonList(MsgUtil.getMessage("tabcomplete.price", sender)) : Collections.emptyList();
+        return cmdArg.length == 1 ? Collections.singletonList(QuickShop.getInstance().text().of(sender,"tabcomplete.price").forLocale()) : Collections.emptyList();
     }
 
 }

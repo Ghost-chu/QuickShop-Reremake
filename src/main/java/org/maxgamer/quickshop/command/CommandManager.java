@@ -292,7 +292,8 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .permission("quickshop.create.changeamount")
                 .executor(new SubCommand_Size(plugin))
                 .disabled(!plugin.isAllowStack())
-                .disablePlaceholder(MsgUtil.getMessage("command.feature-not-enabled", null))
+                // TODO: Check the sender
+                .disablePlaceholder(plugin.text().of("command.feature-not-enabled").forLocale())
                 .build());
         registerCmd(CommandContainer.builder()
                 .prefix("item")
