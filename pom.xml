@@ -955,5 +955,11 @@
             <version>4.0.0</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.maxgamer.quickshop.externalhelper</groupId>
+            <artifactId>PaperAdventureLib</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>

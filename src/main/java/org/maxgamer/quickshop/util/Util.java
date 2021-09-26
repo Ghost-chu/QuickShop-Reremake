@@ -25,7 +25,10 @@ import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.nbt.api.BinaryTagHolder;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
@@ -52,6 +55,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.database.MySQLCore;
+import org.maxgamer.quickshop.externalhelper.paperadventurelib.ItemStackAdventure;
+import org.maxgamer.quickshop.externalhelper.paperadventurelib.PaperAdventureLib;
 import org.maxgamer.quickshop.shop.DisplayItem;
 import org.maxgamer.quickshop.shop.Shop;
 import org.yaml.snakeyaml.DumperOptions;
@@ -1389,6 +1394,28 @@ public class Util {
             runnable.run();
         } else {
             Bukkit.getScheduler().runTask(QuickShop.getInstance(), runnable);
+        }
+    }
+
+    public static HoverEvent<?> generateItemHoverEvent(ItemStack stack){
+        if(PaperAdventureLib.isSupported())
+            return ItemStackAdventure.convertHoverItem(stack);
+        try {
+            return HoverEvent.showItem(
+                                    HoverEvent.ShowItem.of(
+                                            Key.key(stack.getType().getKey().getNamespace(), stack.getType().getKey().getKey()),
+                                            stack.getAmount(),
+                                            BinaryTagHolder.of(ReflectFactory.convertBukkitItemStackToJson(stack))));
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }finally {
+            return HoverEvent.showText(Component.text("Failed to generate item preview. Consider switch to Paper."));
         }
     }
 

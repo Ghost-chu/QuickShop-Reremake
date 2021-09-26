@@ -26,6 +26,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.translation.Translatable;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.*;
@@ -1101,6 +1103,8 @@ public class ShopManager implements Reloadable {
                     Integer.toString(shop.getLocation().getBlockZ()),
                     Util.getItemStackName(shop.getItem())).forLocale();
         }
+
+        plugin.adventure().sender(Component.translatable(T))
 
         MsgUtil.TransactionMessage transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
 
