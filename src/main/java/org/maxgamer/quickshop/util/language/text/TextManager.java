@@ -43,6 +43,7 @@ public class TextManager {
     }
 
     public void load() {
+        plugin.getLogger().info("Checking for translation updates...");
         locale2ContentMapping.clear();
         postProcessors.clear();
         // Load mapping

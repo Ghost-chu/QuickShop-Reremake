@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.command.subcommand;
 
 import io.papermc.lib.PaperLib;
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -131,7 +132,14 @@ public class SubCommand_Find implements CommandHandler<Player> {
                 Shop shop = shopDoubleEntry.getKey();
                 Location location = shop.getLocation();
                 //  "nearby-shop-entry": "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)"
-                stringBuilder.append(plugin.text().of(sender, "nearby-shop-entry", shop.getSignText()[1], shop.getSignText()[3], String.valueOf(location.getBlockX()), String.valueOf(location.getBlockY()), String.valueOf(location.getBlockZ()), String.valueOf(shopDoubleEntry.getValue().intValue())).forLocale()).append("\n");
+                stringBuilder.append(plugin.text().of(sender, "nearby-shop-entry",
+                        LegacyComponentSerializer.legacySection().serialize(shop.getSignText()[1]),
+                        LegacyComponentSerializer.legacySection().serialize(shop.getSignText()[3]),
+                        String.valueOf(location.getBlockX()),
+                        String.valueOf(location.getBlockY()),
+                        String.valueOf(location.getBlockZ()),
+                        String.valueOf(shopDoubleEntry.getValue().intValue())
+                ).forLocale()).append("\n");
                 MsgUtil.sendDirectMessage(sender, stringBuilder.toString());
             }
         }

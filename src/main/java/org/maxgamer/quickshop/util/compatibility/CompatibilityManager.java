@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.util.compatibility;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -47,7 +46,6 @@ public class CompatibilityManager extends QuickShopInstanceHolder implements Lis
 
     public CompatibilityManager(QuickShop plugin) {
         super(plugin);
-        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     public static Map<String, Class<? extends CompatibilityModule>> getCompatibilityModuleNameMap() {
