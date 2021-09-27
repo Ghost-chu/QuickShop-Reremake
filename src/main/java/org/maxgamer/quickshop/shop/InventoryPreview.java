@@ -47,7 +47,6 @@ import java.util.UUID;
 public class InventoryPreview implements Listener {
 
     private final ItemStack itemStack;
-    private final Player player;
     private final QuickShop plugin = QuickShop.getInstance();
     @Nullable
     private Inventory inventory;
@@ -62,10 +61,9 @@ public class InventoryPreview implements Listener {
      * @param player    Target player.
      * @param plugin    The plugin instance.
      */
-    public InventoryPreview(@NotNull QuickShop plugin, @NotNull ItemStack itemStack, @NotNull Player player) {
+    public InventoryPreview(@NotNull QuickShop plugin, @NotNull ItemStack itemStack) {
         Util.ensureThread(false);
         this.itemStack = itemStack.clone();
-        this.player = player;
         ItemMeta itemMeta;
         if (itemStack.hasItemMeta()) {
             itemMeta = this.itemStack.getItemMeta();
@@ -99,7 +97,7 @@ public class InventoryPreview implements Listener {
     /**
      * Open the preview GUI for player.
      */
-    public void show() {
+    public void show(Player player) {
         Util.ensureThread(false);
         if (itemStack == null || player == null || player.isSleeping()) // Null pointer exception
         {
