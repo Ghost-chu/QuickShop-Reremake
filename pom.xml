@@ -583,7 +583,7 @@
         <dependency>
             <groupId>com.github.angeschossen</groupId>
             <artifactId>LandsAPI</artifactId>
-            <version>5.14.10</version>
+            <version>5.15.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -596,7 +596,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.7.2</version>
+            <version>5.8.1</version>
             <scope>test</scope>
         </dependency>
 
@@ -654,7 +654,7 @@
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
-            <version>7.0.5</version>
+            <version>7.0.6</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -849,7 +849,7 @@
             <groupId>me.xanium</groupId>
             <artifactId>GemsEconomy</artifactId>
             <scope>system</scope>
-            <version>4.9.2</version>
+            <version>4.9.3-BCRemake-1.4</version>
             <systemPath>${project.basedir}/lib/GemsEconomy-4.9.2.jar</systemPath>
         </dependency>
         <dependency>
