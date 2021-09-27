@@ -2,7 +2,11 @@ package org.maxgamer.quickshop.util.language.text.distributions.crowdin;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,13 +20,13 @@ import org.maxgamer.quickshop.util.language.text.distributions.crowdin.bean.Mani
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collections;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class CrowdinOTA implements Distribution {
     protected static final String CROWDIN_OTA_HOST = "https://distributions.crowdin.net/daf1a8db40f132ce157c457xrm4/";
-    protected final Cache<String, String> requestCachePool = CacheBuilder.newBuilder()
+    protected final Cache<String, byte[]> requestCachePool = CacheBuilder.newBuilder()
             .expireAfterWrite(7, TimeUnit.DAYS)
             .recordStats()
             .build();
@@ -33,21 +37,24 @@ public class CrowdinOTA implements Distribution {
         Util.getCacheFolder().mkdirs();
     }
 
-    private @Nullable String requestWithCache(String url) {
-        String data = requestCachePool.getIfPresent(url);
+    private byte[] requestWithCache(@NotNull String url, @Nullable File saveTo) {
+        byte[] data = requestCachePool.getIfPresent(url);
         if (data == null) {
             try {
-                data = HttpRequest.get(new URL(url))
+                HttpRequest.BufferedResponse response = HttpRequest.get(new URL(url))
                         .execute()
                         .expectResponseCode(200)
-                        .returnContent()
-                        .asString("UTF-8");
+                        .returnContent();
+                if (saveTo != null)
+                    response.saveContent(saveTo);
+                return response.asBytes();
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            if (data != null)
-                requestCachePool.put(url, data);
+            return null;
         }
         return data;
     }
@@ -55,10 +62,35 @@ public class CrowdinOTA implements Distribution {
     @Nullable
     public Manifest getManifest() {
         String url = CROWDIN_OTA_HOST + "manifest.json";
-        String data = requestWithCache(url);
-        if (data == null)
+        String data = new String(requestWithCache(url,null), StandardCharsets.UTF_8);
+        if (StringUtils.isEmpty(data))
             return null;
         return JsonUtil.getGson().fromJson(data, Manifest.class);
+    }
+
+    @Nullable
+    public String getManifestJson() {
+        String url = CROWDIN_OTA_HOST + "manifest.json";
+        String data = new String(requestWithCache(url,null), StandardCharsets.UTF_8);
+        if (StringUtils.isEmpty(data))
+            return null;
+        return data;
+    }
+
+    public Map<String, String> genLanguageMapping() {
+        if (getManifestJson() == null)
+            return new HashMap<>();
+        Map<String, String> mapping = new HashMap<>();
+        JsonElement parser = new JsonParser().parse(getManifestJson());
+        for (Map.Entry<String, JsonElement> set : parser.getAsJsonObject().getAsJsonObject("language_mapping").entrySet()) {
+            if (!set.getValue().isJsonObject())
+                continue;
+            JsonPrimitive object = set.getValue().getAsJsonObject().getAsJsonPrimitive("locale");
+            if (object == null)
+                continue;
+            mapping.put(set.getKey(), object.getAsString());
+        }
+        return mapping;
     }
 
     @NotNull
@@ -66,7 +98,12 @@ public class CrowdinOTA implements Distribution {
         Manifest manifest = getManifest();
         if (manifest == null)
             return Collections.emptyList();
-        return manifest.getLanguages();
+        List<String> languages = new ArrayList<>();
+        Map<String, String> mapping = genLanguageMapping();
+        for (String language : manifest.getLanguages()) {
+            languages.add(mapping.getOrDefault(language, language));
+        }
+        return languages;
     }
 
     @NotNull
@@ -79,11 +116,11 @@ public class CrowdinOTA implements Distribution {
 
     @Override
     public @NotNull String getFile(String fileCrowdinPath, String crowdinLocale) throws Exception {
-        return getFile(fileCrowdinPath,crowdinLocale,false);
+        return getFile(fileCrowdinPath, crowdinLocale, false);
     }
 
     @NotNull
-    public String getFile(String fileCrowdinPath, String crowdinLocale, boolean forceFlush)throws Exception  {
+    public String getFile(String fileCrowdinPath, String crowdinLocale, boolean forceFlush) throws Exception {
         Manifest manifest = getManifest();
         if (manifest == null)
             throw new IllegalStateException("Failed to get project manifest");
@@ -98,18 +135,20 @@ public class CrowdinOTA implements Distribution {
         long localeTimestamp = cacheMetadata.getLong(pathHash + ".timestamp");
         File cachedDataFile = new File(Util.getCacheFolder(), pathHash);
         String data = null;
-        if(cachedDataFile.exists()){
+        if (cachedDataFile.exists()) {
             data = Util.readToString(cachedDataFile);
         }
         // invalidate cache, flush it
-        if (forceFlush || data == null ||localeTimestamp != manifest.getTimestamp()) {
-            String url = CROWDIN_OTA_HOST + "content/" + fileCrowdinPath.replace("%locale%", postProcessingPath);
-            data = requestWithCache(url);
-            if (data == null)
-                throw new IOException("Couldn't download translation from remote server");
+        if (forceFlush || data == null || localeTimestamp != manifest.getTimestamp()) {
+            String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);
+            byte[] bin = requestWithCache(url,cachedDataFile);
+            if (bin == null)
+                throw new IOException("Couldn't download translation from remote server. If you see any error like \"404 Not Found\", please report it to QuickShop.");
             // update cache index
+            data = Util.readToString(cachedDataFile);
             cacheMetadata.set(pathHash + ".timestamp", manifest.getTimestamp());
             cacheMetadata.save(metadataFile);
+            return new String(bin, StandardCharsets.UTF_8);
         }
 //        if (data == null) {
 //            cacheMetadata.set(pathHash, null);
