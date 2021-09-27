@@ -73,6 +73,10 @@ public class TextManager {
                     }
                 }
             } catch (Exception e) {
+                if(e.getMessage().contains("Did not get expected response code, got 403 for")) {
+                    plugin.getLogger().log(Level.WARNING, "The language " + availableLanguage+" didn't configure correctly, please report to QuickShop.", e);
+                    continue;
+                }
                 plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + availableLanguage, e);
             }
         }

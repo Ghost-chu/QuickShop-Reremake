@@ -23,6 +23,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 public class CrowdinOTA implements Distribution {
     protected static final String CROWDIN_OTA_HOST = "https://distributions.crowdin.net/daf1a8db40f132ce157c457xrm4/";
@@ -37,7 +38,7 @@ public class CrowdinOTA implements Distribution {
         Util.getCacheFolder().mkdirs();
     }
 
-    private byte[] requestWithCache(@NotNull String url, @Nullable File saveTo) {
+    private byte[] requestWithCache(@NotNull String url, @Nullable File saveTo) throws IOException {
         byte[] data = requestCachePool.getIfPresent(url);
         if (data == null) {
             try {
@@ -48,9 +49,6 @@ public class CrowdinOTA implements Distribution {
                 if (saveTo != null)
                     response.saveContent(saveTo);
                 return response.asBytes();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -62,7 +60,13 @@ public class CrowdinOTA implements Distribution {
     @Nullable
     public Manifest getManifest() {
         String url = CROWDIN_OTA_HOST + "manifest.json";
-        String data = new String(requestWithCache(url,null), StandardCharsets.UTF_8);
+        String data = null;
+        try {
+            data = new String(requestWithCache(url,null), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            plugin.getLogger().log(Level.WARNING,"Failed to download manifest.json, multi-language system won't work");
+            return null;
+        }
         if (StringUtils.isEmpty(data))
             return null;
         return JsonUtil.getGson().fromJson(data, Manifest.class);
@@ -71,7 +75,13 @@ public class CrowdinOTA implements Distribution {
     @Nullable
     public String getManifestJson() {
         String url = CROWDIN_OTA_HOST + "manifest.json";
-        String data = new String(requestWithCache(url,null), StandardCharsets.UTF_8);
+        String data;
+        try {
+            data = new String(requestWithCache(url,null), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            plugin.getLogger().log(Level.WARNING,"Failed to download manifest.json, multi-language system won't work");
+            return null;
+        }
         if (StringUtils.isEmpty(data))
             return null;
         return data;
@@ -143,7 +153,7 @@ public class CrowdinOTA implements Distribution {
             String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);
             byte[] bin = requestWithCache(url,cachedDataFile);
             if (bin == null)
-                throw new IOException("Couldn't download translation from remote server. If you see any error like \"404 Not Found\", please report it to QuickShop.");
+                throw new IOException("Couldn't download translation from remote server.");
             // update cache index
             data = Util.readToString(cachedDataFile);
             cacheMetadata.set(pathHash + ".timestamp", manifest.getTimestamp());
