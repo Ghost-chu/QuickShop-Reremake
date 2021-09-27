@@ -55,10 +55,9 @@ public class InventoryPreview implements Listener {
     ;
 
     /**
-     * Create a preview item GUI for a player.
+     * Create a preview item GUI.
      *
      * @param itemStack The item you want create.
-     * @param player    Target player.
      * @param plugin    The plugin instance.
      */
     public InventoryPreview(@NotNull QuickShop plugin, @NotNull ItemStack itemStack) {
@@ -108,11 +107,12 @@ public class InventoryPreview implements Listener {
             Util.debugLog("Inventory preview was canceled by a plugin.");
             return;
         }
-        final int size = 9;
-
-        inventory = plugin.getServer().createInventory(new QuickShopPreviewGUIHolder(), size, plugin.text().of(player,"menu.preview").forLocale());
-        for (int i = 0; i < size; i++) {
-            inventory.setItem(i, itemStack);
+        if (inventory == null) {
+            final int size = 9;
+            inventory = plugin.getServer().createInventory(new QuickShopPreviewGUIHolder(), size, plugin.text().of(player,"menu.preview").forLocale());
+            for (int i = 0; i < size; i++) {
+                inventory.setItem(i, itemStack);
+            }
         }
         player.openInventory(inventory);
     }
