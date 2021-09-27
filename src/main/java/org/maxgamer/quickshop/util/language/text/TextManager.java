@@ -61,6 +61,7 @@ public class TextManager {
                 Map<String, JsonConfiguration> fileLocaleMapping = locale2ContentMapping.computeIfAbsent(languageFileCrowdin, k -> new HashMap<>());
                 JsonConfiguration configuration = new JsonConfiguration();
                 fileLocaleMapping.put(availableLanguage, configuration);
+                plugin.getLogger().info(localeFileContent);
                 configuration.loadFromString(localeFileContent);
                 // load override text
                 JsonConfiguration override = new JsonConfiguration();
