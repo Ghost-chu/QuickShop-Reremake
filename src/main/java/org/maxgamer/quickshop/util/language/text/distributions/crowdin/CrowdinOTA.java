@@ -148,7 +148,7 @@ public class CrowdinOTA implements Distribution {
             data = Util.readToString(cachedDataFile);
             cacheMetadata.set(pathHash + ".timestamp", manifest.getTimestamp());
             cacheMetadata.save(metadataFile);
-            return new String(bin, StandardCharsets.UTF_8);
+            return data;
         }
 //        if (data == null) {
 //            cacheMetadata.set(pathHash, null);
