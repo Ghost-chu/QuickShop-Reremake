@@ -70,6 +70,7 @@ public class InventoryPreview implements Listener {
             itemMeta = plugin.getServer().getItemFactory().getItemMeta(itemStack.getType());
         }
         previewStr = plugin.text().of(player, "quickshop-gui-preview").forLocale();
+        //previewStr="Preview Test";
         if (itemMeta != null) {
             if (itemMeta.hasLore()) {
                 itemMeta.getLore().add(previewStr);
