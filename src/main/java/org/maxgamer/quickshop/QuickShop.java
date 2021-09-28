@@ -46,9 +46,6 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.QuickShopAPI;
-//import org.maxgamer.quickshop.chat.QuickChat;
-//import org.maxgamer.quickshop.chat.QuickChatType;
-//import org.maxgamer.quickshop.chat.platform.minedown.AdventureQuickChat;
 import org.maxgamer.quickshop.command.CommandManager;
 import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.*;
@@ -1906,6 +1903,10 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 139) {
             getConfig().set("integration.iridiumskyblock.enable", false);
             getConfig().set("integration.iridiumskyblock.owner-create-only", false);
+            getConfig().set("config-version", ++selectedVersion);
+        }
+        if (selectedVersion == 140) {
+            getConfig().set("integration.towny.delete-shop-on-plot-destroy", true);
             getConfig().set("config-version", ++selectedVersion);
         }
 
