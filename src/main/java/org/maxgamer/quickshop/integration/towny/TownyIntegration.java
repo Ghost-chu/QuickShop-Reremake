@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.integration.towny;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.event.PlotClearEvent;
 import com.palmergames.bukkit.towny.event.TownRemoveResidentEvent;
+import com.palmergames.bukkit.towny.event.actions.TownyDestroyEvent;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
@@ -61,6 +62,7 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
     private boolean deleteShopOnPlotClear;
     private boolean isNewVersion;
     private boolean whiteList;
+    private boolean deleteShopOnPlotDestroy;
 
 
     public TownyIntegration(QuickShop plugin) {
@@ -82,6 +84,7 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
         ignoreDisabledWorlds = plugin.getConfig().getBoolean("integration.towny.ignore-disabled-worlds");
         deleteShopOnLeave = plugin.getConfig().getBoolean("integration.towny.delete-shop-on-resident-leave");
         deleteShopOnPlotClear = plugin.getConfig().getBoolean("integration.towny.delete-shop-on-plot-clear");
+        deleteShopOnPlotDestroy = plugin.getConfig().getBoolean("integration.towny.delete-shop-on-plot-destroy");
         whiteList = plugin.getConfig().getBoolean("integration.towny.whitelist-mode");
     }
 
@@ -134,7 +137,7 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
     }
 
     public void purgeShops(TownBlock townBlock) {
-        if (!deleteShopOnPlotClear) {
+        if (townBlock == null) {
             return;
         }
         String worldName;
@@ -177,6 +180,21 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
 
     @EventHandler
     public void onPlotClear(PlotClearEvent event) {
+        if (!deleteShopOnPlotClear) {
+            return;
+        }
+        if (Bukkit.isPrimaryThread()) {
+            purgeShops(event.getTownBlock());
+        } else {
+            Util.mainThreadRun(() -> purgeShops(event.getTownBlock()));
+        }
+    }
+
+    @EventHandler
+    public void onPlotDestroy(TownyDestroyEvent event) {
+        if (!deleteShopOnPlotDestroy) {
+            return;
+        }
         if (Bukkit.isPrimaryThread()) {
             purgeShops(event.getTownBlock());
         } else {
