@@ -73,6 +73,7 @@ import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -90,7 +91,7 @@ public class Util {
     private static final ThreadLocal<MineDown> mineDown = ThreadLocal.withInitial(() -> new MineDown(""));
     private static int bypassedCustomStackSize = -1;
     private static Yaml yaml = null;
-    private static boolean devMode = false;
+    private static AtomicBoolean devMode = null;
     @Setter
     private static QuickShop plugin;
     private static Object serverInstance;
@@ -335,7 +336,10 @@ public class Util {
         if (debugLogs.size() >= 2000) {
             debugLogs.clear();
         }
-        if (!devMode) {
+        if(devMode == null){ //Workaround: Initial it if devMode not set while call this method
+            devMode = new AtomicBoolean(plugin.getConfig().getBoolean("dev-mode"));
+        }
+        if (!devMode.get()) {
             for (String log : logs) {
                 debugLogs.add("[DEBUG] " + log);
             }
@@ -626,7 +630,7 @@ public class Util {
         restrictedPrices.clear();
         customStackSize.clear();
         currency2Symbol.clear();
-        devMode = plugin.getConfig().getBoolean("dev-mode");
+        devMode = new AtomicBoolean(plugin.getConfig().getBoolean("dev-mode"));
 
         for (String s : plugin.getConfig().getStringList("shop-blocks")) {
             Material mat = Material.matchMaterial(s.toUpperCase());
@@ -1302,7 +1306,9 @@ public class Util {
      * @return under dev-mode
      */
     public static boolean isDevMode() {
-        return devMode;
+        if(devMode == null)
+            return false;
+        return devMode.get();
     }
 
     /**
