@@ -73,10 +73,14 @@ public class TextManager {
                 if (localOverrideFile.exists()) {
                     override.loadFromString(Util.readToString(localOverrideFile));
                     for (String key : override.getKeys(true)) {
+                        if(key.equals("language-version"))
+                            continue;
                         configuration.set(key, override.get(key));
                     }
                 }
                Util.debugLog("Locale: " + availableLanguage + " has been successfully loaded.");
+
+
             } catch (CrowdinOTA.OTAException e) {
                 plugin.getLogger().warning("Couldn't update the translation for locale " + availableLanguage + " because it not configured, please report to QuickShop");
             } catch (IOException e) {
