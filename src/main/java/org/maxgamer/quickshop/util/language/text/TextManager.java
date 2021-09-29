@@ -2,7 +2,6 @@ package org.maxgamer.quickshop.util.language.text;
 
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -281,8 +280,6 @@ public class TextManager {
             if (sender == null)
                 return;
             String lang = forLocale();
-            if (StringUtils.isEmpty(lang))
-                return;
             MsgUtil.sendDirectMessage(sender, lang);
             // plugin.getQuickChat().send(sender, lang);
         }
