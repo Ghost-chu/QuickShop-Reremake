@@ -79,6 +79,7 @@ public class TextManager {
                     configuration.loadFromString(distribution.getFile(crowdinFile, crowdinCode, true));
                 }
                 // load override text (allow user modification the translation)
+                // TODO: full multi-file support
                 JsonConfiguration override = new JsonConfiguration();
                 File localOverrideFile = new File(getOverrideFilesFolder(crowdinFile), minecraftCode + ".json");
                 if (!localOverrideFile.exists()) {
@@ -93,8 +94,6 @@ public class TextManager {
                 }
                 locale2ContentMapping.get(languageFileCrowdin).computeIfAbsent(minecraftCode, e -> configuration);
                 Util.debugLog("Locale " + crowdinFile);
-                if (configuration.getInt("language-version") < bundledLang.getInt("language-version"))
-                    Util.debugLog("Locale " + crowdinCode + " file version is outdated, some string will fallback to English.");
             } catch (CrowdinOTA.OTAException e) {
                 plugin.getLogger().warning("Couldn't update the translation for locale " + crowdinCode + " because it not configured, please report to QuickShop");
             } catch (IOException e) {
