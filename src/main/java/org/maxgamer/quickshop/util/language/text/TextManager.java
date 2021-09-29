@@ -202,8 +202,6 @@ public class TextManager {
             if (sender == null)
                 return;
             for (String s : forLocale()) {
-                if (StringUtils.isEmpty(s))
-                    continue;
                 MsgUtil.sendDirectMessage(sender, s);
             }
         }
