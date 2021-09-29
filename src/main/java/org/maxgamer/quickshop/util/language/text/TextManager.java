@@ -55,21 +55,25 @@ public class TextManager {
             bundledLang = new JsonConfiguration();
             plugin.getLogger().log(Level.SEVERE,"Cannot load bundled language file from Jar, some strings may missing!",ex);
         }
-        distribution.getAvailableLanguages().parallelStream().forEach(availableLanguage -> {
+        // init file mapping
+        locale2ContentMapping.computeIfAbsent(languageFileCrowdin, e->new HashMap<>());
+        // Multi File and Multi-Language loader
+        distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode -> {
             try {
                 // load OTA text from Crowdin
-                Util.debugLog("Loading translation for locale: " + availableLanguage);
-                Map<String, JsonConfiguration> fileLocaleMapping = locale2ContentMapping.computeIfAbsent(languageFileCrowdin, k -> new HashMap<>());
+
+                String minecraftCode = crowdinCode.toLowerCase(Locale.ROOT).replace("-","_");
+
+                Util.debugLog("Loading translation for locale: " + crowdinCode+" ("+minecraftCode+")");
                 JsonConfiguration configuration = new JsonConfiguration();
                 try {
-                    configuration.loadFromString(distribution.getFile(languageFileCrowdin, availableLanguage));
+                    configuration.loadFromString(distribution.getFile(languageFileCrowdin,crowdinCode));
                 } catch (InvalidConfigurationException exception) {
-                    configuration.loadFromString(distribution.getFile(languageFileCrowdin, availableLanguage, true));
+                    configuration.loadFromString(distribution.getFile(languageFileCrowdin, crowdinCode, true));
                 }
-                fileLocaleMapping.put(availableLanguage, configuration);
                 // load override text (allow user modification the translation)
                 JsonConfiguration override = new JsonConfiguration();
-                File localOverrideFile = new File(overrideFilesFolder, availableLanguage + ".json");
+                File localOverrideFile = new File(overrideFilesFolder, minecraftCode + ".json");
                 if (localOverrideFile.exists()) {
                     override.loadFromString(Util.readToString(localOverrideFile));
                     for (String key : override.getKeys(true)) {
@@ -78,17 +82,20 @@ public class TextManager {
                         configuration.set(key, override.get(key));
                     }
                 }
-                Util.debugLog("Locale: " + availableLanguage + " has been successfully loaded.");
+                locale2ContentMapping.get(languageFileCrowdin).computeIfAbsent(minecraftCode,e->configuration);
+                Util.debugLog("Locale: " + crowdinCode +"("+minecraftCode+")"+ " has been successfully loaded.");
+                Util.debugLog("Locale: " + crowdinCode+"("+minecraftCode+")"+ " test: "+configuration.getString("file-test"));
                 if (configuration.getInt("language-version") < bundledLang.getInt("language-version"))
-                    Util.debugLog("Locale " + availableLanguage + " file version is outdated, some string will fallback to English.");
+                    Util.debugLog("Locale " + crowdinCode + " file version is outdated, some string will fallback to English.");
             } catch (CrowdinOTA.OTAException e) {
-                plugin.getLogger().warning("Couldn't update the translation for locale " + availableLanguage + " because it not configured, please report to QuickShop");
+                plugin.getLogger().warning("Couldn't update the translation for locale " + crowdinCode + " because it not configured, please report to QuickShop");
             } catch (IOException e) {
-                plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + availableLanguage + " please check your network connection.", e);
+                plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + " please check your network connection.", e);
             } catch (Exception e) {
-                plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + availableLanguage + ".", e);
+                plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + ".", e);
             }
         });
+
 
 //        for (String availableLanguage : distribution.getAvailableLanguages()) {
 //
@@ -169,16 +176,16 @@ public class TextManager {
         public List<String> forLocale(@NotNull String locale) {
             JsonConfiguration index = mapping.get(locale);
             if(index == null){
-                if(locale.equals("en-US")){
+                if(locale.equals("en_us")){
                     List<String> str = fallbackLocal();
                     if (str.isEmpty())
                         return Collections.singletonList("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                     return postProcess(str);
                 }else{
-                    return forLocale("en-US");
+                    return forLocale("en_us");
                 }
             }else{
-                List<String> str = index.getStringList(locale);
+                List<String> str = index.getStringList(path);
                 if(str.isEmpty()) {
                     return Collections.singletonList("Missing Language Key: " + path);
                 }else {
@@ -193,7 +200,7 @@ public class TextManager {
             if (sender instanceof Player) {
                 return forLocale(((Player) sender).getLocale());
             } else {
-                return forLocale("en");
+                return forLocale("en_us");
             }
         }
 
@@ -251,16 +258,16 @@ public class TextManager {
         public String forLocale(@NotNull String locale) {
             JsonConfiguration index = mapping.get(locale);
             if(index == null){
-                if(locale.equals("en-US")){
+                if(locale.equals("en_us")){
                     String str = fallbackLocal();
                     if (str == null)
                         return "Fallback Missing Language Key: " + path + ", report to QuickShop!";
                     return postProcess(str);
                 }else{
-                    return forLocale("en-US");
+                    return forLocale("en_us");
                 }
             }else{
-                String str = index.getString(locale);
+                String str = index.getString(path);
                 if (str == null)
                     return "Missing Language Key: " + path;
                 return postProcess(str);
@@ -272,7 +279,7 @@ public class TextManager {
             if (sender instanceof Player) {
                 return forLocale(((Player) sender).getLocale());
             } else {
-                return forLocale("en-US");
+                return forLocale("en_us");
             }
         }
 
