@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.util.language.text;
 
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -20,7 +21,7 @@ import org.maxgamer.quickshop.util.language.text.postprocessing.impl.PlaceHolder
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.logging.Level;
@@ -49,9 +50,8 @@ public class TextManager {
         postProcessors.clear();
         // Load mapping
         //for (String availableFile : distribution.getAvailableFiles()) {
-        try (InputStream stream = plugin.getResource("lang-original/messages.json")) {
-            if (stream != null)
-                bundledLang.loadFromString(new String(Util.inputStream2ByteArray(stream), StandardCharsets.UTF_8));
+        try {
+            bundledLang.loadFromString(new String(IOUtils.toByteArray(new InputStreamReader(plugin.getResource("lang-original/messages.json")), StandardCharsets.UTF_8)));
         } catch (IOException | InvalidConfigurationException ex) {
             bundledLang = new JsonConfiguration();
             plugin.getLogger().log(Level.SEVERE,"Cannot load bundled language file from Jar, some strings may missing!",ex);
@@ -169,17 +169,24 @@ public class TextManager {
         @NotNull
         public List<String> forLocale(@NotNull String locale) {
             JsonConfiguration index = mapping.get(locale);
-            if (index == null && locale.equals("en")) {
-                List<String> str = fallbackLocal();
-                if (str.isEmpty())
-                    return Collections.singletonList("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+            if(index == null){
+                if(locale.equals("en-US")){
+                    List<String> str = fallbackLocal();
+                    if (str.isEmpty())
+                        return Collections.singletonList("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                    return postProcess(str);
+                }else{
+                    return forLocale("en-US");
+                }
+            }else{
+                List<String> str = index.getStringList(locale);
+                if(str.isEmpty()) {
+                    return Collections.singletonList("Missing Language Key: " + path);
+                }else {
+                    return postProcess(str);
+                }
             }
-            if (index == null)
-                return forLocale("en");
-            List<String> str = index.getStringList(locale);
-            if (str.isEmpty())
-                return Collections.singletonList("Missing Language Key: " + path);
-            return postProcess(str);
+
         }
 
         @NotNull
@@ -246,17 +253,21 @@ public class TextManager {
         @NotNull
         public String forLocale(@NotNull String locale) {
             JsonConfiguration index = mapping.get(locale);
-            if (index == null && locale.equals("en")) {
-                String str = fallbackLocal();
+            if(index == null){
+                if(locale.equals("en-US")){
+                    String str = fallbackLocal();
+                    if (str == null)
+                        return "Fallback Missing Language Key: " + path + ", report to QuickShop!";
+                    return postProcess(str);
+                }else{
+                    return forLocale("en-US");
+                }
+            }else{
+                String str = index.getString(locale);
                 if (str == null)
-                    return "Fallback Missing Language Key: " + path + ", report to QuickShop!";
+                    return "Missing Language Key: " + path;
+                return postProcess(str);
             }
-            if (index == null)
-                return forLocale("en");
-            String str = index.getString(locale);
-            if (str == null)
-                return "Missing Language Key: " + path;
-            return postProcess(str);
         }
 
         @NotNull
@@ -264,7 +275,7 @@ public class TextManager {
             if (sender instanceof Player) {
                 return forLocale(((Player) sender).getLocale());
             } else {
-                return forLocale("en");
+                return forLocale("en-US");
             }
         }
 
