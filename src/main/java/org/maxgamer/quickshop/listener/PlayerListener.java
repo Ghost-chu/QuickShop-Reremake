@@ -330,10 +330,6 @@ public class PlayerListener extends QSListener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onJoin(PlayerLocaleChangeEvent e) {
         Util.debugLog("Player "+e.getPlayer().getName()+" using new locale "+e.getLocale()+": "+plugin.text().of(e.getPlayer(),"file-test").forLocale(e.getLocale()));
-        // Notify the player any messages they were sent
-        if (plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
-            MsgUtil.flush(e.getPlayer());
-        }
     }
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent e) {
