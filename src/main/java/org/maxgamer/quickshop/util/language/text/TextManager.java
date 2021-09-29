@@ -52,8 +52,9 @@ public class TextManager {
         try (InputStream stream = plugin.getResource("lang-original/messages.json")) {
             if (stream != null)
                 bundledLang.loadFromString(new String(Util.inputStream2ByteArray(stream), StandardCharsets.UTF_8));
-        } catch (IOException | InvalidConfigurationException ignored) {
+        } catch (IOException | InvalidConfigurationException ex) {
             bundledLang = new JsonConfiguration();
+            plugin.getLogger().log(Level.SEVERE,"Cannot load bundled language file from Jar, some strings may missing!",ex);
         }
         distribution.getAvailableLanguages().parallelStream().forEach(availableLanguage -> {
             try {
