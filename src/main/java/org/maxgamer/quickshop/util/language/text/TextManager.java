@@ -43,7 +43,7 @@ public class TextManager {
     @NotNull
     private File getOverrideFilesFolder(@NotNull String crowdinPath) {
         File file = new File(crowdinPath);
-        File folder = new File(new File(plugin.getDataFolder(),"overrides"), file.getName() + ".overrides");
+        File folder = new File(new File(plugin.getDataFolder(), "overrides"), file.getName() + ".overrides");
         folder.mkdirs();
         return folder;
     }
@@ -81,13 +81,15 @@ public class TextManager {
                 // load override text (allow user modification the translation)
                 JsonConfiguration override = new JsonConfiguration();
                 File localOverrideFile = new File(getOverrideFilesFolder(crowdinFile), minecraftCode + ".json");
-                if (localOverrideFile.exists()) {
-                    override.loadFromString(Util.readToString(localOverrideFile));
-                    for (String key : override.getKeys(true)) {
-                        if (key.equals("language-version") || key.equals("config-version") || key.equals("version"))
-                            continue;
-                        configuration.set(key, override.get(key));
-                    }
+                if (!localOverrideFile.exists()) {
+                    localOverrideFile.getParentFile().mkdirs();
+                    localOverrideFile.createNewFile();
+                }
+                override.loadFromString(Util.readToString(localOverrideFile));
+                for (String key : override.getKeys(true)) {
+                    if (key.equals("language-version") || key.equals("config-version") || key.equals("version"))
+                        continue;
+                    configuration.set(key, override.get(key));
                 }
                 locale2ContentMapping.get(languageFileCrowdin).computeIfAbsent(minecraftCode, e -> configuration);
                 Util.debugLog("Locale " + crowdinFile);
