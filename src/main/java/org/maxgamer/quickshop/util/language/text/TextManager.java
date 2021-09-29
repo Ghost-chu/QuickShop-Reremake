@@ -25,6 +25,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.logging.Level;
 
+/**
+ * QuickShop universal text manager
+ * With multi-files and multi-languages support
+ */
 public class TextManager {
     private final QuickShop plugin;
     private final Distribution distribution;
@@ -32,6 +36,8 @@ public class TextManager {
     private final Map<String, Map<String, JsonConfiguration>> locale2ContentMapping = new HashMap<>();
     private final static String languageFileCrowdin = "/master/src/main/resources/lang/%locale%/messages.json";
     public List<PostProcessor> postProcessors = new ArrayList<>();
+    // <File, Section>
+    private final Map<String, JsonConfiguration> bundledMapping = new HashMap<>();
     private JsonConfiguration bundledLang = new JsonConfiguration();
 
     public TextManager(QuickShop plugin) {
@@ -40,12 +46,21 @@ public class TextManager {
         load();
     }
 
+    /**
+     * Generate and returns the override files storage folder for specific file
+     *
+     * @param distributionPath The file name or path on distribution platform
+     * @return The storage folder
+     */
     @NotNull
-    private File getOverrideFilesFolder(@NotNull String crowdinPath) {
-        File file = new File(crowdinPath);
-        File folder = new File(new File(plugin.getDataFolder(), "overrides"), file.getName() + ".overrides");
+    private File getOverrideFilesFolder(@NotNull String distributionPath) {
+        File folder = new File(new File(plugin.getDataFolder(), "overrides"), getFileNameFromFullPath(distributionPath) + ".overrides");
         folder.mkdirs();
         return folder;
+    }
+
+    private String getFileNameFromFullPath(@NotNull String path) {
+        return new File(path).getName();
     }
 
     public void load() {
@@ -53,56 +68,56 @@ public class TextManager {
         locale2ContentMapping.clear();
         postProcessors.clear();
         // Load mapping
-        //for (String availableFile : distribution.getAvailableFiles()) {
-        try {
-            bundledLang.loadFromString(new String(IOUtils.toByteArray(new InputStreamReader(plugin.getResource("lang-original/messages.json")), StandardCharsets.UTF_8)));
-        } catch (IOException | InvalidConfigurationException ex) {
-            bundledLang = new JsonConfiguration();
-            plugin.getLogger().log(Level.SEVERE, "Cannot load bundled language file from Jar, some strings may missing!", ex);
-        }
+
+
         // init file mapping
         locale2ContentMapping.computeIfAbsent(languageFileCrowdin, e -> new HashMap<>());
         // Multi File and Multi-Language loader
 
-
-        distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode -> distribution.getAvailableFiles().parallelStream().forEach(crowdinFile -> {
+        distribution.getAvailableFiles().parallelStream().forEach(crowdinFile -> {
+            JsonConfiguration bundledLang = new JsonConfiguration();
             try {
-                // load OTA text from Crowdin
-
-                String minecraftCode = crowdinCode.toLowerCase(Locale.ROOT).replace("-", "_");
-
-                Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
-                JsonConfiguration configuration = new JsonConfiguration();
-                try {
-                    configuration.loadFromString(distribution.getFile(crowdinFile, crowdinCode));
-                } catch (InvalidConfigurationException exception) {
-                    configuration.loadFromString(distribution.getFile(crowdinFile, crowdinCode, true));
-                }
-                // load override text (allow user modification the translation)
-                JsonConfiguration override = new JsonConfiguration();
-                File localOverrideFile = new File(getOverrideFilesFolder(crowdinFile), minecraftCode + ".json");
-                if (!localOverrideFile.exists()) {
-                    localOverrideFile.getParentFile().mkdirs();
-                    localOverrideFile.createNewFile();
-                }
-                override.loadFromString(Util.readToString(localOverrideFile));
-                for (String key : override.getKeys(true)) {
-                    if (key.equals("language-version") || key.equals("config-version") || key.equals("version"))
-                        continue;
-                    configuration.set(key, override.get(key));
-                }
-                locale2ContentMapping.get(languageFileCrowdin).computeIfAbsent(minecraftCode, e -> configuration);
-                Util.debugLog("Locale " + crowdinFile);
-                if (configuration.getInt("language-version") < bundledLang.getInt("language-version"))
-                    Util.debugLog("Locale " + crowdinCode + " file version is outdated, some string will fallback to English.");
-            } catch (CrowdinOTA.OTAException e) {
-                plugin.getLogger().warning("Couldn't update the translation for locale " + crowdinCode + " because it not configured, please report to QuickShop");
-            } catch (IOException e) {
-                plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + " please check your network connection.", e);
-            } catch (Exception e) {
-                plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + ".", e);
+                bundledLang.loadFromString(new String(IOUtils.toByteArray(new InputStreamReader(plugin.getResource("bundled/" + getFileNameFromFullPath(crowdinFile))), StandardCharsets.UTF_8)));
+            } catch (IOException | InvalidConfigurationException ex) {
+                bundledLang = new JsonConfiguration();
+                plugin.getLogger().log(Level.SEVERE, "Cannot load bundled file " + crowdinFile + " from Jar, some strings may missing!", ex);
             }
-        }));
+            bundledMapping.put(crowdinFile, bundledLang);
+            distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode -> {
+                try {
+                    // load OTA text from Crowdin
+                    String minecraftCode = crowdinCode.toLowerCase(Locale.ROOT).replace("-", "_");
+                    Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
+                    JsonConfiguration configuration = new JsonConfiguration();
+                    try {
+                        configuration.loadFromString(distribution.getFile(crowdinFile, crowdinCode));
+                    } catch (InvalidConfigurationException exception) {
+                        configuration.loadFromString(distribution.getFile(crowdinFile, crowdinCode, true));
+                    }
+                    // load override text (allow user modification the translation)
+                    JsonConfiguration override = new JsonConfiguration();
+                    File localOverrideFile = new File(getOverrideFilesFolder(crowdinFile), minecraftCode + ".json");
+                    if (!localOverrideFile.exists()) {
+                        localOverrideFile.getParentFile().mkdirs();
+                        localOverrideFile.createNewFile();
+                    }
+                    override.loadFromString(Util.readToString(localOverrideFile));
+                    for (String key : override.getKeys(true)) {
+                        if (key.equals("language-version") || key.equals("config-version") || key.equals("version"))
+                            continue;
+                        configuration.set(key, override.get(key));
+                    }
+                    locale2ContentMapping.get(languageFileCrowdin).computeIfAbsent(minecraftCode, e -> configuration);
+                } catch (CrowdinOTA.OTAException e) {
+                    plugin.getLogger().warning("Couldn't update the translation for locale " + crowdinCode + " because it not configured, please report to QuickShop");
+                } catch (IOException e) {
+                    plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + " please check your network connection.", e);
+                } catch (Exception e) {
+                    plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + ".", e);
+                }
+            });
+        });
+
 
 
 //        for (String availableLanguage : distribution.getAvailableLanguages()) {
@@ -114,27 +129,27 @@ public class TextManager {
     }
 
     public Text of(@NotNull String path, String... args) {
-        return new Text(this, (CommandSender) null, locale2ContentMapping.get(languageFileCrowdin), path, args);
+        return new Text(this, (CommandSender) null, languageFileCrowdin, path, args);
     }
 
     public Text of(@Nullable CommandSender sender, @NotNull String path, String... args) {
-        return new Text(this, sender, locale2ContentMapping.get(languageFileCrowdin), path, args);
+        return new Text(this, sender, languageFileCrowdin, path, args);
     }
 
     public Text of(@Nullable UUID sender, @NotNull String path, String... args) {
-        return new Text(this, sender, locale2ContentMapping.get(languageFileCrowdin), path, args);
+        return new Text(this, sender, languageFileCrowdin, path, args);
     }
 
     public TextList ofList(@NotNull String path, String... args) {
-        return new TextList(this, (CommandSender) null, locale2ContentMapping.get(languageFileCrowdin), path, args);
+        return new TextList(this, (CommandSender) null, languageFileCrowdin, path, args);
     }
 
     public TextList ofList(@Nullable UUID sender, @NotNull String path, String... args) {
-        return new TextList(this, sender, locale2ContentMapping.get(languageFileCrowdin), path, args);
+        return new TextList(this, sender, languageFileCrowdin, path, args);
     }
 
     public TextList ofList(@Nullable CommandSender sender, @NotNull String path, String... args) {
-        return new TextList(this, sender, locale2ContentMapping.get(languageFileCrowdin), path, args);
+        return new TextList(this, sender, languageFileCrowdin, path, args);
     }
 
     public static class TextList {
@@ -145,23 +160,23 @@ public class TextManager {
         private final CommandSender sender;
         private final String[] args;
 
-        private TextList(TextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, String path, String... args) {
+        private TextList(TextManager manager, CommandSender sender, String file, String path, String... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
             this.sender = sender;
-            this.mapping = mapping;
+            this.mapping = manager.locale2ContentMapping.get(file);
             this.path = path;
             this.args = args;
         }
 
-        private TextList(TextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, String path, String... args) {
+        private TextList(TextManager manager, UUID sender, String file, String path, String... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
             if (sender != null)
                 this.sender = Bukkit.getPlayer(sender);
             else
                 this.sender = null;
-            this.mapping = mapping;
+            this.mapping = manager.locale2ContentMapping.get(file);
             this.path = path;
             this.args = args;
         }
@@ -229,23 +244,23 @@ public class TextManager {
         private final CommandSender sender;
         private final String[] args;
 
-        private Text(TextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, String path, String... args) {
+        private Text(TextManager manager, CommandSender sender, String file, String path, String... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
             this.sender = sender;
-            this.mapping = mapping;
+            this.mapping = manager.locale2ContentMapping.get(file);
             this.path = path;
             this.args = args;
         }
 
-        private Text(TextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, String path, String... args) {
+        private Text(TextManager manager, UUID sender, String file, String path, String... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
             if (sender != null)
                 this.sender = Bukkit.getPlayer(sender);
             else
                 this.sender = null;
-            this.mapping = mapping;
+            this.mapping = manager.locale2ContentMapping.get(file);
             this.path = path;
             this.args = args;
         }

@@ -314,7 +314,7 @@
                 <excludes>
                     <exclude>src/main/resources/bin</exclude>
                     <exclude>src/main/resources/lang</exclude>
-                    <exclude>src/main/resources/lang-original</exclude>
+                    <exclude>src/main/resources/bundled</exclude>
                 </excludes>
             </resource>
             <resource>
@@ -328,9 +328,9 @@
                 <directory>src/main/resources/lang</directory>
             </resource>
             <resource>
-                <targetPath>lang-original</targetPath>
+                <targetPath>bundled</targetPath>
                 <filtering>false</filtering>
-                <directory>src/main/resources/lang-original</directory>
+                <directory>src/main/resources/bundled</directory>
             </resource>
         </resources>
     </build>
