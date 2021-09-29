@@ -5,13 +5,18 @@ import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.language.text.distributions.Distribution;
@@ -19,71 +24,80 @@ import org.maxgamer.quickshop.util.language.text.distributions.crowdin.bean.Mani
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 public class CrowdinOTA implements Distribution {
     protected static final String CROWDIN_OTA_HOST = "https://distributions.crowdin.net/daf1a8db40f132ce157c457xrm4/";
-    protected final Cache<String, byte[]> requestCachePool = CacheBuilder.newBuilder()
+    protected final Cache<String, String> requestCachePool = CacheBuilder.newBuilder()
+            .initialCapacity(1)
             .expireAfterWrite(7, TimeUnit.DAYS)
             .recordStats()
             .build();
-    private QuickShop plugin;
+    private final QuickShop plugin;
+    // private final File cacheFolder;
+    // private final okhttp3.Cache cache;
+    private final OkHttpClient client;
+    //  private final OkHttpClient clientNoCache;
 
     public CrowdinOTA(QuickShop plugin) {
         this.plugin = plugin;
         Util.getCacheFolder().mkdirs();
+        // this.cacheFolder = new File(Util.getCacheFolder(), "okhttp");
+        //   this.cacheFolder.mkdirs();
+        // this.cache = new okhttp3.Cache(cacheFolder, 100 * 1024 * 1024);
+//        this.client = new OkHttpClient.Builder()
+//                .cache(cache)
+//                .build();
+        this.client = new OkHttpClient.Builder()
+                .build();
+
     }
 
-    private byte[] requestWithCache(@NotNull String url, @Nullable File saveTo) throws IOException {
-        byte[] data = requestCachePool.getIfPresent(url);
-        if (data == null) {
-            try {
-                HttpRequest.BufferedResponse response = HttpRequest.get(new URL(url))
-                        .execute()
-                        .expectResponseCode(200)
-                        .returnContent();
-                if (saveTo != null)
-                    response.saveContent(saveTo);
-                return response.asBytes();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-        return data;
-    }
+//    private byte[] requestWithCache(@NotNull String url, @Nullable File saveTo) throws IOException {
+//        byte[] data = requestCachePool.getIfPresent(url);
+//        if (data == null) {
+//            CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+//            HttpGet getRequest = new HttpGet(url);
+//            getRequest.setConfig(RequestConfig.custom()
+//                    .setSocketTimeout(30 * 1000)
+//                    .setConnectTimeout(20 * 1000).build());
+//            CloseableHttpResponse response = httpClient.execute(getRequest);
+//            data = Util.inputStream2ByteArray(response.getEntity().getContent());
+//            if (response.getStatusLine().getStatusCode() != 200)
+//                throw new OTAException(response.getStatusLine().getStatusCode(), new String(data == null ? new byte[0] : Util.inputStream2ByteArray(response.getEntity().getContent()), StandardCharsets.UTF_8));
+//            if (saveTo != null && data != null)
+//                Files.write(saveTo.toPath(), data, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+//        }
+//        return data;
+//    }
 
     @Nullable
     public Manifest getManifest() {
-        String url = CROWDIN_OTA_HOST + "manifest.json";
-        String data = null;
-        try {
-            data = new String(requestWithCache(url,null), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            plugin.getLogger().log(Level.WARNING,"Failed to download manifest.json, multi-language system won't work");
-            return null;
-        }
-        if (StringUtils.isEmpty(data))
-            return null;
-        return JsonUtil.getGson().fromJson(data, Manifest.class);
+        return JsonUtil.getGson().fromJson(getManifestJson(), Manifest.class);
     }
 
     @Nullable
     public String getManifestJson() {
         String url = CROWDIN_OTA_HOST + "manifest.json";
         String data;
-        try {
-            data = new String(requestWithCache(url,null), StandardCharsets.UTF_8);
+        if (requestCachePool.getIfPresent(url) != null)
+            return requestCachePool.getIfPresent(url);
+        try (Response response = client.newCall(new Request.Builder().get().url(url).build()).execute()) {
+            data = response.body().string();
+            if (response.code() != 200) {
+                plugin.getLogger().warning("Couldn't get manifest: " + response.code() + ", please report to QuickShop!");
+                return null;
+            }
+            requestCachePool.put(url, data);
         } catch (IOException e) {
-            plugin.getLogger().log(Level.WARNING,"Failed to download manifest.json, multi-language system won't work");
+            plugin.getLogger().log(Level.WARNING, "Failed to download manifest.json, multi-language system won't work");
             return null;
         }
-        if (StringUtils.isEmpty(data))
-            return null;
         return data;
     }
 
@@ -146,25 +160,45 @@ public class CrowdinOTA implements Distribution {
         File cachedDataFile = new File(Util.getCacheFolder(), pathHash);
         String data = null;
         if (cachedDataFile.exists()) {
+            Util.debugLog("Reading data from local cache: " + cachedDataFile.getCanonicalPath());
             data = Util.readToString(cachedDataFile);
         }
         // invalidate cache, flush it
         if (forceFlush || data == null || localeTimestamp != manifest.getTimestamp()) {
             String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);
-            byte[] bin = requestWithCache(url,cachedDataFile);
-            if (bin == null)
-                throw new IOException("Couldn't download translation from remote server.");
+            Util.debugLog("Reading data from remote server: " + url);
+            try (Response response = client.newCall(new Request.Builder().get().url(url).build()).execute()) {
+                data = response.body().string();
+                if (response.code() != 200)
+                    throw new OTAException(response.code(), data);
+                Files.write(cachedDataFile.toPath(), data.getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+            } catch (IOException e) {
+                plugin.getLogger().log(Level.WARNING, "Failed to download manifest.json, multi-language system may won't work");
+                return "";
+            }
             // update cache index
-            data = Util.readToString(cachedDataFile);
             cacheMetadata.set(pathHash + ".timestamp", manifest.getTimestamp());
             cacheMetadata.save(metadataFile);
             return data;
         }
-//        if (data == null) {
-//            cacheMetadata.set(pathHash, null);
-//            cacheMetadata.save(metadataFile);
-//            throw new IOException("Couldn't read translation from local cache, please try again");
-//        }
         return data;
+    }
+
+    @EqualsAndHashCode(callSuper = true)
+    @AllArgsConstructor
+    @Builder
+    @Data
+    public static class OTAException extends Exception {
+        private int httpCode;
+        private String content;
+    }
+
+    @AllArgsConstructor
+    @Builder
+    @Data
+    public static class CrowdinGetFileRequest {
+        private String fileCrowdinPath;
+        private String crowdinLocale;
+        private boolean forceFlush;
     }
 }
