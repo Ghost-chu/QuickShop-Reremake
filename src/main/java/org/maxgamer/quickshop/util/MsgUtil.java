@@ -227,7 +227,7 @@ public class MsgUtil {
 //        String buildInMessageFilePath = "lang/" + languageCode + "/messages.json";
 //        if (plugin.getResource(buildInMessageFilePath) == null) {
 //            //Use default
-//            buildInMessageFilePath = "bundled/messages.json";
+//            buildInMessageFilePath = "lang-original/messages.json";
 //        }
 //        if (!extractedMessageFile.exists()) {
 //            try {
@@ -280,7 +280,7 @@ public class MsgUtil {
 //            Util.debugLog("Cannot load default built-in language file: " + ioException.getMessage());
 //        }
 //        builtInLang = HumanReadableJsonConfiguration.loadConfiguration(buildInLangFile);
-//        try (InputStreamReader inputStreamReader = new InputStreamReader(Objects.requireNonNull(plugin.getResource("bundled/messages.json")))) {
+//        try (InputStreamReader inputStreamReader = new InputStreamReader(Objects.requireNonNull(plugin.getResource("lang-original/messages.json")))) {
 //            builtInOriginalLang = HumanReadableJsonConfiguration.loadConfiguration(inputStreamReader);
 //        } catch (IOException | NullPointerException exception) {
 //            plugin.getLogger().log(Level.WARNING, "Cannot to load built-in original messages, some phrases may missing when upgrading", exception);
