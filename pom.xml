@@ -209,10 +209,6 @@
                             <shadedPattern>org.maxgamer.quickshop.shade.org.enginehub.squirrelid.</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>net.kyori.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.shade.org.net.kyori.</shadedPattern>
-                        </relocation>
-                        <relocation>
                             <pattern>com.squareup.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.org.com.squareup.</shadedPattern>
                         </relocation>
