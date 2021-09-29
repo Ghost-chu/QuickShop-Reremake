@@ -39,6 +39,7 @@ public class TextManager {
         this.plugin = plugin;
         this.distribution = new CrowdinOTA(plugin);
         this.overrideFilesFolder = new File(plugin.getDataFolder(), "lang-override");
+        this.overrideFilesFolder.mkdirs();
         load();
     }
 
@@ -54,16 +55,19 @@ public class TextManager {
         } catch (IOException | InvalidConfigurationException ignored) {
             bundledLang = new JsonConfiguration();
         }
-        for (String availableLanguage : distribution.getAvailableLanguages()) {
+        distribution.getAvailableLanguages().parallelStream().forEach(availableLanguage -> {
             try {
-                // load OTA text
-                String localeFileContent = distribution.getFile(languageFileCrowdin, availableLanguage);
+                // load OTA text from Crowdin
+                Util.debugLog("Loading translation for locale: " + availableLanguage);
                 Map<String, JsonConfiguration> fileLocaleMapping = locale2ContentMapping.computeIfAbsent(languageFileCrowdin, k -> new HashMap<>());
                 JsonConfiguration configuration = new JsonConfiguration();
+                try {
+                    configuration.loadFromString(distribution.getFile(languageFileCrowdin, availableLanguage));
+                } catch (InvalidConfigurationException exception) {
+                    configuration.loadFromString(distribution.getFile(languageFileCrowdin, availableLanguage, true));
+                }
                 fileLocaleMapping.put(availableLanguage, configuration);
-                plugin.getLogger().info(localeFileContent);
-                configuration.loadFromString(localeFileContent);
-                // load override text
+                // load override text (allow user modification the translation)
                 JsonConfiguration override = new JsonConfiguration();
                 File localOverrideFile = new File(overrideFilesFolder, availableLanguage + ".json");
                 if (localOverrideFile.exists()) {
@@ -72,29 +76,36 @@ public class TextManager {
                         configuration.set(key, override.get(key));
                     }
                 }
+               Util.debugLog("Locale: " + availableLanguage + " has been successfully loaded.");
+            } catch (CrowdinOTA.OTAException e) {
+                plugin.getLogger().warning("Couldn't update the translation for locale " + availableLanguage + " because it not configured, please report to QuickShop");
+            } catch (IOException e) {
+                plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + availableLanguage + " please check your network connection.", e);
             } catch (Exception e) {
-                if(e.getMessage().contains("Did not get expected response code, got 403 for")) {
-                    plugin.getLogger().log(Level.WARNING, "The language " + availableLanguage+" didn't configure correctly, please report to QuickShop.", e);
-                    continue;
-                }
-                plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + availableLanguage, e);
+                plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + availableLanguage + ".", e);
             }
-        }
+        });
+
+//        for (String availableLanguage : distribution.getAvailableLanguages()) {
+//
+//        }
         postProcessors.add(new FillerProcessor());
         postProcessors.add(new ColorProcessor());
         postProcessors.add(new PlaceHolderApiProcessor());
     }
 
     public Text of(@NotNull String path, String... args) {
-        return new Text(this,  (CommandSender)null, locale2ContentMapping.get(languageFileCrowdin), path, args);
+        return new Text(this, (CommandSender) null, locale2ContentMapping.get(languageFileCrowdin), path, args);
     }
 
     public Text of(@Nullable CommandSender sender, @NotNull String path, String... args) {
         return new Text(this, sender, locale2ContentMapping.get(languageFileCrowdin), path, args);
     }
+
     public Text of(@Nullable UUID sender, @NotNull String path, String... args) {
         return new Text(this, sender, locale2ContentMapping.get(languageFileCrowdin), path, args);
     }
+
     public TextList ofList(@NotNull String path, String... args) {
         return new TextList(this, (CommandSender) null, locale2ContentMapping.get(languageFileCrowdin), path, args);
     }
@@ -102,6 +113,7 @@ public class TextManager {
     public TextList ofList(@Nullable UUID sender, @NotNull String path, String... args) {
         return new TextList(this, sender, locale2ContentMapping.get(languageFileCrowdin), path, args);
     }
+
     public TextList ofList(@Nullable CommandSender sender, @NotNull String path, String... args) {
         return new TextList(this, sender, locale2ContentMapping.get(languageFileCrowdin), path, args);
     }
@@ -126,7 +138,7 @@ public class TextManager {
         private TextList(TextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, String path, String... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
-            if(sender != null)
+            if (sender != null)
                 this.sender = Bukkit.getPlayer(sender);
             else
                 this.sender = null;
@@ -175,7 +187,7 @@ public class TextManager {
         }
 
         public void send() {
-            if(sender == null)
+            if (sender == null)
                 return;
             for (String s : forLocale()) {
                 if (StringUtils.isEmpty(s))
@@ -205,7 +217,7 @@ public class TextManager {
         private Text(TextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, String path, String... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
-            if(sender != null)
+            if (sender != null)
                 this.sender = Bukkit.getPlayer(sender);
             else
                 this.sender = null;
@@ -252,13 +264,13 @@ public class TextManager {
         }
 
         public void send() {
-            if(sender == null)
+            if (sender == null)
                 return;
             String lang = forLocale();
             if (StringUtils.isEmpty(lang))
                 return;
-           MsgUtil.sendDirectMessage(sender,lang);
-           // plugin.getQuickChat().send(sender, lang);
+            MsgUtil.sendDirectMessage(sender, lang);
+            // plugin.getQuickChat().send(sender, lang);
         }
     }
 }
