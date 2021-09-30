@@ -327,11 +327,11 @@
   "unlimited-shop-owner-keeped": "&eВнимание: Владелец магазина все еще является владельцем безлимитного магазина, вам нужно установить нового владельца магазина самостоятельно.",
   "server-crash-warning": "&cСервер может вызывать сбой после выполнения команды /qs reload, если вы заменяете/удаляете плагина QuickShop во время работы сервера.",
   "reloading-status": {
-    "success": "&aReload completed without any errors.",
-    "require-restart": "&aReload completed. &e(Some changes require server restart to affect)",
-    "failed": "&cReload failed, check the server console",
-    "scheduled": "&aReload completed. &7(Some changes required a while to affect)"
+    "success": "&aПерезагрузка завершена без ошибок.",
+    "require-restart": "&aПерезагрузка завершена. &e(Для изменения интерфейса потребуется перезапуск сервера)",
+    "failed": "&cНе удалось перезагрузить, проверьте консоль сервера",
+    "scheduled": "&aПерезагрузка завершена. &7(Для изменения потребуется некоторое время)"
   },
-  "client-language-changed": "&aQuickShop detected your client language setting has been changed, we're now using {0} locale for you.",
-  "client-language-unsupported": "&eQuickShop doesn't support your client language, we're fallback to {0} locale now."
+  "client-language-changed": "&aQuickShop обнаружил изменения языка вашего клиента, теперь мы используем локаль {0}.",
+  "client-language-unsupported": "&eQuickShop не поддерживает ваш язык клиента, теперь мы возвращаемся на {0} язык."
 }
