@@ -48,38 +48,46 @@ public class TextManager {
         return folder;
     }
 
-    public void load() {
-        plugin.getLogger().info("Checking for translation updates...");
+    private void reset(){
         locale2ContentMapping.clear();
         postProcessors.clear();
-        // Load mapping
-        //for (String availableFile : distribution.getAvailableFiles()) {
+    }
+
+    private void loadBundled(){
         try {
             bundledLang.loadFromString(new String(IOUtils.toByteArray(new InputStreamReader(plugin.getResource("lang-original/messages.json")), StandardCharsets.UTF_8)));
         } catch (IOException | InvalidConfigurationException ex) {
             bundledLang = new JsonConfiguration();
             plugin.getLogger().log(Level.SEVERE, "Cannot load bundled language file from Jar, some strings may missing!", ex);
         }
-        // init file mapping
-        locale2ContentMapping.computeIfAbsent(languageFileCrowdin, e -> new HashMap<>());
+    }
+
+    public void load() {
+        plugin.getLogger().info("Checking for translation updates...");
+        this.reset();
+
+        // Read bundled language files
+        this.loadBundled();
+        // Initial file mapping
+        locale2ContentMapping.computeIfAbsent(languageFileCrowdin, e -> new HashMap<>()); // Prevent nullportinter exception
+        distribution.getAvailableFiles().forEach(file-> locale2ContentMapping.computeIfAbsent(file, e -> new HashMap<>()));
+
         // Multi File and Multi-Language loader
-
-
         distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode -> distribution.getAvailableFiles().parallelStream().forEach(crowdinFile -> {
             try {
-                // load OTA text from Crowdin
-
+                // Minecraft client use lowercase wi
                 String minecraftCode = crowdinCode.toLowerCase(Locale.ROOT).replace("-", "_");
-
                 Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
                 JsonConfiguration configuration = new JsonConfiguration();
                 try {
+                    // Load the locale file from local cache if available
+                    // Or load the locale file from remote server if it had updates or not exists.
                     configuration.loadFromString(distribution.getFile(crowdinFile, crowdinCode));
                 } catch (InvalidConfigurationException exception) {
+                    // Force loading the locale file form remote server because file not valid.
                     configuration.loadFromString(distribution.getFile(crowdinFile, crowdinCode, true));
                 }
-                // load override text (allow user modification the translation)
-                // TODO: full multi-file support
+                // Loading override text (allow user modification the translation)
                 JsonConfiguration override = new JsonConfiguration();
                 File localOverrideFile = new File(getOverrideFilesFolder(crowdinFile), minecraftCode + ".json");
                 if (!localOverrideFile.exists()) {
@@ -93,7 +101,7 @@ public class TextManager {
                     configuration.set(key, override.get(key));
                 }
                 locale2ContentMapping.get(languageFileCrowdin).computeIfAbsent(minecraftCode, e -> configuration);
-                Util.debugLog("Locale " + crowdinFile);
+                Util.debugLog("Locale " + crowdinFile +" has been successfully loaded");
             } catch (CrowdinOTA.OTAException e) {
                 plugin.getLogger().warning("Couldn't update the translation for locale " + crowdinCode + " because it not configured, please report to QuickShop");
             } catch (IOException e) {
@@ -103,10 +111,7 @@ public class TextManager {
             }
         }));
 
-
-//        for (String availableLanguage : distribution.getAvailableLanguages()) {
-//
-//        }
+        // Register post processor
         postProcessors.add(new FillerProcessor());
         postProcessors.add(new ColorProcessor());
         postProcessors.add(new PlaceHolderApiProcessor());
