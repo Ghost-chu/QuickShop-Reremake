@@ -30,9 +30,10 @@ public class TextManager {
     private final Distribution distribution;
     // <File <Locale, Section>>
     private final Map<String, Map<String, JsonConfiguration>> locale2ContentMapping = new HashMap<>();
+    private final Map<String, JsonConfiguration> bundledFile2ContentMapping = new HashMap<>();
     private final static String languageFileCrowdin = "/master/src/main/resources/lang/%locale%/messages.json";
-    public List<PostProcessor> postProcessors = new ArrayList<>();
-    private JsonConfiguration bundledLang = new JsonConfiguration();
+    public final List<PostProcessor> postProcessors = new ArrayList<>();
+
 
     public TextManager(QuickShop plugin) {
         this.plugin = plugin;
@@ -53,24 +54,28 @@ public class TextManager {
         postProcessors.clear();
     }
 
-    private void loadBundled(){
+    private JsonConfiguration loadBundled(String file){
+        JsonConfiguration bundledLang = new JsonConfiguration();
         try {
-            bundledLang.loadFromString(new String(IOUtils.toByteArray(new InputStreamReader(plugin.getResource("lang-original/messages.json")), StandardCharsets.UTF_8)));
+            File fileObject = new File(file);
+            bundledLang.loadFromString(new String(IOUtils.toByteArray(new InputStreamReader(plugin.getResource("lang-original/" +fileObject.getName())), StandardCharsets.UTF_8)));
         } catch (IOException | InvalidConfigurationException ex) {
             bundledLang = new JsonConfiguration();
             plugin.getLogger().log(Level.SEVERE, "Cannot load bundled language file from Jar, some strings may missing!", ex);
         }
+        return bundledLang;
     }
 
     public void load() {
         plugin.getLogger().info("Checking for translation updates...");
         this.reset();
 
-        // Read bundled language files
-        this.loadBundled();
         // Initial file mapping
         locale2ContentMapping.computeIfAbsent(languageFileCrowdin, e -> new HashMap<>()); // Prevent nullportinter exception
         distribution.getAvailableFiles().forEach(file-> locale2ContentMapping.computeIfAbsent(file, e -> new HashMap<>()));
+
+        // Read bundled language files
+        distribution.getAvailableFiles().forEach(crowdinFile-> this.bundledFile2ContentMapping.computeIfAbsent(crowdinFile, e->loadBundled(crowdinFile)));
 
         // Multi File and Multi-Language loader
         distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode -> distribution.getAvailableFiles().parallelStream().forEach(crowdinFile -> {
@@ -118,27 +123,27 @@ public class TextManager {
     }
 
     public Text of(@NotNull String path, String... args) {
-        return new Text(this, (CommandSender) null, locale2ContentMapping.get(languageFileCrowdin), path, args);
+        return new Text(this, (CommandSender) null, locale2ContentMapping.get(languageFileCrowdin),bundledFile2ContentMapping.get(languageFileCrowdin), path, args);
     }
 
     public Text of(@Nullable CommandSender sender, @NotNull String path, String... args) {
-        return new Text(this, sender, locale2ContentMapping.get(languageFileCrowdin), path, args);
+        return new Text(this, sender, locale2ContentMapping.get(languageFileCrowdin),bundledFile2ContentMapping.get(languageFileCrowdin), path, args);
     }
 
     public Text of(@Nullable UUID sender, @NotNull String path, String... args) {
-        return new Text(this, sender, locale2ContentMapping.get(languageFileCrowdin), path, args);
+        return new Text(this, sender, locale2ContentMapping.get(languageFileCrowdin),bundledFile2ContentMapping.get(languageFileCrowdin), path, args);
     }
 
     public TextList ofList(@NotNull String path, String... args) {
-        return new TextList(this, (CommandSender) null, locale2ContentMapping.get(languageFileCrowdin), path, args);
+        return new TextList(this, (CommandSender) null, locale2ContentMapping.get(languageFileCrowdin),bundledFile2ContentMapping.get(languageFileCrowdin), path, args);
     }
 
     public TextList ofList(@Nullable UUID sender, @NotNull String path, String... args) {
-        return new TextList(this, sender, locale2ContentMapping.get(languageFileCrowdin), path, args);
+        return new TextList(this, sender, locale2ContentMapping.get(languageFileCrowdin),bundledFile2ContentMapping.get(languageFileCrowdin), path, args);
     }
 
     public TextList ofList(@Nullable CommandSender sender, @NotNull String path, String... args) {
-        return new TextList(this, sender, locale2ContentMapping.get(languageFileCrowdin), path, args);
+        return new TextList(this, sender, locale2ContentMapping.get(languageFileCrowdin),bundledFile2ContentMapping.get(languageFileCrowdin), path, args);
     }
 
     public static class TextList {
@@ -148,17 +153,19 @@ public class TextManager {
         private final Map<String, JsonConfiguration> mapping;
         private final CommandSender sender;
         private final String[] args;
+        private final JsonConfiguration bundled;
 
-        private TextList(TextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, String path, String... args) {
+        private TextList(TextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, String... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
             this.sender = sender;
             this.mapping = mapping;
+            this.bundled = bundled;
             this.path = path;
             this.args = args;
         }
 
-        private TextList(TextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, String path, String... args) {
+        private TextList(TextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, String... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
             if (sender != null)
@@ -166,12 +173,13 @@ public class TextManager {
             else
                 this.sender = null;
             this.mapping = mapping;
+            this.bundled = bundled;
             this.path = path;
             this.args = args;
         }
 
         private @NotNull List<String> fallbackLocal() {
-            return manager.bundledLang.getStringList(path);
+            return this.bundled.getStringList(path);
         }
 
         @NotNull
@@ -232,17 +240,19 @@ public class TextManager {
         private final Map<String, JsonConfiguration> mapping;
         private final CommandSender sender;
         private final String[] args;
+        private final JsonConfiguration bundled;
 
-        private Text(TextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, String path, String... args) {
+        private Text(TextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, String... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
             this.sender = sender;
             this.mapping = mapping;
             this.path = path;
+            this.bundled = bundled;
             this.args = args;
         }
 
-        private Text(TextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, String path, String... args) {
+        private Text(TextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, String... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
             if (sender != null)
@@ -250,13 +260,14 @@ public class TextManager {
             else
                 this.sender = null;
             this.mapping = mapping;
+            this.bundled = bundled;
             this.path = path;
             this.args = args;
         }
 
         @Nullable
         private String fallbackLocal() {
-            return manager.bundledLang.getString(path);
+            return this.bundled.getString(path);
         }
 
         @NotNull
