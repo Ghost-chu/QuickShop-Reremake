@@ -49,16 +49,16 @@ public class TextManager {
         return folder;
     }
 
-    private void reset(){
+    private void reset() {
         locale2ContentMapping.clear();
         postProcessors.clear();
     }
 
-    private JsonConfiguration loadBundled(String file){
+    private JsonConfiguration loadBundled(String file) {
         JsonConfiguration bundledLang = new JsonConfiguration();
         try {
             File fileObject = new File(file);
-            bundledLang.loadFromString(new String(IOUtils.toByteArray(new InputStreamReader(plugin.getResource("lang-original/" +fileObject.getName())), StandardCharsets.UTF_8)));
+            bundledLang.loadFromString(new String(IOUtils.toByteArray(new InputStreamReader(plugin.getResource("lang-original/" + fileObject.getName())), StandardCharsets.UTF_8)));
         } catch (IOException | InvalidConfigurationException ex) {
             bundledLang = new JsonConfiguration();
             plugin.getLogger().log(Level.SEVERE, "Cannot load bundled language file from Jar, some strings may missing!", ex);
@@ -72,10 +72,10 @@ public class TextManager {
 
         // Initial file mapping
         locale2ContentMapping.computeIfAbsent(languageFileCrowdin, e -> new HashMap<>()); // Prevent nullportinter exception
-        distribution.getAvailableFiles().forEach(file-> locale2ContentMapping.computeIfAbsent(file, e -> new HashMap<>()));
+        distribution.getAvailableFiles().forEach(file -> locale2ContentMapping.computeIfAbsent(file, e -> new HashMap<>()));
 
         // Read bundled language files
-        distribution.getAvailableFiles().forEach(crowdinFile-> this.bundledFile2ContentMapping.computeIfAbsent(crowdinFile, e->loadBundled(crowdinFile)));
+        distribution.getAvailableFiles().forEach(crowdinFile -> this.bundledFile2ContentMapping.computeIfAbsent(crowdinFile, e -> loadBundled(crowdinFile)));
 
         // Multi File and Multi-Language loader
         distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode -> distribution.getAvailableFiles().parallelStream().forEach(crowdinFile -> {
@@ -106,7 +106,7 @@ public class TextManager {
                     configuration.set(key, override.get(key));
                 }
                 locale2ContentMapping.get(languageFileCrowdin).computeIfAbsent(minecraftCode, e -> configuration);
-                Util.debugLog("Locale " + crowdinFile +" has been successfully loaded");
+                Util.debugLog("Locale " + crowdinFile + " has been successfully loaded");
             } catch (CrowdinOTA.OTAException e) {
                 plugin.getLogger().warning("Couldn't update the translation for locale " + crowdinCode + " because it not configured, please report to QuickShop");
             } catch (IOException e) {
@@ -122,28 +122,74 @@ public class TextManager {
         postProcessors.add(new PlaceHolderApiProcessor());
     }
 
+    /**
+     * Getting the translation with path with default locale
+     *
+     * @param path THe path
+     * @param args The arguments
+     * @return The text object
+     */
     public Text of(@NotNull String path, String... args) {
-        return new Text(this, (CommandSender) null, locale2ContentMapping.get(languageFileCrowdin),bundledFile2ContentMapping.get(languageFileCrowdin), path, args);
+        return new Text(this, (CommandSender) null, locale2ContentMapping.get(languageFileCrowdin), bundledFile2ContentMapping.get(languageFileCrowdin), path, args);
     }
 
+    /**
+     * Getting the translation with path with player's locale (if available)
+     *
+     * @param sender The sender
+     * @param path   The path
+     * @param args   The arguments
+     * @return The text object
+     */
     public Text of(@Nullable CommandSender sender, @NotNull String path, String... args) {
-        return new Text(this, sender, locale2ContentMapping.get(languageFileCrowdin),bundledFile2ContentMapping.get(languageFileCrowdin), path, args);
+        return new Text(this, sender, locale2ContentMapping.get(languageFileCrowdin), bundledFile2ContentMapping.get(languageFileCrowdin), path, args);
     }
 
+    /**
+     * Getting the translation with path with player's locale (if available)
+     *
+     * @param sender The player unique id
+     * @param path   The path
+     * @param args   The arguments
+     * @return The text object
+     */
     public Text of(@Nullable UUID sender, @NotNull String path, String... args) {
-        return new Text(this, sender, locale2ContentMapping.get(languageFileCrowdin),bundledFile2ContentMapping.get(languageFileCrowdin), path, args);
+        return new Text(this, sender, locale2ContentMapping.get(languageFileCrowdin), bundledFile2ContentMapping.get(languageFileCrowdin), path, args);
     }
 
+    /**
+     * Getting the translation with path with default locale (if available)
+     *
+     * @param path The path
+     * @param args The arguments
+     * @return The text object
+     */
     public TextList ofList(@NotNull String path, String... args) {
-        return new TextList(this, (CommandSender) null, locale2ContentMapping.get(languageFileCrowdin),bundledFile2ContentMapping.get(languageFileCrowdin), path, args);
+        return new TextList(this, (CommandSender) null, locale2ContentMapping.get(languageFileCrowdin), bundledFile2ContentMapping.get(languageFileCrowdin), path, args);
     }
 
+    /**
+     * Getting the translation with path  with player's locale (if available)
+     *
+     * @param sender The player unique id
+     * @param path   The path
+     * @param args   The arguments
+     * @return The text object
+     */
     public TextList ofList(@Nullable UUID sender, @NotNull String path, String... args) {
-        return new TextList(this, sender, locale2ContentMapping.get(languageFileCrowdin),bundledFile2ContentMapping.get(languageFileCrowdin), path, args);
+        return new TextList(this, sender, locale2ContentMapping.get(languageFileCrowdin), bundledFile2ContentMapping.get(languageFileCrowdin), path, args);
     }
 
+    /**
+     * Getting the translation with path with player's locale (if available)
+     *
+     * @param sender The player
+     * @param path   The path
+     * @param args   The arguments
+     * @return The text object
+     */
     public TextList ofList(@Nullable CommandSender sender, @NotNull String path, String... args) {
-        return new TextList(this, sender, locale2ContentMapping.get(languageFileCrowdin),bundledFile2ContentMapping.get(languageFileCrowdin), path, args);
+        return new TextList(this, sender, locale2ContentMapping.get(languageFileCrowdin), bundledFile2ContentMapping.get(languageFileCrowdin), path, args);
     }
 
     public static class TextList {
@@ -178,10 +224,21 @@ public class TextManager {
             this.args = args;
         }
 
+        /**
+         * Getting the bundled fallback text
+         *
+         * @return The bundled text
+         */
         private @NotNull List<String> fallbackLocal() {
             return this.bundled.getStringList(path);
         }
 
+        /**
+         * Post processes the text
+         *
+         * @param text The text
+         * @return The text that processed
+         */
         @NotNull
         private List<String> postProcess(@NotNull List<String> text) {
             List<String> texts = new ArrayList<>();
@@ -192,6 +249,12 @@ public class TextManager {
             return texts;
         }
 
+        /**
+         * Getting the text that use specify locale
+         *
+         * @param locale The minecraft locale code (like en_us)
+         * @return The text
+         */
         @NotNull
         public List<String> forLocale(@NotNull String locale) {
             JsonConfiguration index = mapping.get(locale);
@@ -215,6 +278,11 @@ public class TextManager {
 
         }
 
+        /**
+         * Getting the text for player locale
+         *
+         * @return Getting the text for player locale
+         */
         @NotNull
         public List<String> forLocale() {
             if (sender instanceof Player) {
@@ -224,6 +292,9 @@ public class TextManager {
             }
         }
 
+        /**
+         * Send text to the player
+         */
         public void send() {
             if (sender == null)
                 return;
@@ -265,11 +336,22 @@ public class TextManager {
             this.args = args;
         }
 
+        /**
+         * Getting the bundled fallback text
+         *
+         * @return The bundled text
+         */
         @Nullable
         private String fallbackLocal() {
             return this.bundled.getString(path);
         }
 
+        /**
+         * Post processes the text
+         *
+         * @param text The text
+         * @return The text that processed
+         */
         @NotNull
         private String postProcess(@NotNull String text) {
             for (PostProcessor postProcessor : this.manager.postProcessors)
@@ -277,6 +359,12 @@ public class TextManager {
             return text;
         }
 
+        /**
+         * Getting the text that use specify locale
+         *
+         * @param locale The minecraft locale code (like en_us)
+         * @return The text
+         */
         @NotNull
         public String forLocale(@NotNull String locale) {
             JsonConfiguration index = mapping.get(locale);
@@ -297,6 +385,11 @@ public class TextManager {
             }
         }
 
+        /**
+         * Getting the text for player locale
+         *
+         * @return Getting the text for player locale
+         */
         @NotNull
         public String forLocale() {
             if (sender instanceof Player) {
@@ -306,6 +399,9 @@ public class TextManager {
             }
         }
 
+        /**
+         * Send text to the player
+         */
         public void send() {
             if (sender == null)
                 return;
