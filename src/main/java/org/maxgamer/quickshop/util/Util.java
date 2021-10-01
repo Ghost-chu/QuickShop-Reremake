@@ -135,6 +135,7 @@ public class Util {
      *
      * @return The result for backup
      */
+    // TODO: MySQL support
     public static boolean backupDatabase() {
         if (plugin.getDatabaseManager().getDatabase() instanceof MySQLCore) {
             return true; // Backup and logs by MySQL
@@ -954,14 +955,6 @@ public class Util {
         StringJoiner joiner = new StringJoiner(", ", "", "");
         strList.forEach(joiner::add);
         return joiner.toString();
-//        StringBuilder builder = new StringBuilder();
-//        for (int i = 0; i < strList.size(); i++) {
-//            builder.append(strList.get(i));
-//            if (i + 1 != strList.size()) {
-//                builder.append(", ");
-//            }
-//        }
-//        return builder.toString();
     }
 
     /**
