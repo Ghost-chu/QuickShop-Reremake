@@ -64,8 +64,6 @@ import java.util.logging.Level;
 
 
 public class MsgUtil {
-    private static final String invaildMsg = "Invaild message";
-
     private static final Map<UUID, List<TransactionMessage>> outGoingPlayerMessages = Maps.newConcurrentMap();
     public static GameLanguage gameLanguage;
     private static DecimalFormat decimalFormat;
@@ -169,7 +167,7 @@ public class MsgUtil {
         gameLanguage = ServiceInjector.getGameLanguage(new MojangGameLanguageImpl(plugin, languageCode));
     }
 
-    public static void loadI18nFile() throws InvalidConfigurationException {
+    public static void loadI18nFile() {
         //Update instance
         plugin = QuickShop.getInstance();
         plugin.getLogger().info("Loading plugin translations files...");
@@ -385,7 +383,7 @@ public class MsgUtil {
             }
         }
     }
-
+    // TODO: No hardcode
     /**
      * Send controlPanel infomation to sender
      *
@@ -753,9 +751,6 @@ public class MsgUtil {
         return Util.prettifyText(potionString);
     }
 
-  //  public static JsonConfiguration getI18nFile() {
-  //      return messagei18n;
-    // }
 
     public static void debugStackTrace(StackTraceElement[] traces) {
         if (Util.isDisableDebugLogger()) {
