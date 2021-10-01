@@ -17,6 +17,9 @@ import org.maxgamer.quickshop.util.language.text.postprocessing.PostProcessor;
 import org.maxgamer.quickshop.util.language.text.postprocessing.impl.ColorProcessor;
 import org.maxgamer.quickshop.util.language.text.postprocessing.impl.FillerProcessor;
 import org.maxgamer.quickshop.util.language.text.postprocessing.impl.PlaceHolderApiProcessor;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +28,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.logging.Level;
 
-public class TextManager {
+public class TextManager implements Reloadable {
     private final QuickShop plugin;
     private final Distribution distribution;
     // <File <Locale, Section>>
@@ -33,12 +36,15 @@ public class TextManager {
     private final Map<String, JsonConfiguration> bundledFile2ContentMapping = new HashMap<>();
     private final static String languageFileCrowdin = "/master/src/main/resources/lang/%locale%/messages.json";
     public final List<PostProcessor> postProcessors = new ArrayList<>();
+    private List<String> disabledLanguages = new ArrayList<>();
 
 
     public TextManager(QuickShop plugin) {
         this.plugin = plugin;
+        plugin.getReloadManager().register(this);
         this.distribution = new CrowdinOTA(plugin);
         load();
+
     }
 
     @NotNull
@@ -69,7 +75,7 @@ public class TextManager {
     public void load() {
         plugin.getLogger().info("Checking for translation updates...");
         this.reset();
-
+        disabledLanguages = plugin.getConfig().getStringList("disabled-languages");
         // Initial file mapping
         locale2ContentMapping.computeIfAbsent(languageFileCrowdin, e -> new HashMap<>()); // Prevent nullportinter exception
         distribution.getAvailableFiles().forEach(file -> locale2ContentMapping.computeIfAbsent(file, e -> new HashMap<>()));
@@ -82,6 +88,10 @@ public class TextManager {
             try {
                 // Minecraft client use lowercase wi
                 String minecraftCode = crowdinCode.toLowerCase(Locale.ROOT).replace("-", "_");
+                if(disabledLanguages.contains(minecraftCode) || disabledLanguages.contains(crowdinCode)) {
+                    Util.debugLog("Locale "+crowdinCode+"("+minecraftCode+") has been disabled, skipping.");
+                    return;
+                }
                 Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
                 JsonConfiguration configuration = new JsonConfiguration();
                 try {
@@ -409,5 +419,11 @@ public class TextManager {
             MsgUtil.sendDirectMessage(sender, lang);
             // plugin.getQuickChat().send(sender, lang);
         }
+    }
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        this.load();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 }

@@ -1897,6 +1897,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.towny.delete-shop-on-plot-destroy", true);
             getConfig().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 141) {
+            getConfig().set("language", null);
+            getConfig().set("disabled-languages",Collections.singletonList("disable_here"));
+            getConfig().set("config-version", ++selectedVersion);
+        }
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");

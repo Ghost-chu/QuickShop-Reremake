@@ -22,49 +22,19 @@
 #                        TO EDIT QUICKSHOP'S CONFIGURATION, USE THE "config.yml" FILE!
 
 #Do not touch this if you don't know what you're doing!
-config-version: 141
+config-version: 142
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not existant/not supported language, then QuickShop will use en_US.
 #After you have selected your language, you need to delete the `messages.yml` file and reload the plugin to apply the new language.
 
-#Available languages:
-#af-ZA
-#ar-SA
-#ca-ES
-#cs-CZ
-#da-DK
-#de-DE
-#el-GR
-#en-US
-#es-ES
-#fi-FI
-#fr-FR
-#he-IL
-#hu-HU
-#it-IT
-#ja-JP
-#ko-KR
-#nl-NL
-#no-NO
-#pl-PL
-#pt-BR
-#pt-PT
-#ro-RO
-#sr-SP
-#sv-SE
-#tr-TR
-#uk-UA
-#vi-VN
-#zh-CN
-#zh-TW
-
-language: en-US
-
 #After you have setup a language, QuickShop will download all the required Game language files from Mojang.
 #You can find all supported languages in your Minecraft Client Languages Menu.
 #Enter the language Code here (e.g English (en-US) -> Language Code = en-US).
 game-language: default
+
+disabled-languages:
+  - disable_here
 
 #This enables the developer mode, do not touch this if you don't not know what it does!
 dev-mode: false
