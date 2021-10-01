@@ -135,7 +135,7 @@ public class TextManager implements Reloadable {
                     configuration.set(key, override.get(key));
                 }
                 locale2ContentMapping.get(languageFileCrowdin).computeIfAbsent(minecraftCode, e -> configuration);
-                Util.debugLog("Locale " + crowdinFile + " has been successfully loaded");
+                Util.debugLog("Locale " + crowdinFile.replace("%locale%",crowdinCode) + " has been successfully loaded");
             } catch (CrowdinOTA.OTAException e) {
                 // Key founds in available locales but not in custom mapping on crowdin platform
                 plugin.getLogger().warning("Couldn't update the translation for locale " + crowdinCode + " because it not configured, please report to QuickShop");
