@@ -22,8 +22,6 @@ package org.maxgamer.quickshop.shop;
 import com.lishid.openinv.OpenInv;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -44,8 +42,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.*;
-import org.maxgamer.quickshop.externalhelper.paperadventurelib.PaperAdventureLib;
-import org.maxgamer.quickshop.externalhelper.paperadventurelib.SignAdventure;
 import org.maxgamer.quickshop.util.PriceLimiter;
 import org.maxgamer.quickshop.util.Util;
 
@@ -609,78 +605,15 @@ public class ContainerShop implements Shop {
         return true;
     }
 
-//    @Override
-//    public Component[] getSignText() {
-//        Util.ensureThread(false);
-//        Component[] lines = new Component[4];
-//
-//        //Line 1
-//        OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
-//        String statusStringKey = inventoryAvailable() ? "signs.status-available" : "signs.status-unavailable";
-//        lines[0] = Component.text(plugin.text().of("signs.header", this.ownerName(false), plugin.text().of(statusStringKey).forLocale()).forLocale());
-//
-//        //Line 2
-//        String tradingStringKey;
-//        String noRemainingStringKey;
-//        int shopRemaining;
-//
-//        switch (shopType) {
-//            case BUYING:
-//                shopRemaining = getRemainingSpace();
-//                tradingStringKey = isStackingShop() ? "signs.stack-buying" : "signs.buying";
-//                noRemainingStringKey = "signs.out-of-space";
-//                break;
-//            case SELLING:
-//                shopRemaining = getRemainingStock();
-//                tradingStringKey = isStackingShop() ? "signs.stack-selling" : "signs.selling";
-//                noRemainingStringKey = "signs.out-of-stock";
-//                break;
-//            default:
-//                shopRemaining = 0;
-//                tradingStringKey = "MissingKey for shop type:" + shopType;
-//                noRemainingStringKey = "MissingKey for shop type:" + shopType;
-//        }
-//        switch (shopRemaining) {
-//            //Unlimited
-//            case -1:
-//                lines[1] = Component.text(plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale()).forLocale());
-//                break;
-//            //No remaining
-//            case 0:
-//                lines[1] =Component.text(plugin.text().of(noRemainingStringKey).forLocale());
-//                break;
-//            //Has remaining
-//            default:
-//                lines[1] = Component.text(plugin.text().of(tradingStringKey, Integer.toString(shopRemaining)).forLocale());
-//        }
-//
-//        //line 3
-//        lines[2] = Component.text(plugin.text().of("signs.item", Util.getItemStackName(this.getItem())).forLocale());
-//
-//        //line 4
-//        if (this.isStackingShop()) {
-//            lines[3] =  Component.text(plugin.text().of("signs.stack-price",
-//                    Util.format(this.getPrice(), this), Integer.toString(item.getAmount()),
-//                    Util.getItemStackName(item)).forLocale());
-//        } else {
-//            lines[3] = Component.text( plugin.text().of("signs.price",  Util.format(this.getPrice(), this)).forLocale());
-//        }
-//
-//        //New pattern for recognizing shop sign
-//        lines[1] = Component.text(shopSignPrefix + lines[1] + " ");
-//
-//        return lines;
-//    }
-
     @Override
-    public Component[] getSignText() {
+    public String[] getSignText() {
         Util.ensureThread(false);
-        Component[] lines = new Component[4];
+        String[] lines = new String[4];
 
         //Line 1
         OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
         String statusStringKey = inventoryAvailable() ? "signs.status-available" : "signs.status-unavailable";
-        lines[0] = Component.text(plugin.text().of("signs.header", this.ownerName(false), plugin.text().of(statusStringKey).forLocale()).forLocale());
+        lines[0] = plugin.text().of("signs.header", this.ownerName(false), plugin.text().of(statusStringKey).forLocale()).forLocale();
 
         //Line 2
         String tradingStringKey;
@@ -706,35 +639,34 @@ public class ContainerShop implements Shop {
         switch (shopRemaining) {
             //Unlimited
             case -1:
-                lines[1] = Component.text(plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale()).forLocale());
+                lines[1] = plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale()).forLocale();
                 break;
             //No remaining
             case 0:
-                lines[1] =Component.text(plugin.text().of(noRemainingStringKey).forLocale());
+                lines[1] =plugin.text().of(noRemainingStringKey).forLocale();
                 break;
             //Has remaining
             default:
-                lines[1] = Component.text(plugin.text().of(tradingStringKey, Integer.toString(shopRemaining)).forLocale());
+                lines[1] = plugin.text().of(tradingStringKey, Integer.toString(shopRemaining)).forLocale();
         }
 
         //line 3
-        lines[2] = Component.text(plugin.text().of("signs.item", Util.getItemStackName(this.getItem())).forLocale());
+        lines[2] = plugin.text().of("signs.item", Util.getItemStackName(this.getItem())).forLocale();
 
         //line 4
         if (this.isStackingShop()) {
-            lines[3] =  Component.text(plugin.text().of("signs.stack-price",
+            lines[3] =  plugin.text().of("signs.stack-price",
                     Util.format(this.getPrice(), this), Integer.toString(item.getAmount()),
-                    Util.getItemStackName(item)).forLocale());
+                    Util.getItemStackName(item)).forLocale();
         } else {
-            lines[3] = Component.text( plugin.text().of("signs.price",  Util.format(this.getPrice(), this)).forLocale());
+            lines[3] =  plugin.text().of("signs.price",  Util.format(this.getPrice(), this)).forLocale();
         }
 
         //New pattern for recognizing shop sign
-        lines[1] = Component.text(shopSignPrefix + lines[1] + " ");
+        lines[1] = shopSignPrefix + lines[1] + " ";
 
         return lines;
     }
-
 
     /**
      * Changes all lines of text on a sign near the shop
@@ -742,7 +674,7 @@ public class ContainerShop implements Shop {
      * @param lines The array of lines to change. Index is line number.
      */
     @Override
-    public void setSignText(@NotNull Component[] lines) {
+    public void setSignText(@NotNull String[] lines) {
         Util.ensureThread(false);
         List<Sign> signs = this.getSigns();
         for (Sign sign : signs) {
@@ -750,11 +682,7 @@ public class ContainerShop implements Shop {
                 continue;
             }
             for (int i = 0; i < lines.length; i++) {
-                if(PaperAdventureLib.isSupported()){
-                    SignAdventure.set(sign,i,lines[i]);
-                }else{
-                    sign.setLine(i, LegacyComponentSerializer.legacySection().serialize(lines[i]));
-                }
+                sign.setLine(i, lines[i]);
             }
             if (plugin.getGameVersion().isSignTextDyeSupport()) {
                 DyeColor dyeColor = Util.getDyeColor();
