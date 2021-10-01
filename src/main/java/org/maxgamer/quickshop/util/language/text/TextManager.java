@@ -47,6 +47,11 @@ public class TextManager implements Reloadable {
 
     }
 
+    /**
+     * Generate the override files storage path
+     * @param crowdinPath The crowdin file path
+     * @return Override files storage path
+     */
     @NotNull
     private File getOverrideFilesFolder(@NotNull String crowdinPath) {
         File file = new File(crowdinPath);
@@ -55,11 +60,21 @@ public class TextManager implements Reloadable {
         return folder;
     }
 
+    /**
+     * Reset everything
+     */
     private void reset() {
         locale2ContentMapping.clear();
         postProcessors.clear();
+        bundledFile2ContentMapping.clear();
+        disabledLanguages.clear();
     }
 
+    /**
+     * Loading bundled files from Jar file
+     * @param file The Crowdin file path
+     * @return The bundled file configuration object
+     */
     private JsonConfiguration loadBundled(String file) {
         JsonConfiguration bundledLang = new JsonConfiguration();
         try {
@@ -72,6 +87,9 @@ public class TextManager implements Reloadable {
         return bundledLang;
     }
 
+    /**
+     * Loading Crowdin OTA module and i18n system
+     */
     public void load() {
         plugin.getLogger().info("Checking for translation updates...");
         this.reset();
@@ -110,6 +128,7 @@ public class TextManager implements Reloadable {
                     localOverrideFile.createNewFile();
                 }
                 override.loadFromString(Util.readToString(localOverrideFile));
+                // Prevent user override important keys
                 for (String key : override.getKeys(true)) {
                     if (key.equals("language-version") || key.equals("config-version") || key.equals("version"))
                         continue;
@@ -118,10 +137,13 @@ public class TextManager implements Reloadable {
                 locale2ContentMapping.get(languageFileCrowdin).computeIfAbsent(minecraftCode, e -> configuration);
                 Util.debugLog("Locale " + crowdinFile + " has been successfully loaded");
             } catch (CrowdinOTA.OTAException e) {
+                // Key founds in available locales but not in custom mapping on crowdin platform
                 plugin.getLogger().warning("Couldn't update the translation for locale " + crowdinCode + " because it not configured, please report to QuickShop");
             } catch (IOException e) {
+                // Network error
                 plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + " please check your network connection.", e);
             } catch (Exception e) {
+                // Translation syntax error or other exceptions
                 plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + ".", e);
             }
         }));
