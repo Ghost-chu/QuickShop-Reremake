@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.chat.platform.minedown;
 
+import lombok.AllArgsConstructor;
 import net.md_5.bungee.api.chat.*;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -44,8 +45,9 @@ import java.util.logging.Level;
  *
  * @author Ghost_chu
  */
+@AllArgsConstructor
 public class BungeeQuickChat implements QuickChat {
-    private final QuickShop plugin = QuickShop.getInstance();
+    private final QuickShop plugin;
 
     @Override
     public void send(@NotNull CommandSender receiver, @Nullable String message) {

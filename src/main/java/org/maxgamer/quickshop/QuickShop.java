@@ -251,7 +251,7 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private BuildInfo buildInfo;
     @Getter
-    private final QuickChat quickChat = new BungeeQuickChat();
+    private final QuickChat quickChat = new BungeeQuickChat(this);
     @Getter
     @Nullable
     private String currency = null;

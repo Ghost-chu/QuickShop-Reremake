@@ -81,10 +81,10 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
                 }
                 if (container.isDisabled()) {
                     if (QuickShop.getPermissionManager().hasPermission(s, "quickshop.showdisabled")) {
-                        plugin.text().of(s, "command.format", commandLabel, container.getPrefix(), container.getDisableText(s));
+                        plugin.text().of(s, "command.format", commandLabel, container.getPrefix(), container.getDisableText(s)).send();
                     }
                 } else {
-                    plugin.text().of(s, "command.format", commandLabel, container.getPrefix(), commandDesc);
+                    plugin.text().of(s, "command.format", commandLabel, container.getPrefix(), commandDesc).send();
                 }
             }
         }
