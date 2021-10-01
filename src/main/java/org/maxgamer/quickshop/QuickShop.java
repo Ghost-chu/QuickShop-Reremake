@@ -23,11 +23,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -46,6 +44,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.QuickShopAPI;
+import org.maxgamer.quickshop.chat.QuickChat;
 import org.maxgamer.quickshop.command.CommandManager;
 import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.*;
@@ -254,8 +253,8 @@ public class QuickShop extends JavaPlugin {
     private BuildInfo buildInfo;
 //    @Getter
 //    private QuickChatType quickChatType = QuickChatType.ADVENTURE;
-//    @Getter
-//    private QuickChat quickChat = new AdventureQuickChat();
+    @Getter
+    private QuickChat quickChat = new BungeeChat();
     @Getter
     @Nullable
     private String currency = null;
@@ -267,7 +266,6 @@ public class QuickShop extends JavaPlugin {
     private Plugin worldEditPlugin;
     @Getter
     private WorldEditAdapter worldEditAdapter;
-    private BukkitAudiences adventure;
     @Getter
     private TextManager textManager ;
 
@@ -666,10 +664,6 @@ public class QuickShop extends JavaPlugin {
         Util.debugLog("Unregistering plugin services...");
         getServer().getServicesManager().unregisterAll(this);
         Util.debugLog("Cleanup...");
-        if(this.adventure != null) {
-            this.adventure.close();
-            this.adventure = null;
-        }
         Util.debugLog("All shutdown work is finished.");
 
     }
@@ -788,9 +782,8 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
         getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
         getLogger().info("Let's start loading the plugin");
-        this.adventure = BukkitAudiences.create(this);
         //getLogger().info("Chat processor selected: " + this.quickChatType.name());
-        getLogger().info("Chat processor selected: Hardcoded Adventure Lib");
+        getLogger().info("Chat processor selected: Hardcoded BungeeChat Lib");
         /* Process Metrics and Sentry error reporter. */
         metrics = new Metrics(this, 3320);
 
@@ -1961,13 +1954,6 @@ public class QuickShop extends JavaPlugin {
             return;
         }
         Util.debugLog("Command alias successfully registered.");
-    }
-
-    public @NonNull BukkitAudiences adventure() {
-        if(this.adventure == null) {
-            throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
-        }
-        return this.adventure;
     }
 
     public @NotNull TextManager text(){

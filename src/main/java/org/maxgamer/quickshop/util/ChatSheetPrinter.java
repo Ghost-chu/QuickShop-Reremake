@@ -22,9 +22,6 @@ package org.maxgamer.quickshop.util;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -44,45 +41,38 @@ public class ChatSheetPrinter {
         if (!text.isEmpty()) {
             MsgUtil.sendDirectMessage(p,
                     ChatColor.DARK_PURPLE
-                            + QuickShop.getInstance().text().of(p,"tableformat.left_half_line").forLocale()
+                            + MsgUtil.getMessage("tableformat.left_half_line", p)
                             + text
-                            + QuickShop.getInstance().text().of(p,"tableformat.right_half_line").forLocale());
+                            + MsgUtil.getMessage("tableformat.right_half_line", p));
         }
     }
 
     public void printExecutableCmdLine(
             @NotNull String text, @NotNull String hoverText, @NotNull String executeCmd) {
-        QuickShop.getInstance().adventure().sender(p).sendMessage(Component.text(text)
-                .hoverEvent(HoverEvent.showText(Component.text(text)))
-                .clickEvent(ClickEvent.runCommand(executeCmd))
-        );
-     //   QuickShop.getInstance().getQuickChat().sendExecutableChat(p, text, hoverText, executeCmd);
+        QuickShop.getInstance().getQuickChat().sendExecutableChat(p, text, hoverText, executeCmd);
     }
 
     public void printFooter() {
-        MsgUtil.sendDirectMessage(p, ChatColor.DARK_PURPLE +QuickShop.getInstance().text().of(p,"tableformat.full_line").forLocale());
+        MsgUtil.sendDirectMessage(p, ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.full_line", p));
     }
 
     public void printHeader() {
-        MsgUtil.sendDirectMessage(p, ChatColor.DARK_PURPLE + QuickShop.getInstance().text().of(p,"tableformat.full_line").forLocale());
+        MsgUtil.sendDirectMessage(p, ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.full_line", p));
     }
 
     public void printLine(@NotNull String text) {
         String[] texts = text.split("\n");
         for (String str : texts) {
             if (!str.isEmpty()) {
-                MsgUtil.sendDirectMessage(p, ChatColor.DARK_PURPLE + QuickShop.getInstance().text().of(p,"tableformat.left_begin").forLocale() + str);
+                MsgUtil.sendDirectMessage(p, ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin", p) + str);
             }
         }
     }
 
     public void printSuggestedCmdLine(
             @NotNull String text, @NotNull String hoverText, @NotNull String suggestCmd) {
-        QuickShop.getInstance().adventure().sender(p)
-                .sendMessage(Component.text(text)
-                        .hoverEvent(HoverEvent.showText(Component.text(hoverText)))
-                        .clickEvent(ClickEvent.suggestCommand(suggestCmd)));
-       // QuickShop.getInstance().getQuickChat().sendSuggestedChat(p, text, hoverText, suggestCmd);
+        QuickShop.getInstance().getQuickChat().sendSuggestedChat(p, text, hoverText, suggestCmd);
+
     }
 
 }

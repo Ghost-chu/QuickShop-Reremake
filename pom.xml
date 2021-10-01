@@ -25,7 +25,7 @@
     <artifactId>QuickShop</artifactId>
 
     <properties>
-        <pluginver>4.0.10.0</pluginver>
+        <pluginver>5.0.0.0</pluginver>
         <package>org.maxgamer.quickshop</package>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -209,20 +209,8 @@
                             <shadedPattern>org.maxgamer.quickshop.shade.org.enginehub.squirrelid.</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>net.kyori.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.shade.org.net.kyori.</shadedPattern>
-                        </relocation>
-                        <relocation>
                             <pattern>com.squareup.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.org.com.squareup.</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>net.kyori.examination.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.examination</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>net.kyori.adventure.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.shade.kyori.adventure</shadedPattern>
                         </relocation>
 
 
@@ -846,12 +834,6 @@
             <version>[1.0,)</version>
             <artifactId>rollbar-java</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>de.themoep</groupId>-->
-<!--            <artifactId>minedown</artifactId>-->
-<!--            <version>1.7.1-SNAPSHOT</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>de.themoep</groupId>
             <artifactId>minedown</artifactId>
@@ -872,18 +854,18 @@
             <version>4.9.2</version>
             <systemPath>${project.basedir}/lib/TNE.jar</systemPath>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.songoda</groupId>-->
-<!--            <artifactId>skyblock</artifactId>-->
-<!--            <version>2.2.13</version>-->
-<!--            <scope>provided</scope>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>MVdWPlaceholderAPI</artifactId>-->
-<!--                    <groupId>be.maximvdw</groupId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.songoda</groupId>
+            <artifactId>skyblock</artifactId>
+            <version>2.2.13</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>MVdWPlaceholderAPI</artifactId>
+                    <groupId>be.maximvdw</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <!--        <dependency>-->
         <!--            <groupId>team.aura_dev.lib.slf4j-plugin.spigot</groupId>-->
         <!--            <artifactId>slf4j-plugin-spigot</artifactId>-->

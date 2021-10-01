@@ -26,11 +26,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.nbt.api.BinaryTagHolder;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -60,7 +55,6 @@ import org.maxgamer.quickshop.util.language.game.MojangGameLanguageImpl;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -119,26 +113,10 @@ public class MsgUtil {
                                 if (data == null) {
                                     MsgUtil.sendDirectMessage(p.getPlayer(), msg.getMessage());
                                 } else {
-                                    plugin.adventure().sender(player).sendMessage(
-                                            Component.text(msg.getMessage())
-                                                    .hoverEvent(HoverEvent.showItem(
-                                                            HoverEvent.ShowItem.of(
-                                                                    Key.key(data.getType().getKey().getNamespace(),data.getType().getKey().getKey()),
-                                                                    data.getAmount(),
-                                                                    BinaryTagHolder.of(ReflectFactory.convertBukkitItemStackToJson(data))))));
-
-                                    //plugin.getQuickChat().sendItemHologramChat(player, msg.getMessage(), data);
+                                    plugin.getQuickChat().sendItemHologramChat(player, msg.getMessage(), data);
                                 }
                             } catch (InvalidConfigurationException e) {
                                 MsgUtil.sendDirectMessage(p.getPlayer(), msg.getMessage());
-                            } catch (InvocationTargetException e) {
-                                e.printStackTrace();
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            } catch (NoSuchMethodException e) {
-                                e.printStackTrace();
-                            } catch (InstantiationException e) {
-                                e.printStackTrace();
                             }
                         }
                     }
@@ -514,15 +492,7 @@ public class MsgUtil {
             if (p.getPlayer() != null) {
                 if (transactionMessage.getHoverItem() != null) {
                     try {
-                        ItemStack data = Util.deserialize(transactionMessage.getHoverItem());
-                        plugin.adventure().sender(p.getPlayer()).sendMessage(
-                                Component.text(transactionMessage.getMessage())
-                                        .hoverEvent(HoverEvent.showItem(
-                                                HoverEvent.ShowItem.of(
-                                                        Key.key(data.getType().getKey().getNamespace(),data.getType().getKey().getKey()),
-                                                        data.getAmount(),
-                                                        BinaryTagHolder.of(ReflectFactory.convertBukkitItemStackToJson(data))))));
-                       // plugin.getQuickChat().sendItemHologramChat(p.getPlayer(), transactionMessage.getMessage(), Objects.requireNonNull(Util.deserialize(transactionMessage.getHoverItem())));
+                        plugin.getQuickChat().sendItemHologramChat(p.getPlayer(), transactionMessage.getMessage(), Objects.requireNonNull(Util.deserialize(transactionMessage.getHoverItem())));
                     } catch (Exception any) {
                         Util.debugLog("Unknown error, send by plain text.");
                         // Normal msg
@@ -557,25 +527,7 @@ public class MsgUtil {
             if (p.getPlayer() != null) {
                 if (transactionMessage.getHoverItem() != null) {
                     try {
-                        try {
-                            ItemStack data = Util.deserialize(transactionMessage.getHoverItem());
-                            plugin.adventure().sender(p.getPlayer()).sendMessage(
-                                    Component.text(transactionMessage.getMessage())
-                                            .hoverEvent(HoverEvent.showItem(
-                                                    HoverEvent.ShowItem.of(
-                                                            Key.key(data.getType().getKey().getNamespace(),data.getType().getKey().getKey()),
-                                                            data.getAmount(),
-                                                            BinaryTagHolder.of(ReflectFactory.convertBukkitItemStackToJson(data))))));
-                        } catch (InvocationTargetException e) {
-                            e.printStackTrace();
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        } catch (NoSuchMethodException e) {
-                            e.printStackTrace();
-                        } catch (InstantiationException e) {
-                            e.printStackTrace();
-                        }
-                       // plugin.getQuickChat().sendItemHologramChat(p.getPlayer(), transactionMessage.getMessage(), Objects.requireNonNull(Util.deserialize(transactionMessage.getHoverItem())));
+                        plugin.getQuickChat().sendItemHologramChat(p.getPlayer(), transactionMessage.getMessage(), Objects.requireNonNull(Util.deserialize(transactionMessage.getHoverItem())));
                     } catch (Exception any) {
                         Util.debugLog("Unknown error, send by plain text.");
                         // Normal msg
@@ -941,29 +893,9 @@ public class MsgUtil {
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(plugin.text().of(p,"menu.shop-information").forLocale());
-        chatSheetPrinter.printLine(plugin.text().of(p,"menu.owner", shop.ownerName()).forLocale());
+        chatSheetPrinter.printLine(plugin.text().of(p,"menu.owner",  shop.ownerName()).forLocale());
         // Enabled
-
-        try {
-            plugin.adventure().sender(p).sendMessage(
-                    Component.text(ChatColor.DARK_PURPLE + plugin.text().of(p,"tableformat.left_begin").forLocale() +  plugin.text().of(p,"menu.item", Util.getItemStackName(items)) + "  ")
-                            .hoverEvent(HoverEvent.showItem(
-                                    HoverEvent.ShowItem.of(
-                                            Key.key(items.getType().getKey().getNamespace(),items.getType().getKey().getKey()),
-                                            items.getAmount(),
-                                            BinaryTagHolder.of(ReflectFactory.convertBukkitItemStackToJson(items))))));
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }
-        //plugin.getQuickChat().sendItemHologramChat(player, msg.getMessage(), data);
-
-        //plugin.getQuickChat().send(p, plugin.getQuickChat().getItemHologramChat(shop, items, p);
+        plugin.getQuickChat().send(p, plugin.getQuickChat().getItemHologramChat(shop, items, p, ChatColor.DARK_PURPLE + plugin.text().of(p,"tableformat.left_begin").forLocale() + plugin.text().of(p,"menu.item",  Util.getItemStackName(items)).forLocale() + "  "));
         if (Util.isTool(items.getType())) {
             chatSheetPrinter.printLine(
                     plugin.text().of(p,"menu.damage-percent-remaining", Util.getToolPercentage(items)).forLocale());
@@ -971,15 +903,15 @@ public class MsgUtil {
         if (shop.isSelling()) {
             if (shop.getRemainingStock() == -1) {
                 chatSheetPrinter.printLine(
-                        plugin.text().of(p,"menu.stock",plugin.text().of(p,"signs.unlimited").forLocale()).forLocale());
+                        plugin.text().of(p,"menu.stock",  plugin.text().of(p,"signs.unlimited").forLocale()).forLocale());
             } else {
                 chatSheetPrinter.printLine(
-                        plugin.text().of(p,"menu.stock", Integer.toString(shop.getRemainingStock())).forLocale());
+                        plugin.text().of(p,"menu.stock",  Integer.toString(shop.getRemainingStock())).forLocale());
             }
         } else {
             if (shop.getRemainingSpace() == -1) {
                 chatSheetPrinter.printLine(
-                        plugin.text().of(p,"menu.space",plugin.text().of(p,"signs.unlimited").forLocale()).forLocale());
+                        plugin.text().of(p,"menu.space", plugin.text().of(p,"signs.unlimited").forLocale()).forLocale());
             } else {
                 chatSheetPrinter.printLine(
                         plugin.text().of(p,"menu.space",  Integer.toString(shop.getRemainingSpace())).forLocale());
@@ -1569,8 +1501,7 @@ public class MsgUtil {
                 if (StringUtils.isEmpty(msg)) {
                     continue;
                 }
-                plugin.adventure().sender(sender).sendMessage(LegacyComponentSerializer.legacySection().deserialize(msg));
-             //   plugin.getQuickChat().send(sender, msg);
+                plugin.getQuickChat().send(sender, msg);
             } catch (Throwable throwable) {
                 Util.debugLog("Failed to send formatted text.");
                 if (!StringUtils.isEmpty(msg)) {
