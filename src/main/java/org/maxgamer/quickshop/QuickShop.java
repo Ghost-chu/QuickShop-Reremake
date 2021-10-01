@@ -45,6 +45,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.QuickShopAPI;
 import org.maxgamer.quickshop.chat.QuickChat;
+import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
 import org.maxgamer.quickshop.command.CommandManager;
 import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.*;
@@ -234,8 +235,6 @@ public class QuickShop extends JavaPlugin {
     DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
     @Getter
     private boolean enabledAsyncDisplayDespawn;
-//    @Getter
-//    private String previewProtectionLore;
     @Getter
     private Plugin blockHubPlugin;
     @Getter
@@ -251,15 +250,11 @@ public class QuickShop extends JavaPlugin {
     private UpdateWatcher updateWatcher;
     @Getter
     private BuildInfo buildInfo;
-//    @Getter
-//    private QuickChatType quickChatType = QuickChatType.ADVENTURE;
     @Getter
-    private QuickChat quickChat = new BungeeChat();
+    private final QuickChat quickChat = new BungeeQuickChat();
     @Getter
     @Nullable
     private String currency = null;
-//    @Getter
-//    private ShopControlPanel shopControlPanelManager;
     @Getter
     private CalendarWatcher calendarWatcher;
     @Getter
