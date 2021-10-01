@@ -150,8 +150,8 @@ public class TextManager implements Reloadable {
 
         // Register post processor
         postProcessors.add(new FillerProcessor());
-        postProcessors.add(new ColorProcessor());
         postProcessors.add(new PlaceHolderApiProcessor());
+        postProcessors.add(new ColorProcessor());
     }
 
     /**
