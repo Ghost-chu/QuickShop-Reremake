@@ -854,7 +854,7 @@
 <!--        </dependency>-->
         <dependency>
             <groupId>de.themoep</groupId>
-            <artifactId>minedown-adventure</artifactId>
+            <artifactId>minedown</artifactId>
             <version>1.7.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
@@ -977,41 +977,6 @@
             <artifactId>commons-io</artifactId>
             <version>2.11.0</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-text-serializer-gson</artifactId>
-            <version>4.9.1</version>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-api</artifactId>
-            <version>4.9.1</version>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-nbt</artifactId>
-            <version>4.9.1</version>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-key</artifactId>
-            <version>4.9.1</version>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-text-serializer-gson-legacy-impl</artifactId>
-            <version>4.9.1</version>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-platform-api</artifactId>
-            <version>4.0.0</version>
         </dependency>
     </dependencies>
 </project>
