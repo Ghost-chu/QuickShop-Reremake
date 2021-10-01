@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.chat;
 
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
 
 public enum QuickChatType {
@@ -54,14 +55,14 @@ public enum QuickChatType {
 //        if (type == QuickChatType.ADVENTURE) {
 //            return new AdventureQuickChat();
 //        }
-        return new BungeeQuickChat();
+        return new BungeeQuickChat(QuickShop.getInstance());
     }
 
     public static QuickChat createByType(QuickChatType type) {
 //        if (type == QuickChatType.ADVENTURE) {
 //            return new AdventureQuickChat();
 //        }
-        return new BungeeQuickChat();
+        return new BungeeQuickChat(QuickShop.getInstance());
     }
 
     public int toID() {

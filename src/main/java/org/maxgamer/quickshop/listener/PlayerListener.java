@@ -383,6 +383,11 @@ public class PlayerListener extends QSListener {
         Util.debugLog("Disallow " + e.getPlayer().getName() + " dye the shop sign.");
     }
 
+    @EventHandler(priority = EventPriority.MONITOR,ignoreCancelled = true)
+    public void onLocaleChanges(PlayerLocaleChangeEvent event){
+        MsgUtil.sendDirectMessage(event.getPlayer(),plugin.text().of(event.getPlayer(),"client-language-changed").forLocale(event.getLocale()));
+    }
+
     /**
      * Callback for reloading
      *
