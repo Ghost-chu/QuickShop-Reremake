@@ -327,11 +327,11 @@
   "unlimited-shop-owner-keeped": "&e주의: 상점 주인은 여전히 무제한 상점의 주인입니다, 상점을 소유하려면 상점을 초기화해야합니다.",
   "server-crash-warning": "&cQuickShop 플러그인의 자바파일을 지운/이동후 /qs reload를 사용하면 서버가 크래쉬 될수 있습니다",
   "reloading-status": {
-    "success": "&aReload completed without any errors.",
-    "require-restart": "&aReload completed. &e(Some changes require server restart to affect)",
-    "failed": "&cReload failed, check the server console",
-    "scheduled": "&aReload completed. &7(Some changes required a while to affect)"
+    "success": "&a아무 오류도없이 리로드를 완료했습니다.",
+    "require-restart": "&a리로드를 완료했습니다. &e(일부 변경사항은 서버를 재부팅해야 적용됩니다.)",
+    "failed": "&c리로드를 하지 못했습니다, 콘솔을 확인해주세요.",
+    "scheduled": "&a리로드를 완료했습니다. &7(일부 변경사항이 적용되려면 시간이 필요합니다.)"
   },
-  "client-language-changed": "&aQuickShop detected your client language setting has been changed, we're now using {0} locale for you.",
-  "client-language-unsupported": "&eQuickShop doesn't support your client language, we're fallback to {0} locale now."
+  "client-language-changed": "&a퀵샵이 당신의 클라이언트의 언어설정이 변경된것을 확인했습니다, 지금부터 저희는 당신을 위해 {0} 를 적용합니다.",
+  "client-language-unsupported": "&e퀵 샵이 당신의 언어를 지원하지 않습니다, {0} 언어로 돌아갑니다."
 }

@@ -129,7 +129,7 @@
     "now-buying": "&e{0} &awerden jetzt &dANGEKAUFT",
     "now-selling": "&e{0} &awerden jetzt &dVERKAUFT",
     "cleaning": "&aEntferne Shops ohne Lager...",
-    "reloading": "&aConfiguration reloaded. &eSome changes may require reboot to affect. \n&7(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won't crashed.)",
+    "reloading": "&aKonfiguration neu geladen. &eEinige Änderungen benötigen eventuell einen Neustart um aktiv zu werden.\n&7(Hinweis: Das verhalten beim neu laden wurde nach 4.0.9.10 geändert. Wir laden nun nur die Konfiguration neu nicht aber das gesammte Plugin um sicher zu stellen, dass der Server nicht crashed.)",
     "cleaned": "&aEntfernte &e{0}&ein Shop.",
     "no-type-given": "&cVerwendung: /qs find <item>",
     "no-world-given": "&cBitte gib einen Welt namen an",
@@ -318,7 +318,7 @@
   "backup-success": "&aBackup erfolgreich.",
   "console-only": "&cDieser Befehl kann nur per Konsole ausgeführt werden.",
   "console-only-danger": "&cDies ist ein gefährlicher Befehl, weswegen nur die Konsole ihn ausführen kann.",
-  "clean-warning": "&eThis command will purge &call &eshops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
+  "clean-warning": "&eDieser Befehl wird &calle &eShops entfernen, welche korrupt sind, sich in einer nicht erlaubten Welt befinden, nicht erlaubte Items verkaufen/kaufen oder &c&lIN NICHT GELADENEN WELTEN EXISTIEREN&e. Stelle sicher, dass du ein komplettes Backup deiner Shopdaten erstellst und verwende &b/qs cleanghost confirm &e um fortzufahren.",
   "shop-creation-failed": "&cShop-Erstellung fehlgeschlagen, Bitte kontaktiere einen Server Administrator.",
   "shop-owner-self-trade": "&eDu handelst mit deinem eigenen Shop, also wirst du keinen extra Saldo erhalten.",
   "chest-title": "QuickShop Laden",
@@ -327,11 +327,11 @@
   "unlimited-shop-owner-keeped": "&eAchtung: Der Shopeigentümer ist nach wie vor unlimitiert. Du musst den Besitzer manuell neu setzten.",
   "server-crash-warning": "&cServer kann nach Ausführung des /qs Reload-Befehls abstürzen, wenn Sie während des Laufens des Servers QuickShop-Plugin-Jar-Datei ersetzen/löschen.",
   "reloading-status": {
-    "success": "&aReload completed without any errors.",
-    "require-restart": "&aReload completed. &e(Some changes require server restart to affect)",
-    "failed": "&cReload failed, check the server console",
-    "scheduled": "&aReload completed. &7(Some changes required a while to affect)"
+    "success": "&aNeu laden ohne Fehler abgeschlossen.",
+    "require-restart": "&aNeu laden abgeschlossen. &e(Einige Einstellungen benötigen einen Serverneustart um aktiv zu werden)",
+    "failed": "&cNeu laden fehlgeschlagen. Überprüfe die Serverkonsole",
+    "scheduled": "&aNeu laden abgeschlossen. &7(Einige Änderungen benötigen eine Weile um aktiv zu werden)"
   },
-  "client-language-changed": "&aQuickShop detected your client language setting has been changed, we're now using {0} locale for you.",
-  "client-language-unsupported": "&eQuickShop doesn't support your client language, we're fallback to {0} locale now."
+  "client-language-changed": "&aQuickShop hat festgestellt, dass deine Client-Spracheinstellungen geändert wurden. Wir verwenden jetzt die Spracheinstellung {0} für dich.",
+  "client-language-unsupported": "&eQuickShop unterstützt deine Client-Sprache nicht. Wir verwenden die Spracheinstellung {0} jetzt."
 }

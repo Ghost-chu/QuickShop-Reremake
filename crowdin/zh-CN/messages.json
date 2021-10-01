@@ -328,10 +328,10 @@
   "server-crash-warning": "&c如果服务器运行时替换/删除QuickShop插件 Jar 文件，执行 /qs reload后服务器可能会崩溃。",
   "reloading-status": {
     "success": "&a重载完成，没有任何错误。",
-    "require-restart": "&aReload completed. &e(Some changes require server restart to affect)",
-    "failed": "&cReload failed, check the server console",
-    "scheduled": "&aReload completed. &7(Some changes required a while to affect)"
+    "require-restart": "&a重载完成。&e(一些更改需要重启服务器后生效)",
+    "failed": "&c重载失败，请检查服务器控制台",
+    "scheduled": "&a重载成功。&7(一些更改需要一段时间才能生效)"
   },
-  "client-language-changed": "&aQuickShop detected your client language setting has been changed, we're now using {0} locale for you.",
-  "client-language-unsupported": "&eQuickShop doesn't support your client language, we're fallback to {0} locale now."
+  "client-language-changed": "&aQuickShop检测到您的客户端语言已更改，我们正在为您使用 {0} 语言。",
+  "client-language-unsupported": "&eQuickShop不支持您的客户端语言，我们现在退回到 {0} 语言。"
 }

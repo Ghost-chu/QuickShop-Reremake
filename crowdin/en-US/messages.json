@@ -1,5 +1,5 @@
 {
-  "_comment": "Hi translator! If you are editing this from Github or from code sources, you should go to https://crowdin.com/project/quickshop-reremake",
+  "_comment": "Hi translator! If you're editing this on GitHub or through the sourcecode should you go to https://crowdin.com/project/quickshop-reremake instead.",
   "file-test": "This is a test text file. We use it to test if the messages.json is broken. You can fill it with any easter-eggs you like here :)",
   "translation-author": "Translator: Ghost_chu, Andre_601",
   "translation-version": "Support Version: Reremake",
@@ -328,10 +328,10 @@
   "server-crash-warning": "&cThe Server may crash after executing the /qs reload command when you replace/delete the QuickShop plugin-jar file while the server is running.",
   "reloading-status": {
     "success": "&aReload completed without any errors.",
-    "require-restart": "&aReload completed. &e(Some changes require server restart to affect)",
+    "require-restart": "&aReload completed. &e(Some changes require a server restart to take effect)",
     "failed": "&cReload failed, check the server console",
-    "scheduled": "&aReload completed. &7(Some changes required a while to affect)"
+    "scheduled": "&aReload completed. &7(Some changes take a while to become active)"
   },
-  "client-language-changed": "&aQuickShop detected your client language setting has been changed, we're now using {0} locale for you.",
-  "client-language-unsupported": "&eQuickShop doesn't support your client language, we're fallback to {0} locale now."
+  "client-language-changed": "&aQuickShop detected that your client language has been changed, we now use the {0} locale for you.",
+  "client-language-unsupported": "&eQuickShop doesn't support your client language, falling back to {0} locale..."
 }
