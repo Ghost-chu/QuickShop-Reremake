@@ -327,8 +327,8 @@
   "unlimited-shop-owner-keeped": "&eUwaga: Właściciel sklepu nadal jest właścicielem nielimitowanego sklepu, musisz ustawić nowego właściciela sklepu samodzielnie.",
   "server-crash-warning": "&cSerwer może się zawiesić po wykonaniu polecenia /qs reload po zastąpieniu/usunięciu pliku Jar pluginu QuickShop podczas uruchamiania serwera.",
   "reloading-status": {
-    "success": "&aReload completed without any errors.",
-    "require-restart": "&aReload completed. &e(Some changes require server restart to affect)",
+    "success": "&aPrzeładowanie zakończone bez żadnych błędów.",
+    "require-restart": "&aPrzeładowanie zakończone. &e(Wszystkie zmiany wymagają restartu serwera)",
     "failed": "&cReload failed, check the server console",
     "scheduled": "&aReload completed. &7(Some changes required a while to affect)"
   },
