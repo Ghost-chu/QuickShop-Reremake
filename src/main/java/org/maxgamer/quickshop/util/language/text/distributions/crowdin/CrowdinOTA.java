@@ -5,10 +5,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -88,7 +85,9 @@ public class CrowdinOTA implements Distribution {
         if (requestCachePool.getIfPresent(url) != null)
             return requestCachePool.getIfPresent(url);
         try (Response response = client.newCall(new Request.Builder().get().url(url).build()).execute()) {
-            data = response.body().string();
+            val body = response.body();
+            if(body == null) return null;
+            data = body.string();
             if (response.code() != 200) {
                 plugin.getLogger().warning("Couldn't get manifest: " + response.code() + ", please report to QuickShop!");
                 return null;
@@ -168,7 +167,10 @@ public class CrowdinOTA implements Distribution {
             String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);
             Util.debugLog("Reading data from remote server: " + url);
             try (Response response = client.newCall(new Request.Builder().get().url(url).build()).execute()) {
-                data = response.body().string();
+                val body = response.body();
+                if(body == null)
+                    throw new OTAException(response.code(),""); // Returns empty string
+                data = body.string();
                 if (response.code() != 200)
                     throw new OTAException(response.code(), data);
                 Files.write(cachedDataFile.toPath(), data.getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
