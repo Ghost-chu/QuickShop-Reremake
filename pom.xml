@@ -209,12 +209,16 @@
                             <shadedPattern>org.maxgamer.quickshop.shade.org.enginehub.squirrelid.</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>net.kyori.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.shade.org.net.kyori.</shadedPattern>
-                        </relocation>
-                        <relocation>
                             <pattern>com.squareup.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.org.com.squareup.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori.examination.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.examination</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori.adventure.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.kyori.adventure</shadedPattern>
                         </relocation>
 
 
@@ -406,10 +410,10 @@
             <id>minebench-repo</id>
             <url>https://repo.minebench.de/</url>
         </repository>
-        <repository>
-            <id>songoda-repo</id>
-            <url>https://repo.songoda.com/repository/public/</url>
-        </repository>
+<!--        <repository>-->
+<!--            <id>songoda-repo</id>-->
+<!--            <url>https://repo.songoda.com/repository/public/</url>-->
+<!--        </repository>-->
         <repository>
             <id>papermc</id>
             <url>https://papermc.io/repo/repository/maven-public/</url>
@@ -864,18 +868,18 @@
             <version>4.9.2</version>
             <systemPath>${project.basedir}/lib/TNE.jar</systemPath>
         </dependency>
-        <dependency>
-            <groupId>com.songoda</groupId>
-            <artifactId>skyblock</artifactId>
-            <version>2.2.13</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>MVdWPlaceholderAPI</artifactId>
-                    <groupId>be.maximvdw</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.songoda</groupId>-->
+<!--            <artifactId>skyblock</artifactId>-->
+<!--            <version>2.2.13</version>-->
+<!--            <scope>provided</scope>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <artifactId>MVdWPlaceholderAPI</artifactId>-->
+<!--                    <groupId>be.maximvdw</groupId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
         <!--        <dependency>-->
         <!--            <groupId>team.aura_dev.lib.slf4j-plugin.spigot</groupId>-->
         <!--            <artifactId>slf4j-plugin-spigot</artifactId>-->
@@ -956,18 +960,6 @@
             <systemPath>${project.basedir}/lib/IridiumSkyblock-3.1.1.jar</systemPath>
             <scope>system</scope>
         </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.0.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.maxgamer.quickshop.externalhelper</groupId>
-            <artifactId>PaperAdventureLib</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
@@ -982,6 +974,40 @@
             <version>2.11.0</version>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-gson</artifactId>
+            <version>4.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-api</artifactId>
+            <version>4.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-nbt</artifactId>
+            <version>4.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-key</artifactId>
+            <version>4.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-gson-legacy-impl</artifactId>
+            <version>4.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-bukkit</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-api</artifactId>
+            <version>4.0.0</version>
+        </dependency>
     </dependencies>
 </project>
