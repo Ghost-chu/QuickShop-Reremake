@@ -46,7 +46,7 @@ public class ReloadManager {
     /**
      * Register a reloadable module into reloading registery
      *
-     * @param reloadable Reloadable module
+     * @param reloadMethod Reloadable module
      */
     public void register(@NotNull Method reloadMethod) {
         unregister(reloadMethod);
@@ -56,7 +56,7 @@ public class ReloadManager {
     /**
      * Register a reloadable module into reloading registery
      *
-     * @param reloadable Reloadable module
+     * @param reloadMethod Reloadable module
      */
     public void unregister(@NotNull Method reloadMethod) {
         this.registry.removeIf(reloadableContainer -> reloadableContainer.getReloadableMethod() != null
@@ -116,7 +116,6 @@ public class ReloadManager {
             }
             ReloadResult reloadResult;
             try {
-
                 if (reloadable.getReloadable() != null)
                     reloadResult = reloadable.getReloadable().reloadModule();
                 else
