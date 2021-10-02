@@ -360,7 +360,6 @@ public class ContainerShop implements Shop {
                 if(this.displayItem.isSpawned()){
                     this.displayItem.remove();
                 }
-                this.displayItem = null;
             }
             return;
         }
@@ -533,11 +532,9 @@ public class ContainerShop implements Shop {
         }
         if (inventoryPreview != null) {
             inventoryPreview.close();
-            inventoryPreview = null;
         }
         if (this.displayItem != null) {
             this.displayItem.remove();
-            this.displayItem = null;
         }
         update();
         this.isLoaded = false;
