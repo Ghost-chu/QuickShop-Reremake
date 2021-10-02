@@ -337,10 +337,6 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>vault-repo</id>
-            <url>https://jitpack.io</url>
-        </repository>
-        <repository>
             <id>sk89q-repo</id>
             <url>https://maven.sk89q.com/repo/</url>
         </repository>
@@ -387,12 +383,10 @@
             <url>https://jitpack.io</url>
         </repository>
         <!-- JsonConfiguration  -->
-        <!-- Repo was down temporary, building this as workaround-->
         <repository>
             <id>onarandombox</id>
             <url>https://repo.onarandombox.com/content/groups/public</url>
         </repository>
-
         <!-- for development builds -->
         <repository>
             <id>sonatype-oss</id>
@@ -403,7 +397,7 @@
             <url>https://repo.minebench.de/</url>
         </repository>
         <repository>
-            <id>songoda-repo</id>
+            <id>songoda</id>
             <url>https://repo.songoda.com/repository/public/</url>
         </repository>
         <repository>
@@ -854,25 +848,18 @@
             <version>4.9.2</version>
             <systemPath>${project.basedir}/lib/TNE.jar</systemPath>
         </dependency>
-        <dependency>
-            <groupId>com.songoda</groupId>
-            <artifactId>skyblock</artifactId>
-            <version>2.2.13</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>MVdWPlaceholderAPI</artifactId>
-                    <groupId>be.maximvdw</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>team.aura_dev.lib.slf4j-plugin.spigot</groupId>-->
-        <!--            <artifactId>slf4j-plugin-spigot</artifactId>-->
-        <!--            <version>1.2.0</version>-->
-        <!--            <classifier>1.7.25</classifier>-->
-        <!--            <scope>compile</scope>-->
-        <!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.songoda</groupId>-->
+<!--            <artifactId>skyblock</artifactId>-->
+<!--            <version>2.2.13</version>-->
+<!--            <scope>provided</scope>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <artifactId>MVdWPlaceholderAPI</artifactId>-->
+<!--                    <groupId>be.maximvdw</groupId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <dependency>
             <groupId>commons-codec</groupId>
