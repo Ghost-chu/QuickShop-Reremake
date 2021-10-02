@@ -32,6 +32,7 @@ softdepend:
   - AdvancedRegionMarket
   - ArmShopBridge
   - IridiumSkyblock
+  - FabledSkyblock
 
 api-version: 1.15
 
