@@ -3,7 +3,7 @@ package org.maxgamer.quickshop.database;
 import lombok.Getter;
 
 public enum DataTypeMapping {
-    INT("int", "integer"),
+    INT("integer", "integer"),
     BIGINT("bigint", "integer"),
     FLOAT("float", "float"),
     DOUBLE("double", "float"),
