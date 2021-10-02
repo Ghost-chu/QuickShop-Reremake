@@ -1256,7 +1256,7 @@ public class ShopManager implements Reloadable {
                 amount = Integer.parseInt(message);
             } else {
                 if (message.equalsIgnoreCase(plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
-                    int shopHaveItems = Util.countItems(((ContainerShop) shop).getInventory(), shop.getItem());
+                    int shopHaveItems = shop.getRemainingStock();
                     int invHaveSpaces = Util.countSpace(p.getInventory(), shop.getItem());
                     if (!shop.isUnlimited()) {
                         amount = Math.min(shopHaveItems, invHaveSpaces);

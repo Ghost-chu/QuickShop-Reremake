@@ -194,7 +194,7 @@ public class PlayerListener extends QSListener {
             final double money = plugin.getEconomy().getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
 
             if (shop.isSelling()) {
-                int itemAmount = Math.min(Util.countSpace(p.getInventory(), shop.getItem()), (int) Math.floor(money / price));
+                int itemAmount = Math.min(shop.getRemainingSpace(), (int) Math.floor(money / price));
                 if (!shop.isUnlimited()) {
                     itemAmount = Math.min(itemAmount, shop.getRemainingStock());
                 }
@@ -208,7 +208,7 @@ public class PlayerListener extends QSListener {
                 }
             } else {
                 final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
-                int items = Util.countItems(p.getInventory(), shop.getItem());
+                int items = shop.getRemainingStock();
                 final int ownerCanAfford = (int) (ownerBalance / shop.getPrice());
 
                 if (!shop.isUnlimited()) {

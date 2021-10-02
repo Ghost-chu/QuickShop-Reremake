@@ -69,6 +69,9 @@ public class DatabaseHelper implements Reloadable {
         if(!manager.hasTable(plugin.getDbPrefix() + "logs")){
             createLogsTable();
         }
+        if(!manager.hasTable(plugin.getDbPrefix()+"external_cache")){
+            createExternalCacheTable();
+        }
         checkColumns();
     }
 
@@ -103,6 +106,14 @@ public class DatabaseHelper implements Reloadable {
         manager.runInstantTask(new DatabaseTask(createTable));
         createColumn("logs", "classname", new DataType(DataTypeMapping.TEXT, null, ""));
         createColumn("logs", "data", new DataType(DataTypeMapping.LONGTEXT, null, ""));
+    }
+
+    private void createExternalCacheTable(){
+        String createTable = "CREATE TABLE " + plugin.getDbPrefix()
+                + "external_cache ( x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL );";
+        manager.runInstantTask(new DatabaseTask(createTable));
+        createColumn("external_cache", "space", new DataType(DataTypeMapping.INT, null, ""));
+        createColumn("external_cache", "stock", new DataType(DataTypeMapping.INT, null, ""));
     }
 
 
@@ -307,6 +318,10 @@ public class DatabaseHelper implements Reloadable {
                     ps.setInt(4, z);
                     ps.setString(5, worldName);
                 }));
+    }
+
+    public void updateExternalInventoryProfileCache(@NotNull Shop shop, int space, int stock){
+
     }
 
     public void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,

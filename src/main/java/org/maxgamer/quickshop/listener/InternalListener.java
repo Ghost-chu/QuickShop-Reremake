@@ -132,6 +132,13 @@ public class InternalListener extends QSListener {
         }
     }
 
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void shopInventoryCalc(ShopInventoryCalculate event) {
+       plugin.getDatabaseHelper().updateExternalInventoryProfileCache(event.getShop(),event.getSpace(), event.getStock());
+    }
+
+
+
     /**
      * Callback for reloading
      *
