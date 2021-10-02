@@ -91,6 +91,12 @@ public class ContainerShop implements Shop {
     @EqualsAndHashCode.Exclude
     private volatile boolean dirty;
     private volatile boolean updating = false;
+    @Nullable
+    private String currency;
+
+    private boolean disableDisplay;
+
+    private UUID taxAccount;
 
     @SuppressWarnings("CopyConstructorMissesField")
     private ContainerShop(@NotNull ContainerShop s) {
@@ -108,6 +114,8 @@ public class ContainerShop implements Shop {
         this.extra = s.extra;
         this.dirty = true;
         this.inventoryPreview = null;
+        this.currency = s.currency;
+        this.disableDisplay = s.disableDisplay;
         initDisplayItem();
     }
 
@@ -133,7 +141,9 @@ public class ContainerShop implements Shop {
             @NotNull ShopModerator moderator,
             boolean unlimited,
             @NotNull ShopType type,
-            @NotNull YamlConfiguration extra) {
+            @NotNull YamlConfiguration extra,
+            @Nullable String currency,
+            @NotNull boolean disableDisplay) {
         Util.ensureThread(false);
         this.location = location;
         this.price = price;
@@ -159,8 +169,36 @@ public class ContainerShop implements Shop {
         this.shopType = type;
         this.unlimited = unlimited;
         this.extra = extra;
+        this.currency = currency;
+        this.disableDisplay = disableDisplay;
         initDisplayItem();
         this.dirty = false;
+        updateShopData();
+    }
+
+    private void updateShopData() {
+        ConfigurationSection section = getExtra(plugin);
+        if (section.getString("currency") != null) {
+            this.currency = section.getString("currency");
+            section.set("currency", null);
+        }
+        setExtra(plugin, section);
+        setDirty();
+        this.update();
+    }
+
+    public boolean isDisableDisplay() {
+        return disableDisplay;
+    }
+
+    @Override
+    @Nullable
+    public UUID getTaxAccount() {
+        if (taxAccount != null)
+            return taxAccount;
+        if (plugin.getShopManager().getCacheTaxAccount() != null)
+            return plugin.getShopManager().getCacheTaxAccount().getUniqueId();
+        return null;
     }
 
     private void initDisplayItem() {
@@ -487,7 +525,7 @@ public class ContainerShop implements Shop {
         OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
         String name = player.getName();
         if (name == null || name.isEmpty()) {
-            name = plugin.text().of( "unknown-owner").forLocale();
+            name = plugin.text().of("unknown-owner").forLocale();
         }
         if (forceUsername) {
             return name;
@@ -643,7 +681,7 @@ public class ContainerShop implements Shop {
                 break;
             //No remaining
             case 0:
-                lines[1] =plugin.text().of(noRemainingStringKey).forLocale();
+                lines[1] = plugin.text().of(noRemainingStringKey).forLocale();
                 break;
             //Has remaining
             default:
@@ -655,11 +693,11 @@ public class ContainerShop implements Shop {
 
         //line 4
         if (this.isStackingShop()) {
-            lines[3] =  plugin.text().of("signs.stack-price",
+            lines[3] = plugin.text().of("signs.stack-price",
                     Util.format(this.getPrice(), this), Integer.toString(item.getAmount()),
                     Util.getItemStackName(item)).forLocale();
         } else {
-            lines[3] =  plugin.text().of("signs.price",  Util.format(this.getPrice(), this)).forLocale();
+            lines[3] = plugin.text().of("signs.price", Util.format(this.getPrice(), this)).forLocale();
         }
 
         //New pattern for recognizing shop sign
@@ -736,7 +774,7 @@ public class ContainerShop implements Shop {
             plugin.getDatabaseHelper()
                     .updateShop(ShopModerator.serialize(this.moderator), this.getItem(),
                             unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
-                            this.saveExtraToYaml());
+                            this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString());
             this.dirty = false;
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING,
@@ -1032,15 +1070,15 @@ public class ContainerShop implements Shop {
                 signs.add(sign);
             } else {
                 String header = lines[0];
-                String adminShopHeader = plugin.text().of("signs.header",plugin.text().of("admin-shop").forLocale()).forLocale();
+                String adminShopHeader = plugin.text().of("signs.header", plugin.text().of("admin-shop").forLocale()).forLocale();
                 String signHeaderUsername = plugin.text().of("signs.header", this.ownerName(true)).forLocale();
                 if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
                     signs.add(sign);
                     //TEXT SIGN
                     //continue
                 } else {
-                    adminShopHeader = plugin.text().of("signs.header",  plugin.text().of("admin-shop").forLocale(), "").forLocale();
-                    signHeaderUsername = plugin.text().of("signs.header",  this.ownerName(true), "").forLocale();
+                    adminShopHeader = plugin.text().of("signs.header", plugin.text().of("admin-shop").forLocale(), "").forLocale();
+                    signHeaderUsername = plugin.text().of("signs.header", this.ownerName(true), "").forLocale();
                     adminShopHeader = ChatColor.stripColor(adminShopHeader).trim();
                     signHeaderUsername = ChatColor.stripColor(signHeaderUsername).trim();
                     if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
@@ -1434,8 +1472,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public @Nullable String getCurrency() {
-        ConfigurationSection section = getExtra(plugin);
-        return section.getString("currency");
+        return this.currency;
     }
 
     /**
@@ -1445,9 +1482,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void setCurrency(@Nullable String currency) {
-        ConfigurationSection section = getExtra(plugin);
-        section.set("currency", currency);
-        setExtra(plugin, section);
+        this.currency = currency;
         setDirty();
         this.update();
     }

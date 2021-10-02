@@ -495,5 +495,18 @@ public interface Shop {
      */
     ShopInfoStorage saveToInfoStorage();
 
+    /**
+     * Getting if this shop has been disabled the display
+     * @return Does display has been disabled
+     */
+    boolean isDisableDisplay();
+
+    /**
+     * Getting the shop tax account, it can be specific uuid or general tax account
+     * @return Shop Tax Account, null if use general tax account
+     */
+    @Nullable
+    UUID getTaxAccount();
+
 
 }
