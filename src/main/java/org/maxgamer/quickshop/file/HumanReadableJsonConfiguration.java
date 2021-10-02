@@ -61,6 +61,6 @@ public class HumanReadableJsonConfiguration extends JsonConfiguration {
 
     @Override
     public @NotNull String saveToString() {
-        return JsonUtil.getHumanReadableGson().toJson(SerializationHelper.serialize(this.getValues(false)));
+        return JsonUtil.prettyPrinting().toJson(SerializationHelper.serialize(this.getValues(false)));
     }
 }

@@ -505,17 +505,21 @@ public class QuickShop extends JavaPlugin {
         }
     }
 
-    /**
-     * Logs the given string to qs.log, if QuickShop is configured to do so.
-     *
-     * @param s The string to log. It will be prefixed with the date and time.
-     */
-    public void log(@NotNull String s) {
-        Util.debugLog("[SHOP LOG] " + s);
-        if (this.getLogWatcher() == null) {
-            return;
-        }
-        this.getLogWatcher().log(s);
+   // /**
+//     * Logs the given string to qs.log, if QuickShop is configured to do so.
+//     *
+//     * @param s The string to log. It will be prefixed with the date and time.
+//     */
+//    public void log(@NotNull String s) {
+//        Util.debugLog("[SHOP LOG] " + s);
+//        if (this.getLogWatcher() == null) {
+//            return;
+//        }
+//        this.getLogWatcher().log(s);
+//    }
+
+    public void logEvent(@NotNull Object eventObject){
+        getDatabaseHelper().insertHistoryRecord(eventObject);
     }
 
     @Override
@@ -955,6 +959,14 @@ public class QuickShop extends JavaPlugin {
         shopPurger.runTaskAsynchronously(this);
         Util.debugLog("Now using display-type: " + DisplayItem.getNowUsing().name());
         getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
+
+        // TODO: Test code
+        getDatabaseHelper().insertHistoryRecord(new TestRecord());
+    }
+
+    static class TestRecord{
+        private String test = "Hello World!";
+        private ShopChunk chunk = new ShopChunk("hello!",2,3);
     }
 
     private void loadItemMatcher() {

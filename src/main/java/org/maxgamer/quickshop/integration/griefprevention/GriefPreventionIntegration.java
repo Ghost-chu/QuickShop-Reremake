@@ -36,6 +36,8 @@ import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
@@ -179,7 +181,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
                 for (Shop shop : shops.values()) {
                     if (!shop.getOwner().equals(event.getClaim().getOwnerID()) &&
                             event.getClaim().contains(shop.getLocation(), false, false)) {
-                        plugin.log("[SHOP DELETE] GP Integration: Single delete (SubClaim Created) #" + shop.ownerName());
+                        plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(event.getCreator()),String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Created", this.getName(), shop),shop.saveToInfoStorage()));
                         shop.delete();
                     }
                 }
@@ -199,13 +201,14 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
                     continue;
                 }
                 if (event.getIdentifier().equals(shop.getOwner().toString())) {
-                    plugin.log("[SHOP DELETE] GP Integration: Single delete (Claim/Subclaim Trust Changed) #" + shop.ownerName());
+                    plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(event.getChanger()),String.format("[%s Integration]Shop %s deleted caused by [Single] Claim/SubClaim Trust Changed", this.getName(), shop),shop.saveToInfoStorage()));
                     shop.delete();
                 } else if (event.getIdentifier().contains(shop.getOwner().toString())) {
-                    plugin.log("[SHOP DELETE] GP Integration: Group delete (Claim/Subclaim Trust Changed)#" + shop.ownerName());
+                    plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(event.getChanger()),String.format("[%s Integration]Shop %s deleted caused by [Group] Claim/SubClaim Trust Changed", this.getName(), shop),shop.saveToInfoStorage()));
                     shop.delete();
                 } else if ("all".equals(event.getIdentifier()) || "public".equals(event.getIdentifier())) {
-                    plugin.log("[SHOP DELETE] GP Integration: All/Public delete (Claim/Subclaim Trust Changed) #" + shop.ownerName());
+                    plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(event.getChanger()),String.format("[%s Integration]Shop %s deleted caused by [All/Public] Claim/SubClaim Trust Changed", this.getName(), shop),shop.saveToInfoStorage()));
+
                     shop.delete();
                 }
             }
@@ -220,7 +223,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
             if (shops != null) {
                 for (Shop shop : shops.values()) {
                     if (claim.contains(shop.getLocation(), false, false)) {
-                        plugin.log(logMessage + shop.ownerName());
+                        plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),String.format("[%s Integration]Shop %s deleted caused by [System] Claim/SubClaim Unclaimed/Expired: "+logMessage, this.getName(), shop),shop.saveToInfoStorage()));
                         shop.delete();
                     }
                 }
@@ -237,7 +240,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
                 for (Shop shop : shops.values()) {
                     if (!shop.getOwner().equals(subClaim.getOwnerID()) &&
                             subClaim.contains(shop.getLocation(), false, false)) {
-                        plugin.log("[SHOP DELETE] GP Integration: Single delete (SubClaim Unclaimed) #" + shop.ownerName());
+                        plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Unclaimed", this.getName(), shop),shop.saveToInfoStorage()));
                         shop.delete();
                     }
                 }
@@ -254,7 +257,8 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
                 for (Shop shop : shops.values()) {
                     if (oldClaim.contains(shop.getLocation(), false, false) &&
                             !newClaim.contains(shop.getLocation(), false, false)) {
-                        plugin.log("[SHOP DELETE] GP Integration: Single delete (Claim Resized) #" + shop.ownerName());
+                        plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),String.format("[%s Integration]Shop %s deleted caused by [Single] Claim Resized: ", this.getName(), shop),shop.saveToInfoStorage()));
+
                         shop.delete();
                     }
                 }
@@ -279,7 +283,7 @@ public class GriefPreventionIntegration extends QSIntegratedPlugin {
                     if (!shop.getOwner().equals(claimVerifyChunks.getOwnerID()) &&
                             claimVerifyChunks.contains(shop.getLocation(), false, false) &&
                             !claimVerifyShop.contains(shop.getLocation(), false, false)) {
-                        plugin.log("[SHOP DELETE] GP Integration: Single delete (SubClaim Resized) #" + shop.ownerName());
+                        plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Resized: ", this.getName(), shop),shop.saveToInfoStorage()));
                         shop.delete();
                     }
                 }

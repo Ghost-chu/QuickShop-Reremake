@@ -26,6 +26,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 
 import java.util.UUID;
 
@@ -54,7 +55,7 @@ public class SubCommand_SilentRemove implements CommandHandler<Player> {
             return;
         }
 
-        plugin.log("Deleting shop " + shop + " as requested by the /qs silentremove command from the control panel.");
+        plugin.logEvent(new ShopRemoveLog(sender.getUniqueId(),"/qs silentremove command",shop.saveToInfoStorage()));
         shop.delete();
     }
 }

@@ -22,19 +22,25 @@ package org.maxgamer.quickshop.shop;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import me.lucko.helper.serialize.BlockPosition;
+
+import java.util.UUID;
 
 /**
  * TODO This class used for storage the shop
- * Exclude location
  */
 @AllArgsConstructor
 @Data
 @Builder
 public class ShopInfoStorage {
-    String moderator;
-    double price;
-    String item;
-    int unlimited;
-    int shopType;
-    String extra;
+    private final BlockPosition location;
+    private final String moderator;
+    private final double price;
+    private final String item;
+    private final int unlimited;
+    private final int shopType;
+    private final String extra;
+    private final String currency;
+    private final boolean disableDisplay;
+    private final UUID taxAccount;
 }

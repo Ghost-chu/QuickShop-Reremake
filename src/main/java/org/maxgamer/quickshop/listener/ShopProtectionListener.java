@@ -42,6 +42,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
@@ -141,7 +142,7 @@ public class ShopProtectionListener extends ProtectionListenerBase {
                 if (plugin.getConfig().getBoolean("protect.explode")) {
                     e.setCancelled(true);
                 } else {
-                    plugin.log("Deleting shop " + shop + " request by block break (explode).");
+                    plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),"BlockBreak(explode)",shop.saveToInfoStorage()));
                     shop.delete();
                 }
             }
@@ -235,7 +236,7 @@ public class ShopProtectionListener extends ProtectionListenerBase {
             if (plugin.getConfig().getBoolean("protect.explode")) {
                 e.setCancelled(true);
             } else {
-                plugin.log("Deleting shop " + shop + " request by block break (explode).");
+                plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),"BlockBreak(explode)",shop.saveToInfoStorage()));
                 shop.delete();
             }
         }
@@ -297,7 +298,7 @@ public class ShopProtectionListener extends ProtectionListenerBase {
             event.setCancelled(true);
             return;
         }
-        plugin.log("Deleting shop " + shop + " request by mob changing.");
+        plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),"EntityChanges",shop.saveToInfoStorage()));
         shop.delete();
     }
 

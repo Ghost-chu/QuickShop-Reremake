@@ -36,6 +36,7 @@ import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopChunk;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
@@ -111,7 +112,7 @@ public class LandsIntegration extends QSIntegratedPlugin implements Listener {
                         Map<Location, Shop> shops = chunkedShopEntry.getValue();
                         for (Shop shop : shops.values()) {
                             if (target.equals(shop.getOwner())) {
-                                plugin.log("[UNTRUSTED DELETE] Shop " + shop + " has been deleted due the owner no-longer have permission in land " + land.getName());
+                                plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),"[Lands Integration] Untrusted",shop.saveToInfoStorage()));
                                 Util.mainThreadRun(shop::delete);
                             }
                         }

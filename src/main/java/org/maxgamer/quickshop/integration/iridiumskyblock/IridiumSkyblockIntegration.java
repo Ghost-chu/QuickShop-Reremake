@@ -37,6 +37,8 @@ import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
@@ -136,7 +138,7 @@ public class IridiumSkyblockIntegration extends QSIntegratedPlugin implements Li
             if (!island.isInIsland(shop.getLocation())) continue;
             for (User user : members) {
                 if (shop.getOwner().equals(user.getUuid())) {
-                    plugin.log(String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop));
+                    plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop),shop.saveToInfoStorage()));
                     shop.delete();
                 }
             }
@@ -151,7 +153,7 @@ public class IridiumSkyblockIntegration extends QSIntegratedPlugin implements Li
             if (!island.isInIsland(shop.getLocation())) continue;
             for (User user : members) {
                 if (shop.getOwner().equals(user.getUuid())) {
-                    plugin.log(String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop));
+                    plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop),shop.saveToInfoStorage()));
                     shop.delete();
                 }
             }
@@ -163,7 +165,7 @@ public class IridiumSkyblockIntegration extends QSIntegratedPlugin implements Li
         Island island = event.getIsland();
         for (Shop shop : plugin.getShopManager().getPlayerAllShops(event.getUser().getUuid())) {
             if (!island.isInIsland(shop.getLocation())) continue;
-            plugin.log(String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop));
+            plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop),shop.saveToInfoStorage()));
             shop.delete();
         }
     }

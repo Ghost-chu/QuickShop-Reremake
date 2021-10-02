@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopModerator;
+import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
@@ -65,6 +66,9 @@ public class DatabaseHelper implements Reloadable {
         if (!manager.hasTable(plugin.getDbPrefix() + "messages")) {
             createMessagesTable();
         }
+        if(!manager.hasTable(plugin.getDbPrefix() + "logs")){
+            createLogsTable();
+        }
         checkColumns();
     }
 
@@ -91,6 +95,14 @@ public class DatabaseHelper implements Reloadable {
                     + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL , time  BIGINT(32) NOT NULL );";
         }
         manager.runInstantTask(new DatabaseTask(createTable));
+    }
+
+    private void createLogsTable(){
+        String createTable = "CREATE TABLE " + plugin.getDbPrefix()
+                + "logs (time BIGINT(32) NOT NULL);";
+        manager.runInstantTask(new DatabaseTask(createTable));
+        createColumn("logs", "classname", new DataType(DataTypeMapping.TEXT, null, ""));
+        createColumn("logs", "data", new DataType(DataTypeMapping.LONGTEXT, null, ""));
     }
 
 
@@ -128,6 +140,12 @@ public class DatabaseHelper implements Reloadable {
                     .getDbPrefix() + "messages MODIFY COLUMN message text CHARACTER SET utf8mb4 NOT NULL AFTER owner", checkTask));
             manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
                     .getDbPrefix() + "shops MODIFY COLUMN itemConfig text CHARACTER SET utf8mb4 NOT NULL AFTER price", checkTask));
+            manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
+                    .getDbPrefix() + "shops TO CHARACTER SET uft8mb4 COLLATE utf8mb4_general_ci", checkTask));
+            manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
+                    .getDbPrefix() + "messages TO CHARACTER SET uft8mb4 COLLATE utf8mb4_general_ci", checkTask));
+            manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
+                    .getDbPrefix() + "history TO CHARACTER SET uft8mb4 COLLATE utf8mb4_general_ci", checkTask));
         }
         plugin.getLogger().info("Finished!");
     }
@@ -220,8 +238,6 @@ public class DatabaseHelper implements Reloadable {
     }
 
     public void removeShop(Shop shop) {
-        plugin.log("[DATABASE HELPER] Removing shop in the database: " + shop.toString());
-        bakeTraceIfNeeded();
         String sqlString = "DELETE FROM "
                 + plugin.getDbPrefix()
                 + "shops WHERE x = ? AND y = ? AND z = ? AND world = ?"
@@ -237,8 +253,6 @@ public class DatabaseHelper implements Reloadable {
     }
 
     public void removeShop(String world, int x, int y, int z) {
-        plugin.log("[DATABASE HELPER] Removing shop in the database: " + world + "/" + x + "/" + y + "z" + z);
-        bakeTraceIfNeeded();
         String sqlString = "DELETE FROM "
                 + plugin.getDbPrefix()
                 + "shops WHERE x = ? AND y = ? AND z = ? AND world = ?"
@@ -321,14 +335,16 @@ public class DatabaseHelper implements Reloadable {
 
     }
 
-    private void bakeTraceIfNeeded() {
-        if (plugin.getConfig().getBoolean("debug.shop-deletion")) {
-            for (StackTraceElement stackTraceElement : new Exception().getStackTrace()) {
-                plugin.log("at [" + stackTraceElement.getClassName() + "]" +
-                        "[" + stackTraceElement.getMethodName() + "] (" + stackTraceElement.getLineNumber() + ") - "
-                        + stackTraceElement.getFileName());
-            }
-        }
+    public void insertHistoryRecord(Object record){
+        String sqlString = "INSERT INTO " + plugin.getDbPrefix() + "logs (time, classname, data) VALUES (?, ?, ?)";
+        manager.addDelayTask(
+                new DatabaseTask(
+                        sqlString,
+                        (ps) -> {
+                            ps.setLong(1,System.currentTimeMillis());
+                            ps.setString(2, record.getClass().getName());
+                            ps.setString(3, JsonUtil.getGson().toJson(record));
+                        }));
     }
 
     /**

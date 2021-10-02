@@ -36,6 +36,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.EnderChest;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -1403,5 +1404,14 @@ public class Util {
         return date == null ? null : date.toLocalDate();
     }
 
+    public static UUID getNilUniqueId(){
+        return new UUID(0,0);
+    }
+    public static UUID getSenderUniqueId(CommandSender sender){
+        if(sender instanceof OfflinePlayer){
+           return  ((OfflinePlayer) sender).getUniqueId();
+        }
+        return getNilUniqueId();
+    }
 
 }
