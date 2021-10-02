@@ -39,7 +39,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.util.mojangapi.MojangAPI;
+import org.maxgamer.quickshop.util.mojangapi.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -66,6 +66,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
     private final QuickShop plugin;
     @Nullable
     private final JsonObject lang;
+    private MojangApiMirror mirror;
 
     @SneakyThrows
     public MojangGameLanguageImpl(@NotNull QuickShop plugin, @NotNull String languageCode) {
@@ -93,9 +94,36 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
             }
         }
         languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
+
+        switch (plugin.getConfig().getInt("mojangapi-mirror",0)){
+            case 0:
+                mirror = new MojangApiOfficialMirror();
+                plugin.getLogger().info("Game assets server selected: Mojang API");
+                break;
+            case 1:
+                mirror = new MojangApiBmclApiMirror();
+                plugin.getLogger().info("Game assets server selected: BMCLAPI");
+                plugin.getLogger().info("===Mirror description===");
+                plugin.getLogger().info("BMCLAPI is a non-profit mirror service made by @bangbang93 to speed up download in China mainland region.");
+                plugin.getLogger().info("Donate BMCLAPI or get details about BMCLAPI, check here: https://bmclapidoc.bangbang93.com");
+                plugin.getLogger().info("You should only use this mirror if your server in China mainland or have connection trouble with Mojang server, otherwise use Mojang Official server");
+                plugin.getLogger().warning("You're selected unofficial game assets server, use at your own risk.");
+                break;
+            case 2:
+                mirror = new MojangApiMcbbsApiMirror();
+                plugin.getLogger().info("Game assets server selected: BMCLAPI");
+                plugin.getLogger().info("===Mirror description===");
+                plugin.getLogger().info("MCBBSAPI is a special server of OpenBMCLAPI made by @bangbang93 but managed by MCBBS, same with BMCLAPI, MCBBSAPI is target speed up download in China mainland region.");
+                plugin.getLogger().info("Donate BMCLAPI or get details about BMCLAPI (includes MCBBSAPI), check here: https://bmclapidoc.bangbang93.com");
+                plugin.getLogger().info("You should only use this mirror if your server in China mainland or have connection trouble with Mojang server, otherwise use Mojang Official server");
+                plugin.getLogger().warning("You're selected unofficial game assets server, use at your own risk.");
+                break;
+        }
+
+
         LOCK.lock();
         try {
-            final GameLanguageLoadThread loadThread = new GameLanguageLoadThread(plugin, languageCode);
+            final GameLanguageLoadThread loadThread = new GameLanguageLoadThread(plugin, languageCode,mirror);
             loadThread.start();
             boolean timeout = !DOWNLOAD_CONDITION.await(20, TimeUnit.SECONDS);
             if (timeout) {
@@ -106,6 +134,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         } finally {
             LOCK.unlock();
         }
+
     }
 
     @Override
@@ -199,10 +228,12 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         private JsonObject lang;
         private boolean isLatest = false; //Does assets is latest?
         private boolean isUpdated = false; //Did we tried update assets?
+        private MojangApiMirror mirror;
 
-        public GameLanguageLoadThread(@NotNull QuickShop plugin, @NotNull String languageCode) {
+        public GameLanguageLoadThread(@NotNull QuickShop plugin, @NotNull String languageCode,@NotNull MojangApiMirror mirror) {
             this.plugin = plugin;
             this.languageCode = languageCode;
+            this.mirror = mirror;
         }
 
         @Override
@@ -260,7 +291,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 plugin.getLogger().info("Loading required files from Mojang API, Please allow up to 20 secs.");
 
                 //Download new things from Mojang launcher meta site
-                MojangAPI mojangAPI = new MojangAPI();
+                MojangAPI mojangAPI = new MojangAPI(mirror);
                 MojangAPI.AssetsAPI assetsAPI = mojangAPI.getAssetsAPI(ReflectFactory.getServerVersion());
                 if (!assetsAPI.isAvailable()) { //This version no meta can be found, bug?
                     Util.debugLog("AssetsAPI returns not available, This may caused by Mojang servers down or connection issue.");

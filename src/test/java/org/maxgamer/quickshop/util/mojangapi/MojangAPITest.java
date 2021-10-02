@@ -27,7 +27,7 @@ import java.util.Optional;
 public class MojangAPITest {
     @Test
     public void testMojangMetaApi() {
-        MojangAPI api = new MojangAPI();
+        MojangAPI api = new MojangAPI(new MojangApiOfficialMirror());
         Optional<String> metaData = api.getMetaAPI("1.16.5").get();
         Assert.assertTrue(metaData.isPresent());
         Assert.assertFalse(metaData.get().isEmpty());
@@ -35,7 +35,7 @@ public class MojangAPITest {
 
     @Test
     public void testMojangAssetsApi() {
-        MojangAPI api = new MojangAPI();
+        MojangAPI api = new MojangAPI(new MojangApiOfficialMirror());
         MojangAPI.AssetsAPI assetsAPI = api.getAssetsAPI("1.16.5");
         Assert.assertTrue(assetsAPI.isAvailable());
         Optional<MojangAPI.AssetsFileData> assetsFileData = assetsAPI.getGameAssetsFile();

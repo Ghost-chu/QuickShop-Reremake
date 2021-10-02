@@ -26,7 +26,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,15 +40,15 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class MojangAPI {
-
-    public MojangAPI() {
-
+    private MojangApiMirror mirror;
+    public MojangAPI(MojangApiMirror mirror) {
+        this.mirror = mirror;
     }
 
 
     @NotNull
     public AssetsAPI getAssetsAPI(@NotNull String serverVersion) {
-        return new AssetsAPI(serverVersion);
+        return new AssetsAPI(mirror,serverVersion);
     }
 
     @NotNull
@@ -59,11 +58,11 @@ public class MojangAPI {
 
     @NotNull
     public MetaAPI getMetaAPI(@NotNull String serverVersion) {
-        return new MetaAPI(serverVersion);
+        return new MetaAPI(mirror,serverVersion);
     }
 
     public ResourcesAPI getResourcesAPI() {
-        return new ResourcesAPI();
+        return new ResourcesAPI(mirror);
     }
 
 
@@ -76,15 +75,19 @@ public class MojangAPI {
     }
 
     @Data
-    @NoArgsConstructor
     public static class ResourcesAPI {
         private final LoadingCache<URL, Optional<String>> request = CacheBuilder.newBuilder()
                 .expireAfterAccess(10, TimeUnit.MINUTES)
                 .build(new HttpCacheLoader());
+        private final MojangApiMirror apiMirror;
+
+        public ResourcesAPI(MojangApiMirror mirror){
+            this.apiMirror = mirror;
+        }
 
         public Optional<String> get(@NotNull String hash) {
             try {
-                return request.get(new URL("https://resources.download.minecraft.net/" + hash.substring(0, 2) + "/" + hash));
+                return request.get(new URL(apiMirror.getResourcesDownloadRoot()+"/" + hash.substring(0, 2) + "/" + hash));
             } catch (ExecutionException | MalformedURLException e) {
                 return Optional.empty();
             }
@@ -98,8 +101,8 @@ public class MojangAPI {
                 .build(new HttpCacheLoader());
         private final MetaAPI metaAPI;
 
-        AssetsAPI(@NotNull String version) {
-            this.metaAPI = new MetaAPI(version);
+        AssetsAPI(@NotNull MojangApiMirror apiMirror, @NotNull String version) {
+            this.metaAPI = new MetaAPI(apiMirror,version);
         }
 
         public boolean isAvailable() {
@@ -198,9 +201,9 @@ public class MojangAPI {
         private final String version;
 
         @SneakyThrows
-        public MetaAPI(@NotNull String version) {
+        public MetaAPI(@NotNull MojangApiMirror mirror, @NotNull String version) {
             this.version = version;
-            this.metaEndpoint = new URL("https://launchermeta.mojang.com/mc/game/version_manifest.json");
+            this.metaEndpoint = new URL(mirror.getLauncherMetaRoot()+"/mc/game/version_manifest.json");
         }
 
         /**

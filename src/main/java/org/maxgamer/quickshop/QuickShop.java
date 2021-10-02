@@ -1902,6 +1902,7 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 141) {
             getConfig().set("language", null);
             getConfig().set("disabled-languages", Collections.singletonList("disable_here"));
+            getConfig().set("mojangapi-mirror", 0);
             getConfig().set("config-version", ++selectedVersion);
         }
 
