@@ -712,7 +712,6 @@ public class ShopManager implements Reloadable {
             } else {
                 plugin.text().of(buyer, "purchase-failed").send();
                 plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
-                QuickShop.getInstance().log("EconomyTransaction Failed, last error:" + transaction.getLastError());
             }
             return;
         }
@@ -969,7 +968,6 @@ public class ShopManager implements Reloadable {
                 } else {
                     plugin.text().of(p, "purchase-failed").send();
                     plugin.getLogger().severe("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
-                    plugin.log("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
                 }
                 return;
             }
@@ -1084,7 +1082,6 @@ public class ShopManager implements Reloadable {
             } else {
                 plugin.text().of(seller, "purchase-failed").send();
                 plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
-                QuickShop.getInstance().log("EconomyTransaction Failed, last error:" + transaction.getLastError());
             }
             return;
         }

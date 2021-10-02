@@ -46,6 +46,7 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopAction;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
@@ -101,8 +102,7 @@ public class BlockListener extends ProtectionListenerBase {
             if (action != null) {
                 action.setAction(ShopAction.CANCELLED);
             }
-
-            plugin.log("Deleting shop " + shop + " request by block break.");
+            plugin.logEvent(new ShopRemoveLog(e.getPlayer().getUniqueId(),"BlockBreak(player)",shop.saveToInfoStorage()));
             shop.delete();
             plugin.text().of(p, "success-removed-shop").send();
         } else if (Util.isWallSign(b.getType())) {
@@ -132,7 +132,7 @@ public class BlockListener extends ProtectionListenerBase {
                         return;
                     }
                     plugin.text().of(p, "break-shop-use-supertool").send();
-                    plugin.log("Deleting shop " + shop + " request by block break (super tool).");
+                    plugin.logEvent(new ShopRemoveLog(e.getPlayer().getUniqueId(),"BlockBreak(player)",shop.saveToInfoStorage()));
                     shop.delete();
                     return;
                 }

@@ -28,6 +28,8 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,7 +67,7 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
                 }
                 for (Shop shop : tempList) {
                     if (shop.getOwner().equals(shopOwner.getUniqueId())) {
-                        plugin.log("Deleting shop " + shop + " as requested by the /qs removeall command.");
+                        plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender),"Deleting shop " + shop + " as requested by the /qs removeall command.",shop.saveToInfoStorage()));
                         shop.delete();
                         i++;
                     }
@@ -81,7 +83,7 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
                 }
                 for (Shop shop : tempList) {
                     if (shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
-                        plugin.log("Deleting shop " + shop + " as requested by the /qs removeall command.");
+                        plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender),"Deleting shop " + shop + " as requested by the /qs removeall command.",shop.saveToInfoStorage()));
                         shop.delete();
                         i++;
                     }

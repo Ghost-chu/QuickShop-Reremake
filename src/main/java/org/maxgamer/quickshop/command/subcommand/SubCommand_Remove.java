@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 
 @AllArgsConstructor
 public class SubCommand_Remove implements CommandHandler<Player> {
@@ -52,7 +53,7 @@ public class SubCommand_Remove implements CommandHandler<Player> {
             if (shop.getModerator().isModerator(sender.getUniqueId())
                     || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy")) {
                 shop.delete();
-                plugin.log("Deleting shop " + shop + " as requested by the /qs remove command.");
+                plugin.logEvent(new ShopRemoveLog(sender.getUniqueId(),"/qs remove command",shop.saveToInfoStorage()));
             } else {
                 plugin.text().of(sender, "no-permission").send();
             }

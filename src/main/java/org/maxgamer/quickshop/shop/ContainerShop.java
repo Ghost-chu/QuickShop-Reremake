@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.shop;
 import com.lishid.openinv.OpenInv;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
+import me.lucko.helper.serialize.BlockPosition;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -42,8 +43,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.*;
+import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.PriceLimiter;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -53,17 +56,20 @@ import java.util.logging.Level;
  */
 @EqualsAndHashCode
 public class ContainerShop implements Shop {
-
+    @JsonUtil.Hidden
     @EqualsAndHashCode.Exclude
     private static final String shopSignPrefix = "§d§o §r";
     @EqualsAndHashCode.Exclude
+    @JsonUtil.Hidden
     private static final String shopSignPattern = "§d§o ";
     @NotNull
     private final Location location;
     private final YamlConfiguration extra;
     @EqualsAndHashCode.Exclude
+    @JsonUtil.Hidden
     private final QuickShop plugin;
     @EqualsAndHashCode.Exclude
+    @JsonUtil.Hidden
     private final UUID runtimeRandomUniqueId = UUID.randomUUID();
     private ShopModerator moderator;
     private double price;
@@ -73,29 +79,38 @@ public class ContainerShop implements Shop {
     private ItemStack item;
     @Nullable
     @EqualsAndHashCode.Exclude
+    @JsonUtil.Hidden
     private DisplayItem displayItem;
     @EqualsAndHashCode.Exclude
+    @JsonUtil.Hidden
     private volatile boolean isLoaded = false;
     @EqualsAndHashCode.Exclude
+    @JsonUtil.Hidden
     private volatile boolean isDeleted = false;
     @EqualsAndHashCode.Exclude
+    @JsonUtil.Hidden
     private volatile boolean isLeftShop = false;
     @EqualsAndHashCode.Exclude
+    @JsonUtil.Hidden
     private volatile boolean createBackup = false;
     @EqualsAndHashCode.Exclude
+    @JsonUtil.Hidden
     private InventoryPreview inventoryPreview = null;
     @EqualsAndHashCode.Exclude
+    @JsonUtil.Hidden
     private volatile ContainerShop attachedShop;
     @EqualsAndHashCode.Exclude
+    @JsonUtil.Hidden
     private volatile boolean isDisplayItemChanged = false;
     @EqualsAndHashCode.Exclude
+    @JsonUtil.Hidden
     private volatile boolean dirty;
+    @EqualsAndHashCode.Exclude
+    @JsonUtil.Hidden
     private volatile boolean updating = false;
     @Nullable
     private String currency;
-
     private boolean disableDisplay;
-
     private UUID taxAccount;
 
     @SuppressWarnings("CopyConstructorMissesField")
@@ -855,14 +870,14 @@ public class ContainerShop implements Shop {
             displayItem.remove();
         }
 
-        if (plugin.isDisplay()) {
+        if (plugin.isDisplay() && !isDisableDisplay()) {
             if (displayItem != null) {
                 displayItem.remove();
             }
             // Update double shop status, is left status, and the attachedShop
             updateAttachedShop();
             // Update displayItem
-            if (isDisplayItemChanged) {
+            if (isDisplayItemChanged && !isDisableDisplay()) {
                 initDisplayItem();
                 isDisplayItemChanged = false;
             }
@@ -871,7 +886,7 @@ public class ContainerShop implements Shop {
                 attachedShop.refresh();
             }
             // Don't make an item for this chest if it's a left shop.
-            if (!isLeftShop) {
+            if (!isLeftShop && !isDisableDisplay()) {
                 displayItem.spawn();
             }
         }
@@ -1272,16 +1287,14 @@ public class ContainerShop implements Shop {
             if (!createBackup) {
                 createBackup = Util.backupDatabase();
                 if (createBackup) {
-                    plugin.log("Deleting shop " + this + " request by invalid inventory.");
-                    this.delete();
-                    Util.debugLog(
-                            "Inventory doesn't exist anymore: " + this + " shop was removed.");
+                    this.delete(false);
                 }
             } else {
-                plugin.log("Deleting shop " + this + " request by invalid inventory.");
-                this.delete();
-                Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was removed.");
+                this.delete(true);
             }
+            plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),"Inventory Invalid",this.saveToInfoStorage()));
+            Util.debugLog(
+                    "Inventory doesn't exist anymore: " + this + " shop was removed.");
             return null;
         }
     }
@@ -1520,6 +1533,6 @@ public class ContainerShop implements Shop {
 
     @Override
     public ShopInfoStorage saveToInfoStorage() {
-        return new ShopInfoStorage(ShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml());
+        return new ShopInfoStorage(BlockPosition.of(getLocation()),ShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(),getCurrency(),isDisableDisplay(),getTaxAccount());
     }
 }

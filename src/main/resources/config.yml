@@ -155,7 +155,7 @@ database:
   user: root
   password: passwd
   #Set prefix to "none" to remove prefix
-  prefix: none
+  prefix: "qs_"
   usessl: false
   #Whether to use async queue?
   queue: true

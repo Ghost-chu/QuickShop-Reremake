@@ -27,8 +27,8 @@ import org.bukkit.event.EventPriority;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.*;
-import org.maxgamer.quickshop.shop.ShopType;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.logging.container.*;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
@@ -69,42 +69,29 @@ public class InternalListener extends QSListener {
         }
         if (loggingAction) {
             Player creator = plugin.getServer().getPlayer(event.getCreator());
-            plugin.log(
-                    "Player "
-                            + (creator != null ? creator.getName() : event.getCreator())
-                            + " created a shop at location "
-                            + event.getShop().getLocation());
+            plugin.logEvent(new ShopCreationLog(event.getCreator(),event.getShop().saveToInfoStorage(),event.getShop().getLocation()));
+
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopDelete(ShopDeleteEvent event) {
         if (loggingAction) {
-            plugin.log("Shop at " + event.getShop().getLocation() + " was removed.");
+            plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),"Shop removed",event.getShop().saveToInfoStorage()));
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopModeratorChanges(ShopModeratorChangedEvent event) {
         if (loggingAction) {
-            plugin.log(
-                    "Shop at location "
-                            + event.getShop().getLocation()
-                            + " moderator was changed to "
-                            + event.getModerator());
+            plugin.logEvent(new ShopModeratorChangedEvent(event.getShop(),event.getModerator()));
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopPriceChanges(ShopPriceChangeEvent event) {
         if (loggingAction) {
-            plugin.log(
-                    "Shop at location "
-                            + event.getShop().getLocation()
-                            + " price was changed from "
-                            + event.getOldPrice()
-                            + " to "
-                            + event.getNewPrice());
+            plugin.logEvent(new ShopPriceChangedLog(event.getShop().saveToInfoStorage(),event.getOldPrice(),event.getOldPrice()));
         }
     }
 
@@ -116,57 +103,26 @@ public class InternalListener extends QSListener {
             return;
         }
         if (loggingBalance) {
-            Player creator = Bukkit.getPlayer(event.getPurchaser());
-            plugin.log("Player " + (creator != null ? creator.getName() : event.getPurchaser()) + " had " + plugin.getEconomy().getBalance(event.getPurchaser(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency()) + " before trading.");
-            plugin.log("Shop Owner " + event.getShop().ownerName() + " had " + plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency()) + " before trading.");
-        }
+            plugin.logEvent(new PlayerEconomyPreCheckLog(true,event.getPurchaser(),plugin.getEconomy().getBalance(event.getPurchaser(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
+            plugin.logEvent(new PlayerEconomyPreCheckLog(true, event.getShop().getOwner(),plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
+       }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopPurchase(ShopSuccessPurchaseEvent event) {
-        Player creator = plugin.getServer().getPlayer(event.getPurchaser());
         if (loggingAction) {
-            if (event.getShop().getShopType() == ShopType.BUYING) {
-                plugin.log(
-                        "Player "
-                                + (creator != null ? creator.getName() : event.getPurchaser())
-                                + " sold "
-                                + event.getShop().ownerName()
-                                + " shop "
-                                + event.getShop()
-                                + " for"
-                                + Util.getItemStackName(event.getShop().getItem())
-                                + "x" +
-                                event.getAmount()
-                                + " for "
-                                + event.getBalance()
-                                + " ("
-                                + event.getTax()
-                                + " tax).");
-            }
-            if (event.getShop().getShopType() == ShopType.SELLING) {
-                plugin.log(
-                        "Player "
-                                + (creator != null ? creator.getName() : event.getPurchaser())
-                                + " bought "
-                                + event.getShop().ownerName()
-                                + " shop "
-                                + event.getShop()
-                                + " for "
-                                + Util.getItemStackName(event.getShop().getItem())
-                                + " x"
-                                + event.getAmount()
-                                + " for "
-                                + event.getBalance()
-                                + " ("
-                                + event.getTax()
-                                + " tax).");
-
-            }
+            plugin.logEvent(new ShopPurchaseLog(event.getShop().saveToInfoStorage(),
+                    event.getShop().getShopType(),
+                    event.getPurchaser(),
+                    Util.getItemStackName(event.getShop().getItem()),
+                    Util.serialize(event.getShop().getItem()),
+                    event.getAmount(),
+                    event.getBalance(),
+                    event.getTax()));
         }
         if (loggingBalance) {
-            plugin.log("Player " + (creator != null ? creator.getName() : event.getPurchaser()) + " had " + plugin.getEconomy().getBalance(event.getPurchaser(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency()) + " after trading.");
-            plugin.log("Shop Owner " + event.getShop().ownerName() + " had " + plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency()) + " after trading.");
+            plugin.logEvent(new PlayerEconomyPreCheckLog(false,event.getPurchaser(),plugin.getEconomy().getBalance(event.getPurchaser(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
+            plugin.logEvent(new PlayerEconomyPreCheckLog(false, event.getShop().getOwner(),plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
         }
         if (event.getPurchaser().equals(event.getShop().getOwner())) {
             Player player = Bukkit.getPlayer(event.getPurchaser());

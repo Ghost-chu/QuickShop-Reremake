@@ -28,6 +28,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.EconomyCommitEvent;
 import org.maxgamer.quickshop.util.CalculateUtil;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.logging.container.EconomyTransactionLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -261,6 +262,7 @@ public class EconomyTransaction {
          */
         default void onSuccess(@NotNull EconomyTransaction economyTransaction) {
             Util.debugLog("Transaction succeed.");
+            QuickShop.getInstance().logEvent(new EconomyTransactionLog(true,economyTransaction));
         }
 
         /**
@@ -272,6 +274,7 @@ public class EconomyTransaction {
          */
         default void onFailed(@NotNull EconomyTransaction economyTransaction) {
             Util.debugLog("Transaction failed: " + economyTransaction.getLastError() + ".");
+            QuickShop.getInstance().logEvent(new EconomyTransactionLog(false,economyTransaction));
         }
 
         /**
@@ -283,6 +286,7 @@ public class EconomyTransaction {
          */
         default void onTaxFailed(@NotNull EconomyTransaction economyTransaction) {
             Util.debugLog("Tax Transaction failed: " + economyTransaction.getLastError() + ".");
+            QuickShop.getInstance().logEvent(new EconomyTransactionLog(false,economyTransaction));
         }
 
     }

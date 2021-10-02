@@ -28,6 +28,7 @@ import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +66,7 @@ public class SubCommand_Clean implements CommandHandler<CommandSender> {
         }
 
         for (Shop shop : pendingRemoval) {
-            plugin.log("Deleting shop " + shop + " as requested by the /qs clean command.");
+            plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender),"/qs clean",shop.saveToInfoStorage()));
             shop.delete();
         }
 

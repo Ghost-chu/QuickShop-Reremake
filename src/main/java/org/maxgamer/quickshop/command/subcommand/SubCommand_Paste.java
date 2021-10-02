@@ -73,7 +73,6 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
         String pasteResult = paste.paste(pasteText);
         if (pasteResult != null) {
             sender.sendMessage(pasteResult);
-            plugin.log(pasteResult);
             return true;
         }
         return false;

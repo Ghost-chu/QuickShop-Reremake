@@ -32,6 +32,7 @@ import org.bukkit.Location;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 
 /**
  * Proxy class to handle WorldEdit actions
@@ -68,7 +69,7 @@ public class WorldEditBlockListener extends AbstractDelegateExtent {
                 Shop shop = plugin.getShopManager().getShop(location, true); // Because WorldEdit can only remove half of shop, so we can keep another half as shop if it is doublechest shop.
                 if (shop != null) {
                     plugin.getLogger().info("Removing shop at " + location + " because removed by WorldEdit.");
-                    plugin.log("Deleting shop " + shop + " as requested by the WorldEdit support.");
+                    plugin.logEvent(new ShopRemoveLog(actor.getUniqueId() != null ? actor.getUniqueId(): Util.getNilUniqueId() ,"WorldEdit",shop.saveToInfoStorage()));
                     Util.mainThreadRun(shop::delete);
                 }
             }

@@ -51,6 +51,7 @@ import org.maxgamer.quickshop.event.ShopControlPanelOpenEvent;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.language.game.GameLanguage;
 import org.maxgamer.quickshop.util.language.game.MojangGameLanguageImpl;
+import org.maxgamer.quickshop.util.logging.container.PluginGlobalAlertLog;
 
 import java.io.File;
 import java.io.IOException;
@@ -551,7 +552,7 @@ public class MsgUtil {
         }
         sendMessageToOps(content);
         plugin.getLogger().warning(content);
-        plugin.log(content);
+        plugin.logEvent(new PluginGlobalAlertLog(content));
     }
 
     /**
