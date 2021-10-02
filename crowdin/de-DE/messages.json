@@ -176,7 +176,8 @@
       "ban": "&eBannt einen Spieler vom Shop",
       "unban": "&eEntbannt einen Spieler vom Shop",
       "freeze": "&e(De)aktiviere Shop-Handel",
-      "lock": "&eWechsle den Lock-Status des Shops"
+      "lock": "&eWechsle den Lock-Status des Shops",
+      "taxaccount": "&eSet the tax account that shop using"
     },
     "disabled": "&cDieser Befehl ist deaktiviert: &e{0}",
     "feature-not-enabled": "Dieses Feature ist nicht in der Config Datei aktiviert."
@@ -333,5 +334,8 @@
     "scheduled": "&aNeu laden abgeschlossen. &7(Einige Änderungen benötigen eine Weile um aktiv zu werden)"
   },
   "client-language-changed": "&aQuickShop hat festgestellt, dass deine Client-Spracheinstellungen geändert wurden. Wir verwenden jetzt die Spracheinstellung {0} für dich.",
-  "client-language-unsupported": "&eQuickShop unterstützt deine Client-Sprache nicht. Wir verwenden die Spracheinstellung {0} jetzt."
+  "client-language-unsupported": "&eQuickShop unterstützt deine Client-Sprache nicht. Wir verwenden die Spracheinstellung {0} jetzt.",
+  "taxaccount-set": "&aThis shop's tax account has been set to &e{0}",
+  "taxaccount-unset": "&aThis shop's tax account now following server global setting.",
+  "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes)."
 }
