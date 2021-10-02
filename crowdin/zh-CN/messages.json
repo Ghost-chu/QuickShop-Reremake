@@ -179,7 +179,7 @@
       "lock": "&e切换商店锁状态",
       "taxaccount": "&e设置商店使用的税务账户",
       "toggledisplay": "&e切换商店是否显示悬浮物",
-      "purge": "&a在后台启用商店清理任务"
+      "purge": "&a在后台启动商店清理任务"
     },
     "disabled": "&c此命令已禁用: &e{0}",
     "feature-not-enabled": "该功能未在配置文件中启用。"
