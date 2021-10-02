@@ -176,7 +176,8 @@
       "ban": "&eBanuje gracza ze sklepu",
       "unban": "&eOdbanuje gracza ze sklepu",
       "freeze": "&eWyłącz lub włącz handel sklepowy",
-      "lock": "&eZmień status blokady sklepu"
+      "lock": "&eZmień status blokady sklepu",
+      "taxaccount": "&eSet the tax account that shop using"
     },
     "disabled": "&cTa komenda jest wyłączona: &e{0}",
     "feature-not-enabled": "Ta funkcja nie jest włączona w pliku konfiguracyjnym."
@@ -333,5 +334,8 @@
     "scheduled": "&aPrzeładowanie zakończone. &7(Niektóre zmiany wymagały chwili, aby zadziałać)"
   },
   "client-language-changed": "&aQuickShop wykrył, że ustawienia języka klienta zostały zmienione, teraz używamy dla Ciebie wersji językowej {0}.",
-  "client-language-unsupported": "&eQuickShop nie obsługuje Twojego języka klienta, powrócono do wersji językowej {0}."
+  "client-language-unsupported": "&eQuickShop nie obsługuje Twojego języka klienta, powrócono do wersji językowej {0}.",
+  "taxaccount-set": "&aThis shop's tax account has been set to &e{0}",
+  "taxaccount-unset": "&aThis shop's tax account now following server global setting.",
+  "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes)."
 }
