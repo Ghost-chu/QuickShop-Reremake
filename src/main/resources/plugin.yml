@@ -63,6 +63,7 @@ permissions:
       quickshop.preview: true
       quickshop.currency: true
       quickshop.taxaccount: true
+      quickshop.toggledisplay: true
   quickshop.moderator:
     description: The permission that provide all moderator need have permissions
     default: op
@@ -76,6 +77,9 @@ permissions:
       quickshop.other.changeitem: true
       quickshop.other.changeamount: true
       quickshop.other.staff: true
+      quickshop.other.currency: true
+      quickshop.other.taxaccount: true
+      quickshop.other.toggledisplay: true
   quickshop.create.sell:
     description: Allows a player to sell from a shop.
     default: op
@@ -212,6 +216,11 @@ permissions:
     description: Permission to use /qs taxaccount
     default: op
   quickshop.other.taxaccount:
-    description: Permission to use /qs taxaccount
+    description: Permission to use /qs taxaccount on others shops
     default: op
-
+  quickshop.toggledisplay:
+    description: Permission to use /qs toggledisplay
+    default: op
+  quickshop.other.toggledisplay:
+    description: Permission to use /qs toggledisplay on others shops
+    default: op

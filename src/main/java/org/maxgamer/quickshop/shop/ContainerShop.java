@@ -200,6 +200,7 @@ public class ContainerShop implements Shop {
         this.disableDisplay = disabled;
         setDirty();
         update();
+        checkDisplay();
     }
 
     @Override
@@ -221,7 +222,7 @@ public class ContainerShop implements Shop {
 
     private void initDisplayItem() {
         Util.ensureThread(false);
-        if (plugin.isDisplay()) {
+        if (plugin.isDisplay() && !isDisableDisplay()) {
             switch (DisplayItem.getNowUsing()) {
                 case REALITEM:
                     this.displayItem = new RealDisplayItem(this);
@@ -354,8 +355,13 @@ public class ContainerShop implements Shop {
     @Override
     public void checkDisplay() {
         Util.ensureThread(false);
-        if (!plugin.isDisplay() || !this.isLoaded || this
-                .isDeleted()) { // FIXME: Reinit scheduler on reloading config
+        if (!plugin.isDisplay() || this.disableDisplay || !this.isLoaded || this.isDeleted()) { // FIXME: Reinit scheduler on reloading config
+            if(this.displayItem != null){
+                if(this.displayItem.isSpawned()){
+                    this.displayItem.remove();
+                }
+                this.displayItem = null;
+            }
             return;
         }
 
@@ -527,9 +533,11 @@ public class ContainerShop implements Shop {
         }
         if (inventoryPreview != null) {
             inventoryPreview.close();
+            inventoryPreview = null;
         }
         if (this.displayItem != null) {
             this.displayItem.remove();
+            this.displayItem = null;
         }
         update();
         this.isLoaded = false;
