@@ -485,8 +485,10 @@ public class ShopManager implements Reloadable {
         if (!plugin.getShopManager().getActions().containsKey(p.getUniqueId())) {
             return;
         }
-        final String message = ChatColor.stripColor(msg);
+        String message = net.md_5.bungee.api.ChatColor.stripColor(msg);
+        message = ChatColor.stripColor(message);
         // Use from the main thread, because Bukkit hates life
+        String finalMessage = message;
         Util.mainThreadRun(() -> {
             Map<UUID, Info> actions = getActions();
             // They wanted to do something.
@@ -500,10 +502,10 @@ public class ShopManager implements Reloadable {
                 return;
             }
             if (info.getAction() == ShopAction.CREATE) {
-                actionCreate(p, info, message, bypassProtectionChecks);
+                actionCreate(p, info, finalMessage, bypassProtectionChecks);
             }
             if (info.getAction() == ShopAction.BUY) {
-                actionTrade(p, info, message);
+                actionTrade(p, info, finalMessage);
             }
         });
     }
