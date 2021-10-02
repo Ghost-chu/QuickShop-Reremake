@@ -510,13 +510,22 @@ public interface Shop {
     void setDisableDisplay(boolean disabled);
 
     /**
-     * Getting the shop tax account, it can be specific uuid or general tax account
+     * Getting the shop tax account for using, it can be specific uuid or general tax account
      *
-     * @return Shop Tax Account, null if use general tax account
+     * @return Shop Tax Account or fallback to general tax account
      */
     @Nullable
     UUID getTaxAccount();
 
+
+    /**
+     * Getting the shop tax account, it can be specific uuid or general tax account
+     *
+     * @return Shop Tax Account, null if use general tax account
+     */
+
+    @Nullable
+    UUID getTaxAccountActual();
     /**
      * Sets shop taxAccount
      *

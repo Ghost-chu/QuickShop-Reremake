@@ -226,6 +226,12 @@ public class ContainerShop implements Shop {
         if (plugin.getShopManager().getCacheTaxAccount() != null)
             return plugin.getShopManager().getCacheTaxAccount().getUniqueId();
         return null;
+
+    }
+    @Override
+    @Nullable
+    public UUID getTaxAccountActual(){
+        return taxAccount;
     }
 
     @Override
