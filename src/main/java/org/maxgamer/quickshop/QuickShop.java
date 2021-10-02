@@ -1919,6 +1919,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("language", null);
             getConfig().set("disabled-languages", Collections.singletonList("disable_here"));
             getConfig().set("mojangapi-mirror", 0);
+            getConfig().set("purge.enabled", false);
+            getConfig().set("purge.days", 60);
+            getConfig().set("purge.banned", true);
+            getConfig().set("purge.skip-op", true);
+            getConfig().set("purge.return-create-fee",true);
             getConfig().set("config-version", ++selectedVersion);
         }
 
