@@ -120,8 +120,6 @@ public class DatabaseHelper implements Reloadable {
         try {
             if (!manager.hasColumn(plugin.getDbPrefix() + "shops", "extra")) {
                 String sqlString;
-                // Reremake - DataStorage 
-                // @TODO needs testing
                 if (manager.getDatabase() instanceof MySQLCore) {
                     sqlString = "ALTER TABLE " + plugin
                             .getDbPrefix() + "shops ADD extra LONGTEXT";
