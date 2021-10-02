@@ -329,7 +329,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(CommandContainer.builder()
                 .prefix("purge")
                 .permission("quickshop.purge")
-                .executor(new SubCommand_ToggleDisplay(plugin))
+                .executor(new SubCommand_Purge(plugin))
                 .build());
 //        registerCmd(CommandContainer.builder()
 //                .prefix("backup")
