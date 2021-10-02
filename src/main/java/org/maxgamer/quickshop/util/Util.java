@@ -65,6 +65,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.DecimalFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
 import java.util.Map.Entry;
@@ -1384,6 +1387,18 @@ public class Util {
         } else {
             Bukkit.getScheduler().runTask(QuickShop.getInstance(), runnable);
         }
+    }
+    // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
+    public static LocalDateTime getDateTimeFromTimestamp(long timestamp) {
+        if (timestamp == 0)
+            return null;
+        return LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), TimeZone
+                .getDefault().toZoneId());
+    }
+    // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
+    public static LocalDate getDateFromTimestamp(long timestamp) {
+        LocalDateTime date = getDateTimeFromTimestamp(timestamp);
+        return date == null ? null : date.toLocalDate();
     }
 
 

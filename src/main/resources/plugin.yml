@@ -80,6 +80,10 @@ permissions:
       quickshop.other.currency: true
       quickshop.other.taxaccount: true
       quickshop.other.toggledisplay: true
+      quickshop.purge: true
+      quickshop.other.setowner: true
+
+
   quickshop.create.sell:
     description: Allows a player to sell from a shop.
     default: op
@@ -223,4 +227,7 @@ permissions:
     default: op
   quickshop.other.toggledisplay:
     description: Permission to use /qs toggledisplay on others shops
+    default: op
+  quickshop.purge:
+    description: Permission to use /qs purge
     default: op

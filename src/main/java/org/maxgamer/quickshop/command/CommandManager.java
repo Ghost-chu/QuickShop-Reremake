@@ -326,6 +326,11 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .permission("quickshop.toggledisplay")
                 .executor(new SubCommand_ToggleDisplay(plugin))
                 .build());
+        registerCmd(CommandContainer.builder()
+                .prefix("purge")
+                .permission("quickshop.purge")
+                .executor(new SubCommand_ToggleDisplay(plugin))
+                .build());
 //        registerCmd(CommandContainer.builder()
 //                .prefix("backup")
 //                .permission("quickshop.backup")
