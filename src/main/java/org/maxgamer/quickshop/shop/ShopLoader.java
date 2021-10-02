@@ -493,7 +493,7 @@ public class ShopLoader {
                 this.extra = deserializeExtra(origin.getExtra(), needUpdate);
                 this.currency = origin.getCurrency();
                 this.disableDisplay = origin.isDisableDisplay();
-                this.taxAccount = UUID.fromString(origin.getTaxAccount());
+                this.taxAccount = origin.getTaxAccount() != null ? UUID.fromString(origin.getTaxAccount()) : null;
             } catch (Exception ex) {
                 exceptionHandler(ex, this.location);
             }
