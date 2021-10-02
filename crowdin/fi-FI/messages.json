@@ -176,7 +176,8 @@
       "ban": "&eAntaa pelaajalle porttikiellon kauppaasi",
       "unban": "&ePoistaa pelaajan porttikiellon kaupastasi",
       "freeze": "&eOta kaupankäynti käyttöön tai poista se käytöstä",
-      "lock": "&eVaihda kaupan lukituksen tila"
+      "lock": "&eVaihda kaupan lukituksen tila",
+      "taxaccount": "&eSet the tax account that shop using"
     },
     "disabled": "&cTämä komento on poistettu käytöstä: &e{0}",
     "feature-not-enabled": "Tämä ominaisuus ei ole käytössä asetustiedostossa."
@@ -333,5 +334,8 @@
     "scheduled": "&aReload completed. &7(Some changes required a while to affect)"
   },
   "client-language-changed": "&aQuickShop detected your client language setting has been changed, we're now using {0} locale for you.",
-  "client-language-unsupported": "&eQuickShop doesn't support your client language, we're fallback to {0} locale now."
+  "client-language-unsupported": "&eQuickShop doesn't support your client language, we're fallback to {0} locale now.",
+  "taxaccount-set": "&aThis shop's tax account has been set to &e{0}",
+  "taxaccount-unset": "&aThis shop's tax account now following server global setting.",
+  "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes)."
 }
