@@ -67,7 +67,7 @@ public class UpdateWatcher implements Listener {
                 if (QuickShop.getPermissionManager()
                         .hasPermission(player, "quickshop.alerts")) {
                     List<String> notifys =
-                            QuickShop.getInstance().text().ofList(player,"updatenotify.list").forLocale();
+                            QuickShop.getInstance().text().ofList(player, "updatenotify.list").forLocale();
                     int notifyNum = -1;
                     if (notifys.size() > 1) {
                         notifyNum = random.nextInt(notifys.size());
@@ -103,7 +103,7 @@ public class UpdateWatcher implements Listener {
             if (!QuickShop.getPermissionManager().hasPermission(e.getPlayer(), "quickshop.alerts") || getUpdater().isLatest(getUpdater().getCurrentRunning())) {
                 return;
             }
-            List<String> notifys = QuickShop.getInstance().text().ofList(e.getPlayer(),"updatenotify.list").forLocale();
+            List<String> notifys = QuickShop.getInstance().text().ofList(e.getPlayer(), "updatenotify.list").forLocale();
             int notifyNum = random.nextInt(notifys.size());
             String notify = notifys.get(notifyNum);
             notify = MsgUtil.fillArgs(notify, updater.getRemoteServerVersion(), QuickShop.getInstance().getBuildInfo().getBuildTag());

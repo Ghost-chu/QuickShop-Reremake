@@ -72,13 +72,13 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                 //We must check balance manually to avoid shop missing hell when tax account broken
                 if (allowLoan || plugin.getEconomy().getBalance(shopOwner, Objects.requireNonNull(world), shop.getCurrency()) >= cost) {
                     Trader taxAccount;
-                    if(shop.getTaxAccount() != null)
+                    if (shop.getTaxAccount() != null)
                         taxAccount = new Trader(shop.getTaxAccount().toString(), Bukkit.getOfflinePlayer(shop.getTaxAccount()));
                     else
                         taxAccount = plugin.getShopManager().getCacheTaxAccount();
 
-                    ShopOngoingFeeEvent event = new ShopOngoingFeeEvent(shop,shopOwner,cost);
-                    if(Util.fireCancellableEvent(event))
+                    ShopOngoingFeeEvent event = new ShopOngoingFeeEvent(shop, shopOwner, cost);
+                    if (Util.fireCancellableEvent(event))
                         continue;
 
                     cost = event.getCost();
@@ -115,7 +115,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
         Util.mainThreadRun(shop::delete);
 
         MsgUtil.send(shop, shop.getOwner(), new MsgUtil.TransactionMessage(
-                plugin.text().of("shop-removed-cause-ongoing-fee","World:"
+                plugin.text().of("shop-removed-cause-ongoing-fee", "World:"
                         + Objects.requireNonNull(shop.getLocation().getWorld()).getName()
                         + " X:"
                         + shop.getLocation().getBlockX()

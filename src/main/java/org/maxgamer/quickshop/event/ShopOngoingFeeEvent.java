@@ -12,7 +12,7 @@ public class ShopOngoingFeeEvent extends QSEvent implements Cancellable {
 
     private double cost;
 
-    public ShopOngoingFeeEvent(Shop shop, UUID player, double cost){
+    public ShopOngoingFeeEvent(Shop shop, UUID player, double cost) {
         this.shop = shop;
         this.player = player;
         this.cost = cost;
@@ -20,6 +20,7 @@ public class ShopOngoingFeeEvent extends QSEvent implements Cancellable {
 
     /**
      * Sets the ongoing fee to replace old one
+     *
      * @param cost The ongoing fee
      */
     public void setCost(double cost) {
@@ -28,6 +29,7 @@ public class ShopOngoingFeeEvent extends QSEvent implements Cancellable {
 
     /**
      * Getting the cost in this event
+     *
      * @return The ongoing fee
      */
     public double getCost() {
@@ -36,13 +38,16 @@ public class ShopOngoingFeeEvent extends QSEvent implements Cancellable {
 
     /**
      * Getting related shop in this event
+     *
      * @return The shop triggered ongoing fee event
      */
     public Shop getShop() {
         return shop;
     }
+
     /**
      * Getting related player in this event
+     *
      * @return The player triggered ongoing fee event
      */
     public UUID getPlayer() {
@@ -50,6 +55,7 @@ public class ShopOngoingFeeEvent extends QSEvent implements Cancellable {
     }
 
     private boolean cancelled;
+
     @Override
     public boolean isCancelled() {
         return cancelled;

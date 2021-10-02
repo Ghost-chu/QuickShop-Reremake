@@ -155,7 +155,7 @@ public class ShopManager implements Reloadable {
             }
             int max = plugin.getShopLimit(p);
             if (owned + 1 > max) {
-                plugin.text().of(p,"reached-maximum-can-create", String.valueOf(owned), String.valueOf(max)).send();
+                plugin.text().of(p, "reached-maximum-can-create", String.valueOf(owned), String.valueOf(max)).send();
                 //MsgUtil.sendMessage(p, "reached-maximum-can-create", String.valueOf(owned), String.valueOf(max));
                 return false;
             }
@@ -280,7 +280,7 @@ public class ShopManager implements Reloadable {
             } else {
                 if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
                     plugin.text().of(player, "failed-to-put-sign").send();
-                   // MsgUtil.sendMessage(player, "failed-to-put-sign");
+                    // MsgUtil.sendMessage(player, "failed-to-put-sign");
                     Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
                     return;
                 }
@@ -309,8 +309,8 @@ public class ShopManager implements Reloadable {
                     plugin.getDatabaseHelper().createShop(shop, null, e2 -> {
                         plugin.getLogger()
                                 .log(Level.SEVERE, "Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
-                       // MsgUtil.sendMessage(player, "shop-creation-failed");
-                        plugin.text().of(player,"shop-creation-failed").send();
+                        // MsgUtil.sendMessage(player, "shop-creation-failed");
+                        plugin.text().of(player, "shop-creation-failed").send();
                         Util.mainThreadRun(() -> {
                             shop.onUnload();
                             removeShop(shop);
@@ -496,7 +496,7 @@ public class ShopManager implements Reloadable {
             }
             if (info.getLocation().getWorld() != p.getLocation().getWorld()
                     || info.getLocation().distanceSquared(p.getLocation()) > 25) {
-               plugin.text().of(p, "not-looking-at-shop").send();
+                plugin.text().of(p, "not-looking-at-shop").send();
                 return;
             }
             if (info.getAction() == ShopAction.CREATE) {
@@ -683,7 +683,7 @@ public class ShopManager implements Reloadable {
             total = e.getTotal(); // Allow addon to set it
         }
         Trader taxAccount;
-        if(shop.getTaxAccount() != null)
+        if (shop.getTaxAccount() != null)
             taxAccount = new Trader(shop.getTaxAccount().toString(), Bukkit.getOfflinePlayer(shop.getTaxAccount()));
         else
             taxAccount = this.cacheTaxAccount;
@@ -1052,7 +1052,7 @@ public class ShopManager implements Reloadable {
         // SELLING Player -> Shop Owner
         EconomyTransaction transaction;
         Trader taxAccount;
-        if(shop.getTaxAccount() != null)
+        if (shop.getTaxAccount() != null)
             taxAccount = new Trader(shop.getTaxAccount().toString(), Bukkit.getOfflinePlayer(shop.getTaxAccount()));
         else
             taxAccount = this.cacheTaxAccount;
@@ -1108,7 +1108,7 @@ public class ShopManager implements Reloadable {
         }
         // Transfers the item from A to B
         if (stock == amount) {
-            msg += "\n" +plugin.text().of(seller, "shop-out-of-stock",
+            msg += "\n" + plugin.text().of(seller, "shop-out-of-stock",
                     Integer.toString(shop.getLocation().getBlockX()),
                     Integer.toString(shop.getLocation().getBlockY()),
                     Integer.toString(shop.getLocation().getBlockZ()),

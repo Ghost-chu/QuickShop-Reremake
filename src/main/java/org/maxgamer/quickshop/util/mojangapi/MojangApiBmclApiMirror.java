@@ -1,6 +1,6 @@
 package org.maxgamer.quickshop.util.mojangapi;
 
-public class MojangApiBmclApiMirror implements MojangApiMirror{
+public class MojangApiBmclApiMirror implements MojangApiMirror {
     @Override
     public String getLauncherMetaRoot() {
         return "https://bmclapi2.bangbang93.com";

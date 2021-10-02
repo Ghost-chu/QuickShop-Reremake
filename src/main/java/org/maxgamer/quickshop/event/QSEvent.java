@@ -53,12 +53,13 @@ public abstract class QSEvent extends Event {
 
     /**
      * Call event on Bukkit event bus and check if cancelled
+     *
      * @return Returns true if cancelled, and false if didn't cancel
      */
-    public boolean callCancellableEvent(){
+    public boolean callCancellableEvent() {
         QuickShop.getInstance().getServer().getPluginManager().callEvent(this);
-        if(this instanceof Cancellable)
-            return ((Cancellable)this).isCancelled();
+        if (this instanceof Cancellable)
+            return ((Cancellable) this).isCancelled();
         return false;
     }
 

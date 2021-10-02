@@ -87,7 +87,7 @@ public class CommandContainer {
         } else if (StringUtils.isNotEmpty(this.getDisablePlaceholder())) {
             return this.getDisablePlaceholder();
         } else {
-            return QuickShop.getInstance().text().of(sender,"command.feature-not-enabled").forLocale();
+            return QuickShop.getInstance().text().of(sender, "command.feature-not-enabled").forLocale();
         }
     }
 }

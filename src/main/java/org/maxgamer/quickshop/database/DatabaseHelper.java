@@ -117,11 +117,10 @@ public class DatabaseHelper implements Reloadable {
         manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
                 .getDbPrefix() + "messages MODIFY COLUMN time BIGINT(32) NOT NULL AFTER message", checkTask));
         //Extra column
-        createColumn("shops","extra",new DataType(DataTypeMapping.LONGTEXT,null,""));
-        createColumn("shops","currency",new DataType(DataTypeMapping.TEXT));
-        createColumn("shops","disableDisplay",new DataType(DataTypeMapping.INT,null,-1));
-        createColumn("shops","taxAccount",new DataType(DataTypeMapping.VARCHAR,255));
-
+        createColumn("shops", "extra", new DataType(DataTypeMapping.LONGTEXT, null, ""));
+        createColumn("shops", "currency", new DataType(DataTypeMapping.TEXT));
+        createColumn("shops", "disableDisplay", new DataType(DataTypeMapping.INT, null, -1));
+        createColumn("shops", "taxAccount", new DataType(DataTypeMapping.VARCHAR, 255));
 
 
         if (manager.getDatabase() instanceof MySQLCore) {
@@ -141,13 +140,13 @@ public class DatabaseHelper implements Reloadable {
                 return false;
             String sqlString;
             if (manager.getDatabase() instanceof MySQLCore) {
-                sqlString = "alter table " + table + " add "+columnName+" " + type.getDatatype().getMysql();
+                sqlString = "alter table " + table + " add " + columnName + " " + type.getDatatype().getMysql();
             } else {
-                sqlString = "alter table " + table + " add column "+columnName+" " + type.getDatatype().getSqlite();
+                sqlString = "alter table " + table + " add column " + columnName + " " + type.getDatatype().getSqlite();
             }
             if (type.getLength() != null)
-                sqlString += "(" + type.getLength().toString()+") ";
-            Util.debugLog("Append sql for creating column is "+ sqlString);
+                sqlString += "(" + type.getLength().toString() + ") ";
+            Util.debugLog("Append sql for creating column is " + sqlString);
             manager.runInstantTask(new DatabaseTask(sqlString, new DatabaseTask.Task() {
                 @Override
                 public void edit(PreparedStatement ps) {
@@ -311,8 +310,8 @@ public class DatabaseHelper implements Reloadable {
             ps.setDouble(5, price);
             ps.setString(6, extra);
             ps.setString(7, currency);
-            ps.setInt(8,((!disableDisplay) ? 0: 1));
-            ps.setString(9,taxAccount);
+            ps.setInt(8, ((!disableDisplay) ? 0 : 1));
+            ps.setString(9, taxAccount);
             ps.setInt(10, x);
             ps.setInt(11, y);
             ps.setInt(12, z);

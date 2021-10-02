@@ -951,7 +951,7 @@ public class QuickShop extends JavaPlugin {
         }
         calendarWatcher = new CalendarWatcher(this);
         calendarWatcher.start();
-        this.shopPurger = new ShopPurger(this,false);
+        this.shopPurger = new ShopPurger(this, false);
         shopPurger.runTaskAsynchronously(this);
         Util.debugLog("Now using display-type: " + DisplayItem.getNowUsing().name());
         getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");

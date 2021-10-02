@@ -70,7 +70,7 @@ public class InventoryPreview implements Listener {
             itemMeta = plugin.getServer().getItemFactory().getItemMeta(itemStack.getType());
         }
         //TODO Locale
-        previewStr="Preview Item";
+        previewStr = "Preview Item";
         if (itemMeta != null) {
             if (itemMeta.hasLore()) {
                 itemMeta.getLore().add(previewStr);
@@ -110,7 +110,7 @@ public class InventoryPreview implements Listener {
         }
         if (inventory == null) {
             final int size = 9;
-            inventory = plugin.getServer().createInventory(new QuickShopPreviewGUIHolder(), size, plugin.text().of(player,"menu.preview").forLocale());
+            inventory = plugin.getServer().createInventory(new QuickShopPreviewGUIHolder(), size, plugin.text().of(player, "menu.preview").forLocale());
             for (int i = 0; i < size; i++) {
                 inventory.setItem(i, itemStack);
             }

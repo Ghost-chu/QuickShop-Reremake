@@ -214,7 +214,6 @@
                         </relocation>
 
 
-
                         <!--                        <relocation>-->
                         <!--                            <pattern>de.leonhard</pattern>-->
                         <!--                            <shadedPattern>org.maxgamer.quickshop.shade.de.leonhard.storage</shadedPattern>-->
@@ -848,18 +847,18 @@
             <version>4.9.2</version>
             <systemPath>${project.basedir}/lib/TNE.jar</systemPath>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.songoda</groupId>-->
-<!--            <artifactId>skyblock</artifactId>-->
-<!--            <version>2.2.13</version>-->
-<!--            <scope>provided</scope>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>MVdWPlaceholderAPI</artifactId>-->
-<!--                    <groupId>be.maximvdw</groupId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.songoda</groupId>-->
+        <!--            <artifactId>skyblock</artifactId>-->
+        <!--            <version>2.2.13</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--            <exclusions>-->
+        <!--                <exclusion>-->
+        <!--                    <artifactId>MVdWPlaceholderAPI</artifactId>-->
+        <!--                    <groupId>be.maximvdw</groupId>-->
+        <!--                </exclusion>-->
+        <!--            </exclusions>-->
+        <!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <dependency>
             <groupId>commons-codec</groupId>
