@@ -854,8 +854,8 @@ public class QuickShop extends JavaPlugin {
                 limits.put(key, limitCfg.getInt(key));
             }
         }
-        if (getConfig().getInt("shop.finding.distance") > 100) {
-            getLogger().severe("Shop find distance is too high! It may cause lag! Pick a number under 100!");
+        if (getConfig().getInt("shop.finding.distance") > 100 && (getConfig().getBoolean("shop.finding.exclude-out-of-stock"))) {
+            getLogger().severe("Shop find distance is too high with chunk loading feature turned on! It may cause lag! Pick a number under 100!");
         }
 
         if (getConfig().getBoolean("use-caching")) {
