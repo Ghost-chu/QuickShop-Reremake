@@ -76,7 +76,7 @@ public class BungeeQuickChat implements QuickChat {
 
     @Override
     public void sendItemHologramChat(@NotNull Player player, @NotNull String text, @NotNull ItemStack itemStack) {
-        TextComponent errorComponent = new TextComponent(QuickShop.getInstance().text().of(player,"menu.item-holochat-error").forLocale());
+        TextComponent errorComponent = new TextComponent(QuickShop.getInstance().text().of(player, "menu.item-holochat-error").forLocale());
         try {
             String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
             TextComponent centerItem = new TextComponent(text);
@@ -91,14 +91,14 @@ public class BungeeQuickChat implements QuickChat {
 
     @Override
     public @NotNull QuickComponent getItemHologramChat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String message) {
-        TextComponent errorComponent = new TextComponent(QuickShop.getInstance().text().of(player,"menu.item-holochat-error").forLocale());
+        TextComponent errorComponent = new TextComponent(QuickShop.getInstance().text().of(player, "menu.item-holochat-error").forLocale());
         try {
 
             String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
             if (json == null) {
                 return new QuickComponentImpl(errorComponent);
             }
-            TextComponent normalmessage = new TextComponent(message + " " + QuickShop.getInstance().text().of(player,"menu.preview").forLocale());
+            TextComponent normalmessage = new TextComponent(message + " " + QuickShop.getInstance().text().of(player, "menu.preview").forLocale());
             ComponentBuilder cBuilder = new ComponentBuilder(json);
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
                 normalmessage.setClickEvent(new ClickEvent(
@@ -117,7 +117,7 @@ public class BungeeQuickChat implements QuickChat {
 
     @Override
     public @NotNull QuickComponent getItemTextComponent(@NotNull Player player, @NotNull ItemStack itemStack, @NotNull String normalText) {
-        TextComponent errorComponent = new TextComponent(QuickShop.getInstance().text().of(player,"menu.item-holochat-error").forLocale());
+        TextComponent errorComponent = new TextComponent(QuickShop.getInstance().text().of(player, "menu.item-holochat-error").forLocale());
 
         String json;
         try {
@@ -130,7 +130,7 @@ public class BungeeQuickChat implements QuickChat {
             return new QuickComponentImpl(errorComponent);
         }
 
-        TextComponent component = new TextComponent(normalText + " " +QuickShop.getInstance().text().of(player,"menu.preview").forLocale());
+        TextComponent component = new TextComponent(normalText + " " + QuickShop.getInstance().text().of(player, "menu.preview").forLocale());
         ComponentBuilder cBuilder = new ComponentBuilder(json);
         component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create()));
         return new QuickComponentImpl(component);
@@ -140,7 +140,7 @@ public class BungeeQuickChat implements QuickChat {
     @Override
     public void sendExecutableChat(@NotNull CommandSender receiver, @NotNull String message, @NotNull String hoverText, @NotNull String command) {
         TextComponent component =
-                new TextComponent(ChatColor.DARK_PURPLE + plugin.text().of(receiver,"tableformat.left_begin").forLocale() + message);
+                new TextComponent(ChatColor.DARK_PURPLE + plugin.text().of(receiver, "tableformat.left_begin").forLocale() + message);
         component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
         component.setHoverEvent(
                 new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create())); //FIXME: Update this when drop 1.15 supports
@@ -150,7 +150,7 @@ public class BungeeQuickChat implements QuickChat {
     @Override
     public void sendSuggestedChat(@NotNull CommandSender receiver, @NotNull String message, @NotNull String hoverText, @NotNull String command) {
         TextComponent component =
-                new TextComponent(ChatColor.DARK_PURPLE + plugin.text().of(receiver,"tableformat.left_begin").forLocale() + message);
+                new TextComponent(ChatColor.DARK_PURPLE + plugin.text().of(receiver, "tableformat.left_begin").forLocale() + message);
         component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command));
         component.setHoverEvent(
                 new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create())); //FIXME: Update this when drop 1.15 supports

@@ -321,16 +321,18 @@ public class PlayerListener extends QSListener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent e) {
-        Util.debugLog("Player "+e.getPlayer().getName()+" using locale "+e.getPlayer().getLocale()+": "+plugin.text().of(e.getPlayer(),"file-test").forLocale());
+        Util.debugLog("Player " + e.getPlayer().getName() + " using locale " + e.getPlayer().getLocale() + ": " + plugin.text().of(e.getPlayer(), "file-test").forLocale());
         // Notify the player any messages they were sent
         if (plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
             MsgUtil.flush(e.getPlayer());
         }
     }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onJoin(PlayerLocaleChangeEvent e) {
-        Util.debugLog("Player "+e.getPlayer().getName()+" using new locale "+e.getLocale()+": "+plugin.text().of(e.getPlayer(),"file-test").forLocale(e.getLocale()));
+        Util.debugLog("Player " + e.getPlayer().getName() + " using new locale " + e.getLocale() + ": " + plugin.text().of(e.getPlayer(), "file-test").forLocale(e.getLocale()));
     }
+
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent e) {
         // Remove them from the menu
@@ -383,9 +385,9 @@ public class PlayerListener extends QSListener {
         Util.debugLog("Disallow " + e.getPlayer().getName() + " dye the shop sign.");
     }
 
-    @EventHandler(priority = EventPriority.MONITOR,ignoreCancelled = true)
-    public void onLocaleChanges(PlayerLocaleChangeEvent event){
-        MsgUtil.sendDirectMessage(event.getPlayer(),plugin.text().of(event.getPlayer(),"client-language-changed").forLocale(event.getLocale()));
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onLocaleChanges(PlayerLocaleChangeEvent event) {
+        MsgUtil.sendDirectMessage(event.getPlayer(), plugin.text().of(event.getPlayer(), "client-language-changed").forLocale(event.getLocale()));
     }
 
     /**

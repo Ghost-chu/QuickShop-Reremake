@@ -1,6 +1,6 @@
 package org.maxgamer.quickshop.util.mojangapi;
 
-public class MojangApiMcbbsApiMirror implements MojangApiMirror{
+public class MojangApiMcbbsApiMirror implements MojangApiMirror {
     @Override
     public String getLauncherMetaRoot() {
         return "https://download.mcbbs.net";

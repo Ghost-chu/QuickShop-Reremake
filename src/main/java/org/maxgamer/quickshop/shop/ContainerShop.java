@@ -184,7 +184,7 @@ public class ContainerShop implements Shop {
         if (section.getString("currency") != null) {
             this.currency = section.getString("currency");
             section.set("currency", null);
-            Util.debugLog("Shop "+this+" currency data upgrade successful.");
+            Util.debugLog("Shop " + this + " currency data upgrade successful.");
         }
         setExtra(plugin, section);
         setDirty();
@@ -356,8 +356,8 @@ public class ContainerShop implements Shop {
     public void checkDisplay() {
         Util.ensureThread(false);
         if (!plugin.isDisplay() || this.disableDisplay || !this.isLoaded || this.isDeleted()) { // FIXME: Reinit scheduler on reloading config
-            if(this.displayItem != null){
-                if(this.displayItem.isSpawned()){
+            if (this.displayItem != null) {
+                if (this.displayItem.isSpawned()) {
                     this.displayItem.remove();
                 }
             }

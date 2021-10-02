@@ -78,7 +78,7 @@ public class SubCommand_Item implements CommandHandler<Player> {
                     return;
                 }
                 shop.setItem(itemStack);
-               plugin.text().of(sender,"command.trade-item-now",  Integer.toString(shop.getItem().getAmount()),Util.getItemStackName(shop.getItem())).send();
+                plugin.text().of(sender, "command.trade-item-now", Integer.toString(shop.getItem().getAmount()), Util.getItemStackName(shop.getItem())).send();
                 return;
             }
         }

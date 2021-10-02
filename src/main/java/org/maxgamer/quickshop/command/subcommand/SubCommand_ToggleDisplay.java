@@ -47,12 +47,12 @@ public class SubCommand_ToggleDisplay implements CommandHandler<Player> {
 
             if (shop != null) {
                 if (shop.getModerator().isModerator(sender.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.toggledisplay")) {
-                    if(shop.isDisableDisplay()){
+                    if (shop.isDisableDisplay()) {
                         shop.setDisableDisplay(false);
-                        plugin.text().of(sender,"display-turn-on").send();
-                    }else{
+                        plugin.text().of(sender, "display-turn-on").send();
+                    } else {
                         shop.setDisableDisplay(true);
-                        plugin.text().of(sender,"display-turn-off").send();
+                        plugin.text().of(sender, "display-turn-off").send();
                     }
                 } else {
                     plugin.text().of(sender, "not-managed-shop").send();

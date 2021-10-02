@@ -63,7 +63,8 @@ public class PlotSquaredIntegrationV5 extends QSIntegratedPlugin {
     }
 
     @Override
-    public @NotNull String getName() {
+    public @NotNull
+    String getName() {
         return "PlotSquared";
     }
 

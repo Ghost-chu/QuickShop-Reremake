@@ -497,18 +497,21 @@ public interface Shop {
 
     /**
      * Getting if this shop has been disabled the display
+     *
      * @return Does display has been disabled
      */
     boolean isDisableDisplay();
 
     /**
      * Set the display disable state
+     *
      * @param disabled Has been disabled
      */
     void setDisableDisplay(boolean disabled);
 
     /**
      * Getting the shop tax account, it can be specific uuid or general tax account
+     *
      * @return Shop Tax Account, null if use general tax account
      */
     @Nullable
@@ -516,10 +519,10 @@ public interface Shop {
 
     /**
      * Sets shop taxAccount
+     *
      * @param taxAccount tax account, null to use general tax account
      */
     void setTaxAccount(@Nullable UUID taxAccount);
-
 
 
 }

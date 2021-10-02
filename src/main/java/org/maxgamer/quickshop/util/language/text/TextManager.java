@@ -49,6 +49,7 @@ public class TextManager implements Reloadable {
 
     /**
      * Generate the override files storage path
+     *
      * @param crowdinPath The crowdin file path
      * @return Override files storage path
      */
@@ -72,6 +73,7 @@ public class TextManager implements Reloadable {
 
     /**
      * Loading bundled files from Jar file
+     *
      * @param file The Crowdin file path
      * @return The bundled file configuration object
      */
@@ -106,8 +108,8 @@ public class TextManager implements Reloadable {
             try {
                 // Minecraft client use lowercase wi
                 String minecraftCode = crowdinCode.toLowerCase(Locale.ROOT).replace("-", "_");
-                if(disabledLanguages.contains(minecraftCode) || disabledLanguages.contains(crowdinCode)) {
-                    Util.debugLog("Locale "+crowdinCode+"("+minecraftCode+") has been disabled, skipping.");
+                if (disabledLanguages.contains(minecraftCode) || disabledLanguages.contains(crowdinCode)) {
+                    Util.debugLog("Locale " + crowdinCode + "(" + minecraftCode + ") has been disabled, skipping.");
                     return;
                 }
                 Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
@@ -135,7 +137,7 @@ public class TextManager implements Reloadable {
                     configuration.set(key, override.get(key));
                 }
                 locale2ContentMapping.get(languageFileCrowdin).computeIfAbsent(minecraftCode, e -> configuration);
-                Util.debugLog("Locale " + crowdinFile.replace("%locale%",crowdinCode) + " has been successfully loaded");
+                Util.debugLog("Locale " + crowdinFile.replace("%locale%", crowdinCode) + " has been successfully loaded");
             } catch (CrowdinOTA.OTAException e) {
                 // Key founds in available locales but not in custom mapping on crowdin platform
                 plugin.getLogger().warning("Couldn't update the translation for locale " + crowdinCode + " because it not configured, please report to QuickShop");

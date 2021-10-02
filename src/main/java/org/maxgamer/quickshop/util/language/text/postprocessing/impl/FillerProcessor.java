@@ -9,6 +9,6 @@ import org.maxgamer.quickshop.util.language.text.postprocessing.PostProcessor;
 public class FillerProcessor implements PostProcessor {
     @Override
     public @NotNull String process(@NotNull String text, @Nullable CommandSender sender, String... args) {
-        return MsgUtil.fillArgs(text,args);
+        return MsgUtil.fillArgs(text, args);
     }
 }

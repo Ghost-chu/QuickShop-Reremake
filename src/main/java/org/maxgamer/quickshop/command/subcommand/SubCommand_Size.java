@@ -96,6 +96,6 @@ public class SubCommand_Size implements CommandHandler<Player> {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return cmdArg.length == 1 ? Collections.singletonList(QuickShop.getInstance().text().of(sender,"tabcomplete.amount").forLocale()) : Collections.emptyList();
+        return cmdArg.length == 1 ? Collections.singletonList(QuickShop.getInstance().text().of(sender, "tabcomplete.amount").forLocale()) : Collections.emptyList();
     }
 }

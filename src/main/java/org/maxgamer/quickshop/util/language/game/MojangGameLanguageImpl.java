@@ -95,7 +95,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         }
         languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
 
-        switch (plugin.getConfig().getInt("mojangapi-mirror",0)){
+        switch (plugin.getConfig().getInt("mojangapi-mirror", 0)) {
             case 0:
                 mirror = new MojangApiOfficialMirror();
                 plugin.getLogger().info("Game assets server selected: Mojang API");
@@ -123,7 +123,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
 
         LOCK.lock();
         try {
-            final GameLanguageLoadThread loadThread = new GameLanguageLoadThread(plugin, languageCode,mirror);
+            final GameLanguageLoadThread loadThread = new GameLanguageLoadThread(plugin, languageCode, mirror);
             loadThread.start();
             boolean timeout = !DOWNLOAD_CONDITION.await(20, TimeUnit.SECONDS);
             if (timeout) {
@@ -230,7 +230,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         private boolean isUpdated = false; //Did we tried update assets?
         private MojangApiMirror mirror;
 
-        public GameLanguageLoadThread(@NotNull QuickShop plugin, @NotNull String languageCode,@NotNull MojangApiMirror mirror) {
+        public GameLanguageLoadThread(@NotNull QuickShop plugin, @NotNull String languageCode, @NotNull MojangApiMirror mirror) {
             this.plugin = plugin;
             this.languageCode = languageCode;
             this.mirror = mirror;

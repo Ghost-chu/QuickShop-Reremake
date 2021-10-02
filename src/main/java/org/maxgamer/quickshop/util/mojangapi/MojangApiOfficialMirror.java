@@ -1,6 +1,6 @@
 package org.maxgamer.quickshop.util.mojangapi;
 
-public class MojangApiOfficialMirror implements MojangApiMirror{
+public class MojangApiOfficialMirror implements MojangApiMirror {
     @Override
     public String getLauncherMetaRoot() {
         return "https://launchermeta.mojang.com";

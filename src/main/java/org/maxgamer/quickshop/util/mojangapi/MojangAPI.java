@@ -41,6 +41,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MojangAPI {
     private MojangApiMirror mirror;
+
     public MojangAPI(MojangApiMirror mirror) {
         this.mirror = mirror;
     }
@@ -48,7 +49,7 @@ public class MojangAPI {
 
     @NotNull
     public AssetsAPI getAssetsAPI(@NotNull String serverVersion) {
-        return new AssetsAPI(mirror,serverVersion);
+        return new AssetsAPI(mirror, serverVersion);
     }
 
     @NotNull
@@ -58,7 +59,7 @@ public class MojangAPI {
 
     @NotNull
     public MetaAPI getMetaAPI(@NotNull String serverVersion) {
-        return new MetaAPI(mirror,serverVersion);
+        return new MetaAPI(mirror, serverVersion);
     }
 
     public ResourcesAPI getResourcesAPI() {
@@ -81,13 +82,13 @@ public class MojangAPI {
                 .build(new HttpCacheLoader());
         private final MojangApiMirror apiMirror;
 
-        public ResourcesAPI(MojangApiMirror mirror){
+        public ResourcesAPI(MojangApiMirror mirror) {
             this.apiMirror = mirror;
         }
 
         public Optional<String> get(@NotNull String hash) {
             try {
-                return request.get(new URL(apiMirror.getResourcesDownloadRoot()+"/" + hash.substring(0, 2) + "/" + hash));
+                return request.get(new URL(apiMirror.getResourcesDownloadRoot() + "/" + hash.substring(0, 2) + "/" + hash));
             } catch (ExecutionException | MalformedURLException e) {
                 return Optional.empty();
             }
@@ -102,7 +103,7 @@ public class MojangAPI {
         private final MetaAPI metaAPI;
 
         AssetsAPI(@NotNull MojangApiMirror apiMirror, @NotNull String version) {
-            this.metaAPI = new MetaAPI(apiMirror,version);
+            this.metaAPI = new MetaAPI(apiMirror, version);
         }
 
         public boolean isAvailable() {
@@ -203,7 +204,7 @@ public class MojangAPI {
         @SneakyThrows
         public MetaAPI(@NotNull MojangApiMirror mirror, @NotNull String version) {
             this.version = version;
-            this.metaEndpoint = new URL(mirror.getLauncherMetaRoot()+"/mc/game/version_manifest.json");
+            this.metaEndpoint = new URL(mirror.getLauncherMetaRoot() + "/mc/game/version_manifest.json");
         }
 
         /**

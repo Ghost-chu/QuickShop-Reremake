@@ -384,6 +384,7 @@ public class MsgUtil {
         }
     }
     // TODO: No hardcode
+
     /**
      * Send controlPanel infomation to sender
      *
@@ -405,10 +406,10 @@ public class MsgUtil {
         plugin.getShopManager().bakeShopRuntimeRandomUniqueIdCache(shop);
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(plugin.text().of(sender,"controlpanel.infomation").forLocale());
+        chatSheetPrinter.printLine(plugin.text().of(sender, "controlpanel.infomation").forLocale());
         // Owner
         if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.setowner")) {
-            chatSheetPrinter.printLine(plugin.text().of(sender,"menu.owner", shop.ownerName()).forLocale());
+            chatSheetPrinter.printLine(plugin.text().of(sender, "menu.owner", shop.ownerName()).forLocale());
         } else {
             chatSheetPrinter.printSuggestedCmdLine(
                     plugin.text().of(sender,
@@ -418,7 +419,7 @@ public class MsgUtil {
                                     && shop.isUnlimited())
                                     ? (" (" + shop.getOwner() + ")")
                                     : "")).forLocale(),
-                    plugin.text().of(sender,"controlpanel.setowner-hover").forLocale(),
+                    plugin.text().of(sender, "controlpanel.setowner-hover").forLocale(),
                     "/qs setowner ");
         }
 
@@ -426,8 +427,8 @@ public class MsgUtil {
         // Unlimited
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.unlimited")) {
             String text =
-                    plugin.text().of(sender,"controlpanel.unlimited",bool2String(shop.isUnlimited())).forLocale();
-            String hoverText = plugin.text().of(sender,"controlpanel.unlimited-hover").forLocale();
+                    plugin.text().of(sender, "controlpanel.unlimited", bool2String(shop.isUnlimited())).forLocale();
+            String hoverText = plugin.text().of(sender, "controlpanel.unlimited-hover").forLocale();
             String clickCommand =
                     MsgUtil.fillArgs(
                             "/qs silentunlimited {0}",
@@ -438,16 +439,16 @@ public class MsgUtil {
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.buy")
                 && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.sell")) {
             if (shop.isSelling()) {
-                String text = plugin.text().of(sender,"controlpanel.mode-selling").forLocale();
-                String hoverText = plugin.text().of(sender,"controlpanel.mode-selling-hover").forLocale();
+                String text = plugin.text().of(sender, "controlpanel.mode-selling").forLocale();
+                String hoverText = plugin.text().of(sender, "controlpanel.mode-selling-hover").forLocale();
                 String clickCommand =
                         MsgUtil.fillArgs(
                                 "/qs silentbuy {0}",
                                 shop.getRuntimeRandomUniqueId().toString());
                 chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
             } else if (shop.isBuying()) {
-                String text = plugin.text().of(sender,"controlpanel.mode-buying").forLocale();
-                String hoverText = plugin.text().of(sender,"controlpanel.mode-buying-hover").forLocale();
+                String text = plugin.text().of(sender, "controlpanel.mode-buying").forLocale();
+                String hoverText = plugin.text().of(sender, "controlpanel.mode-buying-hover").forLocale();
                 String clickCommand =
                         MsgUtil.fillArgs(
                                 "/qs silentsell {0}",
@@ -460,19 +461,19 @@ public class MsgUtil {
                 || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
             String text =
                     MsgUtil.fillArgs(
-                            plugin.text().of(sender,"controlpanel.price").forLocale(),
+                            plugin.text().of(sender, "controlpanel.price").forLocale(),
                             (plugin.getConfig().getBoolean("use-decimal-format"))
                                     ? decimalFormat(shop.getPrice())
                                     : Double.toString(shop.getPrice()));
-            String hoverText = plugin.text().of(sender,"controlpanel.price-hover").forLocale();
+            String hoverText = plugin.text().of(sender, "controlpanel.price-hover").forLocale();
             String clickCommand = "/qs price ";
             chatSheetPrinter.printSuggestedCmdLine(text, hoverText, clickCommand);
         }
         //Set amount per bulk
         if (QuickShop.getInstance().isAllowStack()) {
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.amount") || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId()) && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeamount")) {
-                String text = plugin.text().of(sender,"controlpanel.stack", Integer.toString(shop.getItem().getAmount())).forLocale();
-                String hoverText = plugin.text().of(sender,"controlpanel.stack-hover").forLocale();
+                String text = plugin.text().of(sender, "controlpanel.stack", Integer.toString(shop.getItem().getAmount())).forLocale();
+                String hoverText = plugin.text().of(sender, "controlpanel.stack-hover").forLocale();
                 String clickCommand = "/qs size ";
                 chatSheetPrinter.printSuggestedCmdLine(text, hoverText, clickCommand);
 
@@ -482,15 +483,15 @@ public class MsgUtil {
             // Refill
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.refill")) {
                 String text =
-                        plugin.text().of(sender,"controlpanel.refill", String.valueOf(shop.getPrice())).forLocale();
-                String hoverText = plugin.text().of(sender,"controlpanel.refill-hover").forLocale();
+                        plugin.text().of(sender, "controlpanel.refill", String.valueOf(shop.getPrice())).forLocale();
+                String hoverText = plugin.text().of(sender, "controlpanel.refill-hover").forLocale();
                 String clickCommand = "/qs refill ";
                 chatSheetPrinter.printSuggestedCmdLine(text, hoverText, clickCommand);
             }
             // Empty
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.empty")) {
-                String text = plugin.text().of(sender,"controlpanel.empty", String.valueOf(shop.getPrice())).forLocale();
-                String hoverText = plugin.text().of(sender,"controlpanel.empty-hover").forLocale();
+                String text = plugin.text().of(sender, "controlpanel.empty", String.valueOf(shop.getPrice())).forLocale();
+                String hoverText = plugin.text().of(sender, "controlpanel.empty-hover").forLocale();
                 String clickCommand = MsgUtil.fillArgs("/qs silentempty {0}", shop.getRuntimeRandomUniqueId().toString());
                 chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
             }
@@ -498,8 +499,8 @@ public class MsgUtil {
         // Remove
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy")
                 || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
-            String text = plugin.text().of(sender,"controlpanel.remove",String.valueOf(shop.getPrice())).forLocale();
-            String hoverText =plugin.text().of(sender,"controlpanel.remove-hover").forLocale();
+            String text = plugin.text().of(sender, "controlpanel.remove", String.valueOf(shop.getPrice())).forLocale();
+            String hoverText = plugin.text().of(sender, "controlpanel.remove-hover").forLocale();
             String clickCommand = MsgUtil.fillArgs("/qs silentremove {0}", shop.getRuntimeRandomUniqueId().toString());
             chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
         }
@@ -580,8 +581,8 @@ public class MsgUtil {
         }
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(plugin.text().of(sender,"menu.successful-purchase").forLocale());
-        chatSheetPrinter.printLine(plugin.text().of(sender,"menu.item-name-and-price", Integer.toString(amount * shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()), Util.format(amount * shop.getPrice(), shop)).forLocale());
+        chatSheetPrinter.printLine(plugin.text().of(sender, "menu.successful-purchase").forLocale());
+        chatSheetPrinter.printLine(plugin.text().of(sender, "menu.item-name-and-price", Integer.toString(amount * shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()), Util.format(amount * shop.getPrice(), shop)).forLocale());
         printEnchantment(sender, shop, chatSheetPrinter);
         chatSheetPrinter.printFooter();
     }
@@ -618,7 +619,7 @@ public class MsgUtil {
         }
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(plugin.text().of(sender,"menu.successfully-sold").forLocale());
+        chatSheetPrinter.printLine(plugin.text().of(sender, "menu.successfully-sold").forLocale());
         chatSheetPrinter.printLine(
                 plugin.text().of(sender,
                         "menu.item-name-and-price",
@@ -631,9 +632,9 @@ public class MsgUtil {
             if (tax != 0) {
                 if (!seller.equals(shop.getOwner())) {
                     chatSheetPrinter.printLine(
-                            plugin.text().of(sender,"menu.sell-tax", Util.format(tax * total, shop)).forLocale());
+                            plugin.text().of(sender, "menu.sell-tax", Util.format(tax * total, shop)).forLocale());
                 } else {
-                    chatSheetPrinter.printLine( plugin.text().of(sender,"menu.sell-tax-self").forLocale());
+                    chatSheetPrinter.printLine(plugin.text().of(sender, "menu.sell-tax-self").forLocale());
                 }
             }
         }
@@ -650,7 +651,7 @@ public class MsgUtil {
             enchs = shop.getItem().getItemMeta().getEnchants();
         }
         if (!enchs.isEmpty()) {
-            chatSheetPrinter.printCenterLine( plugin.text().of(p,"menu.enchants").forLocale());
+            chatSheetPrinter.printCenterLine(plugin.text().of(p, "menu.enchants").forLocale());
             printEnchantment(chatSheetPrinter, enchs);
         }
         if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta) {
@@ -658,7 +659,7 @@ public class MsgUtil {
             stor.getStoredEnchants();
             enchs = stor.getStoredEnchants();
             if (!enchs.isEmpty()) {
-                chatSheetPrinter.printCenterLine(plugin.text().of(p,"menu.stored-enchants").forLocale());
+                chatSheetPrinter.printCenterLine(plugin.text().of(p, "menu.stored-enchants").forLocale());
                 printEnchantment(chatSheetPrinter, enchs);
             }
         }
@@ -683,47 +684,47 @@ public class MsgUtil {
         ItemStack items = shop.getItem();
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
         chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(plugin.text().of(p,"menu.shop-information").forLocale());
-        chatSheetPrinter.printLine(plugin.text().of(p,"menu.owner",  shop.ownerName()).forLocale());
+        chatSheetPrinter.printLine(plugin.text().of(p, "menu.shop-information").forLocale());
+        chatSheetPrinter.printLine(plugin.text().of(p, "menu.owner", shop.ownerName()).forLocale());
         // Enabled
-        plugin.getQuickChat().send(p, plugin.getQuickChat().getItemHologramChat(shop, items, p, ChatColor.DARK_PURPLE + plugin.text().of(p,"tableformat.left_begin").forLocale() + plugin.text().of(p,"menu.item",  Util.getItemStackName(items)).forLocale() + "  "));
+        plugin.getQuickChat().send(p, plugin.getQuickChat().getItemHologramChat(shop, items, p, ChatColor.DARK_PURPLE + plugin.text().of(p, "tableformat.left_begin").forLocale() + plugin.text().of(p, "menu.item", Util.getItemStackName(items)).forLocale() + "  "));
         if (Util.isTool(items.getType())) {
             chatSheetPrinter.printLine(
-                    plugin.text().of(p,"menu.damage-percent-remaining", Util.getToolPercentage(items)).forLocale());
+                    plugin.text().of(p, "menu.damage-percent-remaining", Util.getToolPercentage(items)).forLocale());
         }
         if (shop.isSelling()) {
             if (shop.getRemainingStock() == -1) {
                 chatSheetPrinter.printLine(
-                        plugin.text().of(p,"menu.stock",  plugin.text().of(p,"signs.unlimited").forLocale()).forLocale());
+                        plugin.text().of(p, "menu.stock", plugin.text().of(p, "signs.unlimited").forLocale()).forLocale());
             } else {
                 chatSheetPrinter.printLine(
-                        plugin.text().of(p,"menu.stock",  Integer.toString(shop.getRemainingStock())).forLocale());
+                        plugin.text().of(p, "menu.stock", Integer.toString(shop.getRemainingStock())).forLocale());
             }
         } else {
             if (shop.getRemainingSpace() == -1) {
                 chatSheetPrinter.printLine(
-                        plugin.text().of(p,"menu.space", plugin.text().of(p,"signs.unlimited").forLocale()).forLocale());
+                        plugin.text().of(p, "menu.space", plugin.text().of(p, "signs.unlimited").forLocale()).forLocale());
             } else {
                 chatSheetPrinter.printLine(
-                        plugin.text().of(p,"menu.space",  Integer.toString(shop.getRemainingSpace())).forLocale());
+                        plugin.text().of(p, "menu.space", Integer.toString(shop.getRemainingSpace())).forLocale());
             }
         }
         if (shop.getItem().getAmount() == 1) {
-            chatSheetPrinter.printLine(plugin.text().of(p,"menu.price-per",  Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice(), shop)).forLocale());
+            chatSheetPrinter.printLine(plugin.text().of(p, "menu.price-per", Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice(), shop)).forLocale());
         } else {
-            chatSheetPrinter.printLine(plugin.text().of(p,"menu.price-per-stack",  Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice(), shop), Integer.toString(shop.getItem().getAmount())).forLocale());
+            chatSheetPrinter.printLine(plugin.text().of(p, "menu.price-per-stack", Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice(), shop), Integer.toString(shop.getItem().getAmount())).forLocale());
         }
         if (shop.isBuying()) {
-            chatSheetPrinter.printLine(plugin.text().of(p,"menu.this-shop-is-buying").forLocale());
+            chatSheetPrinter.printLine(plugin.text().of(p, "menu.this-shop-is-buying").forLocale());
         } else {
-            chatSheetPrinter.printLine(plugin.text().of(p,"menu.this-shop-is-selling").forLocale());
+            chatSheetPrinter.printLine(plugin.text().of(p, "menu.this-shop-is-selling").forLocale());
         }
         printEnchantment(p, shop, chatSheetPrinter);
         if (items.getItemMeta() instanceof PotionMeta) {
             PotionMeta potionMeta = (PotionMeta) items.getItemMeta();
             PotionEffectType potionEffectType = potionMeta.getBasePotionData().getType().getEffectType();
             if (potionEffectType != null) {
-                chatSheetPrinter.printLine(plugin.text().of(p,"menu.effects").forLocale());
+                chatSheetPrinter.printLine(plugin.text().of(p, "menu.effects").forLocale());
                 chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getPotioni18n(potionEffectType));
             }
             for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
@@ -819,7 +820,8 @@ public class MsgUtil {
                 if (MsgUtil.isJson(json)) {
                     return JsonUtil.getGson().fromJson(json, TransactionMessage.class);
                 }
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
             return new TransactionMessage(json, null, null);
         }
 

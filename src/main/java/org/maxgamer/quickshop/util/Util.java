@@ -1388,6 +1388,7 @@ public class Util {
             Bukkit.getScheduler().runTask(QuickShop.getInstance(), runnable);
         }
     }
+
     // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
     public static LocalDateTime getDateTimeFromTimestamp(long timestamp) {
         if (timestamp == 0)
@@ -1395,6 +1396,7 @@ public class Util {
         return LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), TimeZone
                 .getDefault().toZoneId());
     }
+
     // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
     public static LocalDate getDateFromTimestamp(long timestamp) {
         LocalDateTime date = getDateTimeFromTimestamp(timestamp);

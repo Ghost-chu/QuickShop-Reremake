@@ -86,7 +86,7 @@ public class CrowdinOTA implements Distribution {
             return requestCachePool.getIfPresent(url);
         try (Response response = client.newCall(new Request.Builder().get().url(url).build()).execute()) {
             val body = response.body();
-            if(body == null) return null;
+            if (body == null) return null;
             data = body.string();
             if (response.code() != 200) {
                 plugin.getLogger().warning("Couldn't get manifest: " + response.code() + ", please report to QuickShop!");
@@ -168,8 +168,8 @@ public class CrowdinOTA implements Distribution {
             Util.debugLog("Reading data from remote server: " + url);
             try (Response response = client.newCall(new Request.Builder().get().url(url).build()).execute()) {
                 val body = response.body();
-                if(body == null)
-                    throw new OTAException(response.code(),""); // Returns empty string
+                if (body == null)
+                    throw new OTAException(response.code(), ""); // Returns empty string
                 data = body.string();
                 if (response.code() != 200)
                     throw new OTAException(response.code(), data);

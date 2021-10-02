@@ -46,8 +46,6 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
         while (bIt.hasNext()) {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-
-
             if (shop != null) {
                 if (shop.getModerator().isModerator(sender.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.taxaccount")) {
                     if (cmdArg.length < 1) {
@@ -55,7 +53,7 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
                         plugin.text().of(sender, "taxaccount-unset").send();
                         return;
                     }
-                    if(Util.isUUID(cmdArg[0]))
+                    if (Util.isUUID(cmdArg[0]))
                         shop.setTaxAccount(UUID.fromString(cmdArg[0]));
                     else
                         shop.setTaxAccount(Bukkit.getOfflinePlayer(cmdArg[0]).getUniqueId());
