@@ -117,32 +117,12 @@ public class DatabaseHelper implements Reloadable {
         manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
                 .getDbPrefix() + "messages MODIFY COLUMN time BIGINT(32) NOT NULL AFTER message", checkTask));
         //Extra column
-        try {
-            if (!manager.hasColumn(plugin.getDbPrefix() + "shops", "extra")) {
-                String sqlString;
-                if (manager.getDatabase() instanceof MySQLCore) {
-                    sqlString = "ALTER TABLE " + plugin
-                            .getDbPrefix() + "shops ADD extra LONGTEXT";
-                } else {
-                    sqlString = "ALTER TABLE " + plugin
-                            .getDbPrefix() + "shops ADD COLUMN extra TEXT";
-                }
-                manager.runInstantTask(new DatabaseTask(sqlString, new DatabaseTask.Task() {
-                    @Override
-                    public void edit(PreparedStatement ps) throws SQLException {
-                    }
+        createColumn("shops","extra",new DataType(DataTypeMapping.LONGTEXT,null,""));
+        createColumn("shops","currency",new DataType(DataTypeMapping.TEXT));
+        createColumn("shops","disableDisplay",new DataType(DataTypeMapping.INT,null,-1));
+        createColumn("shops","taxAccount",new DataType(DataTypeMapping.VARCHAR,255));
 
-                    @Override
-                    public void onFailed(SQLException e) {
-                        Util.debugLog("Error to create EXTRA column: " + e.getMessage());
-                    }
-                }));
-                Util.debugLog("Setting up the column EXTRA...");
-            }
-        } catch (SQLException e) {
-            Util.debugLog("Error to create EXTRA column: " + e.getMessage());
-            //ignore
-        }
+
 
         if (manager.getDatabase() instanceof MySQLCore) {
             manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
@@ -151,6 +131,38 @@ public class DatabaseHelper implements Reloadable {
                     .getDbPrefix() + "shops MODIFY COLUMN itemConfig text CHARACTER SET utf8mb4 NOT NULL AFTER price", checkTask));
         }
         plugin.getLogger().info("Finished!");
+    }
+
+    public boolean createColumn(@NotNull String tableName, @NotNull String columnName, @NotNull DataType type) {
+
+        try {
+            String table = plugin.getDbPrefix() + tableName;
+            if (manager.hasColumn(table, columnName))
+                return false;
+            String sqlString;
+            if (manager.getDatabase() instanceof MySQLCore) {
+                sqlString = "alter table " + table + " add "+columnName+" " + type.getDatatype().getMysql();
+            } else {
+                sqlString = "alter table " + table + " add column "+columnName+" " + type.getDatatype().getSqlite();
+            }
+            if (type.getLength() != null)
+                sqlString += "(" + type.getLength().toString()+") ";
+            Util.debugLog("Append sql for creating column is "+ sqlString);
+            manager.runInstantTask(new DatabaseTask(sqlString, new DatabaseTask.Task() {
+                @Override
+                public void edit(PreparedStatement ps) {
+                }
+
+                @Override
+                public void onFailed(SQLException e) {
+                    Util.debugLog("Cannot create column " + columnName + " casued by:" + e.getMessage());
+                }
+            }));
+            return true;
+        } catch (SQLException sqlException) {
+            Util.debugLog("Cannot create column " + columnName + " casued by:" + sqlException.getMessage());
+            return false;
+        }
     }
 
     public void cleanMessage(long weekAgo) {
@@ -285,9 +297,12 @@ public class DatabaseHelper implements Reloadable {
     }
 
     public void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
-                           double price, int x, int y, int z, String world, String extra) {
+                           double price, int x, int y, int z, @NotNull String world, @NotNull String extra,
+                           @NotNull String currency, boolean disableDisplay, @Nullable String taxAccount) {
         String sqlString = "UPDATE " + plugin
-                .getDbPrefix() + "shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ?, extra = ? WHERE x = ? AND y = ? and z = ? and world = ?";
+                .getDbPrefix() + "shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ?," +
+                " extra = ?, currency = ?, disableDisplay = ?, taxAccount = ?" +
+                " WHERE x = ? AND y = ? and z = ? and world = ?";
         manager.addDelayTask(new DatabaseTask(sqlString, ps -> {
             ps.setString(1, owner);
             ps.setString(2, Util.serialize(item));
@@ -295,10 +310,13 @@ public class DatabaseHelper implements Reloadable {
             ps.setInt(4, shopType);
             ps.setDouble(5, price);
             ps.setString(6, extra);
-            ps.setInt(7, x);
-            ps.setInt(8, y);
-            ps.setInt(9, z);
-            ps.setString(10, world);
+            ps.setString(7, currency);
+            ps.setInt(8,((!disableDisplay) ? 0: 1));
+            ps.setString(9,taxAccount);
+            ps.setInt(10, x);
+            ps.setInt(11, y);
+            ps.setInt(12, z);
+            ps.setString(13, world);
         }));
         //db.execute(q, owner, Util.serialize(item), unlimited, shopType, price, x, y, z, world);
 
@@ -307,7 +325,9 @@ public class DatabaseHelper implements Reloadable {
     private void bakeTraceIfNeeded() {
         if (plugin.getConfig().getBoolean("debug.shop-deletion")) {
             for (StackTraceElement stackTraceElement : new Exception().getStackTrace()) {
-                plugin.log("at [" + stackTraceElement.getClassName() + "] [" + stackTraceElement.getMethodName() + "] (" + stackTraceElement.getLineNumber() + ") - " + stackTraceElement.getFileName());
+                plugin.log("at [" + stackTraceElement.getClassName() + "]" +
+                        "[" + stackTraceElement.getMethodName() + "] (" + stackTraceElement.getLineNumber() + ") - "
+                        + stackTraceElement.getFileName());
             }
         }
     }

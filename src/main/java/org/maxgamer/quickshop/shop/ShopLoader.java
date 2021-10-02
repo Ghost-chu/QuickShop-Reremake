@@ -112,7 +112,9 @@ public class ShopLoader {
                                 data.getModerators(),
                                 data.isUnlimited(),
                                 data.getType(),
-                                data.getExtra());
+                                data.getExtra(),
+                                data.getCurrency(),
+                                data.isDisableDisplay());
                 if (data.needUpdate.get()) {
                     shop.setDirty();
                 }
@@ -302,7 +304,9 @@ public class ShopLoader {
                                 data.getModerators(),
                                 data.isUnlimited(),
                                 data.getType(),
-                                data.getExtra());
+                                data.getExtra(),
+                                data.getCurrency(),
+                                data.isDisableDisplay());
                 if (shopNullCheck(shop)) {
                     continue;
                 }
@@ -335,7 +339,9 @@ public class ShopLoader {
                         databaseInfo.getModerators(),
                         databaseInfo.isUnlimited(),
                         databaseInfo.getType(),
-                        databaseInfo.getExtra());
+                        databaseInfo.getExtra(),
+                        databaseInfo.getCurrency(),
+                        databaseInfo.isDisableDisplay());
                 shopsInDatabaseList.add(shop);
             } catch (Exception e) {
                 exceptionHandler(e, null);
@@ -384,6 +390,12 @@ public class ShopLoader {
 
         private String extra;
 
+        private String currency;
+
+        private boolean disableDisplay;
+
+        private String taxAccount;
+
         ShopRawDatabaseInfo(ResultSet rs) throws SQLException {
             this.x = rs.getInt("x");
             this.y = rs.getInt("y");
@@ -399,9 +411,12 @@ public class ShopLoader {
             if (extra == null) {
                 extra = "";
             }
+            this.currency = rs.getString("currency");
+            this.disableDisplay = rs.getInt("disableDisplay") == 0;
+            this.taxAccount = rs.getString("taxAccount");
         }
 
-        ShopRawDatabaseInfo(int x, int y, int z, String world, String itemConfig, String owner, double price, int type, boolean unlimited, String extra) {
+        ShopRawDatabaseInfo(int x, int y, int z, String world, String itemConfig, String owner, double price, int type, boolean unlimited, String extra, String currency, boolean disableDisplay, String taxAccount) {
             this.x = x;
             this.y = y;
             this.z = z;
@@ -412,6 +427,9 @@ public class ShopLoader {
             this.type = type;
             this.unlimited = unlimited;
             this.extra = extra;
+            this.currency = currency;
+            this.taxAccount = taxAccount;
+            this.disableDisplay = disableDisplay;
         }
 
         ShopRawDatabaseInfo() {
@@ -451,6 +469,12 @@ public class ShopLoader {
 
         private AtomicBoolean needUpdate = new AtomicBoolean(false);
 
+        private String currency;
+
+        private UUID taxAccount;
+
+        private boolean disableDisplay;
+
         ShopDatabaseInfo(ShopRawDatabaseInfo origin) {
             try {
                 this.x = origin.getX();
@@ -464,6 +488,9 @@ public class ShopLoader {
                 this.type = ShopType.fromID(origin.getType());
                 this.item = deserializeItem(origin.getItem());
                 this.extra = deserializeExtra(origin.getExtra(), needUpdate);
+                this.currency = origin.getCurrency();
+                this.disableDisplay = origin.isDisableDisplay();
+                this.taxAccount = UUID.fromString(origin.getTaxAccount());
             } catch (Exception ex) {
                 exceptionHandler(ex, this.location);
             }
