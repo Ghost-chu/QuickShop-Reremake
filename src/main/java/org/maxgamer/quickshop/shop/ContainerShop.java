@@ -23,6 +23,9 @@ import com.lishid.openinv.OpenInv;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import me.lucko.helper.serialize.BlockPosition;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -43,6 +46,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.*;
+import org.maxgamer.quickshop.util.ComponentPackge;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.PriceLimiter;
 import org.maxgamer.quickshop.util.Util;
@@ -688,14 +692,13 @@ public class ContainerShop implements Shop {
     }
 
     @Override
-    public String[] getSignText() {
+    public List<ComponentPackge> getSignText(@NotNull String locale) {
         Util.ensureThread(false);
-        String[] lines = new String[4];
-
+        List<ComponentPackge> lines = new ArrayList<>();
         //Line 1
         OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
         String statusStringKey = inventoryAvailable() ? "signs.status-available" : "signs.status-unavailable";
-        lines[0] = plugin.text().of("signs.header", this.ownerName(false), plugin.text().of(statusStringKey).forLocale()).forLocale();
+        lines.add(new ComponentPackge(TextComponent.fromLegacyText(plugin.text().of("signs.header", this.ownerName(false), plugin.text().of(statusStringKey).forLocale(locale)).forLocale(locale))));
 
         //Line 2
         String tradingStringKey;
@@ -718,35 +721,48 @@ public class ContainerShop implements Shop {
                 tradingStringKey = "MissingKey for shop type:" + shopType;
                 noRemainingStringKey = "MissingKey for shop type:" + shopType;
         }
+        String line2;
         switch (shopRemaining) {
             //Unlimited
             case -1:
-                lines[1] = plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale()).forLocale();
+                line2 =plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale(locale)).forLocale(locale);
                 break;
             //No remaining
             case 0:
-                lines[1] = plugin.text().of(noRemainingStringKey).forLocale();
+                line2 =plugin.text().of(noRemainingStringKey).forLocale(locale);
                 break;
             //Has remaining
             default:
-                lines[1] = plugin.text().of(tradingStringKey, Integer.toString(shopRemaining)).forLocale();
+                line2 =plugin.text().of(tradingStringKey, Integer.toString(shopRemaining)).forLocale(locale);
         }
+        lines.add(new ComponentPackge(TextComponent.fromLegacyText(shopSignPrefix+line2+" ")));
 
         //line 3
-        lines[2] = plugin.text().of("signs.item", Util.getItemStackName(this.getItem())).forLocale();
+        if(this.getItem().hasItemMeta() && this.getItem().getItemMeta().hasDisplayName()){
+            TextComponent left = new TextComponent(plugin.text().of("signs.item-left").forLocale());
+            TranslatableComponent mediumItem = new TranslatableComponent("item."+getItem().getType().getKey().getNamespace()+"."+getItem().getType().getKey().getKey());
+            TextComponent right = new TextComponent(plugin.text().of("signs.item-right").forLocale());
+            lines.add(new ComponentPackge(new ComponentBuilder()
+                    .append(left)
+                    .append(mediumItem)
+                    .append(right)
+                    .create()));
+        }else{
+            lines.add(new ComponentPackge(new ComponentBuilder().append( TextComponent.fromLegacyText(plugin.text().of("signs.item-left").forLocale()))
+                    .append(TextComponent.fromLegacyText(Util.getItemStackName(getItem())))
+                    .append(TextComponent.fromLegacyText(plugin.text().of("signs.item-right").forLocale())).create()));
+        }
 
         //line 4
+        String line4;
         if (this.isStackingShop()) {
-            lines[3] = plugin.text().of("signs.stack-price",
+            line4 = plugin.text().of("signs.stack-price",
                     Util.format(this.getPrice(), this), Integer.toString(item.getAmount()),
                     Util.getItemStackName(item)).forLocale();
         } else {
-            lines[3] = plugin.text().of("signs.price", Util.format(this.getPrice(), this)).forLocale();
+            line4 = plugin.text().of("signs.price", Util.format(this.getPrice(), this)).forLocale();
         }
-
-        //New pattern for recognizing shop sign
-        lines[1] = shopSignPrefix + lines[1] + " ";
-
+        lines.add(new ComponentPackge(TextComponent.fromLegacyText(line4)));
         return lines;
     }
 
@@ -756,15 +772,12 @@ public class ContainerShop implements Shop {
      * @param lines The array of lines to change. Index is line number.
      */
     @Override
-    public void setSignText(@NotNull String[] lines) {
+    public void setSignText(@NotNull List<ComponentPackge> lines) {
         Util.ensureThread(false);
         List<Sign> signs = this.getSigns();
         for (Sign sign : signs) {
-            if (Arrays.equals(sign.getLines(), lines)) {
-                continue;
-            }
-            for (int i = 0; i < lines.length; i++) {
-                sign.setLine(i, lines[i]);
+            for (int i = 0; i < lines.size(); i++) {
+                sign.setLine(i, new TextComponent(lines.get(i).getComponents()).toLegacyText());
             }
             if (plugin.getGameVersion().isSignTextDyeSupport()) {
                 DyeColor dyeColor = Util.getDyeColor();
@@ -790,7 +803,7 @@ public class ContainerShop implements Shop {
         if (!Util.isLoaded(this.location)) {
             return;
         }
-        this.setSignText(getSignText());
+        this.setSignText(getSignText("en_us"));
     }
 
     /**
@@ -1535,6 +1548,7 @@ public class ContainerShop implements Shop {
             inventoryPreview = new InventoryPreview(plugin, getItem().clone());
         }
         inventoryPreview.show(player);
+
     }
 
     @Override
