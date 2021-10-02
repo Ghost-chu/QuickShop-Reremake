@@ -114,7 +114,8 @@ public class ShopLoader {
                                 data.getType(),
                                 data.getExtra(),
                                 data.getCurrency(),
-                                data.isDisableDisplay());
+                                data.isDisableDisplay(),
+                                data.getTaxAccount());
                 if (data.needUpdate.get()) {
                     shop.setDirty();
                 }
@@ -306,7 +307,8 @@ public class ShopLoader {
                                 data.getType(),
                                 data.getExtra(),
                                 data.getCurrency(),
-                                data.isDisableDisplay());
+                                data.isDisableDisplay(),
+                                data.getTaxAccount());
                 if (shopNullCheck(shop)) {
                     continue;
                 }
@@ -341,7 +343,8 @@ public class ShopLoader {
                         databaseInfo.getType(),
                         databaseInfo.getExtra(),
                         databaseInfo.getCurrency(),
-                        databaseInfo.isDisableDisplay());
+                        databaseInfo.isDisableDisplay(),
+                        databaseInfo.getTaxAccount());
                 shopsInDatabaseList.add(shop);
             } catch (Exception e) {
                 exceptionHandler(e, null);
