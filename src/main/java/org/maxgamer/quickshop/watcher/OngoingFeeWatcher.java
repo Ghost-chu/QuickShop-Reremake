@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.economy.EconomyTransaction;
 import org.maxgamer.quickshop.economy.Trader;
+import org.maxgamer.quickshop.event.ShopOngoingFeeEvent;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -55,13 +56,14 @@ public class OngoingFeeWatcher extends BukkitRunnable {
             Util.debugLog("Economy hadn't get ready.");
             return;
         }
-        int cost = plugin.getConfig().getInt("shop.ongoing-fee.cost-per-shop");
+
         boolean allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
         boolean ignoreUnlimited = plugin.getConfig().getBoolean("shop.ongoing-fee.ignore-unlimited");
         for (Shop shop : plugin.getShopManager().getAllShops()) {
             if ((!shop.isUnlimited() || !ignoreUnlimited) && !shop.isDeleted()) {
                 UUID shopOwner = shop.getOwner();
                 Location location = shop.getLocation();
+                double cost = plugin.getConfig().getDouble("shop.ongoing-fee.cost-per-shop");
                 if (!location.isWorldLoaded()) {
                     //ignore unloaded world
                     continue;
@@ -74,12 +76,21 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                         taxAccount = new Trader(shop.getTaxAccount().toString(), Bukkit.getOfflinePlayer(shop.getTaxAccount()));
                     else
                         taxAccount = plugin.getShopManager().getCacheTaxAccount();
+
+                    ShopOngoingFeeEvent event = new ShopOngoingFeeEvent(shop,shopOwner,cost);
+                    if(Util.fireCancellableEvent(event))
+                        continue;
+
+                    cost = event.getCost();
+                    double finalCost = cost;
+
                     Util.mainThreadRun(() -> {
                         EconomyTransaction transaction = EconomyTransaction.builder()
                                 .allowLoan(allowLoan)
                                 .currency(shop.getCurrency())
                                 .core(plugin.getEconomy())
                                 .world(world)
+                                .amount(finalCost)
                                 .to(taxAccount == null ? null : taxAccount.getUniqueId())
                                 .from(shopOwner).build();
 

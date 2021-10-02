@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.event;
 
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
@@ -48,6 +49,17 @@ public abstract class QSEvent extends Event {
 
     public void callEvent() {
         QuickShop.getInstance().getServer().getPluginManager().callEvent(this);
+    }
+
+    /**
+     * Call event on Bukkit event bus and check if cancelled
+     * @return Returns true if cancelled, and false if didn't cancel
+     */
+    public boolean callCancellableEvent(){
+        QuickShop.getInstance().getServer().getPluginManager().callEvent(this);
+        if(this instanceof Cancellable)
+            return ((Cancellable)this).isCancelled();
+        return false;
     }
 
 }
