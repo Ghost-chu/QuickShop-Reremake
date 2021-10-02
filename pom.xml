@@ -387,11 +387,11 @@
             <url>https://jitpack.io</url>
         </repository>
         <!-- JsonConfiguration  -->
-        <!-- Repo was down temporary, building this as workaround
+        <!-- Repo was down temporary, building this as workaround-->
         <repository>
             <id>onarandombox</id>
             <url>https://repo.onarandombox.com/content/groups/public</url>
-        </repository>-->
+        </repository>
 
         <!-- for development builds -->
         <repository>
@@ -402,10 +402,10 @@
             <id>minebench-repo</id>
             <url>https://repo.minebench.de/</url>
         </repository>
-<!--        <repository>-->
-<!--            <id>songoda-repo</id>-->
-<!--            <url>https://repo.songoda.com/repository/public/</url>-->
-<!--        </repository>-->
+        <repository>
+            <id>songoda-repo</id>
+            <url>https://repo.songoda.com/repository/public/</url>
+        </repository>
         <repository>
             <id>papermc</id>
             <url>https://papermc.io/repo/repository/maven-public/</url>
@@ -854,18 +854,18 @@
             <version>4.9.2</version>
             <systemPath>${project.basedir}/lib/TNE.jar</systemPath>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.songoda</groupId>-->
-<!--            <artifactId>skyblock</artifactId>-->
-<!--            <version>2.2.13</version>-->
-<!--            <scope>provided</scope>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>MVdWPlaceholderAPI</artifactId>-->
-<!--                    <groupId>be.maximvdw</groupId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.songoda</groupId>
+            <artifactId>skyblock</artifactId>
+            <version>2.2.13</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>MVdWPlaceholderAPI</artifactId>
+                    <groupId>be.maximvdw</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <!--        <dependency>-->
         <!--            <groupId>team.aura_dev.lib.slf4j-plugin.spigot</groupId>-->
         <!--            <artifactId>slf4j-plugin-spigot</artifactId>-->
