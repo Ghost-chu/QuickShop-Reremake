@@ -116,6 +116,7 @@ public class ContainerShop implements Shop {
         this.inventoryPreview = null;
         this.currency = s.currency;
         this.disableDisplay = s.disableDisplay;
+        this.taxAccount = s.taxAccount;
         initDisplayItem();
     }
 
@@ -143,7 +144,8 @@ public class ContainerShop implements Shop {
             @NotNull ShopType type,
             @NotNull YamlConfiguration extra,
             @Nullable String currency,
-            @NotNull boolean disableDisplay) {
+            boolean disableDisplay,
+            @Nullable UUID taxAccount) {
         Util.ensureThread(false);
         this.location = location;
         this.price = price;
@@ -171,6 +173,7 @@ public class ContainerShop implements Shop {
         this.extra = extra;
         this.currency = currency;
         this.disableDisplay = disableDisplay;
+        this.taxAccount = taxAccount;
         initDisplayItem();
         this.dirty = false;
         updateShopData();
@@ -181,6 +184,7 @@ public class ContainerShop implements Shop {
         if (section.getString("currency") != null) {
             this.currency = section.getString("currency");
             section.set("currency", null);
+            Util.debugLog("Shop "+this+" currency data upgrade successful.");
         }
         setExtra(plugin, section);
         setDirty();
@@ -192,6 +196,13 @@ public class ContainerShop implements Shop {
     }
 
     @Override
+    public void setDisableDisplay(boolean disabled) {
+        this.disableDisplay = disabled;
+        setDirty();
+        update();
+    }
+
+    @Override
     @Nullable
     public UUID getTaxAccount() {
         if (taxAccount != null)
@@ -199,6 +210,13 @@ public class ContainerShop implements Shop {
         if (plugin.getShopManager().getCacheTaxAccount() != null)
             return plugin.getShopManager().getCacheTaxAccount().getUniqueId();
         return null;
+    }
+
+    @Override
+    public void setTaxAccount(@Nullable UUID taxAccount) {
+        this.taxAccount = taxAccount;
+        setDirty();
+        update();
     }
 
     private void initDisplayItem() {

@@ -316,6 +316,11 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .permission("quickshop.currency")
                 .executor(new SubCommand_Currency(plugin))
                 .build());
+        registerCmd(CommandContainer.builder()
+                .prefix("taxaccount")
+                .permission("quickshop.taxaccount")
+                .executor(new SubCommand_TaxAccount(plugin))
+                .build());
 //        registerCmd(CommandContainer.builder()
 //                .prefix("backup")
 //                .permission("quickshop.backup")
