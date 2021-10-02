@@ -768,6 +768,17 @@ protect:
 #
 custom-item-stacksize: [ ]
 
+# Shops purger
+# Will purge all shops that owner offline x days while use command or server startup
+purge:
+  enabled: false
+  days: 60
+  # At this moment, QuickShop only compatible with Vanilla banning system (e.g Essentials using)
+  banned: true
+  # At this moment, QuickShop only compatible with Vanilla OP system, LuckPerms may need add in future.
+  skip-op: true
+  return-create-fee: true
+
 debug:
   #Should we disable the debug logger?
   #This will save a lot of execution time but will make reporting bugs

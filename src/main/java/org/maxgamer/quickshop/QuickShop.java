@@ -263,6 +263,8 @@ public class QuickShop extends JavaPlugin {
     private WorldEditAdapter worldEditAdapter;
     @Getter
     private TextManager textManager;
+    @Getter
+    private ShopPurger shopPurger;
 
     /**
      * Use for mock bukkit
@@ -949,6 +951,8 @@ public class QuickShop extends JavaPlugin {
         }
         calendarWatcher = new CalendarWatcher(this);
         calendarWatcher.start();
+        this.shopPurger = new ShopPurger(this,false);
+        shopPurger.runTaskAsynchronously(this);
         Util.debugLog("Now using display-type: " + DisplayItem.getNowUsing().name());
         getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
     }
