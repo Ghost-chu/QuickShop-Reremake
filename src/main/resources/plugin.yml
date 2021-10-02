@@ -62,6 +62,7 @@ permissions:
       quickshop.staff: true
       quickshop.preview: true
       quickshop.currency: true
+      quickshop.taxaccount: true
   quickshop.moderator:
     description: The permission that provide all moderator need have permissions
     default: op
@@ -206,5 +207,11 @@ permissions:
     default: op
   quickshop.showdisabled:
     description: Permission to see disabled commands in help list.
+    default: op
+  quickshop.taxaccount:
+    description: Permission to use /qs taxaccount
+    default: op
+  quickshop.other.taxaccount:
+    description: Permission to use /qs taxaccount
     default: op
 

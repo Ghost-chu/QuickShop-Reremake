@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.watcher;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -68,14 +69,18 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                 World world = location.getWorld();
                 //We must check balance manually to avoid shop missing hell when tax account broken
                 if (allowLoan || plugin.getEconomy().getBalance(shopOwner, Objects.requireNonNull(world), shop.getCurrency()) >= cost) {
-                    Trader trader = plugin.getShopManager().getCacheTaxAccount();
+                    Trader taxAccount;
+                    if(shop.getTaxAccount() != null)
+                        taxAccount = new Trader(shop.getTaxAccount().toString(), Bukkit.getOfflinePlayer(shop.getTaxAccount()));
+                    else
+                        taxAccount = plugin.getShopManager().getCacheTaxAccount();
                     Util.mainThreadRun(() -> {
                         EconomyTransaction transaction = EconomyTransaction.builder()
                                 .allowLoan(allowLoan)
                                 .currency(shop.getCurrency())
                                 .core(plugin.getEconomy())
                                 .world(world)
-                                .to(trader == null ? null : trader.getUniqueId())
+                                .to(taxAccount == null ? null : taxAccount.getUniqueId())
                                 .from(shopOwner).build();
 
                         boolean success = transaction.failSafeCommit();

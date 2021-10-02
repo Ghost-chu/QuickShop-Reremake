@@ -682,12 +682,17 @@ public class ShopManager implements Reloadable {
         } else {
             total = e.getTotal(); // Allow addon to set it
         }
+        Trader taxAccount;
+        if(shop.getTaxAccount() != null)
+            taxAccount = new Trader(shop.getTaxAccount().toString(), Bukkit.getOfflinePlayer(shop.getTaxAccount()));
+        else
+            taxAccount = this.cacheTaxAccount;
         EconomyTransaction transaction;
         EconomyTransaction.EconomyTransactionBuilder builder = EconomyTransaction.builder()
                 .core(eco)
                 .amount(total)
                 .taxModifier(taxModifier)
-                .taxAccount(cacheTaxAccount)
+                .taxAccount(taxAccount)
                 .currency(shop.getCurrency())
                 .world(shop.getLocation().getWorld())
                 .to(buyer);
@@ -916,7 +921,10 @@ public class ShopManager implements Reloadable {
                 new ShopModerator(p.getUniqueId()),
                 false,
                 ShopType.SELLING,
-                new YamlConfiguration());
+                new YamlConfiguration(),
+                null,
+                false,
+                null);
         if (!bypassProtectionChecks) {
             Result result = plugin.getIntegrationHelper()
                     .callIntegrationsCanCreate(p, info.getLocation());
@@ -1043,13 +1051,18 @@ public class ShopManager implements Reloadable {
         // Money handling
         // SELLING Player -> Shop Owner
         EconomyTransaction transaction;
+        Trader taxAccount;
+        if(shop.getTaxAccount() != null)
+            taxAccount = new Trader(shop.getTaxAccount().toString(), Bukkit.getOfflinePlayer(shop.getTaxAccount()));
+        else
+            taxAccount = this.cacheTaxAccount;
         EconomyTransaction.EconomyTransactionBuilder builder = EconomyTransaction.builder()
                 .allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false))
                 .core(eco)
                 .from(seller)
                 .amount(total)
                 .taxModifier(taxModifier)
-                .taxAccount(cacheTaxAccount)
+                .taxAccount(taxAccount)
                 .world(shop.getLocation().getWorld())
                 .currency(shop.getCurrency());
         if (!shop.isUnlimited()
