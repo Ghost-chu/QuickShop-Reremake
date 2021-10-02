@@ -262,7 +262,7 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private WorldEditAdapter worldEditAdapter;
     @Getter
-    private TextManager textManager ;
+    private TextManager textManager;
 
     /**
      * Use for mock bukkit
@@ -374,7 +374,7 @@ public class QuickShop extends JavaPlugin {
                 }
             }
         }
-        Bukkit.getPluginManager().registerEvents(this.compatibilityTool,this);
+        Bukkit.getPluginManager().registerEvents(this.compatibilityTool, this);
         compatibilityTool.searchAndRegisterPlugins();
         if (this.display) {
             //VirtualItem support
@@ -389,24 +389,26 @@ public class QuickShop extends JavaPlugin {
                     saveConfig();
                 }
             }
-
-            if (DisplayItem.getNowUsing() == DisplayType.REALITEM && Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
-                try {
-                    Clearlag clearlag = (Clearlag) Bukkit.getPluginManager().getPlugin("ClearLag");
-                    for (RegisteredListener clearLagListener : ItemSpawnEvent.getHandlerList().getRegisteredListeners()) {
-                        if (!clearLagListener.getPlugin().equals(clearlag)) {
-                            continue;
+            if (DisplayItem.getNowUsing() == DisplayType.REALITEM) {
+                getLogger().warning("You're using Real Display system and that may cause your server lagg, switch to Virtual Display system if you can!");
+                if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
+                    try {
+                        Clearlag clearlag = (Clearlag) Bukkit.getPluginManager().getPlugin("ClearLag");
+                        for (RegisteredListener clearLagListener : ItemSpawnEvent.getHandlerList().getRegisteredListeners()) {
+                            if (!clearLagListener.getPlugin().equals(clearlag)) {
+                                continue;
+                            }
+                            if (clearLagListener.getListener().getClass().equals(ItemMergeListener.class)) {
+                                ItemSpawnEvent.getHandlerList().unregister(clearLagListener.getListener());
+                                getLogger().warning("+++++++++++++++++++++++++++++++++++++++++++");
+                                getLogger().severe("Detected incompatible module of ClearLag-ItemMerge module, it will broken the QuickShop display, we already unregister this module listener!");
+                                getLogger().severe("Please turn off it in the ClearLag config.yml or turn off the QuickShop display feature!");
+                                getLogger().severe("If you didn't do that, this message will keep spam in your console every times you server boot up!");
+                                getLogger().warning("+++++++++++++++++++++++++++++++++++++++++++");
+                            }
                         }
-                        if (clearLagListener.getListener().getClass().equals(ItemMergeListener.class)) {
-                            ItemSpawnEvent.getHandlerList().unregister(clearLagListener.getListener());
-                            getLogger().warning("+++++++++++++++++++++++++++++++++++++++++++");
-                            getLogger().severe("Detected incompatible module of ClearLag-ItemMerge module, it will broken the QuickShop display, we already unregister this module listener!");
-                            getLogger().severe("Please turn off it in the ClearLag config.yml or turn off the QuickShop display feature!");
-                            getLogger().severe("If you didn't do that, this message will keep spam in your console every times you server boot up!");
-                            getLogger().warning("+++++++++++++++++++++++++++++++++++++++++++");
-                        }
+                    } catch (Exception ignored) {
                     }
-                } catch (Exception ignored) {
                 }
             }
         }
@@ -804,7 +806,7 @@ public class QuickShop extends JavaPlugin {
         MsgUtil.loadItemi18n();
         MsgUtil.loadEnchi18n();
         MsgUtil.loadPotioni18n();
-    //    shopControlPanelManager = new ShopControlPanel(this);
+        //    shopControlPanelManager = new ShopControlPanel(this);
 //        this.previewProtectionLore = MsgUtil.getMessageOfflinePlayer("quickshop-gui-preview", null);
 //        if (this.previewProtectionLore == null || this.previewProtectionLore.isEmpty()) {
 //            this.previewProtectionLore = ChatColor.RED + "FIXME: DON'T SET THIS TO EMPTY STRING";
@@ -1899,7 +1901,7 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 141) {
             getConfig().set("language", null);
-            getConfig().set("disabled-languages",Collections.singletonList("disable_here"));
+            getConfig().set("disabled-languages", Collections.singletonList("disable_here"));
             getConfig().set("config-version", ++selectedVersion);
         }
 
@@ -1956,7 +1958,7 @@ public class QuickShop extends JavaPlugin {
         Util.debugLog("Command alias successfully registered.");
     }
 
-    public @NotNull TextManager text(){
+    public @NotNull TextManager text() {
         return textManager;
     }
 }
