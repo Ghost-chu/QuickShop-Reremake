@@ -176,7 +176,9 @@
       "ban": "&e플레이어를 상점에서 거래하지 못하게 합니다.",
       "unban": "&e플레이어 차단헤제",
       "freeze": "&e상점 거래 비활성화 또는 활성화",
-      "lock": "상점 잠금 상태 전환"
+      "lock": "상점 잠금 상태 전환",
+      "taxaccount": "&eSet the tax account that shop using",
+      "toggledisplay": "&eToggle the shop display item status"
     },
     "disabled": "&c이 명령어는 비활성화 되어있습니다: &e{0}",
     "feature-not-enabled": "이옵션은 컨피그에서 비활성 상태입니다"
@@ -333,5 +335,10 @@
     "scheduled": "&a리로드를 완료했습니다. &7(일부 변경사항이 적용되려면 시간이 필요합니다.)"
   },
   "client-language-changed": "&a퀵샵이 당신의 클라이언트의 언어설정이 변경된것을 확인했습니다, 지금부터 저희는 당신을 위해 {0} 를 적용합니다.",
-  "client-language-unsupported": "&e퀵 샵이 당신의 언어를 지원하지 않습니다, {0} 언어로 돌아갑니다."
+  "client-language-unsupported": "&e퀵 샵이 당신의 언어를 지원하지 않습니다, {0} 언어로 돌아갑니다.",
+  "taxaccount-set": "&aThis shop's tax account has been set to &e{0}",
+  "taxaccount-unset": "&aThis shop's tax account now following server global setting.",
+  "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
+  "display-turn-on": "&aSuccessfully turn on the shop display.",
+  "display-turn-off": "&aSuccessfully turn off the shop display."
 }
