@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.util.ComponentPackge;
 
 import java.util.List;
 import java.util.UUID;
@@ -179,8 +180,7 @@ public interface Shop {
      * Line 2: Shop Item Name
      * Line 3: Price
      */
-    @NotNull
-    default String[] getSignText() {
+    default List<ComponentPackge> getSignText(String locale) {
         //backward support
         throw new UnsupportedOperationException();
     }
@@ -190,7 +190,7 @@ public interface Shop {
      *
      * @param paramArrayOfString The texts you want set
      */
-    void setSignText(@NotNull String[] paramArrayOfString);
+    void setSignText(@NotNull List<ComponentPackge> paramArrayOfString);
 
     /**
      * Update shop data to database
