@@ -58,8 +58,9 @@ public abstract class QSEvent extends Event {
      */
     public boolean callCancellableEvent() {
         QuickShop.getInstance().getServer().getPluginManager().callEvent(this);
-        if (this instanceof Cancellable)
+        if (this instanceof Cancellable) {
             return ((Cancellable) this).isCancelled();
+        }
         return false;
     }
 

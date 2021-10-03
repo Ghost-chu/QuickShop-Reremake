@@ -80,7 +80,9 @@ public class IridiumSkyblockIntegration extends QSIntegratedPlugin implements Li
      */
     @Override
     public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
-        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(location.getWorld())) return false;
+        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(location.getWorld())) {
+            return false;
+        }
         Optional<Island> island = IridiumSkyblockAPI.getInstance().getIslandViaLocation(location);
         if (!island.isPresent()) {
             return false;
@@ -135,7 +137,9 @@ public class IridiumSkyblockIntegration extends QSIntegratedPlugin implements Li
         Island island = event.getIsland();
         List<User> members = event.getIsland().getMembers();
         for (Shop shop : plugin.getShopManager().getAllShops()) {
-            if (!island.isInIsland(shop.getLocation())) continue;
+            if (!island.isInIsland(shop.getLocation())) {
+                continue;
+            }
             for (User user : members) {
                 if (shop.getOwner().equals(user.getUuid())) {
                     plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop),shop.saveToInfoStorage()));
@@ -150,7 +154,9 @@ public class IridiumSkyblockIntegration extends QSIntegratedPlugin implements Li
         Island island = event.getIsland();
         List<User> members = event.getIsland().getMembers();
         for (Shop shop : plugin.getShopManager().getAllShops()) {
-            if (!island.isInIsland(shop.getLocation())) continue;
+            if (!island.isInIsland(shop.getLocation())) {
+                continue;
+            }
             for (User user : members) {
                 if (shop.getOwner().equals(user.getUuid())) {
                     plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop),shop.saveToInfoStorage()));
@@ -164,7 +170,9 @@ public class IridiumSkyblockIntegration extends QSIntegratedPlugin implements Li
     public void deleteShopWhenMemberKicked(UserKickEvent event) {
         Island island = event.getIsland();
         for (Shop shop : plugin.getShopManager().getPlayerAllShops(event.getUser().getUuid())) {
-            if (!island.isInIsland(shop.getLocation())) continue;
+            if (!island.isInIsland(shop.getLocation())) {
+                continue;
+            }
             plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop),shop.saveToInfoStorage()));
             shop.delete();
         }

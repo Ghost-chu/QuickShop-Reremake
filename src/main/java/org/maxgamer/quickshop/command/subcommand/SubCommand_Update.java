@@ -53,7 +53,7 @@ public class SubCommand_Update implements CommandHandler<CommandSender> {
                 return;
             }
 
-            if (cmdArg.length == 0 || !cmdArg[0].equalsIgnoreCase("confirm")) {
+            if (cmdArg.length == 0 || !"confirm".equalsIgnoreCase(cmdArg[0])) {
                 MsgUtil.sendDirectMessage(sender, ChatColor.RED + "You will need to restart the server to complete the update of plugin! Before restarting plugin will stop working!");
                 MsgUtil.sendDirectMessage(sender, ChatColor.RED + "Type " + ChatColor.BOLD + "/qs update confirm" + ChatColor.RESET + ChatColor.RED + " to confirm update");
                 return;

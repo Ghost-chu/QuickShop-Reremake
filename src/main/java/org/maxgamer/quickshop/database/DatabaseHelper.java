@@ -165,16 +165,18 @@ public class DatabaseHelper implements Reloadable {
 
         try {
             String table = plugin.getDbPrefix() + tableName;
-            if (manager.hasColumn(table, columnName))
+            if (manager.hasColumn(table, columnName)) {
                 return false;
+            }
             String sqlString;
             if (manager.getDatabase() instanceof MySQLCore) {
                 sqlString = "alter table " + table + " add " + columnName + " " + type.getDatatype().getMysql();
             } else {
                 sqlString = "alter table " + table + " add column " + columnName + " " + type.getDatatype().getSqlite();
             }
-            if (type.getLength() != null)
+            if (type.getLength() != null) {
                 sqlString += "(" + type.getLength().toString() + ") ";
+            }
             Util.debugLog("Append sql for creating column is " + sqlString);
             manager.runInstantTask(new DatabaseTask(sqlString, new DatabaseTask.Task() {
                 @Override

@@ -1162,7 +1162,9 @@ public class Util {
         try {
             Class<?> c = Class.forName(className);
             className = c.getSimpleName();
-            if (!c.getSimpleName().isEmpty()) className = c.getSimpleName();
+            if (!c.getSimpleName().isEmpty()) {
+                className = c.getSimpleName();
+            }
         } catch (ClassNotFoundException ignored) {
         }
         String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
@@ -1392,8 +1394,9 @@ public class Util {
 
     // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
     public static LocalDateTime getDateTimeFromTimestamp(long timestamp) {
-        if (timestamp == 0)
+        if (timestamp == 0) {
             return null;
+        }
         return LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), TimeZone
                 .getDefault().toZoneId());
     }

@@ -30,8 +30,10 @@ import java.util.List;
 @Deprecated
 public interface CommandProcesser extends CommandHandler<CommandSender> {
 
+    @Override
     void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg);
 
+    @Override
     @Nullable
     default List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

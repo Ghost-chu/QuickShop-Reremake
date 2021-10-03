@@ -15,16 +15,18 @@ public class DataType {
 
     public DataType(@NotNull DataTypeMapping type, @Nullable Integer length, @NotNull Object defaultValue) {
         this.datatype = type;
-        if (length != null)
+        if (length != null) {
             Validate.isTrue(length > 1, "Field length cannot be negative or zero.");
+        }
         this.length = length;
         this.defaultValue = defaultValue;
     }
 
     public DataType(@NotNull DataTypeMapping type, @Nullable Integer length) {
         this.datatype = type;
-        if (length != null)
+        if (length != null) {
             Validate.isTrue(length > 1, "Field length cannot be negative or zero.");
+        }
         this.length = length;
         this.defaultValue = null;
     }

@@ -23,7 +23,9 @@ public class ShopPurger extends BukkitRunnable {
             return;
         }
         executing = true;
-        if (!plugin.getConfig().getBoolean("purge.enabled")) return;
+        if (!plugin.getConfig().getBoolean("purge.enabled")) {
+            return;
+        }
         Util.debugLog("[Shop Purger] Scanning and removing shops");
         int days = plugin.getConfig().getInt("purge.days", 360);
         boolean deleteBanned = plugin.getConfig().getBoolean("purge.banned");
@@ -48,10 +50,12 @@ public class ShopPurger extends BukkitRunnable {
             boolean markDeletion = player.isBanned() && deleteBanned;
             //noinspection ConstantConditions
             long noOfDaysBetween = ChronoUnit.DAYS.between(Util.getDateTimeFromTimestamp(lastPlayed), Util.getDateTimeFromTimestamp(System.currentTimeMillis()));
-            if (noOfDaysBetween > days)
+            if (noOfDaysBetween > days) {
                 markDeletion = true;
-            if (!markDeletion)
+            }
+            if (!markDeletion) {
                 continue;
+            }
             plugin.getLogger().info("[Shop Purger] Shop " + shop + " has been purged.");
             shop.delete(false);
             if (returnCreationFee) {
