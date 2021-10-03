@@ -340,7 +340,7 @@
   "client-language-unsupported": "&eQuickShop doesn't support your client language, we're fallback to {0} locale now.",
   "taxaccount-set": "&aDenna butiks momskonto har satts till &e{0}",
   "taxaccount-unset": "&aDenna butiks momskonto följer nu serverns globala inställningar.",
-  "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
+  "taxaccount-invalid": "&cAngivet konto är ogiltigt, ange ett giltigt spelarnamn eller uuid(med bindestreck).",
   "display-turn-on": "&aSuccessfully turn on the shop display.",
   "display-turn-off": "&aSuccessfully turn off the shop display.",
   "shop-purged-start": "&aShop purge started, check the console for details."
