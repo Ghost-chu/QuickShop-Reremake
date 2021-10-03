@@ -177,8 +177,9 @@
       "unban": "&eOdbanuje gracza ze sklepu",
       "freeze": "&eWyłącz lub włącz handel sklepowy",
       "lock": "&eZmień status blokady sklepu",
-      "taxaccount": "&eSet the tax account that shop using",
-      "toggledisplay": "&eToggle the shop display item status"
+      "taxaccount": "&eUstaw konto podatkowe, które sklep ma używać",
+      "toggledisplay": "&ePrzełącz stan wyświetlania przedmiotu w sklepie",
+      "purge": "&aStart the shop purge task in background"
     },
     "disabled": "&cTa komenda jest wyłączona: &e{0}",
     "feature-not-enabled": "Ta funkcja nie jest włączona w pliku konfiguracyjnym."
@@ -189,7 +190,8 @@
     "header": "{1}{0}",
     "buying": "Sprzedaj {0}",
     "stack-buying": "Kup {0}",
-    "item": "{0}",
+    "item-left": "",
+    "item-right": "",
     "price": "{0} za 1 szt.",
     "stack-price": "{0} za {1}x {2}",
     "unlimited": "Nieograniczony",
@@ -336,9 +338,10 @@
   },
   "client-language-changed": "&aQuickShop wykrył, że ustawienia języka klienta zostały zmienione, teraz używamy dla Ciebie wersji językowej {0}.",
   "client-language-unsupported": "&eQuickShop nie obsługuje Twojego języka klienta, powrócono do wersji językowej {0}.",
-  "taxaccount-set": "&aThis shop's tax account has been set to &e{0}",
-  "taxaccount-unset": "&aThis shop's tax account now following server global setting.",
-  "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
-  "display-turn-on": "&aSuccessfully turn on the shop display.",
-  "display-turn-off": "&aSuccessfully turn off the shop display."
+  "taxaccount-set": "&aKonto podatkowe tego sklepu zostało ustawione na &e{0}",
+  "taxaccount-unset": "&aKonto podatkowe tego sklepu jest teraz zgodne z ustawieniami globalnymi serwera.",
+  "taxaccount-invalid": "&cKonto docelowe jest nieprawidłowe, wprowadź prawidłową nazwę gracza lub identyfikator uuid (z myślnikami).",
+  "display-turn-on": "&aPomyślnie włączono wyświetlacz sklepu.",
+  "display-turn-off": "&aPomyślnie wyłączono wyświetlacz sklepu.",
+  "shop-purged-start": "&aShop purge started, check the console for details."
 }

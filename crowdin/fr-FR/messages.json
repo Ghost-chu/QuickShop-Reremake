@@ -178,7 +178,8 @@
       "freeze": "&eDésactiver ou activer le trading en magasin",
       "lock": "&eChanger l'état de verrouillage de la boutique",
       "taxaccount": "&eSet the tax account that shop using",
-      "toggledisplay": "&eToggle the shop display item status"
+      "toggledisplay": "&eToggle the shop display item status",
+      "purge": "&aStart the shop purge task in background"
     },
     "disabled": "&cCette commande est désactivée : &e{0}",
     "feature-not-enabled": "Cette fonctionnalité n'est pas activée dans le fichier de configuration."
@@ -189,7 +190,8 @@
     "header": "{1}{0}",
     "buying": "Acheter {0}",
     "stack-buying": "Acheter {0}",
-    "item": "{0}",
+    "item-left": "",
+    "item-right": "",
     "price": "{0} l'unité",
     "stack-price": "{0} par {1} x {2}",
     "unlimited": "Illimité",
@@ -340,5 +342,6 @@
   "taxaccount-unset": "&aThis shop's tax account now following server global setting.",
   "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
   "display-turn-on": "&aSuccessfully turn on the shop display.",
-  "display-turn-off": "&aSuccessfully turn off the shop display."
+  "display-turn-off": "&aSuccessfully turn off the shop display.",
+  "shop-purged-start": "&aShop purge started, check the console for details."
 }
