@@ -173,6 +173,7 @@ public interface Shop {
     /**
      * Get sign texts on shop's sign.
      *
+     * @param locale The locale to be created for
      * @return String arrays represents sign texts:
      * Index | Content
      * Line 0: Header
