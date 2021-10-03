@@ -324,6 +324,42 @@ public class DatabaseHelper implements Reloadable {
 
     public void updateExternalInventoryProfileCache(@NotNull Shop shop, int space, int stock) {
 
+        if(manager.getDatabase() instanceof MySQLCore){
+            String sqlString = "INSERT INTO "+plugin.getDbPrefix()+"external_cache (x,y,z,world,space,stock) VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE space = ?, stock = ?";
+            manager.addDelayTask(
+                    new DatabaseTask(sqlString, ps -> {
+                        ps.setInt(1, shop.getLocation().getBlockX());
+                        ps.setInt(2, shop.getLocation().getBlockY());
+                        ps.setInt(3, shop.getLocation().getBlockZ());
+                        ps.setString(4, shop.getLocation().getWorld().getName());
+                        ps.setInt(5, space);
+                        ps.setInt(6, stock);
+                        ps.setInt(7, space);
+                        ps.setInt(8, stock);
+                    }));
+        }else{
+            String createString = "INSERT OR IGNORE INTO "+plugin.getDbPrefix()+"external_cache (x,y,z,world,space,stock) VALUES (?,?,?,?,?,?)";
+            manager.addDelayTask(
+                    new DatabaseTask(createString, ps -> {
+                        ps.setInt(1, shop.getLocation().getBlockX());
+                        ps.setInt(2, shop.getLocation().getBlockY());
+                        ps.setInt(3, shop.getLocation().getBlockZ());
+                        ps.setString(4, shop.getLocation().getWorld().getName());
+                        ps.setInt(5, space);
+                        ps.setInt(6, stock);;
+                    }));
+            String updateString = "UPDATE "+plugin.getDbPrefix()+"external_cache SET space = ?, stock = ? WHERE x = ? AND y = ? AND z = ? AND world =?";
+            manager.addDelayTask(
+                    new DatabaseTask(updateString, ps -> {
+                        ps.setInt(1, space);
+                        ps.setInt(2, stock);
+                        ps.setInt(3, shop.getLocation().getBlockX());
+                        ps.setInt(4,  shop.getLocation().getBlockY());
+                        ps.setInt(5,  shop.getLocation().getBlockZ());
+                        ps.setString(6, shop.getLocation().getWorld().getName());;
+                    }));
+        }
+
     }
 
     public void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
