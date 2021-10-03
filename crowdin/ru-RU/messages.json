@@ -178,7 +178,8 @@
       "freeze": "&eОтключить или включить торговлю в магазине",
       "lock": "&eПереключить состояние блокировки магазина",
       "taxaccount": "&eУстановить налоговый счет, который магазин использует",
-      "toggledisplay": "&eПереключит статус товара в магазине"
+      "toggledisplay": "&eПереключит статус товара в магазине",
+      "purge": "&aStart the shop purge task in background"
     },
     "disabled": "&cДанная команда недоступна: &e{0}",
     "feature-not-enabled": "Функция не включена в конфигурации."
@@ -189,7 +190,8 @@
     "header": "{1}{0}",
     "buying": "Покупает {0}",
     "stack-buying": "Покупка {0}",
-    "item": "{0}",
+    "item-left": "",
+    "item-right": "",
     "price": "{0}",
     "stack-price": "{0} за {1}x {2}",
     "unlimited": "∞",
@@ -340,5 +342,6 @@
   "taxaccount-unset": "&aСейчас этот магазин использует глобальные настройки сервера.",
   "taxaccount-invalid": "&cТекущий аккаунт недействителен, пожалуйста, введите правильное имя игрока или uuid(тире).",
   "display-turn-on": "&aОтображение магазина успешно включено.",
-  "display-turn-off": "&aОтображение магазина успешно выключено."
+  "display-turn-off": "&aОтображение магазина успешно выключено.",
+  "shop-purged-start": "&aShop purge started, check the console for details."
 }

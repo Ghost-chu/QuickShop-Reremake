@@ -178,7 +178,8 @@
       "freeze": "&eUitschakelen of inschakelen van winkel handelen",
       "lock": "&eVerander de vergrendelstatus van de winkel",
       "taxaccount": "&eSet the tax account that shop using",
-      "toggledisplay": "&eToggle the shop display item status"
+      "toggledisplay": "&eToggle the shop display item status",
+      "purge": "&aStart the shop purge task in background"
     },
     "disabled": "&cDeze opdracht is uitgeschakeld: &e{0}",
     "feature-not-enabled": "De functie niet ingeschakeld in de config."
@@ -189,7 +190,8 @@
     "header": "{1}{0}",
     "buying": "{0} kopen",
     "stack-buying": "{0} kopen",
-    "item": "{0}",
+    "item-left": "",
+    "item-right": "",
     "price": "{0} per stuk",
     "stack-price": "{0} per {1}x {2}",
     "unlimited": "Onbeperkt",
@@ -340,5 +342,6 @@
   "taxaccount-unset": "&aThis shop's tax account now following server global setting.",
   "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
   "display-turn-on": "&aSuccessfully turn on the shop display.",
-  "display-turn-off": "&aSuccessfully turn off the shop display."
+  "display-turn-off": "&aSuccessfully turn off the shop display.",
+  "shop-purged-start": "&aShop purge started, check the console for details."
 }

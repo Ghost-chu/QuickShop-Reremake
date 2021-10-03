@@ -178,7 +178,8 @@
       "freeze": "&eOta kaupankäynti käyttöön tai poista se käytöstä",
       "lock": "&eVaihda kaupan lukituksen tila",
       "taxaccount": "&eSet the tax account that shop using",
-      "toggledisplay": "&eToggle the shop display item status"
+      "toggledisplay": "&eToggle the shop display item status",
+      "purge": "&aStart the shop purge task in background"
     },
     "disabled": "&cTämä komento on poistettu käytöstä: &e{0}",
     "feature-not-enabled": "Tämä ominaisuus ei ole käytössä asetustiedostossa."
@@ -189,7 +190,8 @@
     "header": "{1}{0}",
     "buying": "Ostetaan {0}",
     "stack-buying": "Ostetaan {0}",
-    "item": "{0}",
+    "item-left": "",
+    "item-right": "",
     "price": "{0} kpl",
     "stack-price": "{0} per {1}x {2}",
     "unlimited": "Rajaton",
@@ -340,5 +342,6 @@
   "taxaccount-unset": "&aThis shop's tax account now following server global setting.",
   "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
   "display-turn-on": "&aSuccessfully turn on the shop display.",
-  "display-turn-off": "&aSuccessfully turn off the shop display."
+  "display-turn-off": "&aSuccessfully turn off the shop display.",
+  "shop-purged-start": "&aShop purge started, check the console for details."
 }

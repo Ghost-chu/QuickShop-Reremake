@@ -178,7 +178,8 @@
       "freeze": "&eDisable or Enable shop trading",
       "lock": "&eSwitch the shop's lock status",
       "taxaccount": "&eSet the tax account that shop using",
-      "toggledisplay": "&eToggle the shop display item status"
+      "toggledisplay": "&eToggle the shop display item status",
+      "purge": "&aStart the shop purge task in background"
     },
     "disabled": "&cThis command is disabled: &e{0}",
     "feature-not-enabled": "This feature is not enabled in the config file."
@@ -189,7 +190,8 @@
     "header": "{1}{0}",
     "buying": "Vétel {0}",
     "stack-buying": "Veszel: {0}",
-    "item": "{0}",
+    "item-left": "",
+    "item-right": "",
     "price": "{0} egy darab",
     "stack-price": "{0} per x{1} {2}",
     "unlimited": "Korlátlan",
@@ -340,5 +342,6 @@
   "taxaccount-unset": "&aThis shop's tax account now following server global setting.",
   "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
   "display-turn-on": "&aSuccessfully turn on the shop display.",
-  "display-turn-off": "&aSuccessfully turn off the shop display."
+  "display-turn-off": "&aSuccessfully turn off the shop display.",
+  "shop-purged-start": "&aShop purge started, check the console for details."
 }
