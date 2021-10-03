@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.maxgamer.quickshop.shop.Shop;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor

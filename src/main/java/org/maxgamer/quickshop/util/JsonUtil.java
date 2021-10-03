@@ -65,7 +65,7 @@ public final class JsonUtil {
         return STANDARD_GSON;
     }
 
-    public static Gson getGson(){
+    public static Gson getGson() {
         return STANDARD_GSON;
     }
 
@@ -128,11 +128,11 @@ public final class JsonUtil {
         return prettyPrinting();
     }
 
-    public @interface Hidden{
+    public @interface Hidden {
 
     }
-    public static class HiddenAnnotationExclusionStrategy implements ExclusionStrategy
-    {
+
+    public static class HiddenAnnotationExclusionStrategy implements ExclusionStrategy {
         @Override
         public boolean shouldSkipClass(Class<?> clazz) {
             return clazz.getDeclaredAnnotation(Hidden.class) != null;

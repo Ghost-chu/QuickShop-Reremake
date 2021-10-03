@@ -25,8 +25,9 @@ package org.maxgamer.quickshop.util.reload;
 public interface Reloadable {
     /**
      * Callback for reloading
-     * @throws Exception Throws error if module failed to process reloading
+     *
      * @return Reloading success
+     * @throws Exception Throws error if module failed to process reloading
      */
     default ReloadResult reloadModule() throws Exception {
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();

@@ -387,7 +387,7 @@ public class PlayerListener extends AbstractQSListener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onLocaleChanges(PlayerLocaleChangeEvent event) {
-        MsgUtil.sendDirectMessage(event.getPlayer(), plugin.text().of(event.getPlayer(), "client-language-changed",event.getLocale()).forLocale(event.getLocale()));
+        MsgUtil.sendDirectMessage(event.getPlayer(), plugin.text().of(event.getPlayer(), "client-language-changed", event.getLocale()).forLocale(event.getLocale()));
     }
 
     /**

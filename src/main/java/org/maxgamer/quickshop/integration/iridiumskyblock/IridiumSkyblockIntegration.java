@@ -142,7 +142,7 @@ public class IridiumSkyblockIntegration extends QSIntegratedPlugin implements Li
             }
             for (User user : members) {
                 if (shop.getOwner().equals(user.getUuid())) {
-                    plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop),shop.saveToInfoStorage()));
+                    plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop), shop.saveToInfoStorage()));
                     shop.delete();
                 }
             }
@@ -159,7 +159,7 @@ public class IridiumSkyblockIntegration extends QSIntegratedPlugin implements Li
             }
             for (User user : members) {
                 if (shop.getOwner().equals(user.getUuid())) {
-                    plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop),shop.saveToInfoStorage()));
+                    plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop), shop.saveToInfoStorage()));
                     shop.delete();
                 }
             }
@@ -173,7 +173,7 @@ public class IridiumSkyblockIntegration extends QSIntegratedPlugin implements Li
             if (!island.isInIsland(shop.getLocation())) {
                 continue;
             }
-            plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop),shop.saveToInfoStorage()));
+            plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop), shop.saveToInfoStorage()));
             shop.delete();
         }
     }

@@ -235,9 +235,10 @@ public class ContainerShop implements Shop {
         return null;
 
     }
+
     @Override
     @Nullable
-    public UUID getTaxAccountActual(){
+    public UUID getTaxAccountActual() {
         return taxAccount;
     }
 
@@ -579,10 +580,10 @@ public class ContainerShop implements Shop {
         if (name == null || name.isEmpty()) {
             name = plugin.text().of("unknown-owner").forLocale();
         }
-        if(!forceUsername && isUnlimited()) {
+        if (!forceUsername && isUnlimited()) {
             name = plugin.text().of("admin-shop").forLocale();
         }
-        ShopOwnerNameGettingEvent event = new ShopOwnerNameGettingEvent(this,getOwner(),name);
+        ShopOwnerNameGettingEvent event = new ShopOwnerNameGettingEvent(this, getOwner(), name);
         event.callEvent();
         name = event.getName();
         return name;
@@ -729,30 +730,30 @@ public class ContainerShop implements Shop {
         switch (shopRemaining) {
             //Unlimited
             case -1:
-                line2 =plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale(locale)).forLocale(locale);
+                line2 = plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale(locale)).forLocale(locale);
                 break;
             //No remaining
             case 0:
-                line2 =plugin.text().of(noRemainingStringKey).forLocale(locale);
+                line2 = plugin.text().of(noRemainingStringKey).forLocale(locale);
                 break;
             //Has remaining
             default:
-                line2 =plugin.text().of(tradingStringKey, Integer.toString(shopRemaining)).forLocale(locale);
+                line2 = plugin.text().of(tradingStringKey, Integer.toString(shopRemaining)).forLocale(locale);
         }
-        lines.add(new ComponentPackge(TextComponent.fromLegacyText(SHOP_SIGN_PREFIX+line2+" ")));
+        lines.add(new ComponentPackge(TextComponent.fromLegacyText(SHOP_SIGN_PREFIX + line2 + " ")));
 
         //line 3
-        if(this.getItem().hasItemMeta() && this.getItem().getItemMeta().hasDisplayName()){
+        if (this.getItem().hasItemMeta() && this.getItem().getItemMeta().hasDisplayName()) {
             TextComponent left = new TextComponent(plugin.text().of("signs.item-left").forLocale());
-            TranslatableComponent mediumItem = new TranslatableComponent("item."+getItem().getType().getKey().getNamespace()+"."+getItem().getType().getKey().getKey());
+            TranslatableComponent mediumItem = new TranslatableComponent("item." + getItem().getType().getKey().getNamespace() + "." + getItem().getType().getKey().getKey());
             TextComponent right = new TextComponent(plugin.text().of("signs.item-right").forLocale());
             lines.add(new ComponentPackge(new ComponentBuilder()
                     .append(left)
                     .append(mediumItem)
                     .append(right)
                     .create()));
-        }else{
-            lines.add(new ComponentPackge(new ComponentBuilder().append( TextComponent.fromLegacyText(plugin.text().of("signs.item-left").forLocale()))
+        } else {
+            lines.add(new ComponentPackge(new ComponentBuilder().append(TextComponent.fromLegacyText(plugin.text().of("signs.item-left").forLocale()))
                     .append(TextComponent.fromLegacyText(Util.getItemStackName(getItem())))
                     .append(TextComponent.fromLegacyText(plugin.text().of("signs.item-right").forLocale())).create()));
         }
@@ -1048,7 +1049,7 @@ public class ContainerShop implements Shop {
             return -1;
         }
         int space = Util.countSpace(this.getInventory(), this.getItem());
-        new ShopInventoryCalculate(this,space,-1).callEvent();
+        new ShopInventoryCalculate(this, space, -1).callEvent();
         return space;
     }
 
@@ -1064,7 +1065,7 @@ public class ContainerShop implements Shop {
             return -1;
         }
         int stock = Util.countItems(this.getInventory(), this.getItem());
-        new ShopInventoryCalculate(this,-1,stock).callEvent();
+        new ShopInventoryCalculate(this, -1, stock).callEvent();
         return stock;
     }
 
@@ -1319,7 +1320,7 @@ public class ContainerShop implements Shop {
             } else {
                 this.delete(true);
             }
-            plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),"Inventory Invalid",this.saveToInfoStorage()));
+            plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Inventory Invalid", this.saveToInfoStorage()));
             Util.debugLog(
                     "Inventory doesn't exist anymore: " + this + " shop was removed.");
             return null;
@@ -1561,6 +1562,6 @@ public class ContainerShop implements Shop {
 
     @Override
     public ShopInfoStorage saveToInfoStorage() {
-        return new ShopInfoStorage(BlockPosition.of(getLocation()),ShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(),getCurrency(),isDisableDisplay(),getTaxAccount());
+        return new ShopInfoStorage(BlockPosition.of(getLocation()), ShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount());
     }
 }

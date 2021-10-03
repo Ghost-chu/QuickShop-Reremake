@@ -5,6 +5,7 @@ import lombok.Data;
 import org.maxgamer.quickshop.shop.ShopInfoStorage;
 
 import java.util.UUID;
+
 @AllArgsConstructor
 @Data
 public class ShopRemoveLog {

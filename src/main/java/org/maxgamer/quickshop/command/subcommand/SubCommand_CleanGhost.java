@@ -71,7 +71,7 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
                 if (shop.getItem().getType() == Material.AIR) {
                     MsgUtil.sendDirectMessage(sender,
                             ChatColor.YELLOW + "Deleting shop " + shop + " because of corrupted item data.");
-                    plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender),"/qs cleanghost command",shop.saveToInfoStorage()));
+                    plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender), "/qs cleanghost command", shop.saveToInfoStorage()));
                     Util.mainThreadRun(shop::delete);
                     continue;
                 }
@@ -79,7 +79,7 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
                     MsgUtil.sendDirectMessage(sender,
                             ChatColor.YELLOW + "Deleting shop " + shop + " because the its world is not loaded.");
                     Util.mainThreadRun(shop::delete);
-                    plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender),"/qs cleanghost command",shop.saveToInfoStorage()));
+                    plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender), "/qs cleanghost command", shop.saveToInfoStorage()));
                     continue;
                 }
                 //noinspection ConstantConditions
@@ -87,7 +87,7 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
                     MsgUtil.sendDirectMessage(sender,
                             ChatColor.YELLOW + "Deleting shop " + shop + " because of corrupted owner data.");
                     Util.mainThreadRun(shop::delete);
-                    plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender),"/qs cleanghost command",shop.saveToInfoStorage()));
+                    plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender), "/qs cleanghost command", shop.saveToInfoStorage()));
                     continue;
                 }
                 // Shop exist check

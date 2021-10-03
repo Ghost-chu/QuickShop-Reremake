@@ -265,7 +265,7 @@ public class EconomyTransaction {
          */
         default void onSuccess(@NotNull EconomyTransaction economyTransaction) {
             Util.debugLog("Transaction succeed.");
-            QuickShop.getInstance().logEvent(new EconomyTransactionLog(true,economyTransaction.getFrom(),economyTransaction.getTo(),economyTransaction.getCurrency(),economyTransaction.getTax(),economyTransaction.getTaxer().getUniqueId(),economyTransaction.getAmount(),economyTransaction.getLastError()));
+            QuickShop.getInstance().logEvent(new EconomyTransactionLog(true, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer().getUniqueId(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 
         /**
@@ -277,7 +277,7 @@ public class EconomyTransaction {
          */
         default void onFailed(@NotNull EconomyTransaction economyTransaction) {
             Util.debugLog("Transaction failed: " + economyTransaction.getLastError() + ".");
-            QuickShop.getInstance().logEvent(new EconomyTransactionLog(false,economyTransaction.getFrom(),economyTransaction.getTo(),economyTransaction.getCurrency(),economyTransaction.getTax(),economyTransaction.getTaxer().getUniqueId(),economyTransaction.getAmount(),economyTransaction.getLastError()));
+            QuickShop.getInstance().logEvent(new EconomyTransactionLog(false, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer().getUniqueId(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 
         /**
@@ -289,7 +289,7 @@ public class EconomyTransaction {
          */
         default void onTaxFailed(@NotNull EconomyTransaction economyTransaction) {
             Util.debugLog("Tax Transaction failed: " + economyTransaction.getLastError() + ".");
-            QuickShop.getInstance().logEvent(new EconomyTransactionLog(false,economyTransaction.getFrom(),economyTransaction.getTo(),economyTransaction.getCurrency(),economyTransaction.getTax(),economyTransaction.getTaxer().getUniqueId(),economyTransaction.getAmount(),economyTransaction.getLastError()));
+            QuickShop.getInstance().logEvent(new EconomyTransactionLog(false, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer().getUniqueId(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 
     }

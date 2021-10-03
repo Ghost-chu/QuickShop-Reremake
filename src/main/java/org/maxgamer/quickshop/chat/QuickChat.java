@@ -60,10 +60,11 @@ public interface QuickChat {
 
     /**
      * Generate the chat component with preview item hover event
-     * @param shop The shop
+     *
+     * @param shop      The shop
      * @param itemStack The itemstack
-     * @param player The player
-     * @param message The message with hover event
+     * @param player    The player
+     * @param message   The message with hover event
      * @return The component
      */
     @NotNull QuickComponent getItemHologramChat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String message);
@@ -91,9 +92,9 @@ public interface QuickChat {
     /**
      * Send click-suggest-command chat to specified receiver
      *
-     * @param receiver The PLAYER will receive this message
-     * @param message  The text will sent
-     * @param command  The command when click to be suggested
+     * @param receiver  The PLAYER will receive this message
+     * @param message   The text will sent
+     * @param command   The command when click to be suggested
      * @param hoverText The text while player hover on the text
      */
     void sendSuggestedChat(@NotNull CommandSender receiver, @NotNull String message, @NotNull String hoverText, @NotNull String command);

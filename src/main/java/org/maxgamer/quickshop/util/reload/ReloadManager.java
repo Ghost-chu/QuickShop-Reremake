@@ -127,7 +127,7 @@ public class ReloadManager {
                 if (reloadable.getReloadable() != null) {
                     reloadResult = reloadable.getReloadable().reloadModule();
                 } else
-                    //noinspection ConstantConditions
+                //noinspection ConstantConditions
                 {
                     reloadResult = (ReloadResult) reloadable.getReloadableMethod().invoke(null);
                 }

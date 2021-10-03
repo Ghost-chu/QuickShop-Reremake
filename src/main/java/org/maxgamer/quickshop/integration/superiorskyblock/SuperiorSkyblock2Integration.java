@@ -135,7 +135,7 @@ public class SuperiorSkyblock2Integration extends QSIntegratedPlugin implements 
             if (shops != null && !shops.isEmpty()) {
                 shops.forEach((location, shop) -> {
                     if (shop.getOwner().equals(event.getPlayer().getUniqueId())) {
-                        plugin.logEvent(new ShopRemoveLog(event.getPlayer().getUniqueId(),String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop),shop.saveToInfoStorage()));
+                        plugin.logEvent(new ShopRemoveLog(event.getPlayer().getUniqueId(), String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop), shop.saveToInfoStorage()));
                         shop.delete();
                     }
                 });
@@ -150,7 +150,7 @@ public class SuperiorSkyblock2Integration extends QSIntegratedPlugin implements 
             if (shops != null && !shops.isEmpty()) {
                 shops.forEach((location, shop) -> {
                     if (shop.getOwner().equals(event.getTarget().getUniqueId())) {
-                        plugin.logEvent(new ShopRemoveLog(event.getPlayer().getUniqueId(),String.format("[%s Integration]Shop %s deleted caused by ShopOwnerKickedFromIsland", this.getName(), shop),shop.saveToInfoStorage()));
+                        plugin.logEvent(new ShopRemoveLog(event.getPlayer().getUniqueId(), String.format("[%s Integration]Shop %s deleted caused by ShopOwnerKickedFromIsland", this.getName(), shop), shop.saveToInfoStorage()));
                         shop.delete();
                     }
                 });
@@ -164,7 +164,7 @@ public class SuperiorSkyblock2Integration extends QSIntegratedPlugin implements 
         Map<Location, Shop> shops = plugin.getShopManager().getShops(event.getWorld().getName(), event.getChunkX(), event.getChunkZ());
         if (shops != null && !shops.isEmpty()) {
             shops.forEach((location, shop) -> {
-                plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),String.format("[%s Integration]Shop %s deleted caused by IslandChunkReset", this.getName(), shop),shop.saveToInfoStorage()));
+                plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by IslandChunkReset", this.getName(), shop), shop.saveToInfoStorage()));
                 shop.delete();
             });
         }

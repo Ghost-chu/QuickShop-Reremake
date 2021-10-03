@@ -1407,12 +1407,13 @@ public class Util {
         return date == null ? null : date.toLocalDate();
     }
 
-    public static UUID getNilUniqueId(){
-        return new UUID(0,0);
+    public static UUID getNilUniqueId() {
+        return new UUID(0, 0);
     }
-    public static UUID getSenderUniqueId(CommandSender sender){
-        if(sender instanceof OfflinePlayer){
-           return  ((OfflinePlayer) sender).getUniqueId();
+
+    public static UUID getSenderUniqueId(CommandSender sender) {
+        if (sender instanceof OfflinePlayer) {
+            return ((OfflinePlayer) sender).getUniqueId();
         }
         return getNilUniqueId();
     }
