@@ -579,12 +579,12 @@ public class ContainerShop implements Shop {
         if (name == null || name.isEmpty()) {
             name = plugin.text().of("unknown-owner").forLocale();
         }
-        if (forceUsername) {
-            return name;
+        if(!forceUsername && isUnlimited()) {
+            name = plugin.text().of("admin-shop").forLocale();
         }
-        if (isUnlimited()) {
-            return plugin.text().of("admin-shop").forLocale();
-        }
+        ShopOwnerNameGettingEvent event = new ShopOwnerNameGettingEvent(this,getOwner(),name);
+        event.callEvent();
+        name = event.getName();
         return name;
     }
 
