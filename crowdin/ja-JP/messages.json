@@ -1,6 +1,6 @@
 {
   "_comment": "Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake",
-  "file-test": "This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)",
+  "file-test": "これはテスト用のファイルです。私たちはこれを使って、messages.jsonは壊れていないかをチェックします。ここに好きなイースターエッグを挿入してもいいですよ:)",
   "translation-author": "翻訳者: Ghost_chu, Andre_601",
   "translation-version": "&c&lサポートバージョン: &b&lReremake",
   "translation-contributors": "貢献者: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken, Andre_601 and Namiu",
@@ -33,8 +33,8 @@
   "you-cant-afford-to-buy": "&c価格は {0} ですが {1} しか所持していません。",
   "negative-amount": "&cマイナス量を取引できません",
   "not-a-number": "&c数字しか入力出来ません。あなたの入力は {0} でした。",
-  "exceeded-maximum": "&cThe value exceeded the maximum value in Java.",
-  "not-a-integer": "&cYou must input a integer, your input was {0}.",
+  "exceeded-maximum": "この値はJavaの最大値を越えました",
+  "not-a-integer": "数字しか入力できません。あなたが入力したのは {0} でした",
   "player-bought-from-your-store": "&c{0} が {1} 個の {2} をあなたのショップから購入したので {3} を獲得しました。",
   "shop-out-of-stock": "&5{0}、{1}、{2} のショップで {3} の在庫がなくなりました！",
   "shop-has-no-space": "&cショップには {0} 個以上 {1} 個分のスペースしかありません",
@@ -45,7 +45,7 @@
   "fee-charged-for-price-change": "&a価格変更のため &c{0}&a を支払いました",
   "price-is-now": "&aショップの新しい価格は &e{0} です",
   "thats-not-a-number": "&c無効な番号です",
-  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to it not being consisten with vanilla behaviour",
+  "forbidden-vanilla-behavior": "この操作はバニラの動作に反したため、禁止されています",
   "no-price-given": "&c有効な価格を設定してください",
   "average-price-nearby": "&a近所の平均価格: &e{0}",
   "shop-has-changed": "&cクリックしてから利用しようとしたショップが変わっています！",
@@ -82,7 +82,7 @@
   "no-pending-action": "&c保留中のアクションはありません",
   "permission-denied-3rd-party": "&cアクセス拒否: サードパーティのプラグイン [{0}]",
   "shops-removed-in-world": "&eワールド &b{1}&e で合計 &b{0} つ&e のショップを削除しました。",
-  "world-not-exists": "&cThe world &e{0}&c doesn't exist",
+  "world-not-exists": "&cワールド &e{0}&c が存在しません",
   "menu": {
     "successful-purchase": "&a購入成功:",
     "successfully-sold": "&a売却成功:",
@@ -178,7 +178,8 @@
       "freeze": "&eDisable or Enable shop trading",
       "lock": "&eSwitch the shop's lock status",
       "taxaccount": "&eSet the tax account that shop using",
-      "toggledisplay": "&eToggle the shop display item status"
+      "toggledisplay": "&eToggle the shop display item status",
+      "purge": "&aStart the shop purge task in background"
     },
     "disabled": "&cThis command is disabled: &e{0}",
     "feature-not-enabled": "This feature is not enabled in the config file."
@@ -189,7 +190,8 @@
     "header": "{1}{0}",
     "buying": "買取 {0}",
     "stack-buying": "買取 {0}",
-    "item": "{0}",
+    "item-left": "",
+    "item-right": "",
     "price": "{0} / 1個",
     "stack-price": "{0} / {1}個 {2}",
     "unlimited": "無制限",
@@ -340,5 +342,6 @@
   "taxaccount-unset": "&aThis shop's tax account now following server global setting.",
   "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
   "display-turn-on": "&aSuccessfully turn on the shop display.",
-  "display-turn-off": "&aSuccessfully turn off the shop display."
+  "display-turn-off": "&aSuccessfully turn off the shop display.",
+  "shop-purged-start": "&aShop purge started, check the console for details."
 }
