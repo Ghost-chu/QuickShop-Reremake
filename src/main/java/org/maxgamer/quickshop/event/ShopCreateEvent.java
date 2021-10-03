@@ -31,7 +31,7 @@ import java.util.UUID;
 /**
  * Calling when new shop creating
  */
-public class ShopCreateEvent extends QSEvent implements Cancellable {
+public class ShopCreateEvent extends AbstractQSEvent implements Cancellable {
 
     @NotNull
     private final UUID creator;

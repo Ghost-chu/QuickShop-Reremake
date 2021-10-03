@@ -380,7 +380,7 @@ public class QuickShop extends JavaPlugin {
         compatibilityTool.searchAndRegisterPlugins();
         if (this.display) {
             //VirtualItem support
-            if (DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+            if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
                 getLogger().info("Using Virtual Item display, loading ProtocolLib support...");
                 Plugin protocolLibPlugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
                 if (protocolLibPlugin != null && protocolLibPlugin.isEnabled()) {
@@ -391,7 +391,7 @@ public class QuickShop extends JavaPlugin {
                     saveConfig();
                 }
             }
-            if (DisplayItem.getNowUsing() == DisplayType.REALITEM) {
+            if (AbstractDisplayItem.getNowUsing() == DisplayType.REALITEM) {
                 getLogger().warning("You're using Real Display system and that may cause your server lagg, switch to Virtual Display system if you can!");
                 if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
                     try {
@@ -623,7 +623,7 @@ public class QuickShop extends JavaPlugin {
         if (shopManager != null) {
             shopManager.clear();
         }
-        if (DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+        if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
             VirtualDisplayItem.VirtualDisplayItemManager.unload();
         }
 
@@ -869,7 +869,7 @@ public class QuickShop extends JavaPlugin {
 
         signUpdateWatcher = new SignUpdateWatcher();
         shopContainerWatcher = new ShopContainerWatcher();
-        if (display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
+        if (display && AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
             timerTaskList.add(displayDupeRemoverWatcher.runTaskTimerAsynchronously(this, 0, 1));
         }
@@ -894,7 +894,7 @@ public class QuickShop extends JavaPlugin {
         ongoingFeeWatcher = new OngoingFeeWatcher(this);
         InternalListener internalListener = new InternalListener(this);
         Bukkit.getPluginManager().registerEvents(internalListener, this);
-        if (isDisplay() && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
+        if (isDisplay() && AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayWatcher = new DisplayWatcher(this);
             new DisplayProtectionListener(this, this.shopCache).register();
             if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
@@ -954,7 +954,7 @@ public class QuickShop extends JavaPlugin {
         calendarWatcher.start();
         this.shopPurger = new ShopPurger(this, false);
         shopPurger.runTaskAsynchronously(this);
-        Util.debugLog("Now using display-type: " + DisplayItem.getNowUsing().name());
+        Util.debugLog("Now using display-type: " + AbstractDisplayItem.getNowUsing().name());
         getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
 
         // TODO: Test code
@@ -1061,7 +1061,7 @@ public class QuickShop extends JavaPlugin {
             metrics.addCustomChart(new Metrics.SimplePie("use_enhance_shop_protect", () -> String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"))));
             metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"))));
             metrics.addCustomChart(new Metrics.SimplePie("database_type", () -> this.getDatabaseManager().getDatabase().getName()));
-            metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> DisplayItem.getNowUsing().name()));
+            metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> AbstractDisplayItem.getNowUsing().name()));
             metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> this.getItemMatcher().getName()));
             metrics.addCustomChart(new Metrics.SimplePie("use_stack_item", () -> String.valueOf(this.isAllowStack())));
             metrics.addCustomChart(new Metrics.SimplePie("chat_adapter", () -> "Hardcoded Adventure"));

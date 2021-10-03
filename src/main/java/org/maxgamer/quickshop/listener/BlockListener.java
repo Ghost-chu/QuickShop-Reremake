@@ -55,7 +55,7 @@ import org.maxgamer.quickshop.util.reload.ReloadStatus;
  *
  * @author KaiNoMood, Ghost_chu, sandtechnology
  */
-public class BlockListener extends ProtectionListenerBase {
+public class BlockListener extends AbstractProtectionListener {
     private boolean update_sign_when_inventory_moving;
 
     public BlockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {

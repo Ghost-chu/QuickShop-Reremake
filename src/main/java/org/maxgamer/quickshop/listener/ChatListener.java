@@ -30,7 +30,7 @@ import org.maxgamer.quickshop.util.reload.ReloadStatus;
 /**
  * @author Netherfoam
  */
-public class ChatListener extends QSListener {
+public class ChatListener extends AbstractQSListener {
 
     public ChatListener(QuickShop plugin) {
         super(plugin);

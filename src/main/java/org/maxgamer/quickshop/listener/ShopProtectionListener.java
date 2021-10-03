@@ -52,7 +52,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 
-public class ShopProtectionListener extends ProtectionListenerBase {
+public class ShopProtectionListener extends AbstractProtectionListener {
 
     private boolean useEnhanceProtection;
 

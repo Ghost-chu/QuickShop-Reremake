@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
 
-public class SpartanCompatibilityModule extends QSCompatibilityModule {
+public class SpartanCompatibilityModule extends AbstractQSCompatibilityModule {
 
     public SpartanCompatibilityModule(QuickShop plugin) {
         super(plugin);

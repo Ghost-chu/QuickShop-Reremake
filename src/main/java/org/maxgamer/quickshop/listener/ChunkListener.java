@@ -31,7 +31,7 @@ import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.Map;
 
-public class ChunkListener extends QSListener {
+public class ChunkListener extends AbstractQSListener {
 
     public ChunkListener(QuickShop plugin) {
         super(plugin);

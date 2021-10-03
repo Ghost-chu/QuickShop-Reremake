@@ -53,7 +53,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class PlayerListener extends QSListener {
+public class PlayerListener extends AbstractQSListener {
     private final CooldownMap<Player> cooldownMap = CooldownMap.create(Cooldown.of(1, TimeUnit.SECONDS));
     private final boolean swapBehavior;
 

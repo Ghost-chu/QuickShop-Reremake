@@ -22,14 +22,14 @@ package org.maxgamer.quickshop.event;
 import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.shop.DisplayItem;
+import org.maxgamer.quickshop.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.shop.DisplayType;
 import org.maxgamer.quickshop.shop.Shop;
 
 /**
  * This event is called after DisplayItem removed
  */
-public class ShopDisplayItemDespawnEvent extends QSEvent implements Cancellable {
+public class ShopDisplayItemDespawnEvent extends AbstractQSEvent implements Cancellable {
 
     @NotNull
     private final Shop shop;
@@ -50,7 +50,7 @@ public class ShopDisplayItemDespawnEvent extends QSEvent implements Cancellable 
      */
     @Deprecated
     public ShopDisplayItemDespawnEvent(@NotNull Shop shop, @NotNull ItemStack itemStack) {
-        this(shop, itemStack, DisplayItem.getNowUsing());
+        this(shop, itemStack, AbstractDisplayItem.getNowUsing());
     }
 
     /**

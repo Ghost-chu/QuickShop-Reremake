@@ -35,7 +35,7 @@ import org.maxgamer.quickshop.util.reload.ReloadStatus;
 import java.util.Objects;
 
 
-public class InternalListener extends QSListener {
+public class InternalListener extends AbstractQSListener {
     private final QuickShop plugin;
     private boolean loggingBalance;
     private boolean loggingAction;

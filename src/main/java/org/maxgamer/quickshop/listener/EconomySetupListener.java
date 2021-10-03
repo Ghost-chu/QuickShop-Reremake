@@ -25,7 +25,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
-public class EconomySetupListener extends QSListener {
+public class EconomySetupListener extends AbstractQSListener {
     public EconomySetupListener(QuickShop plugin) {
         super(plugin);
     }

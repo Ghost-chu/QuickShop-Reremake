@@ -33,7 +33,7 @@ import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.Set;
 
-public class PluginListener extends QSListener {
+public class PluginListener extends AbstractQSListener {
 
     private static final Set<String> COMPATIBILITY_MODULE_LIST = CompatibilityManager.getModuleMapping().keySet();
     private static final Set<String> PLUGIN_INTEGRATION_LIST = IntegrationHelper.getIntegrationMapping().keySet();

@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.shop.DisplayItem;
+import org.maxgamer.quickshop.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.shop.DisplayType;
 import org.maxgamer.quickshop.shop.Shop;
 
@@ -38,7 +38,7 @@ public class DisplayItemAPI {
      * @return yes or no
      */
     public static boolean isDisplayItem(@NotNull ItemStack itemStack) {
-        return DisplayItem.checkIsGuardItemStack(itemStack);
+        return AbstractDisplayItem.checkIsGuardItemStack(itemStack);
     }
 
     /**
@@ -49,7 +49,7 @@ public class DisplayItemAPI {
      * @return yes or no
      */
     public static boolean isShopDisplayItem(@NotNull ItemStack itemStack, @NotNull Shop shop) {
-        return DisplayItem.checkIsTargetShopDisplay(itemStack, shop);
+        return AbstractDisplayItem.checkIsTargetShopDisplay(itemStack, shop);
     }
 
     /**
@@ -58,6 +58,6 @@ public class DisplayItemAPI {
      * @return The type of display now using
      */
     public static DisplayType getNowUsing() {
-        return DisplayItem.getNowUsing();
+        return AbstractDisplayItem.getNowUsing();
     }
 }

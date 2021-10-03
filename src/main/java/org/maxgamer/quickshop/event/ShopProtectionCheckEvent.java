@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Calling when player do some actions about shop
  */
-public class ShopProtectionCheckEvent extends QSEvent {
+public class ShopProtectionCheckEvent extends AbstractQSEvent {
 
     @NotNull
     private final Player player;

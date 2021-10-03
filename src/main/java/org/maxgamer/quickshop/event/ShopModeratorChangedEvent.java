@@ -26,7 +26,7 @@ import org.maxgamer.quickshop.shop.ShopModerator;
 /**
  * Calling when moderator was changed, Can't cancel
  */
-public class ShopModeratorChangedEvent extends QSEvent {
+public class ShopModeratorChangedEvent extends AbstractQSEvent {
 
     @NotNull
     private final ShopModerator moderator;

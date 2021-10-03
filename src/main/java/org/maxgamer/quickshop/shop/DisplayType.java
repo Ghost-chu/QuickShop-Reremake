@@ -61,7 +61,7 @@ public enum DisplayType {
         return displayType.id;
     }
 
-    public static DisplayType typeIs(@Nullable DisplayItem displayItem) {
+    public static DisplayType typeIs(@Nullable AbstractDisplayItem displayItem) {
         if (displayItem instanceof RealDisplayItem) {
             return REALITEM;
         }

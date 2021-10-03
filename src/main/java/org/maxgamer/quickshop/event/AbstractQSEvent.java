@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is QSEvent.java
+ * This file is a part of project QuickShop, the name is AbstractQSEvent.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -25,15 +25,15 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 
-public abstract class QSEvent extends Event {
+public abstract class AbstractQSEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    public QSEvent() {
+    public AbstractQSEvent() {
 
     }
 
-    public QSEvent(boolean async) {
+    public AbstractQSEvent(boolean async) {
         super(async);
     }
 

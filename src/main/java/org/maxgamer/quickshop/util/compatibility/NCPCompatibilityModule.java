@@ -26,7 +26,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
 
 
-public class NCPCompatibilityModule extends QSCompatibilityModule {
+public class NCPCompatibilityModule extends AbstractQSCompatibilityModule {
 
     public NCPCompatibilityModule(QuickShop plugin) {
         super(plugin);

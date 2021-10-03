@@ -32,7 +32,7 @@ import java.util.UUID;
 /**
  * Calling when success purchase in shop
  */
-public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
+public class ShopSuccessPurchaseEvent extends AbstractQSEvent implements Cancellable {
 
     @NotNull
     private final Shop shop;

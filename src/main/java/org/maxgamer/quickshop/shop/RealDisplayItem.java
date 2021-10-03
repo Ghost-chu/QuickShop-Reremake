@@ -40,7 +40,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @ToString
-public class RealDisplayItem extends DisplayItem {
+public class RealDisplayItem extends AbstractDisplayItem {
 
     @Nullable
     private Item item;
@@ -88,7 +88,7 @@ public class RealDisplayItem extends DisplayItem {
         if (!(entity instanceof Item)) {
             return false;
         }
-        return DisplayItem.checkIsGuardItemStack(((Item) entity).getItemStack());
+        return AbstractDisplayItem.checkIsGuardItemStack(((Item) entity).getItemStack());
     }
 
     @Override
@@ -139,7 +139,7 @@ public class RealDisplayItem extends DisplayItem {
         this.guardedIstack = null;
         ShopDisplayItemDespawnEvent shopDisplayItemDespawnEvent = new ShopDisplayItemDespawnEvent(
                 shop, originalItemStack, DisplayType.REALITEM);
-        plugin.getServer().getPluginManager().callEvent(shopDisplayItemDespawnEvent);
+        PLUGIN.getServer().getPluginManager().callEvent(shopDisplayItemDespawnEvent);
     }
 
     @Override
@@ -172,7 +172,7 @@ public class RealDisplayItem extends DisplayItem {
             Item eItem = (Item) entity;
             UUID displayUUID = this.item.getUniqueId();
             if (!eItem.getUniqueId().equals(displayUUID)) {
-                if (DisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
+                if (AbstractDisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
                     Util.debugLog("Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem.getLocation());
                     entity.remove();
                     removed = true;
@@ -200,7 +200,7 @@ public class RealDisplayItem extends DisplayItem {
         Item item = (Item) entity;
         // Set item protect in the armorstand's hand
 
-        if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
+        if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
             item.setCustomName(Util.getItemStackName(this.originalItemStack));
             item.setCustomNameVisible(true);
         } else {
@@ -243,13 +243,13 @@ public class RealDisplayItem extends DisplayItem {
 
         ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop,
                 originalItemStack, DisplayType.REALITEM);
-        plugin.getServer().getPluginManager().callEvent(shopDisplayItemSpawnEvent);
+        PLUGIN.getServer().getPluginManager().callEvent(shopDisplayItemSpawnEvent);
 
         if (shopDisplayItemSpawnEvent.isCancelled()) {
             Util.debugLog("Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
             return;
         }
-        this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
+        this.guardedIstack = AbstractDisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         this.item = this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack);
         //this.item.setItemStack(this.guardedIstack);
         safeGuard(this.item);

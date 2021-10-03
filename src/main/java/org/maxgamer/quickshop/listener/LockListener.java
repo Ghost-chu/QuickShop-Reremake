@@ -40,7 +40,7 @@ import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
-public class LockListener extends ProtectionListenerBase {
+public class LockListener extends AbstractProtectionListener {
     public LockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
         super(plugin, cache);
     }

@@ -27,9 +27,9 @@ import com.sk89q.worldedit.util.eventbus.EventHandler;
 import com.sk89q.worldedit.util.eventbus.Subscribe;
 import com.sk89q.worldedit.world.World;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.listener.QSListener;
+import org.maxgamer.quickshop.listener.AbstractQSListener;
 
-public class WorldEditAdapter extends QSListener {
+public class WorldEditAdapter extends AbstractQSListener {
     private final WorldEditPlugin weBukkit;
 
     public WorldEditAdapter(QuickShop plugin, WorldEditPlugin weBukkit) {

@@ -21,7 +21,7 @@ package org.maxgamer.quickshop.event;
 
 import org.maxgamer.quickshop.QuickShop;
 
-public class QSReloadEvent extends QSEvent {
+public class QSReloadEvent extends AbstractQSEvent {
 
     private final QuickShop instance;
 
