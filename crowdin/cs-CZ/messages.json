@@ -178,7 +178,8 @@
       "freeze": "&eZakázat nebo povolit obchodování obchodu",
       "lock": "&ePřepnout stav zámku obchodu",
       "taxaccount": "&eSet the tax account that shop using",
-      "toggledisplay": "&eToggle the shop display item status"
+      "toggledisplay": "&eToggle the shop display item status",
+      "purge": "&aStart the shop purge task in background"
     },
     "disabled": "&cTento příkaz je zakázán: &e{0}",
     "feature-not-enabled": "Funkce není v konfiguraci povolena."
@@ -189,7 +190,8 @@
     "header": "{1}{0}",
     "buying": "Koupit {0}",
     "stack-buying": "Buy {0}",
-    "item": "{0}",
+    "item-left": "",
+    "item-right": "",
     "price": "{0} každý",
     "stack-price": "{0} za {1}x {2}",
     "unlimited": "Neomezené",
@@ -340,5 +342,6 @@
   "taxaccount-unset": "&aThis shop's tax account now following server global setting.",
   "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
   "display-turn-on": "&aSuccessfully turn on the shop display.",
-  "display-turn-off": "&aSuccessfully turn off the shop display."
+  "display-turn-off": "&aSuccessfully turn off the shop display.",
+  "shop-purged-start": "&aShop purge started, check the console for details."
 }
