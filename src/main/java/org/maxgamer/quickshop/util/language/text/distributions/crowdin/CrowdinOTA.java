@@ -44,34 +44,10 @@ public class CrowdinOTA implements Distribution {
     public CrowdinOTA(QuickShop plugin) {
         this.plugin = plugin;
         Util.getCacheFolder().mkdirs();
-        // this.cacheFolder = new File(Util.getCacheFolder(), "okhttp");
-        //   this.cacheFolder.mkdirs();
-        // this.cache = new okhttp3.Cache(cacheFolder, 100 * 1024 * 1024);
-//        this.client = new OkHttpClient.Builder()
-//                .cache(cache)
-//                .build();
         this.client = new OkHttpClient.Builder()
                 .build();
 
     }
-
-//    private byte[] requestWithCache(@NotNull String url, @Nullable File saveTo) throws IOException {
-//        byte[] data = requestCachePool.getIfPresent(url);
-//        if (data == null) {
-//            CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-//            HttpGet getRequest = new HttpGet(url);
-//            getRequest.setConfig(RequestConfig.custom()
-//                    .setSocketTimeout(30 * 1000)
-//                    .setConnectTimeout(20 * 1000).build());
-//            CloseableHttpResponse response = httpClient.execute(getRequest);
-//            data = Util.inputStream2ByteArray(response.getEntity().getContent());
-//            if (response.getStatusLine().getStatusCode() != 200)
-//                throw new OTAException(response.getStatusLine().getStatusCode(), new String(data == null ? new byte[0] : Util.inputStream2ByteArray(response.getEntity().getContent()), StandardCharsets.UTF_8));
-//            if (saveTo != null && data != null)
-//                Files.write(saveTo.toPath(), data, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
-//        }
-//        return data;
-//    }
 
     @Nullable
     public Manifest getManifest() {

@@ -26,14 +26,14 @@ import org.maxgamer.quickshop.util.Util;
 import java.net.URL;
 
 public class PastebinPaster implements PasteInterface {
-    private final static String developerKey = "kYoezdaN6Gg9c2VnY78NcpylWRwdzQdk";
+    private final static String DEVELOPER_KEY = "kYoezdaN6Gg9c2VnY78NcpylWRwdzQdk";
 
     @Override
     public String pasteTheText(@NotNull String text) throws Exception {
         HttpRequest request = HttpRequest.post(new URL("https://pastebin.com/api/api_post.php"))
                 .bodyUrlEncodedForm(HttpRequest.Form.create()
                         .add("api_option", "paste")
-                        .add("api_dev_key", developerKey)
+                        .add("api_dev_key", DEVELOPER_KEY)
                         //.add("api_paste_private", "1")
                         .add("api_paste_name", "quickshop.paste")
                         .add("api_paste_expire_date", "1Y")

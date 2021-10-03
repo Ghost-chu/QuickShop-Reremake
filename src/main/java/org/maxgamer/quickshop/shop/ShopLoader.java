@@ -174,21 +174,6 @@ public class ShopLoader {
         }
     }
 
-   /* private void singleShopLoaded(@NotNull Timer singleShopLoadTimer) {
-        totalLoaded++;
-        long singleShopLoadTime = singleShopLoadTimer.stopAndGetTimePassed();
-        loadTimes.add(singleShopLoadTime);
-        Util.debugLog("Loaded shop used time " + singleShopLoadTime + "ms");
-//        if (singleShopLoadTime > 1500) {
-//            warningSender.sendWarn("Database performance bottleneck: Detected slow database, it may mean bad network connection, slow database server or database fault. Please check the database!");
-//        }
-    }
-
-    private double calcTimeCost(@NotNull Timer timer) {
-        timeCostCache.putIfAbsent(timer, (double) timer.getPassedTime());
-        return timer.getPassedTime() - timeCostCache.get(timer);
-    }*/
-
     @SuppressWarnings("ConstantConditions")
     private boolean shopNullCheck(@Nullable Shop shop) {
         if (shop == null) {

@@ -39,8 +39,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 
 public class LogWatcher extends BukkitRunnable implements AutoCloseable {
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.systemDefault());
-    private static final DateTimeFormatter logFileFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.systemDefault());
+    private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.systemDefault());
+    private static final DateTimeFormatter LOG_FILE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.systemDefault());
     private final Queue<String> logs = new ConcurrentLinkedQueue<>();
 
     private PrintWriter printWriter = null;
@@ -59,7 +59,7 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
                     Path targetPath;
                     int i = 1;
                     do {
-                        targetPath = logPath.resolve(ZonedDateTime.now().format(logFileFormatter) + "-" + i + ".log.gz");
+                        targetPath = logPath.resolve(ZonedDateTime.now().format(LOG_FILE_FORMATTER) + "-" + i + ".log.gz");
                         i++;
                     } while (Files.exists(targetPath));
                     Files.createFile(targetPath);
@@ -107,7 +107,7 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
     }
 
     public void log(@NonNull String log) {
-        logs.add("[" + dateTimeFormatter.format(Instant.now()) + "] " + log);
+        logs.add("[" + DATETIME_FORMATTER.format(Instant.now()) + "] " + log);
     }
 
     @Override

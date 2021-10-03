@@ -28,7 +28,7 @@ import org.maxgamer.quickshop.util.MsgUtil;
 public class ShopPersistentDataType implements PersistentDataType<String, ShopPersistentData> {
     static final ShopPersistentDataType INSTANCE = new ShopPersistentDataType();
 
-    private static final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+    private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
     @Override
     public @NotNull Class<String> getPrimitiveType() {
@@ -44,7 +44,7 @@ public class ShopPersistentDataType implements PersistentDataType<String, ShopPe
     @Override
     public String toPrimitive(@NotNull ShopPersistentData complex, @NotNull PersistentDataAdapterContext context) {
         try {
-            return gson.toJson(complex);
+            return GSON.toJson(complex);
         } catch (Exception th) {
             MsgUtil.debugStackTrace(th.getStackTrace());
             return "";
@@ -56,7 +56,7 @@ public class ShopPersistentDataType implements PersistentDataType<String, ShopPe
     public ShopPersistentData fromPrimitive(
             @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
         try {
-            return gson.fromJson(primitive, ShopPersistentData.class);
+            return GSON.fromJson(primitive, ShopPersistentData.class);
         } catch (Exception th) {
             MsgUtil.debugStackTrace(th.getStackTrace());
             return new ShopPersistentData(0, 0, 0, "null", false);

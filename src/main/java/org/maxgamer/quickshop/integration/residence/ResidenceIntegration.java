@@ -39,8 +39,8 @@ import java.util.Map;
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class ResidenceIntegration extends QSIntegratedPlugin {
-    private static final String createFlag = "quickshop-create";
-    private static final String tradeFlag = "quickshop-trade";
+    private static final String CREATE_FLAG = "quickshop-create";
+    private static final String TRADE_FLAG = "quickshop-trade";
     private List<String> createLimits;
     private List<String> tradeLimits;
     private boolean whiteList;
@@ -87,13 +87,13 @@ public class ResidenceIntegration extends QSIntegratedPlugin {
                     if (!playerHas(Residence.getInstance()
                                     .getWorldFlags()
                                     .getPerms(location.getWorld().getName())
-                            , player, createFlag, !whiteList)) {
+                            , player, CREATE_FLAG, !whiteList)) {
                         return false;
                     }
                 } else {
                     if (!playerHas(residence
                                     .getPermissions()
-                            , player, createFlag, false)) {
+                            , player, CREATE_FLAG, false)) {
                         return false;
                     }
                 }
@@ -127,13 +127,13 @@ public class ResidenceIntegration extends QSIntegratedPlugin {
                     if (!playerHas(Residence.getInstance()
                                     .getWorldFlags()
                                     .getPerms(location.getWorld().getName())
-                            , player, tradeFlag, !whiteList)) {
+                            , player, TRADE_FLAG, !whiteList)) {
                         return false;
                     }
                 } else {
                     if (!playerHas(residence
                                     .getPermissions()
-                            , player, tradeFlag, true)) {
+                            , player, TRADE_FLAG, true)) {
                         return false;
                     }
                 }
@@ -158,8 +158,8 @@ public class ResidenceIntegration extends QSIntegratedPlugin {
 
     @Override
     public void load() {
-        FlagPermissions.addFlag(createFlag);
-        FlagPermissions.addFlag(tradeFlag);
+        FlagPermissions.addFlag(CREATE_FLAG);
+        FlagPermissions.addFlag(TRADE_FLAG);
     }
 
     @Override

@@ -59,11 +59,6 @@ public class PermissionManager {
                 try {
                     PermissionInformationContainer container = provider.getDebugInfo(sender, permission);
                     Util.debugLog("Node: [" + container.getPermission() + "]; Result: [" + result + "]; Sender: [" + container.getSender().getName() + "]");
-//                    Util.debugLog("Result: " + result);
-//                    Util.debugLog("Sender: " + container.getSender().getName());
-//                    Util.debugLog("Permission Node: " + container.getPermission());
-//                    //                    Util.debugLog("Primary Group: " + container.getGroupName());
-//                    //                    Util.debugLog("Other infos: " + container.getOtherInfos());
                 } catch (Exception th) {
                     Util.debugLog("Exception threw when getting debug messages.");
                     MsgUtil.debugStackTrace(th.getStackTrace());

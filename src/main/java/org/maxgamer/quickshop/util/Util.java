@@ -77,16 +77,16 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class Util {
-    private static final EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
-    private static final EnumMap<Material, Entry<Double, Double>> restrictedPrices = new EnumMap<>(Material.class);
-    private static final EnumMap<Material, Integer> customStackSize = new EnumMap<>(Material.class);
-    private static final EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
-    private static final List<BlockFace> verticalFacing = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
-    private static final List<String> debugLogs = new ArrayList<>();
-    private static final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private static final EnumSet<Material> BLACKLIST = EnumSet.noneOf(Material.class);
+    private static final EnumMap<Material, Entry<Double, Double>> RESTRICTED_PRICES = new EnumMap<>(Material.class);
+    private static final EnumMap<Material, Integer> CUSTOM_STACKSIZE = new EnumMap<>(Material.class);
+    private static final EnumSet<Material> SHOPABLES = EnumSet.noneOf(Material.class);
+    private static final List<BlockFace> VERTICAL_FACING = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
+    private static final List<String> DEBUG_LOGS = new ArrayList<>();
+    private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
     @Getter
-    private static final Map<String, String> currency2Symbol = new HashMap<>();
-    private static final ThreadLocal<MineDown> mineDown = ThreadLocal.withInitial(() -> new MineDown(""));
+    private static final Map<String, String> CURRENCY_SYMBOL_MAPPING = new HashMap<>();
+    private static final ThreadLocal<MineDown> MINEDOWN = ThreadLocal.withInitial(() -> new MineDown(""));
     private static int bypassedCustomStackSize = -1;
     private static Yaml yaml = null;
     private static Boolean devMode = null;
@@ -188,7 +188,7 @@ public class Util {
      * @return Can or not
      */
     public static boolean isShoppables(@NotNull Material material) {
-        return shoppables.contains(material);
+        return SHOPABLES.contains(material);
     }
 
     public static boolean isBlacklistWorld(@NotNull World world) {
@@ -251,7 +251,7 @@ public class Util {
      * @return Game StackSize or Custom
      */
     public static int getItemMaxStackSize(@NotNull Material material) {
-        return customStackSize.getOrDefault(material, bypassedCustomStackSize == -1 ? material.getMaxStackSize() : bypassedCustomStackSize);
+        return CUSTOM_STACKSIZE.getOrDefault(material, bypassedCustomStackSize == -1 ? material.getMaxStackSize() : bypassedCustomStackSize);
     }
 
     /**
@@ -316,9 +316,9 @@ public class Util {
 
     @NotNull
     public static List<String> getDebugLogs() {
-        lock.readLock().lock();
-        List<String> strings = new ArrayList<>(debugLogs);
-        lock.readLock().unlock();
+        LOCK.readLock().lock();
+        List<String> strings = new ArrayList<>(DEBUG_LOGS);
+        LOCK.readLock().unlock();
         return strings;
     }
 
@@ -331,15 +331,15 @@ public class Util {
         if (disableDebugLogger) {
             return;
         }
-        lock.writeLock().lock();
-        if (debugLogs.size() >= 2000) {
-            debugLogs.clear();
+        LOCK.writeLock().lock();
+        if (DEBUG_LOGS.size() >= 2000) {
+            DEBUG_LOGS.clear();
         }
         if (!isDevMode()) {
             for (String log : logs) {
-                debugLogs.add("[DEBUG] " + log);
+                DEBUG_LOGS.add("[DEBUG] " + log);
             }
-            lock.writeLock().unlock();
+            LOCK.writeLock().unlock();
             return;
         }
         final StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[2];
@@ -347,10 +347,10 @@ public class Util {
         final String methodName = stackTraceElement.getMethodName();
         final int codeLine = stackTraceElement.getLineNumber();
         for (String log : logs) {
-            debugLogs.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
+            DEBUG_LOGS.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
             QuickShop.getInstance().getLogger().info("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
         }
-        lock.writeLock().unlock();
+        LOCK.writeLock().unlock();
     }
 
     /**
@@ -416,7 +416,7 @@ public class Util {
         } else {
             Util.debugLog("Format: Currency is: [" + currency + "]");
             String formatted = plugin.getConfig().getBoolean("use-decimal-format", false) ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
-            String symbol = currency2Symbol.getOrDefault(currency, currency);
+            String symbol = CURRENCY_SYMBOL_MAPPING.getOrDefault(currency, currency);
             return plugin.getConfig().getBoolean("shop.currency-symbol-on-right", false) ? formatted + symbol : symbol + formatted;
         }
     }
@@ -450,7 +450,7 @@ public class Util {
      */
     @NotNull
     public static List<BlockFace> getVerticalFacing() {
-        return verticalFacing;
+        return VERTICAL_FACING;
     }
 
     /**
@@ -543,7 +543,7 @@ public class Util {
      */
     @Nullable
     public static Entry<Double, Double> getPriceRestriction(@NotNull Material material) {
-        return restrictedPrices.get(material);
+        return RESTRICTED_PRICES.get(material);
     }
 
     public static boolean isDoubleChest(@Nullable BlockData blockData) {
@@ -621,11 +621,11 @@ public class Util {
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
-        blacklist.clear();
-        shoppables.clear();
-        restrictedPrices.clear();
-        customStackSize.clear();
-        currency2Symbol.clear();
+        BLACKLIST.clear();
+        SHOPABLES.clear();
+        RESTRICTED_PRICES.clear();
+        CUSTOM_STACKSIZE.clear();
+        CURRENCY_SYMBOL_MAPPING.clear();
         devMode = plugin.getConfig().getBoolean("dev-mode");
 
         for (String s : plugin.getConfig().getStringList("shop-blocks")) {
@@ -636,7 +636,7 @@ public class Util {
             if (mat == null) {
                 plugin.getLogger().warning("Invalid shop-block: " + s);
             } else {
-                shoppables.add(mat);
+                SHOPABLES.add(mat);
             }
         }
         List<String> configBlacklist = plugin.getConfig().getStringList("blacklist");
@@ -649,7 +649,7 @@ public class Util {
                 plugin.getLogger().warning(s + " is not a valid material.  Check your spelling or ID");
                 continue;
             }
-            blacklist.add(mat);
+            BLACKLIST.add(mat);
         }
 
         for (String s : plugin.getConfig().getStringList("shop.price-restriction")) {
@@ -661,7 +661,7 @@ public class Util {
                         plugin.getLogger().warning("Material " + sp[0] + " in config.yml can't match with a valid Materials, check your config.yml!");
                         continue;
                     }
-                    restrictedPrices.put(mat, new SimpleEntry<>(Double.valueOf(sp[1]), Double.valueOf(sp[2])));
+                    RESTRICTED_PRICES.put(mat, new SimpleEntry<>(Double.valueOf(sp[1]), Double.valueOf(sp[2])));
                 } catch (Exception e) {
                     plugin.getLogger().warning("Invalid price restricted material: " + s);
                 }
@@ -681,7 +681,7 @@ public class Util {
                 plugin.getLogger().warning(material + " not a valid material type in custom-item-stacksize section.");
                 continue;
             }
-            customStackSize.put(mat, Integer.parseInt(data[1]));
+            CUSTOM_STACKSIZE.put(mat, Integer.parseInt(data[1]));
         }
         disableDebugLogger = plugin.getConfig().getBoolean("debug.disable-debuglogger", false);
         try {
@@ -694,7 +694,7 @@ public class Util {
             if (splits.length < 2) {
                 plugin.getLogger().warning("Invalid entry in alternate-currency-symbol-list: " + entry);
             }
-            currency2Symbol.put(splits[0], splits[1]);
+            CURRENCY_SYMBOL_MAPPING.put(splits[0], splits[1]);
         });
         InteractUtil.init(plugin.getConfig());
     }
@@ -778,7 +778,7 @@ public class Util {
      * @return true if the ItemStack is black listed. False if not.
      */
     public static boolean isBlacklisted(@NotNull ItemStack stack) {
-        if (blacklist.contains(stack.getType())) {
+        if (BLACKLIST.contains(stack.getType())) {
             return true;
         }
         if (!stack.hasItemMeta()) {
@@ -1036,7 +1036,7 @@ public class Util {
         if (StringUtils.isEmpty(text)) {
             return "";
         }
-        MineDownParser parser = mineDown.get().parser();
+        MineDownParser parser = MINEDOWN.get().parser();
         parser.reset();
         StringBuilder builder = new StringBuilder();
         BaseComponent[] components = parser.enable(MineDownParser.Option.LEGACY_COLORS).parse(text).create();

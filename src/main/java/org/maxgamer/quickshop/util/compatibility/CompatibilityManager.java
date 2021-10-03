@@ -35,11 +35,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CompatibilityManager extends QuickShopInstanceHolder implements Listener {
-    private static final Map<String, Class<? extends CompatibilityModule>> compatibilityModuleNameMap = new HashMap<>(2);
+    private static final Map<String, Class<? extends CompatibilityModule>> MODULE_MAP = new HashMap<>(2);
 
     static {
-        compatibilityModuleNameMap.put("NoCheatPlus", NCPCompatibilityModule.class);
-        compatibilityModuleNameMap.put("Spartan", SpartanCompatibilityModule.class);
+        MODULE_MAP.put("NoCheatPlus", NCPCompatibilityModule.class);
+        MODULE_MAP.put("Spartan", SpartanCompatibilityModule.class);
     }
 
     private final Map<String, CompatibilityModule> registeredModules = new HashMap<>(5);
@@ -48,8 +48,8 @@ public class CompatibilityManager extends QuickShopInstanceHolder implements Lis
         super(plugin);
     }
 
-    public static Map<String, Class<? extends CompatibilityModule>> getCompatibilityModuleNameMap() {
-        return compatibilityModuleNameMap;
+    public static Map<String, Class<? extends CompatibilityModule>> getModuleMapping() {
+        return MODULE_MAP;
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -59,7 +59,7 @@ public class CompatibilityManager extends QuickShopInstanceHolder implements Lis
 
     public void searchAndRegisterPlugins() {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
-        for (Map.Entry<String, Class<? extends CompatibilityModule>> entry : compatibilityModuleNameMap.entrySet()) {
+        for (Map.Entry<String, Class<? extends CompatibilityModule>> entry : MODULE_MAP.entrySet()) {
             String pluginName = entry.getKey();
             if (pluginManager.isPluginEnabled(pluginName) && !isRegistered(pluginName)) {
                 register(entry.getValue());
@@ -68,7 +68,7 @@ public class CompatibilityManager extends QuickShopInstanceHolder implements Lis
     }
 
     public boolean isRegistered(String pluginName) {
-        return compatibilityModuleNameMap.containsKey(pluginName);
+        return MODULE_MAP.containsKey(pluginName);
     }
 
     /**
@@ -101,7 +101,7 @@ public class CompatibilityManager extends QuickShopInstanceHolder implements Lis
     }
 
     public void register(@NotNull String moduleName) {
-        Class<? extends CompatibilityModule> compatibilityModuleClass = compatibilityModuleNameMap.get(moduleName);
+        Class<? extends CompatibilityModule> compatibilityModuleClass = MODULE_MAP.get(moduleName);
         if (compatibilityModuleClass != null) {
             register(compatibilityModuleClass);
         } else {

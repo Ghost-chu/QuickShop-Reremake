@@ -52,12 +52,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualDisplayItem extends DisplayItem {
-    private static final AtomicInteger counter = new AtomicInteger(0);
-    private static final GameVersion version = QuickShop.getInstance().getGameVersion();
-    private static final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
+    private static final AtomicInteger COUNTER = new AtomicInteger(0);
+    private static final GameVersion VERSION = QuickShop.getInstance().getGameVersion();
+    private static final ProtocolManager PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
     private static PacketAdapter packetAdapter = null;
     //unique EntityID
-    private final int entityID = counter.decrementAndGet();
+    private final int entityID = COUNTER.decrementAndGet();
     //The List which store packet sender
     private final Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
     //cache chunk x and z
@@ -86,7 +86,7 @@ public class VirtualDisplayItem extends DisplayItem {
         VirtualDisplayItemManager.put(chunkLocation, this);
         if (Util.isLoaded(shop.getLocation())) {
             //Let nearby player can saw fake item
-            Collection<Entity> entityCollection = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), plugin.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), plugin.getServer().getViewDistance() * 16);
+            Collection<Entity> entityCollection = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), PLUGIN.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), PLUGIN.getServer().getViewDistance() * 16);
             for (Entity entity : entityCollection) {
                 if (entity instanceof Player) {
                     packetSenders.add(entity.getUniqueId());
@@ -140,7 +140,7 @@ public class VirtualDisplayItem extends DisplayItem {
     private void sendPacketToAll(@NotNull PacketContainer packet) {
         Iterator<UUID> iterator = packetSenders.iterator();
         while (iterator.hasNext()) {
-            Player nextPlayer = plugin.getServer().getPlayer(iterator.next());
+            Player nextPlayer = PLUGIN.getServer().getPlayer(iterator.next());
             if (nextPlayer == null) {
                 iterator.remove();
             } else {
@@ -151,7 +151,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
     private void sendPacket(@NotNull Player player, @NotNull PacketContainer packet) {
         try {
-            protocolManager.sendServerPacket(player, packet);
+            PROTOCOL_MANAGER.sendServerPacket(player, packet);
         } catch (InvocationTargetException e) {
             throw new RuntimeException("An error occurred when sending a packet", e);
         }
@@ -187,7 +187,7 @@ public class VirtualDisplayItem extends DisplayItem {
             return;
         }
         ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.VIRTUALITEM);
-        plugin.getServer().getPluginManager().callEvent(shopDisplayItemSpawnEvent);
+        PLUGIN.getServer().getPluginManager().callEvent(shopDisplayItemSpawnEvent);
         if (shopDisplayItemSpawnEvent.isCancelled()) {
             Util.debugLog(
                     "Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
@@ -241,32 +241,32 @@ public class VirtualDisplayItem extends DisplayItem {
     }
 
     public static class VirtualDisplayItemManager {
-        private static final AtomicBoolean loaded = new AtomicBoolean(false);
-        private static final Map<ShopChunk, List<VirtualDisplayItem>> chunksMapping = new ConcurrentHashMap<>();
+        private static final AtomicBoolean LOADED = new AtomicBoolean(false);
+        private static final Map<ShopChunk, List<VirtualDisplayItem>> CHUNKS_MAPPING = new ConcurrentHashMap<>();
 
         public static void put(@NotNull ShopChunk key, @NotNull VirtualDisplayItem value) {
             //Thread-safe was ensured by ONLY USE Map method to do something
             List<VirtualDisplayItem> virtualDisplayItems = new ArrayList<>(Collections.singletonList(value));
-            chunksMapping.merge(key, virtualDisplayItems, (mapOldVal, mapNewVal) -> {
+            CHUNKS_MAPPING.merge(key, virtualDisplayItems, (mapOldVal, mapNewVal) -> {
                 mapOldVal.addAll(mapNewVal);
                 return mapOldVal;
             });
         }
 
         public static void remove(@NotNull ShopChunk key, @NotNull VirtualDisplayItem value) {
-            chunksMapping.computeIfPresent(key, (mapOldKey, mapOldVal) -> {
+            CHUNKS_MAPPING.computeIfPresent(key, (mapOldKey, mapOldVal) -> {
                 mapOldVal.remove(value);
                 return mapOldVal;
             });
         }
 
         public static void load() {
-            if (loaded.get()) {
+            if (LOADED.get()) {
                 return;
             }
             Util.debugLog("Loading VirtualDisplayItem chunks mapping manager...");
             if (packetAdapter == null) {
-                packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
+                packetAdapter = new PacketAdapter(PLUGIN, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
                     @Override
                     public void onPacketSending(@NotNull PacketEvent event) {
                         //is really full chunk data
@@ -289,7 +289,7 @@ public class VirtualDisplayItem extends DisplayItem {
                         //chunk z
                         int z = integerStructureModifier.read(1);
 
-                        chunksMapping.computeIfPresent(new ShopChunk(player.getWorld().getName(), x, z), (chunkLocation, targetList) -> {
+                        CHUNKS_MAPPING.computeIfPresent(new ShopChunk(player.getWorld().getName(), x, z), (chunkLocation, targetList) -> {
                             for (VirtualDisplayItem target : targetList) {
                                 if (!target.shop.isLoaded() || !target.isDisplay || target.shop.isLeftShop()) {
                                     continue;
@@ -302,17 +302,17 @@ public class VirtualDisplayItem extends DisplayItem {
                     }
                 };
                 Util.debugLog("Registering the packet listener...");
-                protocolManager.addPacketListener(packetAdapter);
-                loaded.set(true);
+                PROTOCOL_MANAGER.addPacketListener(packetAdapter);
+                LOADED.set(true);
             }
         }
 
         public static void unload() {
             Util.debugLog("Unloading VirtualDisplayItem chunks mapping manager...");
-            if (loaded.get()) {
+            if (LOADED.get()) {
                 Util.debugLog("Unregistering the packet listener...");
-                protocolManager.removePacketListener(packetAdapter);
-                loaded.set(false);
+                PROTOCOL_MANAGER.removePacketListener(packetAdapter);
+                LOADED.set(false);
             }
         }
     }
@@ -320,7 +320,7 @@ public class VirtualDisplayItem extends DisplayItem {
     public static class PacketFactory {
         public static Throwable testFakeItem() {
             try {
-                createFakeItemSpawnPacket(0, new Location(plugin.getServer().getWorlds().get(0), 0, 0, 0));
+                createFakeItemSpawnPacket(0, new Location(PLUGIN.getServer().getWorlds().get(0), 0, 0, 0));
                 createFakeItemMetaPacket(0, new ItemStack(Material.values()[0]));
                 createFakeItemVelocityPacket(0);
                 createFakeItemDestroyPacket(0);
@@ -332,7 +332,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
         private static PacketContainer createFakeItemSpawnPacket(int entityID, Location displayLocation) {
             //First, create a new packet to spawn item
-            PacketContainer fakeItemPacket = protocolManager.createPacket(PacketType.Play.Server.SPAWN_ENTITY);
+            PacketContainer fakeItemPacket = PROTOCOL_MANAGER.createPacket(PacketType.Play.Server.SPAWN_ENTITY);
 
             //and add data based on packet class in NMS  (global scope variable)
             //Reference: https://wiki.vg/Protocol#Spawn_Object
@@ -351,7 +351,7 @@ public class VirtualDisplayItem extends DisplayItem {
                     .write(5, 0);
 
             //noinspection SwitchStatementWithTooFewBranches
-            switch (version) {
+            switch (VERSION) {
 //                case v1_13_R1:
 //                case v1_13_R2:
 //                    fakeItemPacket.getIntegers()
@@ -395,7 +395,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
         private static PacketContainer createFakeItemMetaPacket(int entityID, ItemStack itemStack) {
             //Next, create a new packet to update item data (default is empty)
-            PacketContainer fakeItemMetaPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_METADATA);
+            PacketContainer fakeItemMetaPacket = PROTOCOL_MANAGER.createPacket(PacketType.Play.Server.ENTITY_METADATA);
             //Entity ID
             fakeItemMetaPacket.getIntegers().write(0, entityID);
 
@@ -403,7 +403,7 @@ public class VirtualDisplayItem extends DisplayItem {
             //Create a DataWatcher
             WrappedDataWatcher wpw = new WrappedDataWatcher();
             //https://wiki.vg/index.php?title=Entity_metadata#Entity
-            if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
+            if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
                 String itemName;
                 if (QuickShop.isTesting()) {
                     //Env Testing
@@ -417,7 +417,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
             //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
             //Is 1.17-?
-            if (GameVersion.v1_17_R1.ordinal() > version.ordinal()) {
+            if (GameVersion.v1_17_R1.ordinal() > VERSION.ordinal()) {
 //                if (version == GameVersion.v1_13_R1 || version == GameVersion.v1_13_R2) {
 //                    //For 1.13 is 6
 //                    wpw.setObject(6, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
@@ -436,7 +436,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
         private static PacketContainer createFakeItemVelocityPacket(int entityID) {
             //And, create a entity velocity packet to make it at a proper location (otherwise it will fly randomly)
-            PacketContainer fakeItemVelocityPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_VELOCITY);
+            PacketContainer fakeItemVelocityPacket = PROTOCOL_MANAGER.createPacket(PacketType.Play.Server.ENTITY_VELOCITY);
             fakeItemVelocityPacket.getIntegers()
                     //Entity ID
                     .write(0, entityID)
@@ -451,14 +451,14 @@ public class VirtualDisplayItem extends DisplayItem {
 
         private static PacketContainer createFakeItemDestroyPacket(int entityID) {
             //Also make a DestroyPacket to remove it
-            PacketContainer fakeItemDestroyPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_DESTROY);
-            if (GameVersion.v1_17_R1.ordinal() > version.ordinal()) {
+            PacketContainer fakeItemDestroyPacket = PROTOCOL_MANAGER.createPacket(PacketType.Play.Server.ENTITY_DESTROY);
+            if (GameVersion.v1_17_R1.ordinal() > VERSION.ordinal()) {
                 //On 1.17-, we need to write an integer array
                 //Entity to remove
                 fakeItemDestroyPacket.getIntegerArrays().write(0, new int[]{entityID});
             } else {
                 //1.17+
-                MinecraftVersion minecraftVersion = protocolManager.getMinecraftVersion();
+                MinecraftVersion minecraftVersion = PROTOCOL_MANAGER.getMinecraftVersion();
                 if (minecraftVersion.getMajor() == 1 && minecraftVersion.getMinor() == 17 && minecraftVersion.getBuild() == 0) {
                     //On 1.17, just need to write a int
                     //Entity to remove

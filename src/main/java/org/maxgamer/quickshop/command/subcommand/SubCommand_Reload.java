@@ -32,7 +32,6 @@ public class SubCommand_Reload implements CommandHandler<CommandSender> {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        //MsgUtil.sendMessage(sender, "server-crash-warning");
         plugin.text().of(sender, "command.reloading").send();
         plugin.reloadConfig();
     }

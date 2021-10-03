@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.integration;
 
-import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -45,21 +44,20 @@ import java.util.logging.Level;
 
 
 public class IntegrationHelper extends QuickShopInstanceHolder {
-    @Getter
-    private static final Map<String, Class<? extends IntegratedPlugin>> integratedPluginNameMap = new HashMap<>(7);
+    private static final Map<String, Class<? extends IntegratedPlugin>> INTEGRATION_MAPPING = new HashMap<>(7);
 
     static {
-        integratedPluginNameMap.put("Factions", FactionsUUIDIntegration.class);
-        integratedPluginNameMap.put("GriefPrevention", GriefPreventionIntegration.class);
-        integratedPluginNameMap.put("Lands", LandsIntegration.class);
-        integratedPluginNameMap.put("PlotSquared", PlotSquaredIntegrationProxy.class);
-        integratedPluginNameMap.put("Residence", ResidenceIntegration.class);
-        integratedPluginNameMap.put("Towny", TownyIntegration.class);
-        integratedPluginNameMap.put("WorldGuard", WorldGuardIntegration.class);
-        //integratedPluginNameMap.put("FabledSkyblock", FabledIntegration.class);
-        integratedPluginNameMap.put("IridiumSkyblock", IridiumSkyblockIntegration.class);
-        integratedPluginNameMap.put("SuperiorSkyblock", SuperiorSkyblock2Integration.class);
-        integratedPluginNameMap.put("AdvancedRegionMarket", AdvancedShopRegionMarketIntegration.class);
+        INTEGRATION_MAPPING.put("Factions", FactionsUUIDIntegration.class);
+        INTEGRATION_MAPPING.put("GriefPrevention", GriefPreventionIntegration.class);
+        INTEGRATION_MAPPING.put("Lands", LandsIntegration.class);
+        INTEGRATION_MAPPING.put("PlotSquared", PlotSquaredIntegrationProxy.class);
+        INTEGRATION_MAPPING.put("Residence", ResidenceIntegration.class);
+        INTEGRATION_MAPPING.put("Towny", TownyIntegration.class);
+        INTEGRATION_MAPPING.put("WorldGuard", WorldGuardIntegration.class);
+        //INTEGRATION_MAPPING.put("FabledSkyblock", FabledIntegration.class);
+        INTEGRATION_MAPPING.put("IridiumSkyblock", IridiumSkyblockIntegration.class);
+        INTEGRATION_MAPPING.put("SuperiorSkyblock", SuperiorSkyblock2Integration.class);
+        INTEGRATION_MAPPING.put("AdvancedRegionMarket", AdvancedShopRegionMarketIntegration.class);
     }
 
     private final Map<String, IntegratedPlugin> integrations = new HashMap<>(7);
@@ -76,9 +74,13 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
         return Collections.unmodifiableList(new ArrayList<>(integrations.values()));
     }
 
+    public static Map<String, Class<? extends IntegratedPlugin>> getIntegrationMapping() {
+        return INTEGRATION_MAPPING;
+    }
+
     public void searchAndRegisterPlugins() {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
-        for (Map.Entry<String, Class<? extends IntegratedPlugin>> entry : integratedPluginNameMap.entrySet()) {
+        for (Map.Entry<String, Class<? extends IntegratedPlugin>> entry : INTEGRATION_MAPPING.entrySet()) {
             String pluginName = entry.getKey();
             if (pluginManager.isPluginEnabled(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
                 try {
@@ -127,7 +129,7 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
      * @param integratedPluginName custom integrated module name
      */
     public void register(@NotNull String integratedPluginName) {
-        Class<? extends IntegratedPlugin> integratedPluginClass = integratedPluginNameMap.get(integratedPluginName);
+        Class<? extends IntegratedPlugin> integratedPluginClass = INTEGRATION_MAPPING.get(integratedPluginName);
         if (integratedPluginClass != null) {
             register(integratedPluginClass);
         } else {

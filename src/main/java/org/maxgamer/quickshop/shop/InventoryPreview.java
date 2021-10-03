@@ -51,7 +51,7 @@ public class InventoryPreview implements Listener {
     @Nullable
     private Inventory inventory;
     private final String previewStr;
-    private static final NamespacedKey key = new NamespacedKey(QuickShop.getInstance(), "preview-item");
+    private static final NamespacedKey NAMESPACED_KEY = new NamespacedKey(QuickShop.getInstance(), "preview-item");
     ;
 
     /**
@@ -78,7 +78,7 @@ public class InventoryPreview implements Listener {
                 itemMeta.setLore(Collections.singletonList(previewStr));
             }
 
-            itemMeta.getPersistentDataContainer().set(key, PreviewGuiPersistentDataType.INSTANCE, UUID.randomUUID());
+            itemMeta.getPersistentDataContainer().set(NAMESPACED_KEY, PreviewGuiPersistentDataType.INSTANCE, UUID.randomUUID());
             this.itemStack.setItemMeta(itemMeta);
         }
     }
@@ -91,7 +91,7 @@ public class InventoryPreview implements Listener {
         if (!stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
             return false;
         }
-        return stack.getItemMeta().getPersistentDataContainer().get(key, PreviewGuiPersistentDataType.INSTANCE) != null;
+        return stack.getItemMeta().getPersistentDataContainer().get(NAMESPACED_KEY, PreviewGuiPersistentDataType.INSTANCE) != null;
     }
 
     /**

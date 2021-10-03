@@ -30,15 +30,15 @@ import java.util.EnumMap;
  * @since 4.0.5.0
  */
 public class InteractUtil {
-    private final static EnumMap<Action, Boolean> sneakingActionMap = new EnumMap<>(Action.class);
+    private final static EnumMap<Action, Boolean> SNEAKING_ACTION_MAPPING = new EnumMap<>(Action.class);
     private static Mode mode;
     private static boolean init;
 
     public static void init(ConfigurationSection configuration) {
         mode = Mode.getMode(configuration.getInt("shop.interact.interact-mode", 0));
-        sneakingActionMap.put(Action.CREATE, configuration.getBoolean("shop.interact.sneak-to-create"));
-        sneakingActionMap.put(Action.TRADE, configuration.getBoolean("shop.interact.sneak-to-trade"));
-        sneakingActionMap.put(Action.CONTROL, configuration.getBoolean("shop.interact.sneak-to-control"));
+        SNEAKING_ACTION_MAPPING.put(Action.CREATE, configuration.getBoolean("shop.interact.sneak-to-create"));
+        SNEAKING_ACTION_MAPPING.put(Action.TRADE, configuration.getBoolean("shop.interact.sneak-to-trade"));
+        SNEAKING_ACTION_MAPPING.put(Action.CONTROL, configuration.getBoolean("shop.interact.sneak-to-control"));
         init = true;
     }
 
@@ -54,7 +54,7 @@ public class InteractUtil {
             init(QuickShop.getInstance().getConfig());
         }
         //Hopefully some coders can read this
-        boolean sneakAllowed = sneakingActionMap.get(action);
+        boolean sneakAllowed = SNEAKING_ACTION_MAPPING.get(action);
         switch (mode) {
             case ONLY:
                 return sneakAllowed == isSneaking;

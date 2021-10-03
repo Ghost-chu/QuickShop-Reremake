@@ -62,10 +62,10 @@ import java.util.logging.Level;
 public class ContainerShop implements Shop {
     @JsonUtil.Hidden
     @EqualsAndHashCode.Exclude
-    private static final String shopSignPrefix = "§d§o §r";
+    private static final String SHOP_SIGN_PREFIX = "§d§o §r";
     @EqualsAndHashCode.Exclude
     @JsonUtil.Hidden
-    private static final String shopSignPattern = "§d§o ";
+    private static final String SHOP_SIGN_PATTERN = "§d§o ";
     @NotNull
     private final Location location;
     private final YamlConfiguration extra;
@@ -739,7 +739,7 @@ public class ContainerShop implements Shop {
             default:
                 line2 =plugin.text().of(tradingStringKey, Integer.toString(shopRemaining)).forLocale(locale);
         }
-        lines.add(new ComponentPackge(TextComponent.fromLegacyText(shopSignPrefix+line2+" ")));
+        lines.add(new ComponentPackge(TextComponent.fromLegacyText(SHOP_SIGN_PREFIX+line2+" ")));
 
         //line 3
         if(this.getItem().hasItemMeta() && this.getItem().getItemMeta().hasDisplayName()){
@@ -1131,7 +1131,7 @@ public class ContainerShop implements Shop {
                 continue;
             }
 
-            if (lines[1].startsWith(shopSignPattern)) {
+            if (lines[1].startsWith(SHOP_SIGN_PATTERN)) {
                 signs.add(sign);
             } else {
                 String header = lines[0];

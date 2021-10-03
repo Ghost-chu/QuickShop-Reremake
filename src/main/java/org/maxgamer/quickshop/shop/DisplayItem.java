@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.shop;
 
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.Setter;
 import org.bukkit.Location;
@@ -44,10 +43,9 @@ import java.util.logging.Level;
  */
 public abstract class DisplayItem implements Reloadable {
 
-    protected static final QuickShop plugin = QuickShop.getInstance();
+    protected static final QuickShop PLUGIN = QuickShop.getInstance();
 
-    private static final Gson gson = JsonUtil.getGson();
-    private static boolean displayAllowStacks;
+    private static boolean DISPLAY_ALLOW_STACKS;
     @Setter
     private static volatile boolean isNotSupportVirtualItem = false;
     protected final ItemStack originalItemStack;
@@ -59,7 +57,7 @@ public abstract class DisplayItem implements Reloadable {
     protected DisplayItem(Shop shop) {
         this.shop = shop;
         this.originalItemStack = shop.getItem().clone();
-        plugin.getReloadManager().register(this);
+        PLUGIN.getReloadManager().register(this);
         init();
     }
 
@@ -70,7 +68,7 @@ public abstract class DisplayItem implements Reloadable {
      * @return Contains protect flag.
      */
     public static boolean checkIsGuardItemStack(@Nullable final ItemStack itemStack) {
-        if (!plugin.isDisplay()) {
+        if (!PLUGIN.isDisplay()) {
             return false;
         }
         if (getNowUsing() == DisplayType.VIRTUALITEM) {
@@ -94,7 +92,7 @@ public abstract class DisplayItem implements Reloadable {
                 if (!lore.startsWith("{")) {
                     continue;
                 }
-                ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
+                ShopProtectionFlag shopProtectionFlag = JsonUtil.getGson().fromJson(lore, ShopProtectionFlag.class);
                 if (shopProtectionFlag == null) {
                     continue;
                 }
@@ -123,7 +121,7 @@ public abstract class DisplayItem implements Reloadable {
      * @return Is target shop's display
      */
     public static boolean checkIsTargetShopDisplay(@NotNull final ItemStack itemStack, @NotNull Shop shop) {
-        if (!plugin.isDisplay()) {
+        if (!PLUGIN.isDisplay()) {
             return false;
         }
         if (getNowUsing() == DisplayType.VIRTUALITEM) {
@@ -149,7 +147,7 @@ public abstract class DisplayItem implements Reloadable {
                 if (!lore.startsWith("{")) {
                     continue;
                 }
-                ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
+                ShopProtectionFlag shopProtectionFlag = JsonUtil.getGson().fromJson(lore, ShopProtectionFlag.class);
                 if (shopProtectionFlag == null) {
                     continue;
                 }
@@ -168,18 +166,18 @@ public abstract class DisplayItem implements Reloadable {
     }
 
     /**
-     * Get plugin now is using which one DisplayType
+     * Get PLUGIN now is using which one DisplayType
      *
      * @return Using displayType.
      */
     @NotNull
     public static DisplayType getNowUsing() {
-        DisplayType displayType = DisplayType.fromID(plugin.getConfig().getInt("shop.display-type"));
+        DisplayType displayType = DisplayType.fromID(PLUGIN.getConfig().getInt("shop.display-type"));
         //Falling back to RealDisplayItem when VirtualDisplayItem is unsupported
         if (isNotSupportVirtualItem && displayType == DisplayType.VIRTUALITEM) {
-            plugin.getConfig().set("shop.display-type", 0);
-            plugin.saveConfig();
-            plugin.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because VirtualDisplayItem is unsupported");
+            PLUGIN.getConfig().set("shop.display-type", 0);
+            PLUGIN.saveConfig();
+            PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because VirtualDisplayItem is unsupported");
             return DisplayType.REALITEM;
         }
         return displayType;
@@ -197,13 +195,13 @@ public abstract class DisplayItem implements Reloadable {
         itemStack = itemStack.clone();
         ItemMeta iMeta = itemStack.getItemMeta();
         if (iMeta == null) {
-            iMeta = plugin.getServer().getItemFactory().getItemMeta(itemStack.getType());
+            iMeta = PLUGIN.getServer().getItemFactory().getItemMeta(itemStack.getType());
         }
         if (iMeta == null) {
             Util.debugLog("ItemStack " + itemStack + " cannot getting or creating ItemMeta, failed to create guarded ItemStack.");
             return itemStack;
         }
-        if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
+        if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
             if (iMeta.hasDisplayName()) {
                 iMeta.setDisplayName(iMeta.getDisplayName());
             } else {
@@ -213,7 +211,7 @@ public abstract class DisplayItem implements Reloadable {
             iMeta.setDisplayName(null);
         }
         ShopProtectionFlag shopProtectionFlag = createShopProtectionFlag(itemStack, shop);
-        String protectFlag = gson.toJson(shopProtectionFlag);
+        String protectFlag = JsonUtil.getGson().toJson(shopProtectionFlag);
         iMeta.setLore(Lists.newArrayList(protectFlag));
         itemStack.setItemMeta(iMeta);
         return itemStack;
@@ -233,8 +231,8 @@ public abstract class DisplayItem implements Reloadable {
     }
 
     protected void init() {
-        displayAllowStacks = plugin.getConfig().getBoolean("shop.display-allow-stacks");
-        if (displayAllowStacks) {
+        DISPLAY_ALLOW_STACKS = PLUGIN.getConfig().getBoolean("shop.display-allow-stacks");
+        if (DISPLAY_ALLOW_STACKS) {
             //Prevent stack over the normal size
             originalItemStack.setAmount(Math.min(originalItemStack.getAmount(), originalItemStack.getMaxStackSize()));
         } else {
