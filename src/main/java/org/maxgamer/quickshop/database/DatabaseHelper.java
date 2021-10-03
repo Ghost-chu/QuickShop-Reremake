@@ -112,8 +112,8 @@ public class DatabaseHelper implements Reloadable {
         String createTable = "CREATE TABLE " + plugin.getDbPrefix()
                 + "external_cache ( x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL );";
         manager.runInstantTask(new DatabaseTask(createTable));
-        createColumn("external_cache", "space", new DataType(DataTypeMapping.INT, null, ""));
-        createColumn("external_cache", "stock", new DataType(DataTypeMapping.INT, null, ""));
+        createColumn("external_cache", "space", new DataType(DataTypeMapping.INT, null));
+        createColumn("external_cache", "stock", new DataType(DataTypeMapping.INT, null));
     }
 
 

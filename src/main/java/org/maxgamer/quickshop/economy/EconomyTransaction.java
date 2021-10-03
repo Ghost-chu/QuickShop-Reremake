@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.EconomyCommitEvent;
 import org.maxgamer.quickshop.util.CalculateUtil;
+import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.EconomyTransactionLog;
 
@@ -42,6 +43,7 @@ public class EconomyTransaction {
     private final UUID to;
     private final double amount;
     @NotNull
+    @JsonUtil.Hidden
     private final EconomyCore core;
     private final double actualAmount; //
     private final double tax;
@@ -52,6 +54,7 @@ public class EconomyTransaction {
     private final World world;
     @Getter
     private final String currency;
+    @JsonUtil.Hidden
     private final QuickShop plugin = QuickShop.getInstance();
     @Getter
     private TransactionSteps steps; //For rollback
@@ -262,7 +265,7 @@ public class EconomyTransaction {
          */
         default void onSuccess(@NotNull EconomyTransaction economyTransaction) {
             Util.debugLog("Transaction succeed.");
-            QuickShop.getInstance().logEvent(new EconomyTransactionLog(true,economyTransaction));
+            QuickShop.getInstance().logEvent(new EconomyTransactionLog(true,economyTransaction.getFrom(),economyTransaction.getTo(),economyTransaction.getCurrency(),economyTransaction.getTax(),economyTransaction.getTaxer().getUniqueId(),economyTransaction.getAmount(),economyTransaction.getLastError()));
         }
 
         /**
@@ -274,7 +277,7 @@ public class EconomyTransaction {
          */
         default void onFailed(@NotNull EconomyTransaction economyTransaction) {
             Util.debugLog("Transaction failed: " + economyTransaction.getLastError() + ".");
-            QuickShop.getInstance().logEvent(new EconomyTransactionLog(false,economyTransaction));
+            QuickShop.getInstance().logEvent(new EconomyTransactionLog(false,economyTransaction.getFrom(),economyTransaction.getTo(),economyTransaction.getCurrency(),economyTransaction.getTax(),economyTransaction.getTaxer().getUniqueId(),economyTransaction.getAmount(),economyTransaction.getLastError()));
         }
 
         /**
@@ -286,7 +289,7 @@ public class EconomyTransaction {
          */
         default void onTaxFailed(@NotNull EconomyTransaction economyTransaction) {
             Util.debugLog("Tax Transaction failed: " + economyTransaction.getLastError() + ".");
-            QuickShop.getInstance().logEvent(new EconomyTransactionLog(false,economyTransaction));
+            QuickShop.getInstance().logEvent(new EconomyTransactionLog(false,economyTransaction.getFrom(),economyTransaction.getTo(),economyTransaction.getCurrency(),economyTransaction.getTax(),economyTransaction.getTaxer().getUniqueId(),economyTransaction.getAmount(),economyTransaction.getLastError()));
         }
 
     }
