@@ -156,7 +156,6 @@ public class ShopManager implements Reloadable {
             int max = plugin.getShopLimit(p);
             if (owned + 1 > max) {
                 plugin.text().of(p, "reached-maximum-can-create", String.valueOf(owned), String.valueOf(max)).send();
-                //MsgUtil.sendMessage(p, "reached-maximum-can-create", String.valueOf(owned), String.valueOf(max));
                 return false;
             }
         }
@@ -280,7 +279,6 @@ public class ShopManager implements Reloadable {
             } else {
                 if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
                     plugin.text().of(player, "failed-to-put-sign").send();
-                    // MsgUtil.sendMessage(player, "failed-to-put-sign");
                     Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
                     return;
                 }

@@ -35,8 +35,8 @@ import java.util.Set;
 
 public class PluginListener extends QSListener {
 
-    private static final Set<String> pluginCompatibilityModuleList = CompatibilityManager.getCompatibilityModuleNameMap().keySet();
-    private static final Set<String> pluginIntegrationList = IntegrationHelper.getIntegratedPluginNameMap().keySet();
+    private static final Set<String> COMPATIBILITY_MODULE_LIST = CompatibilityManager.getModuleMapping().keySet();
+    private static final Set<String> PLUGIN_INTEGRATION_LIST = IntegrationHelper.getIntegrationMapping().keySet();
     private IntegrationHelper integrationHelper;
     private CompatibilityManager compatibilityManager;
 
@@ -54,7 +54,7 @@ public class PluginListener extends QSListener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginDisabled(PluginDisableEvent event) {
         String pluginName = event.getPlugin().getName();
-        if (pluginIntegrationList.contains(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
+        if (PLUGIN_INTEGRATION_LIST.contains(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
             IntegratedPlugin integratedPlugin = integrationHelper.getIntegrationMap().get(pluginName);
             if (integratedPlugin != null) {
                 Util.debugLog("[Hot Load] Calling for unloading " + integratedPlugin.getName());
@@ -62,7 +62,7 @@ public class PluginListener extends QSListener {
                 integrationHelper.unregister(integratedPlugin);
             }
         }
-        if (pluginCompatibilityModuleList.contains(pluginName)) {
+        if (COMPATIBILITY_MODULE_LIST.contains(pluginName)) {
             compatibilityManager.unregister(pluginName);
         }
     }
@@ -70,7 +70,7 @@ public class PluginListener extends QSListener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginEnabled(PluginEnableEvent event) {
         String pluginName = event.getPlugin().getName();
-        if (pluginIntegrationList.contains(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
+        if (PLUGIN_INTEGRATION_LIST.contains(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
             integrationHelper.register(pluginName);
             IntegratedPlugin integratedPlugin = integrationHelper.getIntegrationMap().get(pluginName);
             if (integratedPlugin != null) {
@@ -78,7 +78,7 @@ public class PluginListener extends QSListener {
                 integratedPlugin.load();
             }
         }
-        if (pluginCompatibilityModuleList.contains(pluginName)) {
+        if (COMPATIBILITY_MODULE_LIST.contains(pluginName)) {
             compatibilityManager.register(pluginName);
         }
     }

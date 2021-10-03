@@ -65,7 +65,7 @@ import java.util.logging.Level;
 
 
 public class MsgUtil {
-    private static final Map<UUID, List<TransactionMessage>> outGoingPlayerMessages = Maps.newConcurrentMap();
+    private static final Map<UUID, List<TransactionMessage>> OUTGOING_MESSAGES = Maps.newConcurrentMap();
     public static GameLanguage gameLanguage;
     private static DecimalFormat decimalFormat;
     private static QuickShop plugin = QuickShop.getInstance();
@@ -97,7 +97,7 @@ public class MsgUtil {
         Player player = p.getPlayer();
         if (player != null) {
             UUID pName = p.getUniqueId();
-            List<TransactionMessage> msgs = outGoingPlayerMessages.get(pName);
+            List<TransactionMessage> msgs = OUTGOING_MESSAGES.get(pName);
             if (msgs != null) {
                 for (TransactionMessage msg : msgs) {
                     if (p.getPlayer() != null) {
@@ -284,7 +284,7 @@ public class MsgUtil {
      * loads all player purchase messages from the database.
      */
     public static void loadTransactionMessages() {
-        outGoingPlayerMessages.clear(); // Delete old messages
+        OUTGOING_MESSAGES.clear(); // Delete old messages
         try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllMessages(); ResultSet rs = warpRS.getResultSet()) {
             while (rs.next()) {
                 String owner = rs.getString("owner");
@@ -296,7 +296,7 @@ public class MsgUtil {
                     ownerUUID = Bukkit.getOfflinePlayer(owner).getUniqueId();
                 }
                 String message = rs.getString("message");
-                List<TransactionMessage> msgs = outGoingPlayerMessages.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
+                List<TransactionMessage> msgs = OUTGOING_MESSAGES.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
                 msgs.add(MsgUtil.TransactionMessage.fromJson(message));
             }
         } catch (SQLException e) {
@@ -328,9 +328,9 @@ public class MsgUtil {
         Util.debugLog(transactionMessage.getMessage());
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
         if (!p.isOnline()) {
-            List<TransactionMessage> msgs = outGoingPlayerMessages.getOrDefault(player, new LinkedList<>());
+            List<TransactionMessage> msgs = OUTGOING_MESSAGES.getOrDefault(player, new LinkedList<>());
             msgs.add(transactionMessage);
-            outGoingPlayerMessages.put(player, msgs);
+            OUTGOING_MESSAGES.put(player, msgs);
             plugin.getDatabaseHelper().sendMessage(player, transactionMessage.toJson(), System.currentTimeMillis());
         } else {
             if (p.getPlayer() != null) {
@@ -363,9 +363,9 @@ public class MsgUtil {
         Util.debugLog(transactionMessage.getMessage());
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
         if (!p.isOnline()) {
-            List<TransactionMessage> msgs = outGoingPlayerMessages.getOrDefault(player, new LinkedList<>());
+            List<TransactionMessage> msgs = OUTGOING_MESSAGES.getOrDefault(player, new LinkedList<>());
             msgs.add(transactionMessage);
-            outGoingPlayerMessages.put(player, msgs);
+            OUTGOING_MESSAGES.put(player, msgs);
             plugin.getDatabaseHelper().sendMessage(player, transactionMessage.toJson(), System.currentTimeMillis());
         } else {
             if (p.getPlayer() != null) {

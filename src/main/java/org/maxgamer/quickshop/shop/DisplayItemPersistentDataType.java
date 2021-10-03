@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.shop;
 
-import com.google.gson.Gson;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataAdapterContext;
@@ -31,8 +30,6 @@ import org.maxgamer.quickshop.util.Util;
 public class DisplayItemPersistentDataType
         implements PersistentDataType<String, ShopProtectionFlag> {
     static final DisplayItemPersistentDataType INSTANCE = new DisplayItemPersistentDataType();
-
-    private static final Gson gson = JsonUtil.getGson();
 
     @Override
     public @NotNull Class<String> getPrimitiveType() {
@@ -49,7 +46,7 @@ public class DisplayItemPersistentDataType
     public String toPrimitive(
             @NotNull ShopProtectionFlag complex, @NotNull PersistentDataAdapterContext context) {
         try {
-            return gson.toJson(complex);
+            return JsonUtil.getGson().toJson(complex);
         } catch (Exception th) {
             new RuntimeException("Cannot to toPrimitive the shop protection flag.").printStackTrace();
             return "";
@@ -61,7 +58,7 @@ public class DisplayItemPersistentDataType
     public ShopProtectionFlag fromPrimitive(
             @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
         try {
-            return gson.fromJson(primitive, ShopProtectionFlag.class);
+            return JsonUtil.getGson().fromJson(primitive, ShopProtectionFlag.class);
         } catch (Exception th) {
             new RuntimeException("Cannot to fromPrimitive the shop protection flag.").printStackTrace();
             return new ShopProtectionFlag("", Util.serialize(new ItemStack(Material.STONE)));

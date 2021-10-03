@@ -37,14 +37,14 @@ public enum DisplayType {
     //  ARMORSTAND(1),
     VIRTUALITEM(2);
 
-    private static final Map<Integer, DisplayType> displayTypeMap;
+    private static final Map<Integer, DisplayType> TYPE_MAP;
 
     static {
         Map<Integer, DisplayType> map = new HashMap<>(values().length);
         for (DisplayType type : values()) {
             map.put(type.id, type);
         }
-        displayTypeMap = Collections.unmodifiableMap(map);
+        TYPE_MAP = Collections.unmodifiableMap(map);
     }
 
     private final int id;
@@ -54,7 +54,7 @@ public enum DisplayType {
     }
 
     public static @NotNull DisplayType fromID(int id) {
-        return displayTypeMap.getOrDefault(id, UNKNOWN);
+        return TYPE_MAP.getOrDefault(id, UNKNOWN);
     }
 
     public static int toID(@NotNull DisplayType displayType) {

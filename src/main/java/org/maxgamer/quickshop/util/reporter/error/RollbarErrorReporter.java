@@ -79,9 +79,6 @@ public class RollbarErrorReporter {
         serverExceptionFilter = new GlobalExceptionFilter(plugin.getLogger().getFilter());
         plugin.getServer().getLogger().setFilter(serverExceptionFilter);
 
-        //globalExceptionFilter = new GlobalExceptionFilter(Logger.getGlobal().getFilter());
-        // Logger.getGlobal().setFilter(globalExceptionFilter);
-
         Util.debugLog("Rollbar error reporter success loaded.");
         enabled = true;
     }

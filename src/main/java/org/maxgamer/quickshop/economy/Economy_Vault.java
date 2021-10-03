@@ -43,7 +43,7 @@ import java.util.logging.Level;
 
 public class Economy_Vault implements EconomyCore, Listener {
 
-    private static final String errorMsg =
+    private static final String ERROR_MESSAGE =
             "QuickShop received an error when processing Economy response, THIS NOT A QUICKSHOP FAULT, you might need ask help with your Economy Provider plugin (%s) author.";
     private final QuickShop plugin;
     private boolean allowLoan;
@@ -139,7 +139,7 @@ public class Economy_Vault implements EconomyCore, Listener {
                 plugin.getLogger().warning("Deposit failed and player name is NULL, Player uuid: " + trader.getUniqueId() + ". Provider (" + getProviderName() + ")");
                 return false;
             }
-            plugin.getLogger().log(Level.WARNING, String.format(errorMsg, getProviderName()), t);
+            plugin.getLogger().log(Level.WARNING, String.format(ERROR_MESSAGE, getProviderName()), t);
             return false;
         }
     }
@@ -191,7 +191,7 @@ public class Economy_Vault implements EconomyCore, Listener {
             return Objects.requireNonNull(this.vault).getBalance(player);
         } catch (Exception t) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            plugin.getLogger().log(Level.WARNING, String.format(errorMsg, getProviderName()), t);
+            plugin.getLogger().log(Level.WARNING, String.format(ERROR_MESSAGE, getProviderName()), t);
             return 0.0;
         }
     }
@@ -220,7 +220,7 @@ public class Economy_Vault implements EconomyCore, Listener {
                 plugin.getLogger().warning("Withdraw failed and player name is NULL, Player uuid: " + trader.getUniqueId() + ", Provider: " + getProviderName());
                 return false;
             }
-            plugin.getLogger().log(Level.WARNING, String.format(errorMsg, getProviderName()), t);
+            plugin.getLogger().log(Level.WARNING, String.format(ERROR_MESSAGE, getProviderName()), t);
             return false;
         }
     }

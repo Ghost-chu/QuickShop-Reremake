@@ -30,7 +30,7 @@ import java.sql.SQLException;
 @ToString()
 public class DatabaseTask {
 
-    private final static Task emptyTask = ps -> {
+    private final static Task EMPTY_TASK = ps -> {
     };
     private final String statement;
     private final Task task;
@@ -42,7 +42,7 @@ public class DatabaseTask {
 
     public DatabaseTask(String statement) {
         this.statement = statement;
-        this.task = emptyTask;
+        this.task = EMPTY_TASK;
     }
 
 

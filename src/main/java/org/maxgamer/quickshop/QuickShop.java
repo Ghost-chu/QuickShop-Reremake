@@ -543,8 +543,6 @@ public class QuickShop extends JavaPlugin {
         this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
         this.displayItemCheckTicks = this.getConfig().getInt("shop.display-items-check-ticks");
         this.allowStack = this.getConfig().getBoolean("shop.allow-stacks");
-//        this.quickChatType = QuickChatType.fromID(this.getConfig().getInt("chat-type"));
-//        this.quickChat = QuickChatType.createByType(this.quickChatType);
         this.currency = this.getConfig().getString("currency");
         if (StringUtils.isEmpty(this.currency)) {
             this.currency = null;
@@ -785,7 +783,6 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
         getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
         getLogger().info("Let's start loading the plugin");
-        //getLogger().info("Chat processor selected: " + this.quickChatType.name());
         getLogger().info("Chat processor selected: Hardcoded BungeeChat Lib");
         /* Process Metrics and Sentry error reporter. */
         metrics = new Metrics(this, 3320);
