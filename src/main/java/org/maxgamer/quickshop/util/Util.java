@@ -54,7 +54,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.database.MySQLCore;
-import org.maxgamer.quickshop.shop.DisplayItem;
+import org.maxgamer.quickshop.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.shop.Shop;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -758,7 +758,7 @@ public class Util {
                 if (itemStack == null) {
                     continue;
                 }
-                if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+                if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
                     // Found Item and remove it.
                     Location location = inv.getLocation();
                     if (location == null) {

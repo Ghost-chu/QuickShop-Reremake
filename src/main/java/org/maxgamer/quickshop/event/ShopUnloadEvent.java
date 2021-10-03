@@ -25,7 +25,7 @@ import org.maxgamer.quickshop.shop.Shop;
 /**
  * Getting the unloading shop, Can't cancel.
  */
-public class ShopUnloadEvent extends QSEvent {
+public class ShopUnloadEvent extends AbstractQSEvent {
 
     @NotNull
     private final Shop shop;

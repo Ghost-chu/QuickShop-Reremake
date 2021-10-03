@@ -21,7 +21,7 @@ package org.maxgamer.quickshop.watcher;
 
 import lombok.Data;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.shop.DisplayItem;
+import org.maxgamer.quickshop.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.shop.DisplayType;
 import org.maxgamer.quickshop.shop.Shop;
 
@@ -36,7 +36,7 @@ public class DisplayWatcher {
 
     private void registerTask() {
         plugin.getLogger().info("Registering DisplayCheck task....");
-        if (DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+        if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
             return;
         }
         if (plugin.isDisplay() && plugin.getDisplayItemCheckTicks() > 0) {

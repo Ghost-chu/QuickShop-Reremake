@@ -27,7 +27,7 @@ import java.util.UUID;
 /**
  * Calling when shop tax calcing
  */
-public class ShopTaxEvent extends QSEvent {
+public class ShopTaxEvent extends AbstractQSEvent {
     private final UUID user;
     private final Shop shop;
     private double tax;

@@ -5,7 +5,7 @@ import org.maxgamer.quickshop.shop.Shop;
 
 import java.util.UUID;
 
-public class ShopOngoingFeeEvent extends QSEvent implements Cancellable {
+public class ShopOngoingFeeEvent extends AbstractQSEvent implements Cancellable {
     private final UUID player;
 
     private final Shop shop;

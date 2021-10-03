@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class WorldListener extends QSListener {
+public class WorldListener extends AbstractQSListener {
 
     public WorldListener(QuickShop plugin) {
         super(plugin);

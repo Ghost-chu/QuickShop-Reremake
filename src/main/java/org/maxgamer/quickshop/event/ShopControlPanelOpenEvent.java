@@ -27,7 +27,7 @@ import org.maxgamer.quickshop.shop.Shop;
 /**
  * Calling when control panel opened for
  */
-public class ShopControlPanelOpenEvent extends QSEvent implements Cancellable {
+public class ShopControlPanelOpenEvent extends AbstractQSEvent implements Cancellable {
     private final Shop shop;
     private final CommandSender sender;
     private boolean cancelled = false;

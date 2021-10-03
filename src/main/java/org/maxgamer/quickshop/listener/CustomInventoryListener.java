@@ -29,7 +29,7 @@ import org.maxgamer.quickshop.util.holder.QuickShopPreviewGUIHolder;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
-public class CustomInventoryListener extends QSListener {
+public class CustomInventoryListener extends AbstractQSListener {
 
     public CustomInventoryListener(QuickShop plugin) {
         super(plugin);

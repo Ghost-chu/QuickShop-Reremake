@@ -42,14 +42,14 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Cache;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.shop.DisplayItem;
+import org.maxgamer.quickshop.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
-public class EnhanceDisplayProtectionListener extends ProtectionListenerBase implements Listener {
+public class EnhanceDisplayProtectionListener extends AbstractProtectionListener implements Listener {
 
     public EnhanceDisplayProtectionListener(QuickShop plugin, Cache cache) {
         super(plugin, cache);
@@ -151,7 +151,7 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void block(BrewingStandFuelEvent event) {
         final ItemStack itemStack = event.getFuel();
-        if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+        if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
             sendAlert(
                     "[DisplayGuard] Block  "
@@ -164,7 +164,7 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
     public void block(FurnaceBurnEvent event) {
         final ItemStack itemStack = event.getFuel();
 
-        if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+        if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
             Block furnace = event.getBlock();
             BlockState state = PaperLib.getBlockState(event.getBlock(), false).getState();
@@ -180,7 +180,7 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
     public void block(FurnaceSmeltEvent event) {
         ItemStack itemStack = event.getSource();
         BlockState furnace = PaperLib.getBlockState(event.getBlock(), false).getState();
-        if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+        if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
             if (furnace instanceof Furnace) {
                 Furnace furnace1 = (Furnace) furnace;
@@ -193,7 +193,7 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
             return;
         }
         itemStack = event.getResult();
-        if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+        if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
             if (furnace instanceof Furnace) {
                 Furnace furnace1 = (Furnace) furnace;
@@ -209,7 +209,7 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void entity(EntityPickupItemEvent e) {
         final ItemStack stack = e.getItem().getItemStack();
-        if (!DisplayItem.checkIsGuardItemStack(stack)) {
+        if (!AbstractDisplayItem.checkIsGuardItemStack(stack)) {
             return;
         }
         e.setCancelled(true);
@@ -230,7 +230,7 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryClickEvent event) {
-        if (!DisplayItem.checkIsGuardItemStack(event.getCurrentItem())) {
+        if (!AbstractDisplayItem.checkIsGuardItemStack(event.getCurrentItem())) {
             return;
         }
         if (event.getClickedInventory() == null) {
@@ -255,7 +255,7 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryDragEvent event) {
         ItemStack itemStack = event.getCursor();
-        if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+        if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
             Util.inventoryCheck(event.getInventory());
             sendAlert(
@@ -265,7 +265,7 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
             return;
         }
         itemStack = event.getOldCursor();
-        if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+        if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
             Util.inventoryCheck(event.getInventory());
             sendAlert(
@@ -278,7 +278,7 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryCreativeEvent event) {
         ItemStack itemStack = event.getCursor();
-        if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+        if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
             Util.inventoryCheck(event.getInventory());
             sendAlert(
@@ -288,7 +288,7 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
             return;
         }
         itemStack = event.getCurrentItem();
-        if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+        if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
             Util.inventoryCheck(event.getInventory());
             sendAlert(
@@ -302,7 +302,7 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
     public void item(PlayerItemHeldEvent e) {
         final ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
         final ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
-        if (DisplayItem.checkIsGuardItemStack(stack)) {
+        if (AbstractDisplayItem.checkIsGuardItemStack(stack)) {
             e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR, 0));
             // You shouldn't be able to pick up that...
             sendAlert(
@@ -312,7 +312,7 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
             e.setCancelled(true);
             Util.inventoryCheck(e.getPlayer().getInventory());
         }
-        if (DisplayItem.checkIsGuardItemStack(stackOffHand)) {
+        if (AbstractDisplayItem.checkIsGuardItemStack(stackOffHand)) {
             e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR, 0));
             // You shouldn't be able to pick up that...
             sendAlert(
@@ -328,7 +328,7 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
     public void player(CraftItemEvent event) {
         ItemStack itemStack;
         itemStack = event.getCurrentItem();
-        if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+        if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
             Util.inventoryCheck(event.getInventory());
             sendAlert(
@@ -338,7 +338,7 @@ public class EnhanceDisplayProtectionListener extends ProtectionListenerBase imp
             return;
         }
         itemStack = event.getCursor();
-        if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+        if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
             Util.inventoryCheck(event.getInventory());
             sendAlert(

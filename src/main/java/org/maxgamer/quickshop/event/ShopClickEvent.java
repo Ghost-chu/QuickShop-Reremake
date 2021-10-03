@@ -26,7 +26,7 @@ import org.maxgamer.quickshop.shop.Shop;
 /**
  * Calling when shop clicked
  */
-public class ShopClickEvent extends QSEvent implements Cancellable {
+public class ShopClickEvent extends AbstractQSEvent implements Cancellable {
 
     @NotNull
     private final Shop shop;

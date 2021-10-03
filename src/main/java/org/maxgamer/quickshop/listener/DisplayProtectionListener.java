@@ -37,14 +37,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Cache;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.shop.DisplayItem;
+import org.maxgamer.quickshop.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.shop.DisplayType;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
-public class DisplayProtectionListener extends ProtectionListenerBase {
+public class DisplayProtectionListener extends AbstractProtectionListener {
 
     private final boolean useEnhanceProtection;
 
@@ -79,13 +79,13 @@ public class DisplayProtectionListener extends ProtectionListenerBase {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void portal(EntityPortalEvent event) {
-        if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
+        if (AbstractDisplayItem.getNowUsing() != DisplayType.REALITEM) {
             return;
         }
         if (!(event.getEntity() instanceof Item)) {
             return;
         }
-        if (DisplayItem.checkIsGuardItemStack(((Item) event.getEntity()).getItemStack())) {
+        if (AbstractDisplayItem.checkIsGuardItemStack(((Item) event.getEntity()).getItemStack())) {
             event.setCancelled(true);
             event.getEntity().remove();
             sendAlert(
@@ -104,10 +104,10 @@ public class DisplayProtectionListener extends ProtectionListenerBase {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryPickupItemEvent event) {
         ItemStack itemStack = event.getItem().getItemStack();
-        if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
+        if (AbstractDisplayItem.getNowUsing() != DisplayType.REALITEM) {
             return;
         }
-        if (!DisplayItem.checkIsGuardItemStack(itemStack)) {
+        if (!AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             return; // We didn't care that
         }
         @Nullable Location loc = event.getInventory().getLocation();
@@ -125,11 +125,11 @@ public class DisplayProtectionListener extends ProtectionListenerBase {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void item(ItemDespawnEvent event) {
-        if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
+        if (AbstractDisplayItem.getNowUsing() != DisplayType.REALITEM) {
             return;
         }
         final ItemStack itemStack = event.getEntity().getItemStack();
-        if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+        if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
         }
 
@@ -138,7 +138,7 @@ public class DisplayProtectionListener extends ProtectionListenerBase {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void player(PlayerFishEvent event) {
-        if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
+        if (AbstractDisplayItem.getNowUsing() != DisplayType.REALITEM) {
             return;
         }
         if (event.getState() != State.CAUGHT_ENTITY) {
@@ -152,7 +152,7 @@ public class DisplayProtectionListener extends ProtectionListenerBase {
         }
         final Item item = (Item) event.getCaught();
         final ItemStack is = item.getItemStack();
-        if (!DisplayItem.checkIsGuardItemStack(is)) {
+        if (!AbstractDisplayItem.checkIsGuardItemStack(is)) {
             return;
         }
         event.getHook().remove();
@@ -166,10 +166,10 @@ public class DisplayProtectionListener extends ProtectionListenerBase {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void player(PlayerArmorStandManipulateEvent event) {
-        if (!DisplayItem.checkIsGuardItemStack(event.getArmorStandItem())) {
+        if (!AbstractDisplayItem.checkIsGuardItemStack(event.getArmorStandItem())) {
             return;
         }
-        if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
+        if (AbstractDisplayItem.getNowUsing() != DisplayType.REALITEM) {
             return;
         }
         event.setCancelled(true);

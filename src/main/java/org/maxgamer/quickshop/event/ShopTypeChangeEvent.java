@@ -27,7 +27,7 @@ import org.maxgamer.quickshop.shop.ShopType;
 /**
  * Calling when shop item was changed
  */
-public class ShopTypeChangeEvent extends QSEvent implements Cancellable {
+public class ShopTypeChangeEvent extends AbstractQSEvent implements Cancellable {
     private final ShopType oldType;
 
     private final ShopType newType;

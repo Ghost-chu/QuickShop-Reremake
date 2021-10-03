@@ -7,7 +7,7 @@ import org.maxgamer.quickshop.shop.Shop;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
-public class ShopInventoryCalculate extends QSEvent {
+public class ShopInventoryCalculate extends AbstractQSEvent {
     private Shop shop;
     private int space;
     private int stock;

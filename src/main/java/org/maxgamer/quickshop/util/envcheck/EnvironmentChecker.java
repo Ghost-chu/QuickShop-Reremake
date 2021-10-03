@@ -23,7 +23,7 @@ import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.shop.DisplayItem;
+import org.maxgamer.quickshop.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.shop.DisplayType;
 import org.maxgamer.quickshop.shop.VirtualDisplayItem;
 import org.maxgamer.quickshop.util.*;
@@ -355,14 +355,14 @@ public final class EnvironmentChecker {
             if (plugin.getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
                 throwable = VirtualDisplayItem.PacketFactory.testFakeItem();
             } else {
-                DisplayItem.setNotSupportVirtualItem(true);
+                AbstractDisplayItem.setNotSupportVirtualItem(true);
                 return new ResultContainer(CheckResult.WARNING, "ProtocolLib is not installed, virtual DisplayItem seems will not work on your server.");
             }
         }
         if (throwable != null) {
             Util.debugLog(throwable.getMessage());
             MsgUtil.debugStackTrace(throwable.getStackTrace());
-            DisplayItem.setNotSupportVirtualItem(true);
+            AbstractDisplayItem.setNotSupportVirtualItem(true);
             //do not throw
             plugin.getLogger().log(Level.SEVERE, "Virtual DisplayItem Support Test: Failed to initialize VirtualDisplayItem", throwable);
             return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem seems to not work on this Minecraft server, Make sure QuickShop, ProtocolLib and server builds are up to date.");
@@ -384,7 +384,7 @@ public final class EnvironmentChecker {
 
     @EnvCheckEntry(name = "PacketListenerAPI Conflict Test", priority = 10)
     public ResultContainer plapiConflictTest() {
-        if (plugin.isDisplay() && DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && Bukkit.getPluginManager().isPluginEnabled("ProtocolLib") && Bukkit.getPluginManager().isPluginEnabled("PacketListenerAPI")) {
+        if (plugin.isDisplay() && AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && Bukkit.getPluginManager().isPluginEnabled("ProtocolLib") && Bukkit.getPluginManager().isPluginEnabled("PacketListenerAPI")) {
             return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem may stop working on your server. We are already aware that [PacketListenerAPI] and [ProtocolLib] are conflicting. (QuickShops requirement to send fake items). If your display is not showing, please uninstall [PacketListenerAPI].");
         }
         return new ResultContainer(CheckResult.PASSED, "Passed checks");

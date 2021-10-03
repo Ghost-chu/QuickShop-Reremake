@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is QSCompatibilityModule.java
+ * This file is a part of project QuickShop, the name is QSListener.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,20 +17,26 @@
  *
  */
 
-package org.maxgamer.quickshop.util.compatibility;
+package org.maxgamer.quickshop.listener;
 
-import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.util.holder.QuickShopInstanceHolder;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
-public abstract class QSCompatibilityModule extends QuickShopInstanceHolder implements CompatibilityModule {
-    public QSCompatibilityModule(QuickShop plugin) {
-        super(plugin);
+public abstract class AbstractQSListener implements Listener, Reloadable {
+    protected final QuickShop plugin;
+
+    public AbstractQSListener(QuickShop plugin) {
+        this.plugin = plugin;
+        plugin.getReloadManager().register(this);
     }
 
-    @Override
-    public @NotNull Plugin getPlugin() {
-        return plugin;
+    public void register() {
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
+
+    public void unregister() {
+        HandlerList.unregisterAll(this);
     }
 }

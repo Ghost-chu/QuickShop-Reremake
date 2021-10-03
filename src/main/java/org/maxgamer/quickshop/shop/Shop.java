@@ -377,7 +377,7 @@ public interface Shop {
      * @return The entity for shop display.
      */
     @Nullable
-    DisplayItem getDisplay();
+    AbstractDisplayItem getDisplay();
 
     /**
      * Gets if shop is dirty

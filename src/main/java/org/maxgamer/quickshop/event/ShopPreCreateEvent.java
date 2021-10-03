@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
  * This event is called before the shop creation request is sent. E.g. A player clicks a chest, this
  * event is thrown, if successful, the player is asked how much they wish to trade for.
  */
-public class ShopPreCreateEvent extends QSEvent implements Cancellable {
+public class ShopPreCreateEvent extends AbstractQSEvent implements Cancellable {
 
     @NotNull
     private final Location location;

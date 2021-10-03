@@ -26,7 +26,7 @@ import org.maxgamer.quickshop.shop.Shop;
 /**
  * Calling when shop deleting
  */
-public class ShopDeleteEvent extends QSEvent implements Cancellable {
+public class ShopDeleteEvent extends AbstractQSEvent implements Cancellable {
 
     private final boolean fromMemory;
 

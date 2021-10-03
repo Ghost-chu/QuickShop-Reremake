@@ -26,7 +26,7 @@ import org.maxgamer.quickshop.economy.EconomyTransaction;
 /**
  * Calling when transaction will commit
  */
-public class EconomyCommitEvent extends QSEvent implements Cancellable {
+public class EconomyCommitEvent extends AbstractQSEvent implements Cancellable {
     private final EconomyTransaction transaction;
     private boolean cancelled;
 

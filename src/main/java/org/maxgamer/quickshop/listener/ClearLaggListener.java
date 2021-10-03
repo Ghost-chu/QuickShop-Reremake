@@ -24,7 +24,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.shop.DisplayItem;
+import org.maxgamer.quickshop.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
@@ -32,7 +32,7 @@ import org.maxgamer.quickshop.util.reload.ReloadStatus;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClearLaggListener extends QSListener {
+public class ClearLaggListener extends AbstractQSListener {
 
     public ClearLaggListener(QuickShop plugin) {
         super(plugin);
@@ -45,7 +45,7 @@ public class ClearLaggListener extends QSListener {
 
         for (final Entity entity : entities) {
             if (!(entity instanceof Item)
-                    || !DisplayItem.checkIsGuardItemStack(((Item) entity).getItemStack())) {
+                    || !AbstractDisplayItem.checkIsGuardItemStack(((Item) entity).getItemStack())) {
                 continue;
             }
 

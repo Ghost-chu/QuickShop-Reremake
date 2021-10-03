@@ -26,7 +26,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @Data
-public class CalendarEvent extends QSEvent {
+public class CalendarEvent extends AbstractQSEvent {
     private CalendarTriggerType calendarTriggerType;
 
     public enum CalendarTriggerType {

@@ -41,7 +41,7 @@ import java.util.logging.Level;
  * @author Netherfoam A display item, that spawns a block above the chest and cannot be interacted
  * with.
  */
-public abstract class DisplayItem implements Reloadable {
+public abstract class AbstractDisplayItem implements Reloadable {
 
     protected static final QuickShop PLUGIN = QuickShop.getInstance();
 
@@ -54,7 +54,7 @@ public abstract class DisplayItem implements Reloadable {
     protected ItemStack guardedIstack;
     private boolean pendingRemoval;
 
-    protected DisplayItem(Shop shop) {
+    protected AbstractDisplayItem(Shop shop) {
         this.shop = shop;
         this.originalItemStack = shop.getItem().clone();
         PLUGIN.getReloadManager().register(this);

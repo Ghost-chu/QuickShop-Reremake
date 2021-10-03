@@ -84,7 +84,7 @@ public class ContainerShop implements Shop {
     @Nullable
     @EqualsAndHashCode.Exclude
     @JsonUtil.Hidden
-    private DisplayItem displayItem;
+    private AbstractDisplayItem displayItem;
     @EqualsAndHashCode.Exclude
     @JsonUtil.Hidden
     private volatile boolean isLoaded = false;
@@ -251,7 +251,7 @@ public class ContainerShop implements Shop {
     private void initDisplayItem() {
         Util.ensureThread(false);
         if (plugin.isDisplay() && !isDisableDisplay()) {
-            switch (DisplayItem.getNowUsing()) {
+            switch (AbstractDisplayItem.getNowUsing()) {
                 case REALITEM:
                     this.displayItem = new RealDisplayItem(this);
                     break;
@@ -1213,7 +1213,7 @@ public class ContainerShop implements Shop {
     }
 
     @Override
-    public @Nullable DisplayItem getDisplay() {
+    public @Nullable AbstractDisplayItem getDisplay() {
         return this.displayItem;
     }
 
@@ -1271,7 +1271,7 @@ public class ContainerShop implements Shop {
      * @return The display item associated with this shop.
      */
     @Nullable
-    public DisplayItem getDisplayItem() {
+    public AbstractDisplayItem getDisplayItem() {
         return this.displayItem;
     }
 

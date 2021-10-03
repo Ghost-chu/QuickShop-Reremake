@@ -51,7 +51,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class VirtualDisplayItem extends DisplayItem {
+public class VirtualDisplayItem extends AbstractDisplayItem {
     private static final AtomicInteger COUNTER = new AtomicInteger(0);
     private static final GameVersion VERSION = QuickShop.getInstance().getGameVersion();
     private static final ProtocolManager PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
