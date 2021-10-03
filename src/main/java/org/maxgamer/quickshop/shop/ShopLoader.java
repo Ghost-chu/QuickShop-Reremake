@@ -326,32 +326,32 @@ public class ShopLoader {
         }
     }
 
-    @NotNull
-    public List<Shop> getShopsInDatabase() {
-        errors = 0;
-        List<Shop> shopsInDatabaseList = new ArrayList<>();
-        this.plugin.getLogger().info("Loading shops from the database...");
-        for (ShopRawDatabaseInfo shopRawDatabaseInfo : getOriginShopsInDatabase()) {
-            try {
-                ShopDatabaseInfo databaseInfo = new ShopDatabaseInfo(shopRawDatabaseInfo);
-                Shop shop = new ContainerShop(plugin,
-                        databaseInfo.getLocation(),
-                        databaseInfo.getPrice(),
-                        databaseInfo.getItem(),
-                        databaseInfo.getModerators(),
-                        databaseInfo.isUnlimited(),
-                        databaseInfo.getType(),
-                        databaseInfo.getExtra(),
-                        databaseInfo.getCurrency(),
-                        databaseInfo.isDisableDisplay(),
-                        databaseInfo.getTaxAccount());
-                shopsInDatabaseList.add(shop);
-            } catch (Exception e) {
-                exceptionHandler(e, null);
-            }
-        }
-        return shopsInDatabaseList;
-    }
+//    @NotNull
+//    public List<Shop> getShopsInDatabase() {
+//        errors = 0;
+//        List<Shop> shopsInDatabaseList = new ArrayList<>();
+//        this.plugin.getLogger().info("Loading shops from the database...");
+//        for (ShopRawDatabaseInfo shopRawDatabaseInfo : getOriginShopsInDatabase()) {
+//            try {
+//                ShopDatabaseInfo databaseInfo = new ShopDatabaseInfo(shopRawDatabaseInfo);
+//                Shop shop = new ContainerShop(plugin,
+//                        databaseInfo.getLocation(),
+//                        databaseInfo.getPrice(),
+//                        databaseInfo.getItem(),
+//                        databaseInfo.getModerators(),
+//                        databaseInfo.isUnlimited(),
+//                        databaseInfo.getType(),
+//                        databaseInfo.getExtra(),
+//                        databaseInfo.getCurrency(),
+//                        databaseInfo.isDisableDisplay(),
+//                        databaseInfo.getTaxAccount());
+//                shopsInDatabaseList.add(shop);
+//            } catch (Exception e) {
+//                exceptionHandler(e, null);
+//            }
+//        }
+//        return shopsInDatabaseList;
+//    }
 
     @NotNull
     public List<ShopRawDatabaseInfo> getOriginShopsInDatabase() {
