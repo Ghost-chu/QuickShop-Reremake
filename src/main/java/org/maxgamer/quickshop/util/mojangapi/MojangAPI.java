@@ -40,7 +40,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class MojangAPI {
-    private MojangApiMirror mirror;
+    private final MojangApiMirror mirror;
 
     public MojangAPI(MojangApiMirror mirror) {
         this.mirror = mirror;

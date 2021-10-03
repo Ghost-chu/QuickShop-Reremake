@@ -66,10 +66,10 @@ public class DatabaseHelper implements Reloadable {
         if (!manager.hasTable(plugin.getDbPrefix() + "messages")) {
             createMessagesTable();
         }
-        if(!manager.hasTable(plugin.getDbPrefix() + "logs")){
+        if (!manager.hasTable(plugin.getDbPrefix() + "logs")) {
             createLogsTable();
         }
-        if(!manager.hasTable(plugin.getDbPrefix()+"external_cache")){
+        if (!manager.hasTable(plugin.getDbPrefix() + "external_cache")) {
             createExternalCacheTable();
         }
         checkColumns();
@@ -100,7 +100,7 @@ public class DatabaseHelper implements Reloadable {
         manager.runInstantTask(new DatabaseTask(createTable));
     }
 
-    private void createLogsTable(){
+    private void createLogsTable() {
         String createTable = "CREATE TABLE " + plugin.getDbPrefix()
                 + "logs (time BIGINT(32) NOT NULL);";
         manager.runInstantTask(new DatabaseTask(createTable));
@@ -108,7 +108,7 @@ public class DatabaseHelper implements Reloadable {
         createColumn("logs", "data", new DataType(DataTypeMapping.LONGTEXT, null, ""));
     }
 
-    private void createExternalCacheTable(){
+    private void createExternalCacheTable() {
         String createTable = "CREATE TABLE " + plugin.getDbPrefix()
                 + "external_cache ( x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL );";
         manager.runInstantTask(new DatabaseTask(createTable));
@@ -322,7 +322,7 @@ public class DatabaseHelper implements Reloadable {
                 }));
     }
 
-    public void updateExternalInventoryProfileCache(@NotNull Shop shop, int space, int stock){
+    public void updateExternalInventoryProfileCache(@NotNull Shop shop, int space, int stock) {
 
     }
 
@@ -352,13 +352,13 @@ public class DatabaseHelper implements Reloadable {
 
     }
 
-    public void insertHistoryRecord(Object record){
+    public void insertHistoryRecord(Object record) {
         String sqlString = "INSERT INTO " + plugin.getDbPrefix() + "logs (time, classname, data) VALUES (?, ?, ?)";
         manager.addDelayTask(
                 new DatabaseTask(
                         sqlString,
                         (ps) -> {
-                            ps.setLong(1,System.currentTimeMillis());
+                            ps.setLong(1, System.currentTimeMillis());
                             ps.setString(2, record.getClass().getName());
                             ps.setString(3, JsonUtil.getGson().toJson(record));
                         }));

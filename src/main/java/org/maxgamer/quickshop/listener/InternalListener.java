@@ -69,7 +69,7 @@ public class InternalListener extends AbstractQSListener {
         }
         if (loggingAction) {
             Player creator = plugin.getServer().getPlayer(event.getCreator());
-            plugin.logEvent(new ShopCreationLog(event.getCreator(),event.getShop().saveToInfoStorage(),event.getShop().getLocation()));
+            plugin.logEvent(new ShopCreationLog(event.getCreator(), event.getShop().saveToInfoStorage(), event.getShop().getLocation()));
 
         }
     }
@@ -77,21 +77,21 @@ public class InternalListener extends AbstractQSListener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopDelete(ShopDeleteEvent event) {
         if (loggingAction) {
-            plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),"Shop removed",event.getShop().saveToInfoStorage()));
+            plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Shop removed", event.getShop().saveToInfoStorage()));
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopModeratorChanges(ShopModeratorChangedEvent event) {
         if (loggingAction) {
-            plugin.logEvent(new ShopModeratorChangedEvent(event.getShop(),event.getModerator()));
+            plugin.logEvent(new ShopModeratorChangedEvent(event.getShop(), event.getModerator()));
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopPriceChanges(ShopPriceChangeEvent event) {
         if (loggingAction) {
-            plugin.logEvent(new ShopPriceChangedLog(event.getShop().saveToInfoStorage(),event.getOldPrice(),event.getOldPrice()));
+            plugin.logEvent(new ShopPriceChangedLog(event.getShop().saveToInfoStorage(), event.getOldPrice(), event.getOldPrice()));
         }
     }
 
@@ -103,9 +103,9 @@ public class InternalListener extends AbstractQSListener {
             return;
         }
         if (loggingBalance) {
-            plugin.logEvent(new PlayerEconomyPreCheckLog(true,event.getPurchaser(),plugin.getEconomy().getBalance(event.getPurchaser(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
-            plugin.logEvent(new PlayerEconomyPreCheckLog(true, event.getShop().getOwner(),plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
-       }
+            plugin.logEvent(new PlayerEconomyPreCheckLog(true, event.getPurchaser(), plugin.getEconomy().getBalance(event.getPurchaser(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
+            plugin.logEvent(new PlayerEconomyPreCheckLog(true, event.getShop().getOwner(), plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -121,8 +121,8 @@ public class InternalListener extends AbstractQSListener {
                     event.getTax()));
         }
         if (loggingBalance) {
-            plugin.logEvent(new PlayerEconomyPreCheckLog(false,event.getPurchaser(),plugin.getEconomy().getBalance(event.getPurchaser(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
-            plugin.logEvent(new PlayerEconomyPreCheckLog(false, event.getShop().getOwner(),plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
+            plugin.logEvent(new PlayerEconomyPreCheckLog(false, event.getPurchaser(), plugin.getEconomy().getBalance(event.getPurchaser(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
+            plugin.logEvent(new PlayerEconomyPreCheckLog(false, event.getShop().getOwner(), plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
         }
         if (event.getPurchaser().equals(event.getShop().getOwner())) {
             Player player = Bukkit.getPlayer(event.getPurchaser());
@@ -134,9 +134,8 @@ public class InternalListener extends AbstractQSListener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopInventoryCalc(ShopInventoryCalculate event) {
-       plugin.getDatabaseHelper().updateExternalInventoryProfileCache(event.getShop(),event.getSpace(), event.getStock());
+        plugin.getDatabaseHelper().updateExternalInventoryProfileCache(event.getShop(), event.getSpace(), event.getStock());
     }
-
 
 
     /**

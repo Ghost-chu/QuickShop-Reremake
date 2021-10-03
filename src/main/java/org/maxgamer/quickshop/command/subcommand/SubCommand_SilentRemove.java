@@ -55,7 +55,7 @@ public class SubCommand_SilentRemove implements CommandHandler<Player> {
             return;
         }
 
-        plugin.logEvent(new ShopRemoveLog(sender.getUniqueId(),"/qs silentremove command",shop.saveToInfoStorage()));
+        plugin.logEvent(new ShopRemoveLog(sender.getUniqueId(), "/qs silentremove command", shop.saveToInfoStorage()));
         shop.delete();
     }
 }

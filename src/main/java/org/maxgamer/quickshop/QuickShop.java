@@ -505,7 +505,7 @@ public class QuickShop extends JavaPlugin {
         }
     }
 
-   // /**
+    // /**
 //     * Logs the given string to qs.log, if QuickShop is configured to do so.
 //     *
 //     * @param s The string to log. It will be prefixed with the date and time.
@@ -518,7 +518,7 @@ public class QuickShop extends JavaPlugin {
 //        this.getLogWatcher().log(s);
 //    }
 
-    public void logEvent(@NotNull Object eventObject){
+    public void logEvent(@NotNull Object eventObject) {
         getDatabaseHelper().insertHistoryRecord(eventObject);
     }
 
@@ -961,9 +961,9 @@ public class QuickShop extends JavaPlugin {
         getDatabaseHelper().insertHistoryRecord(new TestRecord());
     }
 
-    static class TestRecord{
-        private String test = "Hello World!";
-        private ShopChunk chunk = new ShopChunk("hello!",2,3);
+    static class TestRecord {
+        private final String test = "Hello World!";
+        private final ShopChunk chunk = new ShopChunk("hello!", 2, 3);
     }
 
     private void loadItemMatcher() {
@@ -1920,7 +1920,7 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("purge.days", 60);
             getConfig().set("purge.banned", true);
             getConfig().set("purge.skip-op", true);
-            getConfig().set("purge.return-create-fee",true);
+            getConfig().set("purge.return-create-fee", true);
             getConfig().set("config-version", ++selectedVersion);
         }
 

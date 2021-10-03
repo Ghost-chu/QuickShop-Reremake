@@ -142,7 +142,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
                 if (plugin.getConfig().getBoolean("protect.explode")) {
                     e.setCancelled(true);
                 } else {
-                    plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),"BlockBreak(explode)",shop.saveToInfoStorage()));
+                    plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "BlockBreak(explode)", shop.saveToInfoStorage()));
                     shop.delete();
                 }
             }
@@ -236,7 +236,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
             if (plugin.getConfig().getBoolean("protect.explode")) {
                 e.setCancelled(true);
             } else {
-                plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),"BlockBreak(explode)",shop.saveToInfoStorage()));
+                plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "BlockBreak(explode)", shop.saveToInfoStorage()));
                 shop.delete();
             }
         }
@@ -298,7 +298,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
             event.setCancelled(true);
             return;
         }
-        plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),"EntityChanges",shop.saveToInfoStorage()));
+        plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "EntityChanges", shop.saveToInfoStorage()));
         shop.delete();
     }
 

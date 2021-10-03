@@ -527,6 +527,7 @@ public interface Shop {
 
     @Nullable
     UUID getTaxAccountActual();
+
     /**
      * Sets shop taxAccount
      *

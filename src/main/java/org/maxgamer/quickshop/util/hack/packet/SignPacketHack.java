@@ -23,22 +23,22 @@ public class SignPacketHack {
 
     private final QuickShop plugin;
 
-    public SignPacketHack(QuickShop plugin){
+    public SignPacketHack(QuickShop plugin) {
         this.plugin = plugin;
-        Validate.isTrue(Bukkit.getPluginManager().isPluginEnabled("BKCommonLib"),"Require BKCommonLib installed!");
+        Validate.isTrue(Bukkit.getPluginManager().isPluginEnabled("BKCommonLib"), "Require BKCommonLib installed!");
     }
 
     public void sendLines(@NotNull Sign sign, @NotNull List<ComponentPackge> lines, Player player) {
         if (player != null) {
             CommonPacket updatePacket = BlockUtil.getUpdatePacket(sign);
             if (updatePacket != null) {
-                applyToSign(updatePacket,lines);
+                applyToSign(updatePacket, lines);
                 PacketUtil.sendPacket(player, updatePacket);
             }
         }
     }
 
-    public void applyToSign(@NotNull CommonPacket updatePacket,@NotNull List<ComponentPackge> lines){
+    public void applyToSign(@NotNull CommonPacket updatePacket, @NotNull List<ComponentPackge> lines) {
         if (updatePacket.getType() == PacketType.OUT_TILE_ENTITY_DATA) {
             // >= MC 1.10.2
 
@@ -46,7 +46,7 @@ public class SignPacketHack {
             // ====================================================================
 
             for (int i = 0; i < lines.size(); i++) {
-                String key = "Text" + (i+1);
+                String key = "Text" + (i + 1);
                 String text = ComponentSerializer.toString(lines.get(i).getComponents());
                 compound.putValue(key, text);
             }

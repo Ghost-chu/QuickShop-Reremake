@@ -52,7 +52,6 @@ public class InventoryPreview implements Listener {
     private Inventory inventory;
     private final String previewStr;
     private static final NamespacedKey NAMESPACED_KEY = new NamespacedKey(QuickShop.getInstance(), "preview-item");
-    ;
 
     /**
      * Create a preview item GUI.

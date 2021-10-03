@@ -59,6 +59,7 @@ public class DatabaseTask {
     interface Task {
         /**
          * Edit action before commit the PreparedStatement
+         *
          * @param ps The PreparedStatement
          * @throws SQLException Throws if any exception throws
          */
@@ -72,6 +73,7 @@ public class DatabaseTask {
 
         /**
          * Calling when PreparedStatement failed to commit
+         *
          * @param e The exception
          */
         default void onFailed(SQLException e) {

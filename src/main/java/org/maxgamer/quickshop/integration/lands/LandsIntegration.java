@@ -112,7 +112,7 @@ public class LandsIntegration extends QSIntegratedPlugin implements Listener {
                         Map<Location, Shop> shops = chunkedShopEntry.getValue();
                         for (Shop shop : shops.values()) {
                             if (target.equals(shop.getOwner())) {
-                                plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(),"[Lands Integration] Untrusted",shop.saveToInfoStorage()));
+                                plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "[Lands Integration] Untrusted", shop.saveToInfoStorage()));
                                 Util.mainThreadRun(shop::delete);
                             }
                         }

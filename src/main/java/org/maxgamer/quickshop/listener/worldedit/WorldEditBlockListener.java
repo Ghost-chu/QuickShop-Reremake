@@ -69,7 +69,7 @@ public class WorldEditBlockListener extends AbstractDelegateExtent {
                 Shop shop = plugin.getShopManager().getShop(location, true); // Because WorldEdit can only remove half of shop, so we can keep another half as shop if it is doublechest shop.
                 if (shop != null) {
                     plugin.getLogger().info("Removing shop at " + location + " because removed by WorldEdit.");
-                    plugin.logEvent(new ShopRemoveLog(actor.getUniqueId() != null ? actor.getUniqueId(): Util.getNilUniqueId() ,"WorldEdit",shop.saveToInfoStorage()));
+                    plugin.logEvent(new ShopRemoveLog(actor.getUniqueId() != null ? actor.getUniqueId() : Util.getNilUniqueId(), "WorldEdit", shop.saveToInfoStorage()));
                     Util.mainThreadRun(shop::delete);
                 }
             }

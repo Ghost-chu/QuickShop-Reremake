@@ -47,52 +47,53 @@ public class MojangDistribution {
 
     @Nullable
     public VersionManifest getVersionManifest() {
-        String url = mirror.getLauncherMetaRoot()+"/mc/game/version_manifest.json";
+        String url = mirror.getLauncherMetaRoot() + "/mc/game/version_manifest.json";
         String data;
         if (requestCachePool.getIfPresent(url) != null) {
-            return JsonUtil.standard().fromJson(requestCachePool.getIfPresent(url),VersionManifest.class);
+            return JsonUtil.standard().fromJson(requestCachePool.getIfPresent(url), VersionManifest.class);
         }
         if (!grabIntoCaches(url)) {
             return null;
         }
-        return JsonUtil.standard().fromJson(requestCachePool.getIfPresent(url),VersionManifest.class);
+        return JsonUtil.standard().fromJson(requestCachePool.getIfPresent(url), VersionManifest.class);
     }
 
 
     @Nullable
-    public GameManifest getGameManifest(VersionManifest versionManifest, String gameVersion){
+    public GameManifest getGameManifest(VersionManifest versionManifest, String gameVersion) {
         for (VersionManifest.VersionsDTO version : versionManifest.getVersions()) {
-            if(version.getId().equals(gameVersion)){
+            if (version.getId().equals(gameVersion)) {
                 String url = version.getUrl();
                 if (!grabIntoCaches(url)) {
                     return null;
                 }
-                return JsonUtil.standard().fromJson(requestCachePool.getIfPresent(url),GameManifest.class);
+                return JsonUtil.standard().fromJson(requestCachePool.getIfPresent(url), GameManifest.class);
             }
         }
         return null;
     }
+
     @NotNull
-    public List<String> getAvailableLanguages(){
+    public List<String> getAvailableLanguages() {
         List<String> languages = new ArrayList<>();
         VersionManifest versionManifest = getVersionManifest();
-        if(versionManifest == null) {
+        if (versionManifest == null) {
             return Collections.emptyList();
         }
         GameManifest gameManifest = getGameManifest(versionManifest, ReflectFactory.getServerVersion());
-        if(gameManifest == null) {
+        if (gameManifest == null) {
             return Collections.emptyList();
         }
-        if(!grabIntoCaches(gameManifest.getAssetIndex().getUrl())) {
+        if (!grabIntoCaches(gameManifest.getAssetIndex().getUrl())) {
             return Collections.emptyList();
         }
         String versionMapping = requestCachePool.getIfPresent(gameManifest.getAssetIndex().getUrl());
-        if(versionMapping == null) {
+        if (versionMapping == null) {
             return Collections.emptyList();
         }
         for (Map.Entry<String, JsonElement> objects : JsonUtil.parser().parse(versionMapping).getAsJsonObject().get("objects").getAsJsonObject().entrySet()) {
-            if(objects.getKey().startsWith("minecraft/lang/")){
-                languages.add(StringUtils.substringBetween("minecraft/lang/",".json"));
+            if (objects.getKey().startsWith("minecraft/lang/")) {
+                languages.add(StringUtils.substringBetween("minecraft/lang/", ".json"));
             }
         }
         return languages;
