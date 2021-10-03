@@ -27,7 +27,7 @@ import org.maxgamer.quickshop.QuickShop;
 
 public abstract class QSEvent extends Event {
 
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList HANDLERS = new HandlerList();
 
     public QSEvent() {
 
@@ -38,15 +38,18 @@ public abstract class QSEvent extends Event {
     }
 
     public static HandlerList getHandlerList() {
-        return handlers;
+        return HANDLERS;
     }
 
     @NotNull
     @Override
     public HandlerList getHandlers() {
-        return handlers;
+        return HANDLERS;
     }
 
+    /**
+     * Fire event on Bukkit event bus
+     */
     public void callEvent() {
         QuickShop.getInstance().getServer().getPluginManager().callEvent(this);
     }

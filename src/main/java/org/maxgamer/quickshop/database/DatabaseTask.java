@@ -57,11 +57,23 @@ public class DatabaseTask {
     }
 
     interface Task {
+        /**
+         * Edit action before commit the PreparedStatement
+         * @param ps The PreparedStatement
+         * @throws SQLException Throws if any exception throws
+         */
         void edit(PreparedStatement ps) throws SQLException;
 
+        /**
+         * Calling when PreparedStatement finished without any errors
+         */
         default void onSuccess() {
         }
 
+        /**
+         * Calling when PreparedStatement failed to commit
+         * @param e The exception
+         */
         default void onFailed(SQLException e) {
             e.printStackTrace();
         }
