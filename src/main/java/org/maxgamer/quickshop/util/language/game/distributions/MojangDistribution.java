@@ -49,9 +49,12 @@ public class MojangDistribution {
     public VersionManifest getVersionManifest() {
         String url = mirror.getLauncherMetaRoot()+"/mc/game/version_manifest.json";
         String data;
-        if (requestCachePool.getIfPresent(url) != null)
+        if (requestCachePool.getIfPresent(url) != null) {
             return JsonUtil.standard().fromJson(requestCachePool.getIfPresent(url),VersionManifest.class);
-        if (!grabIntoCaches(url)) return null;
+        }
+        if (!grabIntoCaches(url)) {
+            return null;
+        }
         return JsonUtil.standard().fromJson(requestCachePool.getIfPresent(url),VersionManifest.class);
     }
 
@@ -61,7 +64,9 @@ public class MojangDistribution {
         for (VersionManifest.VersionsDTO version : versionManifest.getVersions()) {
             if(version.getId().equals(gameVersion)){
                 String url = version.getUrl();
-                if (!grabIntoCaches(url)) return null;
+                if (!grabIntoCaches(url)) {
+                    return null;
+                }
                 return JsonUtil.standard().fromJson(requestCachePool.getIfPresent(url),GameManifest.class);
             }
         }
@@ -71,16 +76,20 @@ public class MojangDistribution {
     public List<String> getAvailableLanguages(){
         List<String> languages = new ArrayList<>();
         VersionManifest versionManifest = getVersionManifest();
-        if(versionManifest == null)
+        if(versionManifest == null) {
             return Collections.emptyList();
+        }
         GameManifest gameManifest = getGameManifest(versionManifest, ReflectFactory.getServerVersion());
-        if(gameManifest == null)
+        if(gameManifest == null) {
             return Collections.emptyList();
-        if(!grabIntoCaches(gameManifest.getAssetIndex().getUrl()))
+        }
+        if(!grabIntoCaches(gameManifest.getAssetIndex().getUrl())) {
             return Collections.emptyList();
+        }
         String versionMapping = requestCachePool.getIfPresent(gameManifest.getAssetIndex().getUrl());
-        if(versionMapping == null)
+        if(versionMapping == null) {
             return Collections.emptyList();
+        }
         for (Map.Entry<String, JsonElement> objects : JsonUtil.parser().parse(versionMapping).getAsJsonObject().get("objects").getAsJsonObject().entrySet()) {
             if(objects.getKey().startsWith("minecraft/lang/")){
                 languages.add(StringUtils.substringBetween("minecraft/lang/",".json"));
@@ -94,7 +103,9 @@ public class MojangDistribution {
         String data;
         try (Response response = client.newCall(new Request.Builder().get().url(url).build()).execute()) {
             val body = response.body();
-            if (body == null) return true;
+            if (body == null) {
+                return true;
+            }
             data = body.string();
             if (response.code() != 200) {
                 plugin.getLogger().warning("Couldn't get manifest: " + response.code() + ", please report to QuickShop!");

@@ -210,6 +210,7 @@ public class ContainerShop implements Shop {
         this.update();
     }
 
+    @Override
     public boolean isDisableDisplay() {
         return disableDisplay;
     }
@@ -225,10 +226,12 @@ public class ContainerShop implements Shop {
     @Override
     @Nullable
     public UUID getTaxAccount() {
-        if (taxAccount != null)
+        if (taxAccount != null) {
             return taxAccount;
-        if (plugin.getShopManager().getCacheTaxAccount() != null)
+        }
+        if (plugin.getShopManager().getCacheTaxAccount() != null) {
             return plugin.getShopManager().getCacheTaxAccount().getUniqueId();
+        }
         return null;
 
     }
@@ -517,8 +520,9 @@ public class ContainerShop implements Shop {
      */
     @Override
     public boolean matches(@Nullable ItemStack item) {
-        if (item == null)
+        if (item == null) {
             return false;
+        }
         ItemStack guest = item.clone();
         guest.setAmount(1);
         ItemStack owner = this.item.clone();

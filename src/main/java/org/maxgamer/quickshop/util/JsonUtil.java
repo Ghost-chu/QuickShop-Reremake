@@ -133,10 +133,12 @@ public final class JsonUtil {
     }
     public static class HiddenAnnotationExclusionStrategy implements ExclusionStrategy
     {
+        @Override
         public boolean shouldSkipClass(Class<?> clazz) {
             return clazz.getDeclaredAnnotation(Hidden.class) != null;
         }
 
+        @Override
         public boolean shouldSkipField(FieldAttributes f) {
             return f.getAnnotation(Hidden.class) != null;
         }

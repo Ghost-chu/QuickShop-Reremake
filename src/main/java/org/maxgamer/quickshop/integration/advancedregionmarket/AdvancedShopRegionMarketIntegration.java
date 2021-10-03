@@ -100,7 +100,7 @@ public class AdvancedShopRegionMarketIntegration extends QSIntegratedPlugin {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPluginLoad(PluginEnableEvent event) {
-        if (event.getPlugin().getName().equals("ArmShopBridge")) {
+        if ("ArmShopBridge".equals(event.getPlugin().getName())) {
             scanAndUnregister();
         }
     }

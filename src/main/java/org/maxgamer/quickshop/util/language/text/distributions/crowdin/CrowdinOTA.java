@@ -82,11 +82,14 @@ public class CrowdinOTA implements Distribution {
     public String getManifestJson() {
         String url = CROWDIN_OTA_HOST + "manifest.json";
         String data;
-        if (requestCachePool.getIfPresent(url) != null)
+        if (requestCachePool.getIfPresent(url) != null) {
             return requestCachePool.getIfPresent(url);
+        }
         try (Response response = client.newCall(new Request.Builder().get().url(url).build()).execute()) {
             val body = response.body();
-            if (body == null) return null;
+            if (body == null) {
+                return null;
+            }
             data = body.string();
             if (response.code() != 200) {
                 plugin.getLogger().warning("Couldn't get manifest: " + response.code() + ", please report to QuickShop!");
@@ -101,26 +104,31 @@ public class CrowdinOTA implements Distribution {
     }
 
     public Map<String, String> genLanguageMapping() {
-        if (getManifestJson() == null)
+        if (getManifestJson() == null) {
             return new HashMap<>();
+        }
         Map<String, String> mapping = new HashMap<>();
         JsonElement parser = new JsonParser().parse(getManifestJson());
         for (Map.Entry<String, JsonElement> set : parser.getAsJsonObject().getAsJsonObject("language_mapping").entrySet()) {
-            if (!set.getValue().isJsonObject())
+            if (!set.getValue().isJsonObject()) {
                 continue;
+            }
             JsonPrimitive object = set.getValue().getAsJsonObject().getAsJsonPrimitive("locale");
-            if (object == null)
+            if (object == null) {
                 continue;
+            }
             mapping.put(set.getKey(), object.getAsString());
         }
         return mapping;
     }
 
+    @Override
     @NotNull
     public List<String> getAvailableLanguages() {
         Manifest manifest = getManifest();
-        if (manifest == null)
+        if (manifest == null) {
             return Collections.emptyList();
+        }
         List<String> languages = new ArrayList<>();
         Map<String, String> mapping = genLanguageMapping();
         for (String language : manifest.getLanguages()) {
@@ -129,11 +137,13 @@ public class CrowdinOTA implements Distribution {
         return languages;
     }
 
+    @Override
     @NotNull
     public List<String> getAvailableFiles() {
         Manifest manifest = getManifest();
-        if (manifest == null)
+        if (manifest == null) {
             return Collections.emptyList();
+        }
         return manifest.getFiles();
     }
 
@@ -142,15 +152,19 @@ public class CrowdinOTA implements Distribution {
         return getFile(fileCrowdinPath, crowdinLocale, false);
     }
 
+    @Override
     @NotNull
     public String getFile(String fileCrowdinPath, String crowdinLocale, boolean forceFlush) throws Exception {
         Manifest manifest = getManifest();
-        if (manifest == null)
+        if (manifest == null) {
             throw new IllegalStateException("Failed to get project manifest");
-        if (!manifest.getFiles().contains(fileCrowdinPath))
+        }
+        if (!manifest.getFiles().contains(fileCrowdinPath)) {
             throw new IllegalArgumentException("The file " + fileCrowdinPath + " not exists on Crowdin");
-        if (manifest.getCustomLanguages() != null && !manifest.getCustomLanguages().contains(crowdinLocale))
+        }
+        if (manifest.getCustomLanguages() != null && !manifest.getCustomLanguages().contains(crowdinLocale)) {
             throw new IllegalArgumentException("The locale " + crowdinLocale + " not exists on Crowdin");
+        }
         String postProcessingPath = fileCrowdinPath.replace("%locale%", crowdinLocale);
         String pathHash = DigestUtils.sha1Hex(postProcessingPath);
         File metadataFile = new File(Util.getCacheFolder(), "i18n.metadata");
@@ -168,11 +182,13 @@ public class CrowdinOTA implements Distribution {
             Util.debugLog("Reading data from remote server: " + url);
             try (Response response = client.newCall(new Request.Builder().get().url(url).build()).execute()) {
                 val body = response.body();
-                if (body == null)
+                if (body == null) {
                     throw new OTAException(response.code(), ""); // Returns empty string
+                }
                 data = body.string();
-                if (response.code() != 200)
+                if (response.code() != 200) {
                     throw new OTAException(response.code(), data);
+                }
                 Files.write(cachedDataFile.toPath(), data.getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
             } catch (IOException e) {
                 plugin.getLogger().log(Level.WARNING, "Failed to download manifest.json, multi-language system may won't work");

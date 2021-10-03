@@ -80,10 +80,12 @@ public class ReloadManager {
      */
     public void unregister(@NotNull Class<Reloadable> clazz) {
         this.registry.removeIf(reloadable -> {
-            if (reloadable.getReloadable() != null)
+            if (reloadable.getReloadable() != null) {
                 return clazz.equals(reloadable.getReloadable().getClass());
-            if (reloadable.getReloadableMethod() != null)
+            }
+            if (reloadable.getReloadableMethod() != null) {
                 return clazz.equals(reloadable.getReloadableMethod().getDeclaringClass());
+            }
             return false;
         });
     }
@@ -109,18 +111,26 @@ public class ReloadManager {
         Map<ReloadableContainer, ReloadResult> reloadResultMap = new HashMap<>();
         for (ReloadableContainer reloadable : this.registry) {
             if (clazz != null) {
-                if (reloadable.getReloadable() != null)
-                    if (!clazz.equals(reloadable.getReloadable().getClass())) continue;
-                if (reloadable.getReloadableMethod() != null)
-                    if (!clazz.equals(reloadable.getReloadableMethod().getDeclaringClass())) continue;
+                if (reloadable.getReloadable() != null) {
+                    if (!clazz.equals(reloadable.getReloadable().getClass())) {
+                        continue;
+                    }
+                }
+                if (reloadable.getReloadableMethod() != null) {
+                    if (!clazz.equals(reloadable.getReloadableMethod().getDeclaringClass())) {
+                        continue;
+                    }
+                }
             }
             ReloadResult reloadResult;
             try {
-                if (reloadable.getReloadable() != null)
+                if (reloadable.getReloadable() != null) {
                     reloadResult = reloadable.getReloadable().reloadModule();
-                else
+                } else
                     //noinspection ConstantConditions
+                {
                     reloadResult = (ReloadResult) reloadable.getReloadableMethod().invoke(null);
+                }
             } catch (Exception exception) {
                 reloadResult = new ReloadResult(ReloadStatus.EXCEPTION, "Reloading failed", exception);
             }

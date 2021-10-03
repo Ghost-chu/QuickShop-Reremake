@@ -132,8 +132,9 @@ public class TextManager implements Reloadable {
                 override.loadFromString(Util.readToString(localOverrideFile));
                 // Prevent user override important keys
                 for (String key : override.getKeys(true)) {
-                    if (key.equals("language-version") || key.equals("config-version") || key.equals("version"))
+                    if ("language-version".equals(key) || "config-version".equals(key) || "version".equals(key)) {
                         continue;
+                    }
                     configuration.set(key, override.get(key));
                 }
                 locale2ContentMapping.get(languageFileCrowdin).computeIfAbsent(minecraftCode, e -> configuration);
@@ -248,10 +249,11 @@ public class TextManager implements Reloadable {
         private TextList(TextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, String... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
-            if (sender != null)
+            if (sender != null) {
                 this.sender = Bukkit.getPlayer(sender);
-            else
+            } else {
                 this.sender = null;
+            }
             this.mapping = mapping;
             this.bundled = bundled;
             this.path = path;
@@ -276,10 +278,11 @@ public class TextManager implements Reloadable {
         @NotNull
         private List<String> postProcess(@NotNull List<String> text) {
             List<String> texts = new ArrayList<>();
-            for (PostProcessor postProcessor : this.manager.postProcessors)
+            for (PostProcessor postProcessor : this.manager.postProcessors) {
                 for (String s : text) {
                     texts.add(postProcessor.process(s, sender, args));
                 }
+            }
             return texts;
         }
 
@@ -293,10 +296,11 @@ public class TextManager implements Reloadable {
         public List<String> forLocale(@NotNull String locale) {
             JsonConfiguration index = mapping.get(locale);
             if (index == null) {
-                if (locale.equals("en_us")) {
+                if ("en_us".equals(locale)) {
                     List<String> str = fallbackLocal();
-                    if (str.isEmpty())
+                    if (str.isEmpty()) {
                         return Collections.singletonList("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                    }
                     return postProcess(str);
                 } else {
                     return forLocale("en_us");
@@ -330,8 +334,9 @@ public class TextManager implements Reloadable {
          * Send text to the player
          */
         public void send() {
-            if (sender == null)
+            if (sender == null) {
                 return;
+            }
             for (String s : forLocale()) {
                 MsgUtil.sendDirectMessage(sender, s);
             }
@@ -360,10 +365,11 @@ public class TextManager implements Reloadable {
         private Text(TextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, String... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
-            if (sender != null)
+            if (sender != null) {
                 this.sender = Bukkit.getPlayer(sender);
-            else
+            } else {
                 this.sender = null;
+            }
             this.mapping = mapping;
             this.bundled = bundled;
             this.path = path;
@@ -388,8 +394,9 @@ public class TextManager implements Reloadable {
          */
         @NotNull
         private String postProcess(@NotNull String text) {
-            for (PostProcessor postProcessor : this.manager.postProcessors)
+            for (PostProcessor postProcessor : this.manager.postProcessors) {
                 text = postProcessor.process(text, sender, args);
+            }
             return text;
         }
 
@@ -403,18 +410,20 @@ public class TextManager implements Reloadable {
         public String forLocale(@NotNull String locale) {
             JsonConfiguration index = mapping.get(locale);
             if (index == null) {
-                if (locale.equals("en_us")) {
+                if ("en_us".equals(locale)) {
                     String str = fallbackLocal();
-                    if (str == null)
+                    if (str == null) {
                         return "Fallback Missing Language Key: " + path + ", report to QuickShop!";
+                    }
                     return postProcess(str);
                 } else {
                     return forLocale("en_us");
                 }
             } else {
                 String str = index.getString(path);
-                if (str == null)
+                if (str == null) {
                     return "Missing Language Key: " + path;
+                }
                 return postProcess(str);
             }
         }
@@ -437,8 +446,9 @@ public class TextManager implements Reloadable {
          * Send text to the player
          */
         public void send() {
-            if (sender == null)
+            if (sender == null) {
                 return;
+            }
             String lang = forLocale();
             MsgUtil.sendDirectMessage(sender, lang);
             // plugin.getQuickChat().send(sender, lang);

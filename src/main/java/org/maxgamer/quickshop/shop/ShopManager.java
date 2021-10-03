@@ -685,10 +685,11 @@ public class ShopManager implements Reloadable {
             total = e.getTotal(); // Allow addon to set it
         }
         Trader taxAccount;
-        if (shop.getTaxAccount() != null)
+        if (shop.getTaxAccount() != null) {
             taxAccount = new Trader(shop.getTaxAccount().toString(), Bukkit.getOfflinePlayer(shop.getTaxAccount()));
-        else
+        } else {
             taxAccount = this.cacheTaxAccount;
+        }
         EconomyTransaction transaction;
         EconomyTransaction.EconomyTransactionBuilder builder = EconomyTransaction.builder()
                 .core(eco)
@@ -1052,10 +1053,11 @@ public class ShopManager implements Reloadable {
         // SELLING Player -> Shop Owner
         EconomyTransaction transaction;
         Trader taxAccount;
-        if (shop.getTaxAccount() != null)
+        if (shop.getTaxAccount() != null) {
             taxAccount = new Trader(shop.getTaxAccount().toString(), Bukkit.getOfflinePlayer(shop.getTaxAccount()));
-        else
+        } else {
             taxAccount = this.cacheTaxAccount;
+        }
         EconomyTransaction.EconomyTransactionBuilder builder = EconomyTransaction.builder()
                 .allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false))
                 .core(eco)
