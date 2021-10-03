@@ -444,7 +444,7 @@ public class Paste {
 //                .forEach((shop -> finalReport.append(shop).append("\n")));
         finalReport
                 .append("Total: ")
-                .append(plugin.getShopLoader().getShopsInDatabase().size())
+                .append(plugin.getShopManager().getAllShops().size())
                 .append("\n");
         finalReport.append("================================================\n");
 
