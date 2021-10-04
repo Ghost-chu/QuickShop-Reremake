@@ -23,15 +23,15 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
-import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class PlotSquaredIntegrationProxy extends QSIntegratedPlugin {
-    private final QSIntegratedPlugin plotSquared;
+public class PlotSquaredIntegrationProxy extends AbstractQSIntegratedPlugin {
+    private final AbstractQSIntegratedPlugin plotSquared;
 
     public PlotSquaredIntegrationProxy(QuickShop instance) {
         super(instance);

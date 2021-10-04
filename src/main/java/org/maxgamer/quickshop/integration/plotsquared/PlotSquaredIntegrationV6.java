@@ -52,7 +52,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
-import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
+import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
@@ -65,7 +65,7 @@ import java.util.Map;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class PlotSquaredIntegrationV6 extends QSIntegratedPlugin {
+public class PlotSquaredIntegrationV6 extends AbstractQSIntegratedPlugin {
     private boolean whiteList;
     private boolean deleteUntrusted;
     private QuickshopCreateFlag createFlag;

@@ -32,9 +32,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
-import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
@@ -44,7 +44,7 @@ import org.maxgamer.quickshop.util.reload.ReloadStatus;
 import java.util.Map;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class SuperiorSkyblock2Integration extends QSIntegratedPlugin implements Listener {
+public class SuperiorSkyblock2Integration extends AbstractQSIntegratedPlugin implements Listener {
     private boolean onlyOwnerCanCreateShop;
     private boolean deleteShopOnMemberLeave;
 
