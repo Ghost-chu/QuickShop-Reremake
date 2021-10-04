@@ -30,14 +30,14 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
-import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
+import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.List;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class FactionsUUIDIntegration extends QSIntegratedPlugin {
+public class FactionsUUIDIntegration extends AbstractQSIntegratedPlugin {
     private List<String> createFlags;
 
     private List<String> tradeFlags;

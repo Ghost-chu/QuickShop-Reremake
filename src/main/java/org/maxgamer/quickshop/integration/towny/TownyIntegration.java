@@ -39,7 +39,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
-import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
+import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopChunk;
 import org.maxgamer.quickshop.util.Util;
@@ -52,7 +52,7 @@ import java.util.UUID;
 
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class TownyIntegration extends QSIntegratedPlugin implements Listener {
+public class TownyIntegration extends AbstractQSIntegratedPlugin implements Listener {
     private List<TownyFlags> createFlags;
 
     private List<TownyFlags> tradeFlags;

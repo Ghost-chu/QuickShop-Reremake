@@ -27,9 +27,9 @@ import org.maxgamer.quickshop.util.holder.QuickShopInstanceHolder;
 
 
 @IntegrationStage
-public abstract class QSIntegratedPlugin extends QuickShopInstanceHolder implements IntegratedPlugin, Listener {
+public abstract class AbstractQSIntegratedPlugin extends QuickShopInstanceHolder implements IntegratedPlugin, Listener {
 
-    public QSIntegratedPlugin(QuickShop plugin) {
+    public AbstractQSIntegratedPlugin(QuickShop plugin) {
         super(plugin);
     }
 

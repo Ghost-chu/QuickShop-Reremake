@@ -37,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
-import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
+import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
@@ -47,7 +47,7 @@ import java.util.logging.Level;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onLoadAfter)
-public class WorldGuardIntegration extends QSIntegratedPlugin {
+public class WorldGuardIntegration extends AbstractQSIntegratedPlugin {
     private final StateFlag createFlag = createOrGet("quickshop-create", false);
     private final StateFlag tradeFlag = createOrGet("quickshop-trade", true);
     private List<WorldGuardFlags> createFlags;

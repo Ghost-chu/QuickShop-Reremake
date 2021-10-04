@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
-import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
+import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
@@ -38,7 +38,7 @@ import java.util.Map;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class ResidenceIntegration extends QSIntegratedPlugin {
+public class ResidenceIntegration extends AbstractQSIntegratedPlugin {
     private static final String CREATE_FLAG = "quickshop-create";
     private static final String TRADE_FLAG = "quickshop-trade";
     private List<String> createLimits;

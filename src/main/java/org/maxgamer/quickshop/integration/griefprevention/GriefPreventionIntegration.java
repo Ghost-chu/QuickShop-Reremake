@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegrationStage;
-import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
+import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
@@ -47,7 +47,7 @@ import java.util.List;
 import java.util.Map;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class GriefPreventionIntegration extends QSIntegratedPlugin {
+public class GriefPreventionIntegration extends AbstractQSIntegratedPlugin {
 
     final GriefPrevention griefPrevention = GriefPrevention.instance;
     private final List<Flag> tradeLimits = new ArrayList<>(3);
