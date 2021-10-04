@@ -922,7 +922,7 @@ public class ContainerShop implements Shop {
         }
         Map<Location, Shop> shopsInChunk = plugin.getShopManager().getShops(getLocation().getChunk());
 
-        if(shopsInChunk == null || shopsInChunk.isEmpty() || !shopsInChunk.containsValue(this)){
+        if(shopsInChunk == null || !shopsInChunk.containsValue(this)){
             throw new IllegalStateException("Shop must register into ShopManager before loading.");
         }
 
