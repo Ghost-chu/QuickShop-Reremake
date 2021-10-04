@@ -1,17 +1,38 @@
 package org.maxgamer.quickshop.event;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.shop.Shop;
 
 import java.util.UUID;
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
-@Data
 public class ShopTaxAccountGettingEvent extends AbstractQSEvent{
     @Nullable
     private UUID taxAccount;
     private final Shop shop;
+
+    /**
+     * Getting the tax account
+     * @return The tax account, null if tax has been disabled
+     */
+    @Nullable
+    public UUID getTaxAccount() {
+        return taxAccount;
+    }
+
+    /**
+     * Sets the tax account
+     * @param taxAccount The tax account
+     */
+    public void setTaxAccount(@Nullable UUID taxAccount) {
+        this.taxAccount = taxAccount;
+    }
+
+    /**
+     * Gets the shop
+     * @return The shop
+     */
+    public Shop getShop() {
+        return shop;
+    }
 }

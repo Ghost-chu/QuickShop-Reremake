@@ -949,7 +949,7 @@ public class QuickShop extends JavaPlugin {
         this.shopPurger = new ShopPurger(this, false);
         shopPurger.runTaskAsynchronously(this);
         Util.debugLog("Now using display-type: " + AbstractDisplayItem.getNowUsing().name());
-        getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");c
+        getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
     }
 
     private void loadItemMatcher() {
@@ -1053,8 +1053,6 @@ public class QuickShop extends JavaPlugin {
             metrics.addCustomChart(new Metrics.SimplePie("chat_adapter", () -> "Hardcoded Adventure"));
             metrics.addCustomChart(new Metrics.SimplePie("event_adapter", () -> eventAdapter));
             metrics.addCustomChart(new Metrics.SingleLineChart("shops_created_on_all_servers", () -> this.getShopManager().getAllShops().size()));
-            // Exp for stats, maybe i need improve this, so i add this.// Submit now!
-            getLogger().info("Metrics submitted.");
         } else {
             getLogger().info("You have disabled mertics, Skipping...");
         }
