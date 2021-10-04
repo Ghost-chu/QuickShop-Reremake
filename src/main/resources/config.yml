@@ -432,9 +432,9 @@ shop:
   #THIS MAY BREAK SOMETHING!
   allow-free-shop: false
 
-  #Use fast algorithm for ShopManager#getShopIncludeAttached, 
-  #This should drastically improve performance.
-  use-fast-shop-search-algorithm: true
+#  #Use fast algorithm for ShopManager#getShopIncludeAttached,
+#  #This should drastically improve performance.
+#  use-fast-shop-search-algorithm: true
 
   #The shop ongoing fee.
   #If the shop owner doesn't have enough money, the shop will automatically be removed.

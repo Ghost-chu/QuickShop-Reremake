@@ -1921,6 +1921,7 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("purge.banned", true);
             getConfig().set("purge.skip-op", true);
             getConfig().set("purge.return-create-fee", true);
+            getConfig().set("shop.use-fast-shop-search-algorithm",null);
             getConfig().set("config-version", ++selectedVersion);
         }
 
