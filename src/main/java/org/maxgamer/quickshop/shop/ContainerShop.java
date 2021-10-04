@@ -63,9 +63,7 @@ public class ContainerShop implements Shop {
     @JsonUtil.Hidden
     @EqualsAndHashCode.Exclude
     private static final String SHOP_SIGN_PREFIX = "§d§o §r";
-    @EqualsAndHashCode.Exclude
-    @JsonUtil.Hidden
-    private static final String SHOP_SIGN_PATTERN = "§d§o ";
+
     @NotNull
     private final Location location;
     private final YamlConfiguration extra;
@@ -1117,7 +1115,6 @@ public class ContainerShop implements Shop {
             if (b == null) {
                 continue;
             }
-
             BlockState state = PaperLib.getBlockState(b, false).getState();
             if (!(state instanceof Sign)) {
                 continue;
@@ -1126,35 +1123,23 @@ public class ContainerShop implements Shop {
                 continue;
             }
             Sign sign = (Sign) state;
-            String[] lines = sign.getLines();
-            if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3].isEmpty()) {
-                signs.add(sign); //NEW SIGN
+            if(!isShopSign(sign)){
                 continue;
             }
-
-            if (lines[1].startsWith(SHOP_SIGN_PATTERN)) {
-                signs.add(sign);
-            } else {
-                String header = lines[0];
-                String adminShopHeader = plugin.text().of("signs.header", plugin.text().of("admin-shop").forLocale()).forLocale();
-                String signHeaderUsername = plugin.text().of("signs.header", this.ownerName(true)).forLocale();
-                if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
-                    signs.add(sign);
-                    //TEXT SIGN
-                    //continue
-                } else {
-                    adminShopHeader = plugin.text().of("signs.header", plugin.text().of("admin-shop").forLocale(), "").forLocale();
-                    signHeaderUsername = plugin.text().of("signs.header", this.ownerName(true), "").forLocale();
-                    adminShopHeader = ChatColor.stripColor(adminShopHeader).trim();
-                    signHeaderUsername = ChatColor.stripColor(signHeaderUsername).trim();
-                    if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
-                        signs.add(sign);
-                    }
-                }
-            }
+            claimShopSign(sign);
+            signs.add(sign);
         }
 
         return signs;
+    }
+
+    private ShopSignStorage saveToShopSignStorage(){
+       return new ShopSignStorage(getLocation().getWorld().getName(),getLocation().getBlockX(),getLocation().getBlockY(),getLocation().getBlockZ());
+    }
+
+    @Override
+    public void claimShopSign(@NotNull Sign sign){
+        sign.getPersistentDataContainer().set(SHOP_NAMESPACED_KEY,ShopSignPersistentDataType.INSTANCE,saveToShopSignStorage());
     }
 
     /**
@@ -1562,6 +1547,6 @@ public class ContainerShop implements Shop {
 
     @Override
     public ShopInfoStorage saveToInfoStorage() {
-        return new ShopInfoStorage(BlockPosition.of(getLocation()), ShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount());
+        return new ShopInfoStorage(getLocation().getWorld().getName(),BlockPosition.of(getLocation()), ShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount());
     }
 }

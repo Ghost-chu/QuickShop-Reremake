@@ -19,7 +19,9 @@
 
 package org.maxgamer.quickshop.shop;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
@@ -29,12 +31,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.ComponentPackge;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public interface Shop {
+    NamespacedKey SHOP_NAMESPACED_KEY = new NamespacedKey(QuickShop.getInstance(),"shopsign");
+    String SHOP_SIGN_PATTERN = "§d§o ";
     /**
      * Add x ItemStack to the shop inventory
      *
@@ -535,5 +541,63 @@ public interface Shop {
      */
     void setTaxAccount(@Nullable UUID taxAccount);
 
+    /**
+     * Claim a sign as shop sign (modern method)
+     * @param sign The shop sign
+     */
+    void claimShopSign(@NotNull Sign sign);
+
+    /**
+     * Checks if a Sign is a ShopSign
+     * @param sign Target sign
+     * @return Is shop info sign
+     */
+    default boolean isShopSign(@NotNull Sign sign){
+        return isShopSign(sign,null);
+    }
+
+    /**
+     * Checks if a Sign is a ShopSign and also check if a ShopSign is specific shop's ShopSign.
+     * @param sign Target sign
+     * @param shop Target shop (null if you don't want check sign owner)
+     *
+     * @return Is specific shop's ShopSign.
+     */
+    default boolean isShopSign(@NotNull Sign sign, @Nullable Shop shop){
+        // Check for new shop sign
+        String[] lines = sign.getLines();
+        if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3].isEmpty()) {
+            return true;
+        }
+
+        // Check for exists shop sign (modern)
+        if(sign.getPersistentDataContainer().has(SHOP_NAMESPACED_KEY,ShopSignPersistentDataType.INSTANCE)){
+            if(shop != null){
+                ShopSignStorage shopSignStorage = sign.getPersistentDataContainer().get(SHOP_NAMESPACED_KEY,ShopSignPersistentDataType.INSTANCE);
+                return Objects.equals(shopSignStorage, new ShopSignStorage(getLocation().getWorld().getName(),getLocation().getBlockX(),getLocation().getBlockY(),getLocation().getBlockZ()));
+            }
+            return true;
+        }
+
+        // Check for exists shop sign (legacy upgrade)
+        if (lines[1].startsWith(SHOP_SIGN_PATTERN)) {
+            return true;
+        } else {
+            String header = lines[0];
+            String adminShopHeader = QuickShop.getInstance().text().of("signs.header",QuickShop.getInstance().text().of("admin-shop").forLocale()).forLocale();
+            String signHeaderUsername = QuickShop.getInstance().text().of("signs.header", this.ownerName(true)).forLocale();
+            if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
+                return true;
+                //TEXT SIGN
+                //continue
+            } else {
+                adminShopHeader =QuickShop.getInstance().text().of("signs.header", QuickShop.getInstance().text().of("admin-shop").forLocale(), "").forLocale();
+                signHeaderUsername = QuickShop.getInstance().text().of("signs.header", this.ownerName(true), "").forLocale();
+                adminShopHeader = ChatColor.stripColor(adminShopHeader).trim();
+                signHeaderUsername = ChatColor.stripColor(signHeaderUsername).trim();
+                return header.contains(adminShopHeader) || header.contains(signHeaderUsername);
+            }
+        }
+    }
 
 }
