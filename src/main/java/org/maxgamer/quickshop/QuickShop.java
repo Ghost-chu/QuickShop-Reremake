@@ -949,15 +949,7 @@ public class QuickShop extends JavaPlugin {
         this.shopPurger = new ShopPurger(this, false);
         shopPurger.runTaskAsynchronously(this);
         Util.debugLog("Now using display-type: " + AbstractDisplayItem.getNowUsing().name());
-        getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
-
-        // TODO: Test code
-        getDatabaseHelper().insertHistoryRecord(new TestRecord());
-    }
-
-    static class TestRecord {
-        private final String test = "Hello World!";
-        private final ShopChunk chunk = new ShopChunk("hello!", 2, 3);
+        getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");c
     }
 
     private void loadItemMatcher() {
