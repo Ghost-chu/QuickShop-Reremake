@@ -485,7 +485,7 @@ public class ShopManager implements Reloadable {
         }
         String message = net.md_5.bungee.api.ChatColor.stripColor(msg);
         message = ChatColor.stripColor(message);
-        QSHandleChatEvent qsHandleChatEvent = new QSHandleChatEvent(p,msg);
+        QSHandleChatEvent qsHandleChatEvent = new QSHandleChatEvent(p,message);
         qsHandleChatEvent.callEvent();
         message = qsHandleChatEvent.getMessage();
         // Use from the main thread, because Bukkit hates life
