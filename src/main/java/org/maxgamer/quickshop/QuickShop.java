@@ -164,11 +164,6 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private ItemMatcher itemMatcher;
     /**
-     * Language manager, to select which language will loaded.
-     */
-    @Getter
-    private Language language;
-    /**
      * Whether or not to limit players shop amounts
      */
     @Getter
@@ -547,7 +542,6 @@ public class QuickShop extends JavaPlugin {
         if (StringUtils.isEmpty(this.currency)) {
             this.currency = null;
         }
-        language = new Language(this); // Init locale
         if (this.getConfig().getBoolean("logging.enable")) {
             logWatcher = new LogWatcher(this, new File(getDataFolder(), "qs.log"));
         } else {
