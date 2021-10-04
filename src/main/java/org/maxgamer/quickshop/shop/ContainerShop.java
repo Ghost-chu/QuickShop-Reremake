@@ -26,7 +26,10 @@ import me.lucko.helper.serialize.BlockPosition;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.TranslatableComponent;
-import org.bukkit.*;
+import org.bukkit.DyeColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -47,7 +50,6 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.util.ComponentPackge;
-import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.PriceLimiter;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
@@ -60,19 +62,15 @@ import java.util.logging.Level;
  */
 @EqualsAndHashCode
 public class ContainerShop implements Shop {
-    @JsonUtil.Hidden
     @EqualsAndHashCode.Exclude
     @Deprecated
     private static final String SHOP_SIGN_PREFIX = "§d§o §r";
-
     @NotNull
     private final Location location;
     private final YamlConfiguration extra;
     @EqualsAndHashCode.Exclude
-    @JsonUtil.Hidden
     private final QuickShop plugin;
     @EqualsAndHashCode.Exclude
-    @JsonUtil.Hidden
     private final UUID runtimeRandomUniqueId = UUID.randomUUID();
     private ShopModerator moderator;
     private double price;
@@ -82,34 +80,24 @@ public class ContainerShop implements Shop {
     private ItemStack item;
     @Nullable
     @EqualsAndHashCode.Exclude
-    @JsonUtil.Hidden
     private AbstractDisplayItem displayItem;
     @EqualsAndHashCode.Exclude
-    @JsonUtil.Hidden
     private volatile boolean isLoaded = false;
     @EqualsAndHashCode.Exclude
-    @JsonUtil.Hidden
     private volatile boolean isDeleted = false;
     @EqualsAndHashCode.Exclude
-    @JsonUtil.Hidden
     private volatile boolean isLeftShop = false;
     @EqualsAndHashCode.Exclude
-    @JsonUtil.Hidden
     private volatile boolean createBackup = false;
     @EqualsAndHashCode.Exclude
-    @JsonUtil.Hidden
     private InventoryPreview inventoryPreview = null;
     @EqualsAndHashCode.Exclude
-    @JsonUtil.Hidden
     private volatile ContainerShop attachedShop;
     @EqualsAndHashCode.Exclude
-    @JsonUtil.Hidden
     private volatile boolean isDisplayItemChanged = false;
     @EqualsAndHashCode.Exclude
-    @JsonUtil.Hidden
     private volatile boolean dirty;
     @EqualsAndHashCode.Exclude
-    @JsonUtil.Hidden
     private volatile boolean updating = false;
     @Nullable
     private String currency;
