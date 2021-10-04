@@ -82,7 +82,7 @@ public class ShopManager implements Reloadable {
     private Trader cacheUnlimitedShopAccount;
     @Getter
     private PriceLimiter priceLimiter;
-    private boolean useFastShopSearchAlgorithm;
+    //private boolean useFastShopSearchAlgorithm;
     private boolean useOldCanBuildAlgorithm;
     private boolean autoSign;
 
@@ -95,8 +95,8 @@ public class ShopManager implements Reloadable {
     }
 
     private void init() {
-        this.useFastShopSearchAlgorithm =
-                plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
+//        this.useFastShopSearchAlgorithm =
+//                plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
         Util.debugLog("Loading caching tax account...");
         String taxAccount = plugin.getConfig().getString("tax-account", "tax");
         if (!taxAccount.isEmpty()) {
@@ -386,64 +386,64 @@ public class ShopManager implements Reloadable {
             return null;
         }
 
-        if (this.useFastShopSearchAlgorithm) {
+        //if (this.useFastShopSearchAlgorithm) {
             return getShopIncludeAttached_Fast(loc, false, useCache);
-        } else {
-            return getShopIncludeAttached_Classic(loc);
-        }
+      //  } else {
+      //      return getShopIncludeAttached_Classic(loc);
+       // }
     }
 
-    public @Nullable Shop getShopIncludeAttached_Classic(@NotNull Location loc) {
-        @Nullable Shop shop;
-        // Get location's chunk all shops
-        @Nullable Map<Location, Shop> inChunk = getShops(loc.getChunk());
-        // Found some shops in this chunk.
-        if (inChunk != null) {
-            shop = inChunk.get(loc);
-            if (shop != null) {
-                // Okay, shop was founded.
-                return shop;
-            }
-            // Ooops, not founded that shop in this chunk.
-        }
-        @Nullable Block secondHalfShop = Util.getSecondHalf(loc.getBlock());
-        if (secondHalfShop != null) {
-            inChunk = getShops(secondHalfShop.getChunk());
-            if (inChunk != null) {
-                shop = inChunk.get(secondHalfShop.getLocation());
-                if (shop != null) {
-                    // Okay, shop was founded.
-                    return shop;
-                }
-                // Oooops, no any shops matched.
-            }
-        }
-
-        // only check if is sign
-        Block block = loc.getBlock();
-        BlockState state = PaperLib.getBlockState(loc.getBlock(), false).getState();
-        if (state instanceof Sign) {
-            // If that chunk nothing we founded, we should check it is attached.
-            @Nullable Block attachedBlock = Util.getAttached(block);
-            // Check is attached on some block.
-            if (attachedBlock == null) {
-                // Nope
-                return null;
-            } else {
-                // Okay we know it on some blocks.
-                // We need set new location and chunk.
-                inChunk = getShops(attachedBlock.getChunk());
-                // Found some shops in this chunk
-                if (inChunk != null) {
-                    shop = inChunk.get(attachedBlock.getLocation());
-                    // Okay, shop was founded.
-                    return shop;
-                    // Oooops, no any shops matched.
-                }
-            }
-        }
-        return null;
-    }
+//    public @Nullable Shop getShopIncludeAttached_Classic(@NotNull Location loc) {
+//        @Nullable Shop shop;
+//        // Get location's chunk all shops
+//        @Nullable Map<Location, Shop> inChunk = getShops(loc.getChunk());
+//        // Found some shops in this chunk.
+//        if (inChunk != null) {
+//            shop = inChunk.get(loc);
+//            if (shop != null) {
+//                // Okay, shop was founded.
+//                return shop;
+//            }
+//            // Ooops, not founded that shop in this chunk.
+//        }
+//        @Nullable Block secondHalfShop = Util.getSecondHalf(loc.getBlock());
+//        if (secondHalfShop != null) {
+//            inChunk = getShops(secondHalfShop.getChunk());
+//            if (inChunk != null) {
+//                shop = inChunk.get(secondHalfShop.getLocation());
+//                if (shop != null) {
+//                    // Okay, shop was founded.
+//                    return shop;
+//                }
+//                // Oooops, no any shops matched.
+//            }
+//        }
+//
+//        // only check if is sign
+//        Block block = loc.getBlock();
+//        BlockState state = PaperLib.getBlockState(loc.getBlock(), false).getState();
+//        if (state instanceof Sign) {
+//            // If that chunk nothing we founded, we should check it is attached.
+//            @Nullable Block attachedBlock = Util.getAttached(block);
+//            // Check is attached on some block.
+//            if (attachedBlock == null) {
+//                // Nope
+//                return null;
+//            } else {
+//                // Okay we know it on some blocks.
+//                // We need set new location and chunk.
+//                inChunk = getShops(attachedBlock.getChunk());
+//                // Found some shops in this chunk
+//                if (inChunk != null) {
+//                    shop = inChunk.get(attachedBlock.getLocation());
+//                    // Okay, shop was founded.
+//                    return shop;
+//                    // Oooops, no any shops matched.
+//                }
+//            }
+//        }
+//        return null;
+//    }
 
     public void bakeShopRuntimeRandomUniqueIdCache(@NotNull Shop shop) {
         shopRuntimeUUIDCaching.put(shop.getRuntimeRandomUniqueId(), shop);
