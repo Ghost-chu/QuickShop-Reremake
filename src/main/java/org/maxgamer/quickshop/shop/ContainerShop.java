@@ -932,6 +932,12 @@ public class ContainerShop implements Shop {
             Util.debugLog("Dupe load request, canceled.");
             return;
         }
+        Map<Location, Shop> shopsInChunk = plugin.getShopManager().getShops(getLocation().getChunk());
+
+        if(shopsInChunk == null || shopsInChunk.isEmpty() || !shopsInChunk.containsValue(this)){
+            throw new IllegalStateException("Shop must register into ShopManager before loading.");
+        }
+
         ShopLoadEvent shopLoadEvent = new ShopLoadEvent(this);
         if (Util.fireCancellableEvent(shopLoadEvent)) {
             return;
