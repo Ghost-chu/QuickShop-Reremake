@@ -1048,7 +1048,7 @@ public class ContainerShop implements Shop {
             return -1;
         }
         int space = Util.countSpace(this.getInventory(), this.getItem());
-        new ShopInventoryCalculate(this, space, -1).callEvent();
+        new ShopInventoryCalculateEvent(this, space, -1).callEvent();
         return space;
     }
 
@@ -1064,7 +1064,7 @@ public class ContainerShop implements Shop {
             return -1;
         }
         int stock = Util.countItems(this.getInventory(), this.getItem());
-        new ShopInventoryCalculate(this, -1, stock).callEvent();
+        new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
         return stock;
     }
 
