@@ -225,12 +225,17 @@ public class ContainerShop implements Shop {
     @Override
     @Nullable
     public UUID getTaxAccount() {
+        UUID uuid = null;
         if (taxAccount != null) {
-            return taxAccount;
+            uuid = taxAccount;
+        }else {
+            if (plugin.getShopManager().getCacheTaxAccount() != null) {
+                uuid = plugin.getShopManager().getCacheTaxAccount().getUniqueId();
+            }
         }
-        if (plugin.getShopManager().getCacheTaxAccount() != null) {
-            return plugin.getShopManager().getCacheTaxAccount().getUniqueId();
-        }
+        ShopTaxAccountGettingEvent event = new ShopTaxAccountGettingEvent(uuid,this);
+        event.callEvent();
+        uuid = event.getTaxAccount();
         return null;
 
     }

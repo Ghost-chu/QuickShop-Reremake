@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.event;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -30,7 +31,7 @@ public abstract class AbstractQSEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
 
     public AbstractQSEvent() {
-
+        super(!Bukkit.isPrimaryThread());
     }
 
     public AbstractQSEvent(boolean async) {
