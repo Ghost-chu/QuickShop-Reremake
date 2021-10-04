@@ -62,6 +62,7 @@ import java.util.logging.Level;
 public class ContainerShop implements Shop {
     @JsonUtil.Hidden
     @EqualsAndHashCode.Exclude
+    @Deprecated
     private static final String SHOP_SIGN_PREFIX = "§d§o §r";
 
     @NotNull
@@ -699,7 +700,6 @@ public class ContainerShop implements Shop {
         Util.ensureThread(false);
         List<ComponentPackge> lines = new ArrayList<>();
         //Line 1
-        OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
         String statusStringKey = inventoryAvailable() ? "signs.status-available" : "signs.status-unavailable";
         lines.add(new ComponentPackge(TextComponent.fromLegacyText(plugin.text().of("signs.header", this.ownerName(false), plugin.text().of(statusStringKey).forLocale(locale)).forLocale(locale))));
 
@@ -738,6 +738,8 @@ public class ContainerShop implements Shop {
             default:
                 line2 = plugin.text().of(tradingStringKey, Integer.toString(shopRemaining)).forLocale(locale);
         }
+
+        // TODO No-longer use SHOP_SIGN_PREFIX since we use modern storage method. Pending for deletion.
         lines.add(new ComponentPackge(TextComponent.fromLegacyText(SHOP_SIGN_PREFIX + line2 + " ")));
 
         //line 3
