@@ -113,30 +113,10 @@ public class TextManager implements Reloadable {
                     return;
                 }
                 Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
-                JsonConfiguration configuration = new JsonConfiguration();
-                try {
-                    // Load the locale file from local cache if available
-                    // Or load the locale file from remote server if it had updates or not exists.
-                    configuration.loadFromString(distribution.getFile(crowdinFile, crowdinCode));
-                } catch (InvalidConfigurationException exception) {
-                    // Force loading the locale file form remote server because file not valid.
-                    configuration.loadFromString(distribution.getFile(crowdinFile, crowdinCode, true));
-                }
+                JsonConfiguration configuration = getDistributionConfiguration(crowdinFile, crowdinCode);
                 // Loading override text (allow user modification the translation)
-                JsonConfiguration override = new JsonConfiguration();
-                File localOverrideFile = new File(getOverrideFilesFolder(crowdinFile), minecraftCode + ".json");
-                if (!localOverrideFile.exists()) {
-                    localOverrideFile.getParentFile().mkdirs();
-                    localOverrideFile.createNewFile();
-                }
-                override.loadFromString(Util.readToString(localOverrideFile));
-                // Prevent user override important keys
-                for (String key : override.getKeys(true)) {
-                    if ("language-version".equals(key) || "config-version".equals(key) || "version".equals(key)) {
-                        continue;
-                    }
-                    configuration.set(key, override.get(key));
-                }
+                JsonConfiguration override = getOverrideConfiguration(crowdinFile, minecraftCode);
+                applyOverrideConfiguration(configuration,override);
                 locale2ContentMapping.get(crowdinFile).computeIfAbsent(minecraftCode, e -> configuration);
                 Util.debugLog("Locale " + crowdinFile.replace("%locale%", crowdinCode) + " has been successfully loaded");
             } catch (CrowdinOTA.OTAException e) {
@@ -155,6 +135,39 @@ public class TextManager implements Reloadable {
         postProcessors.add(new FillerProcessor());
         postProcessors.add(new PlaceHolderApiProcessor());
         postProcessors.add(new ColorProcessor());
+    }
+
+    private void applyOverrideConfiguration(JsonConfiguration distributionConfiguration, JsonConfiguration overrideConfiguration){
+        for (String key : overrideConfiguration.getKeys(true)) {
+            if ("language-version".equals(key) || "config-version".equals(key) || "version".equals(key)) {
+                continue;
+            }
+            distributionConfiguration.set(key, distributionConfiguration.get(key));
+        }
+    }
+
+    private JsonConfiguration getDistributionConfiguration(String distributionFile, String distributionCode) throws Exception {
+        JsonConfiguration configuration = new JsonConfiguration();
+        try {
+            // Load the locale file from local cache if available
+            // Or load the locale file from remote server if it had updates or not exists.
+            configuration.loadFromString(distribution.getFile(distributionFile, distributionCode));
+        } catch (InvalidConfigurationException exception) {
+            // Force loading the locale file form remote server because file not valid.
+            configuration.loadFromString(distribution.getFile(distributionFile, distributionCode, true));
+        }
+        return configuration;
+    }
+
+    private JsonConfiguration getOverrideConfiguration(String overrideFile, String locale) throws IOException, InvalidConfigurationException {
+        File localOverrideFile = new File(getOverrideFilesFolder(overrideFile), locale + ".json");
+        if (!localOverrideFile.exists()) {
+            localOverrideFile.getParentFile().mkdirs();
+            localOverrideFile.createNewFile();
+        }
+        JsonConfiguration configuration = new JsonConfiguration();
+        configuration.loadFromString(Util.readToString(localOverrideFile));
+        return configuration;
     }
 
     /**
