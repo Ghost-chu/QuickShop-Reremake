@@ -309,7 +309,6 @@
                 <excludes>
                     <exclude>src/main/resources/bin</exclude>
                     <exclude>src/main/resources/lang</exclude>
-                    <exclude>src/main/resources/lang-original</exclude>
                 </excludes>
             </resource>
             <resource>
@@ -321,11 +320,6 @@
                 <targetPath>lang</targetPath>
                 <filtering>false</filtering>
                 <directory>src/main/resources/lang</directory>
-            </resource>
-            <resource>
-                <targetPath>lang-original</targetPath>
-                <filtering>false</filtering>
-                <directory>src/main/resources/lang-original</directory>
             </resource>
         </resources>
     </build>
