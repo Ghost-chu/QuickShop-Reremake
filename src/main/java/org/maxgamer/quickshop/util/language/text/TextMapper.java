@@ -34,6 +34,15 @@ public class TextMapper {
     }
 
     /**
+     * Deploy bundled file
+     * @param distributionPath Distribution Path
+     * @param bundled The values from bundled file
+     */
+    public void deployBundled(@NotNull String distributionPath, @NotNull JsonConfiguration bundled){
+        this.bundledFile2ContentMapping.put(distributionPath,bundled);
+    }
+
+    /**
      * Remove all locales data under specific distribution path
      * @param distributionPath The distribution path
      */
