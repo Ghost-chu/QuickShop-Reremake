@@ -322,9 +322,8 @@ public class HttpRequest implements Closeable {
      * @param out the output stream
      * @return this object
      * @throws java.io.IOException  on I/O error
-     * @throws InterruptedException on interruption
      */
-    public HttpRequest saveContent(OutputStream out) throws IOException, InterruptedException {
+    public HttpRequest saveContent(OutputStream out) throws IOException {
         BufferedInputStream bis;
 
         try {
@@ -492,9 +491,8 @@ public class HttpRequest implements Closeable {
          * @param out the output stream
          * @return this object
          * @throws java.io.IOException  on I/O error
-         * @throws InterruptedException on interruption
          */
-        public BufferedResponse saveContent(OutputStream out) throws IOException, InterruptedException {
+        public BufferedResponse saveContent(OutputStream out) throws IOException {
             out.write(data);
 
             return this;

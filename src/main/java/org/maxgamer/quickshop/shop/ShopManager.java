@@ -127,7 +127,7 @@ public class ShopManager implements Reloadable {
     }
 
     @Override
-    public ReloadResult reloadModule() throws Exception {
+    public ReloadResult reloadModule() {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, this::init);
         return ReloadResult.builder().status(ReloadStatus.SCHEDULED).build();
     }

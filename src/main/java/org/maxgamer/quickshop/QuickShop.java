@@ -1302,7 +1302,7 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 39) {
             getConfig().set("update-sign-when-inventory-moving", true);
             getConfig().set("config-version", 40);
-            selectedVersion = 39;
+            selectedVersion = 40;
         }
         if (selectedVersion == 40) {
             getConfig().set("allow-economy-loan", false);

@@ -70,7 +70,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
     }
 
     @Override
-    public ReloadResult reloadModule() throws Exception {
+    public ReloadResult reloadModule() {
         init();
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }

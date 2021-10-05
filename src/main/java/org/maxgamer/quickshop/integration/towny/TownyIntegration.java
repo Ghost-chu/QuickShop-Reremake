@@ -254,7 +254,7 @@ public class TownyIntegration extends AbstractQSIntegratedPlugin implements List
     }
 
     @Override
-    public ReloadResult reloadModule() throws Exception {
+    public ReloadResult reloadModule() {
         init();
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }

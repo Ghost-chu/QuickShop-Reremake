@@ -241,7 +241,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
     }
 
     @Override
-    public ReloadResult reloadModule() throws Exception {
+    public ReloadResult reloadModule() {
         init();
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }

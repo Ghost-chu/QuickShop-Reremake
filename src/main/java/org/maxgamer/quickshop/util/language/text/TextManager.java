@@ -503,7 +503,7 @@ public class TextManager implements Reloadable {
     }
 
     @Override
-    public ReloadResult reloadModule() throws Exception {
+    public ReloadResult reloadModule() {
         this.load();
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }

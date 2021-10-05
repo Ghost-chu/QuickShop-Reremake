@@ -126,10 +126,10 @@ public class ReloadManager {
             try {
                 if (reloadable.getReloadable() != null) {
                     reloadResult = reloadable.getReloadable().reloadModule();
-                } else
-                //noinspection ConstantConditions
-                {
+                } else if(reloadable.getReloadableMethod() != null){
                     reloadResult = (ReloadResult) reloadable.getReloadableMethod().invoke(null);
+                }else{
+                    reloadResult = new ReloadResult(ReloadStatus.EXCEPTION, "Both reloadable and method not exists", null);
                 }
             } catch (Exception exception) {
                 reloadResult = new ReloadResult(ReloadStatus.EXCEPTION, "Reloading failed", exception);

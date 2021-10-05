@@ -38,13 +38,9 @@ public class HttpCacheLoader extends CacheLoader<URL, Optional<String>> {
      *
      * @param key the non-null key whose value should be loaded
      * @return the value associated with {@code key}; <b>must not be null</b>
-     * @throws Exception            if unable to load the result
-     * @throws InterruptedException if this method is interrupted. {@code InterruptedException} is
-     *                              treated like any other {@code Exception} in all respects except that, when it is caught,
-     *                              the thread's interrupt status is set
      */
     @Override
-    public Optional<String> load(@NotNull URL key) throws Exception {
+    public Optional<String> load(@NotNull URL key) {
         try {
             return Optional.ofNullable(HttpRequest.get(key)
                     .execute()

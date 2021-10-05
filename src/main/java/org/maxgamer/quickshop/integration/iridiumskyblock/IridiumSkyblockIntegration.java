@@ -184,7 +184,7 @@ public class IridiumSkyblockIntegration extends AbstractQSIntegratedPlugin imple
      * @return Reloading success
      */
     @Override
-    public ReloadResult reloadModule() throws Exception {
+    public ReloadResult reloadModule() {
         init();
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
