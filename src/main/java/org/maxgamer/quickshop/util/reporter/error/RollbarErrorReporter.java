@@ -129,7 +129,7 @@ public class RollbarErrorReporter {
                 return;
             }
             if (throwable.getCause() != null) {
-                if (ignoredException.contains(throwable.getCause())) {
+                if (ignoredException.contains(throwable.getCause().getClass())) {
                     return;
                 }
             }
