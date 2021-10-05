@@ -62,6 +62,7 @@ import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.util.config.ConfigProvider;
+import org.maxgamer.quickshop.util.config.ConfigurationFixer;
 import org.maxgamer.quickshop.util.envcheck.*;
 import org.maxgamer.quickshop.util.language.text.TextManager;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
