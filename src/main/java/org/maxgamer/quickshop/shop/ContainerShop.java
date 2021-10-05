@@ -223,8 +223,7 @@ public class ContainerShop implements Shop {
         }
         ShopTaxAccountGettingEvent event = new ShopTaxAccountGettingEvent(uuid,this);
         event.callEvent();
-        uuid = event.getTaxAccount();
-        return uuid;
+        return event.getTaxAccount();
 
     }
 
