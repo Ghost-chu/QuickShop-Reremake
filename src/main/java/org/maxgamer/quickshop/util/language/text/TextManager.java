@@ -28,6 +28,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public class TextManager implements Reloadable {
@@ -35,7 +36,7 @@ public class TextManager implements Reloadable {
     private final Distribution distribution;
     // <File <Locale, Section>>
     private final TextMapper mapper = new TextMapper();
-    private final static String CROWDIN_LANGUAGE_FILE = "/master/src/main/resources/lang/%locale%/messages.json";
+    private final static String CROWDIN_LANGUAGE_FILE = "/master/crowdin/%locale%/messages.json";
     public final List<PostProcessor> postProcessors = new ArrayList<>();
 
 
@@ -60,7 +61,7 @@ public class TextManager implements Reloadable {
         String module = file.getParentFile().getName();
         File moduleFolder = new File(new File(plugin.getDataFolder(), "overrides"), module);
         moduleFolder.mkdirs();
-        File fileFolder = new File(moduleFolder,file.getName());
+        File fileFolder = new File(moduleFolder, file.getName());
         fileFolder.mkdirs();
         return file;
     }
@@ -103,7 +104,7 @@ public class TextManager implements Reloadable {
             try {
                 // Minecraft client use lowercase wi
                 String minecraftCode = crowdinCode.toLowerCase(Locale.ROOT).replace("-", "_");
-                if (!localeEnabled(minecraftCode,enabledLanguagesRegex)) {
+                if (!localeEnabled(minecraftCode, enabledLanguagesRegex)) {
                     Util.debugLog("Locale: " + minecraftCode + " not enabled in configuration.");
                     return;
                 }
@@ -123,6 +124,8 @@ public class TextManager implements Reloadable {
             } catch (Exception e) {
                 // Translation syntax error or other exceptions
                 plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + ".", e);
+            } finally {
+                mapper.deployBundled(crowdinFile,loadBundled(crowdinFile));
             }
         }));
 
@@ -134,14 +137,15 @@ public class TextManager implements Reloadable {
 
     /**
      * Gets specific locale status
+     *
      * @param locale The locale
-     * @param regex The regexes
+     * @param regex  The regexes
      * @return The locale enabled status
      */
-    private boolean localeEnabled(@NotNull String locale, @NotNull List<String> regex){
+    private boolean localeEnabled(@NotNull String locale, @NotNull List<String> regex) {
         for (String languagesRegex : regex) {
             try {
-                if (languagesRegex.matches(locale)) {
+                if (Pattern.matches(Util.createRegexFromGlob(languagesRegex), locale)) {
                     return true;
                 }
             } catch (PatternSyntaxException exception) {
@@ -151,10 +155,12 @@ public class TextManager implements Reloadable {
         return false;
     }
 
+
     /**
      * Merge override data into distribution configuration to override texts
+     *
      * @param distributionConfiguration The configuration that from distribution (will override it)
-     * @param overrideConfiguration The configuration that from local
+     * @param overrideConfiguration     The configuration that from local
      */
     private void applyOverrideConfiguration(@NotNull JsonConfiguration distributionConfiguration, @NotNull JsonConfiguration overrideConfiguration) {
         for (String key : overrideConfiguration.getKeys(true)) {
@@ -167,6 +173,7 @@ public class TextManager implements Reloadable {
 
     /**
      * Getting configuration from distribution platform
+     *
      * @param distributionFile Distribution path
      * @param distributionCode Locale code on distribution platform
      * @return The configuration
@@ -187,10 +194,11 @@ public class TextManager implements Reloadable {
 
     /**
      * Getting user's override configuration for specific distribution path
+     *
      * @param overrideFile The distribution
-     * @param locale the locale
+     * @param locale       the locale
      * @return The override configuration
-     * @throws IOException IOException
+     * @throws IOException                   IOException
      * @throws InvalidConfigurationException File invalid
      */
     private JsonConfiguration getOverrideConfiguration(@NotNull String overrideFile, @NotNull String locale) throws IOException, InvalidConfigurationException {

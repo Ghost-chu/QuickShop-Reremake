@@ -1417,5 +1417,21 @@ public class Util {
         }
         return getNilUniqueId();
     }
+    // https://stackoverflow.com/questions/45321050/java-string-matching-with-wildcards
+    public static String createRegexFromGlob(@NotNull String glob) {
+        StringBuilder out = new StringBuilder("^");
+        for(int i = 0; i < glob.length(); ++i) {
+            final char c = glob.charAt(i);
+            switch(c) {
+                case '*': out.append(".*"); break;
+                case '?': out.append('.'); break;
+                case '.': out.append("\\."); break;
+                case '\\': out.append("\\\\"); break;
+                default: out.append(c);
+            }
+        }
+        out.append('$');
+        return out.toString();
+    }
 
 }
