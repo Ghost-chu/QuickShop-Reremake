@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.util.language.text;
 
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
+import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -49,15 +50,19 @@ public class TextManager implements Reloadable {
     /**
      * Generate the override files storage path
      *
-     * @param crowdinPath The crowdin file path
+     * @param path The distribution file path
      * @return Override files storage path
      */
+    @SneakyThrows
     @NotNull
-    private File getOverrideFilesFolder(@NotNull String crowdinPath) {
-        File file = new File(crowdinPath);
-        File folder = new File(new File(plugin.getDataFolder(), "overrides"), file.getName() + ".overrides");
-        folder.mkdirs();
-        return folder;
+    private File getOverrideFilesFolder(@NotNull String path) {
+        File file = new File(path);
+        String module = file.getParentFile().getName();
+        File moduleFolder = new File(new File(plugin.getDataFolder(), "overrides"), module);
+        moduleFolder.mkdirs();
+        File fileFolder = new File(moduleFolder,file.getName());
+        fileFolder.mkdirs();
+        return file;
     }
 
     /**
@@ -78,7 +83,7 @@ public class TextManager implements Reloadable {
         JsonConfiguration bundledLang = new JsonConfiguration();
         try {
             File fileObject = new File(file);
-            bundledLang.loadFromString(new String(IOUtils.toByteArray(new InputStreamReader(plugin.getResource("lang-original/" + fileObject.getName())), StandardCharsets.UTF_8)));
+            bundledLang.loadFromString(new String(IOUtils.toByteArray(new InputStreamReader(plugin.getResource("lang/" + fileObject.getName())), StandardCharsets.UTF_8)));
         } catch (IOException | InvalidConfigurationException ex) {
             bundledLang = new JsonConfiguration();
             plugin.getLogger().log(Level.SEVERE, "Cannot load bundled language file from Jar, some strings may missing!", ex);
@@ -127,7 +132,13 @@ public class TextManager implements Reloadable {
         postProcessors.add(new ColorProcessor());
     }
 
-    private boolean localeEnabled(String locale, List<String> regex){
+    /**
+     * Gets specific locale status
+     * @param locale The locale
+     * @param regex The regexes
+     * @return The locale enabled status
+     */
+    private boolean localeEnabled(@NotNull String locale, @NotNull List<String> regex){
         for (String languagesRegex : regex) {
             try {
                 if (locale.matches(languagesRegex)) {
@@ -140,7 +151,12 @@ public class TextManager implements Reloadable {
         return false;
     }
 
-    private void applyOverrideConfiguration(JsonConfiguration distributionConfiguration, JsonConfiguration overrideConfiguration) {
+    /**
+     * Merge override data into distribution configuration to override texts
+     * @param distributionConfiguration The configuration that from distribution (will override it)
+     * @param overrideConfiguration The configuration that from local
+     */
+    private void applyOverrideConfiguration(@NotNull JsonConfiguration distributionConfiguration, @NotNull JsonConfiguration overrideConfiguration) {
         for (String key : overrideConfiguration.getKeys(true)) {
             if ("language-version".equals(key) || "config-version".equals(key) || "version".equals(key)) {
                 continue;
@@ -149,7 +165,14 @@ public class TextManager implements Reloadable {
         }
     }
 
-    private JsonConfiguration getDistributionConfiguration(String distributionFile, String distributionCode) throws Exception {
+    /**
+     * Getting configuration from distribution platform
+     * @param distributionFile Distribution path
+     * @param distributionCode Locale code on distribution platform
+     * @return The configuration
+     * @throws Exception Any errors when getting it
+     */
+    private JsonConfiguration getDistributionConfiguration(@NotNull String distributionFile, @NotNull String distributionCode) throws Exception {
         JsonConfiguration configuration = new JsonConfiguration();
         try {
             // Load the locale file from local cache if available
@@ -162,7 +185,15 @@ public class TextManager implements Reloadable {
         return configuration;
     }
 
-    private JsonConfiguration getOverrideConfiguration(String overrideFile, String locale) throws IOException, InvalidConfigurationException {
+    /**
+     * Getting user's override configuration for specific distribution path
+     * @param overrideFile The distribution
+     * @param locale the locale
+     * @return The override configuration
+     * @throws IOException IOException
+     * @throws InvalidConfigurationException File invalid
+     */
+    private JsonConfiguration getOverrideConfiguration(@NotNull String overrideFile, @NotNull String locale) throws IOException, InvalidConfigurationException {
         File localOverrideFile = new File(getOverrideFilesFolder(overrideFile), locale + ".json");
         if (!localOverrideFile.exists()) {
             localOverrideFile.getParentFile().mkdirs();
