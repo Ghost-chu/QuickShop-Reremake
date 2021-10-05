@@ -36,7 +36,7 @@ public class TextManager implements Reloadable {
     private final Distribution distribution;
     // <File <Locale, Section>>
     private final TextMapper mapper = new TextMapper();
-    private final static String CROWDIN_LANGUAGE_FILE = "/master/crowdin/%locale%/messages.json";
+    private final static String CROWDIN_LANGUAGE_FILE = "/master/crowdin/lang/%locale%/messages.json";
     public final List<PostProcessor> postProcessors = new ArrayList<>();
 
 
@@ -109,6 +109,7 @@ public class TextManager implements Reloadable {
                     return;
                 }
                 Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
+                mapper.deployBundled(crowdinFile,loadBundled(crowdinFile));
                 JsonConfiguration configuration = getDistributionConfiguration(crowdinFile, crowdinCode);
                 // Loading override text (allow user modification the translation)
                 JsonConfiguration override = getOverrideConfiguration(crowdinFile, minecraftCode);
@@ -124,8 +125,6 @@ public class TextManager implements Reloadable {
             } catch (Exception e) {
                 // Translation syntax error or other exceptions
                 plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + ".", e);
-            } finally {
-                mapper.deployBundled(crowdinFile,loadBundled(crowdinFile));
             }
         }));
 

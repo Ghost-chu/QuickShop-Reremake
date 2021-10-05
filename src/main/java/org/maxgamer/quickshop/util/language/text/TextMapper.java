@@ -76,6 +76,7 @@ public class TextMapper {
      */
     public @Nullable JsonConfiguration getBundled(@NotNull String distributionPath){
         return this.bundledFile2ContentMapping.get(distributionPath);
+
     }
     /**
      * Getting locales data under specific distribution data
