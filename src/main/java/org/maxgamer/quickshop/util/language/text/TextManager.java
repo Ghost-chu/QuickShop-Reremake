@@ -141,7 +141,7 @@ public class TextManager implements Reloadable {
     private boolean localeEnabled(@NotNull String locale, @NotNull List<String> regex){
         for (String languagesRegex : regex) {
             try {
-                if (locale.matches(languagesRegex)) {
+                if (languagesRegex.matches(locale)) {
                     return true;
                 }
             } catch (PatternSyntaxException exception) {
