@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.database.AbstractDatabaseCore;
 import org.maxgamer.quickshop.economy.EconomyCore;
-import org.maxgamer.quickshop.util.language.game.GameLanguage;
+import org.maxgamer.quickshop.localization.api.GameLanguage;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 
 /**

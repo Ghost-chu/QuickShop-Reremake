@@ -17,7 +17,7 @@
  *
  */
 
-package org.maxgamer.quickshop.util.language.game;
+package org.maxgamer.quickshop.localization.api;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -49,7 +49,6 @@ public interface GameLanguage {
      * @return In-game string
      */
     @NotNull String getItem(@NotNull ItemStack itemStack);
-
     /**
      * Getting a Material in-game language string
      *

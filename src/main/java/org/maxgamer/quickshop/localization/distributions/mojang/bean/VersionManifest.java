@@ -1,6 +1,6 @@
-package org.maxgamer.quickshop.util.language.game.distributions.bean;
+package org.maxgamer.quickshop.localization.distributions.mojang.bean;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,32 +10,32 @@ import java.util.List;
 @Data
 public class VersionManifest {
 
-    @JsonProperty("latest")
+    @SerializedName("latest")
     private LatestDTO latest;
-    @JsonProperty("versions")
+    @SerializedName("versions")
     private List<VersionsDTO> versions;
 
     @NoArgsConstructor
     @Data
     public static class LatestDTO {
-        @JsonProperty("release")
+        @SerializedName("release")
         private String release;
-        @JsonProperty("snapshot")
+        @SerializedName("snapshot")
         private String snapshot;
     }
 
     @NoArgsConstructor
     @Data
     public static class VersionsDTO {
-        @JsonProperty("id")
+        @SerializedName("id")
         private String id;
-        @JsonProperty("type")
+        @SerializedName("type")
         private String type;
-        @JsonProperty("url")
+        @SerializedName("url")
         private String url;
-        @JsonProperty("time")
+        @SerializedName("time")
         private String time;
-        @JsonProperty("releaseTime")
+        @SerializedName("releaseTime")
         private String releaseTime;
     }
 }

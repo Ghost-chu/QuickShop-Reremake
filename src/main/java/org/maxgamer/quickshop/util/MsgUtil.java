@@ -48,9 +48,9 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.ServiceInjector;
 import org.maxgamer.quickshop.database.WarpedResultSet;
 import org.maxgamer.quickshop.event.ShopControlPanelOpenEvent;
+import org.maxgamer.quickshop.localization.api.GameLanguage;
+import org.maxgamer.quickshop.localization.api.MojangGameLanguageImpl;
 import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.util.language.game.GameLanguage;
-import org.maxgamer.quickshop.util.language.game.MojangGameLanguageImpl;
 import org.maxgamer.quickshop.util.logging.container.PluginGlobalAlertLog;
 
 import java.io.File;
@@ -165,7 +165,7 @@ public class MsgUtil {
     }
 
     public static void loadGameLanguage(@NotNull String languageCode) {
-        gameLanguage = ServiceInjector.getGameLanguage(new MojangGameLanguageImpl(plugin, languageCode));
+        gameLanguage = ServiceInjector.getGameLanguage(new MojangGameLanguageImpl(plugin).getLocaleLanguage(languageCode));
     }
 
     public static void loadI18nFile() {

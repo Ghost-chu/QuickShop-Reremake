@@ -1,6 +1,6 @@
-package org.maxgamer.quickshop.util.language.game.distributions.bean;
+package org.maxgamer.quickshop.localization.distributions.mojang.bean;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,63 +10,63 @@ import java.util.List;
 @Data
 public class GameManifest {
 
-    @JsonProperty("arguments")
+    @SerializedName("arguments")
     private ArgumentsDTO arguments;
-    @JsonProperty("assetIndex")
+    @SerializedName("assetIndex")
     private AssetIndexDTO assetIndex;
-    @JsonProperty("assets")
+    @SerializedName("assets")
     private String assets;
-    @JsonProperty("complianceLevel")
+    @SerializedName("complianceLevel")
     private Integer complianceLevel;
-    @JsonProperty("downloads")
+    @SerializedName("downloads")
     private DownloadsDTO downloads;
-    @JsonProperty("id")
+    @SerializedName("id")
     private String id;
-    @JsonProperty("javaVersion")
+    @SerializedName("javaVersion")
     private JavaVersionDTO javaVersion;
-    @JsonProperty("libraries")
+    @SerializedName("libraries")
     private List<LibrariesDTO> libraries;
-    @JsonProperty("logging")
+    @SerializedName("logging")
     private LoggingDTO logging;
-    @JsonProperty("mainClass")
+    @SerializedName("mainClass")
     private String mainClass;
-    @JsonProperty("minimumLauncherVersion")
+    @SerializedName("minimumLauncherVersion")
     private Integer minimumLauncherVersion;
-    @JsonProperty("releaseTime")
+    @SerializedName("releaseTime")
     private String releaseTime;
-    @JsonProperty("time")
+    @SerializedName("time")
     private String time;
-    @JsonProperty("type")
+    @SerializedName("type")
     private String type;
 
     @NoArgsConstructor
     @Data
     public static class ArgumentsDTO {
-        @JsonProperty("game")
+        @SerializedName("game")
         private List<String> game;
-        @JsonProperty("jvm")
+        @SerializedName("jvm")
         private List<JvmDTO> jvm;
 
         @NoArgsConstructor
         @Data
         public static class JvmDTO {
-            @JsonProperty("rules")
+            @SerializedName("rules")
             private List<RulesDTO> rules;
-            @JsonProperty("value")
+            @SerializedName("value")
             private List<String> value;
 
             @NoArgsConstructor
             @Data
             public static class RulesDTO {
-                @JsonProperty("action")
+                @SerializedName("action")
                 private String action;
-                @JsonProperty("os")
+                @SerializedName("os")
                 private OsDTO os;
 
                 @NoArgsConstructor
                 @Data
                 public static class OsDTO {
-                    @JsonProperty("name")
+                    @SerializedName("name")
                     private String name;
                 }
             }
@@ -76,71 +76,71 @@ public class GameManifest {
     @NoArgsConstructor
     @Data
     public static class AssetIndexDTO {
-        @JsonProperty("id")
+        @SerializedName("id")
         private String id;
-        @JsonProperty("sha1")
+        @SerializedName("sha1")
         private String sha1;
-        @JsonProperty("size")
+        @SerializedName("size")
         private Integer size;
-        @JsonProperty("totalSize")
+        @SerializedName("totalSize")
         private Integer totalSize;
-        @JsonProperty("url")
+        @SerializedName("url")
         private String url;
     }
 
     @NoArgsConstructor
     @Data
     public static class DownloadsDTO {
-        @JsonProperty("client")
+        @SerializedName("client")
         private ClientDTO client;
-        @JsonProperty("client_mappings")
+        @SerializedName("client_mappings")
         private ClientMappingsDTO clientMappings;
-        @JsonProperty("server")
+        @SerializedName("server")
         private ServerDTO server;
-        @JsonProperty("server_mappings")
+        @SerializedName("server_mappings")
         private ServerMappingsDTO serverMappings;
 
         @NoArgsConstructor
         @Data
         public static class ClientDTO {
-            @JsonProperty("sha1")
+            @SerializedName("sha1")
             private String sha1;
-            @JsonProperty("size")
+            @SerializedName("size")
             private Integer size;
-            @JsonProperty("url")
+            @SerializedName("url")
             private String url;
         }
 
         @NoArgsConstructor
         @Data
         public static class ClientMappingsDTO {
-            @JsonProperty("sha1")
+            @SerializedName("sha1")
             private String sha1;
-            @JsonProperty("size")
+            @SerializedName("size")
             private Integer size;
-            @JsonProperty("url")
+            @SerializedName("url")
             private String url;
         }
 
         @NoArgsConstructor
         @Data
         public static class ServerDTO {
-            @JsonProperty("sha1")
+            @SerializedName("sha1")
             private String sha1;
-            @JsonProperty("size")
+            @SerializedName("size")
             private Integer size;
-            @JsonProperty("url")
+            @SerializedName("url")
             private String url;
         }
 
         @NoArgsConstructor
         @Data
         public static class ServerMappingsDTO {
-            @JsonProperty("sha1")
+            @SerializedName("sha1")
             private String sha1;
-            @JsonProperty("size")
+            @SerializedName("size")
             private Integer size;
-            @JsonProperty("url")
+            @SerializedName("url")
             private String url;
         }
     }
@@ -148,38 +148,38 @@ public class GameManifest {
     @NoArgsConstructor
     @Data
     public static class JavaVersionDTO {
-        @JsonProperty("component")
+        @SerializedName("component")
         private String component;
-        @JsonProperty("majorVersion")
+        @SerializedName("majorVersion")
         private Integer majorVersion;
     }
 
     @NoArgsConstructor
     @Data
     public static class LoggingDTO {
-        @JsonProperty("client")
+        @SerializedName("client")
         private ClientDTO client;
 
         @NoArgsConstructor
         @Data
         public static class ClientDTO {
-            @JsonProperty("argument")
+            @SerializedName("argument")
             private String argument;
-            @JsonProperty("file")
+            @SerializedName("file")
             private FileDTO file;
-            @JsonProperty("type")
+            @SerializedName("type")
             private String type;
 
             @NoArgsConstructor
             @Data
             public static class FileDTO {
-                @JsonProperty("id")
+                @SerializedName("id")
                 private String id;
-                @JsonProperty("sha1")
+                @SerializedName("sha1")
                 private String sha1;
-                @JsonProperty("size")
+                @SerializedName("size")
                 private Integer size;
-                @JsonProperty("url")
+                @SerializedName("url")
                 private String url;
             }
         }
@@ -188,33 +188,33 @@ public class GameManifest {
     @NoArgsConstructor
     @Data
     public static class LibrariesDTO {
-        @JsonProperty("downloads")
+        @SerializedName("downloads")
         private DownloadsDTO downloads;
-        @JsonProperty("name")
+        @SerializedName("name")
         private String name;
-        @JsonProperty("rules")
+        @SerializedName("rules")
         private List<RulesDTO> rules;
-        @JsonProperty("natives")
+        @SerializedName("natives")
         private NativesDTO natives;
-        @JsonProperty("extract")
+        @SerializedName("extract")
         private ExtractDTO extract;
 
         @NoArgsConstructor
         @Data
         public static class DownloadsDTO {
-            @JsonProperty("artifact")
+            @SerializedName("artifact")
             private ArtifactDTO artifact;
 
             @NoArgsConstructor
             @Data
             public static class ArtifactDTO {
-                @JsonProperty("path")
+                @SerializedName("path")
                 private String path;
-                @JsonProperty("sha1")
+                @SerializedName("sha1")
                 private String sha1;
-                @JsonProperty("size")
+                @SerializedName("size")
                 private Integer size;
-                @JsonProperty("url")
+                @SerializedName("url")
                 private String url;
             }
         }
@@ -222,29 +222,29 @@ public class GameManifest {
         @NoArgsConstructor
         @Data
         public static class NativesDTO {
-            @JsonProperty("osx")
+            @SerializedName("osx")
             private String osx;
         }
 
         @NoArgsConstructor
         @Data
         public static class ExtractDTO {
-            @JsonProperty("exclude")
+            @SerializedName("exclude")
             private List<String> exclude;
         }
 
         @NoArgsConstructor
         @Data
         public static class RulesDTO {
-            @JsonProperty("action")
+            @SerializedName("action")
             private String action;
-            @JsonProperty("os")
+            @SerializedName("os")
             private OsDTO os;
 
             @NoArgsConstructor
             @Data
             public static class OsDTO {
-                @JsonProperty("name")
+                @SerializedName("name")
                 private String name;
             }
         }

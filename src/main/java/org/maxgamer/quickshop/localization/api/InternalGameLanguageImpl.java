@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is BukkitGameLanguageImpl.java
+ * This file is a part of project QuickShop, the name is InternalGameLanguageImpl.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,8 +17,9 @@
  *
  */
 
-package org.maxgamer.quickshop.util.language.game;
+package org.maxgamer.quickshop.localization.api;
 
+import lombok.AllArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -27,25 +28,15 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.Util;
 
-import java.util.Objects;
-
-/**
- * A simple impl for GameLanguage
- *
- * @author Ghost_chu
- */
-public class BukkitGameLanguageImpl extends InternalGameLanguageImpl implements GameLanguage {
+@AllArgsConstructor
+public class InternalGameLanguageImpl implements GameLanguage {
     private final QuickShop plugin;
-
-    public BukkitGameLanguageImpl(@NotNull QuickShop plugin) {
-        super(plugin);
-        this.plugin = plugin;
-    }
 
     @Override
     public @NotNull String getName() {
-        return "Bukkit";
+        return plugin.getName();
     }
 
     @Override
@@ -55,26 +46,26 @@ public class BukkitGameLanguageImpl extends InternalGameLanguageImpl implements 
 
     @Override
     public @NotNull String getItem(@NotNull ItemStack itemStack) {
-        return Objects.requireNonNull(itemStack.getItemMeta()).getLocalizedName();
+        return Util.prettifyText(itemStack.getType().name());
     }
 
     @Override
     public @NotNull String getItem(@NotNull Material material) {
-        return super.getItem(material);
+        return Util.prettifyText(material.name());
     }
 
     @Override
     public @NotNull String getPotion(@NotNull PotionEffectType potionEffectType) {
-        return super.getPotion(potionEffectType);
+        return Util.prettifyText(potionEffectType.getName());
     }
 
     @Override
     public @NotNull String getEnchantment(@NotNull Enchantment enchantment) {
-        return super.getEnchantment(enchantment);
+        return Util.prettifyText(enchantment.getKey().getKey());
     }
 
     @Override
     public @NotNull String getEntity(@NotNull EntityType entityType) {
-        return super.getEntity(entityType);
+        return Util.prettifyText(entityType.name());
     }
 }

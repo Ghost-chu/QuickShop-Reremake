@@ -1,6 +1,6 @@
 package org.maxgamer.quickshop.util.language.text.distributions.crowdin.bean;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,13 +11,13 @@ import java.util.List;
 @Data
 public class Manifest {
 
-    @JsonProperty("files")
+    @SerializedName("files")
     private List<String> files;
-    @JsonProperty("languages")
+    @SerializedName("languages")
     private List<String> languages;
-    @JsonProperty("custom_languages")
+    @SerializedName("custom_languages")
     private List<?> customLanguages;
-    @JsonProperty("timestamp")
+    @SerializedName("timestamp")
     private Integer timestamp;
 
 }
