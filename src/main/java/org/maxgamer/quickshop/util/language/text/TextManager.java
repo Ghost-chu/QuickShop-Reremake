@@ -32,8 +32,7 @@ public class TextManager implements Reloadable {
     private final QuickShop plugin;
     private final Distribution distribution;
     // <File <Locale, Section>>
-    private final Map<String, Map<String, JsonConfiguration>> locale2ContentMapping = new HashMap<>();
-    private final Map<String, JsonConfiguration> bundledFile2ContentMapping = new HashMap<>();
+    private final TextMapper mapper = new TextMapper();
     private final static String CROWDIN_LANGUAGE_FILE = "/master/src/main/resources/lang/%locale%/messages.json";
     public final List<PostProcessor> postProcessors = new ArrayList<>();
     private List<String> disabledLanguages = new ArrayList<>();
@@ -65,9 +64,8 @@ public class TextManager implements Reloadable {
      * Reset everything
      */
     private void reset() {
-        locale2ContentMapping.clear();
+        mapper.reset();
         postProcessors.clear();
-        bundledFile2ContentMapping.clear();
         disabledLanguages.clear();
     }
 
@@ -97,11 +95,11 @@ public class TextManager implements Reloadable {
         this.reset();
         disabledLanguages = plugin.getConfig().getStringList("disabled-languages");
         // Initial file mapping
-        locale2ContentMapping.computeIfAbsent(CROWDIN_LANGUAGE_FILE, e -> new HashMap<>()); // Prevent nullportinter exception
-        distribution.getAvailableFiles().forEach(file -> locale2ContentMapping.computeIfAbsent(file, e -> new HashMap<>()));
+        //locale2ContentMapping.computeIfAbsent(CROWDIN_LANGUAGE_FILE, e -> new HashMap<>()); // Prevent nullportinter exception
+        //distribution.getAvailableFiles().forEach(file -> locale2ContentMapping.computeIfAbsent(file, e -> new HashMap<>()));
 
         // Read bundled language files
-        distribution.getAvailableFiles().forEach(crowdinFile -> this.bundledFile2ContentMapping.computeIfAbsent(crowdinFile, e -> loadBundled(crowdinFile)));
+        //distribution.getAvailableFiles().forEach(crowdinFile -> this.bundledFile2ContentMapping.computeIfAbsent(crowdinFile, e -> loadBundled(crowdinFile)));
 
         // Multi File and Multi-Language loader
         distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode -> distribution.getAvailableFiles().parallelStream().forEach(crowdinFile -> {
@@ -116,8 +114,8 @@ public class TextManager implements Reloadable {
                 JsonConfiguration configuration = getDistributionConfiguration(crowdinFile, crowdinCode);
                 // Loading override text (allow user modification the translation)
                 JsonConfiguration override = getOverrideConfiguration(crowdinFile, minecraftCode);
-                applyOverrideConfiguration(configuration,override);
-                locale2ContentMapping.get(crowdinFile).computeIfAbsent(minecraftCode, e -> configuration);
+                applyOverrideConfiguration(configuration, override);
+                mapper.deploy(crowdinFile, minecraftCode, configuration, loadBundled(crowdinFile));
                 Util.debugLog("Locale " + crowdinFile.replace("%locale%", crowdinCode) + " has been successfully loaded");
             } catch (CrowdinOTA.OTAException e) {
                 // Key founds in available locales but not in custom mapping on crowdin platform
@@ -137,7 +135,7 @@ public class TextManager implements Reloadable {
         postProcessors.add(new ColorProcessor());
     }
 
-    private void applyOverrideConfiguration(JsonConfiguration distributionConfiguration, JsonConfiguration overrideConfiguration){
+    private void applyOverrideConfiguration(JsonConfiguration distributionConfiguration, JsonConfiguration overrideConfiguration) {
         for (String key : overrideConfiguration.getKeys(true)) {
             if ("language-version".equals(key) || "config-version".equals(key) || "version".equals(key)) {
                 continue;
@@ -178,7 +176,7 @@ public class TextManager implements Reloadable {
      * @return The text object
      */
     public Text of(@NotNull String path, String... args) {
-        return new Text(this, (CommandSender) null, locale2ContentMapping.get(CROWDIN_LANGUAGE_FILE), bundledFile2ContentMapping.get(CROWDIN_LANGUAGE_FILE), path, args);
+        return new Text(this, (CommandSender) null, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
 
     /**
@@ -190,7 +188,7 @@ public class TextManager implements Reloadable {
      * @return The text object
      */
     public Text of(@Nullable CommandSender sender, @NotNull String path, String... args) {
-        return new Text(this, sender, locale2ContentMapping.get(CROWDIN_LANGUAGE_FILE), bundledFile2ContentMapping.get(CROWDIN_LANGUAGE_FILE), path, args);
+        return new Text(this, sender, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
 
     /**
@@ -202,7 +200,7 @@ public class TextManager implements Reloadable {
      * @return The text object
      */
     public Text of(@Nullable UUID sender, @NotNull String path, String... args) {
-        return new Text(this, sender, locale2ContentMapping.get(CROWDIN_LANGUAGE_FILE), bundledFile2ContentMapping.get(CROWDIN_LANGUAGE_FILE), path, args);
+        return new Text(this, sender, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
 
     /**
@@ -213,7 +211,7 @@ public class TextManager implements Reloadable {
      * @return The text object
      */
     public TextList ofList(@NotNull String path, String... args) {
-        return new TextList(this, (CommandSender) null, locale2ContentMapping.get(CROWDIN_LANGUAGE_FILE), bundledFile2ContentMapping.get(CROWDIN_LANGUAGE_FILE), path, args);
+        return new TextList(this, (CommandSender) null, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
 
     /**
@@ -225,7 +223,7 @@ public class TextManager implements Reloadable {
      * @return The text object
      */
     public TextList ofList(@Nullable UUID sender, @NotNull String path, String... args) {
-        return new TextList(this, sender, locale2ContentMapping.get(CROWDIN_LANGUAGE_FILE), bundledFile2ContentMapping.get(CROWDIN_LANGUAGE_FILE), path, args);
+        return new TextList(this, sender, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
 
     /**
@@ -237,7 +235,7 @@ public class TextManager implements Reloadable {
      * @return The text object
      */
     public TextList ofList(@Nullable CommandSender sender, @NotNull String path, String... args) {
-        return new TextList(this, sender, locale2ContentMapping.get(CROWDIN_LANGUAGE_FILE), bundledFile2ContentMapping.get(CROWDIN_LANGUAGE_FILE), path, args);
+        return new TextList(this, sender, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
 
     public static class TextList {
