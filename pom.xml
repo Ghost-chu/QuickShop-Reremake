@@ -319,7 +319,7 @@
             <resource>
                 <targetPath>lang</targetPath>
                 <filtering>false</filtering>
-                <directory>src/main/resources/lang</directory>
+                <directory>src/main/resources/lang-original</directory>
             </resource>
         </resources>
     </build>
