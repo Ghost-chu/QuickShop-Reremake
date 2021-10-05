@@ -346,7 +346,7 @@ public class DatabaseHelper implements Reloadable {
                         ps.setInt(3, shop.getLocation().getBlockZ());
                         ps.setString(4, shop.getLocation().getWorld().getName());
                         ps.setInt(5, space);
-                        ps.setInt(6, stock);;
+                        ps.setInt(6, stock);
                     }));
             String updateString = "UPDATE "+plugin.getDbPrefix()+"external_cache SET space = ?, stock = ? WHERE x = ? AND y = ? AND z = ? AND world =?";
             manager.addDelayTask(
@@ -356,7 +356,7 @@ public class DatabaseHelper implements Reloadable {
                         ps.setInt(3, shop.getLocation().getBlockX());
                         ps.setInt(4,  shop.getLocation().getBlockY());
                         ps.setInt(5,  shop.getLocation().getBlockZ());
-                        ps.setString(6, shop.getLocation().getWorld().getName());;
+                        ps.setString(6, shop.getLocation().getWorld().getName());
                     }));
         }
 

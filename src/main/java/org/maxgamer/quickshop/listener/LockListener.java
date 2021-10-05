@@ -60,7 +60,7 @@ public class LockListener extends AbstractProtectionListener {
      * @return Reloading success
      */
     @Override
-    public ReloadResult reloadModule() throws Exception {
+    public ReloadResult reloadModule() {
         register();
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }

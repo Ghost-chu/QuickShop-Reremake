@@ -48,7 +48,7 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
     }
 
     @Override
-    public ReloadResult reloadModule() throws Exception {
+    public ReloadResult reloadModule() {
         init();
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }

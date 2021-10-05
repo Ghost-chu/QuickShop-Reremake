@@ -120,7 +120,7 @@ public class WorldListener extends AbstractQSListener {
      * @return Reloading success
      */
     @Override
-    public ReloadResult reloadModule() throws Exception {
+    public ReloadResult reloadModule() {
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 }

@@ -158,7 +158,7 @@ public class PlotSquaredIntegrationV4 extends AbstractQSIntegratedPlugin impleme
      * @return Reloading success
      */
     @Override
-    public ReloadResult reloadModule() throws Exception {
+    public ReloadResult reloadModule() {
         init();
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }

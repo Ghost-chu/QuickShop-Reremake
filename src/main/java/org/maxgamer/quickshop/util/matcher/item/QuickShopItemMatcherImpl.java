@@ -173,7 +173,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
      * @return Reloading success
      */
     @Override
-    public ReloadResult reloadModule() throws Exception {
+    public ReloadResult reloadModule() {
         init();
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }

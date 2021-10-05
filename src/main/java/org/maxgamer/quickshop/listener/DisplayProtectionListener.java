@@ -62,7 +62,7 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
      * @return Reloading success
      */
     @Override
-    public ReloadResult reloadModule() throws Exception {
+    public ReloadResult reloadModule() {
         if (useEnhanceProtection == plugin.getConfig().getBoolean("shop.enchance-display-protect")) {
             return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
         }
