@@ -109,11 +109,13 @@ public class TextManager implements Reloadable {
                     return;
                 }
                 Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
+                // Deploy bundled to mapper
                 mapper.deployBundled(crowdinFile,loadBundled(crowdinFile));
                 JsonConfiguration configuration = getDistributionConfiguration(crowdinFile, crowdinCode);
                 // Loading override text (allow user modification the translation)
                 JsonConfiguration override = getOverrideConfiguration(crowdinFile, minecraftCode);
                 applyOverrideConfiguration(configuration, override);
+                // Deploy distribution to mapper
                 mapper.deploy(crowdinFile, minecraftCode, configuration, loadBundled(crowdinFile));
                 Util.debugLog("Locale " + crowdinFile.replace("%locale%", crowdinCode) + " has been successfully loaded");
             } catch (CrowdinOTA.OTAException e) {
