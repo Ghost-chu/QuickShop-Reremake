@@ -27,6 +27,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.logging.Level;
+import java.util.regex.PatternSyntaxException;
 
 public class TextManager implements Reloadable {
     private final QuickShop plugin;
@@ -35,7 +36,6 @@ public class TextManager implements Reloadable {
     private final TextMapper mapper = new TextMapper();
     private final static String CROWDIN_LANGUAGE_FILE = "/master/src/main/resources/lang/%locale%/messages.json";
     public final List<PostProcessor> postProcessors = new ArrayList<>();
-    private List<String> disabledLanguages = new ArrayList<>();
 
 
     public TextManager(QuickShop plugin) {
@@ -66,7 +66,6 @@ public class TextManager implements Reloadable {
     private void reset() {
         mapper.reset();
         postProcessors.clear();
-        disabledLanguages.clear();
     }
 
     /**
@@ -93,14 +92,14 @@ public class TextManager implements Reloadable {
     public void load() {
         plugin.getLogger().info("Checking for translation updates...");
         this.reset();
-        disabledLanguages = plugin.getConfig().getStringList("disabled-languages");
+        List<String> enabledLanguagesRegex = plugin.getConfig().getStringList("enabled-languages");
         // Multi File and Multi-Language loader
         distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode -> distribution.getAvailableFiles().parallelStream().forEach(crowdinFile -> {
             try {
                 // Minecraft client use lowercase wi
                 String minecraftCode = crowdinCode.toLowerCase(Locale.ROOT).replace("-", "_");
-                if (disabledLanguages.contains(minecraftCode) || disabledLanguages.contains(crowdinCode)) {
-                    Util.debugLog("Locale " + crowdinCode + "(" + minecraftCode + ") has been disabled, skipping.");
+                if (!localeEnabled(minecraftCode,enabledLanguagesRegex)) {
+                    Util.debugLog("Locale: " + minecraftCode + " not enabled in configuration.");
                     return;
                 }
                 Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
@@ -126,6 +125,19 @@ public class TextManager implements Reloadable {
         postProcessors.add(new FillerProcessor());
         postProcessors.add(new PlaceHolderApiProcessor());
         postProcessors.add(new ColorProcessor());
+    }
+
+    private boolean localeEnabled(String locale, List<String> regex){
+        for (String languagesRegex : regex) {
+            try {
+                if (locale.matches(languagesRegex)) {
+                    return true;
+                }
+            } catch (PatternSyntaxException exception) {
+                Util.debugLog("Pattern " + languagesRegex + " invalid, skipping...");
+            }
+        }
+        return false;
     }
 
     private void applyOverrideConfiguration(JsonConfiguration distributionConfiguration, JsonConfiguration overrideConfiguration) {

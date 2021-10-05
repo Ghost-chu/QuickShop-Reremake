@@ -1908,6 +1908,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.use-fast-shop-search-algorithm",null);
             getConfig().set("config-version", ++selectedVersion);
         }
+        if(selectedVersion == 142){
+            getConfig().set("disabled-languages",null);
+            getConfig().set("enabled-languages",Collections.singletonList("*"));
+            getConfig().set("config-version", ++selectedVersion);
+        }
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
