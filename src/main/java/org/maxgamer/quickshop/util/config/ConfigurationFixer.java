@@ -17,10 +17,11 @@
  *
  */
 
-package org.maxgamer.quickshop;
+package org.maxgamer.quickshop.util.config;
 
 import lombok.AllArgsConstructor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.maxgamer.quickshop.QuickShop;
 
 import java.io.File;
 import java.io.IOException;
