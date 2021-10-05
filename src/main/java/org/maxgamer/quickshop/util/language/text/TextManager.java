@@ -94,13 +94,6 @@ public class TextManager implements Reloadable {
         plugin.getLogger().info("Checking for translation updates...");
         this.reset();
         disabledLanguages = plugin.getConfig().getStringList("disabled-languages");
-        // Initial file mapping
-        //locale2ContentMapping.computeIfAbsent(CROWDIN_LANGUAGE_FILE, e -> new HashMap<>()); // Prevent nullportinter exception
-        //distribution.getAvailableFiles().forEach(file -> locale2ContentMapping.computeIfAbsent(file, e -> new HashMap<>()));
-
-        // Read bundled language files
-        //distribution.getAvailableFiles().forEach(crowdinFile -> this.bundledFile2ContentMapping.computeIfAbsent(crowdinFile, e -> loadBundled(crowdinFile)));
-
         // Multi File and Multi-Language loader
         distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode -> distribution.getAvailableFiles().parallelStream().forEach(crowdinFile -> {
             try {
