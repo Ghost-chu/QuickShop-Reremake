@@ -10,6 +10,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,12 +49,20 @@ public class CrowdinOTA implements Distribution {
                 .build();
 
     }
+    /**
+     * Getting the Crowdin distribution manifest
+     * @return The distribution manifest
+     */
 
     @Nullable
     public Manifest getManifest() {
         return JsonUtil.getGson().fromJson(getManifestJson(), Manifest.class);
     }
 
+    /**
+     * Getting the Crowdin distribution manifest json
+     * @return The distribution manifest json
+     */
     @Nullable
     public String getManifestJson() {
         String url = CROWDIN_OTA_HOST + "manifest.json";
@@ -79,6 +88,11 @@ public class CrowdinOTA implements Distribution {
         return data;
     }
 
+    /**
+     * Getting crowdin language mapping (crowdin code -> minecraft code)
+     * Can be set on Crowdin platform
+     * @return The language mapping
+     */
     public Map<String, String> genLanguageMapping() {
         if (getManifestJson() == null) {
             return new HashMap<>();
@@ -98,6 +112,10 @@ public class CrowdinOTA implements Distribution {
         return mapping;
     }
 
+    /**
+     * Getting all languages available on crowdin, so we can use that as the key to read language mapping.
+     * @return The languages available
+     */
     @Override
     @NotNull
     public List<String> getAvailableLanguages() {
@@ -132,39 +150,43 @@ public class CrowdinOTA implements Distribution {
     @NotNull
     public String getFile(String fileCrowdinPath, String crowdinLocale, boolean forceFlush) throws Exception {
         Manifest manifest = getManifest();
-        if (manifest == null) {
-            throw new IllegalStateException("Failed to get project manifest");
-        }
-        if (!manifest.getFiles().contains(fileCrowdinPath)) {
-            throw new IllegalArgumentException("The file " + fileCrowdinPath + " not exists on Crowdin");
-        }
-        if (manifest.getCustomLanguages() != null && !manifest.getCustomLanguages().contains(crowdinLocale)) {
-            throw new IllegalArgumentException("The locale " + crowdinLocale + " not exists on Crowdin");
-        }
+        // Validate
+        Validate.notNull(manifest,"Manifest cannot be null");
+        Validate.isTrue(manifest.getFiles().contains(fileCrowdinPath),"Requested file not exists on Crowdin");
+        Validate.notNull(manifest.getCustomLanguages(),"Crowdin custom languages payload incorrect");
+        Validate.isTrue(manifest.getCustomLanguages().contains(crowdinLocale),"Requested locale "+crowdinLocale+" not exists on Crowdin");
+        // Post path (replaced with locale code)
         String postProcessingPath = fileCrowdinPath.replace("%locale%", crowdinLocale);
+        // Create path hash to store the file
         String pathHash = DigestUtils.sha1Hex(postProcessingPath);
+        // Reading metadata
         File metadataFile = new File(Util.getCacheFolder(), "i18n.metadata");
         YamlConfiguration cacheMetadata = YamlConfiguration.loadConfiguration(metadataFile);
+        // Reading cloud timestamp
         long localeTimestamp = cacheMetadata.getLong(pathHash + ".timestamp");
+        // Reading locale cache
         File cachedDataFile = new File(Util.getCacheFolder(), pathHash);
         String data = null;
+        // Getting local cache
         if (cachedDataFile.exists()) {
             Util.debugLog("Reading data from local cache: " + cachedDataFile.getCanonicalPath());
             data = Util.readToString(cachedDataFile);
         }
         // invalidate cache, flush it
+        // force flush required OR local cache not exists OR outdated
         if (forceFlush || data == null || localeTimestamp != manifest.getTimestamp()) {
             String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);
             Util.debugLog("Reading data from remote server: " + url);
             try (Response response = client.newCall(new Request.Builder().get().url(url).build()).execute()) {
                 val body = response.body();
                 if (body == null) {
-                    throw new OTAException(response.code(), ""); // Returns empty string
+                    throw new OTAException(response.code(), ""); // Returns empty string (failed to getting content)
                 }
                 data = body.string();
                 if (response.code() != 200) {
                     throw new OTAException(response.code(), data);
                 }
+                // save to local cache file
                 Files.write(cachedDataFile.toPath(), data.getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
             } catch (IOException e) {
                 plugin.getLogger().log(Level.WARNING, "Failed to download manifest.json, multi-language system may won't work");
