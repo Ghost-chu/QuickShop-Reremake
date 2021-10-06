@@ -129,7 +129,7 @@
     "now-buying": "&dBUYING&a numera&e{0}",
     "now-selling": "&bSELLING&a numera&e{0}",
     "cleaning": "&aTar bort tomma butiker...",
-    "reloading": "&aConfiguration reloaded. &eSome changes may require reboot to affect. \n&7(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won't crashed.)",
+    "reloading": "&aKonfiguration laddad. &eVissa ändringar kan kräva omstart för att påverka. \n&7(Notis: Laddningsbeteende har ändrats efter 4.. 9.10, vi nu bara ladda om konfigurationen men inte hela plugin för att säkerställa att servern inte kraschar.)",
     "cleaned": "&aTog bort &{0}&a butiker.",
     "no-type-given": "&cKommando: /qs find <föremål>",
     "no-world-given": "&cVar god ange ett världsnamn",
@@ -178,8 +178,8 @@
       "freeze": "&eInaktivera eller aktivera butikshandel",
       "lock": "&eVäxla butikens låsstatus",
       "taxaccount": "&eAnge skattekontot som butiken använder",
-      "toggledisplay": "&eToggle the shop display item status",
-      "purge": "&aStart the shop purge task in background"
+      "toggledisplay": "&eVäxla butikens status för visningsobjekt",
+      "purge": "&aStarta butikens rensningsuppgifter i bakgrunden"
     },
     "disabled": "&cDetta kommando är inaktiverat: &e{0}",
     "feature-not-enabled": "Funktionen är inte aktiverad i konfigurationsfilen."
@@ -322,7 +322,7 @@
   "backup-success": "&aBackup framgångsrik.",
   "console-only": "&cDetta kommando kan endast exekveras av Konsolen.",
   "console-only-danger": "&cDetta är ett farligt kommando, varför endast konsolen kan exekvera det.",
-  "clean-warning": "&eThis command will purge &call &eshops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
+  "clean-warning": "&eDetta kommando kommer att rensa &ebutiker som är skadade eller skapade i otillåtna världar eller säljer/köper otillåtna föremål eller &c&lEXISTERAR I OLADDADE VÄRLDAR&e. Se till att du har full säkerhetskopiering av dina butikers data och använd &b/qs cleanghost confirm &eför att fortsätta.",
   "shop-creation-failed": "&cSkapandet av butiken misslyckades, kontakta serveradministratören.",
   "shop-owner-self-trade": "&eYou handlar med din egen butik, så du kanske inte kommer att få något saldo.",
   "chest-title": "QuickShop-butik",
@@ -331,17 +331,17 @@
   "unlimited-shop-owner-keeped": "&eObservera: Butiksägaren är fortfarande ägare av obegränsad butik, du behöver själv byta ny butiksägare igen.",
   "server-crash-warning": "&cServer kan krascha efter körning av /qs reload om du ersätter/tar bort QuickShop plugin Jar-fil medan servern körs.",
   "reloading-status": {
-    "success": "&aReload completed without any errors.",
-    "require-restart": "&aReload completed. &e(Some changes require server restart to affect)",
-    "failed": "&cReload failed, check the server console",
-    "scheduled": "&aReload completed. &7(Some changes required a while to affect)"
+    "success": "&aOmladdning slutförd utan några fel.",
+    "require-restart": "&aOmladdning slutförd. &(Vissa ändringar kräver att servern startar om för att påverka)",
+    "failed": "&cReload misslyckades, kontrollera serverkonsolen",
+    "scheduled": "&aOmladdning slutförd. &(Vissa ändringar kräver att servern startar om för att påverka)"
   },
-  "client-language-changed": "&aQuickShop detected your client language setting has been changed, we're now using {0} locale for you.",
-  "client-language-unsupported": "&eQuickShop doesn't support your client language, we're fallback to {0} locale now.",
+  "client-language-changed": "&aQuickShop upptäckte att ditt klientspråk har ändrats, vi använder nu {0} språk för dig.",
+  "client-language-unsupported": "&eQuickShop stöder inte ditt klientspråk, vi återgår till {0} språk nu.",
   "taxaccount-set": "&aDenna butiks momskonto har satts till &e{0}",
   "taxaccount-unset": "&aDenna butiks momskonto följer nu serverns globala inställningar.",
   "taxaccount-invalid": "&cAngivet konto är ogiltigt, ange ett giltigt spelarnamn eller uuid(med bindestreck).",
-  "display-turn-on": "&aSuccessfully turn on the shop display.",
-  "display-turn-off": "&aSuccessfully turn off the shop display.",
-  "shop-purged-start": "&aShop purge started, check the console for details."
+  "display-turn-on": "&aLyckades aktivera butiksdisplayen.",
+  "display-turn-off": "&aLyckades aktivera butiksdisplayen.",
+  "shop-purged-start": "&aShop rensning startade, kontrollera konsolen för detaljer."
 }
