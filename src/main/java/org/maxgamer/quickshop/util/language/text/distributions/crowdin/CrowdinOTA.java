@@ -36,15 +36,13 @@ public class CrowdinOTA implements Distribution {
             .recordStats()
             .build();
     private final QuickShop plugin;
-    // private final File cacheFolder;
-    // private final okhttp3.Cache cache;
     private final OkHttpClient client;
-    //  private final OkHttpClient clientNoCache;
 
     public CrowdinOTA(QuickShop plugin) {
         this.plugin = plugin;
         Util.getCacheFolder().mkdirs();
         this.client = new OkHttpClient.Builder()
+                .cache(new okhttp3.Cache(new File(Util.getCacheFolder(), "okhttp"), 50L * 1024L * 1024L))
                 .build();
 
     }
