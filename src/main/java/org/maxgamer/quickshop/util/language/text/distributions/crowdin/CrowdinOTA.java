@@ -6,7 +6,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import lombok.*;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -14,6 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.HttpUtil;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.language.text.distributions.Distribution;
@@ -36,14 +36,10 @@ public class CrowdinOTA implements Distribution {
             .recordStats()
             .build();
     private final QuickShop plugin;
-    private final OkHttpClient client;
 
     public CrowdinOTA(QuickShop plugin) {
         this.plugin = plugin;
         Util.getCacheFolder().mkdirs();
-        this.client = new OkHttpClient.Builder()
-                .cache(new okhttp3.Cache(new File(Util.getCacheFolder(), "okhttp"), 50L * 1024L * 1024L))
-                .build();
 
     }
     /**
@@ -67,7 +63,7 @@ public class CrowdinOTA implements Distribution {
         if (requestCachePool.getIfPresent(url) != null) {
             return requestCachePool.getIfPresent(url);
         }
-        try (Response response = client.newCall(new Request.Builder().get().url(url).build()).execute()) {
+        try (Response response = HttpUtil.instance().getClient().newCall(new Request.Builder().get().url(url).build()).execute()) {
             val body = response.body();
             if (body == null) {
                 return null;
@@ -176,7 +172,7 @@ public class CrowdinOTA implements Distribution {
         if (forceFlush || data == null || localeTimestamp != manifest.getTimestamp()) {
             String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);
             Util.debugLog("Reading data from remote server: " + url);
-            try (Response response = client.newCall(new Request.Builder().get().url(url).build()).execute()) {
+            try (Response response = HttpUtil.instance().getClient().newCall(new Request.Builder().get().url(url).build()).execute()) {
                 val body = response.body();
                 if (body == null) {
                     throw new OTAException(response.code(), ""); // Returns empty string (failed to getting content)
