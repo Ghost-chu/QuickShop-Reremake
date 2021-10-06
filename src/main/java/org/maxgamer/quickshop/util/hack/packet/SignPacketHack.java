@@ -12,7 +12,7 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.util.ComponentPackge;
+import org.maxgamer.quickshop.util.ComponentPackage;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class SignPacketHack {
         Validate.isTrue(Bukkit.getPluginManager().isPluginEnabled("BKCommonLib"), "Require BKCommonLib installed!");
     }
 
-    public void sendLines(@NotNull Sign sign, @NotNull List<ComponentPackge> lines, Player player) {
+    public void sendLines(@NotNull Sign sign, @NotNull List<ComponentPackage> lines, Player player) {
         if (player != null) {
             CommonPacket updatePacket = BlockUtil.getUpdatePacket(sign);
             if (updatePacket != null) {
@@ -38,7 +38,7 @@ public class SignPacketHack {
         }
     }
 
-    public void applyToSign(@NotNull CommonPacket updatePacket, @NotNull List<ComponentPackge> lines) {
+    public void applyToSign(@NotNull CommonPacket updatePacket, @NotNull List<ComponentPackage> lines) {
         if (updatePacket.getType() == PacketType.OUT_TILE_ENTITY_DATA) {
             // >= MC 1.10.2
 

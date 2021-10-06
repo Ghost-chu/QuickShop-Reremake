@@ -49,7 +49,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.*;
-import org.maxgamer.quickshop.util.ComponentPackge;
+import org.maxgamer.quickshop.util.ComponentPackage;
 import org.maxgamer.quickshop.util.PriceLimiter;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
@@ -688,12 +688,12 @@ public class ContainerShop implements Shop {
     }
 
     @Override
-    public List<ComponentPackge> getSignText(@NotNull String locale) {
+    public List<ComponentPackage> getSignText(@NotNull String locale) {
         Util.ensureThread(false);
-        List<ComponentPackge> lines = new ArrayList<>();
+        List<ComponentPackage> lines = new ArrayList<>();
         //Line 1
         String statusStringKey = inventoryAvailable() ? "signs.status-available" : "signs.status-unavailable";
-        lines.add(new ComponentPackge(TextComponent.fromLegacyText(plugin.text().of("signs.header", this.ownerName(false), plugin.text().of(statusStringKey).forLocale(locale)).forLocale(locale))));
+        lines.add(new ComponentPackage(TextComponent.fromLegacyText(plugin.text().of("signs.header", this.ownerName(false), plugin.text().of(statusStringKey).forLocale(locale)).forLocale(locale))));
 
         //Line 2
         String tradingStringKey;
@@ -732,20 +732,20 @@ public class ContainerShop implements Shop {
         }
 
         // TODO No-longer use SHOP_SIGN_PREFIX since we use modern storage method. Pending for deletion.
-        lines.add(new ComponentPackge(TextComponent.fromLegacyText(SHOP_SIGN_PREFIX + line2 + " ")));
+        lines.add(new ComponentPackage(TextComponent.fromLegacyText(SHOP_SIGN_PREFIX + line2 + " ")));
 
         //line 3
         if (this.getItem().hasItemMeta() && this.getItem().getItemMeta().hasDisplayName()) {
             TextComponent left = new TextComponent(plugin.text().of("signs.item-left").forLocale());
             TranslatableComponent mediumItem = new TranslatableComponent("item." + getItem().getType().getKey().getNamespace() + "." + getItem().getType().getKey().getKey());
             TextComponent right = new TextComponent(plugin.text().of("signs.item-right").forLocale());
-            lines.add(new ComponentPackge(new ComponentBuilder()
+            lines.add(new ComponentPackage(new ComponentBuilder()
                     .append(left)
                     .append(mediumItem)
                     .append(right)
                     .create()));
         } else {
-            lines.add(new ComponentPackge(new ComponentBuilder().append(TextComponent.fromLegacyText(plugin.text().of("signs.item-left").forLocale()))
+            lines.add(new ComponentPackage(new ComponentBuilder().append(TextComponent.fromLegacyText(plugin.text().of("signs.item-left").forLocale()))
                     .append(TextComponent.fromLegacyText(Util.getItemStackName(getItem())))
                     .append(TextComponent.fromLegacyText(plugin.text().of("signs.item-right").forLocale())).create()));
         }
@@ -759,7 +759,7 @@ public class ContainerShop implements Shop {
         } else {
             line4 = plugin.text().of("signs.price", Util.format(this.getPrice(), this)).forLocale();
         }
-        lines.add(new ComponentPackge(TextComponent.fromLegacyText(line4)));
+        lines.add(new ComponentPackage(TextComponent.fromLegacyText(line4)));
         return lines;
     }
 
@@ -769,7 +769,7 @@ public class ContainerShop implements Shop {
      * @param lines The array of lines to change. Index is line number.
      */
     @Override
-    public void setSignText(@NotNull List<ComponentPackge> lines) {
+    public void setSignText(@NotNull List<ComponentPackage> lines) {
         Util.ensureThread(false);
         List<Sign> signs = this.getSigns();
         for (Sign sign : signs) {

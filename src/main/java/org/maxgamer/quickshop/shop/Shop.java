@@ -32,7 +32,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.util.ComponentPackge;
+import org.maxgamer.quickshop.util.ComponentPackage;
 
 import java.util.List;
 import java.util.Objects;
@@ -187,7 +187,7 @@ public interface Shop {
      * Line 2: Shop Item Name
      * Line 3: Price
      */
-    default List<ComponentPackge> getSignText(String locale) {
+    default List<ComponentPackage> getSignText(String locale) {
         //backward support
         throw new UnsupportedOperationException();
     }
@@ -197,7 +197,7 @@ public interface Shop {
      *
      * @param paramArrayOfString The texts you want set
      */
-    void setSignText(@NotNull List<ComponentPackge> paramArrayOfString);
+    void setSignText(@NotNull List<ComponentPackage> paramArrayOfString);
 
     /**
      * Update shop data to database
