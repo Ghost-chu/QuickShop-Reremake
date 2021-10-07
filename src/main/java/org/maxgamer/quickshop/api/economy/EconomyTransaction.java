@@ -17,7 +17,7 @@
  *
  */
 
-package org.maxgamer.quickshop.economy;
+package org.maxgamer.quickshop.api.economy;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -25,7 +25,7 @@ import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.economy.EconomyCore;
+import org.maxgamer.quickshop.economy.Trader;
 import org.maxgamer.quickshop.event.EconomyCommitEvent;
 import org.maxgamer.quickshop.util.CalculateUtil;
 import org.maxgamer.quickshop.util.JsonUtil;
@@ -46,11 +46,11 @@ public class EconomyTransaction {
     @NotNull
     @JsonUtil.Hidden
     private final EconomyCore core;
-    private final double actualAmount; //
+    private final double actualAmount;
     private final double tax;
     private final Trader taxer;
     private final boolean allowLoan;
-    private final boolean tryingFixBanlanceInsuffient;
+    private final boolean tryingFixBalanceInsufficient;
     @Getter
     private final World world;
     @Getter
@@ -101,11 +101,11 @@ public class EconomyTransaction {
         //For passing Test
         //noinspection ConstantConditions
         if (QuickShop.getInstance() != null) {
-            this.tryingFixBanlanceInsuffient = QuickShop.getInstance().getConfig().getBoolean("trying-fix-banlance-insuffient");
+            this.tryingFixBalanceInsufficient = QuickShop.getInstance().getConfig().getBoolean("trying-fix-banlance-insuffient");
         } else {
-            this.tryingFixBanlanceInsuffient = false;
+            this.tryingFixBalanceInsufficient = false;
         }
-        if (tryingFixBanlanceInsuffient) {
+        if (tryingFixBalanceInsufficient) {
             //Fetch some stupid plugin caching
             if (from != null) {
                 this.core.getBalance(from, world, currency);
@@ -140,7 +140,7 @@ public class EconomyTransaction {
         return this.commit(new TransactionCallback() {
             @Override
             public void onSuccess(@NotNull EconomyTransaction economyTransaction) {
-                if (tryingFixBanlanceInsuffient) {
+                if (tryingFixBalanceInsufficient) {
                     //Fetch some stupid plugin caching
                     if (from != null) {
                         core.getBalance(from, world, currency);
@@ -248,7 +248,7 @@ public class EconomyTransaction {
         DONE
     }
 
-    interface TransactionCallback {
+    public interface TransactionCallback {
         /**
          * Calling while Transaction commit
          *

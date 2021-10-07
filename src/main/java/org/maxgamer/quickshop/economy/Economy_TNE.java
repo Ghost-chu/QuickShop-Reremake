@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.economy;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import net.tnemc.core.TNE;
 import net.tnemc.core.common.api.TNEAPI;
 import net.tnemc.core.common.currency.TNECurrency;
@@ -31,14 +32,15 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.economy.EconomyCore;
+import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class Economy_TNE implements EconomyCore {
+@ToString
+public class Economy_TNE extends AbstractEconomy {
 
     private final QuickShop plugin;
     private boolean allowLoan;
@@ -48,6 +50,7 @@ public class Economy_TNE implements EconomyCore {
     private TNEAPI api;
 
     public Economy_TNE(@NotNull QuickShop plugin) {
+        super(plugin);
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
         init();

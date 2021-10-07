@@ -39,8 +39,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.shop.*;
-import org.maxgamer.quickshop.economy.Economy;
-import org.maxgamer.quickshop.economy.EconomyTransaction;
+import org.maxgamer.quickshop.api.economy.AbstractEconomy;
+import org.maxgamer.quickshop.api.economy.EconomyTransaction;
 import org.maxgamer.quickshop.economy.Trader;
 import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.integration.JavaIntegrationManager;
@@ -672,7 +672,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
     public void actionBuy(
             @NotNull UUID buyer,
             @NotNull Inventory buyerInventory,
-            @NotNull Economy eco,
+            @NotNull AbstractEconomy eco,
             @NotNull Info info,
             @NotNull Shop shop,
             int amount) {
@@ -781,7 +781,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
 
 
     @Deprecated
-    public void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull JavaInfo info,
+    public void actionBuy(@NotNull Player p, @NotNull AbstractEconomy eco, @NotNull JavaInfo info,
                           @NotNull Shop shop, int amount) {
         Util.ensureThread(false);
         actionBuy(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
@@ -1033,7 +1033,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
 
     @Deprecated
     public void actionSell(
-            @NotNull Player p, @NotNull Economy eco, @NotNull JavaInfo info, @NotNull Shop shop,
+            @NotNull Player p, @NotNull AbstractEconomy eco, @NotNull JavaInfo info, @NotNull Shop shop,
             int amount) {
         Util.ensureThread(false);
         actionSell(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
@@ -1042,7 +1042,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
     public void actionSell(
             @NotNull UUID seller,
             @NotNull Inventory sellerInventory,
-            @NotNull Economy eco,
+            @NotNull AbstractEconomy eco,
             @NotNull Info info,
             @NotNull Shop shop,
             int amount) {
@@ -1196,7 +1196,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
             Util.debugLog("Cancel by integrations.");
             return;
         }
-        Economy eco = plugin.getEconomy();
+        AbstractEconomy eco = plugin.getEconomy();
 
         // Get the shop they interacted with
         Shop shop = plugin.getShopManager().getShop(info.getLocation());

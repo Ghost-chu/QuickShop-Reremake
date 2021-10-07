@@ -23,7 +23,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Item;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.economy.Economy;
+import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.api.economy.EconomyCore;
 import org.maxgamer.quickshop.economy.Economy_Vault;
 import org.maxgamer.quickshop.api.shop.Shop;
@@ -48,9 +48,9 @@ public class CollectorAdapter {
         data.put("openinv_hook", plugin.getOpenInvPlugin() == null ? "Disabled" : "Enabled");
         Map<String, String> economy = new HashMap<>();
         try {
-            EconomyCore economyCore = plugin.getEconomy().getCore();
+            EconomyCore economyCore = plugin.getEconomy();
             //noinspection SwitchStatementWithTooFewBranches
-            switch (Economy.getNowUsing()) {
+            switch (AbstractEconomy.getNowUsing()) {
                 case VAULT:
                     economy.put("core", "Vault");
                     economy.put("provider", ((Economy_Vault) economyCore).getProviderName());
@@ -112,7 +112,7 @@ public class CollectorAdapter {
         if (plugin.getEconomy() == null) {
             data.put("economy_core", "Not loaded@Unknown");
         } else {
-            data.put("economy_core", plugin.getEconomy().getCore().getName() + "@" + plugin.getEconomy().getCore().getPlugin().getName());
+            data.put("economy_core", plugin.getEconomy().getName() + "@" + plugin.getEconomy().getPlugin().getName());
         }
         data.put("database_core", plugin.getDatabaseManager().getDatabase().getName() + "@" + plugin.getDatabaseManager().getDatabase().getPlugin().getName());
         data.put("gamelanguage_processor", MsgUtil.gameLanguage.getName() + "@" + MsgUtil.gameLanguage.getPlugin().getName());

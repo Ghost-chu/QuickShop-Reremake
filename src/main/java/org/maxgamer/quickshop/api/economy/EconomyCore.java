@@ -24,14 +24,13 @@ import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.UUID;
 
 /**
  * @author netherfoam Represents an economy.
  */
-public interface EconomyCore extends Reloadable {
+public interface EconomyCore {
     /**
      * Deposits a given amount of money from thin air to the given username.
      *
@@ -94,22 +93,7 @@ public interface EconomyCore extends Reloadable {
      * @param world    The transaction world
      * @return true if success (Payer had enough cash, receiver was able to receive the funds)
      */
-    default boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @NotNull World world, @Nullable String currency) {
-        if (!isValid()) {
-            return false;
-        }
-        if (this.getBalance(from, world, currency) >= amount) {
-            if (this.withdraw(from, amount, world, currency)) {
-                if (this.deposit(to, amount, world, currency)) {
-                    this.deposit(from, amount, world, currency);
-                    return false;
-                }
-                return true;
-            }
-            return false;
-        }
-        return false;
-    }
+    boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @NotNull World world, @Nullable String currency);
 
     /**
      * Withdraws a given amount of money from the given username and turns it to thin air.

@@ -17,7 +17,7 @@
  *
  */
 
-package org.maxgamer.quickshop.economy;
+package org.maxgamer.quickshop.api.economy;
 
 import org.jetbrains.annotations.NotNull;
 

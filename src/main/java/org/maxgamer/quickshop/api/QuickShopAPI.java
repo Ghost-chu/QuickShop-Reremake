@@ -6,6 +6,9 @@ import org.maxgamer.quickshop.api.database.DatabaseHelper;
 import org.maxgamer.quickshop.api.localization.text.TextManager;
 import org.maxgamer.quickshop.api.shop.ItemMatcher;
 import org.maxgamer.quickshop.api.shop.ShopManager;
+import org.maxgamer.quickshop.util.GameVersion;
+
+import java.util.Map;
 
 public interface QuickShopAPI {
 
@@ -28,5 +31,9 @@ public interface QuickShopAPI {
     boolean isPriceChangeRequiresFee();
 
     CommandManager getCommandManager();
+
+    Map<String, Integer> getLimits();
+
+    GameVersion getGameVersion();
 
 }
