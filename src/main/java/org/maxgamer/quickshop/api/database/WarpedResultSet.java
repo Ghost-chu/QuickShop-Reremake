@@ -22,7 +22,7 @@ package org.maxgamer.quickshop.api.database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public interface WarpedResultSet {
+public interface WarpedResultSet extends AutoCloseable {
     void close() throws SQLException;
     ResultSet getResultSet();
 }
