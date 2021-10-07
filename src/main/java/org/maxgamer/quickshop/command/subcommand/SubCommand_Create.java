@@ -30,8 +30,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandHandler;
-import org.maxgamer.quickshop.shop.Info;
-import org.maxgamer.quickshop.shop.ShopAction;
+import org.maxgamer.quickshop.shop.JavaInfo;
+import org.maxgamer.quickshop.api.shop.ShopAction;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.holder.Result;
@@ -148,7 +148,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
 
             // Send creation menu.
             plugin.getShopManager().getActions().put(sender.getUniqueId(),
-                    new Info(b.getLocation(), ShopAction.CREATE, item, b.getRelative(sender.getFacing().getOppositeFace())));
+                    new JavaInfo(b.getLocation(), ShopAction.CREATE, item, b.getRelative(sender.getFacing().getOppositeFace())));
             plugin.getShopManager().handleChat(sender, price);
             return;
         }

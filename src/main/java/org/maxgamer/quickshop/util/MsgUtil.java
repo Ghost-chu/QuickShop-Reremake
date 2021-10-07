@@ -46,7 +46,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.ServiceInjector;
-import org.maxgamer.quickshop.database.WarpedResultSet;
+import org.maxgamer.quickshop.database.JavaWarpedResultSet;
 import org.maxgamer.quickshop.event.ShopControlPanelOpenEvent;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.localization.game.game.GameLanguage;
@@ -285,7 +285,7 @@ public class MsgUtil {
      */
     public static void loadTransactionMessages() {
         OUTGOING_MESSAGES.clear(); // Delete old messages
-        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllMessages(); ResultSet rs = warpRS.getResultSet()) {
+        try (JavaWarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllMessages(); ResultSet rs = warpRS.getResultSet()) {
             while (rs.next()) {
                 String owner = rs.getString("owner");
                 UUID ownerUUID;

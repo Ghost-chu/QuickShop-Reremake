@@ -81,13 +81,13 @@ public abstract class AbstractDatabaseCore {
      *
      * @return Impl name
      */
-    abstract @NotNull String getName();
+    public abstract @NotNull String getName();
 
     /**
      * Getting DatabaseCore owned by
      *
      * @return Owned by
      */
-    abstract @NotNull Plugin getPlugin();
+    public abstract @NotNull Plugin getPlugin();
 
 }

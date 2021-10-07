@@ -25,13 +25,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class WarpedResultSet implements AutoCloseable {
+public class JavaWarpedResultSet implements org.maxgamer.quickshop.api.database.WarpedResultSet,AutoCloseable {
     @Getter
     private final ResultSet resultSet;
     private final DatabaseConnection databaseConnection;
     private final Statement statement;
 
-    public WarpedResultSet(Statement statement, ResultSet resultSet, DatabaseConnection databaseConnection) {
+    public JavaWarpedResultSet(Statement statement, ResultSet resultSet, DatabaseConnection databaseConnection) {
         this.statement = statement;
         this.resultSet = resultSet;
         this.databaseConnection = databaseConnection;

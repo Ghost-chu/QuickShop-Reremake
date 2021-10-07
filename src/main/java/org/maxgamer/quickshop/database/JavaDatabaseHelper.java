@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.database.DatabaseHelper;
 import org.maxgamer.quickshop.api.shop.Shop;
-import org.maxgamer.quickshop.shop.JavaShopModerator;
+import org.maxgamer.quickshop.api.shop.ShopModerator;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
@@ -215,7 +215,7 @@ public class JavaDatabaseHelper implements DatabaseHelper,Reloadable {
             public void edit(PreparedStatement ps) throws SQLException {
                 Location location = shop.getLocation();
                 //plugin.getDB().execute(q, owner, price, Util.serialize(item), x, y, z, world, unlimited, shopType);
-                ps.setString(1, JavaShopModerator.serialize(shop.getModerator()));
+                ps.setString(1, ShopModerator.serialize(shop.getModerator()));
                 ps.setDouble(2, shop.getPrice());
                 ps.setString(3, Util.serialize(shop.getItem()));
                 ps.setInt(4, location.getBlockX());
@@ -280,19 +280,19 @@ public class JavaDatabaseHelper implements DatabaseHelper,Reloadable {
 
     }
 
-    public WarpedResultSet selectAllMessages() throws SQLException {
+    public JavaWarpedResultSet selectAllMessages() throws SQLException {
         return selectTable("messages");
     }
 
-    public WarpedResultSet selectTable(String table) throws SQLException {
+    public JavaWarpedResultSet selectTable(String table) throws SQLException {
         DatabaseConnection databaseConnection = manager.getDatabase().getConnection();
         Statement st = databaseConnection.get().createStatement();
         String selectAllShops = "SELECT * FROM " + plugin.getDbPrefix() + table;
         ResultSet resultSet = st.executeQuery(selectAllShops);
-        return new WarpedResultSet(st, resultSet, databaseConnection);
+        return new JavaWarpedResultSet(st, resultSet, databaseConnection);
     }
 
-    public WarpedResultSet selectAllShops() throws SQLException {
+    public JavaWarpedResultSet selectAllShops() throws SQLException {
         return selectTable("shops");
     }
 

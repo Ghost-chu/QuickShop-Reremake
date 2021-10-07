@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.database.DataType;
-import org.maxgamer.quickshop.database.WarpedResultSet;
 
 import java.sql.SQLException;
 import java.util.UUID;
