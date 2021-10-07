@@ -8,8 +8,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.shop.Info;
-import org.maxgamer.quickshop.shop.JavaShopChunk;
 
 import java.util.*;
 
@@ -30,7 +28,7 @@ public interface ShopManager {
      *
      * @return a map of World - Chunk - Shop
      */
-    @NotNull Map<String, Map<JavaShopChunk, Map<Location, Shop>>> getShops();
+    @NotNull Map<String, Map<ShopChunk, Map<Location, Shop>>> getShops();
 
     /**
      * Returns a new shop iterator object, allowing iteration over shops easily, instead of sorting
@@ -63,7 +61,7 @@ public interface ShopManager {
      * @param world The name of the world (case sensitive) to get the list of shops from
      * @return a map of Chunk - Shop
      */
-    @Nullable Map<JavaShopChunk, Map<Location, Shop>> getShops(@NotNull String world);
+    @Nullable Map<ShopChunk, Map<Location, Shop>> getShops(@NotNull String world);
 
     /**
      * Create a shop use Shop and Info object.

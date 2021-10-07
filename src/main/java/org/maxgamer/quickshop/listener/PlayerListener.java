@@ -38,10 +38,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.economy.Economy;
-import org.maxgamer.quickshop.shop.Info;
+import org.maxgamer.quickshop.api.shop.Info;
 import org.maxgamer.quickshop.api.shop.Shop;
-import org.maxgamer.quickshop.shop.ShopAction;
+import org.maxgamer.quickshop.api.shop.ShopAction;
+import org.maxgamer.quickshop.economy.Economy;
+import org.maxgamer.quickshop.shop.JavaInfo;
 import org.maxgamer.quickshop.util.InteractUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -233,7 +234,7 @@ public class PlayerListener extends AbstractQSListener {
             }
             // Add the new action
             Map<UUID, Info> actions = plugin.getShopManager().getActions();
-            Info info = new Info(shop.getLocation(), ShopAction.BUY, null, null, shop);
+            Info info = new JavaInfo(shop.getLocation(), ShopAction.BUY, null, null, shop);
             actions.put(p.getUniqueId(), info);
         }
         // Handles creating shops
@@ -286,7 +287,7 @@ public class PlayerListener extends AbstractQSListener {
                 last = n;
             }
             // Send creation menu.
-            final Info info = new Info(b.getLocation(), ShopAction.CREATE, e.getItem(), last);
+            final JavaInfo info = new JavaInfo(b.getLocation(), ShopAction.CREATE, e.getItem(), last);
 
             plugin.getShopManager().getActions().put(p.getUniqueId(), info);
             plugin.text().of(p, "how-much-to-trade-for", Util.getItemStackName(Objects.requireNonNull(e.getItem())), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1)).send();

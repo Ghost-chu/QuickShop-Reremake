@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is PermissionProvider.java
+ * This file is a part of project QuickShop, the name is WarpedResultSet.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,27 +17,12 @@
  *
  */
 
-package org.maxgamer.quickshop.api.permission;
+package org.maxgamer.quickshop.api.database;
 
-import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public interface PermissionProvider {
-    /**
-     * Test the sender has special permission
-     *
-     * @param sender     CommandSender
-     * @param permission The permission want to check
-     * @return hasPermission
-     */
-    boolean hasPermission(@NotNull CommandSender sender, @NotNull String permission);
-
-    /**
-     * Get permission provider name
-     *
-     * @return The name of permission provider
-     */
-    @NotNull
-    String getName();
-
+public interface WarpedResultSet {
+    void close() throws SQLException;
+    ResultSet getResultSet();
 }

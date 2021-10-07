@@ -32,8 +32,9 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.shop.*;
 import org.maxgamer.quickshop.api.chat.ComponentPackage;
+import org.maxgamer.quickshop.shop.ShopSignPersistentDataType;
+import org.maxgamer.quickshop.shop.ShopSignStorage;
 
 import java.util.List;
 import java.util.Objects;
@@ -246,14 +247,14 @@ public interface Shop {
      * @return Shop moderators
      */
     @NotNull
-    JavaShopModerator getModerator();
+    ShopModerator getModerator();
 
     /**
      * Set new shop's moderators
      *
      * @param shopModerator New moderators team you want set
      */
-    void setModerator(@NotNull JavaShopModerator shopModerator);
+    void setModerator(@NotNull ShopModerator shopModerator);
 
     /**
      * Get shop's owner UUID

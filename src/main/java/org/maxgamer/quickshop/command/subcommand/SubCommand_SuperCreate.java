@@ -28,8 +28,8 @@ import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandHandler;
-import org.maxgamer.quickshop.shop.Info;
-import org.maxgamer.quickshop.shop.ShopAction;
+import org.maxgamer.quickshop.shop.JavaInfo;
+import org.maxgamer.quickshop.api.shop.ShopAction;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.Collections;
@@ -62,7 +62,7 @@ public class SubCommand_SuperCreate implements CommandHandler<Player> {
                 return;
             }
             // Send creation menu.
-            final Info info = new Info(b.getLocation(), ShopAction.CREATE, sender.getInventory().getItemInMainHand(), b.getRelative(sender.getFacing().getOppositeFace()));
+            final JavaInfo info = new JavaInfo(b.getLocation(), ShopAction.CREATE, sender.getInventory().getItemInMainHand(), b.getRelative(sender.getFacing().getOppositeFace()));
 
             plugin.getShopManager().getActions().put(sender.getUniqueId(), info);
             plugin.text().of(sender, "how-much-to-trade-for", Util.getItemStackName(item), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.stacks") ? item.getAmount() : 1)).send();

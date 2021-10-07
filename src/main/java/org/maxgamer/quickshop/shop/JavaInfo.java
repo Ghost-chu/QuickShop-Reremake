@@ -26,14 +26,16 @@ import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.api.shop.Info;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.api.shop.ShopAction;
 
 /**
  * A class contains shop's infomations
  */
 @EqualsAndHashCode
 @ToString
-public class Info {
+public class JavaInfo implements Info {
     private final Block last;
     private final Location loc;
     private final boolean dirty;
@@ -41,7 +43,7 @@ public class Info {
     private ItemStack item;
     private Shop shop;
 
-    public Info(
+    public JavaInfo(
             @NotNull Location loc,
             @NotNull ShopAction action,
             @Nullable ItemStack item,
@@ -55,7 +57,7 @@ public class Info {
         this.dirty = true;
     }
 
-    public Info(
+    public JavaInfo(
             @NotNull Location loc,
             @NotNull ShopAction action,
             @Nullable ItemStack item,
@@ -118,7 +120,7 @@ public class Info {
      * @param shop, The need checked with this shop.
      * @return hasChanged
      */
-    boolean hasChanged(@NotNull Shop shop) {
+    public boolean hasChanged(@NotNull Shop shop) {
         if (this.shop.isUnlimited() != shop.isUnlimited()) {
             return true;
         }

@@ -38,10 +38,7 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.shop.PriceLimiterCheckResult;
-import org.maxgamer.quickshop.api.shop.Shop;
-import org.maxgamer.quickshop.api.shop.ShopManager;
-import org.maxgamer.quickshop.api.shop.ShopType;
+import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.economy.Economy;
 import org.maxgamer.quickshop.economy.EconomyTransaction;
 import org.maxgamer.quickshop.economy.Trader;
@@ -65,7 +62,7 @@ import java.util.logging.Level;
  */
 public class JavaShopManager implements ShopManager, Reloadable {
 
-    private final Map<String, Map<JavaShopChunk, Map<Location, Shop>>> shops = Maps.newConcurrentMap();
+    private final Map<String, Map<ShopChunk, Map<Location, Shop>>> shops = Maps.newConcurrentMap();
 
     private final Set<Shop> loadedShops = Sets.newConcurrentHashSet();
 
@@ -172,7 +169,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      *
      * @return a map of World - Chunk - Shop
      */
-    public @NotNull Map<String, Map<JavaShopChunk, Map<Location, Shop>>> getShops() {
+    public @NotNull Map<String, Map<ShopChunk, Map<Location, Shop>>> getShops() {
         return this.shops;
     }
 
@@ -223,7 +220,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
     }
 
     public @Nullable Map<Location, Shop> getShops(@NotNull String world, int chunkX, int chunkZ) {
-        final Map<JavaShopChunk, Map<Location, Shop>> inWorld = this.getShops(world);
+        final Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops(world);
         if (inWorld == null) {
             return null;
         }
@@ -236,7 +233,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      * @param world The name of the world (case sensitive) to get the list of shops from
      * @return a map of Chunk - Shop
      */
-    public @Nullable Map<JavaShopChunk, Map<Location, Shop>> getShops(@NotNull String world) {
+    public @Nullable Map<ShopChunk, Map<Location, Shop>> getShops(@NotNull String world) {
         return this.shops.get(world);
     }
 
@@ -271,6 +268,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      * @param shop The shop object
      * @param info The info object
      */
+    @Override
     public void createShop(@NotNull Shop shop, @NotNull Info info) {
         Util.ensureThread(false);
         Player player = plugin.getServer().getPlayer(shop.getOwner());
@@ -535,7 +533,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      * @param shop  The shop to add
      */
     public void addShop(@NotNull String world, @NotNull Shop shop) {
-        Map<JavaShopChunk, Map<Location, Shop>> inWorld =
+        Map<ShopChunk, Map<Location, Shop>> inWorld =
                 this.getShops()
                         .computeIfAbsent(world, k -> new MapMaker().initialCapacity(3).makeMap());
         // There's no world storage yet. We need to create that map.
@@ -545,7 +543,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
         int x = (int) Math.floor((shop.getLocation().getBlockX()) / 16.0);
         int z = (int) Math.floor((shop.getLocation().getBlockZ()) / 16.0);
         // Get the chunk set from the world info
-        JavaShopChunk shopChunk = new JavaShopChunk(world, x, z);
+        ShopChunk shopChunk = new JavaShopChunk(world, x, z);
         Map<Location, Shop> inChunk =
                 inWorld.computeIfAbsent(shopChunk, k -> new MapMaker().initialCapacity(1).makeMap());
         // That chunk data hasn't been created yet - Create it!
@@ -565,10 +563,10 @@ public class JavaShopManager implements ShopManager, Reloadable {
     public void removeShop(@NotNull Shop shop) {
         Location loc = shop.getLocation();
         String world = Objects.requireNonNull(loc.getWorld()).getName();
-        Map<JavaShopChunk, Map<Location, Shop>> inWorld = this.getShops().get(world);
+        Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops().get(world);
         int x = (int) Math.floor((loc.getBlockX()) / 16.0);
         int z = (int) Math.floor((loc.getBlockZ()) / 16.0);
-        JavaShopChunk shopChunk = new JavaShopChunk(world, x, z);
+        ShopChunk shopChunk = new JavaShopChunk(world, x, z);
         Map<Location, Shop> inChunk = inWorld.get(shopChunk);
         if (inChunk == null) {
             return;
@@ -619,7 +617,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      */
     public @NotNull List<Shop> getAllShops() {
         final List<Shop> shops = new ArrayList<>();
-        for (final Map<JavaShopChunk, Map<Location, Shop>> shopMapData : getShops().values()) {
+        for (final Map<ShopChunk, Map<Location, Shop>> shopMapData : getShops().values()) {
             for (final Map<Location, Shop> shopData : shopMapData.values()) {
                 shops.addAll(shopData.values());
             }
@@ -758,7 +756,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
 
 
     @Deprecated
-    public void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull Info info,
+    public void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull JavaInfo info,
                           @NotNull Shop shop, int amount) {
         Util.ensureThread(false);
         actionBuy(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
@@ -798,7 +796,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
         return taxEvent.getTax();
     }
 
-    public void actionCreate(@NotNull Player p, @NotNull Info info, @NotNull String message,
+    public void actionCreate(@NotNull Player p, Info info, @NotNull String message,
                              boolean bypassProtectionChecks) {
         Util.ensureThread(false);
         if (plugin.getEconomy() == null) {
@@ -1008,7 +1006,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
 
     @Deprecated
     public void actionSell(
-            @NotNull Player p, @NotNull Economy eco, @NotNull Info info, @NotNull Shop shop,
+            @NotNull Player p, @NotNull Economy eco, @NotNull JavaInfo info, @NotNull Shop shop,
             int amount) {
         Util.ensureThread(false);
         actionSell(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
@@ -1157,7 +1155,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
         return false;
     }
 
-    private void actionTrade(@NotNull Player p, @NotNull Info info, @NotNull String message) {
+    private void actionTrade(@NotNull Player p, Info info, @NotNull String message) {
         Util.ensureThread(false);
         if (plugin.getEconomy() == null) {
             MsgUtil.sendDirectMessage(p, "Error: Economy system not loaded, type /qs main command to get details.");
@@ -1366,7 +1364,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
 
     public class ShopIterator implements Iterator<Shop> {
 
-        private final Iterator<Map<JavaShopChunk, Map<Location, Shop>>> worlds;
+        private final Iterator<Map<ShopChunk, Map<Location, Shop>>> worlds;
 
         private Iterator<Map<Location, Shop>> chunks;
 
