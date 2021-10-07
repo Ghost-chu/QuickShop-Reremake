@@ -50,7 +50,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.chat.ComponentPackage;
 import org.maxgamer.quickshop.api.shop.*;
-import org.maxgamer.quickshop.event.*;
+import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 

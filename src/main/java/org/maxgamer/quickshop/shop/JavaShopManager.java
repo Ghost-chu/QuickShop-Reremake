@@ -45,7 +45,7 @@ import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.api.economy.EconomyTransaction;
 import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.economy.Trader;
-import org.maxgamer.quickshop.event.*;
+import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.integration.JavaIntegrationManager;
 import org.maxgamer.quickshop.util.CalculateUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
