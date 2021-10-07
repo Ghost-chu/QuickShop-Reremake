@@ -24,6 +24,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.util.reload.Reloadable;
 
+/**
+ * Integration module
+ */
 public interface IntegratedPlugin extends Reloadable {
     /**
      * Return the integrated plugin name.
