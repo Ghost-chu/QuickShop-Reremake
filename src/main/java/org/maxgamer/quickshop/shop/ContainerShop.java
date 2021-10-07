@@ -485,8 +485,7 @@ public class ContainerShop implements Shop {
             // Delete it from the database
             // Refund if necessary
             if (plugin.getConfig().getBoolean("shop.refund")) {
-                plugin.getEconomy()
-                        .deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"),
+                plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"),
                                 Objects.requireNonNull(getLocation().getWorld()), getCurrency());
             }
             plugin.getShopManager().removeShop(this);

@@ -25,10 +25,11 @@ import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.economy.EconomyTransaction;
+import org.maxgamer.quickshop.api.economy.EconomyTransaction;
 import org.maxgamer.quickshop.economy.Trader;
 import org.maxgamer.quickshop.event.ShopOngoingFeeEvent;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.shop.JavaShopManager;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.WarningSender;
@@ -75,7 +76,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                     if (shop.getTaxAccount() != null) {
                         taxAccount = new Trader(shop.getTaxAccount().toString(), Bukkit.getOfflinePlayer(shop.getTaxAccount()));
                     } else {
-                        taxAccount = plugin.getShopManager().getCacheTaxAccount();
+                        taxAccount = ((JavaShopManager)plugin.getShopManager()).getCacheTaxAccount();
                     }
 
                     ShopOngoingFeeEvent event = new ShopOngoingFeeEvent(shop, shopOwner, cost);

@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.economy;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
@@ -33,7 +34,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.economy.EconomyCore;
+import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
@@ -42,7 +43,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Level;
 
-public class Economy_Vault implements EconomyCore, Listener {
+@ToString
+public class Economy_Vault extends AbstractEconomy implements Listener{
 
     private static final String ERROR_MESSAGE =
             "QuickShop received an error when processing Economy response, THIS NOT A QUICKSHOP FAULT, you might need ask help with your Economy Provider plugin (%s) author.";
@@ -55,6 +57,7 @@ public class Economy_Vault implements EconomyCore, Listener {
 
 
     public Economy_Vault(@NotNull QuickShop plugin) {
+        super(plugin);
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
         init();

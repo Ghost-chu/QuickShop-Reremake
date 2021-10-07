@@ -21,7 +21,7 @@ package org.maxgamer.quickshop.event;
 
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.economy.EconomyTransaction;
+import org.maxgamer.quickshop.api.economy.EconomyTransaction;
 
 /**
  * Calling when transaction will commit

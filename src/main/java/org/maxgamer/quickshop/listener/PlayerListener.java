@@ -41,7 +41,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.shop.Info;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopAction;
-import org.maxgamer.quickshop.economy.Economy;
+import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.shop.JavaInfo;
 import org.maxgamer.quickshop.util.InteractUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -190,7 +190,7 @@ public class PlayerListener extends AbstractQSListener {
             MsgUtil.sendShopInfo(p, shop);
             shop.setSignText();
 
-            final Economy eco = plugin.getEconomy();
+            final AbstractEconomy eco = plugin.getEconomy();
             final double price = shop.getPrice();
             final double money = plugin.getEconomy().getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
 

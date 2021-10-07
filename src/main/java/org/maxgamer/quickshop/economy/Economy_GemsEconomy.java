@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.economy;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import me.xanium.gemseconomy.api.GemsEconomyAPI;
 import me.xanium.gemseconomy.currency.Currency;
 import org.bukkit.OfflinePlayer;
@@ -29,14 +30,14 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.economy.EconomyCore;
+import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.UUID;
-
-public class Economy_GemsEconomy implements EconomyCore {
+@ToString
+public class Economy_GemsEconomy extends AbstractEconomy {
 
     private final QuickShop plugin;
     private boolean allowLoan;
@@ -46,11 +47,13 @@ public class Economy_GemsEconomy implements EconomyCore {
     private GemsEconomyAPI api;
 
     public Economy_GemsEconomy(@NotNull QuickShop plugin) {
+        super(plugin);
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
         init();
         setupEconomy();
     }
+
 
     private void init() {
         this.allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
@@ -150,7 +153,6 @@ public class Economy_GemsEconomy implements EconomyCore {
     public double getBalance(@NotNull OfflinePlayer player, @NotNull World world, @Nullable String currency) {
         return getBalance(player.getUniqueId(), world, currency);
     }
-
 
     /**
      * Withdraws a given amount of money from the given username and turns it to thin air.

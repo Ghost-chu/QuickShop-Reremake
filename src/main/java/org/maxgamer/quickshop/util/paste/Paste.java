@@ -28,8 +28,8 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.database.JavaWarpedResultSet;
-import org.maxgamer.quickshop.economy.Economy;
+import org.maxgamer.quickshop.api.database.WarpedResultSet;
+import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.api.economy.EconomyCore;
 import org.maxgamer.quickshop.economy.Economy_Vault;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -84,9 +84,9 @@ public class Paste {
                 .append("\n");
         finalReport.append("\tEconomy System: ");
         try {
-            EconomyCore economyCore = plugin.getEconomy().getCore();
+            EconomyCore economyCore = plugin.getEconomy();
             //noinspection SwitchStatementWithTooFewBranches
-            switch (Economy.getNowUsing()) {
+            switch (AbstractEconomy.getNowUsing()) {
                 case VAULT:
                     finalReport
                             .append("Vault")
@@ -154,7 +154,7 @@ public class Paste {
         if (plugin.getEconomy() == null) {
             finalReport.append("\tEconomyCore: ").append("Not loaded").append("@").append("Unknown").append("\n");
         } else {
-            finalReport.append("\tEconomyCore: ").append(plugin.getEconomy().getCore().getName()).append("@").append(plugin.getEconomy().getCore().getPlugin().getName()).append("\n");
+            finalReport.append("\tEconomyCore: ").append(plugin.getEconomy().getName()).append("@").append(plugin.getEconomy().getPlugin().getName()).append("\n");
         }
         finalReport.append("\tDatabaseCore: ").append(plugin.getDatabaseManager().getDatabase().getName()).append("@").append(plugin.getDatabaseManager().getDatabase().getPlugin().getName()).append("\n");
         finalReport.append("\tGameLanguage Processor: ").append(MsgUtil.gameLanguage.getName()).append("@").append(MsgUtil.gameLanguage.getPlugin().getName()).append("\n");
@@ -429,7 +429,7 @@ public class Paste {
         finalReport.append("================================================\n");
         int totalDB = 0;
 
-        try (JavaWarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops()) {
+        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops()) {
             while (warpRS.getResultSet().next()) {
                 totalDB++;
             }

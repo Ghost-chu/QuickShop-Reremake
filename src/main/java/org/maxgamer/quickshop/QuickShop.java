@@ -48,7 +48,9 @@ import org.maxgamer.quickshop.api.chat.QuickChat;
 import org.maxgamer.quickshop.api.command.CommandManager;
 import org.maxgamer.quickshop.api.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.api.database.DatabaseHelper;
+import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.api.economy.EconomyCore;
+import org.maxgamer.quickshop.api.economy.EconomyType;
 import org.maxgamer.quickshop.api.integration.IntegrateStage;
 import org.maxgamer.quickshop.api.integration.IntegrationManager;
 import org.maxgamer.quickshop.api.localization.text.TextManager;
@@ -106,6 +108,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private JavaShopManager shopManager;
     private JavaTextManager textManager;
     private boolean priceChangeRequiresFee = false;
+    private final Map<String, Integer> limits = new HashMap<>(15);
+    private final GameVersion gameVersion = GameVersion.get(Util.getNMSVersion());
     /* Public QuickShop API End */
 
     /**
@@ -120,6 +124,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      */
     private static PermissionManager permissionManager;
     private static boolean loaded = false;
+
     /**
      * If running environment test
      */
@@ -129,12 +134,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     /**
      * The shop limites.
      */
-    @Getter
-    private final Map<String, Integer> limits = new HashMap<>(15);
     private final ConfigProvider configProvider = new ConfigProvider(this, new File(getDataFolder(), "config.yml"));
     private final List<BukkitTask> timerTaskList = new ArrayList<>(3);
-    @Getter
-    private final GameVersion gameVersion = GameVersion.get(Util.getNMSVersion());
     @Getter
     private final ReloadManager reloadManager = new ReloadManager();
     boolean onLoadCalled = false;
@@ -145,7 +146,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     @Setter
     private BootError bootError;
-
     /**
      * Queued database manager
      */
@@ -168,9 +168,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      * The economy we hook into for transactions
      */
     @Getter
-    private Economy economy;
-
-
+    private AbstractEconomy economy;
     /**
      * Whether or not to limit players shop amounts
      */
@@ -484,9 +482,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             if (!core.isValid()) {
                 setupBootError(BuiltInSolution.econError(), false);
                 return false;
-            } else {
-                this.economy = new Economy(this, ServiceInjector.getEconomyCore(core));
-                return true;
             }
         } catch (Exception e) {
             this.getSentryErrorReporter().ignoreThrow();
@@ -497,6 +492,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getLogger().severe("Plugin listeners was disabled, please fix the economy issue.");
             return false;
         }
+        return true;
     }
 
     // /**
@@ -1019,7 +1015,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 vaultVer = "Vault not found";
             }
             // Use internal Metric class not Maven for solve plugin name issues
-            String economyType = Economy.getNowUsing().name();
+            String economyType = AbstractEconomy.getNowUsing().name();
             if (getEconomy() != null) {
                 economyType = this.getEconomy().getName();
             }
@@ -2010,5 +2006,15 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Override
     public CommandManager getCommandManager() {
         return this.commandManager;
+    }
+
+    @Override
+    public Map<String, Integer> getLimits() {
+        return this.limits;
+    }
+
+    @Override
+    public GameVersion getGameVersion() {
+        return this.gameVersion;
     }
 }
