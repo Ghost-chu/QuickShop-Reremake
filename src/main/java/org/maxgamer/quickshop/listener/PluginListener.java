@@ -24,6 +24,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.api.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.api.integration.IntegrationManager;
 import org.maxgamer.quickshop.util.Util;
@@ -37,7 +38,7 @@ public class PluginListener extends AbstractQSListener {
 
     private static final Set<String> COMPATIBILITY_MODULE_LIST = JavaCompatibilityManager.getModuleMapping().keySet();
     private IntegrationManager integrationHelper;
-    private JavaCompatibilityManager compatibilityManager;
+    private CompatibilityManager compatibilityManager;
 
     public PluginListener(QuickShop plugin) {
         super(plugin);
@@ -45,8 +46,8 @@ public class PluginListener extends AbstractQSListener {
     }
 
     private void init() {
-        //integrationHelper = plugin.getIntegrationHelper();
-        compatibilityManager = plugin.getCompatibilityTool();
+        integrationHelper = plugin.getIntegrationHelper();
+        compatibilityManager = plugin.getCompatibilityManager();
     }
 
 

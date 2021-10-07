@@ -24,6 +24,8 @@ import lombok.Data;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.shop.PriceLimiter;
+import org.maxgamer.quickshop.api.shop.PriceLimiterCheckResult;
 import org.maxgamer.quickshop.api.shop.PriceLimiterStatus;
 import org.maxgamer.quickshop.util.CalculateUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -34,14 +36,15 @@ import java.util.Map;
 
 @AllArgsConstructor
 @Data
-public class JavaPriceLimiter {
+public class JavaPriceLimiter implements PriceLimiter {
     private double minPrice;
     private double maxPrice;
     private boolean allowFreeShop;
     private boolean wholeNumberOnly;
 
+    @Override
     @NotNull
-    public JavaPriceLimiterCheckResult check(@NotNull ItemStack stack, double price) {
+    public PriceLimiterCheckResult check(@NotNull ItemStack stack, double price) {
         if (Double.isInfinite(price) || Double.isNaN(price)) {
             return new JavaPriceLimiterCheckResult(PriceLimiterStatus.NOT_VALID, minPrice, maxPrice);
         }
