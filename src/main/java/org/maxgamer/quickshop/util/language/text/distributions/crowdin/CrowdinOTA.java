@@ -63,7 +63,7 @@ public class CrowdinOTA implements Distribution {
         if (requestCachePool.getIfPresent(url) != null) {
             return requestCachePool.getIfPresent(url);
         }
-        try (Response response = HttpUtil.instance().getClient().newCall(new Request.Builder().get().url(url).build()).execute()) {
+        try (Response response = HttpUtil.create().getClient().newCall(new Request.Builder().get().url(url).build()).execute()) {
             val body = response.body();
             if (body == null) {
                 return null;
@@ -172,7 +172,7 @@ public class CrowdinOTA implements Distribution {
         if (forceFlush || data == null || localeTimestamp != manifest.getTimestamp()) {
             String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);
             Util.debugLog("Reading data from remote server: " + url);
-            try (Response response = HttpUtil.instance().getClient().newCall(new Request.Builder().get().url(url).build()).execute()) {
+            try (Response response = HttpUtil.create().getClient().newCall(new Request.Builder().get().url(url).build()).execute()) {
                 val body = response.body();
                 if (body == null) {
                     throw new OTAException(response.code(), ""); // Returns empty string (failed to getting content)
