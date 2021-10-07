@@ -11,7 +11,6 @@ import org.maxgamer.quickshop.integration.factionsuuid.FactionsUUIDIntegration;
 import org.maxgamer.quickshop.integration.griefprevention.GriefPreventionIntegration;
 import org.maxgamer.quickshop.integration.iridiumskyblock.IridiumSkyblockIntegration;
 import org.maxgamer.quickshop.integration.lands.LandsIntegration;
-import org.maxgamer.quickshop.integration.plotsquared.PlotSquaredIntegrationProxy;
 import org.maxgamer.quickshop.integration.residence.ResidenceIntegration;
 import org.maxgamer.quickshop.integration.superiorskyblock.SuperiorSkyblock2Integration;
 import org.maxgamer.quickshop.integration.towny.TownyIntegration;
@@ -31,7 +30,7 @@ public class JavaIntegrationManager extends QuickShopInstanceHolder implements I
         INTEGRATION_MAPPING.put("Factions", FactionsUUIDIntegration.class);
         INTEGRATION_MAPPING.put("GriefPrevention", GriefPreventionIntegration.class);
         INTEGRATION_MAPPING.put("Lands", LandsIntegration.class);
-        INTEGRATION_MAPPING.put("PlotSquared", PlotSquaredIntegrationProxy.class);
+        //INTEGRATION_MAPPING.put("PlotSquared", PlotSquaredIntegrationProxy.class);
         INTEGRATION_MAPPING.put("Residence", ResidenceIntegration.class);
         INTEGRATION_MAPPING.put("Towny", TownyIntegration.class);
         INTEGRATION_MAPPING.put("WorldGuard", WorldGuardIntegration.class);
