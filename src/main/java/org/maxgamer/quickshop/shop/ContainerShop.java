@@ -48,13 +48,9 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
-import org.maxgamer.quickshop.api.shop.Shop;
-import org.maxgamer.quickshop.api.shop.ShopInfoStorage;
-import org.maxgamer.quickshop.api.shop.ShopType;
+import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.api.chat.ComponentPackage;
-import org.maxgamer.quickshop.util.PriceLimiter;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 
@@ -221,8 +217,8 @@ public class ContainerShop implements Shop {
         if (taxAccount != null) {
             uuid = taxAccount;
         }else {
-            if (plugin.getShopManager().getCacheTaxAccount() != null) {
-                uuid = plugin.getShopManager().getCacheTaxAccount().getUniqueId();
+            if (((JavaShopManager)plugin.getShopManager()).getCacheTaxAccount() != null) {
+                uuid = ((JavaShopManager)plugin.getShopManager()).getCacheTaxAccount().getUniqueId();
             }
         }
         ShopTaxAccountGettingEvent event = new ShopTaxAccountGettingEvent(uuid,this);
@@ -246,7 +242,7 @@ public class ContainerShop implements Shop {
 
     private void initDisplayItem() {
         Util.ensureThread(false);
-        if (plugin.isDisplay() && !isDisableDisplay()) {
+        if (plugin.isDisplayEnabled() && !isDisableDisplay()) {
             switch (AbstractDisplayItem.getNowUsing()) {
                 case REALITEM:
                     this.displayItem = new RealDisplayItem(this);
@@ -379,7 +375,7 @@ public class ContainerShop implements Shop {
     @Override
     public void checkDisplay() {
         Util.ensureThread(false);
-        if (!plugin.isDisplay() || this.disableDisplay || !this.isLoaded || this.isDeleted()) { // FIXME: Reinit scheduler on reloading config
+        if (!plugin.isDisplayEnabled() || this.disableDisplay || !this.isLoaded || this.isDeleted()) { // FIXME: Reinit scheduler on reloading config
             if (this.displayItem != null) {
                 if (this.displayItem.isSpawned()) {
                     this.displayItem.remove();
@@ -890,7 +886,7 @@ public class ContainerShop implements Shop {
             displayItem.remove();
         }
 
-        if (plugin.isDisplay() && !isDisableDisplay()) {
+        if (plugin.isDisplayEnabled() && !isDisableDisplay()) {
             if (displayItem != null) {
                 displayItem.remove();
             }
@@ -940,14 +936,14 @@ public class ContainerShop implements Shop {
         plugin.getShopContainerWatcher().scheduleCheck(this);
 
         // check price restriction
-        PriceLimiter.CheckResult priceRestriction = plugin.getShopManager().getPriceLimiter().check(item, price);
+        PriceLimiterCheckResult priceRestriction = plugin.getShopManager().getPriceLimiter().check(item, price);
         boolean markUpdate = false;
-        if (priceRestriction.getStatus() != PriceLimiter.Status.PASS) {
-            if (priceRestriction.getStatus() == PriceLimiter.Status.NOT_A_WHOLE_NUMBER) {
+        if (priceRestriction.getStatus() != PriceLimiterStatus.PASS) {
+            if (priceRestriction.getStatus() == PriceLimiterStatus.NOT_A_WHOLE_NUMBER) {
                 setDirty();
                 price = Math.floor(price);
                 markUpdate = true;
-            } else if (priceRestriction.getStatus() == PriceLimiter.Status.NOT_VALID) {
+            } else if (priceRestriction.getStatus() == PriceLimiterStatus.NOT_VALID) {
                 setDirty();
                 price = priceRestriction.getMin();
                 markUpdate = true;

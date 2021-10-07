@@ -39,7 +39,7 @@ public class DisplayWatcher {
         if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
             return;
         }
-        if (plugin.isDisplay() && plugin.getDisplayItemCheckTicks() > 0) {
+        if (plugin.isDisplayEnabled() && plugin.getDisplayItemCheckTicks() > 0) {
             plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
                 if (plugin.getConfig().getInt("shop.display-items-check-ticks") < 3000) {
                     plugin.getLogger().severe("Shop.display-items-check-ticks is too low! It may cause HUGE lag! Pick a number > 3000");

@@ -202,4 +202,6 @@ public interface ShopManager {
      * It defined in configuration.
      */
     void migrateOwnerToUnlimitedShopOwner(Shop shop);
+
+    PriceLimiter getPriceLimiter();
 }

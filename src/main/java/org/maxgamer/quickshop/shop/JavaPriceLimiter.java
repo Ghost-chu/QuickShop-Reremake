@@ -17,13 +17,16 @@
  *
  */
 
-package org.maxgamer.quickshop.util;
+package org.maxgamer.quickshop.shop;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.shop.PriceLimiterStatus;
+import org.maxgamer.quickshop.util.CalculateUtil;
+import org.maxgamer.quickshop.util.Util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -31,20 +34,20 @@ import java.util.Map;
 
 @AllArgsConstructor
 @Data
-public class PriceLimiter {
+public class JavaPriceLimiter {
     private double minPrice;
     private double maxPrice;
     private boolean allowFreeShop;
     private boolean wholeNumberOnly;
 
     @NotNull
-    public CheckResult check(@NotNull ItemStack stack, double price) {
+    public JavaPriceLimiterCheckResult check(@NotNull ItemStack stack, double price) {
         if (Double.isInfinite(price) || Double.isNaN(price)) {
-            return new CheckResult(Status.NOT_VALID, minPrice, maxPrice);
+            return new JavaPriceLimiterCheckResult(PriceLimiterStatus.NOT_VALID, minPrice, maxPrice);
         }
         if (allowFreeShop) {
             if (price != 0 && price < minPrice) {
-                return new CheckResult(Status.REACHED_PRICE_MIN_LIMIT, minPrice, maxPrice);
+                return new JavaPriceLimiterCheckResult(PriceLimiterStatus.REACHED_PRICE_MIN_LIMIT, minPrice, maxPrice);
             }
         }
         if (wholeNumberOnly) {
@@ -52,15 +55,15 @@ public class PriceLimiter {
                 BigDecimal.valueOf(price).setScale(0, RoundingMode.UNNECESSARY);
             } catch (ArithmeticException exception) {
                 Util.debugLog(exception.getMessage());
-                return new CheckResult(Status.NOT_A_WHOLE_NUMBER, minPrice, maxPrice);
+                return new JavaPriceLimiterCheckResult(PriceLimiterStatus.NOT_A_WHOLE_NUMBER, minPrice, maxPrice);
             }
         }
         if (price < minPrice) {
-            return new CheckResult(Status.REACHED_PRICE_MIN_LIMIT, minPrice, maxPrice);
+            return new JavaPriceLimiterCheckResult(PriceLimiterStatus.REACHED_PRICE_MIN_LIMIT, minPrice, maxPrice);
         }
         if (maxPrice != -1) {
             if (price > maxPrice) {
-                return new CheckResult(Status.REACHED_PRICE_MAX_LIMIT, minPrice, maxPrice);
+                return new JavaPriceLimiterCheckResult(PriceLimiterStatus.REACHED_PRICE_MAX_LIMIT, minPrice, maxPrice);
             }
         }
         double perItemPrice;
@@ -72,27 +75,10 @@ public class PriceLimiter {
         Map.Entry<Double, Double> materialLimit = Util.getPriceRestriction(stack.getType());
         if (materialLimit != null) {
             if (perItemPrice < materialLimit.getKey() || perItemPrice > materialLimit.getValue()) {
-                return new CheckResult(Status.PRICE_RESTRICTED, materialLimit.getKey(), materialLimit.getValue());
+                return new JavaPriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, materialLimit.getKey(), materialLimit.getValue());
             }
-            return new CheckResult(Status.PASS, materialLimit.getKey(), materialLimit.getValue());
+            return new JavaPriceLimiterCheckResult(PriceLimiterStatus.PASS, materialLimit.getKey(), materialLimit.getValue());
         }
-        return new CheckResult(Status.PASS, minPrice, maxPrice);
-    }
-
-    public enum Status {
-        PASS,
-        REACHED_PRICE_MAX_LIMIT,
-        REACHED_PRICE_MIN_LIMIT,
-        PRICE_RESTRICTED,
-        NOT_A_WHOLE_NUMBER,
-        NOT_VALID
-    }
-
-    @AllArgsConstructor
-    @Data
-    public static class CheckResult {
-        private PriceLimiter.Status status;
-        private double min;
-        private double max;
+        return new JavaPriceLimiterCheckResult(PriceLimiterStatus.PASS, minPrice, maxPrice);
     }
 }

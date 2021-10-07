@@ -38,6 +38,7 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.shop.PriceLimiterCheckResult;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopManager;
 import org.maxgamer.quickshop.api.shop.ShopType;
@@ -48,7 +49,6 @@ import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.integration.JavaIntegrationManager;
 import org.maxgamer.quickshop.util.CalculateUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
-import org.maxgamer.quickshop.util.PriceLimiter;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.holder.Result;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
@@ -85,7 +85,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
     @Getter
     private Trader cacheUnlimitedShopAccount;
     @Getter
-    private PriceLimiter priceLimiter;
+    private JavaPriceLimiter priceLimiter;
     //private boolean useFastShopSearchAlgorithm;
     private boolean useOldCanBuildAlgorithm;
     private boolean autoSign;
@@ -121,7 +121,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
         } else {
             cacheUnlimitedShopAccount = new Trader(uAccount, Bukkit.getOfflinePlayer(uAccount));
         }
-        this.priceLimiter = new PriceLimiter(
+        this.priceLimiter = new JavaPriceLimiter(
                 plugin.getConfig().getDouble("shop.minimum-price"),
                 plugin.getConfig().getInt("shop.maximum-price"),
                 plugin.getConfig().getBoolean("shop.allow-free-shop"),
@@ -192,7 +192,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      */
     public void clear() {
         Util.ensureThread(false);
-        if (plugin.isDisplay()) {
+        if (plugin.isDisplayEnabled()) {
             for (World world : plugin.getServer().getWorlds()) {
                 for (Chunk chunk : world.getLoadedChunks()) {
                     Map<Location, Shop> inChunk = this.getShops(chunk);
@@ -888,7 +888,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
         // Price limit checking
         boolean decFormat = plugin.getConfig().getBoolean("use-decimal-format");
 
-        PriceLimiter.CheckResult priceCheckResult = this.priceLimiter.check(info.getItem(), price);
+        PriceLimiterCheckResult priceCheckResult = this.priceLimiter.check(info.getItem(), price);
 
         switch (priceCheckResult.getStatus()) {
             case REACHED_PRICE_MIN_LIMIT:
