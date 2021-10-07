@@ -31,9 +31,7 @@ import java.util.logging.Level;
 public class CrowdinOTA implements Distribution {
     protected static final String CROWDIN_OTA_HOST = "https://distributions.crowdin.net/daf1a8db40f132ce157c457xrm4/";
     protected final Cache<String, String> requestCachePool = CacheBuilder.newBuilder()
-            .initialCapacity(1)
             .expireAfterWrite(7, TimeUnit.DAYS)
-            .recordStats()
             .build();
     private final QuickShop plugin;
 

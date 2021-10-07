@@ -97,8 +97,10 @@ public class JavaTextManager implements TextManager, Reloadable {
      * Loading Crowdin OTA module and i18n system
      */
     public void load() {
-        plugin.getLogger().info("Checking for translation updates...");
+        plugin.getLogger().info("Checking for translation updates, this may need a while...");
         this.reset();
+        distribution.getAvailableLanguages(); // Make a request that loading the manifest to create manifest cache for
+        // parallel threads
         List<String> enabledLanguagesRegex = plugin.getConfig().getStringList("enabled-languages");
         // Multi File and Multi-Language loader
         distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode -> distribution.getAvailableFiles().parallelStream().forEach(crowdinFile -> {
