@@ -80,10 +80,12 @@ public class JavaInfo implements Info {
     /**
      * @return ShopAction action, Get shop action.
      */
+    @Override
     public @NotNull ShopAction getAction() {
         return this.action;
     }
 
+    @Override
     public void setAction(@NotNull ShopAction action) {
         this.action = action;
     }
@@ -91,6 +93,7 @@ public class JavaInfo implements Info {
     /**
      * @return ItemStack iStack, Get Shop's selling/buying item's ItemStack.
      */
+    @Override
     public @NotNull ItemStack getItem() {
         return this.item;
     }
@@ -103,6 +106,7 @@ public class JavaInfo implements Info {
     /**
      * @return Location loc, Get shop's location,
      */
+    @Override
     public @NotNull Location getLocation() {
         return this.loc;
     }
@@ -110,6 +114,7 @@ public class JavaInfo implements Info {
     /**
      * @return Block signBlock, Get block of shop's sign, may return the null.
      */
+    @Override
     public @Nullable Block getSignBlock() {
         return this.last;
     }
@@ -120,6 +125,7 @@ public class JavaInfo implements Info {
      * @param shop, The need checked with this shop.
      * @return hasChanged
      */
+    @Override
     public boolean hasChanged(@NotNull Shop shop) {
         if (this.shop.isUnlimited() != shop.isUnlimited()) {
             return true;

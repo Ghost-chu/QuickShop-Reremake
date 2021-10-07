@@ -144,6 +144,7 @@ public class JavaTextManager implements TextManager,Reloadable {
      * @param regex  The regexes
      * @return The locale enabled status
      */
+    @Override
     public boolean localeEnabled(@NotNull String locale, @NotNull List<String> regex) {
         for (String languagesRegex : regex) {
             try {
@@ -221,6 +222,7 @@ public class JavaTextManager implements TextManager,Reloadable {
      * @param args The arguments
      * @return The text object
      */
+    @Override
     public Text of(@NotNull String path, String... args) {
         return new Text(this, (CommandSender) null, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
@@ -233,6 +235,7 @@ public class JavaTextManager implements TextManager,Reloadable {
      * @param args   The arguments
      * @return The text object
      */
+    @Override
     public Text of(@Nullable CommandSender sender, @NotNull String path, String... args) {
         return new Text(this, sender, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
@@ -245,6 +248,7 @@ public class JavaTextManager implements TextManager,Reloadable {
      * @param args   The arguments
      * @return The text object
      */
+    @Override
     public Text of(@Nullable UUID sender, @NotNull String path, String... args) {
         return new Text(this, sender, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
@@ -256,6 +260,7 @@ public class JavaTextManager implements TextManager,Reloadable {
      * @param args The arguments
      * @return The text object
      */
+    @Override
     public TextList ofList(@NotNull String path, String... args) {
         return new TextList(this, (CommandSender) null, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
@@ -268,6 +273,7 @@ public class JavaTextManager implements TextManager,Reloadable {
      * @param args   The arguments
      * @return The text object
      */
+    @Override
     public TextList ofList(@Nullable UUID sender, @NotNull String path, String... args) {
         return new TextList(this, sender, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
@@ -280,6 +286,7 @@ public class JavaTextManager implements TextManager,Reloadable {
      * @param args   The arguments
      * @return The text object
      */
+    @Override
     public TextList ofList(@Nullable CommandSender sender, @NotNull String path, String... args) {
         return new TextList(this, sender, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
@@ -349,6 +356,7 @@ public class JavaTextManager implements TextManager,Reloadable {
          * @param locale The minecraft locale code (like en_us)
          * @return The text
          */
+        @Override
         @NotNull
         public List<String> forLocale(@NotNull String locale) {
             JsonConfiguration index = mapping.get(locale);
@@ -378,6 +386,7 @@ public class JavaTextManager implements TextManager,Reloadable {
          *
          * @return Getting the text for player locale
          */
+        @Override
         @NotNull
         public List<String> forLocale() {
             if (sender instanceof Player) {
@@ -390,6 +399,7 @@ public class JavaTextManager implements TextManager,Reloadable {
         /**
          * Send text to the player
          */
+        @Override
         public void send() {
             if (sender == null) {
                 return;
@@ -463,6 +473,7 @@ public class JavaTextManager implements TextManager,Reloadable {
          * @param locale The minecraft locale code (like en_us)
          * @return The text
          */
+        @Override
         @NotNull
         public String forLocale(@NotNull String locale) {
             JsonConfiguration index = mapping.get(locale);
@@ -490,6 +501,7 @@ public class JavaTextManager implements TextManager,Reloadable {
          *
          * @return Getting the text for player locale
          */
+        @Override
         @NotNull
         public String forLocale() {
             if (sender instanceof Player) {
@@ -502,6 +514,7 @@ public class JavaTextManager implements TextManager,Reloadable {
         /**
          * Send text to the player
          */
+        @Override
         public void send() {
             if (sender == null) {
                 return;
