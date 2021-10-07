@@ -43,7 +43,7 @@ import java.util.Set;
 
 @Data
 @SuppressWarnings("unchecked")
-public class JavaCommandManager implements TabCompleter, CommandExecutor {
+public class JavaCommandManager implements CommandManager, TabCompleter, CommandExecutor {
     private static final String[] EMPTY_ARGS = new String[0];
     private final Set<CommandContainer> cmds = Sets.newCopyOnWriteArraySet(); //Because we open to allow register, so this should be thread-safe
     private final QuickShop plugin;
@@ -347,6 +347,7 @@ public class JavaCommandManager implements TabCompleter, CommandExecutor {
      * @param container The command container to register
      * @throws IllegalStateException Will throw the error if register conflict.
      */
+    @Override
     public void registerCmd(@NotNull CommandContainer container) {
         if (cmds.contains(container)) {
             Util.debugLog("Dupe subcommand registering: " + container);
@@ -362,6 +363,7 @@ public class JavaCommandManager implements TabCompleter, CommandExecutor {
      *
      * @param container The command container to unregister
      */
+    @Override
     public void unregisterCmd(@NotNull CommandContainer container) {
         cmds.remove(container);
     }
@@ -371,6 +373,7 @@ public class JavaCommandManager implements TabCompleter, CommandExecutor {
      *
      * @return All registered commands.
      */
+    @Override
     @NotNull
     public List<CommandContainer> getRegisteredCommands() {
         return new ArrayList<>(this.getCmds());
@@ -442,11 +445,13 @@ public class JavaCommandManager implements TabCompleter, CommandExecutor {
     /**
      * Method for capturing generic type
      */
-    private <T1, T2 extends T1> T2 capture(T1 type) {
+    @Override
+    public <T1, T2 extends T1> T2 capture(T1 type) {
         return (T2) type;
     }
 
-    private boolean checkPermissions(CommandSender sender, String commandLabel, String[] cmdArg, List<String> permissionList, CommandManager.PermissionType permissionType, CommandManager.Action action) {
+    @Override
+    public boolean checkPermissions(CommandSender sender, String commandLabel, String[] cmdArg, List<String> permissionList, CommandManager.PermissionType permissionType, CommandManager.Action action) {
         if (permissionList == null || permissionList.isEmpty()) {
             return true;
         }
@@ -490,7 +495,8 @@ public class JavaCommandManager implements TabCompleter, CommandExecutor {
     }
 
 
-    private boolean isAdapt(CommandContainer container, CommandSender sender) {
+    @Override
+    public boolean isAdapt(CommandContainer container, CommandSender sender) {
         return container.getExecutorType().isInstance(sender);
     }
 

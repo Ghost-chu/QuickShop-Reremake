@@ -44,7 +44,7 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
         plugin.text().of(s, "command.description.title").send();
 
         commandPrintingLoop:
-        for (CommandContainer container : plugin.getCommandManager().getCmds()) {
+        for (CommandContainer container : plugin.getCommandManager().getRegisteredCommands()) {
             if (!container.isHidden()) {
                 boolean passed = false;
                 //selectivePermissions
