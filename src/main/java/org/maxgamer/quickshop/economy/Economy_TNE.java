@@ -50,7 +50,7 @@ public class Economy_TNE extends AbstractEconomy {
     private TNEAPI api;
 
     public Economy_TNE(@NotNull QuickShop plugin) {
-        super(plugin);
+        super();
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
         init();

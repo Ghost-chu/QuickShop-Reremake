@@ -79,7 +79,7 @@ public class PluginListener extends AbstractQSListener {
             }
         }
         if (COMPATIBILITY_MODULE_LIST.contains(pluginName)) {
-            compatibilityManager.register(pluginName);
+            ((JavaCompatibilityManager)compatibilityManager).register(pluginName);
         }
     }
 
