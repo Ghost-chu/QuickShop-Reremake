@@ -48,9 +48,9 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.ServiceInjector;
 import org.maxgamer.quickshop.database.WarpedResultSet;
 import org.maxgamer.quickshop.event.ShopControlPanelOpenEvent;
-import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.util.language.game.GameLanguage;
-import org.maxgamer.quickshop.util.language.game.MojangGameLanguageImpl;
+import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.localization.game.game.GameLanguage;
+import org.maxgamer.quickshop.localization.game.game.MojangGameLanguageImpl;
 import org.maxgamer.quickshop.util.logging.container.PluginGlobalAlertLog;
 
 import java.io.File;

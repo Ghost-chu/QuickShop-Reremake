@@ -21,7 +21,7 @@ package org.maxgamer.quickshop.watcher;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.shop.AbstractDisplayItem;
+import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
 
 import java.util.LinkedList;
 import java.util.Queue;

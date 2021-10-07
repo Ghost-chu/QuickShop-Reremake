@@ -24,10 +24,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.integration.IntegratedPlugin;
-import org.maxgamer.quickshop.integration.IntegrationHelper;
+import org.maxgamer.quickshop.api.integration.IntegratedPlugin;
+import org.maxgamer.quickshop.api.integration.IntegrationManager;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
+import org.maxgamer.quickshop.util.compatibility.JavaCompatibilityManager;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
@@ -35,10 +35,9 @@ import java.util.Set;
 
 public class PluginListener extends AbstractQSListener {
 
-    private static final Set<String> COMPATIBILITY_MODULE_LIST = CompatibilityManager.getModuleMapping().keySet();
-    private static final Set<String> PLUGIN_INTEGRATION_LIST = IntegrationHelper.getIntegrationMapping().keySet();
-    private IntegrationHelper integrationHelper;
-    private CompatibilityManager compatibilityManager;
+    private static final Set<String> COMPATIBILITY_MODULE_LIST = JavaCompatibilityManager.getModuleMapping().keySet();
+    private IntegrationManager integrationHelper;
+    private JavaCompatibilityManager compatibilityManager;
 
     public PluginListener(QuickShop plugin) {
         super(plugin);
@@ -46,7 +45,7 @@ public class PluginListener extends AbstractQSListener {
     }
 
     private void init() {
-        integrationHelper = plugin.getIntegrationHelper();
+        //integrationHelper = plugin.getIntegrationHelper();
         compatibilityManager = plugin.getCompatibilityTool();
     }
 
@@ -54,7 +53,7 @@ public class PluginListener extends AbstractQSListener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginDisabled(PluginDisableEvent event) {
         String pluginName = event.getPlugin().getName();
-        if (PLUGIN_INTEGRATION_LIST.contains(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
+        if (integrationHelper.isRegistered(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
             IntegratedPlugin integratedPlugin = integrationHelper.getIntegrationMap().get(pluginName);
             if (integratedPlugin != null) {
                 Util.debugLog("[Hot Load] Calling for unloading " + integratedPlugin.getName());
@@ -70,7 +69,7 @@ public class PluginListener extends AbstractQSListener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginEnabled(PluginEnableEvent event) {
         String pluginName = event.getPlugin().getName();
-        if (PLUGIN_INTEGRATION_LIST.contains(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
+        if (integrationHelper.isRegistered(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
             integrationHelper.register(pluginName);
             IntegratedPlugin integratedPlugin = integrationHelper.getIntegrationMap().get(pluginName);
             if (integratedPlugin != null) {

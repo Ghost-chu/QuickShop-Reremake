@@ -27,7 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandHandler;
+import org.maxgamer.quickshop.api.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Info;
 import org.maxgamer.quickshop.shop.ShopAction;
 import org.maxgamer.quickshop.util.Util;

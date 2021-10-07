@@ -44,14 +44,21 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.QuickShopAPI;
-import org.maxgamer.quickshop.chat.QuickChat;
+import org.maxgamer.quickshop.api.chat.QuickChat;
+import org.maxgamer.quickshop.api.compatibility.CompatibilityManager;
+import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
+import org.maxgamer.quickshop.database.AbstractDatabaseCore;
+import org.maxgamer.quickshop.api.economy.EconomyCore;
+import org.maxgamer.quickshop.api.integration.IntegrateStage;
+import org.maxgamer.quickshop.api.integration.IntegrationManager;
+import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.api.shop.ShopManager;
 import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
-import org.maxgamer.quickshop.command.CommandManager;
+import org.maxgamer.quickshop.command.JavaCommandManager;
 import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.*;
 import org.maxgamer.quickshop.event.QSReloadEvent;
-import org.maxgamer.quickshop.integration.IntegrateStage;
-import org.maxgamer.quickshop.integration.IntegrationHelper;
+import org.maxgamer.quickshop.integration.JavaIntegrationManager;
 import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
 import org.maxgamer.quickshop.listener.*;
 import org.maxgamer.quickshop.listener.worldedit.WorldEditAdapter;
@@ -60,11 +67,11 @@ import org.maxgamer.quickshop.permission.PermissionManager;
 import org.maxgamer.quickshop.shop.*;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.*;
-import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
+import org.maxgamer.quickshop.util.compatibility.JavaCompatibilityManager;
 import org.maxgamer.quickshop.util.config.ConfigProvider;
 import org.maxgamer.quickshop.util.config.ConfigurationFixer;
 import org.maxgamer.quickshop.util.envcheck.*;
-import org.maxgamer.quickshop.util.language.text.TextManager;
+import org.maxgamer.quickshop.localization.text.JavaTextManager;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
@@ -86,7 +93,7 @@ import java.util.logging.Level;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
-public class QuickShop extends JavaPlugin {
+public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
     /**
      * The active instance of QuickShop
@@ -108,8 +115,9 @@ public class QuickShop extends JavaPlugin {
     /**
      * WIP
      */
+    // Interfaced
     @Getter
-    private final CompatibilityManager compatibilityTool = new CompatibilityManager(this);
+    private final JavaCompatibilityManager compatibilityTool = new JavaCompatibilityManager(this);
     /**
      * The shop limites.
      */
@@ -122,8 +130,8 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private final ReloadManager reloadManager = new ReloadManager();
     boolean onLoadCalled = false;
-    @Getter
-    private IntegrationHelper integrationHelper;
+    // Interfaced
+    private JavaIntegrationManager integrationHelper;
     /**
      * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
      */
@@ -131,13 +139,15 @@ public class QuickShop extends JavaPlugin {
     @Getter
     @Setter
     private BootError bootError;
+    // Interfaced
     @Getter
-    private CommandManager commandManager;
+    private JavaCommandManager commandManager;
     /**
      * Contains all SQL tasks
      */
     @Getter
-    private DatabaseHelper databaseHelper;
+    // Interfaced
+    private JavaDatabaseHelper databaseHelper;
     /**
      * Queued database manager
      */
@@ -151,7 +161,6 @@ public class QuickShop extends JavaPlugin {
     /**
      * Whether we should use display items or not
      */
-    @Getter
     private boolean display = true;
     @Getter
     private int displayItemCheckTicks;
@@ -167,7 +176,6 @@ public class QuickShop extends JavaPlugin {
     /**
      * Whether or not to limit players shop amounts
      */
-    @Getter
     private boolean limit = false;
     @Nullable
     @Getter
@@ -216,8 +224,8 @@ public class QuickShop extends JavaPlugin {
     /**
      * The Shop Manager used to store shops
      */
-    @Getter
-    private ShopManager shopManager;
+    // Interfaced
+    private JavaShopManager shopManager;
     @Getter
     private DisplayAutoDespawnWatcher displayAutoDespawnWatcher;
     @Getter
@@ -258,7 +266,7 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private WorldEditAdapter worldEditAdapter;
     @Getter
-    private TextManager textManager;
+    private JavaTextManager textManager;
     @Getter
     private ShopPurger shopPurger;
 
@@ -308,6 +316,10 @@ public class QuickShop extends JavaPlugin {
      */
     public static String getFork() {
         return "Reremake";
+    }
+
+    public IntegrationManager getIntegrationHelper() {
+        return integrationHelper;
     }
 
     /**
@@ -561,17 +573,16 @@ public class QuickShop extends JavaPlugin {
         this.onLoadCalled = true;
         getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up...");
         //BEWARE THESE ONLY RUN ONCE
-        this.textManager = new TextManager(this);
+        this.textManager = new JavaTextManager(this);
         this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
         runtimeCheck(EnvCheckEntry.Stage.ON_LOAD);
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
-        QuickShopAPI._internal_access_only_setupApi(this);
         //noinspection ResultOfMethodCallIgnored
         getDataFolder().mkdirs();
         this.bootError = null;
         getLogger().info("Loading up integration modules.");
-        this.integrationHelper = new IntegrationHelper(this);
+        this.integrationHelper = new JavaIntegrationManager(this);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadBegin);
         if (getConfig().getBoolean("integration.worldguard.enable")) {
             Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
@@ -770,8 +781,6 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Starting plugin self-test, please wait...");
         runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
 
-        QuickShopAPI._internal_access_only_setupApi(this);
-
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
 
@@ -832,7 +841,7 @@ public class QuickShop extends JavaPlugin {
 
         getLogger().info("Registering commands...");
         /* PreInit for BootError feature */
-        commandManager = new CommandManager(this);
+        commandManager = new JavaCommandManager(this);
         //noinspection ConstantConditions
         getCommand("qs").setExecutor(commandManager);
         //noinspection ConstantConditions
@@ -840,7 +849,7 @@ public class QuickShop extends JavaPlugin {
 
         this.registerCustomCommands();
 
-        this.shopManager = new ShopManager(this);
+        this.shopManager = new JavaShopManager(this);
 
         this.permissionChecker = new PermissionChecker(this);
 
@@ -889,7 +898,7 @@ public class QuickShop extends JavaPlugin {
         ongoingFeeWatcher = new OngoingFeeWatcher(this);
         InternalListener internalListener = new InternalListener(this);
         Bukkit.getPluginManager().registerEvents(internalListener, this);
-        if (isDisplay() && AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
+        if (this.display && AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayWatcher = new DisplayWatcher(this);
             new DisplayProtectionListener(this, this.shopCache).register();
             if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
@@ -996,7 +1005,7 @@ public class QuickShop extends JavaPlugin {
             }
             this.databaseManager = new DatabaseManager(this, ServiceInjector.getDatabaseCore(dbCore));
             // Make the database up to date
-            this.databaseHelper = new DatabaseHelper(this, this.databaseManager);
+            this.databaseHelper = new JavaDatabaseHelper(this, this.databaseManager);
         } catch (DatabaseManager.ConnectionException e) {
             getLogger().log(Level.SEVERE, "Error when connecting to the database", e);
             if (setupDBonEnableding) {
@@ -1968,7 +1977,27 @@ public class QuickShop extends JavaPlugin {
         Util.debugLog("Command alias successfully registered.");
     }
 
-    public @NotNull TextManager text() {
+    public @NotNull JavaTextManager text() {
         return textManager;
+    }
+
+    @Override
+    public CompatibilityManager getCompatibilityManager() {
+        return this.compatibilityTool;
+    }
+
+    @Override
+    public ShopManager getShopManager() {
+        return this.shopManager;
+    }
+
+    @Override
+    public boolean isDisplayEnabled() {
+        return this.display;
+    }
+
+    @Override
+    public boolean isLimit() {
+        return this.limit;
     }
 }

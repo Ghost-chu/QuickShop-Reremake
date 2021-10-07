@@ -3,7 +3,7 @@ package org.maxgamer.quickshop.event;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.api.shop.Shop;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

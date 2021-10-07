@@ -2,7 +2,7 @@ package org.maxgamer.quickshop.event;
 
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.api.shop.Shop;
 
 import java.util.UUID;
 @AllArgsConstructor

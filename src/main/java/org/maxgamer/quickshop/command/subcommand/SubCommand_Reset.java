@@ -24,7 +24,7 @@ import lombok.SneakyThrows;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandHandler;
+import org.maxgamer.quickshop.api.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.io.File;

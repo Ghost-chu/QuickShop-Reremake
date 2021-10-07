@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.database.WarpedResultSet;
 import org.maxgamer.quickshop.economy.Economy;
-import org.maxgamer.quickshop.economy.EconomyCore;
+import org.maxgamer.quickshop.api.economy.EconomyCore;
 import org.maxgamer.quickshop.economy.Economy_Vault;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;

@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandHandler;
+import org.maxgamer.quickshop.api.command.CommandHandler;
 
 import java.util.Collections;
 import java.util.List;

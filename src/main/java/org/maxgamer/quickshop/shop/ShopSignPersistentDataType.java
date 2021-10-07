@@ -26,7 +26,7 @@ import org.maxgamer.quickshop.util.JsonUtil;
 
 public class ShopSignPersistentDataType
         implements PersistentDataType<String, ShopSignStorage> {
-    static final ShopSignPersistentDataType INSTANCE = new ShopSignPersistentDataType();
+    public static final ShopSignPersistentDataType INSTANCE = new ShopSignPersistentDataType();
 
     @Override
     public @NotNull Class<String> getPrimitiveType() {

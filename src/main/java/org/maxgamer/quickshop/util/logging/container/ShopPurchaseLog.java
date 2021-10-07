@@ -2,8 +2,8 @@ package org.maxgamer.quickshop.util.logging.container;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.maxgamer.quickshop.shop.ShopInfoStorage;
-import org.maxgamer.quickshop.shop.ShopType;
+import org.maxgamer.quickshop.api.shop.ShopInfoStorage;
+import org.maxgamer.quickshop.api.shop.ShopType;
 
 import java.util.UUID;
 

@@ -38,7 +38,7 @@ import org.maxgamer.quickshop.event.ProtectionCheckStatus;
 import org.maxgamer.quickshop.event.ShopProtectionCheckEvent;
 import org.maxgamer.quickshop.eventmanager.BukkitEventManager;
 import org.maxgamer.quickshop.eventmanager.QSEventManager;
-import org.maxgamer.quickshop.eventmanager.QuickEventManager;
+import org.maxgamer.quickshop.api.eventmanager.QuickEventManager;
 import org.maxgamer.quickshop.util.holder.Result;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;

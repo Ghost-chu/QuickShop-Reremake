@@ -12,7 +12,7 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.util.ComponentPackage;
+import org.maxgamer.quickshop.api.chat.ComponentPackage;
 
 import java.util.List;
 

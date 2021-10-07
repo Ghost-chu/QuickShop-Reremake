@@ -32,7 +32,7 @@
 //import java.util.concurrent.ConcurrentHashMap;
 //import java.util.function.Function;
 //
-////import org.maxgamer.quickshop.chat.QuickComponent;
+////import org.maxgamer.quickshop.api.chat.QuickComponent;
 //
 //public class ShopControlPanel {
 //    private final Map<Plugin, TreeSet<Entry>> panelRegistry = new ConcurrentHashMap<>();

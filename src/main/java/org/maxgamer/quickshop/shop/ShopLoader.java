@@ -35,6 +35,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.api.shop.ShopType;
 import org.maxgamer.quickshop.database.WarpedResultSet;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Timer;
@@ -437,7 +439,7 @@ public class ShopLoader {
 
         private Location location;
 
-        private ShopModerator moderators;
+        private JavaShopModerator moderators;
 
         private double price;
 
@@ -494,20 +496,20 @@ public class ShopLoader {
             }
         }
 
-        private @Nullable ShopModerator deserializeModerator(@NotNull String moderatorJson, AtomicBoolean needUpdate) {
-            ShopModerator shopModerator;
+        private @Nullable JavaShopModerator deserializeModerator(@NotNull String moderatorJson, AtomicBoolean needUpdate) {
+            JavaShopModerator shopModerator;
             if (Util.isUUID(moderatorJson)) {
                 Util.debugLog("Updating old shop data... for " + moderatorJson);
-                shopModerator = new ShopModerator(UUID.fromString(moderatorJson)); // New one
+                shopModerator = new JavaShopModerator(UUID.fromString(moderatorJson)); // New one
                 needUpdate.set(true);
             } else {
                 try {
-                    shopModerator = ShopModerator.deserialize(moderatorJson);
+                    shopModerator = JavaShopModerator.deserialize(moderatorJson);
                 } catch (JsonSyntaxException ex) {
                     Util.debugLog("Updating old shop data... for " + moderatorJson);
                     //noinspection deprecation
                     moderatorJson = plugin.getServer().getOfflinePlayer(moderatorJson).getUniqueId().toString();
-                    shopModerator = new ShopModerator(UUID.fromString(moderatorJson)); // New one
+                    shopModerator = new JavaShopModerator(UUID.fromString(moderatorJson)); // New one
                     needUpdate.set(true);
                 }
             }

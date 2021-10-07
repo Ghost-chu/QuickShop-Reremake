@@ -21,7 +21,7 @@ package org.maxgamer.quickshop.event;
 
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.api.shop.Shop;
 
 /**
  * Calling when shop deleting

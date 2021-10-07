@@ -23,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.api.chat.QuickComponent;
 
 @AllArgsConstructor
 @Builder

@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.shop;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
 
 import java.util.Collections;
 import java.util.HashMap;

@@ -20,8 +20,8 @@
 package org.maxgamer.quickshop.event;
 
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.shop.ShopModerator;
+import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.shop.JavaShopModerator;
 
 /**
  * Calling when moderator was changed, Can't cancel
@@ -29,7 +29,7 @@ import org.maxgamer.quickshop.shop.ShopModerator;
 public class ShopModeratorChangedEvent extends AbstractQSEvent {
 
     @NotNull
-    private final ShopModerator moderator;
+    private final JavaShopModerator moderator;
 
     @NotNull
     private final Shop shop;
@@ -41,7 +41,7 @@ public class ShopModeratorChangedEvent extends AbstractQSEvent {
      * @param shop          Target shop
      * @param shopModerator The shop moderator
      */
-    public ShopModeratorChangedEvent(@NotNull Shop shop, @NotNull ShopModerator shopModerator) {
+    public ShopModeratorChangedEvent(@NotNull Shop shop, @NotNull JavaShopModerator shopModerator) {
         this.shop = shop;
         this.moderator = shopModerator;
     }
@@ -51,7 +51,7 @@ public class ShopModeratorChangedEvent extends AbstractQSEvent {
      *
      * @return the shop
      */
-    public @NotNull ShopModerator getModerator() {
+    public @NotNull JavaShopModerator getModerator() {
         return this.moderator;
     }
 

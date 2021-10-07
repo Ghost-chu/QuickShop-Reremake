@@ -27,8 +27,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.shop.ShopChunk;
+import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.shop.JavaShopChunk;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
@@ -54,9 +54,9 @@ public class WorldListener extends AbstractQSListener {
 
         plugin.getShopLoader().loadShops(world.getName());
         // New world data
-        final Map<ShopChunk, Map<Location, Shop>> inWorld = new ConcurrentHashMap<>(1);
+        final Map<JavaShopChunk, Map<Location, Shop>> inWorld = new ConcurrentHashMap<>(1);
         // Old world data
-        final Map<ShopChunk, Map<Location, Shop>> oldInWorld =
+        final Map<JavaShopChunk, Map<Location, Shop>> oldInWorld =
                 plugin.getShopManager().getShops(world.getName());
         // Nothing in the old world, therefore we don't care. No locations to
         // update.
@@ -64,7 +64,7 @@ public class WorldListener extends AbstractQSListener {
             return;
         }
 
-        for (Entry<ShopChunk, Map<Location, Shop>> oldInChunk : oldInWorld.entrySet()) {
+        for (Entry<JavaShopChunk, Map<Location, Shop>> oldInChunk : oldInWorld.entrySet()) {
             final Map<Location, Shop> inChunk = new ConcurrentHashMap<>(1);
             // Put the new chunk were the old chunk was
             inWorld.put(oldInChunk.getKey(), inChunk);

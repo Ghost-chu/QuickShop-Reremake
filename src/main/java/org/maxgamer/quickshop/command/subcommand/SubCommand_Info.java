@@ -25,9 +25,9 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.command.CommandHandler;
-import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.shop.ShopChunk;
+import org.maxgamer.quickshop.api.command.CommandHandler;
+import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.shop.JavaShopChunk;
 import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.Map;
@@ -46,7 +46,7 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
         worlds = 0;
         int nostock = 0;
 
-        for (Map<ShopChunk, Map<Location, Shop>> inWorld :
+        for (Map<JavaShopChunk, Map<Location, Shop>> inWorld :
                 plugin.getShopManager().getShops().values()) {
             worlds++;
 
