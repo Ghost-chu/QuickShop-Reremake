@@ -145,7 +145,7 @@ public class ContainerShop implements Shop {
             @NotNull Location location,
             double price,
             @NotNull ItemStack item,
-            @NotNull JavaShopModerator moderator,
+            @NotNull ShopModerator moderator,
             boolean unlimited,
             @NotNull ShopType type,
             @NotNull YamlConfiguration extra,

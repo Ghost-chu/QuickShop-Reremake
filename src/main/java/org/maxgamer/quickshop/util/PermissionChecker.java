@@ -180,9 +180,9 @@ public class PermissionChecker implements Reloadable {
                 }
             }
         }, plugin);
-        plugin.getCompatibilityTool().toggleProtectionListeners(false, player);
+        plugin.getCompatibilityManager().toggleProtectionListeners(false, player);
         this.eventManager.callEvent(beMainHand);
-        plugin.getCompatibilityTool().toggleProtectionListeners(true, player);
+        plugin.getCompatibilityManager().toggleProtectionListeners(true, player);
 
         return isCanBuild;
     }

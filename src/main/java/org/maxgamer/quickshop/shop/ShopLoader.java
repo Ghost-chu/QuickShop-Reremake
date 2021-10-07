@@ -35,9 +35,10 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.database.WarpedResultSet;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.api.shop.ShopModerator;
 import org.maxgamer.quickshop.api.shop.ShopType;
-import org.maxgamer.quickshop.database.JavaWarpedResultSet;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.Util;
@@ -87,7 +88,7 @@ public class ShopLoader {
         int loadAfterChunkLoaded = 0;
         int loadAfterWorldLoaded = 0;
         List<Shop> pendingLoadShops = new ArrayList<>();
-        try (JavaWarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
+        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
             this.plugin.getLogger().info("Loading shops from the database...");
             while (rs.next()) {
                 ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
@@ -344,7 +345,7 @@ public class ShopLoader {
     public List<ShopRawDatabaseInfo> getOriginShopsInDatabase() {
         errors = 0;
         List<ShopRawDatabaseInfo> shopRawDatabaseInfoList = new ArrayList<>();
-        try (JavaWarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
+        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
             this.plugin.getLogger().info("Getting shops from the database...");
             while (rs.next()) {
                 ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
@@ -439,7 +440,7 @@ public class ShopLoader {
 
         private Location location;
 
-        private JavaShopModerator moderators;
+        private ShopModerator moderators;
 
         private double price;
 
@@ -496,8 +497,8 @@ public class ShopLoader {
             }
         }
 
-        private @Nullable JavaShopModerator deserializeModerator(@NotNull String moderatorJson, AtomicBoolean needUpdate) {
-            JavaShopModerator shopModerator;
+        private @Nullable ShopModerator deserializeModerator(@NotNull String moderatorJson, AtomicBoolean needUpdate) {
+            ShopModerator shopModerator;
             if (Util.isUUID(moderatorJson)) {
                 Util.debugLog("Updating old shop data... for " + moderatorJson);
                 shopModerator = new JavaShopModerator(UUID.fromString(moderatorJson)); // New one

@@ -58,8 +58,9 @@ public class PermissionManager {
             boolean result = provider.hasPermission(sender, permission);
             if (Util.isDevMode()) {
                 try {
-                    PermissionInformationContainer container = provider.getDebugInfo(sender, permission);
-                    Util.debugLog("Node: [" + container.getPermission() + "]; Result: [" + result + "]; Sender: [" + container.getSender().getName() + "]");
+                    //PermissionInformationContainer container = (PermissionInformationContainer) provider.getClass().getDeclaredMethod("getDebugInfo", CommandSender.class, String.class).invoke(provider,sender,permission);
+                     //       PermissionInformationContainer container = provider.getDebugInfo(sender, permission);
+                    Util.debugLog("Node: [" + permission + "]; Result: [" + result + "]; Sender: [" + sender.getName() + "]");
                 } catch (Exception th) {
                     Util.debugLog("Exception threw when getting debug messages.");
                     MsgUtil.debugStackTrace(th.getStackTrace());

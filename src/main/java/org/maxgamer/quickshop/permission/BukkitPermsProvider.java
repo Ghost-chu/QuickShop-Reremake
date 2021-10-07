@@ -47,7 +47,6 @@ public class BukkitPermsProvider implements PermissionProvider {
      * @param permission The permission want to check
      * @return Debug Infos
      */
-    @Override
     public @NotNull PermissionInformationContainer getDebugInfo(
             @NotNull CommandSender sender, @NotNull String permission) {
         return new PermissionInformationContainer(sender, permission, null, null);

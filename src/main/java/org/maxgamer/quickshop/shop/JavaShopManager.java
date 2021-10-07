@@ -81,7 +81,6 @@ public class JavaShopManager implements ShopManager, Reloadable {
     private Trader cacheTaxAccount;
     @Getter
     private Trader cacheUnlimitedShopAccount;
-    @Getter
     private JavaPriceLimiter priceLimiter;
     //private boolean useFastShopSearchAlgorithm;
     private boolean useOldCanBuildAlgorithm;
@@ -1389,6 +1388,11 @@ public class JavaShopManager implements ShopManager, Reloadable {
     public void migrateOwnerToUnlimitedShopOwner(Shop shop) {
         shop.setOwner(this.cacheUnlimitedShopAccount.getUniqueId());
         shop.setSignText();
+    }
+
+    @Override
+    public PriceLimiter getPriceLimiter() {
+        return this.priceLimiter;
     }
 
     public class ShopIterator implements Iterator<Shop> {

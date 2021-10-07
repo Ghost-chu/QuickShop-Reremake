@@ -72,7 +72,6 @@ public class VaultPermissionProvider implements PermissionProvider {
      * @param permission The permission want to check
      * @return Debug Infos
      */
-    @Override
     public @NotNull PermissionInformationContainer getDebugInfo(
             @NotNull CommandSender sender, @NotNull String permission) {
         if (sender instanceof Server) {
