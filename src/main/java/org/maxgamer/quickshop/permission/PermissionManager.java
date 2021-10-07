@@ -59,7 +59,7 @@ public class PermissionManager {
             if (Util.isDevMode()) {
                 try {
                     //PermissionInformationContainer container = (PermissionInformationContainer) provider.getClass().getDeclaredMethod("getDebugInfo", CommandSender.class, String.class).invoke(provider,sender,permission);
-                     //       PermissionInformationContainer container = provider.getDebugInfo(sender, permission);
+                    //       PermissionInformationContainer container = provider.getDebugInfo(sender, permission);
                     Util.debugLog("Node: [" + permission + "]; Result: [" + result + "]; Sender: [" + sender.getName() + "]");
                 } catch (Exception th) {
                     Util.debugLog("Exception threw when getting debug messages.");

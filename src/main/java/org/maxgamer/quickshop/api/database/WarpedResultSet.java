@@ -24,5 +24,6 @@ import java.sql.SQLException;
 
 public interface WarpedResultSet extends AutoCloseable {
     void close() throws SQLException;
+
     ResultSet getResultSet();
 }

@@ -48,9 +48,9 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.chat.ComponentPackage;
 import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.event.*;
-import org.maxgamer.quickshop.api.chat.ComponentPackage;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 
@@ -216,12 +216,12 @@ public class ContainerShop implements Shop {
         UUID uuid = null;
         if (taxAccount != null) {
             uuid = taxAccount;
-        }else {
-            if (((JavaShopManager)plugin.getShopManager()).getCacheTaxAccount() != null) {
-                uuid = ((JavaShopManager)plugin.getShopManager()).getCacheTaxAccount().getUniqueId();
+        } else {
+            if (((JavaShopManager) plugin.getShopManager()).getCacheTaxAccount() != null) {
+                uuid = ((JavaShopManager) plugin.getShopManager()).getCacheTaxAccount().getUniqueId();
             }
         }
-        ShopTaxAccountGettingEvent event = new ShopTaxAccountGettingEvent(uuid,this);
+        ShopTaxAccountGettingEvent event = new ShopTaxAccountGettingEvent(uuid, this);
         event.callEvent();
         return event.getTaxAccount();
 
@@ -486,7 +486,7 @@ public class ContainerShop implements Shop {
             // Refund if necessary
             if (plugin.getConfig().getBoolean("shop.refund")) {
                 plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"),
-                                Objects.requireNonNull(getLocation().getWorld()), getCurrency());
+                        Objects.requireNonNull(getLocation().getWorld()), getCurrency());
             }
             plugin.getShopManager().removeShop(this);
             plugin.getDatabaseHelper().removeShop(this);
@@ -920,7 +920,7 @@ public class ContainerShop implements Shop {
         }
         Map<Location, Shop> shopsInChunk = plugin.getShopManager().getShops(getLocation().getChunk());
 
-        if(shopsInChunk == null || !shopsInChunk.containsValue(this)){
+        if (shopsInChunk == null || !shopsInChunk.containsValue(this)) {
             throw new IllegalStateException("Shop must register into ShopManager before loading.");
         }
 
@@ -1122,7 +1122,7 @@ public class ContainerShop implements Shop {
                 continue;
             }
             Sign sign = (Sign) state;
-            if(!isShopSign(sign)){
+            if (!isShopSign(sign)) {
                 continue;
             }
             claimShopSign(sign);
@@ -1132,13 +1132,13 @@ public class ContainerShop implements Shop {
         return signs;
     }
 
-    private ShopSignStorage saveToShopSignStorage(){
-       return new ShopSignStorage(getLocation().getWorld().getName(),getLocation().getBlockX(),getLocation().getBlockY(),getLocation().getBlockZ());
+    private ShopSignStorage saveToShopSignStorage() {
+        return new ShopSignStorage(getLocation().getWorld().getName(), getLocation().getBlockX(), getLocation().getBlockY(), getLocation().getBlockZ());
     }
 
     @Override
-    public void claimShopSign(@NotNull Sign sign){
-        sign.getPersistentDataContainer().set(SHOP_NAMESPACED_KEY,ShopSignPersistentDataType.INSTANCE,saveToShopSignStorage());
+    public void claimShopSign(@NotNull Sign sign) {
+        sign.getPersistentDataContainer().set(SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE, saveToShopSignStorage());
     }
 
     /**
@@ -1546,6 +1546,6 @@ public class ContainerShop implements Shop {
 
     @Override
     public ShopInfoStorage saveToInfoStorage() {
-        return new ShopInfoStorage(getLocation().getWorld().getName(),BlockPosition.of(getLocation()), JavaShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount());
+        return new ShopInfoStorage(getLocation().getWorld().getName(), BlockPosition.of(getLocation()), JavaShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount());
     }
 }

@@ -13,6 +13,7 @@ public class ShopOwnerNameGettingEvent extends AbstractQSEvent {
 
     /**
      * Getting the shop that trying getting the shop owner name
+     *
      * @return The shop
      */
     public Shop getShop() {
@@ -21,6 +22,7 @@ public class ShopOwnerNameGettingEvent extends AbstractQSEvent {
 
     /**
      * Getting the shop owner unique id
+     *
      * @return The shop owner unique id
      */
     public UUID getOwner() {
@@ -29,6 +31,7 @@ public class ShopOwnerNameGettingEvent extends AbstractQSEvent {
 
     /**
      * Getting the shop owner display name
+     *
      * @return The shop owner display name
      */
     public String getName() {
@@ -37,6 +40,7 @@ public class ShopOwnerNameGettingEvent extends AbstractQSEvent {
 
     /**
      * Sets the shop owner display name
+     *
      * @param name New shop owner display name, just display, won't change actual shop owner
      */
     public void setName(String name) {

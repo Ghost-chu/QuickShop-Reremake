@@ -27,8 +27,8 @@ import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandHandler;
-import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.shop.ContainerShop;
 
 @AllArgsConstructor
 public class SubCommand_Empty implements CommandHandler<Player> {

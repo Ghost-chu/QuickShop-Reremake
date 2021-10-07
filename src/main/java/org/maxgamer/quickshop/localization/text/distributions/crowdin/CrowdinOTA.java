@@ -13,11 +13,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.localization.text.distributions.Distribution;
+import org.maxgamer.quickshop.localization.text.distributions.crowdin.bean.Manifest;
 import org.maxgamer.quickshop.util.HttpUtil;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.localization.text.distributions.Distribution;
-import org.maxgamer.quickshop.localization.text.distributions.crowdin.bean.Manifest;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,8 +42,10 @@ public class CrowdinOTA implements Distribution {
         Util.getCacheFolder().mkdirs();
 
     }
+
     /**
      * Getting the Crowdin distribution manifest
+     *
      * @return The distribution manifest
      */
 
@@ -54,6 +56,7 @@ public class CrowdinOTA implements Distribution {
 
     /**
      * Getting the Crowdin distribution manifest json
+     *
      * @return The distribution manifest json
      */
     @Nullable
@@ -84,6 +87,7 @@ public class CrowdinOTA implements Distribution {
     /**
      * Getting crowdin language mapping (crowdin code -> minecraft code)
      * Can be set on Crowdin platform
+     *
      * @return The language mapping
      */
     public Map<String, String> genLanguageMapping() {
@@ -107,6 +111,7 @@ public class CrowdinOTA implements Distribution {
 
     /**
      * Getting all languages available on crowdin, so we can use that as the key to read language mapping.
+     *
      * @return The languages available
      */
     @Override

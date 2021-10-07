@@ -58,8 +58,8 @@ public class JavaIntegrationManager extends QuickShopInstanceHolder implements I
     }
 
     // public static Map<String, Class<? extends IntegratedPlugin>> getIntegrationMapping() {
-   //     return INTEGRATION_MAPPING;
-   // }
+    //     return INTEGRATION_MAPPING;
+    // }
 
     @Override
     public void searchAndRegisterPlugins() {

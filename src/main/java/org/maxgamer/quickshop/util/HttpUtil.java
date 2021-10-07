@@ -9,19 +9,19 @@ import java.nio.file.Files;
 
 public class HttpUtil {
     private final OkHttpClient client = new OkHttpClient.Builder()
-            .cache(new Cache(getCacheFolder(),50L * 1024L * 1024L)).build();
+            .cache(new Cache(getCacheFolder(), 50L * 1024L * 1024L)).build();
 
-    public static HttpUtil create(){
+    public static HttpUtil create() {
         return new HttpUtil();
     }
 
-    private File getCacheFolder(){
+    private File getCacheFolder() {
         try {
             File file = Files.createTempDirectory("quickshop_okhttp_tmp").toFile();
             file.mkdirs();
             return file;
         } catch (IOException e) {
-            File file = new File(Util.getCacheFolder(),"okhttp_tmp");
+            File file = new File(Util.getCacheFolder(), "okhttp_tmp");
             file.mkdirs();
             return file;
         }

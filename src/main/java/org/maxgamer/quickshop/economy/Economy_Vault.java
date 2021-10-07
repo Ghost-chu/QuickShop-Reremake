@@ -44,7 +44,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 @ToString
-public class Economy_Vault extends AbstractEconomy implements Listener{
+public class Economy_Vault extends AbstractEconomy implements Listener {
 
     private static final String ERROR_MESSAGE =
             "QuickShop received an error when processing Economy response, THIS NOT A QUICKSHOP FAULT, you might need ask help with your Economy Provider plugin (%s) author.";
