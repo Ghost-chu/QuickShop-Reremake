@@ -95,6 +95,19 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
+    /* Public QuickShop API */
+    @Getter
+    private final JavaCompatibilityManager compatibilityTool = new JavaCompatibilityManager(this);
+    private JavaIntegrationManager integrationHelper;
+    @Getter
+    private JavaDatabaseHelper databaseHelper;
+    @Getter
+    private JavaCommandManager commandManager;
+    private ItemMatcher itemMatcher;
+    private JavaShopManager shopManager;
+    private JavaTextManager textManager;
+    /* Public QuickShop API End */
+
     /**
      * The active instance of QuickShop
      * You shouldn't use this if you really need it.
@@ -112,12 +125,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      */
     @Getter
     private static volatile boolean testing = false;
-    /**
-     * WIP
-     */
-    // Interfaced
-    @Getter
-    private final JavaCompatibilityManager compatibilityTool = new JavaCompatibilityManager(this);
+
     /**
      * The shop limites.
      */
@@ -130,8 +138,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     private final ReloadManager reloadManager = new ReloadManager();
     boolean onLoadCalled = false;
-    // Interfaced
-    private JavaIntegrationManager integrationHelper;
     /**
      * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
      */
@@ -139,15 +145,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     @Setter
     private BootError bootError;
-    // Interfaced
-    @Getter
-    private JavaCommandManager commandManager;
-    /**
-     * Contains all SQL tasks
-     */
-    @Getter
-    // Interfaced
-    private JavaDatabaseHelper databaseHelper;
+
     /**
      * Queued database manager
      */
@@ -172,7 +170,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     private Economy economy;
 
-    private ItemMatcher itemMatcher;
+
     /**
      * Whether or not to limit players shop amounts
      */
@@ -221,11 +219,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      */
     @Getter
     private ShopLoader shopLoader;
-    /**
-     * The Shop Manager used to store shops
-     */
-    // Interfaced
-    private JavaShopManager shopManager;
     @Getter
     private DisplayAutoDespawnWatcher displayAutoDespawnWatcher;
     @Getter
@@ -265,9 +258,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private Plugin worldEditPlugin;
     @Getter
     private WorldEditAdapter worldEditAdapter;
-    // Interfaced
-    private JavaTextManager textManager;
-    // Not included API
     @Getter
     private ShopPurger shopPurger;
 
