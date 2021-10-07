@@ -24,6 +24,9 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * A custom impl that matching items between two ItemStack
+ */
 public interface ItemMatcher {
     /**
      * Gets the ItemMatcher provider name

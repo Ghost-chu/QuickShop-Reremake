@@ -26,6 +26,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The command handler that processing sub commands under QS main command
+ * @param <T> The subtype of CommandSender you want received
+ */
 public interface CommandHandler<T extends CommandSender> {
     /**
      * Calling while command executed by specified sender

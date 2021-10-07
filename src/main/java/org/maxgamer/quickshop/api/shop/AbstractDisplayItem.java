@@ -40,7 +40,8 @@ import org.maxgamer.quickshop.util.reload.Reloadable;
 import java.util.logging.Level;
 
 /**
- * @author Netherfoam A display item, that spawns a block above the chest and cannot be interacted
+ * @author Netherfoam
+ * A display item, that spawns a block above the chest and cannot be interacted
  * with.
  */
 public abstract class AbstractDisplayItem implements Reloadable {

@@ -11,6 +11,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+/**
+ * The manager that managing shops
+ */
 public interface ShopManager {
 
     /**
@@ -201,5 +204,9 @@ public interface ShopManager {
      */
     void migrateOwnerToUnlimitedShopOwner(Shop shop);
 
+    /**
+     * Getting the Shop Price Limiter
+     * @return The shop price limiter
+     */
     PriceLimiter getPriceLimiter();
 }

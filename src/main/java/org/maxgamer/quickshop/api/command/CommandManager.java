@@ -7,6 +7,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * The manager that managing all sub-commands that registered
+ * Also performing permission checks in there.
+ */
 public interface CommandManager {
     /**
      * This is a interface to allow addons to register the subcommand into quickshop command manager.

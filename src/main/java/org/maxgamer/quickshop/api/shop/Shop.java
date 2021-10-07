@@ -40,6 +40,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * A shop
+ */
 public interface Shop {
     NamespacedKey SHOP_NAMESPACED_KEY = new NamespacedKey(QuickShop.getInstance(), "shopsign");
     String SHOP_SIGN_PATTERN = "§d§o ";
