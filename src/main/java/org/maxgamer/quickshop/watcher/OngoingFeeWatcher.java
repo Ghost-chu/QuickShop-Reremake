@@ -28,7 +28,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.economy.EconomyTransaction;
 import org.maxgamer.quickshop.economy.Trader;
 import org.maxgamer.quickshop.event.ShopOngoingFeeEvent;
-import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.WarningSender;

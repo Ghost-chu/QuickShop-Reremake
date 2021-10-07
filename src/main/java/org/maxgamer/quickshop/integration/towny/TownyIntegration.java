@@ -37,11 +37,11 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.integration.IntegrateStage;
-import org.maxgamer.quickshop.integration.IntegrationStage;
+import org.maxgamer.quickshop.api.integration.IntegrateStage;
+import org.maxgamer.quickshop.api.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
-import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.shop.ShopChunk;
+import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.shop.JavaShopChunk;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
@@ -108,13 +108,13 @@ public class TownyIntegration extends AbstractQSIntegratedPlugin implements List
             worldName = town.getWorld().getName();
         }
         //Getting all shop with world-chunk-shop mapping
-        for (Map.Entry<String, Map<ShopChunk, Map<Location, Shop>>> entry : plugin.getShopManager().getShops().entrySet()) {
+        for (Map.Entry<String, Map<JavaShopChunk, Map<Location, Shop>>> entry : plugin.getShopManager().getShops().entrySet()) {
             //Matching world
             if (worldName.equals(entry.getKey())) {
                 World world = Bukkit.getWorld(entry.getKey());
                 if (world != null) {
                     //Matching Location
-                    for (Map.Entry<ShopChunk, Map<Location, Shop>> chunkedShopEntry : entry.getValue().entrySet()) {
+                    for (Map.Entry<JavaShopChunk, Map<Location, Shop>> chunkedShopEntry : entry.getValue().entrySet()) {
                         Map<Location, Shop> shopMap = chunkedShopEntry.getValue();
                         for (Shop shop : shopMap.values()) {
                             //Matching Owner
@@ -143,13 +143,13 @@ public class TownyIntegration extends AbstractQSIntegratedPlugin implements List
         String worldName;
         worldName = townBlock.getWorld().getName();
         //Getting all shop with world-chunk-shop mapping
-        for (Map.Entry<String, Map<ShopChunk, Map<Location, Shop>>> entry : plugin.getShopManager().getShops().entrySet()) {
+        for (Map.Entry<String, Map<JavaShopChunk, Map<Location, Shop>>> entry : plugin.getShopManager().getShops().entrySet()) {
             //Matching world
             if (worldName.equals(entry.getKey())) {
                 World world = Bukkit.getWorld(entry.getKey());
                 if (world != null) {
                     //Matching Location
-                    for (Map.Entry<ShopChunk, Map<Location, Shop>> chunkedShopEntry : entry.getValue().entrySet()) {
+                    for (Map.Entry<JavaShopChunk, Map<Location, Shop>> chunkedShopEntry : entry.getValue().entrySet()) {
                         Map<Location, Shop> shopMap = chunkedShopEntry.getValue();
                         for (Shop shop : shopMap.values()) {
                             //Matching Owner

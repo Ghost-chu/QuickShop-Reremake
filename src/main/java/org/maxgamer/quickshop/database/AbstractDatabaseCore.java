@@ -74,20 +74,20 @@ public abstract class AbstractDatabaseCore {
         return databaseConnection;
     }
 
-    abstract protected DatabaseConnection getConnection0();
+    abstract DatabaseConnection getConnection0();
 
     /**
      * Getting DatabaseCore impl name
      *
      * @return Impl name
      */
-    abstract public @NotNull String getName();
+    abstract @NotNull String getName();
 
     /**
      * Getting DatabaseCore owned by
      *
      * @return Owned by
      */
-    abstract public @NotNull Plugin getPlugin();
+    abstract @NotNull Plugin getPlugin();
 
 }

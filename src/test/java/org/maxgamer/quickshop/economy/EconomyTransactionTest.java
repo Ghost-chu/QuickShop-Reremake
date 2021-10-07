@@ -26,6 +26,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
+import org.maxgamer.quickshop.api.economy.EconomyCore;
 
 import java.util.HashMap;
 import java.util.List;

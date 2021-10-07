@@ -48,8 +48,12 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
+import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.api.shop.ShopInfoStorage;
+import org.maxgamer.quickshop.api.shop.ShopType;
 import org.maxgamer.quickshop.event.*;
-import org.maxgamer.quickshop.util.ComponentPackage;
+import org.maxgamer.quickshop.api.chat.ComponentPackage;
 import org.maxgamer.quickshop.util.PriceLimiter;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
@@ -72,7 +76,7 @@ public class ContainerShop implements Shop {
     private final QuickShop plugin;
     @EqualsAndHashCode.Exclude
     private final UUID runtimeRandomUniqueId = UUID.randomUUID();
-    private ShopModerator moderator;
+    private JavaShopModerator moderator;
     private double price;
     private ShopType shopType;
     private boolean unlimited;
@@ -145,7 +149,7 @@ public class ContainerShop implements Shop {
             @NotNull Location location,
             double price,
             @NotNull ItemStack item,
-            @NotNull ShopModerator moderator,
+            @NotNull JavaShopModerator moderator,
             boolean unlimited,
             @NotNull ShopType type,
             @NotNull YamlConfiguration extra,
@@ -826,7 +830,7 @@ public class ContainerShop implements Shop {
         int unlimited = this.isUnlimited() ? 1 : 0;
         try {
             plugin.getDatabaseHelper()
-                    .updateShop(ShopModerator.serialize(this.moderator), this.getItem(),
+                    .updateShop(JavaShopModerator.serialize(this.moderator), this.getItem(),
                             unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
                             this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString());
             this.dirty = false;
@@ -973,12 +977,12 @@ public class ContainerShop implements Shop {
     }
 
     @Override
-    public @NotNull ShopModerator getModerator() {
+    public @NotNull JavaShopModerator getModerator() {
         return this.moderator;
     }
 
     @Override
-    public void setModerator(@NotNull ShopModerator shopModerator) {
+    public void setModerator(@NotNull JavaShopModerator shopModerator) {
         Util.ensureThread(false);
         setDirty();
         this.moderator = shopModerator;
@@ -1547,6 +1551,6 @@ public class ContainerShop implements Shop {
 
     @Override
     public ShopInfoStorage saveToInfoStorage() {
-        return new ShopInfoStorage(getLocation().getWorld().getName(),BlockPosition.of(getLocation()), ShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount());
+        return new ShopInfoStorage(getLocation().getWorld().getName(),BlockPosition.of(getLocation()), JavaShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount());
     }
 }

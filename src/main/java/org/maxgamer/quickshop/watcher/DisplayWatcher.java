@@ -21,9 +21,9 @@ package org.maxgamer.quickshop.watcher;
 
 import lombok.Data;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.shop.AbstractDisplayItem;
+import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.shop.DisplayType;
-import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.api.shop.Shop;
 
 @Data
 public class DisplayWatcher {

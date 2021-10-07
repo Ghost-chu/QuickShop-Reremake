@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.eventmanager;
 
 import org.bukkit.event.Event;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.eventmanager.QuickEventManager;
 
 /**
  * A simple impl for Bukkit original EventManager

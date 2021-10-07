@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.permission;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.api.permission.PermissionProvider;
 
 /**
  * A simple impl for PermissionProvider

@@ -23,6 +23,7 @@ import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.compatibility.AbstractQSCompatibilityModule;
 import org.maxgamer.quickshop.util.Util;
 
 

@@ -31,10 +31,10 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.integration.IntegrationStage;
+import org.maxgamer.quickshop.api.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
-import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.shop.ShopChunk;
+import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.shop.JavaShopChunk;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
@@ -100,13 +100,13 @@ public class LandsIntegration extends AbstractQSIntegratedPlugin implements List
 
     private void deleteShopInLand(Land land, UUID target) {
         //Getting all shop with world-chunk-shop mapping
-        for (Map.Entry<String, Map<ShopChunk, Map<Location, Shop>>> entry : plugin.getShopManager().getShops().entrySet()) {
+        for (Map.Entry<String, Map<JavaShopChunk, Map<Location, Shop>>> entry : plugin.getShopManager().getShops().entrySet()) {
             //Matching world
             World world = plugin.getServer().getWorld(entry.getKey());
             if (world != null) {
                 //Matching chunk
-                for (Map.Entry<ShopChunk, Map<Location, Shop>> chunkedShopEntry : entry.getValue().entrySet()) {
-                    ShopChunk shopChunk = chunkedShopEntry.getKey();
+                for (Map.Entry<JavaShopChunk, Map<Location, Shop>> chunkedShopEntry : entry.getValue().entrySet()) {
+                    JavaShopChunk shopChunk = chunkedShopEntry.getKey();
                     if (land.hasChunk(world, shopChunk.getX(), shopChunk.getZ())) {
                         //Matching Owner and delete it
                         Map<Location, Shop> shops = chunkedShopEntry.getValue();

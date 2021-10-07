@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.chat;
 
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.chat.QuickChat;
 import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
 
 public enum QuickChatType {

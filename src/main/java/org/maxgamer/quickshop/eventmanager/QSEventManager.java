@@ -32,6 +32,7 @@ import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.eventmanager.QuickEventManager;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.ArrayList;

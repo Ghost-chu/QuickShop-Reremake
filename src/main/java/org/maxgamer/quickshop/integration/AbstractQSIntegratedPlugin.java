@@ -23,6 +23,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.integration.IntegratedPlugin;
+import org.maxgamer.quickshop.api.integration.IntegrationStage;
 import org.maxgamer.quickshop.util.holder.QuickShopInstanceHolder;
 
 
