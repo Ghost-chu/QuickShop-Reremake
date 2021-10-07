@@ -45,12 +45,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.QuickShopAPI;
 import org.maxgamer.quickshop.api.chat.QuickChat;
+import org.maxgamer.quickshop.api.command.CommandManager;
 import org.maxgamer.quickshop.api.compatibility.CompatibilityManager;
+import org.maxgamer.quickshop.api.database.DatabaseHelper;
 import org.maxgamer.quickshop.api.economy.EconomyCore;
 import org.maxgamer.quickshop.api.integration.IntegrateStage;
 import org.maxgamer.quickshop.api.integration.IntegrationManager;
 import org.maxgamer.quickshop.api.localization.text.TextManager;
 import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
+import org.maxgamer.quickshop.api.shop.ItemMatcher;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopManager;
 import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
@@ -73,7 +76,6 @@ import org.maxgamer.quickshop.util.config.ConfigProvider;
 import org.maxgamer.quickshop.util.config.ConfigurationFixer;
 import org.maxgamer.quickshop.util.envcheck.*;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
-import org.maxgamer.quickshop.api.shop.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import org.maxgamer.quickshop.util.reload.ReloadManager;
 import org.maxgamer.quickshop.util.reporter.error.RollbarErrorReporter;
@@ -96,16 +98,14 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
     /* Public QuickShop API */
-    @Getter
     private final JavaCompatibilityManager compatibilityTool = new JavaCompatibilityManager(this);
     private JavaIntegrationManager integrationHelper;
-    @Getter
     private JavaDatabaseHelper databaseHelper;
-    @Getter
     private JavaCommandManager commandManager;
     private ItemMatcher itemMatcher;
     private JavaShopManager shopManager;
     private JavaTextManager textManager;
+    private boolean priceChangeRequiresFee = false;
     /* Public QuickShop API End */
 
     /**
@@ -197,12 +197,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      */
     @Getter
     private PermissionChecker permissionChecker;
-    /**
-     * Whether we players are charged a fee to change the price on their shop (To help deter endless
-     * undercutting
-     */
-    @Getter
-    private boolean priceChangeRequiresFee = false;
+
     /**
      * The error reporter to help devs report errors to Sentry.io
      */
@@ -1993,6 +1988,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     }
 
     @Override
+    public DatabaseHelper getDatabaseHelper() {
+        return this.databaseHelper;
+    }
+
+    @Override
     public TextManager getTextManager() {
         return this.textManager;
     }
@@ -2000,5 +2000,15 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Override
     public ItemMatcher getItemMatcher() {
         return this.itemMatcher;
+    }
+
+    @Override
+    public boolean isPriceChangeRequiresFee() {
+        return this.priceChangeRequiresFee;
+    }
+
+    @Override
+    public CommandManager getCommandManager() {
+        return this.commandManager;
     }
 }

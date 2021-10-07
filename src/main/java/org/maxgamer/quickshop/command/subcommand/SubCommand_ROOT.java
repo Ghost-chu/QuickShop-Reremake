@@ -46,7 +46,7 @@ public class SubCommand_ROOT implements CommandHandler<CommandSender> {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] strings) {
         final List<String> candidate = new ArrayList<>();
 
-        for (CommandContainer container : plugin.getCommandManager().getCmds()) {
+        for (CommandContainer container : plugin.getCommandManager().getRegisteredCommands()) {
             if (!container.getPrefix().startsWith(strings[0])
                     && !container.getPrefix().equals(strings[0])) {
                 continue;

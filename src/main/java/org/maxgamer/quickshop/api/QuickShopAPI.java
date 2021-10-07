@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.api;
 
+import org.maxgamer.quickshop.api.command.CommandManager;
 import org.maxgamer.quickshop.api.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.api.database.DatabaseHelper;
 import org.maxgamer.quickshop.api.localization.text.TextManager;
@@ -23,5 +24,9 @@ public interface QuickShopAPI {
     TextManager getTextManager();
 
     ItemMatcher getItemMatcher();
+
+    boolean isPriceChangeRequiresFee();
+
+    CommandManager getCommandManager();
 
 }
