@@ -20,12 +20,13 @@
 package org.maxgamer.quickshop.database;
 
 import lombok.Getter;
+import org.maxgamer.quickshop.api.database.WarpedResultSet;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class JavaWarpedResultSet implements org.maxgamer.quickshop.api.database.WarpedResultSet,AutoCloseable {
+public class JavaWarpedResultSet implements WarpedResultSet {
     @Getter
     private final ResultSet resultSet;
     private final DatabaseConnection databaseConnection;
