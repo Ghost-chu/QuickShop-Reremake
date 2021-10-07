@@ -30,7 +30,7 @@ import java.util.Map;
  */
 @AllArgsConstructor
 @Data
-public class JavaShopExtra{
+public class JavaShopExtra {
     private @NotNull String namespace;
     private @NotNull Map<String, Object> data;
 }

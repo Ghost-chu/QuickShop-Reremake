@@ -3,8 +3,8 @@ package org.maxgamer.quickshop.localization.text.postprocessing.impl;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.api.localization.text.postprocessor.PostProcessor;
+import org.maxgamer.quickshop.util.MsgUtil;
 
 public class FillerProcessor implements PostProcessor {
     @Override

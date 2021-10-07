@@ -15,6 +15,7 @@ public class ShopInventoryCalculateEvent extends AbstractQSEvent {
 
     /**
      * Gets the shop that inventory has been calculated
+     *
      * @return The shop
      */
     public Shop getShop() {
@@ -23,6 +24,7 @@ public class ShopInventoryCalculateEvent extends AbstractQSEvent {
 
     /**
      * Getting the inventory space
+     *
      * @return The inventory space (-1 if not get calculated)
      */
     public int getSpace() {
@@ -31,6 +33,7 @@ public class ShopInventoryCalculateEvent extends AbstractQSEvent {
 
     /**
      * Getting the inventory stock
+     *
      * @return The inventory stock (-1 if not get calculated)
      */
     public int getStock() {

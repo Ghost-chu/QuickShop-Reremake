@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
 
-public interface IntegrationManager{
+public interface IntegrationManager {
     Map<String, IntegratedPlugin> getIntegrationMap();
 
     List<IntegratedPlugin> getIntegrations();

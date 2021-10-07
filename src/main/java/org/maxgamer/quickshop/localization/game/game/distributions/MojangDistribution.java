@@ -11,11 +11,11 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.localization.game.game.distributions.bean.GameManifest;
+import org.maxgamer.quickshop.localization.game.game.distributions.bean.VersionManifest;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.localization.game.game.distributions.bean.GameManifest;
-import org.maxgamer.quickshop.localization.game.game.distributions.bean.VersionManifest;
 import org.maxgamer.quickshop.util.mojangapi.MojangApiMirror;
 
 import java.io.IOException;

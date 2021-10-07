@@ -11,14 +11,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.localization.text.TextManager;
-import org.maxgamer.quickshop.util.MsgUtil;
-import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.api.localization.text.postprocessor.PostProcessor;
 import org.maxgamer.quickshop.localization.text.distributions.Distribution;
 import org.maxgamer.quickshop.localization.text.distributions.crowdin.CrowdinOTA;
-import org.maxgamer.quickshop.api.localization.text.postprocessor.PostProcessor;
 import org.maxgamer.quickshop.localization.text.postprocessing.impl.ColorProcessor;
 import org.maxgamer.quickshop.localization.text.postprocessing.impl.FillerProcessor;
 import org.maxgamer.quickshop.localization.text.postprocessing.impl.PlaceHolderApiProcessor;
+import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 import org.maxgamer.quickshop.util.reload.Reloadable;
@@ -32,7 +32,7 @@ import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-public class JavaTextManager implements TextManager,Reloadable {
+public class JavaTextManager implements TextManager, Reloadable {
     private final QuickShop plugin;
     private final Distribution distribution;
     // <File <Locale, Section>>
@@ -111,7 +111,7 @@ public class JavaTextManager implements TextManager,Reloadable {
                 }
                 Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
                 // Deploy bundled to mapper
-                mapper.deployBundled(crowdinFile,loadBundled(crowdinFile));
+                mapper.deployBundled(crowdinFile, loadBundled(crowdinFile));
                 JsonConfiguration configuration = getDistributionConfiguration(crowdinFile, crowdinCode);
                 // Loading override text (allow user modification the translation)
                 JsonConfiguration override = getOverrideConfiguration(crowdinFile, minecraftCode);
@@ -291,7 +291,7 @@ public class JavaTextManager implements TextManager,Reloadable {
         return new TextList(this, sender, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
 
-    public static class TextList implements org.maxgamer.quickshop.api.localization.text.TextList{
+    public static class TextList implements org.maxgamer.quickshop.api.localization.text.TextList {
         private final JavaTextManager manager;
         private final String path;
         private final QuickShop plugin;
@@ -410,7 +410,7 @@ public class JavaTextManager implements TextManager,Reloadable {
         }
     }
 
-    public static class Text implements org.maxgamer.quickshop.api.localization.text.Text{
+    public static class Text implements org.maxgamer.quickshop.api.localization.text.Text {
         private final JavaTextManager manager;
         private final String path;
         private final QuickShop plugin;

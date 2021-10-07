@@ -28,7 +28,10 @@ import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
-import org.bukkit.block.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Container;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
@@ -38,9 +41,9 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.api.economy.EconomyTransaction;
+import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.economy.Trader;
 import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.integration.JavaIntegrationManager;
@@ -400,10 +403,10 @@ public class JavaShopManager implements ShopManager, Reloadable {
         }
 
         //if (this.useFastShopSearchAlgorithm) {
-            return getShopIncludeAttached_Fast(loc, false, useCache);
-      //  } else {
-      //      return getShopIncludeAttached_Classic(loc);
-       // }
+        return getShopIncludeAttached_Fast(loc, false, useCache);
+        //  } else {
+        //      return getShopIncludeAttached_Classic(loc);
+        // }
     }
 
 //    public @Nullable Shop getShopIncludeAttached_Classic(@NotNull Location loc) {
@@ -503,7 +506,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
         }
         String message = net.md_5.bungee.api.ChatColor.stripColor(msg);
         message = ChatColor.stripColor(message);
-        QSHandleChatEvent qsHandleChatEvent = new QSHandleChatEvent(p,message);
+        QSHandleChatEvent qsHandleChatEvent = new QSHandleChatEvent(p, message);
         qsHandleChatEvent.callEvent();
         message = qsHandleChatEvent.getMessage();
         // Use from the main thread, because Bukkit hates life
@@ -958,7 +961,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
                 false,
                 null);
         if (!bypassProtectionChecks) {
-            Result result = ((JavaIntegrationManager)plugin.getIntegrationHelper()).callIntegrationsCanCreate(p, info.getLocation());
+            Result result = ((JavaIntegrationManager) plugin.getIntegrationHelper()).callIntegrationsCanCreate(p, info.getLocation());
             if (!result.isSuccess()) {
                 plugin.text().of(p, "integrations-check-failed-create", result.getMessage()).send();
                 Util.debugLog("Cancelled by integrations: " + result);
@@ -1188,7 +1191,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
             MsgUtil.sendDirectMessage(p, "Error: Economy system not loaded, type /qs main command to get details.");
             return;
         }
-        Result result =  ((JavaIntegrationManager)plugin.getIntegrationHelper())
+        Result result = ((JavaIntegrationManager) plugin.getIntegrationHelper())
                 .callIntegrationsCanTrade(p, info.getLocation());
         if (!result.isSuccess()) {
             plugin.text().of(p, "integrations-check-failed-trade", result.getMessage()).send();

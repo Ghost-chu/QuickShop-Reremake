@@ -53,9 +53,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.database.MySQLCore;
 import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.database.MySQLCore;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -1417,17 +1417,27 @@ public class Util {
         }
         return getNilUniqueId();
     }
+
     // https://stackoverflow.com/questions/45321050/java-string-matching-with-wildcards
     public static String createRegexFromGlob(@NotNull String glob) {
         StringBuilder out = new StringBuilder("^");
-        for(int i = 0; i < glob.length(); ++i) {
+        for (int i = 0; i < glob.length(); ++i) {
             final char c = glob.charAt(i);
-            switch(c) {
-                case '*': out.append(".*"); break;
-                case '?': out.append('.'); break;
-                case '.': out.append("\\."); break;
-                case '\\': out.append("\\\\"); break;
-                default: out.append(c);
+            switch (c) {
+                case '*':
+                    out.append(".*");
+                    break;
+                case '?':
+                    out.append('.');
+                    break;
+                case '.':
+                    out.append("\\.");
+                    break;
+                case '\\':
+                    out.append("\\\\");
+                    break;
+                default:
+                    out.append(c);
             }
         }
         out.append('$');

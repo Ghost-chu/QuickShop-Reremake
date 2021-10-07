@@ -23,10 +23,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.database.AbstractDatabaseCore;
 import org.maxgamer.quickshop.api.economy.EconomyCore;
-import org.maxgamer.quickshop.localization.game.game.GameLanguage;
 import org.maxgamer.quickshop.api.shop.ItemMatcher;
+import org.maxgamer.quickshop.database.AbstractDatabaseCore;
+import org.maxgamer.quickshop.localization.game.game.GameLanguage;
 
 /**
  * ServiceInjector used for "Replaceable Modules" features that allow 3rd party QuickShop addon

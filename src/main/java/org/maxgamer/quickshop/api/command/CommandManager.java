@@ -54,6 +54,7 @@ public interface CommandManager {
             @NotNull Command command,
             @NotNull String commandLabel,
             @NotNull String[] cmdArg);
+
     enum Action {
         EXECUTE("execute"),
         TAB_COMPLETE("tab-complete");

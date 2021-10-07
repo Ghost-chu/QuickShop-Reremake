@@ -28,8 +28,8 @@ import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandHandler;
-import org.maxgamer.quickshop.shop.JavaInfo;
 import org.maxgamer.quickshop.api.shop.ShopAction;
+import org.maxgamer.quickshop.shop.JavaInfo;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.Collections;

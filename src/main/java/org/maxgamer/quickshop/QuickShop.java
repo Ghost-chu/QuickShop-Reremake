@@ -61,7 +61,9 @@ import org.maxgamer.quickshop.api.shop.ShopManager;
 import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
 import org.maxgamer.quickshop.command.JavaCommandManager;
 import org.maxgamer.quickshop.database.*;
-import org.maxgamer.quickshop.economy.*;
+import org.maxgamer.quickshop.economy.Economy_GemsEconomy;
+import org.maxgamer.quickshop.economy.Economy_TNE;
+import org.maxgamer.quickshop.economy.Economy_Vault;
 import org.maxgamer.quickshop.event.QSReloadEvent;
 import org.maxgamer.quickshop.integration.JavaIntegrationManager;
 import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
@@ -1897,12 +1899,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfig().set("purge.banned", true);
             getConfig().set("purge.skip-op", true);
             getConfig().set("purge.return-create-fee", true);
-            getConfig().set("shop.use-fast-shop-search-algorithm",null);
+            getConfig().set("shop.use-fast-shop-search-algorithm", null);
             getConfig().set("config-version", ++selectedVersion);
         }
-        if(selectedVersion == 142){
-            getConfig().set("disabled-languages",null);
-            getConfig().set("enabled-languages",Collections.singletonList("*"));
+        if (selectedVersion == 142) {
+            getConfig().set("disabled-languages", null);
+            getConfig().set("enabled-languages", Collections.singletonList("*"));
             getConfig().set("config-version", ++selectedVersion);
         }
 
