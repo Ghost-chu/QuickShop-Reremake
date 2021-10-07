@@ -37,15 +37,15 @@ public class PlotSquaredIntegrationProxy extends AbstractQSIntegratedPlugin {
         super(instance);
         if (plugin.getServer().getPluginManager().getPlugin("PlotSquared").getClass().getPackage().getName().contains("intellectualsite")) {
             plotSquared = new PlotSquaredIntegrationV4(plugin);
-        } else if (Util.isClassAvailable("com.plotsquared.core.configuration.Caption")) {
-            //Write reload logic for it
-            plotSquared = new PlotSquaredIntegrationV5(plugin) {
-                @Override
-                public ReloadResult reloadModule() throws Exception {
-                    loadConfiguration();
-                    return super.reloadModule();
-                }
-            };
+        } else if (false && Util.isClassAvailable("com.plotsquared.core.configuration.Caption")) {
+                //Write reload logic for it
+                plotSquared = new PlotSquaredIntegrationV5(plugin) {
+                    @Override
+                    public ReloadResult reloadModule() throws Exception {
+                        loadConfiguration();
+                        return super.reloadModule();
+                    }
+                };
             plugin.getReloadManager().register(plotSquared);
         } else {
             plotSquared = new PlotSquaredIntegrationV6(plugin);
