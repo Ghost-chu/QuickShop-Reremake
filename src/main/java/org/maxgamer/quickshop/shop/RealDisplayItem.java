@@ -30,9 +30,10 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
+import org.maxgamer.quickshop.api.shop.DisplayType;
 import org.maxgamer.quickshop.api.shop.Shop;
-import org.maxgamer.quickshop.event.ShopDisplayItemDespawnEvent;
-import org.maxgamer.quickshop.event.ShopDisplayItemSpawnEvent;
+import org.maxgamer.quickshop.api.event.ShopDisplayItemDespawnEvent;
+import org.maxgamer.quickshop.api.event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 

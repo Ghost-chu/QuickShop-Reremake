@@ -25,7 +25,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.event.CalendarEvent;
+import org.maxgamer.quickshop.api.event.CalendarEvent;
 import org.maxgamer.quickshop.util.Util;
 
 import java.io.File;

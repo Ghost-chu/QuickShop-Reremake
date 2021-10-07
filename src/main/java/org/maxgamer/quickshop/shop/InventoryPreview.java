@@ -31,7 +31,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.event.ShopInventoryPreviewEvent;
+import org.maxgamer.quickshop.api.event.ShopInventoryPreviewEvent;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.holder.QuickShopPreviewGUIHolder;
 
