@@ -26,11 +26,13 @@ import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandHandler;
+import org.maxgamer.quickshop.api.shop.PriceLimiterCheckResult;
+import org.maxgamer.quickshop.api.shop.PriceLimiterStatus;
 import org.maxgamer.quickshop.economy.EconomyTransaction;
 import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
-import org.maxgamer.quickshop.util.PriceLimiter;
+import org.maxgamer.quickshop.shop.JavaPriceLimiter;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.Collections;
@@ -81,7 +83,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
             return;
         }
 
-        PriceLimiter limiter = new PriceLimiter(
+        JavaPriceLimiter limiter = new JavaPriceLimiter(
                 plugin.getConfig().getDouble("shop.minimum-price"),
                 plugin.getConfig().getInt("shop.maximum-price"),
                 plugin.getConfig().getBoolean("shop.allow-free-shop"),
@@ -104,16 +106,16 @@ public class SubCommand_Price implements CommandHandler<Player> {
                 return;
             }
 
-            PriceLimiter.CheckResult checkResult = limiter.check(shop.getItem(), price);
-            if (checkResult.getStatus() == PriceLimiter.Status.REACHED_PRICE_MIN_LIMIT) {
+            PriceLimiterCheckResult checkResult = limiter.check(shop.getItem(), price);
+            if (checkResult.getStatus() == PriceLimiterStatus.REACHED_PRICE_MIN_LIMIT) {
                 plugin.text().of(sender, "price-too-cheap", (format) ? MsgUtil.decimalFormat(checkResult.getMin()) : Double.toString(checkResult.getMin())).send();
                 return;
             }
-            if (checkResult.getStatus() == PriceLimiter.Status.REACHED_PRICE_MAX_LIMIT) {
+            if (checkResult.getStatus() == PriceLimiterStatus.REACHED_PRICE_MAX_LIMIT) {
                 plugin.text().of(sender, "price-too-high", (format) ? MsgUtil.decimalFormat(checkResult.getMax()) : Double.toString(checkResult.getMax())).send();
                 return;
             }
-            if (checkResult.getStatus() == PriceLimiter.Status.PRICE_RESTRICTED) {
+            if (checkResult.getStatus() == PriceLimiterStatus.PRICE_RESTRICTED) {
                 plugin.text().of(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
                         String.valueOf(checkResult.getMin()),
                         String.valueOf(checkResult.getMax())).send();
