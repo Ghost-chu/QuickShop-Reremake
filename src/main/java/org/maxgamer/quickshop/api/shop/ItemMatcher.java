@@ -17,7 +17,7 @@
  *
  */
 
-package org.maxgamer.quickshop.util.matcher.item;
+package org.maxgamer.quickshop.api.shop;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;

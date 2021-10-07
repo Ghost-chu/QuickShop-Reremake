@@ -72,7 +72,7 @@ public class ContainerShop implements Shop {
     private final QuickShop plugin;
     @EqualsAndHashCode.Exclude
     private final UUID runtimeRandomUniqueId = UUID.randomUUID();
-    private JavaShopModerator moderator;
+    private ShopModerator moderator;
     private double price;
     private ShopType shopType;
     private boolean unlimited;
@@ -973,12 +973,12 @@ public class ContainerShop implements Shop {
     }
 
     @Override
-    public @NotNull JavaShopModerator getModerator() {
+    public @NotNull ShopModerator getModerator() {
         return this.moderator;
     }
 
     @Override
-    public void setModerator(@NotNull JavaShopModerator shopModerator) {
+    public void setModerator(@NotNull ShopModerator shopModerator) {
         Util.ensureThread(false);
         setDirty();
         this.moderator = shopModerator;
