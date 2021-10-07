@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 
 public class HttpUtil {
     private final OkHttpClient client = new OkHttpClient.Builder()
@@ -16,15 +15,9 @@ public class HttpUtil {
     }
 
     private File getCacheFolder() {
-        try {
-            File file = Files.createTempDirectory("quickshop_okhttp_tmp").toFile();
-            file.mkdirs();
-            return file;
-        } catch (IOException e) {
-            File file = new File(Util.getCacheFolder(), "okhttp_tmp");
-            file.mkdirs();
-            return file;
-        }
+        File file = new File(Util.getCacheFolder(), "okhttp_tmp");
+        file.mkdirs();
+        return file;
     }
 
     public OkHttpClient getClient() {
