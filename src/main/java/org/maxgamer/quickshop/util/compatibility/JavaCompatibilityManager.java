@@ -106,7 +106,6 @@ public class JavaCompatibilityManager extends QuickShopInstanceHolder implements
         }
     }
 
-    @Override
     public void register(@NotNull String moduleName) {
         Class<? extends CompatibilityModule> compatibilityModuleClass = MODULE_MAP.get(moduleName);
         if (compatibilityModuleClass != null) {
@@ -116,7 +115,6 @@ public class JavaCompatibilityManager extends QuickShopInstanceHolder implements
         }
     }
 
-    @Override
     public void register(@NotNull Class<? extends CompatibilityModule> compatibilityModuleClass) {
         CompatibilityModule compatibilityModule;
         try {

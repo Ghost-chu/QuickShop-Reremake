@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.shop.Shop;
 
 /**
- * QuickChat is a system to allow us to processing plain text and also MineDown
+ * QuickChat is a system to allow us to process complex messages
  */
 public interface QuickChat {
     /**

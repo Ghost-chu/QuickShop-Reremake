@@ -7,6 +7,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * The TextManager that allow create user's locale specified message.
+ */
 public interface TextManager {
     /**
      * Gets specific locale status

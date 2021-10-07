@@ -32,13 +32,23 @@ import java.util.UUID;
  * You must save the ContainerShop after modify this
  */
 public interface ShopModerator {
-
+    /**
+     * Deserialize a ShopModerator using Gson
+     * @param serilized ShopModerator object serilized Json String
+     * @exception JsonSyntaxException incorrect json string
+     * @return Json String
+     */
     static ShopModerator deserialize(@NotNull String serilized) throws JsonSyntaxException {
         // Use Gson deserialize data
         Gson gson = JsonUtil.getGson();
         return gson.fromJson(serilized, ShopModerator.class);
     }
 
+    /**
+     * Serialize a ShopModerator using Gson
+     * @param shopModerator ShopModerator object
+     * @return Json String
+     */
     static String serialize(@NotNull ShopModerator shopModerator) {
         Gson gson = JsonUtil.getGson();
         return gson.toJson(shopModerator); // Use Gson serialize this class

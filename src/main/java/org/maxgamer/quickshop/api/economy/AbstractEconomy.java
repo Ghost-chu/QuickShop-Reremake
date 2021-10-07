@@ -31,25 +31,35 @@ import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.UUID;
 
+/**
+ * Abstract Economy Core
+ */
 public abstract class AbstractEconomy implements EconomyCore, Reloadable {
 
-    private final QuickShop plugin;
-
-    public AbstractEconomy(@NotNull QuickShop plugin) {
-        this.plugin = plugin;
-
+    public AbstractEconomy() {
     }
 
+    /**
+     * Getting QuickShop now using type of Economy
+     * @return Economy type that QuickShop now using
+     */
     public static EconomyType getNowUsing() {
         return EconomyType.fromID(QuickShop.getInstance().getConfig().getInt("economy-type"));
     }
 
     @Override
     public abstract String toString();
-    //    return core.getClass().getName().split("_")[1];
-    //}
 
-
+    /**
+     * Transfer specific amount of currency from A to B
+     * (Developer: This is low layer of Economy System, use EconomyTransaction if possible)
+     * @param from     The player who is paying money
+     * @param to       The player who is receiving money
+     * @param amount   The amount to transfer
+     * @param world    The transaction world
+     * @param currency The currency name
+     * @return successed
+     */
     @Override
     public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
@@ -129,9 +139,7 @@ public abstract class AbstractEconomy implements EconomyCore, Reloadable {
     }
 
     @Override
-    public @NotNull Plugin getPlugin() {
-        return plugin;
-    }
+    public abstract @NotNull Plugin getPlugin();
 
     /**
      * Callback for reloading
