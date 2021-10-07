@@ -69,6 +69,7 @@ public class JavaCompatibilityManager extends QuickShopInstanceHolder implements
         }
     }
 
+    @Override
     public boolean isRegistered(String pluginName) {
         return MODULE_MAP.containsKey(pluginName);
     }
@@ -80,6 +81,7 @@ public class JavaCompatibilityManager extends QuickShopInstanceHolder implements
      * @param status true=turn on closed listeners, false=turn off all turned on listeners.
      * @param player The player to check the listeners
      */
+    @Override
     public void toggleProtectionListeners(boolean status, @NotNull Player player) {
         for (CompatibilityModule module : this.registeredModules.values()) {
             try {
@@ -91,10 +93,12 @@ public class JavaCompatibilityManager extends QuickShopInstanceHolder implements
         }
     }
 
+    @Override
     public void unregisterAll() {
         registeredModules.clear();
     }
 
+    @Override
     public void register(@NotNull CompatibilityModule module) {
         if (!registeredModules.containsKey(module.getName())) {
             plugin.getLogger().info("Registering " + module.getName() + " Compatibility Module");
@@ -102,6 +106,7 @@ public class JavaCompatibilityManager extends QuickShopInstanceHolder implements
         }
     }
 
+    @Override
     public void register(@NotNull String moduleName) {
         Class<? extends CompatibilityModule> compatibilityModuleClass = MODULE_MAP.get(moduleName);
         if (compatibilityModuleClass != null) {
@@ -111,6 +116,7 @@ public class JavaCompatibilityManager extends QuickShopInstanceHolder implements
         }
     }
 
+    @Override
     public void register(@NotNull Class<? extends CompatibilityModule> compatibilityModuleClass) {
         CompatibilityModule compatibilityModule;
         try {
@@ -121,11 +127,13 @@ public class JavaCompatibilityManager extends QuickShopInstanceHolder implements
         register(compatibilityModule);
     }
 
+    @Override
     public void unregister(@NotNull String moduleName) {
         plugin.getLogger().info("Unregistering " + moduleName + " compatibility module");
         registeredModules.remove(moduleName);
     }
 
+    @Override
     public void unregister(@NotNull CompatibilityModule module) {
         plugin.getLogger().info("Unregistering " + module.getName() + " compatibility module");
         registeredModules.remove(module.getName());

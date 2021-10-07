@@ -86,6 +86,7 @@ public class JavaShopModerator implements ShopModerator, Cloneable {
      * @param player New staff
      * @return Success
      */
+    @Override
     public boolean addStaff(@NotNull UUID player) {
         if (staffs.contains(player)) {
             return false;
@@ -97,6 +98,7 @@ public class JavaShopModerator implements ShopModerator, Cloneable {
     /**
      * Remove all staffs
      */
+    @Override
     public void clearStaffs() {
         staffs.clear();
     }
@@ -118,6 +120,7 @@ public class JavaShopModerator implements ShopModerator, Cloneable {
      * @param player Staff
      * @return Success
      */
+    @Override
     public boolean delStaff(@NotNull UUID player) {
         return staffs.remove(player);
     }
@@ -128,6 +131,7 @@ public class JavaShopModerator implements ShopModerator, Cloneable {
      * @param player Player
      * @return yes or no, return true when it is staff or owner
      */
+    @Override
     public boolean isModerator(@NotNull UUID player) {
         return isOwner(player) || isStaff(player);
     }
@@ -138,6 +142,7 @@ public class JavaShopModerator implements ShopModerator, Cloneable {
      * @param player Player
      * @return yes or no
      */
+    @Override
     public boolean isOwner(@NotNull UUID player) {
         return player.equals(owner);
     }
@@ -148,6 +153,7 @@ public class JavaShopModerator implements ShopModerator, Cloneable {
      * @param player Player
      * @return yes or no
      */
+    @Override
     public boolean isStaff(@NotNull UUID player) {
         return staffs.contains(player);
     }
@@ -157,6 +163,7 @@ public class JavaShopModerator implements ShopModerator, Cloneable {
      *
      * @return Owner's UUID
      */
+    @Override
     public @NotNull UUID getOwner() {
         return owner;
     }
@@ -166,6 +173,7 @@ public class JavaShopModerator implements ShopModerator, Cloneable {
      *
      * @param player Owner's UUID
      */
+    @Override
     public void setOwner(@NotNull UUID player) {
         this.owner = player;
     }
@@ -175,6 +183,7 @@ public class JavaShopModerator implements ShopModerator, Cloneable {
      *
      * @return Staffs
      */
+    @Override
     public @NotNull List<UUID> getStaffs() {
         return staffs;
     }
@@ -184,6 +193,7 @@ public class JavaShopModerator implements ShopModerator, Cloneable {
      *
      * @param players staffs list
      */
+    @Override
     public void setStaffs(@NotNull List<UUID> players) {
         this.staffs = players;
     }

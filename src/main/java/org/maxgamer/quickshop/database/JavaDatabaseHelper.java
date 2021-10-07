@@ -162,6 +162,7 @@ public class JavaDatabaseHelper implements DatabaseHelper,Reloadable {
         plugin.getLogger().info("Finished!");
     }
 
+    @Override
     public boolean createColumn(@NotNull String tableName, @NotNull String columnName, @NotNull DataType type) {
 
         try {
@@ -196,17 +197,20 @@ public class JavaDatabaseHelper implements DatabaseHelper,Reloadable {
         }
     }
 
+    @Override
     public void cleanMessage(long weekAgo) {
         String sqlString = "DELETE FROM " + plugin
                 .getDbPrefix() + "messages WHERE time < ?";
         manager.addDelayTask(new DatabaseTask(sqlString, ps -> ps.setLong(1, weekAgo)));
     }
 
+    @Override
     public void cleanMessageForPlayer(@NotNull UUID player) {
         String sqlString = "DELETE FROM " + plugin.getDbPrefix() + "messages WHERE owner = ?";
         manager.addDelayTask(new DatabaseTask(sqlString, (ps) -> ps.setString(1, player.toString())));
     }
 
+    @Override
     public void createShop(@NotNull Shop shop, @Nullable Runnable onSuccess, @Nullable Consumer<SQLException> onFailed) {
         removeShop(shop); //First purge old exist shop before create new shop.
         String sqlString = "INSERT INTO " + plugin.getDbPrefix() + "shops (owner, price, itemConfig, x, y, z, world, unlimited, type, extra) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -251,6 +255,7 @@ public class JavaDatabaseHelper implements DatabaseHelper,Reloadable {
         }));
     }
 
+    @Override
     public void removeShop(Shop shop) {
         String sqlString = "DELETE FROM "
                 + plugin.getDbPrefix()
@@ -266,6 +271,7 @@ public class JavaDatabaseHelper implements DatabaseHelper,Reloadable {
 
     }
 
+    @Override
     public void removeShop(String world, int x, int y, int z) {
         String sqlString = "DELETE FROM "
                 + plugin.getDbPrefix()
@@ -280,10 +286,12 @@ public class JavaDatabaseHelper implements DatabaseHelper,Reloadable {
 
     }
 
+    @Override
     public JavaWarpedResultSet selectAllMessages() throws SQLException {
         return selectTable("messages");
     }
 
+    @Override
     public JavaWarpedResultSet selectTable(String table) throws SQLException {
         DatabaseConnection databaseConnection = manager.getDatabase().getConnection();
         Statement st = databaseConnection.get().createStatement();
@@ -292,10 +300,12 @@ public class JavaDatabaseHelper implements DatabaseHelper,Reloadable {
         return new JavaWarpedResultSet(st, resultSet, databaseConnection);
     }
 
+    @Override
     public JavaWarpedResultSet selectAllShops() throws SQLException {
         return selectTable("shops");
     }
 
+    @Override
     public void sendMessage(@NotNull UUID player, @NotNull String message, long time) {
 
         String sqlString = "INSERT INTO " + plugin.getDbPrefix() + "messages (owner, message, time) VALUES (?, ?, ?)";
@@ -309,6 +319,7 @@ public class JavaDatabaseHelper implements DatabaseHelper,Reloadable {
                         }));
     }
 
+    @Override
     public void updateOwner2UUID(@NotNull String ownerUUID, int x, int y, int z, @NotNull String worldName) {
         String sqlString = "UPDATE " + plugin
                 .getDbPrefix() + "shops SET owner = ? WHERE x = ? AND y = ? AND z = ? AND world = ?" + (
@@ -323,6 +334,7 @@ public class JavaDatabaseHelper implements DatabaseHelper,Reloadable {
                 }));
     }
 
+    @Override
     public void updateExternalInventoryProfileCache(@NotNull Shop shop, int space, int stock) {
 
         if(manager.getDatabase() instanceof MySQLCore){
@@ -363,6 +375,7 @@ public class JavaDatabaseHelper implements DatabaseHelper,Reloadable {
 
     }
 
+    @Override
     public void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
                            double price, int x, int y, int z, @NotNull String world, @NotNull String extra,
                            @NotNull String currency, boolean disableDisplay, @Nullable String taxAccount) {
@@ -389,6 +402,7 @@ public class JavaDatabaseHelper implements DatabaseHelper,Reloadable {
 
     }
 
+    @Override
     public void insertHistoryRecord(Object record) {
         String sqlString = "INSERT INTO " + plugin.getDbPrefix() + "logs (time, classname, data) VALUES (?, ?, ?)";
         manager.addDelayTask(

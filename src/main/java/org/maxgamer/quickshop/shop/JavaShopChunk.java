@@ -37,22 +37,27 @@ public class JavaShopChunk implements ShopChunk {
 
     private final int z;
 
+    @Override
     public boolean isSame(@NotNull World world, int x, int z) {
         return isSame(world.getName(), x, z);
     }
 
+    @Override
     public boolean isSame(@NotNull String world, int x, int z) {
         return this.x == x && this.z == z && this.world.equals(world);
     }
 
+    @Override
     public String getWorld() {
         return world;
     }
 
+    @Override
     public int getX() {
         return x;
     }
 
+    @Override
     public int getZ() {
         return z;
     }

@@ -47,10 +47,12 @@ public class JavaIntegrationManager extends QuickShopInstanceHolder implements I
         super(plugin);
     }
 
+    @Override
     public Map<String, IntegratedPlugin> getIntegrationMap() {
         return Collections.unmodifiableMap(integrations);
     }
 
+    @Override
     public List<IntegratedPlugin> getIntegrations() {
         return Collections.unmodifiableList(new ArrayList<>(integrations.values()));
     }
@@ -59,6 +61,7 @@ public class JavaIntegrationManager extends QuickShopInstanceHolder implements I
    //     return INTEGRATION_MAPPING;
    // }
 
+    @Override
     public void searchAndRegisterPlugins() {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
         for (Map.Entry<String, Class<? extends IntegratedPlugin>> entry : INTEGRATION_MAPPING.entrySet()) {
@@ -78,6 +81,7 @@ public class JavaIntegrationManager extends QuickShopInstanceHolder implements I
      *
      * @param integratedPlugin custom integrated module
      */
+    @Override
     public void register(@NotNull IntegratedPlugin integratedPlugin) {
         if (!isIntegrationClass(integratedPlugin.getClass())) {
             throw new InvalidIntegratedPluginClassException("Invaild Integration module: " + integratedPlugin.getName());
@@ -94,6 +98,7 @@ public class JavaIntegrationManager extends QuickShopInstanceHolder implements I
      *
      * @param integratedPluginClass custom integrated module class
      */
+    @Override
     public void register(@NotNull Class<? extends IntegratedPlugin> integratedPluginClass) {
         IntegratedPlugin integratedPlugin;
         try {
@@ -109,6 +114,7 @@ public class JavaIntegrationManager extends QuickShopInstanceHolder implements I
      *
      * @param integratedPluginName custom integrated module name
      */
+    @Override
     public void register(@NotNull String integratedPluginName) {
         Class<? extends IntegratedPlugin> integratedPluginClass = INTEGRATION_MAPPING.get(integratedPluginName);
         if (integratedPluginClass != null) {
@@ -128,6 +134,7 @@ public class JavaIntegrationManager extends QuickShopInstanceHolder implements I
      *
      * @param integratedPluginName plugin name
      */
+    @Override
     public void unregister(@NotNull String integratedPluginName) {
         IntegratedPlugin integratedPlugin = integrations.get(integratedPluginName);
         if (integratedPlugin != null) {
@@ -138,6 +145,7 @@ public class JavaIntegrationManager extends QuickShopInstanceHolder implements I
     /**
      * Unregister all integrated plugin from Integration system
      */
+    @Override
     public void unregisterAll() {
         for (IntegratedPlugin integratedPlugin : new ArrayList<>(integrations.values())) {
             unregister(integratedPlugin);
@@ -149,6 +157,7 @@ public class JavaIntegrationManager extends QuickShopInstanceHolder implements I
      *
      * @param integratedPlugin plugin
      */
+    @Override
     public void unregister(@NotNull IntegratedPlugin integratedPlugin) {
         if (!isIntegrationClass(integratedPlugin.getClass())) {
             throw new InvalidIntegratedPluginClassException();

@@ -141,6 +141,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      * @param bf The blockface to check
      * @return True if they're allowed to place a shop there.
      */
+    @Override
     public boolean canBuildShop(@NotNull Player p, @NotNull Block b, @NotNull BlockFace bf) {
         Util.ensureThread(false);
         if (plugin.isLimit()) {
@@ -169,6 +170,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      *
      * @return a map of World - Chunk - Shop
      */
+    @Override
     public @NotNull Map<String, Map<ShopChunk, Map<Location, Shop>>> getShops() {
         return this.shops;
     }
@@ -179,6 +181,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      *
      * @return a new shop iterator object.
      */
+    @Override
     public @NotNull Iterator<Shop> getShopIterator() {
         return new ShopIterator();
     }
@@ -187,6 +190,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      * Removes all shops from memory and the world. Does not delete them from the database. Call
      * this on plugin disable ONLY.
      */
+    @Override
     public void clear() {
         Util.ensureThread(false);
         if (plugin.isDisplayEnabled()) {
@@ -215,10 +219,12 @@ public class JavaShopManager implements ShopManager, Reloadable {
      *          used.
      * @return Shops
      */
+    @Override
     public @Nullable Map<Location, Shop> getShops(@NotNull Chunk c) {
         return getShops(c.getWorld().getName(), c.getX(), c.getZ());
     }
 
+    @Override
     public @Nullable Map<Location, Shop> getShops(@NotNull String world, int chunkX, int chunkZ) {
         final Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops(world);
         if (inWorld == null) {
@@ -233,6 +239,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      * @param world The name of the world (case sensitive) to get the list of shops from
      * @return a map of Chunk - Shop
      */
+    @Override
     public @Nullable Map<ShopChunk, Map<Location, Shop>> getShops(@NotNull String world) {
         return this.shops.get(world);
     }
@@ -326,6 +333,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      * @param d price
      * @return formated price
      */
+    @Override
     public @Nullable String format(double d, @NotNull World world, @Nullable String currency) {
         return plugin.getEconomy().format(d, world, currency);
     }
@@ -336,6 +344,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      * @param loc The location to get the shop from
      * @return The shop at that location
      */
+    @Override
     public @Nullable Shop getShop(@NotNull Location loc) {
         return getShop(loc, false);
     }
@@ -347,6 +356,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      * @param skipShopableChecking whether to check is shopable
      * @return The shop at that location
      */
+    @Override
     public @Nullable Shop getShop(@NotNull Location loc, boolean skipShopableChecking) {
         if (!skipShopableChecking && !Util.isShoppables(loc.getBlock().getType())) {
             return null;
@@ -371,6 +381,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      * @param loc The location to get the shop from
      * @return The shop at that location
      */
+    @Override
     public @Nullable Shop getShopIncludeAttached(@Nullable Location loc) {
         return getShopIncludeAttached(loc, true);
     }
@@ -382,6 +393,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      * @param useCache whether to use cache
      * @return The shop at that location
      */
+    @Override
     public @Nullable Shop getShopIncludeAttached(@Nullable Location loc, boolean useCache) {
         if (loc == null) {
             Util.debugLog("Location is null.");
@@ -447,15 +459,18 @@ public class JavaShopManager implements ShopManager, Reloadable {
 //        return null;
 //    }
 
+    @Override
     public void bakeShopRuntimeRandomUniqueIdCache(@NotNull Shop shop) {
         shopRuntimeUUIDCaching.put(shop.getRuntimeRandomUniqueId(), shop);
     }
 
+    @Override
     @Nullable
     public Shop getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId) {
         return getShopFromRuntimeRandomUniqueId(runtimeRandomUniqueId, false);
     }
 
+    @Override
     @Nullable
     public Shop getShopFromRuntimeRandomUniqueId(
             @NotNull UUID runtimeRandomUniqueId, boolean includeInvalid) {
@@ -477,10 +492,12 @@ public class JavaShopManager implements ShopManager, Reloadable {
         return null;
     }
 
+    @Override
     public void handleChat(@NotNull Player p, @NotNull String msg) {
         handleChat(p, msg, false);
     }
 
+    @Override
     public void handleChat(@NotNull Player p, @NotNull String msg, boolean bypassProtectionChecks) {
         if (!plugin.getShopManager().getActions().containsKey(p.getUniqueId())) {
             return;
@@ -521,6 +538,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      * @param world The world the shop is in
      * @param shop  The shop to load
      */
+    @Override
     public void loadShop(@NotNull String world, @NotNull Shop shop) {
         this.addShop(world, shop);
     }
@@ -532,6 +550,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      * @param world The name of the world
      * @param shop  The shop to add
      */
+    @Override
     public void addShop(@NotNull String world, @NotNull Shop shop) {
         Map<ShopChunk, Map<Location, Shop>> inWorld =
                 this.getShops()
@@ -560,6 +579,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      *
      * @param shop The shop to remove
      */
+    @Override
     public void removeShop(@NotNull Shop shop) {
         Location loc = shop.getLocation();
         String world = Objects.requireNonNull(loc.getWorld()).getName();
@@ -577,6 +597,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
     /**
      * @return Returns the Map. Info contains what their last question etc was.
      */
+    @Override
     public @NotNull Map<UUID, Info> getActions() {
         return this.actions;
     }
@@ -586,6 +607,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      *
      * @return All loaded shops.
      */
+    @Override
     public @NotNull Set<Shop> getLoadedShops() {
         return this.loadedShops;
     }
@@ -598,6 +620,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      * @param playerUUID The player's uuid.
      * @return The list have this player's all shops.
      */
+    @Override
     public @NotNull List<Shop> getPlayerAllShops(@NotNull UUID playerUUID) {
         final List<Shop> playerShops = new ArrayList<>(10);
         for (final Shop shop : getAllShops()) {
@@ -615,6 +638,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      *
      * @return All shop in the database
      */
+    @Override
     public @NotNull List<Shop> getAllShops() {
         final List<Shop> shops = new ArrayList<>();
         for (final Map<ShopChunk, Map<Location, Shop>> shopMapData : getShops().values()) {
@@ -631,6 +655,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      * @param world The world you want get the shops.
      * @return The list have this world all shops
      */
+    @Override
     public @NotNull List<Shop> getShopsInWorld(@NotNull World world) {
         final List<Shop> worldShops = new ArrayList<>();
         for (final Shop shop : getAllShops()) {
@@ -762,11 +787,13 @@ public class JavaShopManager implements ShopManager, Reloadable {
         actionBuy(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
     }
 
+    @Override
     @Deprecated
     public double getTax(@NotNull Shop shop, @NotNull Player p) {
         return getTax(shop, p.getUniqueId());
     }
 
+    @Override
     public double getTax(@NotNull Shop shop, @NotNull UUID p) {
         Util.ensureThread(false);
         double tax = plugin.getConfig().getDouble("tax");
@@ -1133,6 +1160,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
         plugin.getServer().getPluginManager().callEvent(se);
     }
 
+    @Override
     public boolean shopIsNotValid(@NotNull UUID uuid, @NotNull Info info, @NotNull Shop shop) {
         Player player = plugin.getServer().getPlayer(uuid);
         return shopIsNotValid(player, info, shop);
@@ -1357,6 +1385,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
      * Change the owner to unlimited shop owner.
      * It defined in configuration.
      */
+    @Override
     public void migrateOwnerToUnlimitedShopOwner(Shop shop) {
         shop.setOwner(this.cacheUnlimitedShopAccount.getUniqueId());
         shop.setSignText();
