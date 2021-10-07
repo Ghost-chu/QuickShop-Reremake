@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.database.AbstractDatabaseCore;
 import org.maxgamer.quickshop.api.economy.EconomyCore;
 import org.maxgamer.quickshop.localization.game.game.GameLanguage;
-import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
+import org.maxgamer.quickshop.api.shop.ItemMatcher;
 
 /**
  * ServiceInjector used for "Replaceable Modules" features that allow 3rd party QuickShop addon

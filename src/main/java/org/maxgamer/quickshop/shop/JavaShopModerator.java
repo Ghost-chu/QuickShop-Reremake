@@ -69,13 +69,13 @@ public class JavaShopModerator implements ShopModerator, Cloneable {
         this.staffs = staffs;
     }
 
-    public static JavaShopModerator deserialize(@NotNull String serilized) throws JsonSyntaxException {
+    public static ShopModerator deserialize(@NotNull String serilized) throws JsonSyntaxException {
         // Use Gson deserialize data
         Gson gson = JsonUtil.getGson();
-        return gson.fromJson(serilized, JavaShopModerator.class);
+        return gson.fromJson(serilized, ShopModerator.class);
     }
 
-    public static String serialize(@NotNull JavaShopModerator shopModerator) {
+    public static String serialize(@NotNull ShopModerator shopModerator) {
         Gson gson = JsonUtil.getGson();
         return gson.toJson(shopModerator); // Use Gson serialize this class
     }

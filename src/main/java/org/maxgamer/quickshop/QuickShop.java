@@ -46,11 +46,11 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.QuickShopAPI;
 import org.maxgamer.quickshop.api.chat.QuickChat;
 import org.maxgamer.quickshop.api.compatibility.CompatibilityManager;
-import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
-import org.maxgamer.quickshop.database.AbstractDatabaseCore;
 import org.maxgamer.quickshop.api.economy.EconomyCore;
 import org.maxgamer.quickshop.api.integration.IntegrateStage;
 import org.maxgamer.quickshop.api.integration.IntegrationManager;
+import org.maxgamer.quickshop.api.localization.text.TextManager;
+import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopManager;
 import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
@@ -62,6 +62,7 @@ import org.maxgamer.quickshop.integration.JavaIntegrationManager;
 import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
 import org.maxgamer.quickshop.listener.*;
 import org.maxgamer.quickshop.listener.worldedit.WorldEditAdapter;
+import org.maxgamer.quickshop.localization.text.JavaTextManager;
 import org.maxgamer.quickshop.nonquickshopstuff.com.rylinaux.plugman.util.PluginUtil;
 import org.maxgamer.quickshop.permission.PermissionManager;
 import org.maxgamer.quickshop.shop.*;
@@ -71,9 +72,8 @@ import org.maxgamer.quickshop.util.compatibility.JavaCompatibilityManager;
 import org.maxgamer.quickshop.util.config.ConfigProvider;
 import org.maxgamer.quickshop.util.config.ConfigurationFixer;
 import org.maxgamer.quickshop.util.envcheck.*;
-import org.maxgamer.quickshop.localization.text.JavaTextManager;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
-import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
+import org.maxgamer.quickshop.api.shop.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import org.maxgamer.quickshop.util.reload.ReloadManager;
 import org.maxgamer.quickshop.util.reporter.error.RollbarErrorReporter;
@@ -171,7 +171,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      */
     @Getter
     private Economy economy;
-    @Getter
+
     private ItemMatcher itemMatcher;
     /**
      * Whether or not to limit players shop amounts
@@ -265,8 +265,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private Plugin worldEditPlugin;
     @Getter
     private WorldEditAdapter worldEditAdapter;
-    @Getter
+    // Interfaced
     private JavaTextManager textManager;
+    // Not included API
     @Getter
     private ShopPurger shopPurger;
 
@@ -1977,8 +1978,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         Util.debugLog("Command alias successfully registered.");
     }
 
-    public @NotNull JavaTextManager text() {
-        return textManager;
+    public @NotNull TextManager text() {
+        return this.textManager;
     }
 
     @Override
@@ -1999,5 +2000,15 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Override
     public boolean isLimit() {
         return this.limit;
+    }
+
+    @Override
+    public TextManager getTextManager() {
+        return this.textManager;
+    }
+
+    @Override
+    public ItemMatcher getItemMatcher() {
+        return this.itemMatcher;
     }
 }
