@@ -1,7 +1,7 @@
 package org.maxgamer.quickshop.util;
 
-import okhttp3.Cache;
-import okhttp3.OkHttpClient;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +11,7 @@ public class HttpUtil {
     private final OkHttpClient client = new OkHttpClient.Builder()
             .cache(new Cache(getCacheFolder(),50L * 1024L * 1024L)).build();
 
-    public static HttpUtil instance(){
+    public static HttpUtil create(){
         return new HttpUtil();
     }
 
@@ -29,5 +29,13 @@ public class HttpUtil {
 
     public OkHttpClient getClient() {
         return client;
+    }
+
+    public static Response makeGet(@NotNull String url) throws IOException {
+        return HttpUtil.create().getClient().newCall(new Request.Builder().get().url(url).build()).execute();
+    }
+
+    public static Response makePost(@NotNull String url, @NotNull RequestBody body) throws IOException {
+        return HttpUtil.create().getClient().newCall(new Request.Builder().post(body).url(url).build()).execute();
     }
 }
