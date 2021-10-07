@@ -40,13 +40,16 @@ public class ConfigurationUpdater {
             try {
                 ConfigUpdater configUpdater = updateScript.getAnnotation(ConfigUpdater.class);
                 int current = getConfig().getInt("config-version");
-                if (current >= configUpdater.version())
+                if (current >= configUpdater.version()) {
                     continue;
+                }
                 Util.debugLog("Executing " + updateScript.getName() + " for version " + configUpdater.version());
-                if (updateScript.getParameterCount() == 0)
+                if (updateScript.getParameterCount() == 0) {
                     updateScript.invoke(this);
-                if (updateScript.getParameterCount() == 1 && (updateScript.getParameterTypes()[0] == int.class || updateScript.getParameterTypes()[0] == Integer.class))
+                }
+                if (updateScript.getParameterCount() == 1 && (updateScript.getParameterTypes()[0] == int.class || updateScript.getParameterTypes()[0] == Integer.class)) {
                     updateScript.invoke(this, current);
+                }
                 getConfig().set("config-version", configUpdater.version() + 1);
             } catch (Throwable throwable) {
                 plugin.getLogger().log(Level.WARNING, "Failed execute update script " + updateScript.getName() + " for updating to version " + updateScript.getAnnotation(ConfigUpdater.class).version() + ", some configuration options may missing or outdated", throwable);
@@ -58,8 +61,9 @@ public class ConfigurationUpdater {
     public List<Method> getUpdateScripts() {
         List<Method> methods = new ArrayList<>();
         for (Method declaredMethod : this.getClass().getDeclaredMethods()) {
-            if (declaredMethod.getAnnotation(ConfigUpdater.class) == null)
+            if (declaredMethod.getAnnotation(ConfigUpdater.class) == null) {
                 continue;
+            }
             methods.add(declaredMethod);
         }
         methods.sort(Comparator.comparingInt(o -> o.getAnnotation(ConfigUpdater.class).version()));
