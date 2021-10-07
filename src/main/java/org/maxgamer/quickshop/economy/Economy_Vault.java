@@ -57,7 +57,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
 
 
     public Economy_Vault(@NotNull QuickShop plugin) {
-        super(plugin);
+        super();
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
         init();

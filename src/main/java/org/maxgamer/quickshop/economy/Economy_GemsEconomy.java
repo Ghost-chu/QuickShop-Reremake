@@ -48,7 +48,7 @@ public class Economy_GemsEconomy extends AbstractEconomy {
     private GemsEconomyAPI api;
 
     public Economy_GemsEconomy(@NotNull QuickShop plugin) {
-        super(plugin);
+        super();
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
         init();
