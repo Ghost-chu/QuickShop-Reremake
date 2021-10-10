@@ -406,11 +406,10 @@
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
         <!-- IridiumSkyblock  -->
-        <!-- Repo was down temporary, using jar directly as workaround
         <repository>
-            <id>savagelabs</id>
-            <url>https://nexus.savagelabs.net/repository/maven-releases/</url>
-        </repository>-->
+            <id>IridiumDevelopment</id>
+            <url>https://nexus.iridiumdevelopment.net/repository/maven-releases/</url>
+        </repository>
         <repository>
             <id>MG-Dev Jenkins CI Maven Repository</id>
             <url>https://ci.mg-dev.eu/plugin/repository/everything/</url>
@@ -926,9 +925,8 @@
         <dependency>
             <groupId>com.iridium</groupId>
             <artifactId>IridiumSkyblock</artifactId>
-            <version>3.1.1</version>
-            <systemPath>${project.basedir}/lib/IridiumSkyblock-3.1.1.jar</systemPath>
-            <scope>system</scope>
+            <version>3.1.2</version>
+            <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
         <dependency>
