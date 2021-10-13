@@ -1,3 +1,22 @@
+/*
+ * This file is a part of project QuickShop, the name is JavaIntegrationManager.java
+ *  Copyright (C) PotatoCraft Studio and contributors
+ *
+ *  This program is free software: you can redistribute it and/or modify it
+ *  under the terms of the GNU General Public License as published by the
+ *  Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT
+ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ *  for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 package org.maxgamer.quickshop.integration;
 
 import org.bukkit.Location;
@@ -56,10 +75,6 @@ public class JavaIntegrationManager extends QuickShopInstanceHolder implements I
         return Collections.unmodifiableList(new ArrayList<>(integrations.values()));
     }
 
-    // public static Map<String, Class<? extends IntegratedPlugin>> getIntegrationMapping() {
-    //     return INTEGRATION_MAPPING;
-    // }
-
     @Override
     public void searchAndRegisterPlugins() {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
@@ -87,7 +102,6 @@ public class JavaIntegrationManager extends QuickShopInstanceHolder implements I
         }
         if (!integrations.containsKey(integratedPlugin.getName())) {
             plugin.getLogger().info("Registering " + integratedPlugin.getName() + " integration");
-            Util.debugLog("Registering " + integratedPlugin.getName() + " integration");
             integrations.put(integratedPlugin.getName(), integratedPlugin);
         }
     }
@@ -179,15 +193,6 @@ public class JavaIntegrationManager extends QuickShopInstanceHolder implements I
                             == stage) {
                         Util.debugLog("Calling for load " + integratedPlugin.getName());
                         integratedPlugin.load();
-                    } else {
-                        Util.debugLog(
-                                "Ignored calling because "
-                                        + integratedPlugin.getName()
-                                        + " stage is "
-                                        + integratedPlugin
-                                        .getClass()
-                                        .getDeclaredAnnotation(IntegrationStage.class)
-                                        .loadStage());
                     }
                 });
     }
@@ -199,15 +204,6 @@ public class JavaIntegrationManager extends QuickShopInstanceHolder implements I
                             == stage) {
                         Util.debugLog("Calling for unload " + integratedPlugin.getName());
                         integratedPlugin.unload();
-                    } else {
-                        Util.debugLog(
-                                "Ignored calling because "
-                                        + integratedPlugin.getName()
-                                        + " stage is "
-                                        + integratedPlugin
-                                        .getClass()
-                                        .getDeclaredAnnotation(IntegrationStage.class)
-                                        .loadStage());
                     }
                 });
     }
