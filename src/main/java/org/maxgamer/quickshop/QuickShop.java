@@ -51,6 +51,7 @@ import org.maxgamer.quickshop.api.database.DatabaseHelper;
 import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.api.economy.EconomyCore;
 import org.maxgamer.quickshop.api.economy.EconomyType;
+import org.maxgamer.quickshop.api.event.QSReloadEvent;
 import org.maxgamer.quickshop.api.integration.IntegrateStage;
 import org.maxgamer.quickshop.api.integration.IntegrationManager;
 import org.maxgamer.quickshop.api.localization.text.TextManager;
@@ -61,7 +62,6 @@ import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.Economy_GemsEconomy;
 import org.maxgamer.quickshop.economy.Economy_TNE;
 import org.maxgamer.quickshop.economy.Economy_Vault;
-import org.maxgamer.quickshop.api.event.QSReloadEvent;
 import org.maxgamer.quickshop.integration.JavaIntegrationManager;
 import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
 import org.maxgamer.quickshop.listener.*;
@@ -69,7 +69,10 @@ import org.maxgamer.quickshop.listener.worldedit.WorldEditAdapter;
 import org.maxgamer.quickshop.localization.text.JavaTextManager;
 import org.maxgamer.quickshop.nonquickshopstuff.com.rylinaux.plugman.util.PluginUtil;
 import org.maxgamer.quickshop.permission.PermissionManager;
-import org.maxgamer.quickshop.shop.*;
+import org.maxgamer.quickshop.shop.JavaShopManager;
+import org.maxgamer.quickshop.shop.ShopLoader;
+import org.maxgamer.quickshop.shop.ShopPurger;
+import org.maxgamer.quickshop.shop.VirtualDisplayItem;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.compatibility.JavaCompatibilityManager;
@@ -1050,7 +1053,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
     }
 
-
+    //TODO: Refactor it
     private void updateConfig(int selectedVersion) throws IOException {
         String serverUUID = getConfig().getString("server-uuid");
         if (serverUUID == null || serverUUID.isEmpty()) {
