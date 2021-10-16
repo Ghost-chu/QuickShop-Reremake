@@ -179,7 +179,7 @@
       "lock": "&eZmień status blokady sklepu",
       "taxaccount": "&eUstaw konto podatkowe, które sklep ma używać",
       "toggledisplay": "&ePrzełącz stan wyświetlania przedmiotu w sklepie",
-      "purge": "&aStart the shop purge task in background"
+      "purge": "&aUruchom zadanie czyszczenia sklepu w tle"
     },
     "disabled": "&cTa komenda jest wyłączona: &e{0}",
     "feature-not-enabled": "Ta funkcja nie jest włączona w pliku konfiguracyjnym."
@@ -343,5 +343,5 @@
   "taxaccount-invalid": "&cKonto docelowe jest nieprawidłowe, wprowadź prawidłową nazwę gracza lub identyfikator uuid (z myślnikami).",
   "display-turn-on": "&aPomyślnie włączono wyświetlacz sklepu.",
   "display-turn-off": "&aPomyślnie wyłączono wyświetlacz sklepu.",
-  "shop-purged-start": "&aShop purge started, check the console for details."
+  "shop-purged-start": "&aRozpoczęto czyszczenie sklepu, sprawdź konsolę, aby uzyskać szczegółowe informacje."
 }
