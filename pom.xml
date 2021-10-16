@@ -152,7 +152,8 @@
                         </relocation>
                         <relocation>
                             <pattern>com.dumptruckman.bukkit.configuration.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.file.newest.json.</shadedPattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.com.dumptruckman.bukkit.configuration.
+                            </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.apache.commons.compress.</pattern>
@@ -259,22 +260,6 @@
                     <keypass>${env.quickshop-signer-pwd}</keypass>
                 </configuration>
             </plugin>
-            <!--            <plugin>-->
-            <!--                &lt;!&ndash; https://mvnrepository.com/artifact/org.codehaus.mojo/exec-maven-plugin &ndash;&gt;-->
-            <!--                <groupId>org.codehaus.mojo</groupId>-->
-            <!--                <artifactId>exec-maven-plugin</artifactId>-->
-            <!--                <version>3.0.0</version>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <goals>-->
-            <!--                            <goal>java</goal>-->
-            <!--                        </goals>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--                <configuration>-->
-            <!--                    <executable>${basedir}/scripts/calculate-version.sh</executable>-->
-            <!--                </configuration>-->
-            <!--            </plugin>-->
         </plugins>
         <resources>
             <resource>
@@ -337,11 +322,6 @@
             <id>EnderZone</id>
             <url>https://ci.ender.zone/plugin/repository/everything/</url>
         </repository>
-        <!--        <repository>-->
-        <!--            <id>reserve-repo</id>-->
-        <!--            <url>https://dl.bintray.com/theneweconomy/java/</url>-->
-        <!--        </repository>-->
-        <!-- PlotSquared -->
         <repository>
             <id>intellectualsites releases</id>
             <url>https://mvn.intellectualsites.com/content/repositories/releases/</url>
@@ -367,10 +347,6 @@
         <repository>
             <id>minebench-repo</id>
             <url>https://repo.minebench.de/</url>
-        </repository>
-        <repository>
-            <id>songoda</id>
-            <url>https://repo.songoda.com/repository/public/</url>
         </repository>
         <repository>
             <id>papermc</id>
