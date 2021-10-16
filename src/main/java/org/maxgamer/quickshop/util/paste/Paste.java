@@ -158,7 +158,9 @@ public class Paste {
         }
         finalReport.append("\tDatabaseCore: ").append(plugin.getDatabaseManager().getDatabase().getName()).append("@").append(plugin.getDatabaseManager().getDatabase().getPlugin().getName()).append("\n");
         finalReport.append("\tGameLanguage Processor: ").append(MsgUtil.gameLanguage.getName()).append("@").append(MsgUtil.gameLanguage.getPlugin().getName()).append("\n");
-
+        finalReport.append("================================================\n");
+        finalReport.append("Active shops on the server:\n");
+        finalReport.append("\tTotal: ").append(plugin.getShopManager().getLoadedShops().size()).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Worlds:\n");
         finalReport.append("\tTotal: ").append(plugin.getServer().getWorlds().size()).append("\n");
