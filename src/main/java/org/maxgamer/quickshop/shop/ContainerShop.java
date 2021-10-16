@@ -49,8 +49,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.chat.ComponentPackage;
-import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.api.event.*;
+import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 
@@ -1243,9 +1243,7 @@ public class ContainerShop implements Shop {
                 .append(location.getBlockZ())
                 .append(")");
         sb.append(" Owner: ").append(this.ownerName(false)).append(" - ").append(getOwner());
-        if (isUnlimited()) {
-            sb.append(" Unlimited: true");
-        }
+        sb.append(", Unlimited: ").append(isUnlimited());
         sb.append(" Price: ").append(getPrice());
         return sb.toString();
     }
