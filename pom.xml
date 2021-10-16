@@ -142,10 +142,6 @@
                             <shadedPattern>org.maxgamer.quickshop.shade.com.fasterxml.jackson.jackson.core.
                             </shadedPattern>
                         </relocation>
-                        <!--                        <relocation>-->
-                        <!--                            <pattern>net.kyori.</pattern>-->
-                        <!--                            <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.</shadedPattern>-->
-                        <!--                        </relocation>-->
                         <relocation>
                             <pattern>me.lucko.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.me.lucko.</shadedPattern>
@@ -158,10 +154,6 @@
                             <pattern>com.dumptruckman.bukkit.configuration.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.file.newest.json.</shadedPattern>
                         </relocation>
-                        <!--                        <relocation>-->
-                        <!--                            <pattern>com.offbytwo.jenkins.</pattern>-->
-                        <!--                            <shadedPattern>org.maxgamer.quickshop.shade.com.offbytwo.jenkins.</shadedPattern>-->
-                        <!--                        </relocation>-->
                         <relocation>
                             <pattern>org.apache.commons.compress.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.org.apache.commons.compress.</shadedPattern>
@@ -171,14 +163,9 @@
                             <shadedPattern>org.maxgamer.quickshop.shade.org.apache.commons.codec.</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>com.esotericsoftware.reflectasm.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.shade.com.esotericsoftware.reflectasm.</shadedPattern>
-                        </relocation>
-                        <relocation>
                             <pattern>me.lucko.helper.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.me.lucko.helper.</shadedPattern>
                         </relocation>
-
                         <relocation>
                             <pattern>org.slf4j.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.org.slf4j.</shadedPattern>
@@ -187,11 +174,6 @@
                             <pattern>com.github.SparklingComet.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.com.github.SparklingComet.</shadedPattern>
                         </relocation>
-                        <!--                        <relocation>-->
-                        <!--                            <pattern>com.offbytwo.jenkins.jenkins-client.</pattern>-->
-                        <!--                            <shadedPattern>org.maxgamer.quickshop.shade.com.offbytwo.jenkins.jenkins-client.-->
-                        <!--                            </shadedPattern>-->
-                        <!--                        </relocation>-->
                         <relocation>
                             <pattern>de.themoep.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.de.themoep.</shadedPattern>
@@ -212,13 +194,6 @@
                             <pattern>com.squareup.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.org.com.squareup.</shadedPattern>
                         </relocation>
-
-
-                        <!--                        <relocation>-->
-                        <!--                            <pattern>de.leonhard</pattern>-->
-                        <!--                            <shadedPattern>org.maxgamer.quickshop.shade.de.leonhard.storage</shadedPattern>-->
-                        <!--                        </relocation>-->
-
                     </relocations>
                     <transformers>
                         <transformer
@@ -368,8 +343,12 @@
         <!--        </repository>-->
         <!-- PlotSquared -->
         <repository>
-            <id>IntellectualSites</id>
-            <url>https://mvn.intellectualsites.com/content/groups/public/</url>
+            <id>intellectualsites releases</id>
+            <url>https://mvn.intellectualsites.com/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>intellectualsites snapshots</id>
+            <url>https://mvn.intellectualsites.com/content/repositories/snapshots/</url>
         </repository>
         <repository>
             <id>jitpack.io</id>
@@ -702,11 +681,10 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!--PlotSquared 6 Core-->
         <dependency>
             <groupId>com.plotsquared</groupId>
             <artifactId>PlotSquared-Core</artifactId>
-            <version>6.1.2</version>
+            <version>6.0.8-SNAPSHOT</version>
             <scope>provided</scope>
             <!--We just need the core jar-->
             <exclusions>
