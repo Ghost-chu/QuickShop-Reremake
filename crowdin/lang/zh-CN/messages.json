@@ -86,7 +86,7 @@
   "menu": {
     "successful-purchase": "&a支付成功：",
     "successfully-sold": "&a出售成功：",
-    "item-name-and-price": "&e{0} {1} &a每 &e{2}",
+    "item-name-and-price": "&e{0} {1} &a共 &e{2}",
     "sell-tax": "&a你支付了&e{0}&a的税。",
     "sell-tax-self": "&a你无需支付税，因为你是这家商店的所有者。",
     "enchants": "&5附魔",
