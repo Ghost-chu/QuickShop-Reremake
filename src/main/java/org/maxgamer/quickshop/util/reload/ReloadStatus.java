@@ -25,6 +25,10 @@ public enum ReloadStatus {
      */
     SUCCESS,
     /**
+     * The object that registered now no reference and has been GC by Java.
+     */
+    OUTDATED,
+    /**
      * Reload require the server restart
      */
     REQUIRE_RESTART,
@@ -36,4 +40,5 @@ public enum ReloadStatus {
      * Oof, reloading exploded, wtf
      */
     EXCEPTION,
+
 }

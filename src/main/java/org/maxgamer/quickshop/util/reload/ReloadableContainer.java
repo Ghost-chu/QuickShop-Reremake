@@ -24,6 +24,7 @@ import lombok.Builder;
 import lombok.Data;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 
 @Data
@@ -31,9 +32,9 @@ import java.lang.reflect.Method;
 @AllArgsConstructor
 public class ReloadableContainer {
     @Nullable
-    private Reloadable reloadable;
+    private WeakReference<Reloadable> reloadable;
     @Nullable
-    private Method reloadableMethod;
+    private WeakReference<Method> reloadableMethod;
 
     public boolean isObject() {
         return reloadable != null;
