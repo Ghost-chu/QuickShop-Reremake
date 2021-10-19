@@ -562,8 +562,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         runtimeCheck(EnvCheckEntry.Stage.ON_LOAD);
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
-        //noinspection ResultOfMethodCallIgnored
-        getDataFolder().mkdirs();
         this.bootError = null;
         getLogger().info("Loading up integration modules.");
         this.integrationHelper = new JavaIntegrationManager(this);
@@ -694,6 +692,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
     private void initConfiguration() {
         /* Process the config */
+        //noinspection ResultOfMethodCallIgnored
+        getDataFolder().mkdirs();
         try {
             saveDefaultConfig();
         } catch (IllegalArgumentException resourceNotFoundException) {
