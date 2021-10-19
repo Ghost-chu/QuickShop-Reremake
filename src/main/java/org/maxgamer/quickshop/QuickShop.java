@@ -455,7 +455,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                                         } catch (Exception ignored) {
                                         }
                                         if (!vault.getVault().hasAccount(tax)) {
-                                            getLogger().warning("Tax account's player never played this server before, that may cause server lagg or economy system error, you should change that name. But if this warning not cause any issues, you can safety ignore this.");
+                                            getLogger().warning("Tax account's player never played this server before and failed to create one, that may cause server lagg or economy system error, you should change that name. But if this warning not cause any issues, you can safety ignore this.");
                                         }
                                     }
 
