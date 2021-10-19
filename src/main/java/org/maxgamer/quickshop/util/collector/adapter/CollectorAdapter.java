@@ -29,6 +29,7 @@ import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.economy.Economy_Vault;
 import org.maxgamer.quickshop.shop.ShopLoader;
 import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.collector.CollectResolver;
 import org.maxgamer.quickshop.util.collector.CollectType;
@@ -94,7 +95,7 @@ public class CollectorAdapter {
         data.put("name", plugin.getServer().getName());
         data.put("software", plugin.getServer().getVersion());
         data.put("version", plugin.getServer().getVersion());
-        data.put("version_internal", Util.getNMSVersion());
+        data.put("version_internal", ReflectFactory.getNMSVersion());
         data.put("version_data", plugin.getServer().getUnsafe().getDataVersion());
         data.put("online_mode", plugin.getServer().getOnlineMode());
         data.put("view_distance", plugin.getServer().getViewDistance());

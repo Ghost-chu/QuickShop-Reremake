@@ -276,7 +276,7 @@ public final class EnvironmentChecker {
             //API test
             try {
                 plugin.getServer().spigot();
-                String nmsVersion = Util.getNMSVersion();
+                String nmsVersion = ReflectFactory.getNMSVersion();
                 plugin.getLogger().info("Running QuickShop-" + QuickShop.getFork() + " on NMS version " + nmsVersion + " For Minecraft version " + ReflectFactory.getServerVersion());
             } catch (Exception e) {
                 return failed;
@@ -333,7 +333,7 @@ public final class EnvironmentChecker {
 
     @EnvCheckEntry(name = "CoreSupport Test", priority = 6)
     public ResultContainer coreSupportTest() {
-        String nmsVersion = Util.getNMSVersion();
+        String nmsVersion = ReflectFactory.getNMSVersion();
         GameVersion gameVersion = GameVersion.get(nmsVersion);
         if (!gameVersion.isCoreSupports()) {
             return new ResultContainer(CheckResult.STOP_WORKING, "Your Minecraft version is no longer supported: " + ReflectFactory.getServerVersion() + " (" + nmsVersion + ")");
@@ -346,7 +346,7 @@ public final class EnvironmentChecker {
 
     @EnvCheckEntry(name = "Virtual DisplayItem Support Test", priority = 7)
     public ResultContainer virtualDisplaySupportTest() {
-        String nmsVersion = Util.getNMSVersion();
+        String nmsVersion = ReflectFactory.getNMSVersion();
         GameVersion gameVersion = GameVersion.get(nmsVersion);
         Throwable throwable;
         if (!gameVersion.isVirtualDisplaySupports()) {
@@ -374,7 +374,7 @@ public final class EnvironmentChecker {
 
     @EnvCheckEntry(name = "GameVersion supporting Test", priority = 9)
     public ResultContainer gamerVersionSupportTest() {
-        String nmsVersion = Util.getNMSVersion();
+        String nmsVersion = ReflectFactory.getNMSVersion();
         GameVersion gameVersion = GameVersion.get(nmsVersion);
         if (gameVersion == GameVersion.UNKNOWN) {
             return new ResultContainer(CheckResult.WARNING, "Your Minecraft server version not tested by developers, QuickShop may ran into issues on this version.");
