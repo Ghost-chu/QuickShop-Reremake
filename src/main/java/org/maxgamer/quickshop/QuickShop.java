@@ -111,7 +111,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private JavaTextManager textManager;
     private boolean priceChangeRequiresFee = false;
     private final Map<String, Integer> limits = new HashMap<>(15);
-    private final GameVersion gameVersion = GameVersion.get(Util.getNMSVersion());
+    private final GameVersion gameVersion = GameVersion.get(ReflectFactory.getNMSVersion());
     /* Public QuickShop API End */
 
     /**
@@ -255,6 +255,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private WorldEditAdapter worldEditAdapter;
     @Getter
     private ShopPurger shopPurger;
+    @Getter
+    private final TpsWatcher tpsWatcher = new TpsWatcher();
 
     /**
      * Use for mock bukkit
@@ -349,7 +351,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
         }
         if (getConfig().getBoolean("plugin.WorldEdit")) {
-            String nmsVersion = Util.getNMSVersion();
+            String nmsVersion = ReflectFactory.getNMSVersion();
             GameVersion gameVersion = GameVersion.get(nmsVersion);
             this.worldEditPlugin = Bukkit.getPluginManager().getPlugin("WorldEdit");
             if (this.worldEditPlugin != null) {
@@ -636,6 +638,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
         if (calendarWatcher != null) {
             calendarWatcher.stop();
+        }
+        if (tpsWatcher != null) {
+            tpsWatcher.cancel();
         }
         /* Unload UpdateWatcher */
         if (this.updateWatcher != null) {
@@ -940,6 +945,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
         calendarWatcher = new CalendarWatcher(this);
         calendarWatcher.start();
+        tpsWatcher.runTaskTimer(this, 1000, 50);
         this.shopPurger = new ShopPurger(this, false);
         shopPurger.runTaskAsynchronously(this);
         Util.debugLog("Now using display-type: " + AbstractDisplayItem.getNowUsing().name());

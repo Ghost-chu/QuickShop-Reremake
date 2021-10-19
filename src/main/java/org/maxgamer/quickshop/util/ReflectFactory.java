@@ -43,6 +43,74 @@ public class ReflectFactory {
     private static Method itemStack_saveMethod;
     private static Class<?> nbtTagCompoundClass;
     private static Class<?> craftServerClass;
+    private static Class<?> cachedNMSClass;
+    private static String nmsVersion;
+    private static Object serverInstance;
+    private static Field tpsField;
+
+
+    @NotNull
+    public static String getNMSVersion() {
+        if (nmsVersion == null) {
+            String name = Bukkit.getServer().getClass().getPackage().getName();
+            nmsVersion = name.substring(name.lastIndexOf('.') + 1);
+        }
+        return nmsVersion;
+    }
+
+    /**
+     * Get MinecraftServer's TPS
+     *
+     * @return TPS (e.g 19.92)
+     */
+    @NotNull
+    public static Double getTPS() {
+        return QuickShop.getInstance().getTpsWatcher().getAverageTPS();
+//        if (serverInstance == null || tpsField == null) {
+//            try {
+//                serverInstance = getNMSClass("MinecraftServer").getMethod("getServer").invoke(null);
+//                tpsField = serverInstance.getClass().getField("recentTps");
+//            } catch (NoSuchFieldException
+//                    | SecurityException
+//                    | IllegalAccessException
+//                    | IllegalArgumentException
+//                    | InvocationTargetException
+//                    | NoSuchMethodException e) {
+//                serverInstance = null;
+//                tpsField = null;
+//                Util.debugLog("Failed to get TPS " + e.getMessage());
+//                try {
+//
+//                }catch (Exception exception){
+//                    return 20.0;
+//                }
+//            }
+//        }
+//        try {
+//            double[] tps = ((double[]) tpsField.get(serverInstance));
+//            return tps[0];
+//        } catch (IllegalAccessException ignored) {
+//            return 20.0;
+//        }
+    }
+
+    @NotNull
+    public static Class<?> getNMSClass(@Nullable String className) {
+        if (cachedNMSClass != null) {
+            return cachedNMSClass;
+        }
+        if (className == null) {
+            className = "MinecraftServer";
+        }
+        String name = Bukkit.getServer().getClass().getPackage().getName();
+        String version = name.substring(name.lastIndexOf('.') + 1);
+        try {
+            cachedNMSClass = Class.forName("net.minecraft.server." + version + "." + className);
+            return cachedNMSClass;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     static {
         String name = Bukkit.getServer().getClass().getPackage().getName();

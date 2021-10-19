@@ -61,8 +61,6 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 import java.lang.management.ManagementFactory;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.DecimalFormat;
@@ -84,24 +82,18 @@ public class Util {
     private static final List<BlockFace> VERTICAL_FACING = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
     private static final List<String> DEBUG_LOGS = new ArrayList<>();
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
-    @Getter
-    private static final Map<String, String> CURRENCY_SYMBOL_MAPPING = new HashMap<>();
+
     private static final ThreadLocal<MineDown> MINEDOWN = ThreadLocal.withInitial(() -> new MineDown(""));
     private static int bypassedCustomStackSize = -1;
     private static Yaml yaml = null;
     private static Boolean devMode = null;
     @Setter
     private static QuickShop plugin;
-    private static Object serverInstance;
-    private static Field tpsField;
     @Getter
     private static boolean disableDebugLogger = false;
     @Getter
     @Nullable
     private static DyeColor dyeColor = null;
-    @Nullable
-    private static Class<?> cachedNMSClass = null;
-    private volatile static String nmsVersion;
 
     /**
      * Convert strArray to String. E.g "Foo, Bar"
@@ -353,73 +345,7 @@ public class Util {
         LOCK.writeLock().unlock();
     }
 
-    /**
-     * Formats the given number according to how vault would like it. E.g. $50 or 5 dollars.
-     *
-     * @param n    price
-     * @param shop shop
-     * @return The formatted string.
-     */
-    @NotNull
-    public static String format(double n, @Nullable Shop shop) {
-        if (shop == null) {
-            return "Error: Shop null";
-        }
-        return format(n, plugin.getConfig().getBoolean("shop.disable-vault-format", false), shop.getLocation().getWorld(), shop);
-    }
 
-    @NotNull
-    public static String format(double n, boolean internalFormat, @NotNull World world, @Nullable Shop shop) {
-        if (shop != null) {
-            return format(n, internalFormat, world, shop.getCurrency());
-        } else {
-            return format(n, internalFormat, world, (Shop) null);
-        }
-    }
-
-    @NotNull
-    public static String format(double n, boolean internalFormat, @NotNull World world, @Nullable String currency) {
-        if (internalFormat) {
-            return getInternalFormat(n, currency);
-        }
-
-        if (plugin == null) {
-            Util.debugLog("Called format before Plugin booted up, forcing fixing.");
-            plugin = QuickShop.getInstance();
-        }
-        if (plugin.getEconomy() == null) {
-            Util.debugLog("Called format before Economy booted up, using built-in formatter.");
-            return getInternalFormat(n, currency);
-        }
-        try {
-            String formatted = plugin.getEconomy().format(n, world, currency);
-            if (StringUtils.isEmpty(formatted)) {
-                Util.debugLog(
-                        "Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
-                return getInternalFormat(n, currency);
-            } else {
-                return formatted;
-            }
-        } catch (NumberFormatException e) {
-            Util.debugLog("format", e.getMessage());
-            Util.debugLog(
-                    "format", "Use alternate-currency-symbol to formatting, Cause NumberFormatException");
-            return getInternalFormat(n, currency);
-        }
-    }
-
-    private static String getInternalFormat(double amount, @Nullable String currency) {
-        if (StringUtils.isEmpty(currency)) {
-            Util.debugLog("Format: Currency is null");
-            String formatted = plugin.getConfig().getBoolean("use-decimal-format", false) ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
-            return plugin.getConfig().getBoolean("shop.currency-symbol-on-right", false) ? formatted + plugin.getConfig().getString("shop.alternate-currency-symbol", "$") : plugin.getConfig().getString("shop.alternate-currency-symbol", "$") + formatted;
-        } else {
-            Util.debugLog("Format: Currency is: [" + currency + "]");
-            String formatted = plugin.getConfig().getBoolean("use-decimal-format", false) ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
-            String symbol = CURRENCY_SYMBOL_MAPPING.getOrDefault(currency, currency);
-            return plugin.getConfig().getBoolean("shop.currency-symbol-on-right", false) ? formatted + symbol : symbol + formatted;
-        }
-    }
 
     /**
      * return the right side for given blockFace
@@ -625,7 +551,6 @@ public class Util {
         SHOPABLES.clear();
         RESTRICTED_PRICES.clear();
         CUSTOM_STACKSIZE.clear();
-        CURRENCY_SYMBOL_MAPPING.clear();
         devMode = plugin.getConfig().getBoolean("dev-mode");
 
         for (String s : plugin.getConfig().getStringList("shop-blocks")) {
@@ -688,14 +613,7 @@ public class Util {
             dyeColor = DyeColor.valueOf(plugin.getConfig().getString("shop.sign-dye-color"));
         } catch (Exception ignored) {
         }
-        List<String> symbols = plugin.getConfig().getStringList("shop.alternate-currency-symbol-list");
-        symbols.forEach(entry -> {
-            String[] splits = entry.split(";", 2);
-            if (splits.length < 2) {
-                plugin.getLogger().warning("Invalid entry in alternate-currency-symbol-list: " + entry);
-            }
-            CURRENCY_SYMBOL_MAPPING.put(splits[0], splits[1]);
-        });
+
         InteractUtil.init(plugin.getConfig());
     }
 
@@ -1171,14 +1089,6 @@ public class Util {
         return "[" + className + "-" + methodName + "] ";
     }
 
-    @NotNull
-    public static String getNMSVersion() {
-        if (nmsVersion == null) {
-            String name = Bukkit.getServer().getClass().getPackage().getName();
-            nmsVersion = name.substring(name.lastIndexOf('.') + 1);
-        }
-        return nmsVersion;
-    }
 
     /**
      * Get the sign material using by plugin. With compatiabily process.
@@ -1194,37 +1104,6 @@ public class Util {
         return Material.OAK_WALL_SIGN;
     }
 
-    /**
-     * Get MinecraftServer's TPS
-     *
-     * @return TPS (e.g 19.92)
-     */
-    @NotNull
-    public static Double getTPS() {
-        if (serverInstance == null || tpsField == null) {
-            try {
-                serverInstance = getNMSClass("MinecraftServer").getMethod("getServer").invoke(null);
-                tpsField = serverInstance.getClass().getField("recentTps");
-            } catch (NoSuchFieldException
-                    | SecurityException
-                    | IllegalAccessException
-                    | IllegalArgumentException
-                    | InvocationTargetException
-                    | NoSuchMethodException e) {
-                plugin.getLogger().log(Level.WARNING, "Failed to getting server TPS, please report to QuickShop.", e);
-                serverInstance = null;
-                tpsField = null;
-                Util.debugLog("Failed to get TPS " + e.getMessage());
-                return 20.0;
-            }
-        }
-        try {
-            double[] tps = ((double[]) tpsField.get(serverInstance));
-            return tps[0];
-        } catch (IllegalAccessException ignored) {
-            return 20.0;
-        }
-    }
 
     @SneakyThrows
     public static void makeExportBackup(@Nullable String backupName) {
@@ -1253,23 +1132,6 @@ public class Util {
         });
     }
 
-    @NotNull
-    public static Class<?> getNMSClass(@Nullable String className) {
-        if (cachedNMSClass != null) {
-            return cachedNMSClass;
-        }
-        if (className == null) {
-            className = "MinecraftServer";
-        }
-        String name = Bukkit.getServer().getClass().getPackage().getName();
-        String version = name.substring(name.lastIndexOf('.') + 1);
-        try {
-            cachedNMSClass = Class.forName("net.minecraft.server." + version + "." + className);
-            return cachedNMSClass;
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     /**
      * Check QuickShop is running on dev edition or not.
