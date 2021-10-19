@@ -39,16 +39,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.ServiceInjector;
 import org.maxgamer.quickshop.api.database.WarpedResultSet;
-import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.event.ShopControlPanelOpenEvent;
+import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.localization.game.game.GameLanguage;
 import org.maxgamer.quickshop.localization.game.game.MojangGameLanguageImpl;
 import org.maxgamer.quickshop.util.logging.container.PluginGlobalAlertLog;
@@ -568,25 +566,7 @@ public class MsgUtil {
         }
     }
 
-    /**
-     * Send a purchaseSuccess message for a player.
-     *
-     * @param purchaser Target player
-     * @param shop      Target shop
-     * @param amount    Trading item amounts.
-     */
-    public static void sendPurchaseSuccess(@NotNull UUID purchaser, @NotNull Shop shop, int amount) {
-        Player sender = Bukkit.getPlayer(purchaser);
-        if (sender == null) {
-            return;
-        }
-        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
-        chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(plugin.text().of(sender, "menu.successful-purchase").forLocale());
-        chatSheetPrinter.printLine(plugin.text().of(sender, "menu.item-name-and-price", Integer.toString(amount * shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()), Util.format(amount * shop.getPrice(), shop)).forLocale());
-        printEnchantment(sender, shop, chatSheetPrinter);
-        chatSheetPrinter.printFooter();
-    }
+
 
     /**
      * Get Enchantment's i18n name.
@@ -606,44 +586,8 @@ public class MsgUtil {
         return Util.prettifyText(enchString);
     }
 
-    /**
-     * Send a sellSuccess message for a player.
-     *
-     * @param seller Target player
-     * @param shop   Target shop
-     * @param amount Trading item amounts.
-     */
-    public static void sendSellSuccess(@NotNull UUID seller, @NotNull Shop shop, int amount) {
-        Player sender = Bukkit.getPlayer(seller);
-        if (sender == null) {
-            return;
-        }
-        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
-        chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(plugin.text().of(sender, "menu.successfully-sold").forLocale());
-        chatSheetPrinter.printLine(
-                plugin.text().of(sender,
-                        "menu.item-name-and-price",
-                        Integer.toString(amount),
-                        Util.getItemStackName(shop.getItem()),
-                        Util.format(amount * shop.getPrice(), shop)).forLocale());
-        if (plugin.getConfig().getBoolean("show-tax")) {
-            double tax = plugin.getConfig().getDouble("tax");
-            double total = amount * shop.getPrice();
-            if (tax != 0) {
-                if (!seller.equals(shop.getOwner())) {
-                    chatSheetPrinter.printLine(
-                            plugin.text().of(sender, "menu.sell-tax", Util.format(tax * total, shop)).forLocale());
-                } else {
-                    chatSheetPrinter.printLine(plugin.text().of(sender, "menu.sell-tax-self").forLocale());
-                }
-            }
-        }
-        printEnchantment(sender, shop, chatSheetPrinter);
-        chatSheetPrinter.printFooter();
-    }
 
-    private static void printEnchantment(@NotNull Player p, @NotNull Shop shop, ChatSheetPrinter chatSheetPrinter) {
+    public static void printEnchantment(@NotNull Player p, @NotNull Shop shop, ChatSheetPrinter chatSheetPrinter) {
         if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasItemFlag(ItemFlag.HIDE_ENCHANTS) && plugin.getConfig().getBoolean("respect-item-flag")) {
             return;
         }
@@ -672,67 +616,6 @@ public class MsgUtil {
             Integer level = entries.getValue();
             chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + RomanNumber.toRoman(level == null ? 1 : level));
         }
-    }
-
-    /**
-     * Send a shop infomation to a player.
-     *
-     * @param p    Target player
-     * @param shop The shop
-     */
-    public static void sendShopInfo(@NotNull Player p, @NotNull Shop shop) {
-        // Potentially faster with an array?
-        ItemStack items = shop.getItem();
-        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
-        chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(plugin.text().of(p, "menu.shop-information").forLocale());
-        chatSheetPrinter.printLine(plugin.text().of(p, "menu.owner", shop.ownerName()).forLocale());
-        // Enabled
-        plugin.getQuickChat().send(p, plugin.getQuickChat().getItemHologramChat(shop, items, p, ChatColor.DARK_PURPLE + plugin.text().of(p, "tableformat.left_begin").forLocale() + plugin.text().of(p, "menu.item", Util.getItemStackName(items)).forLocale() + "  "));
-        if (Util.isTool(items.getType())) {
-            chatSheetPrinter.printLine(
-                    plugin.text().of(p, "menu.damage-percent-remaining", Util.getToolPercentage(items)).forLocale());
-        }
-        if (shop.isSelling()) {
-            if (shop.getRemainingStock() == -1) {
-                chatSheetPrinter.printLine(
-                        plugin.text().of(p, "menu.stock", plugin.text().of(p, "signs.unlimited").forLocale()).forLocale());
-            } else {
-                chatSheetPrinter.printLine(
-                        plugin.text().of(p, "menu.stock", Integer.toString(shop.getRemainingStock())).forLocale());
-            }
-        } else {
-            if (shop.getRemainingSpace() == -1) {
-                chatSheetPrinter.printLine(
-                        plugin.text().of(p, "menu.space", plugin.text().of(p, "signs.unlimited").forLocale()).forLocale());
-            } else {
-                chatSheetPrinter.printLine(
-                        plugin.text().of(p, "menu.space", Integer.toString(shop.getRemainingSpace())).forLocale());
-            }
-        }
-        if (shop.getItem().getAmount() == 1) {
-            chatSheetPrinter.printLine(plugin.text().of(p, "menu.price-per", Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice(), shop)).forLocale());
-        } else {
-            chatSheetPrinter.printLine(plugin.text().of(p, "menu.price-per-stack", Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice(), shop), Integer.toString(shop.getItem().getAmount())).forLocale());
-        }
-        if (shop.isBuying()) {
-            chatSheetPrinter.printLine(plugin.text().of(p, "menu.this-shop-is-buying").forLocale());
-        } else {
-            chatSheetPrinter.printLine(plugin.text().of(p, "menu.this-shop-is-selling").forLocale());
-        }
-        printEnchantment(p, shop, chatSheetPrinter);
-        if (items.getItemMeta() instanceof PotionMeta) {
-            PotionMeta potionMeta = (PotionMeta) items.getItemMeta();
-            PotionEffectType potionEffectType = potionMeta.getBasePotionData().getType().getEffectType();
-            if (potionEffectType != null) {
-                chatSheetPrinter.printLine(plugin.text().of(p, "menu.effects").forLocale());
-                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getPotioni18n(potionEffectType));
-            }
-            for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
-                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getPotioni18n(potionEffect.getType()));
-            }
-        }
-        chatSheetPrinter.printFooter();
     }
 
     /**

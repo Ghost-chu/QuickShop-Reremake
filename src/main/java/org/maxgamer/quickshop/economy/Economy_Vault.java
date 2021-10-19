@@ -36,6 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.economyformatter.BuiltInEconomyFormatter;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
@@ -54,11 +55,13 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
     @Setter
     @Nullable
     private net.milkbowl.vault.economy.Economy vault;
+    private final BuiltInEconomyFormatter formatter;
 
 
     public Economy_Vault(@NotNull QuickShop plugin) {
         super();
         this.plugin = plugin;
+        this.formatter = new BuiltInEconomyFormatter(plugin);
         plugin.getReloadManager().register(this);
         init();
         setupEconomy();
@@ -170,7 +173,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
             return "Error";
         }
 
-        return Util.format(balance, true, plugin.getServer().getWorlds().get(0), (String) null);
+        return this.formatter.getInternalFormat(balance, null);
     }
 
     @Override

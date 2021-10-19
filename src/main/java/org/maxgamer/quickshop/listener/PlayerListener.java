@@ -187,7 +187,7 @@ public class PlayerListener extends AbstractQSListener {
             shop.onClick();
             this.playClickSound(e.getPlayer());
             // Text menu
-            MsgUtil.sendShopInfo(p, shop);
+            plugin.getShopManager().sendShopInfo(p, shop);
             shop.setSignText();
 
             final AbstractEconomy eco = plugin.getEconomy();

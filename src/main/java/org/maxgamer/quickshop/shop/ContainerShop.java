@@ -753,10 +753,10 @@ public class ContainerShop implements Shop {
         String line4;
         if (this.isStackingShop()) {
             line4 = plugin.text().of("signs.stack-price",
-                    Util.format(this.getPrice(), this), Integer.toString(item.getAmount()),
+                    plugin.getShopManager().format(this.getPrice(), this), Integer.toString(item.getAmount()),
                     Util.getItemStackName(item)).forLocale();
         } else {
-            line4 = plugin.text().of("signs.price", Util.format(this.getPrice(), this)).forLocale();
+            line4 = plugin.text().of("signs.price", plugin.getShopManager().format(this.getPrice(), this)).forLocale();
         }
         lines.add(new ComponentPackage(TextComponent.fromLegacyText(line4)));
         return lines;

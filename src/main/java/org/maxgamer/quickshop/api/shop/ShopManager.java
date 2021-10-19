@@ -1,3 +1,22 @@
+/*
+ * This file is a part of project QuickShop, the name is ShopManager.java
+ *  Copyright (C) PotatoCraft Studio and contributors
+ *
+ *  This program is free software: you can redistribute it and/or modify it
+ *  under the terms of the GNU General Public License as published by the
+ *  Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT
+ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ *  for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 package org.maxgamer.quickshop.api.shop;
 
 import org.bukkit.Chunk;
@@ -8,12 +27,14 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.api.annotations.Unstable;
 
 import java.util.*;
 
 /**
  * The manager that managing shops
  */
+@SuppressWarnings("ALL")
 public interface ShopManager {
 
     /**
@@ -77,10 +98,21 @@ public interface ShopManager {
     /**
      * Format the price use economy system
      *
-     * @param d price
+     * @param d        price
+     * @param currency currency
+     * @param world    shop world
      * @return formated price
      */
     @Nullable String format(double d, @NotNull World world, @Nullable String currency);
+
+    /**
+     * Format the price use economy system
+     *
+     * @param d    price
+     * @param shop The shop
+     * @return formated price
+     */
+    @Nullable String format(double d, @NotNull Shop shop);
 
     /**
      * Gets a shop in a specific location
@@ -206,7 +238,39 @@ public interface ShopManager {
 
     /**
      * Getting the Shop Price Limiter
+     *
      * @return The shop price limiter
      */
+    @NotNull
     PriceLimiter getPriceLimiter();
+
+    /**
+     * Send a purchaseSuccess message for a player.
+     *
+     * @param purchaser Target player
+     * @param shop      Target shop
+     * @param amount    Trading item amounts.
+     */
+    @Unstable
+    void sendPurchaseSuccess(@NotNull UUID purchaser, @NotNull Shop shop, int amount);
+
+    /**
+     * Send a sellSuccess message for a player.
+     *
+     * @param seller Target player
+     * @param shop   Target shop
+     * @param amount Trading item amounts.
+     */
+    @Unstable
+    void sendSellSuccess(@NotNull UUID seller, @NotNull Shop shop, int amount);
+
+    /**
+     * Send a shop infomation to a player.
+     *
+     * @param p    Target player
+     * @param shop The shop
+     */
+    @Unstable
+    void sendShopInfo(@NotNull Player p, @NotNull Shop shop) ;
+
 }
