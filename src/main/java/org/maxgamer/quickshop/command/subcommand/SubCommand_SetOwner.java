@@ -49,11 +49,6 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
 
         final BlockIterator bIt = new BlockIterator(sender, 10);
 
-        if (!bIt.hasNext()) {
-            plugin.text().of(sender, "not-looking-at-shop").send();
-            return;
-        }
-
         while (bIt.hasNext()) {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());

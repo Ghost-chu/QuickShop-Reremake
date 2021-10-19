@@ -56,10 +56,6 @@ public class SubCommand_Size implements CommandHandler<Player> {
         }
         final BlockIterator bIt = new BlockIterator(sender, 10);
         // Loop through every block they're looking at upto 10 blocks away
-        if (!bIt.hasNext()) {
-            plugin.text().of(sender, "not-looking-at-shop").send();
-            return;
-        }
         while (bIt.hasNext()) {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());

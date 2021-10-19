@@ -42,10 +42,6 @@ public class SubCommand_Item implements CommandHandler<Player> {
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         BlockIterator bIt = new BlockIterator(sender, 10);
         // Loop through every block they're looking at upto 10 blocks away
-        if (!bIt.hasNext()) {
-            plugin.text().of(sender, "not-looking-at-shop").send();
-            return;
-        }
         while (bIt.hasNext()) {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
