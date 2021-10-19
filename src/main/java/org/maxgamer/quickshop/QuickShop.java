@@ -441,26 +441,24 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                                 } else {
                                     tax = Bukkit.getOfflinePlayer(Objects.requireNonNull(taxAccount));
                                 }
-                                if (!tax.hasPlayedBefore()) {
-                                    Economy_Vault vault = (Economy_Vault) core;
-                                    if (vault.isValid()) {
-                                        if (!Objects.requireNonNull(vault.getVault()).hasAccount(tax)) {
-                                            try {
-                                                Util.debugLog("Tax account not exists! Creating...");
-                                                getLogger().warning("QuickShop detected tax account not exists, we're trying to create one. If you see any errors, please change tax-account in config.yml to server owner in-game username");
-                                                if (vault.getVault().createPlayerAccount(tax)) {
-                                                    getLogger().info("Tax account created.");
-                                                } else {
-                                                    getLogger().warning("Cannot to create tax-account,  please change tax-account in config.yml to server owner in-game username");
-                                                }
-                                            } catch (Exception ignored) {
+                                Economy_Vault vault = (Economy_Vault) core;
+                                if (vault.isValid()) {
+                                    if (!Objects.requireNonNull(vault.getVault()).hasAccount(tax)) {
+                                        try {
+                                            Util.debugLog("Tax account not exists! Creating...");
+                                            getLogger().warning("QuickShop detected tax account not exists, we're trying to create one. If you see any errors, please change tax-account in config.yml to server owner in-game username");
+                                            if (vault.getVault().createPlayerAccount(tax)) {
+                                                getLogger().info("Tax account created.");
+                                            } else {
+                                                getLogger().warning("Cannot to create tax-account,  please change tax-account in config.yml to server owner in-game username");
                                             }
-                                            if (!vault.getVault().hasAccount(tax)) {
-                                                getLogger().warning("Tax account's player never played this server before, that may cause server lagg or economy system error, you should change that name. But if this warning not cause any issues, you can safety ignore this.");
-                                            }
+                                        } catch (Exception ignored) {
                                         }
-
+                                        if (!vault.getVault().hasAccount(tax)) {
+                                            getLogger().warning("Tax account's player never played this server before, that may cause server lagg or economy system error, you should change that name. But if this warning not cause any issues, you can safety ignore this.");
+                                        }
                                     }
+
                                 }
                             }
                         } catch (Exception ignored) {
