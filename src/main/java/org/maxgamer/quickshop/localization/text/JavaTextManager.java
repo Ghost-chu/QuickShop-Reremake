@@ -100,13 +100,14 @@ public class JavaTextManager implements TextManager, Reloadable {
      * @param file The Crowdin file path
      * @return The bundled file configuration object
      */
-    private JsonConfiguration loadBundled(String file) {
+    private JsonConfiguration loadBundled(String file) throws IOException {
         JsonConfiguration bundledLang = new JsonConfiguration();
+        File fileObject = new File(file);
         try {
-            File fileObject = new File(file);
             bundledLang.loadFromString(new String(IOUtils.toByteArray(new InputStreamReader(plugin.getResource("lang/" + fileObject.getName())), StandardCharsets.UTF_8)));
         } catch (IOException | InvalidConfigurationException ex) {
             bundledLang = new JsonConfiguration();
+            Util.debugLog(new String(IOUtils.toByteArray(new InputStreamReader(plugin.getResource("lang/" + fileObject.getName())), StandardCharsets.UTF_8)));
             plugin.getLogger().log(Level.SEVERE, "Cannot load bundled language file from Jar, some strings may missing!", ex);
         }
         return bundledLang;
