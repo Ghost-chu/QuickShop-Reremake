@@ -735,7 +735,7 @@ public class ContainerShop implements Shop {
         lines.add(new ComponentPackage(TextComponent.fromLegacyText(SHOP_SIGN_PREFIX + line2 + " ")));
 
         //line 3
-        if (!this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName()) {
+        if (!plugin.getConfiguration().getBoolean("shop.force-use-item-original-name") && (!this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName())) {
             TextComponent left = new TextComponent(plugin.text().of("signs.item-left").forLocale());
             TranslatableComponent mediumItem = new TranslatableComponent("item." + getItem().getType().getKey().getNamespace() + "." + getItem().getType().getKey().getKey());
             TextComponent right = new TextComponent(plugin.text().of("signs.item-right").forLocale());
