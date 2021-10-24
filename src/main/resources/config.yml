@@ -466,6 +466,8 @@ plugin:
     only: false
   #If you have WorldEdit, QuickShop will try migrating shops in EditSession. [BETA]
   WorldEdit: true
+  #Allow us use NBTAPI to direct modify the blockstate data
+  NBTAPI: true
 effect:
   sound:
     ontabcomplete: true

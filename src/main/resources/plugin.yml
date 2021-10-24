@@ -33,6 +33,7 @@ softdepend:
   - ArmShopBridge
   - IridiumSkyblock
   - FabledSkyblock
+  - NBTAPI
 
 api-version: 1.15
 

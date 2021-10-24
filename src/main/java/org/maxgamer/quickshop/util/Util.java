@@ -28,6 +28,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -1104,6 +1105,15 @@ public class Util {
         return Material.OAK_WALL_SIGN;
     }
 
+    /**
+     * Convert component to json
+     *
+     * @param components Chat Component
+     * @return Json
+     */
+    public static String componentsToJson(BaseComponent[] components) {
+        return ComponentSerializer.toString(components);
+    }
 
     @SneakyThrows
     public static void makeExportBackup(@Nullable String backupName) {

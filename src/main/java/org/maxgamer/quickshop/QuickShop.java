@@ -24,6 +24,7 @@ import com.google.common.collect.Lists;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import de.leonhard.storage.Yaml;
 import de.leonhard.storage.sections.FlatFileSection;
+import de.tr7zw.nbtapi.plugin.NBTAPI;
 import lombok.Getter;
 import lombok.Setter;
 import me.minebuilders.clearlag.Clearlag;
@@ -52,7 +53,6 @@ import org.maxgamer.quickshop.api.command.CommandManager;
 import org.maxgamer.quickshop.api.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.api.database.DatabaseHelper;
 import org.maxgamer.quickshop.api.economy.AbstractEconomy;
-import org.maxgamer.quickshop.api.economy.EconomyCore;
 import org.maxgamer.quickshop.api.economy.EconomyType;
 import org.maxgamer.quickshop.api.event.QSReloadEvent;
 import org.maxgamer.quickshop.api.integration.IntegrateStage;
@@ -256,6 +256,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private ShopPurger shopPurger;
     @Getter
     private final TpsWatcher tpsWatcher = new TpsWatcher();
+    @Getter
+    @Nullable
+    private NBTAPI nbtapi = null;
 
     /**
      * Use for mock bukkit
@@ -371,6 +374,17 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 }
             }
         }
+        if (getConfiguration().getBoolean("plugin.NBTAPI")) {
+            this.nbtapi = (NBTAPI) Bukkit.getPluginManager().getPlugin("NBTAPI");
+            if (this.nbtapi != null) {
+                if (!this.nbtapi.isCompatible()) {
+                    getLogger().warning("NBTAPI plugin failed to loading, QuickShop NBTAPI support module has been disabled. Try update NBTAPI version to resolve the issue. (" + nbtapi.getDescription().getVersion() + ")");
+                    this.nbtapi = null;
+                } else {
+                    getLogger().info("Successfully loaded NBTAPI support!");
+                }
+            }
+        }
         Bukkit.getPluginManager().registerEvents(this.compatibilityTool, this);
         compatibilityTool.searchAndRegisterPlugins();
         if (this.display) {
@@ -422,13 +436,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     public boolean loadEcon() {
         try {
             // EconomyCore core = new Economy_Vault();
-            EconomyCore core = null;
             switch (EconomyType.fromID(getConfiguration().getInt("economy-type"))) {
                 case UNKNOWN:
                     setupBootError(new BootError(this.getLogger(), "Can't load the Economy provider, invaild value in config.yml."), true);
                     return false;
                 case VAULT:
-                    core = new Economy_Vault(this);
+                    economy = new Economy_Vault(this);
                     Util.debugLog("Now using the Vault economy system.");
                     if (getConfiguration().getOrDefault("tax", 0.0d) > 0) {
                         try {
@@ -440,7 +453,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                                 } else {
                                     tax = Bukkit.getOfflinePlayer(Objects.requireNonNull(taxAccount));
                                 }
-                                Economy_Vault vault = (Economy_Vault) core;
+                                Economy_Vault vault = (Economy_Vault) economy;
                                 if (vault.isValid()) {
                                     if (!Objects.requireNonNull(vault.getVault()).hasAccount(tax)) {
                                         try {
@@ -466,21 +479,21 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                     }
                     break;
                 case GEMS_ECONOMY:
-                    core = new Economy_GemsEconomy(this);
+                    economy = new Economy_GemsEconomy(this);
                     Util.debugLog("Now using the GemsEconomy economy system.");
                     break;
                 case TNE:
-                    core = new Economy_TNE(this);
+                    economy = new Economy_TNE(this);
                     Util.debugLog("Now using the TNE economy system.");
                     break;
                 default:
                     Util.debugLog("No any economy provider selected.");
                     break;
             }
-            if (core == null) {
+            if (economy == null) {
                 return false;
             }
-            if (!core.isValid()) {
+            if (!economy.isValid()) {
                 setupBootError(BuiltInSolution.econError(), false);
                 return false;
             }

@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.shop;
 
 import com.lishid.openinv.OpenInv;
+import de.tr7zw.nbtapi.NBTTileEntity;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import me.lucko.helper.serialize.BlockPosition;
@@ -734,7 +735,7 @@ public class ContainerShop implements Shop {
         lines.add(new ComponentPackage(TextComponent.fromLegacyText(SHOP_SIGN_PREFIX + line2 + " ")));
 
         //line 3
-        if (this.getItem().hasItemMeta() && this.getItem().getItemMeta().hasDisplayName()) {
+        if (!this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName()) {
             TextComponent left = new TextComponent(plugin.text().of("signs.item-left").forLocale());
             TranslatableComponent mediumItem = new TranslatableComponent("item." + getItem().getType().getKey().getNamespace() + "." + getItem().getType().getKey().getKey());
             TextComponent right = new TextComponent(plugin.text().of("signs.item-right").forLocale());
@@ -772,8 +773,16 @@ public class ContainerShop implements Shop {
         Util.ensureThread(false);
         List<Sign> signs = this.getSigns();
         for (Sign sign : signs) {
+            NBTTileEntity tileSign = null;
+            if (this.plugin.getNbtapi() != null) {
+                tileSign = new NBTTileEntity(sign);
+            }
             for (int i = 0; i < lines.size(); i++) {
-                sign.setLine(i, new TextComponent(lines.get(i).getComponents()).toLegacyText());
+                if (tileSign != null) {
+                    tileSign.setString("Text" + (i + 1), Util.componentsToJson(lines.get(i).getComponents()));
+                } else {
+                    sign.setLine(i, new TextComponent(lines.get(i).getComponents()).toLegacyText());
+                }
             }
             if (plugin.getGameVersion().isSignTextDyeSupport()) {
                 DyeColor dyeColor = Util.getDyeColor();
@@ -1280,10 +1289,10 @@ public class ContainerShop implements Shop {
                     && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
                 OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
                 return openInv.getSpecialEnderChest(
-                                Objects.requireNonNull(
-                                        openInv.loadPlayer(
-                                                plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
-                                plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
+                        Objects.requireNonNull(
+                                openInv.loadPlayer(
+                                        plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
+                        plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
                         .getBukkitInventory();
             }
         } catch (Exception e) {
