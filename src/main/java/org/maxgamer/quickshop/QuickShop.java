@@ -434,7 +434,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 case VAULT:
                     core = new Economy_Vault(this);
                     Util.debugLog("Now using the Vault economy system.");
-                    if (getConfiguration().getOrDefault("tax", 0) > 0) {
+                    if (getConfiguration().getOrDefault("tax", 0.0d) > 0) {
                         try {
                             String taxAccount = getConfiguration().getOrDefault("tax-account", "tax");
                             if (!taxAccount.isEmpty()) {
