@@ -1957,6 +1957,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 //        }
     }
 
+    /**
+     * Mark plugins stop working
+     *
+     * @param bootError           reason
+     * @param unregisterListeners should we disable all listeners?
+     */
     public void setupBootError(BootError bootError, boolean unregisterListeners) {
         this.bootError = bootError;
         if (unregisterListeners) {
