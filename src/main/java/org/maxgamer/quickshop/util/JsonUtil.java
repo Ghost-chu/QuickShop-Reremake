@@ -37,6 +37,7 @@ import java.util.Objects;
  * @author Ghost_chu and sandtechnology, modified based on Lucko's Helper project
  */
 public final class JsonUtil {
+    private static final Gson REGULAR_GSON = new Gson();
     private static final Gson STANDARD_GSON = GsonComponentSerializer.populate(new GsonBuilder())
             .registerTypeHierarchyAdapter(DataTree.class, JsonElementTreeSerializer.INSTANCE)
             .registerTypeAdapterFactory(GsonSerializableAdapterFactory.INSTANCE)
@@ -59,6 +60,10 @@ public final class JsonUtil {
             .create();
 
     private static final JsonParser PARSER = new JsonParser();
+
+    public static Gson regular() {
+        return REGULAR_GSON;
+    }
 
     @Nonnull
     public static Gson standard() {

@@ -69,7 +69,7 @@ public class JavaShopModerator implements ShopModerator, Cloneable {
 
     public static ShopModerator deserialize(@NotNull String serilized) throws JsonSyntaxException {
         // Use Gson deserialize data
-        Gson gson = JsonUtil.getGson();
+        Gson gson = JsonUtil.regular();
         return gson.fromJson(serilized, ShopModerator.class);
     }
 
