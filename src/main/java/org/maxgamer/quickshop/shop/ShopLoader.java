@@ -306,7 +306,7 @@ public class ShopLoader {
                                 data.isDisableDisplay(),
                                 data.getTaxAccount());
                 if (shopNullCheck(shop)) {
-                    return;
+                    continue;
                 }
                 plugin.getDatabaseHelper().createShop(shop, null, null);
                 plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
