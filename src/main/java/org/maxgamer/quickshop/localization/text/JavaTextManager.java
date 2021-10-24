@@ -107,7 +107,6 @@ public class JavaTextManager implements TextManager, Reloadable {
             bundledLang.loadFromString(new String(IOUtils.toByteArray(new InputStreamReader(plugin.getResource("lang/" + fileObject.getName())), StandardCharsets.UTF_8)));
         } catch (IOException | InvalidConfigurationException ex) {
             bundledLang = new JsonConfiguration();
-            Util.debugLog(new String(IOUtils.toByteArray(new InputStreamReader(plugin.getResource("lang/" + fileObject.getName())), StandardCharsets.UTF_8)));
             plugin.getLogger().log(Level.SEVERE, "Cannot load bundled language file from Jar, some strings may missing!", ex);
         }
         return bundledLang;
