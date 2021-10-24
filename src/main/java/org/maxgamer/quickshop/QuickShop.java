@@ -93,14 +93,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
-
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
@@ -1951,13 +1947,14 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         //Delete old example configuration files
         new File(getDataFolder(), "example.config.yml").delete();
         new File(getDataFolder(), "example-configuration.txt").delete();
+        new File(getDataFolder(), "example-configuration.yml").delete();
 
-        Path exampleConfigFile = new File(getDataFolder(), "example-configuration.yml").toPath();
-        try {
-            Files.copy(Objects.requireNonNull(getResource("config.yml")), exampleConfigFile, REPLACE_EXISTING);
-        } catch (IOException ioe) {
-            getLogger().warning("Error when creating the example config file: " + ioe.getMessage());
-        }
+//        // Path exampleConfigFile = new File(getDataFolder(), "example-configuration.yml").toPath();
+//        try {
+//            Files.copy(Objects.requireNonNull(getResource("config.yml")), exampleConfigFile, REPLACE_EXISTING);
+//        } catch (IOException ioe) {
+//            getLogger().warning("Error when creating the example config file: " + ioe.getMessage());
+//        }
     }
 
     public void setupBootError(BootError bootError, boolean unregisterListeners) {

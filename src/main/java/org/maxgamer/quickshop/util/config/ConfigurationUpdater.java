@@ -959,7 +959,7 @@ public class ConfigurationUpdater {
 //        reloadConfig();
 //
 //        //Delete old example configuration files
-//        new File(getDataFolder(), "example.config.yml").delete();
+//        new File(getDataFolder(), "xample.config.yml").delete();
 //        new File(getDataFolder(), "example-configuration.txt").delete();
 //
 //        Path exampleConfigFile = new File(getDataFolder(), "example-configuration.yml").toPath();
