@@ -44,6 +44,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.ServiceInjector;
+import org.maxgamer.quickshop.api.annotations.Unstable;
 import org.maxgamer.quickshop.api.database.WarpedResultSet;
 import org.maxgamer.quickshop.api.event.ShopControlPanelOpenEvent;
 import org.maxgamer.quickshop.api.shop.Shop;
@@ -128,6 +129,8 @@ public class MsgUtil {
      * @param itemBukkitName ItemBukkitName(e.g. Material.STONE.name())
      * @return String Item's i18n name.
      */
+    @Unstable
+    @Deprecated
     public static String getItemi18n(@NotNull String itemBukkitName) {
         if (itemBukkitName.isEmpty()) {
             return "Item is empty";
@@ -162,10 +165,14 @@ public class MsgUtil {
         return raw;
     }
 
+    @Unstable
+    @Deprecated
     public static void loadGameLanguage(@NotNull String languageCode) {
         gameLanguage = ServiceInjector.getGameLanguage(new MojangGameLanguageImpl(plugin, languageCode));
     }
 
+    @Unstable
+    @Deprecated
     public static void loadI18nFile() {
         //Update instance
         plugin = QuickShop.getInstance();
@@ -175,6 +182,8 @@ public class MsgUtil {
         loadGameLanguage(plugin.getConfig().getString("game-language", "default"));
     }
 
+    @Unstable
+    @Deprecated
     public static void loadEnchi18n() {
         plugin.getLogger().info("Loading enchantments translations...");
         File enchi18nFile = new File(plugin.getDataFolder(), "enchi18n.yml");
@@ -210,6 +219,8 @@ public class MsgUtil {
     /**
      * Load Itemi18n fron file
      */
+    @Unstable
+    @Deprecated
     public static void loadItemi18n() {
         plugin.getLogger().info("Loading items translations...");
         File itemi18nFile = new File(plugin.getDataFolder(), "itemi18n.yml");
@@ -244,6 +255,8 @@ public class MsgUtil {
         }
     }
 
+    @Unstable
+    @Deprecated
     public static void loadPotioni18n() {
         plugin.getLogger().info("Loading potions translations...");
         File potioni18nFile = new File(plugin.getDataFolder(), "potioni18n.yml");
@@ -299,14 +312,6 @@ public class MsgUtil {
             }
         } catch (SQLException e) {
             plugin.getLogger().log(Level.WARNING, "Could not load transaction messages from database. Skipping.", e);
-        }
-    }
-
-    //For backward compatibility
-    @Deprecated
-    public static void sendColoredMessage(@NotNull CommandSender sender, @NotNull ChatColor chatColor, @Nullable String... messages) {
-        for (String message : messages) {
-            sendDirectMessage(sender, chatColor + message);
         }
     }
 
@@ -567,13 +572,14 @@ public class MsgUtil {
     }
 
 
-
     /**
      * Get Enchantment's i18n name.
      *
      * @param key The Enchantment.
      * @return Enchantment's i18n name.
      */
+    @Unstable
+    @Deprecated
     public static String getEnchi18n(@NotNull Enchantment key) {
         String enchString = key.getKey().getKey();
         if (enchString.isEmpty()) {
@@ -624,6 +630,8 @@ public class MsgUtil {
      * @param potion potionType
      * @return Potion's i18n name.
      */
+    @Unstable
+    @Deprecated
     public static String getPotioni18n(@NotNull PotionEffectType potion) {
         String potionString = potion.getName().trim();
         if (potionString.isEmpty()) {
