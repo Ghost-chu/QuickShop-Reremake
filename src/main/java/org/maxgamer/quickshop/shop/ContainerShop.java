@@ -799,7 +799,8 @@ public class ContainerShop implements Shop {
         if (!Util.isLoaded(this.location)) {
             return;
         }
-        this.setSignText(getSignText("en_us"));
+        this.setSignText(getSignText(plugin.getConfiguration().getOrDefault("language", "en-US")));
+        // this.setSignText(getSignText("en_us"));
     }
 
     /**

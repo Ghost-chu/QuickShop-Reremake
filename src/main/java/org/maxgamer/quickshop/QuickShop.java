@@ -1914,7 +1914,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfiguration().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 141) {
-            getConfiguration().set("language", null);
             getConfiguration().set("disabled-languages", Collections.singletonList("disable_here"));
             getConfiguration().set("mojangapi-mirror", 0);
             getConfiguration().set("purge.enabled", false);
@@ -1930,6 +1929,13 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfiguration().set("enabled-languages", Collections.singletonList("*"));
             getConfiguration().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 143) {
+            if (getConfiguration().get("language") == null) {
+                getConfiguration().set("language", "en-US");
+            }
+            getConfiguration().set("config-version", ++selectedVersion);
+        }
+
 
         if (getConfiguration().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");

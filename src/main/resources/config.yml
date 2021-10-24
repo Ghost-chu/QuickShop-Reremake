@@ -1,7 +1,14 @@
 # QuickShop-Reremake Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 143
+config-version: 144
+
+#This language will used by Shop signs and other texts that direct write on the block/entity.
+language: en-US
+
+#This language will used by Item Name, Enchantment Name and Potion Effect Name and other them related position.
+#Use default will use your system language.
+game-language: default
 
 #Choose which languages should enabled
 #Any client connect to server that using disabled language, will fallback to en-US language
@@ -11,14 +18,6 @@ config-version: 143
 enabled-languages:
   - '*'
 
-#Select the language you want to use, (e.g de-DE), use only supported language codes from the list below.
-#If you use a not existant/not supported language, then QuickShop will use en_US.
-#After you have selected your language, you need to delete the `messages.yml` file and reload the plugin to apply the new language.
-
-#After you have setup a language, QuickShop will download all the required Game language files from Mojang.
-#You can find all supported languages in your Minecraft Client Languages Menu.
-#Enter the language Code here (e.g English (en-US) -> Language Code = en-US).
-game-language: default
 
 #0=Official
 #1=BMCLAPI (Unofficial China Mirror, https://bmclapidoc.bangbang93.com)

@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is ShopInfoStorage.java
+ * This file is a part of project QuickShop, the name is ShopSignStorage.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -30,6 +30,7 @@ import lombok.Data;
 @Data
 @Builder
 public class ShopSignStorage {
+    private final boolean shopSign = true;
     private String world;
     private int x;
     private int y;
