@@ -279,12 +279,20 @@ public class ShopLoader {
         plugin.getLogger().info("Recovering shops...");
         Gson gson = JsonUtil.getGson();
         int total = shopsPlain.length;
-        for (int i = 0; i < total; i++) {
-            String shopStr = shopsPlain[i].trim();
-            boolean success = false;
+        List<ShopRawDatabaseInfo> list = new ArrayList<>(total);
+        for (String s : shopsPlain) {
+            String shopStr = s.trim();
             try {
-                ShopRawDatabaseInfo shopDatabaseInfoOrigin = gson.fromJson(shopStr, ShopRawDatabaseInfo.class);
-                ShopDatabaseInfo data = new ShopDatabaseInfo(shopDatabaseInfoOrigin);
+                list.add(gson.fromJson(shopStr, ShopRawDatabaseInfo.class));
+            } catch (JsonSyntaxException ignore) {
+            }
+        }
+        plugin.getLogger().info("Processed " + total + "/" + total + " - [ Valid " + list.size() + "]");
+        // Load to RAM
+        Util.mainThreadRun(() -> {
+            plugin.getLogger().info("Loading recovered shops...");
+            for (ShopRawDatabaseInfo rawDatabaseInfo : list) {
+                ShopDatabaseInfo data = new ShopDatabaseInfo(rawDatabaseInfo);
                 Shop shop =
                         new ContainerShop(plugin,
                                 data.getLocation(),
@@ -300,18 +308,13 @@ public class ShopLoader {
                 if (shopNullCheck(shop)) {
                     continue;
                 }
-                // Load to RAM
-                Util.mainThreadRun(() -> {
-                    plugin.getDatabaseHelper().createShop(shop, null, null);
-                    plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
-                    shop.update();
-                });
-
-                success = true;
-            } catch (JsonSyntaxException ignore) {
+                plugin.getDatabaseHelper().createShop(shop, null, null);
+                plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
+                shop.update();
             }
-            plugin.getLogger().info("Processed " + i + "/" + total + " - [" + success + "]");
-        }
+            plugin.getLogger().info("Finished!");
+        });
+
     }
 
 //    @NotNull
