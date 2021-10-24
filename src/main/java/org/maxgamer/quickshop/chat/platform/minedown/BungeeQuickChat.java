@@ -35,6 +35,7 @@ import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.chat.QuickComponentImpl;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.ReflectFactory;
+import org.maxgamer.quickshop.util.TextSplitter;
 import org.maxgamer.quickshop.util.Util;
 
 import java.lang.reflect.InvocationTargetException;
@@ -79,7 +80,16 @@ public class BungeeQuickChat implements QuickChat {
         TextComponent errorComponent = new TextComponent(QuickShop.getInstance().text().of(player, "menu.item-holochat-error").forLocale());
         try {
             String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
-            TextComponent centerItem = new TextComponent(text);
+            ComponentBuilder builder = new ComponentBuilder();
+            TextSplitter.SpilledString spilledString = TextSplitter.deBakeItem(text);
+            if (spilledString == null) {
+                builder.append(text);
+            } else {
+                builder.append(spilledString.getLeft())
+                        .append(spilledString.getComponents())
+                        .append(spilledString.getRight());
+            }
+            TextComponent centerItem = new TextComponent(builder.create());
             ComponentBuilder cBuilder = new ComponentBuilder(json);
             centerItem.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
             player.spigot().sendMessage(centerItem);
@@ -98,7 +108,18 @@ public class BungeeQuickChat implements QuickChat {
             if (json == null) {
                 return new QuickComponentImpl(errorComponent);
             }
-            TextComponent normalmessage = new TextComponent(message + " " + QuickShop.getInstance().text().of(player, "menu.preview").forLocale());
+            ComponentBuilder builder = new ComponentBuilder();
+            TextSplitter.SpilledString spilledString = TextSplitter.deBakeItem(message);
+            if (spilledString == null) {
+                builder.append(message);
+            } else {
+                builder.append(spilledString.getLeft())
+                        .append(spilledString.getComponents())
+                        .append(spilledString.getRight());
+            }
+            builder.append(" ")
+                    .append(QuickShop.getInstance().text().of(player, "menu.preview").forLocale());
+            TextComponent normalmessage = new TextComponent(builder.create());
             ComponentBuilder cBuilder = new ComponentBuilder(json);
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
                 normalmessage.setClickEvent(new ClickEvent(

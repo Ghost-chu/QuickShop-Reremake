@@ -688,9 +688,13 @@ public class MsgUtil {
                 if (spilledString == null) {
                     plugin.getQuickChat().send(sender, msg);
                 } else {
+                    Util.debugLog("Built successfully");
                     ComponentBuilder builder = new ComponentBuilder();
+                    Util.debugLog("Left " + Arrays.toString(TextComponent.fromLegacyText(spilledString.getLeft())));
                     builder.append(TextComponent.fromLegacyText(spilledString.getLeft()));
+                    Util.debugLog("Center " + Arrays.toString(spilledString.getComponents()));
                     builder.append(spilledString.getComponents());
+                    Util.debugLog("Right " + Arrays.toString(TextComponent.fromLegacyText(spilledString.getRight())));
                     builder.append(TextComponent.fromLegacyText(spilledString.getRight()));
                     plugin.getQuickChat().send(sender, new QuickComponentImpl(builder.create()));
                 }
