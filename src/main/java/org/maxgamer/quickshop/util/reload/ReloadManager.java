@@ -32,14 +32,14 @@ import java.util.*;
  * Register order is reloading order preventing unexpected behavior.
  */
 public class ReloadManager {
-    private final List<ReloadableContainer> registry = new ArrayList<>();
+    private final List<ReloadableContainer> registry = Collections.synchronizedList(new LinkedList<>());
 
     /**
      * Register a reloadable module into reloading registery
      *
      * @param reloadable Reloadable module
      */
-    public void register(@NotNull Reloadable reloadable) {
+    public synchronized void register(@NotNull Reloadable reloadable) {
         unregister(reloadable);
         this.registry.add(new ReloadableContainer(new WeakReference<>(reloadable), null));
     }
@@ -49,7 +49,7 @@ public class ReloadManager {
      *
      * @param reloadMethod Reloadable module
      */
-    public void register(@NotNull Method reloadMethod) {
+    public synchronized void register(@NotNull Method reloadMethod) {
         unregister(reloadMethod);
         this.registry.add(new ReloadableContainer(null, new WeakReference<>(reloadMethod)));
     }
@@ -59,7 +59,7 @@ public class ReloadManager {
      *
      * @param reloadMethod Reloadable module
      */
-    public void unregister(@NotNull Method reloadMethod) {
+    public synchronized void unregister(@NotNull Method reloadMethod) {
         this.registry.removeIf(reloadableContainer -> {
             if (reloadableContainer.getReloadableMethod() != null) {
                 Method method = reloadableContainer.getReloadableMethod().get();
@@ -76,7 +76,7 @@ public class ReloadManager {
      *
      * @param reloadable Reloadable module
      */
-    public void unregister(@NotNull Reloadable reloadable) {
+    public synchronized void unregister(@NotNull Reloadable reloadable) {
         this.registry.removeIf(reloadableContainer -> reloadableContainer != null && Objects.equals(reloadableContainer.getReloadable(), reloadable));
     }
 
@@ -85,7 +85,7 @@ public class ReloadManager {
      *
      * @param clazz Class that impl reloadable
      */
-    public void unregister(@NotNull Class<Reloadable> clazz) {
+    public synchronized void unregister(@NotNull Class<Reloadable> clazz) {
         this.registry.removeIf(reloadable -> {
             if (reloadable.getReloadable() != null) {
                 return clazz.equals(reloadable.getReloadable().getClass());
@@ -105,7 +105,7 @@ public class ReloadManager {
      * @return Reloading results
      */
     @NotNull
-    public Map<ReloadableContainer, ReloadResult> reload() {
+    public synchronized Map<ReloadableContainer, ReloadResult> reload() {
         return reload(null);
     }
 
@@ -116,7 +116,7 @@ public class ReloadManager {
      * @return Reloading results
      */
     @NotNull
-    public Map<ReloadableContainer, ReloadResult> reload(@Nullable Class<Reloadable> clazz) {
+    public synchronized Map<ReloadableContainer, ReloadResult> reload(@Nullable Class<Reloadable> clazz) {
         Map<ReloadableContainer, ReloadResult> reloadResultMap = new HashMap<>();
         Iterator<ReloadableContainer> iterator = this.registry.iterator();
         while (iterator.hasNext()) {
