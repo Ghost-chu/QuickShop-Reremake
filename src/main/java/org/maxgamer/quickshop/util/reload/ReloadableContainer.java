@@ -34,7 +34,7 @@ public class ReloadableContainer {
     @Nullable
     private WeakReference<Reloadable> reloadable;
     @Nullable
-    private WeakReference<Method> reloadableMethod;
+    private Method reloadableMethod;
 
     public boolean isObject() {
         return reloadable != null;

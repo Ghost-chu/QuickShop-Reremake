@@ -51,7 +51,7 @@ public class ReloadManager {
      */
     public synchronized void register(@NotNull Method reloadMethod) {
         unregister(reloadMethod);
-        this.registry.add(new ReloadableContainer(null, new WeakReference<>(reloadMethod)));
+        this.registry.add(new ReloadableContainer(null, reloadMethod));
     }
 
     /**
@@ -62,7 +62,7 @@ public class ReloadManager {
     public synchronized void unregister(@NotNull Method reloadMethod) {
         this.registry.removeIf(reloadableContainer -> {
             if (reloadableContainer.getReloadableMethod() != null) {
-                Method method = reloadableContainer.getReloadableMethod().get();
+                Method method = reloadableContainer.getReloadableMethod();
                 return reloadMethod.equals(method);
             } else {
                 return false;
@@ -91,7 +91,7 @@ public class ReloadManager {
                 return clazz.equals(reloadable.getReloadable().getClass());
             }
             if (reloadable.getReloadableMethod() != null) {
-                Method method = reloadable.getReloadableMethod().get();
+                Method method = reloadable.getReloadableMethod();
                 if (method != null)
                     return clazz.equals(method.getDeclaringClass());
             }
@@ -128,7 +128,7 @@ public class ReloadManager {
                     }
                 }
                 if (reloadable.getReloadableMethod() != null) {
-                    Method method = reloadable.getReloadableMethod().get();
+                    Method method = reloadable.getReloadableMethod();
                     if (method != null) {
                         if (!clazz.equals(method.getDeclaringClass())) {
                             continue;
@@ -147,7 +147,7 @@ public class ReloadManager {
                         reloadResult = new ReloadResult(ReloadStatus.OUTDATED, "Object has been invalid", null);
                     }
                 } else if (reloadable.getReloadableMethod() != null) {
-                    Method method = reloadable.getReloadableMethod().get();
+                    Method method = reloadable.getReloadableMethod();
                     if (method != null) {
                         reloadResult = (ReloadResult) method.invoke(null);
                     } else {
