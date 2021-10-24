@@ -40,10 +40,10 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.api.shop.DisplayType;
 import org.maxgamer.quickshop.api.shop.Shop;
-import org.maxgamer.quickshop.api.event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.util.GameVersion;
 import org.maxgamer.quickshop.util.Util;
 
@@ -406,7 +406,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
             //Create a DataWatcher
             WrappedDataWatcher wpw = new WrappedDataWatcher();
             //https://wiki.vg/index.php?title=Entity_metadata#Entity
-            if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
+            if (PLUGIN.getConfiguration().getBoolean("shop.display-item-use-name")) {
                 String itemName;
                 if (QuickShop.isTesting()) {
                     //Env Testing

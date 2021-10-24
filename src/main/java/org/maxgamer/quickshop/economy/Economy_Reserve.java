@@ -180,7 +180,7 @@
 //    @Override
 //    public boolean withdraw(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
 //        try {
-//            if ((!plugin.getConfig().getBoolean("shop.allow-economy-loan")) && getBalance(name, world, currency) < amount) {
+//            if ((!plugin.getConfiguration().getBoolean("shop.allow-economy-loan")) && getBalance(name, world, currency) < amount) {
 //                return false;
 //            }
 //            return Objects.requireNonNull(reserve).removeHoldings(name, new BigDecimal(amount));

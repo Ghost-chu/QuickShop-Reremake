@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.eventmanager;
 
 
+import de.leonhard.storage.sections.FlatFileSection;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -59,6 +60,11 @@ public class ListenerContainerTest {
             @NotNull
             @Override
             public FileConfiguration getConfig() {
+                return null;
+            }
+
+            @NotNull
+            public FlatFileSection getConfiguration() {
                 return null;
             }
 

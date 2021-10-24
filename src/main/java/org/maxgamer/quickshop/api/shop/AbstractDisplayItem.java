@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is DisplayItem.java
+ * This file is a part of project QuickShop, the name is AbstractDisplayItem.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -174,11 +174,11 @@ public abstract class AbstractDisplayItem implements Reloadable {
      */
     @NotNull
     public static DisplayType getNowUsing() {
-        DisplayType displayType = DisplayType.fromID(PLUGIN.getConfig().getInt("shop.display-type"));
+        DisplayType displayType = DisplayType.fromID(PLUGIN.getConfiguration().getInt("shop.display-type"));
         //Falling back to RealDisplayItem when VirtualDisplayItem is unsupported
         if (isNotSupportVirtualItem && displayType == DisplayType.VIRTUALITEM) {
-            PLUGIN.getConfig().set("shop.display-type", 0);
-            PLUGIN.saveConfig();
+            PLUGIN.getConfiguration().set("shop.display-type", 0);
+            PLUGIN.saveConfiguration();
             PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because VirtualDisplayItem is unsupported");
             return DisplayType.REALITEM;
         }
@@ -203,7 +203,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
             Util.debugLog("ItemStack " + itemStack + " cannot getting or creating ItemMeta, failed to create guarded ItemStack.");
             return itemStack;
         }
-        if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
+        if (PLUGIN.getConfiguration().getBoolean("shop.display-item-use-name")) {
             if (iMeta.hasDisplayName()) {
                 iMeta.setDisplayName(iMeta.getDisplayName());
             } else {
@@ -233,7 +233,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
     }
 
     protected void init() {
-        DISPLAY_ALLOW_STACKS = PLUGIN.getConfig().getBoolean("shop.display-allow-stacks");
+        DISPLAY_ALLOW_STACKS = PLUGIN.getConfiguration().getBoolean("shop.display-allow-stacks");
         if (DISPLAY_ALLOW_STACKS) {
             //Prevent stack over the normal size
             originalItemStack.setAmount(Math.min(originalItemStack.getAmount(), originalItemStack.getMaxStackSize()));

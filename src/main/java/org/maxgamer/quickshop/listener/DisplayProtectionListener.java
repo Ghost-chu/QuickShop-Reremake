@@ -50,7 +50,7 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
 
     public DisplayProtectionListener(QuickShop plugin, Cache cache) {
         super(plugin, cache);
-        useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-display-protect");
+        useEnhanceProtection = plugin.getConfiguration().getBoolean("shop.enchance-display-protect");
         if (useEnhanceProtection) {
             plugin.getServer().getPluginManager().registerEvents(new EnhanceDisplayProtectionListener(plugin, cache), plugin);
         }
@@ -63,7 +63,7 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
      */
     @Override
     public ReloadResult reloadModule() {
-        if (useEnhanceProtection == plugin.getConfig().getBoolean("shop.enchance-display-protect")) {
+        if (useEnhanceProtection == plugin.getConfiguration().getBoolean("shop.enchance-display-protect")) {
             return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
         }
         return ReloadResult.builder().status(ReloadStatus.REQUIRE_RESTART).build();
@@ -71,7 +71,7 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
 
 
     private void sendAlert(@NotNull String msg) {
-        if (!plugin.getConfig().getBoolean("send-display-item-protection-alert")) {
+        if (!plugin.getConfiguration().getBoolean("send-display-item-protection-alert")) {
             return;
         }
         MsgUtil.sendGlobalAlert(msg);

@@ -123,7 +123,7 @@ public class ShopLoader {
                     shop.setDirty();
                 }
                 if (shopNullCheck(shop)) {
-                    if (plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false)) {
+                    if (plugin.getConfiguration().getOrDefault("debug.delete-corrupt-shops", false)) {
                         plugin.getLogger().warning("Deleting shop " + shop + " caused by corrupted.");
                         plugin.getDatabaseHelper().removeShop(origin.getWorld(), origin.getX(), origin.getY(), origin.getZ());
                     } else {

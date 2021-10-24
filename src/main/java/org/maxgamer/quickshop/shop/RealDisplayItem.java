@@ -29,11 +29,11 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.api.event.ShopDisplayItemDespawnEvent;
+import org.maxgamer.quickshop.api.event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.api.shop.DisplayType;
 import org.maxgamer.quickshop.api.shop.Shop;
-import org.maxgamer.quickshop.api.event.ShopDisplayItemDespawnEvent;
-import org.maxgamer.quickshop.api.event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -203,7 +203,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
         Item item = (Item) entity;
         // Set item protect in the armorstand's hand
 
-        if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
+        if (PLUGIN.getConfiguration().getBoolean("shop.display-item-use-name")) {
             item.setCustomName(Util.getItemStackName(this.originalItemStack));
             item.setCustomNameVisible(true);
         } else {

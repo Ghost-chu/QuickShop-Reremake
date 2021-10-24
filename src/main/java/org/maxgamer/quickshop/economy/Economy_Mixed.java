@@ -47,7 +47,7 @@
 //        Bukkit.dispatchCommand(
 //                Bukkit.getConsoleSender(),
 //                MsgUtil.fillArgs(
-//                        plugin.getConfig().getString("mixedeconomy.deposit"),
+//                        plugin.getConfiguration().getString("mixedeconomy.deposit"),
 //                        Bukkit.getOfflinePlayer(name).getName(),
 //                        String.valueOf(amount)));
 //        return true;
@@ -61,7 +61,7 @@
 //        Bukkit.dispatchCommand(
 //                Bukkit.getConsoleSender(),
 //                MsgUtil.fillArgs(
-//                        plugin.getConfig().getString("mixedeconomy.deposit"),
+//                        plugin.getConfiguration().getString("mixedeconomy.deposit"),
 //                        trader.getName(),
 //                        String.valueOf(amount)));
 //        return true;
@@ -104,7 +104,7 @@
 //        Bukkit.dispatchCommand(
 //                Bukkit.getConsoleSender(),
 //                MsgUtil.fillArgs(
-//                        plugin.getConfig().getString("mixedeconomy.withdraw"),
+//                        plugin.getConfiguration().getString("mixedeconomy.withdraw"),
 //                        Bukkit.getOfflinePlayer(name).getName(),
 //                        String.valueOf(amount)));
 //        return true;
@@ -118,7 +118,7 @@
 //        Bukkit.dispatchCommand(
 //                Bukkit.getConsoleSender(),
 //                MsgUtil.fillArgs(
-//                        plugin.getConfig().getString("mixedeconomy.withdraw"),
+//                        plugin.getConfiguration().getString("mixedeconomy.withdraw"),
 //                        trader.getName(),
 //                        String.valueOf(amount)));
 //        return true;

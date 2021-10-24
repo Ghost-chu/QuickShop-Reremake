@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is ConfigurationFixer.java
+ * This file is a part of project QuickShop, the name is ConfigurationFixerLightning.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -19,8 +19,9 @@
 
 package org.maxgamer.quickshop.util.config;
 
+import de.leonhard.storage.Yaml;
 import lombok.AllArgsConstructor;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.maxgamer.quickshop.QuickShop;
 
 import java.io.File;
@@ -35,17 +36,17 @@ import java.util.logging.Level;
  * @author sandtechnology
  */
 @AllArgsConstructor
-public class ConfigurationFixer {
+public class ConfigurationFixerLightning {
     private final QuickShop plugin;
     private final File externalConfigFile;
-    private final FileConfiguration externalConfig;
-    private final FileConfiguration builtInConfig;
+    private final Yaml externalConfig;
+    private final YamlConfiguration builtInConfig;
 
 
     public boolean fix() {
         // There read the default value as true but we should set default value as false in config.yml
         // So that we can check the configuration may broken or other else.
-        if (!externalConfig.getBoolean("config-damaged", true)) {
+        if (!externalConfig.getOrDefault("config-damaged", true)) {
             return false;
         }
 
@@ -67,11 +68,7 @@ public class ConfigurationFixer {
         }
         plugin.getLogger().info("QuickShop fixed the corrupted parts in configuration that we can found. We recommend you restart the server and make fix apply.");
         externalConfig.set("config-damaged", false);
-        try {
-            externalConfig.save(externalConfigFile);
-        } catch (IOException e) {
-            plugin.getLogger().log(Level.WARNING, "Couldn't save fixed configuration!", e);
-        }
+        externalConfig.write();
         return true;
     }
 }

@@ -64,10 +64,10 @@ public class SubCommand_Item implements CommandHandler<Player> {
                     itemStack.setAmount(1);
                 }
                 JavaPriceLimiter limiter = new JavaPriceLimiter(
-                        plugin.getConfig().getDouble("shop.minimum-price"),
-                        plugin.getConfig().getInt("shop.maximum-price"),
-                        plugin.getConfig().getBoolean("shop.allow-free-shop"),
-                        plugin.getConfig().getBoolean("whole-number-prices-only"));
+                        plugin.getConfiguration().getDouble("shop.minimum-price"),
+                        plugin.getConfiguration().getInt("shop.maximum-price"),
+                        plugin.getConfiguration().getBoolean("shop.allow-free-shop"),
+                        plugin.getConfiguration().getBoolean("whole-number-prices-only"));
                 PriceLimiterCheckResult checkResult = limiter.check(itemStack, shop.getPrice());
                 if (checkResult.getStatus() != PriceLimiterStatus.PASS) {
                     plugin.text().of(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),

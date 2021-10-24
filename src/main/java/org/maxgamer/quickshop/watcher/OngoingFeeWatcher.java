@@ -26,9 +26,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.economy.EconomyTransaction;
+import org.maxgamer.quickshop.api.event.ShopOngoingFeeEvent;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.economy.Trader;
-import org.maxgamer.quickshop.api.event.ShopOngoingFeeEvent;
 import org.maxgamer.quickshop.shop.JavaShopManager;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -58,13 +58,13 @@ public class OngoingFeeWatcher extends BukkitRunnable {
             return;
         }
 
-        boolean allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
-        boolean ignoreUnlimited = plugin.getConfig().getBoolean("shop.ongoing-fee.ignore-unlimited");
+        boolean allowLoan = plugin.getConfiguration().getBoolean("shop.allow-economy-loan");
+        boolean ignoreUnlimited = plugin.getConfiguration().getBoolean("shop.ongoing-fee.ignore-unlimited");
         for (Shop shop : plugin.getShopManager().getAllShops()) {
             if ((!shop.isUnlimited() || !ignoreUnlimited) && !shop.isDeleted()) {
                 UUID shopOwner = shop.getOwner();
                 Location location = shop.getLocation();
-                double cost = plugin.getConfig().getDouble("shop.ongoing-fee.cost-per-shop");
+                double cost = plugin.getConfiguration().getDouble("shop.ongoing-fee.cost-per-shop");
                 if (!location.isWorldLoaded()) {
                     //ignore unloaded world
                     continue;

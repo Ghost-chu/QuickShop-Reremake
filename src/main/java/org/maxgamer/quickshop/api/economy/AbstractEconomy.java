@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is Economy.java
+ * This file is a part of project QuickShop, the name is AbstractEconomy.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -44,7 +44,7 @@ public abstract class AbstractEconomy implements EconomyCore, Reloadable {
      * @return Economy type that QuickShop now using
      */
     public static EconomyType getNowUsing() {
-        return EconomyType.fromID(QuickShop.getInstance().getConfig().getInt("economy-type"));
+        return EconomyType.fromID(QuickShop.getInstance().getConfiguration().getInt("economy-type"));
     }
 
     @Override

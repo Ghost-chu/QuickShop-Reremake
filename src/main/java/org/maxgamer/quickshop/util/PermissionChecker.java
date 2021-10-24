@@ -34,9 +34,9 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.eventmanager.QuickEventManager;
 import org.maxgamer.quickshop.api.event.ProtectionCheckStatus;
 import org.maxgamer.quickshop.api.event.ShopProtectionCheckEvent;
+import org.maxgamer.quickshop.api.eventmanager.QuickEventManager;
 import org.maxgamer.quickshop.eventmanager.BukkitEventManager;
 import org.maxgamer.quickshop.eventmanager.QSEventManager;
 import org.maxgamer.quickshop.util.holder.Result;
@@ -64,8 +64,8 @@ public class PermissionChecker implements Reloadable {
     }
 
     private void init() {
-        usePermissionChecker = this.plugin.getConfig().getBoolean("shop.protection-checking");
-        if (plugin.getConfig().getInt("shop.protection-checking-handler") == 1) {
+        usePermissionChecker = this.plugin.getConfiguration().getBoolean("shop.protection-checking");
+        if (plugin.getConfiguration().getInt("shop.protection-checking-handler") == 1) {
             this.eventManager = new QSEventManager(plugin);
         } else {
             this.eventManager = new BukkitEventManager();
@@ -93,7 +93,7 @@ public class PermissionChecker implements Reloadable {
      */
     public Result canBuild(@NotNull Player player, @NotNull Block block) {
 
-        if (plugin.getConfig().getStringList("shop.protection-checking-blacklist").contains(block.getWorld().getName())) {
+        if (plugin.getConfiguration().getStringList("shop.protection-checking-blacklist").contains(block.getWorld().getName())) {
             Util.debugLog("Skipping protection checking in world " + block.getWorld().getName() + " causing it in blacklist.");
             return Result.SUCCESS;
         }
@@ -114,7 +114,7 @@ public class PermissionChecker implements Reloadable {
         if (plugin.getBlockHubPlugin() != null) {
             BlocksHubBukkit blocksHubBukkit = (BlocksHubBukkit) plugin.getBlockHubPlugin();
             boolean bhCanBuild = blocksHubBukkit.getApi().hasAccess(player.getUniqueId(), blocksHubBukkit.getApi().getWorld(block.getWorld().getName()), block.getX(), block.getY(), block.getZ());
-            if (plugin.getConfig().getBoolean("plugin.BlockHub.only")) {
+            if (plugin.getConfiguration().getBoolean("plugin.BlockHub.only")) {
                 Util.debugLog("BlockHub only mode response: " + bhCanBuild);
                 return new Result("BlockHub");
             } else {

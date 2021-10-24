@@ -18,7 +18,7 @@
  */
 package org.maxgamer.quickshop.util;
 
-import org.bukkit.configuration.ConfigurationSection;
+import de.leonhard.storage.sections.FlatFileSection;
 import org.maxgamer.quickshop.QuickShop;
 
 import java.util.EnumMap;
@@ -34,11 +34,11 @@ public class InteractUtil {
     private static Mode mode;
     private static boolean init;
 
-    public static void init(ConfigurationSection configuration) {
-        mode = Mode.getMode(configuration.getInt("shop.interact.interact-mode", 0));
-        SNEAKING_ACTION_MAPPING.put(Action.CREATE, configuration.getBoolean("shop.interact.sneak-to-create"));
-        SNEAKING_ACTION_MAPPING.put(Action.TRADE, configuration.getBoolean("shop.interact.sneak-to-trade"));
-        SNEAKING_ACTION_MAPPING.put(Action.CONTROL, configuration.getBoolean("shop.interact.sneak-to-control"));
+    public static void init(FlatFileSection configuration) {
+        mode = Mode.getMode(configuration.getOrDefault("interact-mode", 0));
+        SNEAKING_ACTION_MAPPING.put(Action.CREATE, configuration.getBoolean("sneak-to-create"));
+        SNEAKING_ACTION_MAPPING.put(Action.TRADE, configuration.getBoolean("sneak-to-trade"));
+        SNEAKING_ACTION_MAPPING.put(Action.CONTROL, configuration.getBoolean("sneak-to-control"));
         init = true;
     }
 
@@ -51,7 +51,7 @@ public class InteractUtil {
      */
     public static boolean check(Action action, boolean isSneaking) {
         if (!init) {
-            init(QuickShop.getInstance().getConfig());
+            init(QuickShop.getInstance().getConfiguration().getSection("shop.interact"));
         }
         //Hopefully some coders can read this
         boolean sneakAllowed = SNEAKING_ACTION_MAPPING.get(action);

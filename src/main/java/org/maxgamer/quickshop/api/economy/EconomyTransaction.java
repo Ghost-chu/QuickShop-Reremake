@@ -25,8 +25,8 @@ import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.economy.Trader;
 import org.maxgamer.quickshop.api.event.EconomyCommitEvent;
+import org.maxgamer.quickshop.economy.Trader;
 import org.maxgamer.quickshop.util.CalculateUtil;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -101,7 +101,7 @@ public class EconomyTransaction {
         //For passing Test
         //noinspection ConstantConditions
         if (QuickShop.getInstance() != null) {
-            this.tryingFixBalanceInsufficient = QuickShop.getInstance().getConfig().getBoolean("trying-fix-banlance-insuffient");
+            this.tryingFixBalanceInsufficient = QuickShop.getInstance().getConfiguration().getBoolean("trying-fix-banlance-insuffient");
         } else {
             this.tryingFixBalanceInsufficient = false;
         }

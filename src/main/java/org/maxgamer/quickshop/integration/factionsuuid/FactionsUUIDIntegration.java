@@ -83,42 +83,42 @@ public class FactionsUUIDIntegration extends AbstractQSIntegratedPlugin {
     }
 
     private void init() {
-        this.createFlags = plugin.getConfig().getStringList("integration.factions.create.flags");
-        this.tradeFlags = plugin.getConfig().getStringList("integration.factions.trade.flags");
+        this.createFlags = plugin.getConfiguration().getStringList("integration.factions.create.flags");
+        this.tradeFlags = plugin.getConfiguration().getStringList("integration.factions.trade.flags");
 
-        this.whiteList = plugin.getConfig().getBoolean("integration.factions.whitelist-mode");
+        this.whiteList = plugin.getConfiguration().getBoolean("integration.factions.whitelist-mode");
         this.createRequireOpen =
-                plugin.getConfig().getBoolean("integration.factions.create.require.open");
+                plugin.getConfiguration().getBoolean("integration.factions.create.require.open");
         this.createRequireNormal =
-                plugin.getConfig().getBoolean("integration.factions.create.require.normal");
+                plugin.getConfiguration().getBoolean("integration.factions.create.require.normal");
         this.createRequireWilderness =
-                plugin.getConfig().getBoolean("integration.factions.create.require.wilderness");
+                plugin.getConfiguration().getBoolean("integration.factions.create.require.wilderness");
         this.createRequirePeaceful =
-                plugin.getConfig().getBoolean("integration.factions.create.require.peaceful");
+                plugin.getConfiguration().getBoolean("integration.factions.create.require.peaceful");
         this.createRequirePermanent =
-                plugin.getConfig().getBoolean("integration.factions.create.require.permanent");
+                plugin.getConfiguration().getBoolean("integration.factions.create.require.permanent");
         this.createRequireSafeZone =
-                plugin.getConfig().getBoolean("integration.factions.create.require.safezone");
+                plugin.getConfiguration().getBoolean("integration.factions.create.require.safezone");
         this.createRequireOwn =
-                plugin.getConfig().getBoolean("integration.factions.create.require.own");
+                plugin.getConfiguration().getBoolean("integration.factions.create.require.own");
         this.createRequireWarZone =
-                plugin.getConfig().getBoolean("integration.factions.create.require.warzone");
+                plugin.getConfiguration().getBoolean("integration.factions.create.require.warzone");
 
         this.tradeRequireOpen =
-                plugin.getConfig().getBoolean("integration.factions.trade.require.open");
+                plugin.getConfiguration().getBoolean("integration.factions.trade.require.open");
         this.tradeRequireNormal =
-                plugin.getConfig().getBoolean("integration.factions.trade.require.normal");
+                plugin.getConfiguration().getBoolean("integration.factions.trade.require.normal");
         this.tradeRequireWilderness =
-                plugin.getConfig().getBoolean("integration.factions.trade.require.wilderness");
+                plugin.getConfiguration().getBoolean("integration.factions.trade.require.wilderness");
         this.tradeRequirePeaceful =
-                plugin.getConfig().getBoolean("integration.factions.trade.require.peaceful");
+                plugin.getConfiguration().getBoolean("integration.factions.trade.require.peaceful");
         this.tradeRequirePermanent =
-                plugin.getConfig().getBoolean("integration.factions.trade.require.permanent");
+                plugin.getConfiguration().getBoolean("integration.factions.trade.require.permanent");
         this.tradeRequireSafeZone =
-                plugin.getConfig().getBoolean("integration.factions.trade.require.safezone");
-        this.tradeRequireOwn = plugin.getConfig().getBoolean("integration.factions.trade.require.own");
+                plugin.getConfiguration().getBoolean("integration.factions.trade.require.safezone");
+        this.tradeRequireOwn = plugin.getConfiguration().getBoolean("integration.factions.trade.require.own");
         this.tradeRequireWarZone =
-                plugin.getConfig().getBoolean("integration.factions.trade.require.warzone");
+                plugin.getConfiguration().getBoolean("integration.factions.trade.require.warzone");
     }
 
     private boolean check(@NotNull Player player, @NotNull Location location, boolean createRequireOpen, boolean createRequireSafeZone, boolean createRequirePermanent, boolean createRequirePeaceful, boolean createRequireWilderness, boolean createRequireWarZone, boolean createRequireNormal, boolean createRequireOwn, List<String> createFlags, boolean whiteList) {

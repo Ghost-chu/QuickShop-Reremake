@@ -59,7 +59,7 @@ public class Economy_GemsEconomy extends AbstractEconomy {
 
 
     private void init() {
-        this.allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
+        this.allowLoan = plugin.getConfiguration().getBoolean("shop.allow-economy-loan");
     }
 
     private void setupEconomy() {

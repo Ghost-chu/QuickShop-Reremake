@@ -117,18 +117,18 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     }
 
     public void switchDebug(@NotNull CommandSender sender) {
-        final boolean debug = plugin.getConfig().getBoolean("dev-mode");
+        final boolean debug = plugin.getConfiguration().getBoolean("dev-mode");
 
         if (debug) {
-            plugin.getConfig().set("dev-mode", false);
-            plugin.saveConfig();
+            plugin.getConfiguration().set("dev-mode", false);
+            plugin.saveConfiguration();
             plugin.reload();
             plugin.text().of(sender, "command.now-nolonger-debuging").send();
             return;
         }
 
-        plugin.getConfig().set("dev-mode", true);
-        plugin.saveConfig();
+        plugin.getConfiguration().set("dev-mode", true);
+        plugin.saveConfiguration();
         plugin.reload();
         plugin.text().of(sender, "command.now-debuging").send();
     }

@@ -95,7 +95,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         }
         languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
 
-        switch (plugin.getConfig().getInt("mojangapi-mirror", 0)) {
+        switch (plugin.getConfiguration().getOrDefault("mojangapi-mirror", 0)) {
             case 0:
                 mirror = new MojangApiOfficialMirror();
                 plugin.getLogger().info("Game assets server selected: Mojang API");

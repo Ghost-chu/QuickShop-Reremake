@@ -484,8 +484,8 @@ public class ContainerShop implements Shop {
             }
             // Delete it from the database
             // Refund if necessary
-            if (plugin.getConfig().getBoolean("shop.refund")) {
-                plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"),
+            if (plugin.getConfiguration().getBoolean("shop.refund")) {
+                plugin.getEconomy().deposit(this.getOwner(), plugin.getConfiguration().getDouble("shop.cost"),
                         Objects.requireNonNull(getLocation().getWorld()), getCurrency());
             }
             plugin.getShopManager().removeShop(this);
@@ -782,7 +782,7 @@ public class ContainerShop implements Shop {
                 }
             }
             if (plugin.getGameVersion().isSignGlowingSupport()) {
-                boolean isGlowing = plugin.getConfig().getBoolean("shop.sign-glowing");
+                boolean isGlowing = plugin.getConfiguration().getBoolean("shop.sign-glowing");
                 sign.setGlowingText(isGlowing);
             }
             sign.update(true);

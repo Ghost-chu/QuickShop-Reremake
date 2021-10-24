@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.integration.griefprevention;
 
+import de.leonhard.storage.sections.FlatFileSection;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -26,7 +27,6 @@ import me.ryanhamshire.GriefPrevention.events.*;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -66,15 +66,15 @@ public class GriefPreventionIntegration extends AbstractQSIntegratedPlugin {
     }
 
     private void init() {
-        ConfigurationSection configurationSection = plugin.getConfig();
-        this.whiteList = configurationSection.getBoolean("integration.griefprevention.whitelist-mode");
-        this.deleteOnClaimTrustChanged = configurationSection.getBoolean("integration.griefprevention.delete-on-claim-trust-changed");
-        this.deleteOnClaimUnclaimed = configurationSection.getBoolean("integration.griefprevention.delete-on-claim-unclaimed");
-        this.deleteOnClaimExpired = configurationSection.getBoolean("integration.griefprevention.delete-on-claim-expired");
-        this.deleteOnClaimResized = configurationSection.getBoolean("integration.griefprevention.delete-on-claim-resized");
-        this.deleteOnSubClaimCreated = configurationSection.getBoolean("integration.griefprevention.delete-on-subclaim-created");
-        this.createLimit = Flag.getFlag(configurationSection.getString("integration.griefprevention.create"));
-        this.tradeLimits.addAll(toFlags(configurationSection.getStringList("integration.griefprevention.trade")));
+        FlatFileSection configurationSection = plugin.getConfiguration().getSection("integration.griefprevention");
+        this.whiteList = configurationSection.getBoolean("whitelist-mode");
+        this.deleteOnClaimTrustChanged = configurationSection.getBoolean("delete-on-claim-trust-changed");
+        this.deleteOnClaimUnclaimed = configurationSection.getBoolean("delete-on-claim-unclaimed");
+        this.deleteOnClaimExpired = configurationSection.getBoolean("delete-on-claim-expired");
+        this.deleteOnClaimResized = configurationSection.getBoolean("delete-on-claim-resized");
+        this.deleteOnSubClaimCreated = configurationSection.getBoolean("delete-on-subclaim-created");
+        this.createLimit = Flag.getFlag(configurationSection.getString("create"));
+        this.tradeLimits.addAll(toFlags(configurationSection.getStringList("trade")));
     }
 
     @Override

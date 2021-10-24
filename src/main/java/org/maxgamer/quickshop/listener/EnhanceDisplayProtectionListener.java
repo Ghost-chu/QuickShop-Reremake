@@ -56,7 +56,7 @@ public class EnhanceDisplayProtectionListener extends AbstractProtectionListener
     }
 
     private void sendAlert(@NotNull String msg) {
-        if (!plugin.getConfig().getBoolean("send-display-item-protection-alert")) {
+        if (!plugin.getConfiguration().getBoolean("send-display-item-protection-alert")) {
             return;
         }
         MsgUtil.sendGlobalAlert(msg);

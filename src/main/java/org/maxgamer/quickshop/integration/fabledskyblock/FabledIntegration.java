@@ -46,8 +46,8 @@
 //    }
 //
 //    private void loadConfiguration() {
-//        ignoreDisabledWorlds = plugin.getConfig().getBoolean("integration.fabledskyblock.ignore-disabled-worlds");
-//        whitelist = plugin.getConfig().getBoolean("integration.fabledskyblock.whitelist-mode");
+//        ignoreDisabledWorlds = plugin.getConfiguration().getBoolean("integration.fabledskyblock.ignore-disabled-worlds");
+//        whitelist = plugin.getConfiguration().getBoolean("integration.fabledskyblock.whitelist-mode");
 //    }
 //
 //    /**

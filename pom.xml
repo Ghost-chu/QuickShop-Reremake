@@ -195,6 +195,10 @@
                             <pattern>com.squareup.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.org.com.squareup.</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>de.leonhard.storage.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.de.leonhard.storage.</shadedPattern>
+                        </relocation>
                     </relocations>
                     <transformers>
                         <transformer
@@ -844,6 +848,11 @@
             <artifactId>BKCommonLib</artifactId>
             <version>1.17.1-v3</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.simplix-softworks</groupId>
+            <artifactId>simplixstorage</artifactId>
+            <version>3.2.3</version>
         </dependency>
     </dependencies>
 </project>

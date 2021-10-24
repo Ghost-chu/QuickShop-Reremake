@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is CommandManager.java
+ * This file is a part of project QuickShop, the name is JavaCommandManager.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -395,7 +395,7 @@ public class JavaCommandManager implements CommandManager, TabCompleter, Command
                 return true;
             }
         }
-        if (sender instanceof Player && plugin.getConfig().getBoolean("effect.sound.oncommand")) {
+        if (sender instanceof Player && plugin.getConfiguration().getBoolean("effect.sound.oncommand")) {
             Player player = (Player) sender;
             ((Player) sender)
                     .playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
@@ -510,7 +510,7 @@ public class JavaCommandManager implements CommandManager, TabCompleter, Command
         if (plugin.getBootError() != null) {
             return Collections.emptyList();
         }
-        if (sender instanceof Player && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
+        if (sender instanceof Player && plugin.getConfiguration().getBoolean("effect.sound.ontabcomplete")) {
             Player player = (Player) sender;
             ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
         }

@@ -1,3 +1,22 @@
+/*
+ * This file is a part of project QuickShop, the name is ShopPurger.java
+ *  Copyright (C) PotatoCraft Studio and contributors
+ *
+ *  This program is free software: you can redistribute it and/or modify it
+ *  under the terms of the GNU General Public License as published by the
+ *  Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT
+ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ *  for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 package org.maxgamer.quickshop.shop;
 
 import lombok.AllArgsConstructor;
@@ -13,7 +32,7 @@ import java.time.temporal.ChronoUnit;
 
 @AllArgsConstructor
 public class ShopPurger extends BukkitRunnable {
-    private QuickShop plugin;
+    private final QuickShop plugin;
     private volatile boolean executing;
 
     @Override
@@ -24,14 +43,14 @@ public class ShopPurger extends BukkitRunnable {
             return;
         }
         executing = true;
-        if (!plugin.getConfig().getBoolean("purge.enabled")) {
+        if (!plugin.getConfiguration().getBoolean("purge.enabled")) {
             return;
         }
         Util.debugLog("[Shop Purger] Scanning and removing shops");
-        int days = plugin.getConfig().getInt("purge.days", 360);
-        boolean deleteBanned = plugin.getConfig().getBoolean("purge.banned");
-        boolean skipOp = plugin.getConfig().getBoolean("purge.skip-op");
-        boolean returnCreationFee = plugin.getConfig().getBoolean("purge.return-create-fee");
+        int days = plugin.getConfiguration().getOrDefault("purge.days", 360);
+        boolean deleteBanned = plugin.getConfiguration().getBoolean("purge.banned");
+        boolean skipOp = plugin.getConfiguration().getBoolean("purge.skip-op");
+        boolean returnCreationFee = plugin.getConfiguration().getBoolean("purge.return-create-fee");
         for (Shop shop : plugin.getShopManager().getAllShops()) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(shop.getOwner());
             if (!player.hasPlayedBefore()) {
@@ -62,7 +81,7 @@ public class ShopPurger extends BukkitRunnable {
             if (returnCreationFee) {
                 EconomyTransaction transaction =
                         EconomyTransaction.builder()
-                                .amount(plugin.getConfig().getDouble("shop.cost"))
+                                .amount(plugin.getConfiguration().getDouble("shop.cost"))
                                 .allowLoan(false)
                                 .core(QuickShop.getInstance().getEconomy())
                                 .currency(shop.getCurrency())
