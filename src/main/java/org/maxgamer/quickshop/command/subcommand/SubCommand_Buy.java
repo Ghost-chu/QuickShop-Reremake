@@ -28,7 +28,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandHandler;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopType;
-import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.MsgUtil;
 
 @AllArgsConstructor
 public class SubCommand_Buy implements CommandHandler<Player> {
@@ -48,7 +48,7 @@ public class SubCommand_Buy implements CommandHandler<Player> {
                 if (shop.getModerator().isModerator(sender.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control")) {
                     shop.setShopType(ShopType.BUYING);
                     shop.update();
-                    plugin.text().of(sender, "command.now-buying", Util.getItemStackName(shop.getItem())).send();
+                    plugin.text().of(sender, "command.now-buying", MsgUtil.convertItemStackToTranslateText(shop.getItem().getType())).send();
                 } else {
                     plugin.text().of(sender, "not-managed-shop").send();
                 }

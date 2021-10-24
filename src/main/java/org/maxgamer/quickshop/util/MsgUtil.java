@@ -28,6 +28,7 @@ import lombok.Data;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -167,10 +168,15 @@ public class MsgUtil {
         }
         return raw;
     }
+
     @Unstable
     @Deprecated
     public static void loadGameLanguage(@NotNull String languageCode) {
         gameLanguage = ServiceInjector.getGameLanguage(new MojangGameLanguageImpl(plugin, languageCode));
+    }
+
+    public static String convertItemStackToTranslateText(Material mat) {
+        return TextSplitter.bakeComponent(new ComponentBuilder().append(new TranslatableComponent(ReflectFactory.getMaterialMinecraftNamespacedKey(mat))).create());
     }
 
     @Unstable

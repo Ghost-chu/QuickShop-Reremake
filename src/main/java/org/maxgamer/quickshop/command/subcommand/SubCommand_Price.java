@@ -116,7 +116,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
                 return;
             }
             if (checkResult.getStatus() == PriceLimiterStatus.PRICE_RESTRICTED) {
-                plugin.text().of(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
+                plugin.text().of(sender, "restricted-prices", MsgUtil.convertItemStackToTranslateText(shop.getItem().getType()),
                         String.valueOf(checkResult.getMin()),
                         String.valueOf(checkResult.getMax())).send();
                 return;

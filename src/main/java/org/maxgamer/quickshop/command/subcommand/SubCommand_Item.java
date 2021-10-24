@@ -32,6 +32,7 @@ import org.maxgamer.quickshop.api.shop.PriceLimiterCheckResult;
 import org.maxgamer.quickshop.api.shop.PriceLimiterStatus;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.shop.JavaPriceLimiter;
+import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
@@ -70,7 +71,7 @@ public class SubCommand_Item implements CommandHandler<Player> {
                         plugin.getConfiguration().getBoolean("whole-number-prices-only"));
                 PriceLimiterCheckResult checkResult = limiter.check(itemStack, shop.getPrice());
                 if (checkResult.getStatus() != PriceLimiterStatus.PASS) {
-                    plugin.text().of(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
+                    plugin.text().of(sender, "restricted-prices", MsgUtil.convertItemStackToTranslateText(shop.getItem().getType()),
                             String.valueOf(checkResult.getMin()),
                             String.valueOf(checkResult.getMax())).send();
                     return;

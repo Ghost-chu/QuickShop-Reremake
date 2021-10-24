@@ -32,6 +32,7 @@ import org.maxgamer.quickshop.api.shop.PriceLimiterCheckResult;
 import org.maxgamer.quickshop.api.shop.PriceLimiterStatus;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.shop.JavaPriceLimiter;
+import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.Collections;
@@ -74,13 +75,13 @@ public class SubCommand_Size implements CommandHandler<Player> {
                             plugin.getConfiguration().getBoolean("whole-number-prices-only"));
                     PriceLimiterCheckResult checkResult = limiter.check(pendingItemStack, shop.getPrice());
                     if (checkResult.getStatus() != PriceLimiterStatus.PASS) {
-                        plugin.text().of(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
+                        plugin.text().of(sender, "restricted-prices", MsgUtil.convertItemStackToTranslateText(shop.getItem().getType()),
                                 String.valueOf(checkResult.getMin()),
                                 String.valueOf(checkResult.getMax())).send();
                         return;
                     }
                     shop.setItem(pendingItemStack);
-                    plugin.text().of(sender, "command.bulk-size-now", Integer.toString(shop.getItem().getAmount()), Util.getItemStackName(shop.getItem())).send();
+                    plugin.text().of(sender, "command.bulk-size-now", Integer.toString(shop.getItem().getAmount()), MsgUtil.convertItemStackToTranslateText(shop.getItem().getType())).send();
                     return;
                 } else {
                     plugin.text().of(sender, "not-managed-shop").send();
