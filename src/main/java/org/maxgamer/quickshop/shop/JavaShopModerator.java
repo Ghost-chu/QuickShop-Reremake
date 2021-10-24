@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is ShopModerator.java
+ * This file is a part of project QuickShop, the name is JavaShopModerator.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -22,7 +22,7 @@ package org.maxgamer.quickshop.shop;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.EqualsAndHashCode;
-import lombok.NonNull;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.api.shop.ShopModerator;
 import org.maxgamer.quickshop.util.JsonUtil;
@@ -36,11 +36,9 @@ import java.util.UUID;
  * You must save the ContainerShop after modify this
  */
 @EqualsAndHashCode
+@NoArgsConstructor
 public class JavaShopModerator implements ShopModerator, Cloneable {
-    @NonNull
     private UUID owner;
-
-    @NonNull
     private List<UUID> staffs;
 
     private JavaShopModerator(@NotNull JavaShopModerator shopModerator) {
