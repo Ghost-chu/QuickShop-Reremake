@@ -303,12 +303,12 @@ public class JavaShopManager implements ShopManager, Reloadable {
                 }
             }
         }
+        // sync add to prevent compete issue
+        addShop(shop.getLocation().getWorld().getName(), shop);
         // load the shop finally
         shop.onLoad();
         // first init
         shop.setSignText();
-        // sync add to prevent compete issue
-        addShop(shop.getLocation().getWorld().getName(), shop);
         // save to database
         plugin.getDatabaseHelper().createShop(shop, null, e ->
                 Util.mainThreadRun(() -> {
