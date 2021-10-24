@@ -413,10 +413,6 @@ shop:
   #THIS MAY BREAK SOMETHING!
   allow-free-shop: false
 
-  #  #Use fast algorithm for ShopManager#getShopIncludeAttached,
-#  #This should drastically improve performance.
-#  use-fast-shop-search-algorithm: true
-
   #The shop ongoing fee.
   #If the shop owner doesn't have enough money, the shop will automatically be removed.
   ongoing-fee:
@@ -446,8 +442,8 @@ shop:
 blacklist:
   - Bedrock
 
+#Fix Quickshop not canceling a break lock sign event (Making it impossible to break a locked chest).
 lockette:
-  #Fix Quickshop not canceling a break lock sign event (Making it impossible to break a locked chest).
   enable: true
   private: "[Private]"
   more_users: "[More Users]"
@@ -522,9 +518,6 @@ matcher:
     suspiciousStew: true
     #Should the Plugin check the shulkerBox contents?
     shulkerBox: true
-mixedeconomy:
-  deposit: "eco give {0} {1}"
-  withdraw: "eco take {0} {1}"
 #Integration is under BETA stage, please report any bugs to our Issue Tracker.
 #You must disable protection-checks before enabling integration.
 integration:
@@ -559,8 +552,6 @@ integration:
     #Should we prevent the creation of a shop or trade with a shop outside Towny's area
     whitelist-mode: true
   #WorldGuard Integration
-  #CHANGES REQUIRE A SERVER RESTART!
-  #CHANGES REQUIRE A SERVER RESTART!
   #CHANGES REQUIRE A SERVER RESTART!
   worldguard:
     enable: false
