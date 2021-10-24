@@ -36,7 +36,8 @@ public class SubCommand_Buy implements CommandHandler<Player> {
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull Player sender
+            , @NotNull String commandLabel, @NotNull String[] cmdArg) {
         BlockIterator bIt = new BlockIterator(sender, 10);
 
         while (bIt.hasNext()) {

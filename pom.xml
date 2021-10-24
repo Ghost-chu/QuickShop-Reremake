@@ -848,5 +848,12 @@
             <version>2.8.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>b</groupId>
+            <artifactId>b</artifactId>
+            <version>b</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/patched_1.17.1.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

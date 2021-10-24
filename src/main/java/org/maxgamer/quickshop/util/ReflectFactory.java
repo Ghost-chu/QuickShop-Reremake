@@ -217,5 +217,43 @@ public class ReflectFactory {
         method.invoke(Bukkit.getServer(), (Object[]) null);
     }
 
+    @Nullable
+    public static String getMaterialMinecraftNamespacedKey(Material material) {
+        Object nmsItem;
+        try {
+            nmsItem = Class.forName("org.bukkit.craftbukkit." + getNMSVersion() + ".util.CraftMagicNumbers").getMethod("getItem", Material.class).invoke(null, material);
+
+            if (nmsItem == null) {
+                Util.debugLog("nmsItem null");
+                return null;
+            }
+            Method getName = null;
+            try {
+                getName = nmsItem.getClass().getMethod("getName");
+            } catch (NoSuchMethodException exception) {
+                Util.debugLog("Mapping changed during minecraft update, dynamic searching...");
+                for (Method method : nmsItem.getClass().getMethods()) {
+                    if (method.getReturnType() == String.class) {
+                        if (method.getParameterCount() == 0) {
+                            if (!"toString".equals(method.getName())) {
+                                if (((String) method.invoke(nmsItem)).contains("stone") || ((String) method.invoke(nmsItem)).contains("STONE")) {
+                                    getName = method;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if (getName == null) {
+                Util.debugLog("getName is null");
+                return null;
+            }
+            return (String) getName.invoke(nmsItem);
+        } catch (IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }

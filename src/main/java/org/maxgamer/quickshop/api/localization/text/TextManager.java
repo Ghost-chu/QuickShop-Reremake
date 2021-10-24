@@ -1,3 +1,22 @@
+/*
+ * This file is a part of project QuickShop, the name is TextManager.java
+ *  Copyright (C) PotatoCraft Studio and contributors
+ *
+ *  This program is free software: you can redistribute it and/or modify it
+ *  under the terms of the GNU General Public License as published by the
+ *  Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT
+ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ *  for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 package org.maxgamer.quickshop.api.localization.text;
 
 import org.bukkit.command.CommandSender;
@@ -29,7 +48,7 @@ public interface TextManager {
      * @return The text object
      */
     @NotNull
-    Text of(@NotNull String path, String... args);
+    Text of(@NotNull String path, Object... args);
 
     /**
      * Getting the translation with path with player's locale (if available)
@@ -40,7 +59,7 @@ public interface TextManager {
      * @return The text object
      */
     @NotNull
-    Text of(@Nullable CommandSender sender, @NotNull String path, String... args);
+    Text of(@Nullable CommandSender sender, @NotNull String path, Object... args);
 
     /**
      * Getting the translation with path with player's locale (if available)
@@ -51,7 +70,7 @@ public interface TextManager {
      * @return The text object
      */
     @NotNull
-    Text of(@Nullable UUID sender, @NotNull String path, String... args);
+    Text of(@Nullable UUID sender, @NotNull String path, Object... args);
 
     /**
      * Getting the translation with path with default locale (if available)
@@ -61,7 +80,7 @@ public interface TextManager {
      * @return The text object
      */
     @NotNull
-    TextList ofList(@NotNull String path, String... args);
+    TextList ofList(@NotNull String path, Object... args);
 
     /**
      * Getting the translation with path  with player's locale (if available)
@@ -72,7 +91,7 @@ public interface TextManager {
      * @return The text object
      */
     @NotNull
-    TextList ofList(@Nullable UUID sender, @NotNull String path, String... args);
+    TextList ofList(@Nullable UUID sender, @NotNull String path, Object... args);
 
     /**
      * Getting the translation with path with player's locale (if available)
@@ -83,5 +102,5 @@ public interface TextManager {
      * @return The text object
      */
     @NotNull
-    TextList ofList(@Nullable CommandSender sender, @NotNull String path, String... args);
+    TextList ofList(@Nullable CommandSender sender, @NotNull String path, Object... args);
 }

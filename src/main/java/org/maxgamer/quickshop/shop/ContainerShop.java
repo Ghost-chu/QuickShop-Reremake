@@ -52,6 +52,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.chat.ComponentPackage;
 import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.api.shop.*;
+import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 
@@ -737,16 +738,15 @@ public class ContainerShop implements Shop {
         //line 3
         if (!plugin.getConfiguration().getBoolean("shop.force-use-item-original-name") && (!this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName())) {
             TextComponent left = new TextComponent(plugin.text().of("signs.item-left").forLocale());
-            TranslatableComponent mediumItem = new TranslatableComponent("item." + getItem().getType().getKey().getNamespace() + "." + getItem().getType().getKey().getKey());
             TextComponent right = new TextComponent(plugin.text().of("signs.item-right").forLocale());
             lines.add(new ComponentPackage(new ComponentBuilder()
                     .append(left)
-                    .append(mediumItem)
+                    .append(new TranslatableComponent(ReflectFactory.getMaterialMinecraftNamespacedKey(getItem().getType())))
                     .append(right)
                     .create()));
         } else {
             lines.add(new ComponentPackage(new ComponentBuilder().append(TextComponent.fromLegacyText(plugin.text().of("signs.item-left").forLocale()))
-                    .append(TextComponent.fromLegacyText(Util.getItemStackName(getItem())))
+                    .append(new TextComponent(Util.getItemStackName(getItem())).toLegacyText())
                     .append(TextComponent.fromLegacyText(plugin.text().of("signs.item-right").forLocale())).create()));
         }
 

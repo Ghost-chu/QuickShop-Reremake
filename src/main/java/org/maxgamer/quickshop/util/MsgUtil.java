@@ -26,6 +26,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -48,6 +50,7 @@ import org.maxgamer.quickshop.api.annotations.Unstable;
 import org.maxgamer.quickshop.api.database.WarpedResultSet;
 import org.maxgamer.quickshop.api.event.ShopControlPanelOpenEvent;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.chat.QuickComponentImpl;
 import org.maxgamer.quickshop.localization.game.game.GameLanguage;
 import org.maxgamer.quickshop.localization.game.game.MojangGameLanguageImpl;
 import org.maxgamer.quickshop.util.logging.container.PluginGlobalAlertLog;
@@ -164,7 +167,6 @@ public class MsgUtil {
         }
         return raw;
     }
-
     @Unstable
     @Deprecated
     public static void loadGameLanguage(@NotNull String languageCode) {
@@ -676,7 +678,16 @@ public class MsgUtil {
                 if (StringUtils.isEmpty(msg)) {
                     continue;
                 }
-                plugin.getQuickChat().send(sender, msg);
+                TextSplitter.SpilledString spilledString = TextSplitter.deBakeItem(msg);
+                if (spilledString == null) {
+                    plugin.getQuickChat().send(sender, msg);
+                } else {
+                    ComponentBuilder builder = new ComponentBuilder();
+                    builder.append(TextComponent.fromLegacyText(spilledString.getLeft()));
+                    builder.append(spilledString.getComponents());
+                    builder.append(TextComponent.fromLegacyText(spilledString.getRight()));
+                    plugin.getQuickChat().send(sender, new QuickComponentImpl(builder.create()));
+                }
             } catch (Throwable throwable) {
                 Util.debugLog("Failed to send formatted text.");
                 if (!StringUtils.isEmpty(msg)) {
@@ -685,7 +696,6 @@ public class MsgUtil {
             }
         }
     }
-
     public static boolean isJson(String str) {
         try {
             new JsonParser().parse(str);

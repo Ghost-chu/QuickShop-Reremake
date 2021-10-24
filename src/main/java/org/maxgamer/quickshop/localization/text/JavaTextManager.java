@@ -244,7 +244,7 @@ public class JavaTextManager implements TextManager, Reloadable {
      * @return The text object
      */
     @Override
-    public @NotNull Text of(@NotNull String path, String... args) {
+    public @NotNull Text of(@NotNull String path, Object... args) {
         return new Text(this, (CommandSender) null, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
 
@@ -257,7 +257,7 @@ public class JavaTextManager implements TextManager, Reloadable {
      * @return The text object
      */
     @Override
-    public @NotNull Text of(@Nullable CommandSender sender, @NotNull String path, String... args) {
+    public @NotNull Text of(@Nullable CommandSender sender, @NotNull String path, Object... args) {
         return new Text(this, sender, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
 
@@ -270,7 +270,7 @@ public class JavaTextManager implements TextManager, Reloadable {
      * @return The text object
      */
     @Override
-    public @NotNull Text of(@Nullable UUID sender, @NotNull String path, String... args) {
+    public @NotNull Text of(@Nullable UUID sender, @NotNull String path, Object... args) {
         return new Text(this, sender, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
 
@@ -282,7 +282,7 @@ public class JavaTextManager implements TextManager, Reloadable {
      * @return The text object
      */
     @Override
-    public @NotNull TextList ofList(@NotNull String path, String... args) {
+    public @NotNull TextList ofList(@NotNull String path, Object... args) {
         return new TextList(this, (CommandSender) null, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
 
@@ -295,7 +295,7 @@ public class JavaTextManager implements TextManager, Reloadable {
      * @return The text object
      */
     @Override
-    public @NotNull TextList ofList(@Nullable UUID sender, @NotNull String path, String... args) {
+    public @NotNull TextList ofList(@Nullable UUID sender, @NotNull String path, Object... args) {
         return new TextList(this, sender, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
 
@@ -308,7 +308,7 @@ public class JavaTextManager implements TextManager, Reloadable {
      * @return The text object
      */
     @Override
-    public @NotNull TextList ofList(@Nullable CommandSender sender, @NotNull String path, String... args) {
+    public @NotNull TextList ofList(@Nullable CommandSender sender, @NotNull String path, Object... args) {
         return new TextList(this, sender, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
 
@@ -318,10 +318,10 @@ public class JavaTextManager implements TextManager, Reloadable {
         private final QuickShop plugin;
         private final Map<String, JsonConfiguration> mapping;
         private final CommandSender sender;
-        private final String[] args;
+        private final Object[] args;
         private final JsonConfiguration bundled;
 
-        private TextList(JavaTextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, String... args) {
+        private TextList(JavaTextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, Object... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
             this.sender = sender;
@@ -331,7 +331,7 @@ public class JavaTextManager implements TextManager, Reloadable {
             this.args = args;
         }
 
-        private TextList(JavaTextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, String... args) {
+        private TextList(JavaTextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, Object... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
             if (sender != null) {
@@ -437,10 +437,10 @@ public class JavaTextManager implements TextManager, Reloadable {
         private final QuickShop plugin;
         private final Map<String, JsonConfiguration> mapping;
         private final CommandSender sender;
-        private final String[] args;
+        private final Object[] args;
         private final JsonConfiguration bundled;
 
-        private Text(JavaTextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, String... args) {
+        private Text(JavaTextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, Object... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
             this.sender = sender;
@@ -450,7 +450,7 @@ public class JavaTextManager implements TextManager, Reloadable {
             this.args = args;
         }
 
-        private Text(JavaTextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, String... args) {
+        private Text(JavaTextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, Object... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
             if (sender != null) {
