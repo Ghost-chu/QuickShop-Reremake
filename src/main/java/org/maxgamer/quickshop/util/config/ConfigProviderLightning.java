@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.util.config;
 
 import de.leonhard.storage.LightningBuilder;
 import de.leonhard.storage.Yaml;
+import de.leonhard.storage.internal.settings.ConfigSettings;
 import de.leonhard.storage.internal.settings.ReloadSettings;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -76,6 +77,7 @@ public class ConfigProviderLightning extends QuickShopInstanceHolder {
                     .fromFile(configFile)
                     .addInputStreamFromResource(configFile.getName())
                     .setReloadSettings(ReloadSettings.MANUALLY)
+                    .setConfigSettings(ConfigSettings.PRESERVE_COMMENTS)
                     .createYaml();
 
             if (defaultConfigStream != null) {
