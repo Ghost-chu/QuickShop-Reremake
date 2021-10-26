@@ -85,7 +85,7 @@ public class Util {
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
 
     private static final ThreadLocal<MineDown> MINEDOWN = ThreadLocal.withInitial(() -> new MineDown(""));
-    private static int bypassedCustomStackSize = -1;
+    private static int BYPASSED_CUSTOM_STACKSIZE = -1;
     private static Yaml yaml = null;
     private static Boolean devMode = null;
     @Setter
@@ -244,7 +244,7 @@ public class Util {
      * @return Game StackSize or Custom
      */
     public static int getItemMaxStackSize(@NotNull Material material) {
-        return CUSTOM_STACKSIZE.getOrDefault(material, bypassedCustomStackSize == -1 ? material.getMaxStackSize() : bypassedCustomStackSize);
+        return CUSTOM_STACKSIZE.getOrDefault(material, BYPASSED_CUSTOM_STACKSIZE == -1 ? material.getMaxStackSize() : BYPASSED_CUSTOM_STACKSIZE);
     }
 
     /**
@@ -599,7 +599,7 @@ public class Util {
             }
 
             if ("*".equalsIgnoreCase(data[0])) {
-                bypassedCustomStackSize = Integer.parseInt(data[1]);
+                BYPASSED_CUSTOM_STACKSIZE = Integer.parseInt(data[1]);
             }
             Material mat = Material.matchMaterial(data[0]);
             if (mat == null || mat == Material.AIR) {
