@@ -445,7 +445,6 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     /**
      * Method for capturing generic type
      */
-    @Override
     public <T1, T2 extends T1> T2 capture(T1 type) {
         return (T2) type;
     }
