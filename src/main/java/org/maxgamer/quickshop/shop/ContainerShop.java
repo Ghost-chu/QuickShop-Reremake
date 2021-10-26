@@ -1492,7 +1492,6 @@ public class ContainerShop implements Shop {
      *
      * @param plugin Plugin instace
      * @param data   The data table
-     * @deprecated Extra Map doen't need set to save it.
      */
     @Override
     public void setExtra(@NotNull Plugin plugin, @NotNull ConfigurationSection data) {
