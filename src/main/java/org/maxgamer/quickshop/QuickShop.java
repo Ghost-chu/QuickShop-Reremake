@@ -492,6 +492,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 setupBootError(BuiltInSolution.econError(), false);
                 return false;
             }
+            economy = ServiceInjector.getEconomy(economy);
         } catch (Exception e) {
             this.getSentryErrorReporter().ignoreThrow();
             getLogger().log(Level.WARNING, "Something going wrong when loading up economy system", e);

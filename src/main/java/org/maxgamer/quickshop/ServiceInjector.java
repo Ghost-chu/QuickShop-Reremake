@@ -23,7 +23,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.api.economy.EconomyCore;
+import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.api.shop.ItemMatcher;
 import org.maxgamer.quickshop.database.AbstractDatabaseCore;
 import org.maxgamer.quickshop.localization.game.game.GameLanguage;
@@ -35,9 +35,9 @@ import org.maxgamer.quickshop.localization.game.game.GameLanguage;
  * @author Ghost_chu
  */
 public class ServiceInjector {
-    public static @NotNull EconomyCore getEconomyCore(@NotNull EconomyCore def) {
-        @Nullable RegisteredServiceProvider<? extends EconomyCore> registeredServiceProvider =
-                Bukkit.getServicesManager().getRegistration(EconomyCore.class);
+    public static @NotNull AbstractEconomy getEconomy(@NotNull AbstractEconomy def) {
+        @Nullable RegisteredServiceProvider<? extends AbstractEconomy> registeredServiceProvider =
+                Bukkit.getServicesManager().getRegistration(AbstractEconomy.class);
         if (registeredServiceProvider == null) {
             return def;
         } else {
