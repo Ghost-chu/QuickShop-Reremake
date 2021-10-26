@@ -34,8 +34,8 @@ public class FillerProcessor implements PostProcessor {
         boolean hit = false;
         for (int i = 0; i < args.length; i++) {
 
-            if (args[i].getClass() == String.class) {
-                strings[i] = String.valueOf(args[i]);
+            if (args[i] instanceof String) {
+                strings[i] = (String) args[i];
                 continue;
             }
 
