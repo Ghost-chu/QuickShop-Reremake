@@ -301,10 +301,9 @@ public class HttpRequest implements Closeable {
      *
      * @param file the file
      * @return this object
-     * @throws java.io.IOException  on I/O error
-     * @throws InterruptedException on interruption
+     * @throws java.io.IOException on I/O error
      */
-    public HttpRequest saveContent(File file) throws IOException, InterruptedException {
+    public HttpRequest saveContent(File file) throws IOException {
 
         try (Closer closer = Closer.create()) {
             FileOutputStream fos = closer.register(new FileOutputStream(file));
@@ -470,9 +469,8 @@ public class HttpRequest implements Closeable {
          * @param file the file
          * @return this object
          * @throws java.io.IOException  on I/O error
-         * @throws InterruptedException on interruption
          */
-        public BufferedResponse saveContent(File file) throws IOException, InterruptedException {
+        public BufferedResponse saveContent(File file) throws IOException {
 
             try (Closer closer = Closer.create()) {
                 file.getParentFile().mkdirs();

@@ -100,7 +100,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @param file The Crowdin file path
      * @return The bundled file configuration object
      */
-    private JsonConfiguration loadBundled(String file) throws IOException {
+    private JsonConfiguration loadBundled(String file) {
         JsonConfiguration bundledLang = new JsonConfiguration();
         File fileObject = new File(file);
         try {
@@ -140,10 +140,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 // Deploy distribution to mapper
                 mapper.deploy(crowdinFile, minecraftCode, configuration, loadBundled(crowdinFile));
                 Util.debugLog("Locale " + crowdinFile.replace("%locale%", crowdinCode) + " has been successfully loaded");
-            } catch (CrowdinOTA.OTAException e) {
-                // Key founds in available locales but not in custom mapping on crowdin platform
-                plugin.getLogger().warning("Couldn't update the translation for locale " + crowdinCode + " because it not configured, please report to QuickShop");
-            } catch (IOException e) {
+            } // Key founds in available locales but not in custom mapping on crowdin platform
+            catch (IOException e) {
                 // Network error
                 plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + " please check your network connection.", e);
             } catch (Exception e) {
