@@ -223,7 +223,7 @@ public class ContainerShop implements Shop {
                 uuid = ((JavaShopManager) plugin.getShopManager()).getCacheTaxAccount().getUniqueId();
             }
         }
-        ShopTaxAccountGettingEvent event = new ShopTaxAccountGettingEvent(uuid, this);
+        ShopTaxAccountGettingEvent event = new ShopTaxAccountGettingEvent(this, uuid);
         event.callEvent();
         return event.getTaxAccount();
 
