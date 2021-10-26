@@ -378,7 +378,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     @Override
     public void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
                            double price, int x, int y, int z, @NotNull String world, @NotNull String extra,
-                           @NotNull String currency, boolean disableDisplay, @Nullable String taxAccount) {
+                           @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount) {
         String sqlString = "UPDATE " + plugin
                 .getDbPrefix() + "shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ?," +
                 " extra = ?, currency = ?, disableDisplay = ?, taxAccount = ?" +
@@ -391,7 +391,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
             ps.setDouble(5, price);
             ps.setString(6, extra);
             ps.setString(7, currency);
-            ps.setInt(8, ((!disableDisplay) ? 0 : 1));
+            ps.setInt(8, disableDisplay ? 1 : 0);
             ps.setString(9, taxAccount);
             ps.setInt(10, x);
             ps.setInt(11, y);
