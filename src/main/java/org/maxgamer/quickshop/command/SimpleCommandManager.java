@@ -423,11 +423,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 }
                 List<String> requirePermissions = container.getPermissions();
                 List<String> selectivePermissions = container.getSelectivePermissions();
-                if (!checkPermissions(sender, commandLabel, passThroughArgs, requirePermissions, CommandManager.PermissionType.REQUIRE, CommandManager.Action.EXECUTE)) {
+                if (!checkPermissions(sender, commandLabel, passThroughArgs, requirePermissions, SimpleCommandManager.PermissionType.REQUIRE, SimpleCommandManager.Action.EXECUTE)) {
                     plugin.text().of(sender, "no-permission").send();
                     return true;
                 }
-                if (!checkPermissions(sender, commandLabel, passThroughArgs, selectivePermissions, CommandManager.PermissionType.SELECTIVE, CommandManager.Action.EXECUTE)) {
+                if (!checkPermissions(sender, commandLabel, passThroughArgs, selectivePermissions, SimpleCommandManager.PermissionType.SELECTIVE, SimpleCommandManager.Action.EXECUTE)) {
                     plugin.text().of(sender, "no-permission").send();
                     return true;
                 }
@@ -449,12 +449,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         return (T2) type;
     }
 
-    @Override
-    public boolean checkPermissions(CommandSender sender, String commandLabel, String[] cmdArg, List<String> permissionList, CommandManager.PermissionType permissionType, CommandManager.Action action) {
+    public boolean checkPermissions(CommandSender sender, String commandLabel, String[] cmdArg, List<String> permissionList, SimpleCommandManager.PermissionType permissionType, SimpleCommandManager.Action action) {
         if (permissionList == null || permissionList.isEmpty()) {
             return true;
         }
-        if (permissionType == CommandManager.PermissionType.REQUIRE) {
+        if (permissionType == SimpleCommandManager.PermissionType.REQUIRE) {
             for (String requirePermission : permissionList) {
                 if (requirePermission != null
                         && !requirePermission.isEmpty()
@@ -494,7 +493,6 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     }
 
 
-    @Override
     public boolean isAdapt(CommandContainer container, CommandSender sender) {
         return container.getExecutorType().isInstance(sender);
     }
@@ -528,10 +526,10 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 }
                 List<String> requirePermissions = container.getPermissions();
                 List<String> selectivePermissions = container.getSelectivePermissions();
-                if (!checkPermissions(sender, commandLabel, passThroughArgs, requirePermissions, CommandManager.PermissionType.REQUIRE, CommandManager.Action.TAB_COMPLETE)) {
+                if (!checkPermissions(sender, commandLabel, passThroughArgs, requirePermissions, SimpleCommandManager.PermissionType.REQUIRE, SimpleCommandManager.Action.TAB_COMPLETE)) {
                     return Collections.emptyList();
                 }
-                if (!checkPermissions(sender, commandLabel, passThroughArgs, selectivePermissions, CommandManager.PermissionType.SELECTIVE, CommandManager.Action.TAB_COMPLETE)) {
+                if (!checkPermissions(sender, commandLabel, passThroughArgs, selectivePermissions, SimpleCommandManager.PermissionType.SELECTIVE, SimpleCommandManager.Action.TAB_COMPLETE)) {
                     return Collections.emptyList();
                 }
                 Util.debugLog("Tab-complete container: " + container.getPrefix());
@@ -542,4 +540,22 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         }
     }
 
+    enum Action {
+        EXECUTE("execute"),
+        TAB_COMPLETE("tab-complete");
+        final String name;
+
+        Action(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
+    enum PermissionType {
+        REQUIRE,
+        SELECTIVE
+    }
 }

@@ -59,33 +59,9 @@ public interface CommandManager {
             @NotNull String commandLabel,
             @NotNull String[] cmdArg);
 
-    boolean checkPermissions(CommandSender sender, String commandLabel, String[] cmdArg, List<String> permissionList, PermissionType permissionType, Action action);
-
-
-    boolean isAdapt(CommandContainer container, CommandSender sender);
-
     @Nullable List<String> onTabComplete(
             @NotNull CommandSender sender,
             @NotNull Command command,
             @NotNull String commandLabel,
             @NotNull String[] cmdArg);
-
-    enum Action {
-        EXECUTE("execute"),
-        TAB_COMPLETE("tab-complete");
-        final String name;
-
-        Action(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-    }
-
-    enum PermissionType {
-        REQUIRE,
-        SELECTIVE
-    }
 }
