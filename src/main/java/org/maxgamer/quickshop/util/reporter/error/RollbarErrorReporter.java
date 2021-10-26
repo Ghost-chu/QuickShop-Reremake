@@ -336,34 +336,34 @@ public class RollbarErrorReporter {
             this.preFilter = preFilter;
         }
 
-        private boolean defaultValue(LogRecord record) {
-            return preFilter == null || preFilter.isLoggable(record);
+        private boolean defaultValue(LogRecord rec) {
+            return preFilter == null || preFilter.isLoggable(rec);
         }
 
         /**
          * Check if a given log record should be published.
          *
-         * @param record a LogRecord
+         * @param rec a LogRecord
          * @return true if the log record should be published.
          */
         @Override
-        public boolean isLoggable(@NotNull LogRecord record) {
+        public boolean isLoggable(@NotNull LogRecord rec) {
             if (!enabled) {
-                return defaultValue(record);
+                return defaultValue(rec);
             }
-            Level level = record.getLevel();
+            Level level = rec.getLevel();
             if (level != Level.WARNING && level != Level.SEVERE) {
-                return defaultValue(record);
+                return defaultValue(rec);
             }
-            if (record.getThrown() == null) {
-                return defaultValue(record);
+            if (rec.getThrown() == null) {
+                return defaultValue(rec);
             }
             if (Util.isDevMode()) {
-                sendError(record.getThrown(), record.getMessage());
-                return defaultValue(record);
+                sendError(rec.getThrown(), rec.getMessage());
+                return defaultValue(rec);
             } else {
-                sendError(record.getThrown(), record.getMessage());
-                PossiblyLevel possiblyLevel = checkWasCauseByQS(record.getThrown());
+                sendError(rec.getThrown(), rec.getMessage());
+                PossiblyLevel possiblyLevel = checkWasCauseByQS(rec.getThrown());
                 if (possiblyLevel == PossiblyLevel.IMPOSSIBLE) {
                     return true;
                 }
@@ -386,34 +386,34 @@ public class RollbarErrorReporter {
             this.preFilter = preFilter;
         }
 
-        private boolean defaultValue(LogRecord record) {
-            return preFilter == null || preFilter.isLoggable(record);
+        private boolean defaultValue(LogRecord rec) {
+            return preFilter == null || preFilter.isLoggable(rec);
         }
 
         /**
          * Check if a given log record should be published.
          *
-         * @param record a LogRecord
+         * @param rec a LogRecord
          * @return true if the log record should be published.
          */
         @Override
-        public boolean isLoggable(@NotNull LogRecord record) {
+        public boolean isLoggable(@NotNull LogRecord rec) {
             if (!enabled) {
-                return defaultValue(record);
+                return defaultValue(rec);
             }
-            Level level = record.getLevel();
+            Level level = rec.getLevel();
             if (level != Level.WARNING && level != Level.SEVERE) {
-                return defaultValue(record);
+                return defaultValue(rec);
             }
-            if (record.getThrown() == null) {
-                return defaultValue(record);
+            if (rec.getThrown() == null) {
+                return defaultValue(rec);
             }
             if (Util.isDevMode()) {
-                sendError(record.getThrown(), record.getMessage());
-                return defaultValue(record);
+                sendError(rec.getThrown(), rec.getMessage());
+                return defaultValue(rec);
             } else {
-                sendError(record.getThrown(), record.getMessage());
-                PossiblyLevel possiblyLevel = checkWasCauseByQS(record.getThrown());
+                sendError(rec.getThrown(), rec.getMessage());
+                PossiblyLevel possiblyLevel = checkWasCauseByQS(rec.getThrown());
                 if (possiblyLevel == PossiblyLevel.IMPOSSIBLE) {
                     return true;
                 }

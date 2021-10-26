@@ -403,15 +403,15 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     }
 
     @Override
-    public void insertHistoryRecord(Object record) {
+    public void insertHistoryRecord(Object rec) {
         String sqlString = "INSERT INTO " + plugin.getDbPrefix() + "logs (time, classname, data) VALUES (?, ?, ?)";
         manager.addDelayTask(
                 new DatabaseTask(
                         sqlString,
                         (ps) -> {
                             ps.setLong(1, System.currentTimeMillis());
-                            ps.setString(2, record.getClass().getName());
-                            ps.setString(3, JsonUtil.getGson().toJson(record));
+                            ps.setString(2, rec.getClass().getName());
+                            ps.setString(3, JsonUtil.getGson().toJson(rec));
                         }));
     }
 
