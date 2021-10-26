@@ -406,7 +406,7 @@ public class ShopLoader {
                 extra = "";
             }
             this.currency = rs.getString("currency");
-            this.disableDisplay = rs.getInt("disableDisplay") == 1;
+            this.disableDisplay = rs.getInt("disableDisplay") != 0;
             this.taxAccount = rs.getString("taxAccount");
         }
 
