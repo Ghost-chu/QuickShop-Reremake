@@ -584,14 +584,15 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         instance = this;
         Util.setPlugin(this);
         this.onLoadCalled = true;
-        getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up...");
+        getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up");
         //BEWARE THESE ONLY RUN ONCE
-        this.textManager = new SimpleTextManager(this);
         this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
         runtimeCheck(EnvCheckEntry.Stage.ON_LOAD);
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
         this.bootError = null;
+        getLogger().info("Loading messages translation over-the-air (this may need take a while).");
+        this.textManager = new SimpleTextManager(this);
         getLogger().info("Loading up integration modules.");
         this.integrationHelper = new SimpleIntegrationManager(this);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadBegin);
@@ -603,7 +604,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
         }
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadAfter);
-        getLogger().info("QuickShop " + getFork() + " - Early boot step - Booted up...");
+        getLogger().info("QuickShop " + getFork() + " - Early boot step - Complete");
     }
 
     @Override

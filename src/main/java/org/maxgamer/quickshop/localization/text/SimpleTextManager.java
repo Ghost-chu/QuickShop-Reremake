@@ -63,6 +63,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
     public SimpleTextManager(QuickShop plugin) {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
+        plugin.getLogger().info("Translation over-the-air platform selected: Crowdin");
         this.distribution = new CrowdinOTA(plugin);
         load();
 
