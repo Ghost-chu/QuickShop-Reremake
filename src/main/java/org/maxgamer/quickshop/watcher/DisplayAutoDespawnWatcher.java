@@ -65,7 +65,7 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
                 // Check the range has player?
                 boolean anyPlayerInRegion = false;
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if ((player.getWorld().equals(world)) && (player.getLocation().distance(shop.getLocation()) < range)) {
+                    if ((player.getWorld() == world) && (player.getLocation().distance(shop.getLocation()) < range)) {
                         anyPlayerInRegion = true;
                         break;
                     }
