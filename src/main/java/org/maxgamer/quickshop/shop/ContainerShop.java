@@ -1546,7 +1546,7 @@ public class ContainerShop implements Shop {
     @Override
     public void openPreview(@NotNull Player player) {
         if (inventoryPreview == null) {
-            inventoryPreview = new InventoryPreview(plugin, getItem().clone());
+            inventoryPreview = new InventoryPreview(plugin, getItem().clone(), player.getLocale());
         }
         inventoryPreview.show(player);
 
