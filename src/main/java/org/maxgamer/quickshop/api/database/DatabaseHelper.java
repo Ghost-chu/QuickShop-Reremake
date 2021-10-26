@@ -111,7 +111,8 @@ public interface DatabaseHelper {
      * @param message The message content
      * @param time    System time
      */
-    void sendMessage(@NotNull UUID player, @NotNull String message, long time);
+    void saveTransactionMessage(@NotNull UUID player, @NotNull String message, long time);
+
 
     /**
      * Upgrade legacy name based data record to uniqueId based record
