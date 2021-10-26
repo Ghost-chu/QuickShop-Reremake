@@ -1241,21 +1241,20 @@ public class ContainerShop implements Shop {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
 
-        sb.append("Shop ")
-                .append(location.getWorld() == null ? "unloaded world" : location.getWorld().getName())
-                .append("(")
-                .append(location.getBlockX())
-                .append(", ")
-                .append(location.getBlockY())
-                .append(", ")
-                .append(location.getBlockZ())
-                .append(")");
-        sb.append(" Owner: ").append(this.ownerName(false)).append(" - ").append(getOwner());
-        sb.append(", Unlimited: ").append(isUnlimited());
-        sb.append(" Price: ").append(getPrice());
-        return sb.toString();
+        String sb = "Shop " +
+                (location.getWorld() == null ? "unloaded world" : location.getWorld().getName()) +
+                "(" +
+                location.getBlockX() +
+                ", " +
+                location.getBlockY() +
+                ", " +
+                location.getBlockZ() +
+                ")" +
+                " Owner: " + this.ownerName(false) + " - " + getOwner() +
+                ", Unlimited: " + isUnlimited() +
+                " Price: " + getPrice();
+        return sb;
     }
 
     /**
