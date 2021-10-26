@@ -77,7 +77,14 @@ public class ReloadManager {
      * @param reloadable Reloadable module
      */
     public synchronized void unregister(@NotNull Reloadable reloadable) {
-        this.registry.removeIf(reloadableContainer -> reloadableContainer != null && Objects.equals(reloadableContainer.getReloadable(), reloadable));
+        this.registry.removeIf(reloadableContainer -> {
+            if (reloadableContainer != null) {
+                if (reloadableContainer.getReloadable() != null) {
+                    return Objects.equals(reloadableContainer.getReloadable().get(), reloadable);
+                }
+            }
+            return false;
+        });
     }
 
     /**
@@ -88,7 +95,11 @@ public class ReloadManager {
     public synchronized void unregister(@NotNull Class<Reloadable> clazz) {
         this.registry.removeIf(reloadable -> {
             if (reloadable.getReloadable() != null) {
-                return clazz.equals(reloadable.getReloadable().getClass());
+                Reloadable rable = reloadable.getReloadable().get();
+                if (rable != null) {
+                    return clazz.equals(rable.getClass());
+                }
+                return false;
             }
             if (reloadable.getReloadableMethod() != null) {
                 Method method = reloadable.getReloadableMethod();
@@ -125,7 +136,12 @@ public class ReloadManager {
             ReloadableContainer reloadable = iterator.next();
             if (clazz != null) {
                 if (reloadable.getReloadable() != null) {
-                    if (!clazz.equals(reloadable.getReloadable().getClass())) {
+                    Reloadable rable = reloadable.getReloadable().get();
+                    if (rable != null) {
+                        if (!clazz.equals(reloadable.getReloadable().getClass())) {
+                            continue;
+                        }
+                    } else {
                         continue;
                     }
                 }
