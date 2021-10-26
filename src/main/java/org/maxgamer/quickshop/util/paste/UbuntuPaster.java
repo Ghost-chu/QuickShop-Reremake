@@ -29,6 +29,7 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class UbuntuPaster implements PasteInterface {
     /**
@@ -65,7 +66,7 @@ public class UbuntuPaster implements PasteInterface {
         out.print(builder);
         out.flush(); // Drop
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
         Util.debugLog("Request Completed: " + conn.getURL());
         String link = conn.getURL().toString();
         in.close();

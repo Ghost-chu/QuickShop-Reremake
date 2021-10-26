@@ -128,7 +128,7 @@ public class HttpRequest implements Closeable {
      * @return this object
      */
     public HttpRequest body(String data) {
-        body = data.getBytes();
+        body = data.getBytes(StandardCharsets.UTF_8);
         return this;
     }
 

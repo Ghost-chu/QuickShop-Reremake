@@ -59,6 +59,7 @@ import org.maxgamer.quickshop.util.logging.container.PluginGlobalAlertLog;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -204,7 +205,7 @@ public class MsgUtil {
         enchi18n.options().copyDefaults(false);
         YamlConfiguration enchi18nYAML =
                 YamlConfiguration.loadConfiguration(
-                        new InputStreamReader(Objects.requireNonNull(plugin.getResource("enchi18n.yml"))));
+                        new InputStreamReader(Objects.requireNonNull(plugin.getResource("enchi18n.yml")), StandardCharsets.UTF_8));
         enchi18n.setDefaults(enchi18nYAML);
         Util.parseColours(enchi18n);
         Enchantment[] enchsi18n = Enchantment.values();
@@ -241,7 +242,7 @@ public class MsgUtil {
         itemi18n.options().copyDefaults(false);
         YamlConfiguration itemi18nYAML =
                 YamlConfiguration.loadConfiguration(
-                        new InputStreamReader(Objects.requireNonNull(plugin.getResource("itemi18n.yml"))));
+                        new InputStreamReader(Objects.requireNonNull(plugin.getResource("itemi18n.yml")), StandardCharsets.UTF_8));
         itemi18n.setDefaults(itemi18nYAML);
         Util.parseColours(itemi18n);
         Material[] itemsi18n = Material.values();
@@ -277,7 +278,7 @@ public class MsgUtil {
         potioni18n.options().copyDefaults(false);
         YamlConfiguration potioni18nYAML =
                 YamlConfiguration.loadConfiguration(
-                        new InputStreamReader(Objects.requireNonNull(plugin.getResource("potioni18n.yml"))));
+                        new InputStreamReader(Objects.requireNonNull(plugin.getResource("potioni18n.yml")), StandardCharsets.UTF_8));
         potioni18n.setDefaults(potioni18nYAML);
         Util.parseColours(potioni18n);
         for (PotionEffectType potion : PotionEffectType.values()) {

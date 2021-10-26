@@ -218,7 +218,7 @@ public class Metrics {
 
         StringBuilder builder = new StringBuilder();
         try (BufferedReader bufferedReader =
-                     new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                     new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 builder.append(line);

@@ -93,6 +93,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.Map.Entry;
@@ -105,7 +106,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      * You shouldn't use this if you really need it.
      */
     @Deprecated
-    public static QuickShop instance;
+    private static QuickShop instance;
     /**
      * The manager to check permissions.
      */
@@ -1950,7 +1951,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }
 
-        try (InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(getResource("config.yml"))))) {
+        try (InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(getResource("config.yml"))), StandardCharsets.UTF_8)) {
             if (new ConfigurationFixerLightning(this, new File(getDataFolder(), "config.yml"), getConfiguration(), YamlConfiguration.loadConfiguration(buildInConfigReader)).fix()) {
                 reloadConfiguration();
             }
