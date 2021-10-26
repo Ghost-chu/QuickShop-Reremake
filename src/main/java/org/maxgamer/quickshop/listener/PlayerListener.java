@@ -360,11 +360,10 @@ public class PlayerListener extends AbstractQSListener {
         if (loc1.getWorld() != loc2.getWorld() || loc1.distanceSquared(loc2) > 25) {
             if (info.getAction() == ShopAction.BUY) {
                 plugin.text().of(p, "shop-purchase-cancelled").send();
-                Util.debugLog(p.getName() + " too far with the shop location.");
             } else if (info.getAction() == ShopAction.CREATE) {
                 plugin.text().of(p, "shop-creation-cancelled").send();
-                Util.debugLog(p.getName() + " too far with the shop location.");
             }
+            Util.debugLog(p.getName() + " too far with the shop location.");
             plugin.getShopManager().getActions().remove(p.getUniqueId());
         }
     }

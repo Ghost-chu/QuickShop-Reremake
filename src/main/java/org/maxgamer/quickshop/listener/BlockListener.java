@@ -145,7 +145,7 @@ public class BlockListener extends AbstractProtectionListener {
             if (getPlugin().getConfiguration().getBoolean("shop.allow-owner-break-shop-sign") && p.getUniqueId().equals(shop.getOwner())) {
                 return;
             }
-            Util.debugLog("Cannot break the sign.");
+            Util.debugLog("Player cannot break the shop infomation sign.");
             e.setCancelled(true);
         }
     }

@@ -38,9 +38,8 @@ public class ChatListener extends AbstractQSListener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncPlayerChatEvent e) {
-
         if (e.isCancelled() && plugin.getConfiguration().getBoolean("shop.ignore-cancel-chat-event")) {
-            Util.debugLog("Ignored a chat event (Canceled by another plugin.)");
+            Util.debugLog("Ignored a chat event (Cancelled by another plugin, you can force process by turn on ignore-cancel-chat-event)");
             return;
         }
 
