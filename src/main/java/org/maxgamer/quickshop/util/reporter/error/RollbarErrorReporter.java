@@ -26,7 +26,6 @@ import com.rollbar.notifier.config.ConfigBuilder;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.InvalidPluginException;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -308,18 +307,18 @@ public class RollbarErrorReporter {
         disable = false;
     }
 
-    private String getPluginInfo() {
-        StringBuilder buffer = new StringBuilder();
-        for (Plugin bPlugin : plugin.getServer().getPluginManager().getPlugins()) {
-            buffer
-                    .append("\t")
-                    .append(bPlugin.getName())
-                    .append("@")
-                    .append(bPlugin.isEnabled() ? "Enabled" : "Disabled")
-                    .append("\n");
-        }
-        return buffer.toString();
-    }
+//    private String getPluginInfo() {
+//        StringBuilder buffer = new StringBuilder();
+//        for (Plugin bPlugin : plugin.getServer().getPluginManager().getPlugins()) {
+//            buffer
+//                    .append("\t")
+//                    .append(bPlugin.getName())
+//                    .append("@")
+//                    .append(bPlugin.isEnabled() ? "Enabled" : "Disabled")
+//                    .append("\n");
+//        }
+//        return buffer.toString();
+//    }
 
     enum PossiblyLevel {
         CONFIRM,

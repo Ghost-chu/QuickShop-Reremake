@@ -349,7 +349,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
         if (getConfiguration().getBoolean("plugin.WorldEdit")) {
             String nmsVersion = ReflectFactory.getNMSVersion();
-            GameVersion gameVersion = GameVersion.get(nmsVersion);
+          //  GameVersion gameVersion = GameVersion.get(nmsVersion);
             this.worldEditPlugin = Bukkit.getPluginManager().getPlugin("WorldEdit");
             if (this.worldEditPlugin != null) {
                 this.worldEditAdapter = new WorldEditAdapter(this, (WorldEditPlugin) this.worldEditPlugin);

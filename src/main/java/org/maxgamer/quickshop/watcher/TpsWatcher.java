@@ -30,7 +30,7 @@ import java.util.LinkedList;
 public class TpsWatcher extends BukkitRunnable {
     private final LinkedList<Double> history = new LinkedList<>();
     @SuppressWarnings("FieldCanBeLocal")
-    private final long tickInterval = 50;
+    private final static long TICK_INTERVAL = 50;
     private transient long lastPoll = System.nanoTime();
 
     public TpsWatcher() {
@@ -47,7 +47,7 @@ public class TpsWatcher extends BukkitRunnable {
         if (history.size() > 10) {
             history.remove();
         }
-        final double tps = tickInterval * 1000000.0 / timeSpent;
+        final double tps = TICK_INTERVAL * 1000000.0 / timeSpent;
         if (tps <= 21) {
             history.add(tps);
         }

@@ -45,6 +45,7 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
 
     private PrintWriter printWriter = null;
 
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("DM_DEFAULT_ENCODING")
     public LogWatcher(QuickShop plugin, File log) {
         try {
             boolean deleteFailed = false;

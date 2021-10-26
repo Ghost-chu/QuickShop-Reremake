@@ -68,7 +68,7 @@ public class InternalListener extends AbstractQSListener {
             return;
         }
         if (loggingAction) {
-            Player creator = plugin.getServer().getPlayer(event.getCreator());
+            //Player creator = plugin.getServer().getPlayer(event.getCreator());
             plugin.logEvent(new ShopCreationLog(event.getCreator(), event.getShop().saveToInfoStorage(), event.getShop().getLocation()));
 
         }

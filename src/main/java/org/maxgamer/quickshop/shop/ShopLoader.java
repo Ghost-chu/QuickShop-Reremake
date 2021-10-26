@@ -205,16 +205,16 @@ public class ShopLoader {
         return false;
     }
 
-    private @NotNull Long mean(Long[] m) {
-        long sum = 0;
-        for (Long aM : m) {
-            sum += aM;
-        }
-        if (m.length == 0) {
-            return sum;
-        }
-        return sum / m.length;
-    }
+//    private @NotNull Long mean(Long[] m) {
+//        long sum = 0;
+//        for (Long aM : m) {
+//            sum += aM;
+//        }
+//        if (m.length == 0) {
+//            return sum;
+//        }
+//        return sum / m.length;
+//    }
 
     @NotNull
     private YamlConfiguration extraUpgrade(@NotNull String extraString) {

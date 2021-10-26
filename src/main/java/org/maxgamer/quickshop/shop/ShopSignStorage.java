@@ -30,7 +30,7 @@ import lombok.Data;
 @Data
 @Builder
 public class ShopSignStorage {
-    private final boolean shopSign = true;
+    private final static boolean shopSign = true;
     private String world;
     private int x;
     private int y;
