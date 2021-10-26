@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.util;
 
+import com.google.common.collect.EvictingQueue;
 import de.themoep.minedown.MineDown;
 import de.themoep.minedown.MineDownParser;
 import io.papermc.lib.PaperLib;
@@ -81,7 +82,8 @@ public class Util {
     private static final EnumMap<Material, Integer> CUSTOM_STACKSIZE = new EnumMap<>(Material.class);
     private static final EnumSet<Material> SHOPABLES = EnumSet.noneOf(Material.class);
     private static final List<BlockFace> VERTICAL_FACING = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
-    private static final List<String> DEBUG_LOGS = new ArrayList<>();
+    @SuppressWarnings("UnstableApiUsage")
+    private static final EvictingQueue<String> DEBUG_LOGS = EvictingQueue.create(500);
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
 
     private static final ThreadLocal<MineDown> MINEDOWN = ThreadLocal.withInitial(() -> new MineDown(""));
@@ -325,9 +327,6 @@ public class Util {
             return;
         }
         LOCK.writeLock().lock();
-        if (DEBUG_LOGS.size() >= 2000) {
-            DEBUG_LOGS.clear();
-        }
         if (!isDevMode()) {
             for (String log : logs) {
                 DEBUG_LOGS.add("[DEBUG] " + log);
