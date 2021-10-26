@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public interface QuickShopAPI {
     /**
-     * Getting Compatibility Manager (usually used for anti-chest)
+     * Getting Compatibility Manager (usually used for anti-cheat)
      *
      * @return Compatibility Manager
      */
