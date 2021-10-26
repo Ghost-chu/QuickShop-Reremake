@@ -271,6 +271,6 @@ public interface ShopManager {
      * @param shop The shop
      */
     @Unstable
-    void sendShopInfo(@NotNull Player p, @NotNull Shop shop) ;
+    void sendShopInfo(@NotNull Player p, @NotNull Shop shop);
 
 }

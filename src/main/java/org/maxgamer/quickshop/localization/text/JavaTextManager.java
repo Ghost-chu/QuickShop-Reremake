@@ -52,12 +52,12 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public class JavaTextManager implements TextManager, Reloadable {
+    private final static String CROWDIN_LANGUAGE_FILE = "/master/crowdin/lang/%locale%/messages.json";
+    public final List<PostProcessor> postProcessors = new ArrayList<>();
     private final QuickShop plugin;
     private final Distribution distribution;
     // <File <Locale, Section>>
     private final TextMapper mapper = new TextMapper();
-    private final static String CROWDIN_LANGUAGE_FILE = "/master/crowdin/lang/%locale%/messages.json";
-    public final List<PostProcessor> postProcessors = new ArrayList<>();
 
 
     public JavaTextManager(QuickShop plugin) {
@@ -312,6 +312,12 @@ public class JavaTextManager implements TextManager, Reloadable {
         return new TextList(this, sender, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
     }
 
+    @Override
+    public ReloadResult reloadModule() {
+        this.load();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
+
     public static class TextList implements org.maxgamer.quickshop.api.localization.text.TextList {
         private final JavaTextManager manager;
         private final String path;
@@ -544,11 +550,5 @@ public class JavaTextManager implements TextManager, Reloadable {
             MsgUtil.sendDirectMessage(sender, lang);
             // plugin.getQuickChat().send(sender, lang);
         }
-    }
-
-    @Override
-    public ReloadResult reloadModule() {
-        this.load();
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 }

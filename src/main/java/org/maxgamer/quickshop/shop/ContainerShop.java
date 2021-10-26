@@ -230,16 +230,16 @@ public class ContainerShop implements Shop {
     }
 
     @Override
-    @Nullable
-    public UUID getTaxAccountActual() {
-        return taxAccount;
-    }
-
-    @Override
     public void setTaxAccount(@Nullable UUID taxAccount) {
         this.taxAccount = taxAccount;
         setDirty();
         update();
+    }
+
+    @Override
+    @Nullable
+    public UUID getTaxAccountActual() {
+        return taxAccount;
     }
 
     private void initDisplayItem() {

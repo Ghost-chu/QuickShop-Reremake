@@ -48,6 +48,31 @@ public class ReflectFactory {
     private static Object serverInstance;
     private static Field tpsField;
 
+    static {
+        String name = Bukkit.getServer().getClass().getPackage().getName();
+        String nmsVersion = name.substring(name.lastIndexOf('.') + 1);
+
+        try {
+            craftItemStack_asNMSCopyMethod =
+                    Class.forName("org.bukkit.craftbukkit." + nmsVersion + ".inventory.CraftItemStack")
+                            .getDeclaredMethod("asNMSCopy", ItemStack.class);
+
+            GameVersion gameVersion = GameVersion.get(nmsVersion);
+            if (gameVersion.isNewNmsName()) {
+                // 1.17+
+                nbtTagCompoundClass = Class.forName("net.minecraft.nbt.NBTTagCompound");
+                itemStack_saveMethod = Class.forName("net.minecraft.world.item.ItemStack").getDeclaredMethod("save", nbtTagCompoundClass);
+            } else {
+                // Before 1.17
+                nbtTagCompoundClass = Class.forName("net.minecraft.server." + nmsVersion + ".NBTTagCompound");
+                itemStack_saveMethod = Class.forName("net.minecraft.server." + nmsVersion + ".ItemStack").getDeclaredMethod("save", nbtTagCompoundClass);
+            }
+            craftServerClass = Class.forName("org.bukkit.craftbukkit." + nmsVersion + ".CraftServer");
+
+        } catch (Exception t) {
+            QuickShop.getInstance().getLogger().log(Level.WARNING, "Failed to loading up net.minecraft.server support module, usually this caused by NMS changes but QuickShop not support yet, Did you have up-to-date?", t);
+        }
+    }
 
     @NotNull
     public static String getNMSVersion() {
@@ -109,32 +134,6 @@ public class ReflectFactory {
             return cachedNMSClass;
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    static {
-        String name = Bukkit.getServer().getClass().getPackage().getName();
-        String nmsVersion = name.substring(name.lastIndexOf('.') + 1);
-
-        try {
-            craftItemStack_asNMSCopyMethod =
-                    Class.forName("org.bukkit.craftbukkit." + nmsVersion + ".inventory.CraftItemStack")
-                            .getDeclaredMethod("asNMSCopy", ItemStack.class);
-
-            GameVersion gameVersion = GameVersion.get(nmsVersion);
-            if (gameVersion.isNewNmsName()) {
-                // 1.17+
-                nbtTagCompoundClass = Class.forName("net.minecraft.nbt.NBTTagCompound");
-                itemStack_saveMethod = Class.forName("net.minecraft.world.item.ItemStack").getDeclaredMethod("save", nbtTagCompoundClass);
-            } else {
-                // Before 1.17
-                nbtTagCompoundClass = Class.forName("net.minecraft.server." + nmsVersion + ".NBTTagCompound");
-                itemStack_saveMethod = Class.forName("net.minecraft.server." + nmsVersion + ".ItemStack").getDeclaredMethod("save", nbtTagCompoundClass);
-            }
-            craftServerClass = Class.forName("org.bukkit.craftbukkit." + nmsVersion + ".CraftServer");
-
-        } catch (Exception t) {
-            QuickShop.getInstance().getLogger().log(Level.WARNING, "Failed to loading up net.minecraft.server support module, usually this caused by NMS changes but QuickShop not support yet, Did you have up-to-date?", t);
         }
     }
 

@@ -225,10 +225,10 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
     static class GameLanguageLoadThread extends Thread {
         private final String languageCode;
         private final QuickShop plugin;
+        private final MojangApiMirror mirror;
         private JsonObject lang;
         private boolean isLatest = false; //Does assets is latest?
         private boolean isUpdated = false; //Did we tried update assets?
-        private final MojangApiMirror mirror;
 
         public GameLanguageLoadThread(@NotNull QuickShop plugin, @NotNull String languageCode, @NotNull MojangApiMirror mirror) {
             this.plugin = plugin;

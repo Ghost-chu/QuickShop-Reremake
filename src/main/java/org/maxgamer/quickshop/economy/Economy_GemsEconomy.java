@@ -41,12 +41,11 @@ import java.util.UUID;
 public class Economy_GemsEconomy extends AbstractEconomy {
 
     private final QuickShop plugin;
+    private final BuiltInEconomyFormatter formatter;
     private boolean allowLoan;
-
     @Getter
     @Setter
     private GemsEconomyAPI api;
-    private final BuiltInEconomyFormatter formatter;
 
     public Economy_GemsEconomy(@NotNull QuickShop plugin) {
         super();

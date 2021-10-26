@@ -530,6 +530,12 @@ public interface Shop {
     @Nullable
     UUID getTaxAccount();
 
+    /**
+     * Sets shop taxAccount
+     *
+     * @param taxAccount tax account, null to use general tax account
+     */
+    void setTaxAccount(@Nullable UUID taxAccount);
 
     /**
      * Getting the shop tax account, it can be specific uuid or general tax account
@@ -539,13 +545,6 @@ public interface Shop {
 
     @Nullable
     UUID getTaxAccountActual();
-
-    /**
-     * Sets shop taxAccount
-     *
-     * @param taxAccount tax account, null to use general tax account
-     */
-    void setTaxAccount(@Nullable UUID taxAccount);
 
     /**
      * Claim a sign as shop sign (modern method)

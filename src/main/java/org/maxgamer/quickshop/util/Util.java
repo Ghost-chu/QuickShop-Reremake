@@ -347,7 +347,6 @@ public class Util {
     }
 
 
-
     /**
      * return the right side for given blockFace
      *

@@ -50,12 +50,12 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
     private static final String ERROR_MESSAGE =
             "QuickShop received an error when processing Economy response, THIS NOT A QUICKSHOP FAULT, you might need ask help with your Economy Provider plugin (%s) author.";
     private final QuickShop plugin;
+    private final BuiltInEconomyFormatter formatter;
     private boolean allowLoan;
     @Getter
     @Setter
     @Nullable
     private net.milkbowl.vault.economy.Economy vault;
-    private final BuiltInEconomyFormatter formatter;
 
 
     public Economy_Vault(@NotNull QuickShop plugin) {

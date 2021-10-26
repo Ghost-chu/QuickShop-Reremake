@@ -85,6 +85,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
                     .weakValues()
                     .initialCapacity(50)
                     .build();
+    private final EconomyFormatter formatter;
     @Getter
     @Nullable
     private Trader cacheTaxAccount;
@@ -94,7 +95,6 @@ public class JavaShopManager implements ShopManager, Reloadable {
     //private boolean useFastShopSearchAlgorithm;
     private boolean useOldCanBuildAlgorithm;
     private boolean autoSign;
-    private final EconomyFormatter formatter;
 
 
     public JavaShopManager(@NotNull QuickShop plugin) {

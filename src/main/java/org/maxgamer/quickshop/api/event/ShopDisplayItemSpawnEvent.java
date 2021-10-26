@@ -23,8 +23,8 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
-import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.DisplayType;
+import org.maxgamer.quickshop.api.shop.Shop;
 
 /**
  * This event is called before the shop display item created

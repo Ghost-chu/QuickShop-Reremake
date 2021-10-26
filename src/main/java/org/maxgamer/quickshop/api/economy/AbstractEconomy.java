@@ -41,6 +41,7 @@ public abstract class AbstractEconomy implements EconomyCore, Reloadable {
 
     /**
      * Getting QuickShop now using type of Economy
+     *
      * @return Economy type that QuickShop now using
      */
     public static EconomyType getNowUsing() {
@@ -53,6 +54,7 @@ public abstract class AbstractEconomy implements EconomyCore, Reloadable {
     /**
      * Transfer specific amount of currency from A to B
      * (Developer: This is low layer of Economy System, use EconomyTransaction if possible)
+     *
      * @param from     The player who is paying money
      * @param to       The player who is receiving money
      * @param amount   The amount to transfer

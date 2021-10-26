@@ -34,9 +34,10 @@ import java.util.UUID;
 public interface ShopModerator {
     /**
      * Deserialize a ShopModerator using Gson
+     *
      * @param serilized ShopModerator object serilized Json String
-     * @exception JsonSyntaxException incorrect json string
      * @return Json String
+     * @throws JsonSyntaxException incorrect json string
      */
     static ShopModerator deserialize(@NotNull String serilized) throws JsonSyntaxException {
         // Use Gson deserialize data
@@ -46,6 +47,7 @@ public interface ShopModerator {
 
     /**
      * Serialize a ShopModerator using Gson
+     *
      * @param shopModerator ShopModerator object
      * @return Json String
      */

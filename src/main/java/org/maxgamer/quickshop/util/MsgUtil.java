@@ -706,6 +706,7 @@ public class MsgUtil {
             }
         }
     }
+
     public static boolean isJson(String str) {
         try {
             new JsonParser().parse(str);

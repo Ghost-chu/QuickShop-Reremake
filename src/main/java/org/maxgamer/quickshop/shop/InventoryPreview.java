@@ -46,12 +46,12 @@ import java.util.UUID;
 @ToString
 public class InventoryPreview implements Listener {
 
+    private static final NamespacedKey NAMESPACED_KEY = new NamespacedKey(QuickShop.getInstance(), "preview-item");
     private final ItemStack itemStack;
     private final QuickShop plugin = QuickShop.getInstance();
+    private final String previewStr;
     @Nullable
     private Inventory inventory;
-    private final String previewStr;
-    private static final NamespacedKey NAMESPACED_KEY = new NamespacedKey(QuickShop.getInstance(), "preview-item");
 
     /**
      * Create a preview item GUI.

@@ -100,38 +100,26 @@ import java.util.logging.Level;
 
 public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
-    /* Public QuickShop API */
-    private final JavaCompatibilityManager compatibilityTool = new JavaCompatibilityManager(this);
-    private JavaIntegrationManager integrationHelper;
-    private JavaDatabaseHelper databaseHelper;
-    private JavaCommandManager commandManager;
-    private ItemMatcher itemMatcher;
-    private JavaShopManager shopManager;
-    private JavaTextManager textManager;
-    private boolean priceChangeRequiresFee = false;
-    private final Map<String, Integer> limits = new HashMap<>(15);
-    private final GameVersion gameVersion = GameVersion.get(ReflectFactory.getNMSVersion());
-    /* Public QuickShop API End */
-
     /**
      * The active instance of QuickShop
      * You shouldn't use this if you really need it.
      */
     @Deprecated
     public static QuickShop instance;
-
     /**
      * The manager to check permissions.
      */
     private static PermissionManager permissionManager;
     private static boolean loaded = false;
-
     /**
      * If running environment test
      */
     @Getter
     private static volatile boolean testing = false;
-
+    /* Public QuickShop API */
+    private final JavaCompatibilityManager compatibilityTool = new JavaCompatibilityManager(this);
+    private final Map<String, Integer> limits = new HashMap<>(15);
+    private final GameVersion gameVersion = GameVersion.get(ReflectFactory.getNMSVersion());
     /**
      * The shop limites.
      */
@@ -139,7 +127,19 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private final List<BukkitTask> timerTaskList = new ArrayList<>(3);
     @Getter
     private final ReloadManager reloadManager = new ReloadManager();
+    /* Public QuickShop API End */
+    @Getter
+    private final QuickChat quickChat = new BungeeQuickChat(this);
+    @Getter
+    private final TpsWatcher tpsWatcher = new TpsWatcher();
     boolean onLoadCalled = false;
+    private JavaIntegrationManager integrationHelper;
+    private JavaDatabaseHelper databaseHelper;
+    private JavaCommandManager commandManager;
+    private ItemMatcher itemMatcher;
+    private JavaShopManager shopManager;
+    private JavaTextManager textManager;
+    private boolean priceChangeRequiresFee = false;
     /**
      * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
      */
@@ -196,7 +196,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      */
     @Getter
     private PermissionChecker permissionChecker;
-
     /**
      * The error reporter to help devs report errors to Sentry.io
      */
@@ -242,8 +241,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     private BuildInfo buildInfo;
     @Getter
-    private final QuickChat quickChat = new BungeeQuickChat(this);
-    @Getter
     @Nullable
     private String currency = null;
     @Getter
@@ -254,8 +251,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private WorldEditAdapter worldEditAdapter;
     @Getter
     private ShopPurger shopPurger;
-    @Getter
-    private final TpsWatcher tpsWatcher = new TpsWatcher();
     @Getter
     @Nullable
     private NBTAPI nbtapi = null;
