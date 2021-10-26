@@ -98,7 +98,7 @@ public interface QuickShopAPI {
     ItemMatcher getItemMatcher();
 
     /**
-     * Getting the status that fee requires if user performing price change
+     * Check if fee required for changing shop price
      *
      * @return requires fee
      */
