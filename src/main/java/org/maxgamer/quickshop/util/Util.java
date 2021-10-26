@@ -1116,12 +1116,10 @@ public class Util {
 
     @SneakyThrows
     public static void makeExportBackup(@Nullable String backupName) {
-        File file;
         if (StringUtils.isEmpty(backupName)) {
-            file = new File(plugin.getDataFolder(), "export.txt");
-        } else {
-            file = new File(plugin.getDataFolder(), backupName + ".txt");
+            backupName = "export.txt";
         }
+        File file = new File(plugin.getDataFolder(), backupName + ".txt");
         if (file.exists()) {
             Files.move(file.toPath(), new File(file.getParentFile(), file.getName() + UUID.randomUUID().toString().replace("-", "")).toPath());
         }
