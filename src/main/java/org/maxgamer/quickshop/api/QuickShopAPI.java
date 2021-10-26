@@ -62,7 +62,8 @@ public interface QuickShopAPI {
     boolean isDisplayEnabled();
 
     /**
-     * Getting QuickShop current permission based shop amount limit status
+     * Getting shop limit system status
+     * false if limit system is disabled
      *
      * @return Limit enabled
      */
