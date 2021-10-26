@@ -313,6 +313,7 @@ public class ContainerShop implements Shop {
         amount = amount * item.getAmount();
         if (amount < 0) {
             this.sell(buyer, buyerInventory, loc2Drop, -amount);
+            return;
         }
         ItemStack[] contents = buyerInventory.getContents();
         if (this.isUnlimited()) {
@@ -626,6 +627,7 @@ public class ContainerShop implements Shop {
         amount = item.getAmount() * amount;
         if (amount < 0) {
             this.buy(seller, sellerInventory, loc2Drop, -amount);
+            return;
         }
         // Items to drop on floor
         ArrayList<ItemStack> floor = new ArrayList<>(5);
