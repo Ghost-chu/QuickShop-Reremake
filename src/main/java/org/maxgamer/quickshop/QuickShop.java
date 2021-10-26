@@ -60,25 +60,25 @@ import org.maxgamer.quickshop.api.integration.IntegrationManager;
 import org.maxgamer.quickshop.api.localization.text.TextManager;
 import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
-import org.maxgamer.quickshop.command.JavaCommandManager;
+import org.maxgamer.quickshop.command.SimpleCommandManager;
 import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.Economy_GemsEconomy;
 import org.maxgamer.quickshop.economy.Economy_TNE;
 import org.maxgamer.quickshop.economy.Economy_Vault;
-import org.maxgamer.quickshop.integration.JavaIntegrationManager;
+import org.maxgamer.quickshop.integration.SimpleIntegrationManager;
 import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
 import org.maxgamer.quickshop.listener.*;
 import org.maxgamer.quickshop.listener.worldedit.WorldEditAdapter;
-import org.maxgamer.quickshop.localization.text.JavaTextManager;
+import org.maxgamer.quickshop.localization.text.SimpleTextManager;
 import org.maxgamer.quickshop.nonquickshopstuff.com.rylinaux.plugman.util.PluginUtil;
 import org.maxgamer.quickshop.permission.PermissionManager;
-import org.maxgamer.quickshop.shop.JavaShopManager;
 import org.maxgamer.quickshop.shop.ShopLoader;
 import org.maxgamer.quickshop.shop.ShopPurger;
+import org.maxgamer.quickshop.shop.SimpleShopManager;
 import org.maxgamer.quickshop.shop.VirtualDisplayItem;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.*;
-import org.maxgamer.quickshop.util.compatibility.JavaCompatibilityManager;
+import org.maxgamer.quickshop.util.compatibility.SimpleCompatibilityManager;
 import org.maxgamer.quickshop.util.config.ConfigProviderLightning;
 import org.maxgamer.quickshop.util.config.ConfigurationFixerLightning;
 import org.maxgamer.quickshop.util.envcheck.*;
@@ -117,7 +117,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     private static volatile boolean testing = false;
     /* Public QuickShop API */
-    private final JavaCompatibilityManager compatibilityTool = new JavaCompatibilityManager(this);
+    private final SimpleCompatibilityManager compatibilityTool = new SimpleCompatibilityManager(this);
     private final Map<String, Integer> limits = new HashMap<>(15);
     private final GameVersion gameVersion = GameVersion.get(ReflectFactory.getNMSVersion());
     /**
@@ -133,12 +133,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     private final TpsWatcher tpsWatcher = new TpsWatcher();
     boolean onLoadCalled = false;
-    private JavaIntegrationManager integrationHelper;
-    private JavaDatabaseHelper databaseHelper;
-    private JavaCommandManager commandManager;
+    private SimpleIntegrationManager integrationHelper;
+    private SimpleDatabaseHelper databaseHelper;
+    private SimpleCommandManager commandManager;
     private ItemMatcher itemMatcher;
-    private JavaShopManager shopManager;
-    private JavaTextManager textManager;
+    private SimpleShopManager shopManager;
+    private SimpleTextManager textManager;
     private boolean priceChangeRequiresFee = false;
     /**
      * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
@@ -584,14 +584,14 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         this.onLoadCalled = true;
         getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up...");
         //BEWARE THESE ONLY RUN ONCE
-        this.textManager = new JavaTextManager(this);
+        this.textManager = new SimpleTextManager(this);
         this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
         runtimeCheck(EnvCheckEntry.Stage.ON_LOAD);
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
         this.bootError = null;
         getLogger().info("Loading up integration modules.");
-        this.integrationHelper = new JavaIntegrationManager(this);
+        this.integrationHelper = new SimpleIntegrationManager(this);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadBegin);
         if (getConfiguration().getBoolean("integration.worldguard.enable")) {
             Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
@@ -853,7 +853,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
         getLogger().info("Registering commands...");
         /* PreInit for BootError feature */
-        commandManager = new JavaCommandManager(this);
+        commandManager = new SimpleCommandManager(this);
         //noinspection ConstantConditions
         getCommand("qs").setExecutor(commandManager);
         //noinspection ConstantConditions
@@ -861,7 +861,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
         this.registerCustomCommands();
 
-        this.shopManager = new JavaShopManager(this);
+        this.shopManager = new SimpleShopManager(this);
 
         this.permissionChecker = new PermissionChecker(this);
         // Limit
@@ -1020,7 +1020,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
             this.databaseManager = new DatabaseManager(this, ServiceInjector.getDatabaseCore(dbCore));
             // Make the database up to date
-            this.databaseHelper = new JavaDatabaseHelper(this, this.databaseManager);
+            this.databaseHelper = new SimpleDatabaseHelper(this, this.databaseManager);
         } catch (DatabaseManager.ConnectionException e) {
             getLogger().log(Level.SEVERE, "Error when connecting to the database", e);
             if (setupDBonEnableding) {

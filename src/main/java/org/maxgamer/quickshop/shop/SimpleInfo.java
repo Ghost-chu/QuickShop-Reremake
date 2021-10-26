@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is Info.java
+ * This file is a part of project QuickShop, the name is SimpleInfo.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -35,7 +35,7 @@ import org.maxgamer.quickshop.api.shop.ShopAction;
  */
 @EqualsAndHashCode
 @ToString
-public class JavaInfo implements Info {
+public class SimpleInfo implements Info {
     private final Block last;
     private final Location loc;
     private final boolean dirty;
@@ -43,7 +43,7 @@ public class JavaInfo implements Info {
     private ItemStack item;
     private Shop shop;
 
-    public JavaInfo(
+    public SimpleInfo(
             @NotNull Location loc,
             @NotNull ShopAction action,
             @Nullable ItemStack item,
@@ -57,7 +57,7 @@ public class JavaInfo implements Info {
         this.dirty = true;
     }
 
-    public JavaInfo(
+    public SimpleInfo(
             @NotNull Location loc,
             @NotNull ShopAction action,
             @Nullable ItemStack item,

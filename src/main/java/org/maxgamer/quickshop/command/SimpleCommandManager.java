@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is JavaCommandManager.java
+ * This file is a part of project QuickShop, the name is SimpleCommandManager.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -43,13 +43,13 @@ import java.util.Set;
 
 @Data
 @SuppressWarnings("unchecked")
-public class JavaCommandManager implements CommandManager, TabCompleter, CommandExecutor {
+public class SimpleCommandManager implements CommandManager, TabCompleter, CommandExecutor {
     private static final String[] EMPTY_ARGS = new String[0];
     private final Set<CommandContainer> cmds = Sets.newCopyOnWriteArraySet(); //Because we open to allow register, so this should be thread-safe
     private final QuickShop plugin;
     private final CommandContainer rootContainer;
 
-    public JavaCommandManager(QuickShop plugin) {
+    public SimpleCommandManager(QuickShop plugin) {
         this.plugin = plugin;
         this.rootContainer = CommandContainer.builder()
                 .prefix("")

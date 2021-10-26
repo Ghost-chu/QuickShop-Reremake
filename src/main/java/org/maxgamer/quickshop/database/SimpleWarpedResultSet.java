@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is WarpedResultSet.java
+ * This file is a part of project QuickShop, the name is SimpleWarpedResultSet.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -26,13 +26,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class JavaWarpedResultSet implements WarpedResultSet {
+public class SimpleWarpedResultSet implements WarpedResultSet {
     @Getter
     private final ResultSet resultSet;
     private final DatabaseConnection databaseConnection;
     private final Statement statement;
 
-    public JavaWarpedResultSet(Statement statement, ResultSet resultSet, DatabaseConnection databaseConnection) {
+    public SimpleWarpedResultSet(Statement statement, ResultSet resultSet, DatabaseConnection databaseConnection) {
         this.statement = statement;
         this.resultSet = resultSet;
         this.databaseConnection = databaseConnection;

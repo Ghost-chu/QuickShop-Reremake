@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is CompatibilityManager.java
+ * This file is a part of project QuickShop, the name is SimpleCompatibilityManager.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -36,7 +36,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JavaCompatibilityManager extends QuickShopInstanceHolder implements CompatibilityManager, Listener {
+public class SimpleCompatibilityManager extends QuickShopInstanceHolder implements CompatibilityManager, Listener {
     private static final Map<String, Class<? extends CompatibilityModule>> MODULE_MAP = new HashMap<>(2);
 
     static {
@@ -46,7 +46,7 @@ public class JavaCompatibilityManager extends QuickShopInstanceHolder implements
 
     private final Map<String, CompatibilityModule> registeredModules = new HashMap<>(5);
 
-    public JavaCompatibilityManager(QuickShop plugin) {
+    public SimpleCompatibilityManager(QuickShop plugin) {
         super(plugin);
     }
 

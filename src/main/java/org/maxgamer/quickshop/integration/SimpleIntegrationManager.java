@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is JavaIntegrationManager.java
+ * This file is a part of project QuickShop, the name is SimpleIntegrationManager.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -43,7 +43,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.logging.Level;
 
-public class JavaIntegrationManager extends QuickShopInstanceHolder implements IntegrationManager {
+public class SimpleIntegrationManager extends QuickShopInstanceHolder implements IntegrationManager {
     private static final Map<String, Class<? extends IntegratedPlugin>> INTEGRATION_MAPPING = new HashMap<>(7);
 
     static {
@@ -62,7 +62,7 @@ public class JavaIntegrationManager extends QuickShopInstanceHolder implements I
 
     private final Map<String, IntegratedPlugin> integrations = new HashMap<>(7);
 
-    public JavaIntegrationManager(QuickShop plugin) {
+    public SimpleIntegrationManager(QuickShop plugin) {
         super(plugin);
     }
 

@@ -31,7 +31,7 @@ import org.maxgamer.quickshop.api.command.CommandHandler;
 import org.maxgamer.quickshop.api.shop.PriceLimiterCheckResult;
 import org.maxgamer.quickshop.api.shop.PriceLimiterStatus;
 import org.maxgamer.quickshop.api.shop.Shop;
-import org.maxgamer.quickshop.shop.JavaPriceLimiter;
+import org.maxgamer.quickshop.shop.SimplePriceLimiter;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -64,7 +64,7 @@ public class SubCommand_Item implements CommandHandler<Player> {
                 if (!plugin.isAllowStack() && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.stacks")) {
                     itemStack.setAmount(1);
                 }
-                JavaPriceLimiter limiter = new JavaPriceLimiter(
+                SimplePriceLimiter limiter = new SimplePriceLimiter(
                         plugin.getConfiguration().getDouble("shop.minimum-price"),
                         plugin.getConfiguration().getInt("shop.maximum-price"),
                         plugin.getConfiguration().getBoolean("shop.allow-free-shop"),

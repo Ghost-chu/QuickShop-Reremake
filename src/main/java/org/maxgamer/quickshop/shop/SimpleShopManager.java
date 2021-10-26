@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is JavaShopManager.java
+ * This file is a part of project QuickShop, the name is SimpleShopManager.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -50,7 +50,7 @@ import org.maxgamer.quickshop.api.economy.EconomyTransaction;
 import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.economy.Trader;
-import org.maxgamer.quickshop.integration.JavaIntegrationManager;
+import org.maxgamer.quickshop.integration.SimpleIntegrationManager;
 import org.maxgamer.quickshop.util.CalculateUtil;
 import org.maxgamer.quickshop.util.ChatSheetPrinter;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -69,7 +69,7 @@ import java.util.logging.Level;
 /**
  * Manage a lot of shops.
  */
-public class JavaShopManager implements ShopManager, Reloadable {
+public class SimpleShopManager implements ShopManager, Reloadable {
 
     private final Map<String, Map<ShopChunk, Map<Location, Shop>>> shops = Maps.newConcurrentMap();
 
@@ -91,13 +91,13 @@ public class JavaShopManager implements ShopManager, Reloadable {
     private Trader cacheTaxAccount;
     @Getter
     private Trader cacheUnlimitedShopAccount;
-    private JavaPriceLimiter priceLimiter;
+    private SimplePriceLimiter priceLimiter;
     //private boolean useFastShopSearchAlgorithm;
     private boolean useOldCanBuildAlgorithm;
     private boolean autoSign;
 
 
-    public JavaShopManager(@NotNull QuickShop plugin) {
+    public SimpleShopManager(@NotNull QuickShop plugin) {
         Util.ensureThread(false);
         this.plugin = plugin;
         this.formatter = new EconomyFormatter(plugin, plugin.getEconomy());
@@ -128,7 +128,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
         } else {
             cacheUnlimitedShopAccount = new Trader(uAccount, Bukkit.getOfflinePlayer(uAccount));
         }
-        this.priceLimiter = new JavaPriceLimiter(
+        this.priceLimiter = new SimplePriceLimiter(
                 plugin.getConfiguration().getDouble("shop.minimum-price"),
                 plugin.getConfiguration().getInt("shop.maximum-price"),
                 plugin.getConfiguration().getBoolean("shop.allow-free-shop"),
@@ -240,7 +240,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
         if (inWorld == null) {
             return null;
         }
-        return inWorld.get(new JavaShopChunk(world, chunkX, chunkZ));
+        return inWorld.get(new SimpleShopChunk(world, chunkX, chunkZ));
     }
 
     /**
@@ -583,7 +583,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
         int x = (int) Math.floor((shop.getLocation().getBlockX()) / 16.0);
         int z = (int) Math.floor((shop.getLocation().getBlockZ()) / 16.0);
         // Get the chunk set from the world info
-        ShopChunk shopChunk = new JavaShopChunk(world, x, z);
+        ShopChunk shopChunk = new SimpleShopChunk(world, x, z);
         Map<Location, Shop> inChunk =
                 inWorld.computeIfAbsent(shopChunk, k -> new MapMaker().initialCapacity(1).makeMap());
         // That chunk data hasn't been created yet - Create it!
@@ -607,7 +607,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
         Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops().get(world);
         int x = (int) Math.floor((loc.getBlockX()) / 16.0);
         int z = (int) Math.floor((loc.getBlockZ()) / 16.0);
-        ShopChunk shopChunk = new JavaShopChunk(world, x, z);
+        ShopChunk shopChunk = new SimpleShopChunk(world, x, z);
         Map<Location, Shop> inChunk = inWorld.get(shopChunk);
         if (inChunk == null) {
             return;
@@ -802,7 +802,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
 
 
     @Deprecated
-    public void actionBuy(@NotNull Player p, @NotNull AbstractEconomy eco, @NotNull JavaInfo info,
+    public void actionBuy(@NotNull Player p, @NotNull AbstractEconomy eco, @NotNull SimpleInfo info,
                           @NotNull Shop shop, int amount) {
         Util.ensureThread(false);
         actionBuy(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
@@ -972,7 +972,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
                 info.getLocation(),
                 price,
                 info.getItem(),
-                new JavaShopModerator(p.getUniqueId()),
+                new SimpleShopModerator(p.getUniqueId()),
                 false,
                 ShopType.SELLING,
                 new YamlConfiguration(),
@@ -980,7 +980,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
                 false,
                 null);
         if (!bypassProtectionChecks) {
-            Result result = ((JavaIntegrationManager) plugin.getIntegrationHelper()).callIntegrationsCanCreate(p, info.getLocation());
+            Result result = ((SimpleIntegrationManager) plugin.getIntegrationHelper()).callIntegrationsCanCreate(p, info.getLocation());
             if (!result.isSuccess()) {
                 plugin.text().of(p, "integrations-check-failed-create", result.getMessage()).send();
                 Util.debugLog("Cancelled by integrations: " + result);
@@ -1054,7 +1054,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
 
     @Deprecated
     public void actionSell(
-            @NotNull Player p, @NotNull AbstractEconomy eco, @NotNull JavaInfo info, @NotNull Shop shop,
+            @NotNull Player p, @NotNull AbstractEconomy eco, @NotNull SimpleInfo info, @NotNull Shop shop,
             int amount) {
         Util.ensureThread(false);
         actionSell(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
@@ -1331,7 +1331,7 @@ public class JavaShopManager implements ShopManager, Reloadable {
             MsgUtil.sendDirectMessage(p, "Error: Economy system not loaded, type /qs main command to get details.");
             return;
         }
-        Result result = ((JavaIntegrationManager) plugin.getIntegrationHelper())
+        Result result = ((SimpleIntegrationManager) plugin.getIntegrationHelper())
                 .callIntegrationsCanTrade(p, info.getLocation());
         if (!result.isSuccess()) {
             plugin.text().of(p, "integrations-check-failed-trade", result.getMessage()).send();

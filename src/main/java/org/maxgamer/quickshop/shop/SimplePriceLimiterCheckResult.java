@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is ShopExtra.java
+ * This file is a part of project QuickShop, the name is SimplePriceLimiterCheckResult.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -21,16 +21,13 @@ package org.maxgamer.quickshop.shop;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.api.shop.PriceLimiterCheckResult;
+import org.maxgamer.quickshop.api.shop.PriceLimiterStatus;
 
-import java.util.Map;
-
-/**
- * Storage the extra data that QuickShop needs or from 3rd-addon
- */
 @AllArgsConstructor
 @Data
-public class JavaShopExtra {
-    private @NotNull String namespace;
-    private @NotNull Map<String, Object> data;
+public class SimplePriceLimiterCheckResult implements PriceLimiterCheckResult {
+    PriceLimiterStatus status;
+    double min;
+    double max;
 }

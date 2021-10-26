@@ -31,7 +31,7 @@ import org.maxgamer.quickshop.api.shop.PriceLimiterCheckResult;
 import org.maxgamer.quickshop.api.shop.PriceLimiterStatus;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.shop.ContainerShop;
-import org.maxgamer.quickshop.shop.JavaPriceLimiter;
+import org.maxgamer.quickshop.shop.SimplePriceLimiter;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -83,7 +83,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
             return;
         }
 
-        JavaPriceLimiter limiter = new JavaPriceLimiter(
+        SimplePriceLimiter limiter = new SimplePriceLimiter(
                 plugin.getConfiguration().getDouble("shop.minimum-price"),
                 plugin.getConfiguration().getInt("shop.maximum-price"),
                 plugin.getConfiguration().getBoolean("shop.allow-free-shop"),

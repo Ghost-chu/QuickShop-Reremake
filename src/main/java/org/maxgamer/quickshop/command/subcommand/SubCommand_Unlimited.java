@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandHandler;
 import org.maxgamer.quickshop.api.shop.Shop;
-import org.maxgamer.quickshop.shop.JavaShopManager;
+import org.maxgamer.quickshop.shop.SimpleShopManager;
 
 @AllArgsConstructor
 public class SubCommand_Unlimited implements CommandHandler<Player> {
@@ -50,7 +50,7 @@ public class SubCommand_Unlimited implements CommandHandler<Player> {
                 plugin.text().of(sender, "command.toggle-unlimited.unlimited").send();
                 if (plugin.getConfiguration().getBoolean("unlimited-shop-owner-change")) {
                     plugin.getShopManager().migrateOwnerToUnlimitedShopOwner(shop);
-                    plugin.text().of(sender, "unlimited-shop-owner-changed", ((JavaShopManager) plugin.getShopManager()).getCacheUnlimitedShopAccount().getName()).send();
+                    plugin.text().of(sender, "unlimited-shop-owner-changed", ((SimpleShopManager) plugin.getShopManager()).getCacheUnlimitedShopAccount().getName()).send();
                 }
                 return;
             }

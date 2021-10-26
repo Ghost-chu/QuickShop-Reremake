@@ -64,7 +64,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
     //The List which store packet sender
     private final Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
     //cache chunk x and z
-    private JavaShopChunk chunkLocation;
+    private SimpleShopChunk chunkLocation;
     private volatile boolean isDisplay;
     //If packet initialized
     private volatile boolean initialized = false;
@@ -85,7 +85,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
         Util.ensureThread(false);
         //some time shop can be loaded when world isn't loaded
         Chunk chunk = shop.getLocation().getChunk();
-        chunkLocation = new JavaShopChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
+        chunkLocation = new SimpleShopChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
         VirtualDisplayItemManager.put(chunkLocation, this);
         if (Util.isLoaded(shop.getLocation())) {
             //Let nearby player can saw fake item
@@ -245,9 +245,9 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
 
     public static class VirtualDisplayItemManager {
         private static final AtomicBoolean LOADED = new AtomicBoolean(false);
-        private static final Map<JavaShopChunk, List<VirtualDisplayItem>> CHUNKS_MAPPING = new ConcurrentHashMap<>();
+        private static final Map<SimpleShopChunk, List<VirtualDisplayItem>> CHUNKS_MAPPING = new ConcurrentHashMap<>();
 
-        public static void put(@NotNull JavaShopChunk key, @NotNull VirtualDisplayItem value) {
+        public static void put(@NotNull SimpleShopChunk key, @NotNull VirtualDisplayItem value) {
             //Thread-safe was ensured by ONLY USE Map method to do something
             List<VirtualDisplayItem> virtualDisplayItems = new ArrayList<>(Collections.singletonList(value));
             CHUNKS_MAPPING.merge(key, virtualDisplayItems, (mapOldVal, mapNewVal) -> {
@@ -256,7 +256,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
             });
         }
 
-        public static void remove(@NotNull JavaShopChunk key, @NotNull VirtualDisplayItem value) {
+        public static void remove(@NotNull SimpleShopChunk key, @NotNull VirtualDisplayItem value) {
             CHUNKS_MAPPING.computeIfPresent(key, (mapOldKey, mapOldVal) -> {
                 mapOldVal.remove(value);
                 return mapOldVal;
@@ -292,7 +292,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
                         //chunk z
                         int z = integerStructureModifier.read(1);
 
-                        CHUNKS_MAPPING.computeIfPresent(new JavaShopChunk(player.getWorld().getName(), x, z), (chunkLocation, targetList) -> {
+                        CHUNKS_MAPPING.computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLocation, targetList) -> {
                             for (VirtualDisplayItem target : targetList) {
                                 if (!target.shop.isLoaded() || !target.isDisplay || target.shop.isLeftShop()) {
                                     continue;

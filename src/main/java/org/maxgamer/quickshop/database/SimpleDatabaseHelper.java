@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is DatabaseHelper.java
+ * This file is a part of project QuickShop, the name is SimpleDatabaseHelper.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -44,7 +44,7 @@ import java.util.logging.Level;
 /**
  * A Util to execute all SQLs.
  */
-public class JavaDatabaseHelper implements DatabaseHelper, Reloadable {
+public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
 
 
     @NotNull
@@ -53,7 +53,7 @@ public class JavaDatabaseHelper implements DatabaseHelper, Reloadable {
     @NotNull
     private final QuickShop plugin;
 
-    public JavaDatabaseHelper(@NotNull QuickShop plugin, @NotNull DatabaseManager manager) throws SQLException {
+    public SimpleDatabaseHelper(@NotNull QuickShop plugin, @NotNull DatabaseManager manager) throws SQLException {
         this.plugin = plugin;
         this.manager = manager;
         plugin.getReloadManager().register(this);
@@ -287,21 +287,21 @@ public class JavaDatabaseHelper implements DatabaseHelper, Reloadable {
     }
 
     @Override
-    public JavaWarpedResultSet selectAllMessages() throws SQLException {
+    public SimpleWarpedResultSet selectAllMessages() throws SQLException {
         return selectTable("messages");
     }
 
     @Override
-    public JavaWarpedResultSet selectTable(String table) throws SQLException {
+    public SimpleWarpedResultSet selectTable(String table) throws SQLException {
         DatabaseConnection databaseConnection = manager.getDatabase().getConnection();
         Statement st = databaseConnection.get().createStatement();
         String selectAllShops = "SELECT * FROM " + plugin.getDbPrefix() + table;
         ResultSet resultSet = st.executeQuery(selectAllShops);
-        return new JavaWarpedResultSet(st, resultSet, databaseConnection);
+        return new SimpleWarpedResultSet(st, resultSet, databaseConnection);
     }
 
     @Override
-    public JavaWarpedResultSet selectAllShops() throws SQLException {
+    public SimpleWarpedResultSet selectAllShops() throws SQLException {
         return selectTable("shops");
     }
 

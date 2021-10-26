@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is PriceLimiter.java
+ * This file is a part of project QuickShop, the name is SimplePriceLimiter.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -36,7 +36,7 @@ import java.util.Map;
 
 @AllArgsConstructor
 @Data
-public class JavaPriceLimiter implements PriceLimiter {
+public class SimplePriceLimiter implements PriceLimiter {
     private double minPrice;
     private double maxPrice;
     private boolean allowFreeShop;
@@ -46,11 +46,11 @@ public class JavaPriceLimiter implements PriceLimiter {
     @NotNull
     public PriceLimiterCheckResult check(@NotNull ItemStack stack, double price) {
         if (Double.isInfinite(price) || Double.isNaN(price)) {
-            return new JavaPriceLimiterCheckResult(PriceLimiterStatus.NOT_VALID, minPrice, maxPrice);
+            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_VALID, minPrice, maxPrice);
         }
         if (allowFreeShop) {
             if (price != 0 && price < minPrice) {
-                return new JavaPriceLimiterCheckResult(PriceLimiterStatus.REACHED_PRICE_MIN_LIMIT, minPrice, maxPrice);
+                return new SimplePriceLimiterCheckResult(PriceLimiterStatus.REACHED_PRICE_MIN_LIMIT, minPrice, maxPrice);
             }
         }
         if (wholeNumberOnly) {
@@ -58,15 +58,15 @@ public class JavaPriceLimiter implements PriceLimiter {
                 BigDecimal.valueOf(price).setScale(0, RoundingMode.UNNECESSARY);
             } catch (ArithmeticException exception) {
                 Util.debugLog(exception.getMessage());
-                return new JavaPriceLimiterCheckResult(PriceLimiterStatus.NOT_A_WHOLE_NUMBER, minPrice, maxPrice);
+                return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_A_WHOLE_NUMBER, minPrice, maxPrice);
             }
         }
         if (price < minPrice) {
-            return new JavaPriceLimiterCheckResult(PriceLimiterStatus.REACHED_PRICE_MIN_LIMIT, minPrice, maxPrice);
+            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.REACHED_PRICE_MIN_LIMIT, minPrice, maxPrice);
         }
         if (maxPrice != -1) {
             if (price > maxPrice) {
-                return new JavaPriceLimiterCheckResult(PriceLimiterStatus.REACHED_PRICE_MAX_LIMIT, minPrice, maxPrice);
+                return new SimplePriceLimiterCheckResult(PriceLimiterStatus.REACHED_PRICE_MAX_LIMIT, minPrice, maxPrice);
             }
         }
         double perItemPrice;
@@ -78,10 +78,10 @@ public class JavaPriceLimiter implements PriceLimiter {
         Map.Entry<Double, Double> materialLimit = Util.getPriceRestriction(stack.getType());
         if (materialLimit != null) {
             if (perItemPrice < materialLimit.getKey() || perItemPrice > materialLimit.getValue()) {
-                return new JavaPriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, materialLimit.getKey(), materialLimit.getValue());
+                return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, materialLimit.getKey(), materialLimit.getValue());
             }
-            return new JavaPriceLimiterCheckResult(PriceLimiterStatus.PASS, materialLimit.getKey(), materialLimit.getValue());
+            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PASS, materialLimit.getKey(), materialLimit.getValue());
         }
-        return new JavaPriceLimiterCheckResult(PriceLimiterStatus.PASS, minPrice, maxPrice);
+        return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PASS, minPrice, maxPrice);
     }
 }

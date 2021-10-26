@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is ShopModeratorChangedLog.java
+ * This file is a part of project QuickShop, the name is SimpleShopExtra.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,17 +17,20 @@
  *
  */
 
-package org.maxgamer.quickshop.util.logging.container;
+package org.maxgamer.quickshop.shop;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.maxgamer.quickshop.api.shop.ShopInfoStorage;
-import org.maxgamer.quickshop.shop.SimpleShopModerator;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
+
+/**
+ * Storage the extra data that QuickShop needs or from 3rd-addon
+ */
 @AllArgsConstructor
 @Data
-public class ShopModeratorChangedLog {
-    private static int v = 1;
-    private ShopInfoStorage shop;
-    private SimpleShopModerator moderator;
+public class SimpleShopExtra {
+    private @NotNull String namespace;
+    private @NotNull Map<String, Object> data;
 }

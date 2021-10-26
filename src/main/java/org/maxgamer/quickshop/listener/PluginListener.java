@@ -28,7 +28,7 @@ import org.maxgamer.quickshop.api.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.api.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.api.integration.IntegrationManager;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.util.compatibility.JavaCompatibilityManager;
+import org.maxgamer.quickshop.util.compatibility.SimpleCompatibilityManager;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
@@ -36,7 +36,7 @@ import java.util.Set;
 
 public class PluginListener extends AbstractQSListener {
 
-    private static final Set<String> COMPATIBILITY_MODULE_LIST = JavaCompatibilityManager.getModuleMapping().keySet();
+    private static final Set<String> COMPATIBILITY_MODULE_LIST = SimpleCompatibilityManager.getModuleMapping().keySet();
     private IntegrationManager integrationHelper;
     private CompatibilityManager compatibilityManager;
 
@@ -79,7 +79,7 @@ public class PluginListener extends AbstractQSListener {
             }
         }
         if (COMPATIBILITY_MODULE_LIST.contains(pluginName)) {
-            ((JavaCompatibilityManager) compatibilityManager).register(pluginName);
+            ((SimpleCompatibilityManager) compatibilityManager).register(pluginName);
         }
     }
 

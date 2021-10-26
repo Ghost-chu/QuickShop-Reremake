@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is JavaShopModerator.java
+ * This file is a part of project QuickShop, the name is SimpleShopModerator.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -37,11 +37,11 @@ import java.util.UUID;
  */
 @EqualsAndHashCode
 @NoArgsConstructor
-public class JavaShopModerator implements ShopModerator, Cloneable {
+public class SimpleShopModerator implements ShopModerator, Cloneable {
     private UUID owner;
     private List<UUID> staffs;
 
-    private JavaShopModerator(@NotNull JavaShopModerator shopModerator) {
+    private SimpleShopModerator(@NotNull SimpleShopModerator shopModerator) {
         this.owner = shopModerator.owner;
         this.staffs = shopModerator.staffs;
     }
@@ -51,7 +51,7 @@ public class JavaShopModerator implements ShopModerator, Cloneable {
      *
      * @param owner The owner
      */
-    public JavaShopModerator(@NotNull UUID owner) {
+    public SimpleShopModerator(@NotNull UUID owner) {
         this.owner = owner;
         this.staffs = new ArrayList<>();
     }
@@ -62,7 +62,7 @@ public class JavaShopModerator implements ShopModerator, Cloneable {
      * @param owner  The owner
      * @param staffs The staffs
      */
-    public JavaShopModerator(@NotNull UUID owner, @NotNull List<UUID> staffs) {
+    public SimpleShopModerator(@NotNull UUID owner, @NotNull List<UUID> staffs) {
         this.owner = owner;
         this.staffs = staffs;
     }
@@ -70,12 +70,12 @@ public class JavaShopModerator implements ShopModerator, Cloneable {
     public static ShopModerator deserialize(@NotNull String serilized) throws JsonSyntaxException {
         // Use Gson deserialize data
         Gson gson = JsonUtil.regular();
-        return gson.fromJson(serilized, JavaShopModerator.class);
+        return gson.fromJson(serilized, SimpleShopModerator.class);
     }
 
     public static String serialize(@NotNull ShopModerator shopModerator) {
         Gson gson = JsonUtil.getGson();
-        JavaShopModerator gsonWorkaround = (JavaShopModerator) shopModerator;
+        SimpleShopModerator gsonWorkaround = (SimpleShopModerator) shopModerator;
         return gson.toJson(gsonWorkaround); // Use Gson serialize this class
     }
 
@@ -104,8 +104,8 @@ public class JavaShopModerator implements ShopModerator, Cloneable {
 
     @Override
     @SuppressWarnings("MethodDoesntCallSuperMethod")
-    public @NotNull JavaShopModerator clone() {
-        return new JavaShopModerator(this.owner, this.staffs);
+    public @NotNull SimpleShopModerator clone() {
+        return new SimpleShopModerator(this.owner, this.staffs);
     }
 
     @Override

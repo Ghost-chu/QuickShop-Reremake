@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is JavaTextManager.java
+ * This file is a part of project QuickShop, the name is SimpleTextManager.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -51,7 +51,7 @@ import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-public class JavaTextManager implements TextManager, Reloadable {
+public class SimpleTextManager implements TextManager, Reloadable {
     private final static String CROWDIN_LANGUAGE_FILE = "/master/crowdin/lang/%locale%/messages.json";
     public final List<PostProcessor> postProcessors = new ArrayList<>();
     private final QuickShop plugin;
@@ -60,7 +60,7 @@ public class JavaTextManager implements TextManager, Reloadable {
     private final TextMapper mapper = new TextMapper();
 
 
-    public JavaTextManager(QuickShop plugin) {
+    public SimpleTextManager(QuickShop plugin) {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
         this.distribution = new CrowdinOTA(plugin);
@@ -319,7 +319,7 @@ public class JavaTextManager implements TextManager, Reloadable {
     }
 
     public static class TextList implements org.maxgamer.quickshop.api.localization.text.TextList {
-        private final JavaTextManager manager;
+        private final SimpleTextManager manager;
         private final String path;
         private final QuickShop plugin;
         private final Map<String, JsonConfiguration> mapping;
@@ -327,7 +327,7 @@ public class JavaTextManager implements TextManager, Reloadable {
         private final Object[] args;
         private final JsonConfiguration bundled;
 
-        private TextList(JavaTextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, Object... args) {
+        private TextList(SimpleTextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, Object... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
             this.sender = sender;
@@ -337,7 +337,7 @@ public class JavaTextManager implements TextManager, Reloadable {
             this.args = args;
         }
 
-        private TextList(JavaTextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, Object... args) {
+        private TextList(SimpleTextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, Object... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
             if (sender != null) {
@@ -438,7 +438,7 @@ public class JavaTextManager implements TextManager, Reloadable {
     }
 
     public static class Text implements org.maxgamer.quickshop.api.localization.text.Text {
-        private final JavaTextManager manager;
+        private final SimpleTextManager manager;
         private final String path;
         private final QuickShop plugin;
         private final Map<String, JsonConfiguration> mapping;
@@ -446,7 +446,7 @@ public class JavaTextManager implements TextManager, Reloadable {
         private final Object[] args;
         private final JsonConfiguration bundled;
 
-        private Text(JavaTextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, Object... args) {
+        private Text(SimpleTextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, Object... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
             this.sender = sender;
@@ -456,7 +456,7 @@ public class JavaTextManager implements TextManager, Reloadable {
             this.args = args;
         }
 
-        private Text(JavaTextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, Object... args) {
+        private Text(SimpleTextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, Object... args) {
             this.plugin = manager.plugin;
             this.manager = manager;
             if (sender != null) {

@@ -86,7 +86,7 @@ public class SubCommand_Convert implements CommandHandler<ConsoleCommandSender> 
                     AbstractDatabaseCore dbCore = new MySQLCore(plugin, Objects.requireNonNull(host, "MySQL host can't be null"), Objects.requireNonNull(user, "MySQL username can't be null"), Objects.requireNonNull(pass, "MySQL password can't be null"), Objects.requireNonNull(databaseStr, "MySQL database name can't be null"), Objects.requireNonNull(port, "MySQL port can't be null"), useSSL);
                     DatabaseManager databaseManager = new DatabaseManager(QuickShop.getInstance(), dbCore);
                     sender.sendMessage(ChatColor.GREEN + "Converting...");
-                    transferShops(new JavaDatabaseHelper(plugin, databaseManager), sender);
+                    transferShops(new SimpleDatabaseHelper(plugin, databaseManager), sender);
                     databaseManager.unInit();
                     sender.sendMessage(ChatColor.GREEN + "All done, please change your config.yml settings to mysql to apply the changes.");
                 } catch (Exception e) {
@@ -107,7 +107,7 @@ public class SubCommand_Convert implements CommandHandler<ConsoleCommandSender> 
                     AbstractDatabaseCore core = new SQLiteCore(plugin, new File(plugin.getDataFolder(), "shops.db"));
                     DatabaseManager databaseManager = new DatabaseManager(QuickShop.getInstance(), core);
                     sender.sendMessage(ChatColor.GREEN + "Converting...");
-                    transferShops(new JavaDatabaseHelper(plugin, databaseManager), sender);
+                    transferShops(new SimpleDatabaseHelper(plugin, databaseManager), sender);
                     databaseManager.unInit();
                     sender.sendMessage(ChatColor.GREEN + "All done, please change your config.yml settings to sqlite to apply the changes.");
                 } catch (Exception e) {
@@ -123,7 +123,7 @@ public class SubCommand_Convert implements CommandHandler<ConsoleCommandSender> 
         }
     }
 
-    private void transferShops(@NotNull JavaDatabaseHelper helper, @NotNull CommandSender sender) {
+    private void transferShops(@NotNull SimpleDatabaseHelper helper, @NotNull CommandSender sender) {
         plugin.getShopManager().getAllShops().forEach(shop -> {
             helper.removeShop(shop);
             helper.createShop(shop, null, (ignored) -> sender.sendMessage("Failed to convert shop " + shop));

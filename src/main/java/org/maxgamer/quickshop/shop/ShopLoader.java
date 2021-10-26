@@ -504,16 +504,16 @@ public class ShopLoader {
             ShopModerator shopModerator;
             if (Util.isUUID(moderatorJson)) {
                 Util.debugLog("Updating old shop data... for " + moderatorJson);
-                shopModerator = new JavaShopModerator(UUID.fromString(moderatorJson)); // New one
+                shopModerator = new SimpleShopModerator(UUID.fromString(moderatorJson)); // New one
                 needUpdate.set(true);
             } else {
                 try {
-                    shopModerator = JavaShopModerator.deserialize(moderatorJson);
+                    shopModerator = SimpleShopModerator.deserialize(moderatorJson);
                 } catch (JsonSyntaxException ex) {
                     Util.debugLog("Updating old shop data... for " + moderatorJson);
                     //noinspection deprecation
                     moderatorJson = plugin.getServer().getOfflinePlayer(moderatorJson).getUniqueId().toString();
-                    shopModerator = new JavaShopModerator(UUID.fromString(moderatorJson)); // New one
+                    shopModerator = new SimpleShopModerator(UUID.fromString(moderatorJson)); // New one
                     needUpdate.set(true);
                 }
             }

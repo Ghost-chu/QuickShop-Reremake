@@ -219,8 +219,8 @@ public class ContainerShop implements Shop {
         if (taxAccount != null) {
             uuid = taxAccount;
         } else {
-            if (((JavaShopManager) plugin.getShopManager()).getCacheTaxAccount() != null) {
-                uuid = ((JavaShopManager) plugin.getShopManager()).getCacheTaxAccount().getUniqueId();
+            if (((SimpleShopManager) plugin.getShopManager()).getCacheTaxAccount() != null) {
+                uuid = ((SimpleShopManager) plugin.getShopManager()).getCacheTaxAccount().getUniqueId();
             }
         }
         ShopTaxAccountGettingEvent event = new ShopTaxAccountGettingEvent(this, uuid);
@@ -835,7 +835,7 @@ public class ContainerShop implements Shop {
         int unlimited = this.isUnlimited() ? 1 : 0;
         try {
             plugin.getDatabaseHelper()
-                    .updateShop(JavaShopModerator.serialize(this.moderator), this.getItem(),
+                    .updateShop(SimpleShopModerator.serialize(this.moderator), this.getItem(),
                             unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
                             this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString());
             this.dirty = false;
@@ -1554,6 +1554,6 @@ public class ContainerShop implements Shop {
 
     @Override
     public ShopInfoStorage saveToInfoStorage() {
-        return new ShopInfoStorage(getLocation().getWorld().getName(), BlockPosition.of(getLocation()), JavaShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount());
+        return new ShopInfoStorage(getLocation().getWorld().getName(), BlockPosition.of(getLocation()), SimpleShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount());
     }
 }

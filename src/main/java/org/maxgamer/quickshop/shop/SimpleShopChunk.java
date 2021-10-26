@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is ShopChunk.java
+ * This file is a part of project QuickShop, the name is SimpleShopChunk.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -29,7 +29,7 @@ import org.maxgamer.quickshop.api.shop.ShopChunk;
 @EqualsAndHashCode
 @ToString
 @AllArgsConstructor
-public class JavaShopChunk implements ShopChunk {
+public class SimpleShopChunk implements ShopChunk {
     @NotNull
     private final String world;
 
