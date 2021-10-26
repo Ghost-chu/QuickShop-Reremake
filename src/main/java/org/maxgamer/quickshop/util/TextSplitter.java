@@ -30,22 +30,25 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 public class TextSplitter {
+    private final static String HEADER = "!-!-!=-=-=-=-=-=";
+    private final static String FOOTER = "=-=-=-=-=-=!-!-!";
+
     public static String bakeComponent(BaseComponent[] components) {
-        return "!!!=-=-=-=-=-=" +
+        return HEADER +
                 Base64.getEncoder().encodeToString(ComponentSerializer.toString(components).getBytes(StandardCharsets.UTF_8)) +
-                "=-=-=-=-=-=!!!";
+                FOOTER;
     }
 
     @SneakyThrows
     public static SpilledString deBakeItem(String src) {
-        if (!src.contains("!!!=-=-=-=-=-=")) {
+        if (!src.contains(HEADER)) {
             Util.debugLog(src + " seems not a baked message");
             return null;
         }
-        String base64 = StringUtils.substringBetween(src, "!!!=-=-=-=-=-=", "=-=-=-=-=-=!!!");
+        String base64 = StringUtils.substringBetween(src, HEADER, FOOTER);
         BaseComponent[] components = ComponentSerializer.parse(new String(Base64.getDecoder().decode(base64), StandardCharsets.UTF_8));
-        String left = StringUtils.substringBefore(src, "!!!=-=-=-=-=-=");
-        String right = StringUtils.substringAfter(src, "=-=-=-=-=-=!!!");
+        String left = StringUtils.substringBefore(src, HEADER);
+        String right = StringUtils.substringAfter(src, FOOTER);
         return new SpilledString(left, right, components);
     }
 
