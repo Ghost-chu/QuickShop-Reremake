@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * The command handler that processing sub commands under QS main command
  *
- * @param <T> The subtype of CommandSender you want received
+ * @param <T> The subtype of CommandSender
  */
 public interface CommandHandler<T extends CommandSender> {
     /**
