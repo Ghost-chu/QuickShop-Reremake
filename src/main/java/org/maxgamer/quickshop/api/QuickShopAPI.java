@@ -70,9 +70,9 @@ public interface QuickShopAPI {
     boolean isLimit();
 
     /**
-     * Getting QuickShop current permission based shop amount limits
+     * Getting the mapping of permission to shop amounts
      *
-     * @return Permissions 2 Shop Amounts mapping
+     * @return Permissions <-> Shop Amounts mapping
      */
     Map<String, Integer> getLimits();
 
