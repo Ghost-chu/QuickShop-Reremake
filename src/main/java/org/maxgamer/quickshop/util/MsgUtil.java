@@ -342,7 +342,7 @@ public class MsgUtil {
             List<TransactionMessage> msgs = OUTGOING_MESSAGES.getOrDefault(player, new LinkedList<>());
             msgs.add(transactionMessage);
             OUTGOING_MESSAGES.put(player, msgs);
-            plugin.getDatabaseHelper().saveTransactionMessage(player, transactionMessage.toJson(), System.currentTimeMillis());
+            plugin.getDatabaseHelper().saveOfflineTransactionMessage(player, transactionMessage.toJson(), System.currentTimeMillis());
         } else {
             if (p.getPlayer() != null) {
                 if (transactionMessage.getHoverItem() != null) {
@@ -377,7 +377,7 @@ public class MsgUtil {
             List<TransactionMessage> msgs = OUTGOING_MESSAGES.getOrDefault(player, new LinkedList<>());
             msgs.add(transactionMessage);
             OUTGOING_MESSAGES.put(player, msgs);
-            plugin.getDatabaseHelper().saveTransactionMessage(player, transactionMessage.toJson(), System.currentTimeMillis());
+            plugin.getDatabaseHelper().saveOfflineTransactionMessage(player, transactionMessage.toJson(), System.currentTimeMillis());
         } else {
             if (p.getPlayer() != null) {
                 if (transactionMessage.getHoverItem() != null) {
