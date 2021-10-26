@@ -29,6 +29,8 @@ import org.maxgamer.quickshop.api.command.CommandHandler;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.util.Util;
 
+import java.util.Objects;
+
 @AllArgsConstructor
 public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
 
@@ -47,7 +49,7 @@ public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
         }
         int shopsDeleted = 0;
         for (Shop shop : plugin.getShopManager().getAllShops()) {
-            if (shop.getLocation().getWorld().equals(world)) {
+            if (Objects.equals(shop.getLocation().getWorld(), world)) {
                 shop.delete();
                 shopsDeleted++;
             }
