@@ -54,7 +54,7 @@ import org.maxgamer.quickshop.api.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.api.database.DatabaseHelper;
 import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.api.economy.EconomyType;
-import org.maxgamer.quickshop.api.event.QSReloadEvent;
+import org.maxgamer.quickshop.api.event.QSConfigurationReloadEvent;
 import org.maxgamer.quickshop.api.integration.IntegrateStage;
 import org.maxgamer.quickshop.api.integration.IntegrationManager;
 import org.maxgamer.quickshop.api.localization.text.TextManager;
@@ -572,7 +572,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         } else {
             logWatcher = null;
         }
-        Bukkit.getPluginManager().callEvent(new QSReloadEvent(this));
+        Bukkit.getPluginManager().callEvent(new QSConfigurationReloadEvent(this));
     }
 
     /**
@@ -965,7 +965,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
         }.runTask(this);
         if (loaded) {
-            getServer().getPluginManager().callEvent(new QSReloadEvent(this));
+            getServer().getPluginManager().callEvent(new QSConfigurationReloadEvent(this));
         } else {
             loaded = true;
         }

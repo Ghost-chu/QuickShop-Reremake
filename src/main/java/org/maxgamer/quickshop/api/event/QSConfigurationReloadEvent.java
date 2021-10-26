@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is QSReloadEvent.java
+ * This file is a part of project QuickShop, the name is QSConfigurationReloadEvent.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -21,7 +21,7 @@ package org.maxgamer.quickshop.api.event;
 
 import org.maxgamer.quickshop.QuickShop;
 
-public class QSReloadEvent extends AbstractQSEvent {
+public class QSConfigurationReloadEvent extends AbstractQSEvent {
 
     private final QuickShop instance;
 
@@ -30,7 +30,7 @@ public class QSReloadEvent extends AbstractQSEvent {
      *
      * @param instance Quickshop instance
      */
-    public QSReloadEvent(QuickShop instance) {
+    public QSConfigurationReloadEvent(QuickShop instance) {
         this.instance = instance;
     }
 
