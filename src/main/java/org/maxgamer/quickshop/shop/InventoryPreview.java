@@ -21,6 +21,8 @@ package org.maxgamer.quickshop.shop;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -49,7 +51,7 @@ public class InventoryPreview implements Listener {
     private static final NamespacedKey NAMESPACED_KEY = new NamespacedKey(QuickShop.getInstance(), "preview-item");
     private final ItemStack itemStack;
     private final QuickShop plugin = QuickShop.getInstance();
-    private final String previewStr;
+    private String previewStr;
     @Nullable
     private Inventory inventory;
 
@@ -59,7 +61,7 @@ public class InventoryPreview implements Listener {
      * @param itemStack The item you want create.
      * @param plugin    The plugin instance.
      */
-    public InventoryPreview(@NotNull QuickShop plugin, @NotNull ItemStack itemStack) {
+    public InventoryPreview(@NotNull QuickShop plugin, @NotNull ItemStack itemStack, @NotNull String locale) {
         Util.ensureThread(false);
         this.itemStack = itemStack.clone();
         ItemMeta itemMeta;
@@ -68,8 +70,10 @@ public class InventoryPreview implements Listener {
         } else {
             itemMeta = plugin.getServer().getItemFactory().getItemMeta(itemStack.getType());
         }
-        //TODO Locale
-        previewStr = "Preview Item";
+        previewStr = plugin.text().of("quickshop-gui-preview").forLocale(locale);
+        if (StringUtils.isEmpty(previewStr)) {
+            previewStr = ChatColor.RED + "FIXME: Do not set quickshop-gui-preview to null or empty string.";
+        }
         if (itemMeta != null) {
             if (itemMeta.hasLore()) {
                 itemMeta.getLore().add(previewStr);
