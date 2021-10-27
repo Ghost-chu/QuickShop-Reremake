@@ -46,22 +46,17 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
             if (shop != null) {
-                if (shop.getModerator().isModerator(sender.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.taxaccount")) {
-                    if (cmdArg.length < 1) {
-                        shop.setTaxAccount(null);
-                        plugin.text().of(sender, "taxaccount-unset").send();
-                        return;
-                    }
-                    if (Util.isUUID(cmdArg[0])) {
-                        shop.setTaxAccount(UUID.fromString(cmdArg[0]));
-                    } else {
-                        shop.setTaxAccount(Bukkit.getOfflinePlayer(cmdArg[0]).getUniqueId());
-                    }
-                    plugin.text().of(sender, "taxaccount-unset", cmdArg[0]).send();
+                if (cmdArg.length < 1) {
+                    shop.setTaxAccount(null);
+                    plugin.text().of(sender, "taxaccount-unset").send();
                     return;
-                } else {
-                    plugin.text().of(sender, "not-managed-shop").send();
                 }
+                if (Util.isUUID(cmdArg[0])) {
+                    shop.setTaxAccount(UUID.fromString(cmdArg[0]));
+                } else {
+                    shop.setTaxAccount(Bukkit.getOfflinePlayer(cmdArg[0]).getUniqueId());
+                }
+                plugin.text().of(sender, "taxaccount-unset", cmdArg[0]).send();
                 return;
             }
         }

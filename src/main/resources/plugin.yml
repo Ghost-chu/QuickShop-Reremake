@@ -63,7 +63,6 @@ permissions:
       quickshop.staff: true
       quickshop.preview: true
       quickshop.currency: true
-      quickshop.taxaccount: true
       quickshop.toggledisplay: true
   quickshop.moderator:
     description: The permission that provide all moderator need have permissions
@@ -83,6 +82,7 @@ permissions:
       quickshop.other.toggledisplay: true
       quickshop.purge: true
       quickshop.other.setowner: true
+      quickshop.taxaccount: true
 
 
   quickshop.create.sell:
