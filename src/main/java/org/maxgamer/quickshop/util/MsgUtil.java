@@ -171,6 +171,33 @@ public class MsgUtil {
     }
 
     @Unstable
+    public static String processGameLanguageCode(String languageCode) {
+        if ("default".equalsIgnoreCase(languageCode)) {
+            Locale locale = Locale.getDefault();
+            String language = locale.getLanguage();
+            String country = locale.getCountry();
+            boolean isLanguageEmpty = StringUtils.isEmpty(language);
+            boolean isCountryEmpty = StringUtils.isEmpty(country);
+            if (isLanguageEmpty && isCountryEmpty) {
+                plugin.getLogger().warning("Unable to get language code, fallback to en_us, please change game-language option in config.yml.");
+                languageCode = "en_us";
+            } else {
+                if (isCountryEmpty || isLanguageEmpty) {
+                    languageCode = isLanguageEmpty ? country + '_' + country : language + '_' + language;
+                    if ("en_en".equals(languageCode)) {
+                        languageCode = "en_us";
+                    }
+                    plugin.getLogger().warning("Unable to get language code, guessing " + languageCode + " instead, If it's incorrect, please change game-language option in config.yml.");
+                } else {
+                    languageCode = language + '_' + country;
+                }
+            }
+        }
+        languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
+        return languageCode;
+    }
+
+    @Unstable
     @Deprecated
     public static void loadGameLanguage(@NotNull String languageCode) {
         gameLanguage = ServiceInjector.getGameLanguage(new MojangGameLanguageImpl(plugin, languageCode));

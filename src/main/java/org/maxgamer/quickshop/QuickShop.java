@@ -1941,9 +1941,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfiguration().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 143) {
-            if (getConfiguration().get("language") == null) {
-                getConfiguration().set("language", "en-US");
-            }
+            getConfiguration().set("language", null);
+//            if (getConfiguration().get("language") == null) {
+//                getConfiguration().set("language", "en-US");
+//            }
             getConfiguration().set("config-version", ++selectedVersion);
         }
 
@@ -1951,6 +1952,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             // Updater set it to true because plugin upgrading
             // Default configuration disable it cause probably fresh install
             getConfiguration().getOrDefault("legacy-updater.shop-sign", true);
+            getConfiguration().set("language", null);
             getConfiguration().set("config-version", ++selectedVersion);
         }
         if (getConfiguration().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {

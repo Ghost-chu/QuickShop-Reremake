@@ -25,7 +25,6 @@ import com.google.gson.JsonParser;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -47,7 +46,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -72,29 +70,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
     public MojangGameLanguageImpl(@NotNull QuickShop plugin, @NotNull String languageCode) {
         super(plugin);
         this.plugin = plugin;
-        if ("default".equalsIgnoreCase(languageCode)) {
-            Locale locale = Locale.getDefault();
-            String language = locale.getLanguage();
-            String country = locale.getCountry();
-            boolean isLanguageEmpty = StringUtils.isEmpty(language);
-            boolean isCountryEmpty = StringUtils.isEmpty(country);
-            if (isLanguageEmpty && isCountryEmpty) {
-                plugin.getLogger().warning("Unable to get language code, fallback to en_US, please change game-language option in config.yml.");
-                languageCode = "en_US";
-            } else {
-                if (isCountryEmpty || isLanguageEmpty) {
-                    languageCode = isLanguageEmpty ? country + '_' + country : language + '_' + language;
-                    if ("en_en".equals(languageCode)) {
-                        languageCode = "en_US";
-                    }
-                    plugin.getLogger().warning("Unable to get language code, guessing " + languageCode + " instead, If it's incorrect, please change game-language option in config.yml.");
-                } else {
-                    languageCode = language + '_' + country;
-                }
-            }
-        }
-        languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
-
+        languageCode = MsgUtil.processGameLanguageCode(languageCode);
         switch (plugin.getConfiguration().getOrDefault("mojangapi-mirror", 0)) {
             case 0:
                 mirror = new MojangApiOfficialMirror();

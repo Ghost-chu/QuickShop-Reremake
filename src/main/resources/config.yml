@@ -3,10 +3,8 @@
 #Do not touch this if you don't know what you're doing!
 config-version: 145
 
-#This language will used by Shop signs and other texts that direct write on the block/entity.
-language: en-US
-
-#This language will used by Item Name, Enchantment Name and Potion Effect Name and other them related position.
+#This language will used by Item Name, Enchantment Name,
+#and Potion Effect Name or the text on the shop info sign (nbtapi not installed) and other them related position.
 #Use default will use your system language.
 game-language: default
 

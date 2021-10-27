@@ -52,6 +52,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.chat.ComponentPackage;
 import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.api.shop.*;
+import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
@@ -819,7 +820,7 @@ public class ContainerShop implements Shop {
         if (!Util.isLoaded(this.location)) {
             return;
         }
-        this.setSignText(getSignText(plugin.getConfiguration().getOrDefault("language", "en-US")));
+        this.setSignText(getSignText(MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default"))));
         // this.setSignText(getSignText("en_us"));
     }
 
