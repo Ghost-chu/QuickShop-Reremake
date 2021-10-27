@@ -60,11 +60,11 @@ public class OngoingFeeWatcher extends BukkitRunnable {
 
         boolean allowLoan = plugin.getConfiguration().getBoolean("shop.allow-economy-loan");
         boolean ignoreUnlimited = plugin.getConfiguration().getBoolean("shop.ongoing-fee.ignore-unlimited");
+        double cost = plugin.getConfiguration().getDouble("shop.ongoing-fee.cost-per-shop");
         for (Shop shop : plugin.getShopManager().getAllShops()) {
             if ((!shop.isUnlimited() || !ignoreUnlimited) && !shop.isDeleted()) {
                 UUID shopOwner = shop.getOwner();
                 Location location = shop.getLocation();
-                double cost = plugin.getConfiguration().getDouble("shop.ongoing-fee.cost-per-shop");
                 if (!location.isWorldLoaded()) {
                     //ignore unloaded world
                     continue;
