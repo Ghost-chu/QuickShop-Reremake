@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is SubCommand_Currency.java
+ * This file is a part of project QuickShop, the name is SubCommand_TaxAccount.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -30,7 +30,6 @@ import org.maxgamer.quickshop.api.command.CommandHandler;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.util.Util;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -73,7 +72,7 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
     @Override
     public List<String> onTabComplete(
             @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return Collections.emptyList();
+        return null;
     }
 
 }
