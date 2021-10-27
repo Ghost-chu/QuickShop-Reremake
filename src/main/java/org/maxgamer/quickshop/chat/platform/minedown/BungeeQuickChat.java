@@ -77,7 +77,7 @@ public class BungeeQuickChat implements QuickChat {
 
     @Override
     public void sendItemHologramChat(@NotNull Player player, @NotNull String text, @NotNull ItemStack itemStack) {
-        TextComponent errorComponent = new TextComponent(QuickShop.getInstance().text().of(player, "menu.item-holochat-error").forLocale());
+        TextComponent errorComponent = new TextComponent(plugin.text().of(player, "menu.item-holochat-error").forLocale());
         try {
             String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
             ComponentBuilder builder = new ComponentBuilder();
@@ -101,7 +101,7 @@ public class BungeeQuickChat implements QuickChat {
 
     @Override
     public @NotNull QuickComponent getItemHologramChat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String message) {
-        TextComponent errorComponent = new TextComponent(QuickShop.getInstance().text().of(player, "menu.item-holochat-error").forLocale());
+        TextComponent errorComponent = new TextComponent(plugin.text().of(player, "menu.item-holochat-error").forLocale());
         try {
 
             String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
@@ -118,7 +118,7 @@ public class BungeeQuickChat implements QuickChat {
                         .append(spilledString.getRight());
             }
             builder.append(" ")
-                    .append(QuickShop.getInstance().text().of(player, "menu.preview").forLocale());
+                    .append(plugin.text().of(player, "menu.preview").forLocale());
             TextComponent normalmessage = new TextComponent(builder.create());
             ComponentBuilder cBuilder = new ComponentBuilder(json);
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
@@ -138,7 +138,7 @@ public class BungeeQuickChat implements QuickChat {
 
     @Override
     public @NotNull QuickComponent getItemTextComponent(@NotNull Player player, @NotNull ItemStack itemStack, @NotNull String normalText) {
-        TextComponent errorComponent = new TextComponent(QuickShop.getInstance().text().of(player, "menu.item-holochat-error").forLocale());
+        TextComponent errorComponent = new TextComponent(plugin.text().of(player, "menu.item-holochat-error").forLocale());
 
         String json;
         try {
@@ -151,7 +151,7 @@ public class BungeeQuickChat implements QuickChat {
             return new QuickComponentImpl(errorComponent);
         }
 
-        TextComponent component = new TextComponent(normalText + " " + QuickShop.getInstance().text().of(player, "menu.preview").forLocale());
+        TextComponent component = new TextComponent(normalText + " " + plugin.text().of(player, "menu.preview").forLocale());
         ComponentBuilder cBuilder = new ComponentBuilder(json);
         component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create()));
         return new QuickComponentImpl(component);
