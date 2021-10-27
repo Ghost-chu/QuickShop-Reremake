@@ -350,7 +350,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
         if (getConfiguration().getBoolean("plugin.WorldEdit")) {
             String nmsVersion = ReflectFactory.getNMSVersion();
-          //  GameVersion gameVersion = GameVersion.get(nmsVersion);
+            //  GameVersion gameVersion = GameVersion.get(nmsVersion);
             this.worldEditPlugin = Bukkit.getPluginManager().getPlugin("WorldEdit");
             if (this.worldEditPlugin != null) {
                 this.worldEditAdapter = new WorldEditAdapter(this, (WorldEditPlugin) this.worldEditPlugin);
@@ -1947,7 +1947,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfiguration().set("config-version", ++selectedVersion);
         }
 
-
+        if (selectedVersion == 144) {
+            // Updater set it to true because plugin upgrading
+            // Default configuration disable it cause probably fresh install
+            getConfiguration().getOrDefault("legacy-updater.shop-sign", true);
+            getConfiguration().set("config-version", ++selectedVersion);
+        }
         if (getConfiguration().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }

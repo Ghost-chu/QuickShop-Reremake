@@ -590,6 +590,9 @@ public interface Shop {
         if (lines[1].startsWith(SHOP_SIGN_PATTERN)) {
             return true;
         } else {
+            if (!QuickShop.getInstance().getConfiguration().getOrDefault("legacy-updater.shop-sign", false)) {
+                return false;
+            }
             String header = lines[0];
             String adminShopHeader = QuickShop.getInstance().text().of("signs.header", QuickShop.getInstance().text().of("admin-shop").forLocale()).forLocale();
             String signHeaderUsername = QuickShop.getInstance().text().of("signs.header", this.ownerName(true)).forLocale();

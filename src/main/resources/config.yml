@@ -1,7 +1,7 @@
 # QuickShop-Reremake Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 144
+config-version: 145
 
 #This language will used by Shop signs and other texts that direct write on the block/entity.
 language: en-US
@@ -762,6 +762,12 @@ debug:
   #Delete corrupt shops while loading?
   #Setting this to false will disable the loading of corrupt shops!
   delete-corrupt-shops: false
+
+# Legacy data updater
+# Turn on this will make QuickShop to execute extra checks and may affect performance.
+# Only turn it on when you updating from old versions.
+legacy-updater:
+  shop-sign: false
 
 custom-commands:
   - shop
