@@ -540,7 +540,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         }
     }
 
-    enum Action {
+    private enum Action {
         EXECUTE("execute"),
         TAB_COMPLETE("tab-complete");
         final String name;
@@ -554,7 +554,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         }
     }
 
-    enum PermissionType {
+    private enum PermissionType {
         REQUIRE,
         SELECTIVE
     }
