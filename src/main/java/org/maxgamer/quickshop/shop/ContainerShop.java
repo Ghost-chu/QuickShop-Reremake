@@ -1458,9 +1458,9 @@ public class ContainerShop implements Shop {
         }
         if (!Util.canBeShop(this.getLocation().getBlock())) {
             Util.debugLog("Shop at " + this.getLocation() + "@" + this.getLocation().getBlock()
-                    + " container was missing, unload from memory...");
+                    + " container was missing, deleting...");
             this.onUnload();
-            this.delete(true);
+            this.delete(false);
         }
     }
 
