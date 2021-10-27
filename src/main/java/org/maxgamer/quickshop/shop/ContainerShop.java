@@ -740,11 +740,21 @@ public class ContainerShop implements Shop {
         if (!plugin.getConfiguration().getBoolean("shop.force-use-item-original-name") && (!this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName())) {
             TextComponent left = new TextComponent(plugin.text().of("signs.item-left").forLocale());
             TextComponent right = new TextComponent(plugin.text().of("signs.item-right").forLocale());
-            lines.add(new ComponentPackage(new ComponentBuilder()
-                    .append(left)
-                    .append(new TranslatableComponent(ReflectFactory.getMaterialMinecraftNamespacedKey(getItem().getType())))
-                    .append(right)
-                    .create()));
+            if (plugin.getNbtapi() == null) {
+                // NBTAPI not installed
+                lines.add(new ComponentPackage(new ComponentBuilder()
+                        .append(left)
+                        .append(TextComponent.fromLegacyText(Util.getItemStackName(getItem())))
+                        .append(right)
+                        .create()));
+            } else {
+                // NBTAPI installed
+                lines.add(new ComponentPackage(new ComponentBuilder()
+                        .append(left)
+                        .append(new TranslatableComponent(ReflectFactory.getMaterialMinecraftNamespacedKey(getItem().getType())))
+                        .append(right)
+                        .create()));
+            }
         } else {
             lines.add(new ComponentPackage(new ComponentBuilder().append(TextComponent.fromLegacyText(plugin.text().of("signs.item-left").forLocale()))
                     .append(new TextComponent(Util.getItemStackName(getItem())).toLegacyText())
