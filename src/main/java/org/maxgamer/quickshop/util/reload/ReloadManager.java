@@ -130,8 +130,7 @@ public class ReloadManager {
     @NotNull
     public synchronized Map<ReloadableContainer, ReloadResult> reload(@Nullable Class<Reloadable> clazz) {
         Map<ReloadableContainer, ReloadResult> reloadResultMap = new HashMap<>();
-        //noinspection unchecked
-        Iterator<ReloadableContainer> iterator = ((LinkedList<ReloadableContainer>) ((LinkedList<ReloadableContainer>) this.registry).clone()).iterator();
+        Iterator<ReloadableContainer> iterator = new LinkedList<>(this.registry).iterator();
         while (iterator.hasNext()) {
             ReloadableContainer reloadable = iterator.next();
             if (clazz != null) {
