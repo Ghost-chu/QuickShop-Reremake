@@ -60,7 +60,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
 
         boolean allowLoan = plugin.getConfiguration().getBoolean("shop.allow-economy-loan");
         boolean ignoreUnlimited = plugin.getConfiguration().getBoolean("shop.ongoing-fee.ignore-unlimited");
-        double cost = plugin.getConfiguration().getDouble("shop.ongoing-fee.cost-per-shop");
+        double gobalCost = plugin.getConfiguration().getDouble("shop.ongoing-fee.cost-per-shop");
         for (Shop shop : plugin.getShopManager().getAllShops()) {
             if ((!shop.isUnlimited() || !ignoreUnlimited) && !shop.isDeleted()) {
                 UUID shopOwner = shop.getOwner();
@@ -69,6 +69,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                     //ignore unloaded world
                     continue;
                 }
+                double cost=gobalCost;
                 World world = location.getWorld();
                 //We must check balance manually to avoid shop missing hell when tax account broken
                 if (allowLoan || plugin.getEconomy().getBalance(shopOwner, Objects.requireNonNull(world), shop.getCurrency()) >= cost) {
