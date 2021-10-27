@@ -445,11 +445,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     /**
      * Method for capturing generic type
      */
-    public <T1, T2 extends T1> T2 capture(T1 type) {
+    private <T1, T2 extends T1> T2 capture(T1 type) {
         return (T2) type;
     }
 
-    public boolean checkPermissions(CommandSender sender, String commandLabel, String[] cmdArg, List<String> permissionList, SimpleCommandManager.PermissionType permissionType, SimpleCommandManager.Action action) {
+    private boolean checkPermissions(CommandSender sender, String commandLabel, String[] cmdArg, List<String> permissionList, SimpleCommandManager.PermissionType permissionType, SimpleCommandManager.Action action) {
         if (permissionList == null || permissionList.isEmpty()) {
             return true;
         }
@@ -493,7 +493,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     }
 
 
-    public boolean isAdapt(CommandContainer container, CommandSender sender) {
+    private boolean isAdapt(CommandContainer container, CommandSender sender) {
         return container.getExecutorType().isInstance(sender);
     }
 
