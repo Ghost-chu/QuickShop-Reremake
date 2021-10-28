@@ -373,6 +373,10 @@
             <id>MG-Dev Jenkins CI Maven Repository</id>
             <url>https://ci.mg-dev.eu/plugin/repository/everything/</url>
         </repository>
+        <repository>
+            <id>Sparky</id>
+            <url>https://nexus.sparky.ac/repository/Sparky/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -579,8 +583,7 @@
             <groupId>me.vagdedes.spartan</groupId>
             <artifactId>SpartanAPI</artifactId>
             <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/SpartanAPI.jar</systemPath>
+            <scope>provided</scope>
         </dependency>
         <!--New towny version, As we support 1.13+, so we choose 0.96.2.0 according their README-->
         <dependency>
