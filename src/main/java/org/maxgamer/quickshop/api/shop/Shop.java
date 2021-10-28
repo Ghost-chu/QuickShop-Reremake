@@ -33,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.chat.ComponentPackage;
+import org.maxgamer.quickshop.api.localization.text.TextManager;
 import org.maxgamer.quickshop.shop.ShopSignPersistentDataType;
 import org.maxgamer.quickshop.shop.ShopSignStorage;
 
@@ -594,18 +595,23 @@ public interface Shop {
                 return false;
             }
             String header = lines[0];
-            String adminShopHeader = QuickShop.getInstance().text().of("signs.header", QuickShop.getInstance().text().of("admin-shop").forLocale()).forLocale();
-            String signHeaderUsername = QuickShop.getInstance().text().of("signs.header", this.ownerName(true)).forLocale();
-            if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
+            TextManager textManager=QuickShop.getInstance().text();
+            String ownerName=this.ownerName(true);
+            //Raw text matching
+            String adminShopHeader = textManager.of("signs.header", textManager.of("admin-shop").forLocale()).forLocale();
+            String userShopHeader = textManager.of("signs.header", ownerName).forLocale();
+            if (header.contains(adminShopHeader) || header.contains(userShopHeader)) {
                 return true;
                 //TEXT SIGN
                 //continue
             } else {
-                adminShopHeader = QuickShop.getInstance().text().of("signs.header", QuickShop.getInstance().text().of("admin-shop").forLocale(), "").forLocale();
-                signHeaderUsername = QuickShop.getInstance().text().of("signs.header", this.ownerName(true), "").forLocale();
-                adminShopHeader = ChatColor.stripColor(adminShopHeader).trim();
-                signHeaderUsername = ChatColor.stripColor(signHeaderUsername).trim();
-                return header.contains(adminShopHeader) || header.contains(signHeaderUsername);
+                //Try no color matching
+                //arg[0] is name, arg[1] is color code
+                adminShopHeader = textManager.of("signs.header", textManager.of("admin-shop").forLocale(), "").forLocale();
+                userShopHeader = textManager.of("signs.header", ownerName, "").forLocale();
+                adminShopHeader = ChatColor.stripColor(adminShopHeader);
+                userShopHeader = ChatColor.stripColor(userShopHeader);
+                return header.contains(adminShopHeader) || header.contains(userShopHeader);
             }
         }
     }
