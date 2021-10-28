@@ -38,7 +38,6 @@ import org.maxgamer.quickshop.shop.ShopSignPersistentDataType;
 import org.maxgamer.quickshop.shop.ShopSignStorage;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -561,17 +560,6 @@ public interface Shop {
      * @return Is shop info sign
      */
     default boolean isShopSign(@NotNull Sign sign) {
-        return isShopSign(sign, null);
-    }
-
-    /**
-     * Checks if a Sign is a ShopSign and also check if a ShopSign is specific shop's ShopSign.
-     *
-     * @param sign Target sign
-     * @param shop Target shop (null if you don't want check sign owner)
-     * @return Is specific shop's ShopSign.
-     */
-    default boolean isShopSign(@NotNull Sign sign, @Nullable Shop shop) {
         // Check for new shop sign
         String[] lines = sign.getLines();
         if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3].isEmpty()) {
@@ -579,15 +567,17 @@ public interface Shop {
         }
 
         // Check for exists shop sign (modern)
-        if (sign.getPersistentDataContainer().has(SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE)) {
-            if (shop != null) {
-                ShopSignStorage shopSignStorage = sign.getPersistentDataContainer().get(SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE);
-                return Objects.equals(shopSignStorage, new ShopSignStorage(getLocation().getWorld().getName(), getLocation().getBlockX(), getLocation().getBlockY(), getLocation().getBlockZ()));
-            }
-            return true;
+        ShopSignStorage shopSignStorage = sign.getPersistentDataContainer().get(SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE);
+        if (shopSignStorage != null) {
+            return shopSignStorage.equals(getLocation().getWorld().getName(), getLocation().getBlockX(), getLocation().getBlockY(), getLocation().getBlockZ());
         }
 
         // Check for exists shop sign (legacy upgrade)
+        //Check if attached with the shop block
+        if (!isAttached(sign.getBlock())) {
+            return false;
+        }
+        //Check sign content
         if (lines[1].startsWith(SHOP_SIGN_PATTERN)) {
             return true;
         } else {
@@ -595,8 +585,8 @@ public interface Shop {
                 return false;
             }
             String header = lines[0];
-            TextManager textManager=QuickShop.getInstance().text();
-            String ownerName=this.ownerName(true);
+            TextManager textManager = QuickShop.getInstance().text();
+            String ownerName = this.ownerName(true);
             //Raw text matching
             String adminShopHeader = textManager.of("signs.header", textManager.of("admin-shop").forLocale()).forLocale();
             String userShopHeader = textManager.of("signs.header", ownerName).forLocale();

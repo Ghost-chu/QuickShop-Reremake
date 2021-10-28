@@ -1140,15 +1140,11 @@ public class ContainerShop implements Shop {
             if (!(state instanceof Sign)) {
                 continue;
             }
-            if (!isAttached(b)) {
-                continue;
-            }
             Sign sign = (Sign) state;
-            if (!isShopSign(sign)) {
-                continue;
+            if (isShopSign(sign)) {
+                claimShopSign(sign);
+                signs.add(sign);
             }
-            claimShopSign(sign);
-            signs.add(sign);
         }
 
         return signs;
@@ -1300,10 +1296,10 @@ public class ContainerShop implements Shop {
                     && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
                 OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
                 return openInv.getSpecialEnderChest(
-                        Objects.requireNonNull(
-                                openInv.loadPlayer(
-                                        plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
-                        plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
+                                Objects.requireNonNull(
+                                        openInv.loadPlayer(
+                                                plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
+                                plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
                         .getBukkitInventory();
             }
         } catch (Exception e) {
