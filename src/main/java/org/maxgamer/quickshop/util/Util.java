@@ -1163,7 +1163,17 @@ public class Util {
      * @return under dev-mode
      */
     public static boolean isDevMode() {
-        return devMode != null ? devMode : (devMode = plugin.getConfiguration().getBoolean("dev-mode"));
+        if (devMode != null) {
+            return devMode;
+        } else {
+            if (plugin != null) {
+                devMode = plugin.getConfiguration().getBoolean("dev-mode");
+                return devMode;
+            } else {
+                return false;
+            }
+        }
+        //F  return devMode != null ? devMode : (devMode = plugin.getConfiguration().getBoolean("dev-mode"));
     }
 
     /**
