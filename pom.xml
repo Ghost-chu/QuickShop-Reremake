@@ -848,5 +848,11 @@
             <version>2.8.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>net.tnemc</groupId>
+            <artifactId>Reserve</artifactId>
+            <version>0.1.5.4</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>
