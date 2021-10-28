@@ -70,15 +70,12 @@ public class Economy_Reserve extends AbstractEconomy {
         setup();
     }
 
-    /**
-     * @deprecated Reserve no-longer active after Minecraft 1.14.
-     */
     @SuppressWarnings("ConstantConditions")
-    @Deprecated
     private void setup() {
         try {
-            if (((Reserve) plugin.getServer().getPluginManager().getPlugin("Reserve")).economyProvided()) {
-                reserve = ((Reserve) plugin.getServer().getPluginManager().getPlugin("Reserve")).economy();
+            Reserve re = ((Reserve) plugin.getServer().getPluginManager().getPlugin("Reserve"));
+            if (re.economyProvided()) {
+                reserve = re.economy();
             }
         } catch (Exception throwable) {
             reserve = null;
@@ -97,7 +94,7 @@ public class Economy_Reserve extends AbstractEconomy {
     @Override
     public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
         try {
-            return Objects.requireNonNull(reserve).addHoldings(name, new BigDecimal(amount));
+            return Objects.requireNonNull(reserve).addHoldings(name, new BigDecimal(amount), world.getName(), currency);
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
             plugin.getLogger().log(Level.WARNING, errorMsg, throwable);
@@ -121,7 +118,7 @@ public class Economy_Reserve extends AbstractEconomy {
     @Override
     public String format(double balance, @NotNull World world, @Nullable String currency) {
         try {
-            return Objects.requireNonNull(reserve).format(new BigDecimal(balance));
+            return Objects.requireNonNull(reserve).format(new BigDecimal(balance), world.getName(), currency);
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
             plugin.getLogger().log(Level.WARNING, errorMsg, throwable);
@@ -148,7 +145,7 @@ public class Economy_Reserve extends AbstractEconomy {
     @Deprecated
     public double getBalance(@NotNull UUID name, @NotNull World world, @Nullable String currency) {
         try {
-            return Objects.requireNonNull(reserve).getHoldings(name).doubleValue();
+            return Objects.requireNonNull(reserve).getHoldings(name, world.getName(), currency).doubleValue();
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
             plugin.getLogger().log(Level.WARNING, errorMsg, throwable);
@@ -175,7 +172,7 @@ public class Economy_Reserve extends AbstractEconomy {
     @Deprecated
     public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @NotNull World world, @Nullable String currency) {
         try {
-            return Objects.requireNonNull(reserve).transferHoldings(from, to, new BigDecimal(amount));
+            return Objects.requireNonNull(reserve).transferHoldings(from, to, new BigDecimal(amount), world.getName(), currency);
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
             plugin.getLogger().log(Level.WARNING, errorMsg, throwable);
@@ -193,9 +190,6 @@ public class Economy_Reserve extends AbstractEconomy {
     @Override
     public boolean withdraw(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
         try {
-            if ((!plugin.getConfiguration().getBoolean("shop.allow-economy-loan")) && getBalance(name, world, currency) < amount) {
-                return false;
-            }
             return Objects.requireNonNull(reserve).removeHoldings(name, new BigDecimal(amount));
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
@@ -218,7 +212,9 @@ public class Economy_Reserve extends AbstractEconomy {
      */
     @Override
     public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
-        return false;
+        if (!isValid())
+            return false;
+        return reserve.hasCurrency(currency, world.getName());
     }
 
     /**
@@ -228,7 +224,7 @@ public class Economy_Reserve extends AbstractEconomy {
      */
     @Override
     public boolean supportCurrency() {
-        return false;
+        return true;
     }
 
     /**
