@@ -1,7 +1,7 @@
 # QuickShop-Reremake Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 145
+config-version: 146
 
 #This language will used by Item Name, Enchantment Name,
 #and Potion Effect Name or the text on the shop info sign (nbtapi not installed) and other them related position.
@@ -63,6 +63,8 @@ logging:
   log-balance: true
   #The target size (in MB) to split log files to the "plugins\QuickShop\logs" folder.
   file-size: 10.0
+  #Log data storage location (0 to file, 1 to database)
+  location: 0
 #Some economy plugins cache player balances, this sometimes causes insufficient balance when trying to use a shop
 #This workaround uses getBalance to refresh it, but its time costing.
 #So ONLY turn this on when you have this problem!
@@ -766,6 +768,8 @@ debug:
 # Only turn it on when you updating from old versions.
 legacy-updater:
   shop-sign: false
+
+
 
 custom-commands:
   - shop

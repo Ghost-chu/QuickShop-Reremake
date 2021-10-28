@@ -256,6 +256,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Nullable
     private NBTAPI nbtapi = null;
 
+    private int loggingLocation = 0;
+
     /**
      * Use for mock bukkit
      */
@@ -520,7 +522,15 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 //    }
 
     public void logEvent(@NotNull Object eventObject) {
-        getDatabaseHelper().insertHistoryRecord(eventObject);
+        if (this.getLogWatcher() == null) {
+            return;
+        }
+        if (loggingLocation == 0) {
+            this.getLogWatcher().log(JsonUtil.getGson().toJson(eventObject));
+        } else {
+            getDatabaseHelper().insertHistoryRecord(eventObject);
+        }
+
     }
 
     @Override
@@ -565,6 +575,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         this.displayItemCheckTicks = this.getConfiguration().getInt("shop.display-items-check-ticks");
         this.allowStack = this.getConfiguration().getBoolean("shop.allow-stacks");
         this.currency = this.getConfiguration().getString("currency");
+        this.loggingLocation = this.getConfiguration().getInt("logging.location");
         if (StringUtils.isEmpty(this.currency)) {
             this.currency = null;
         }
@@ -1953,6 +1964,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             // Default configuration disable it cause probably fresh install
             getConfiguration().getOrDefault("legacy-updater.shop-sign", true);
             getConfiguration().set("language", null);
+            getConfiguration().set("config-version", ++selectedVersion);
+        }
+        if (selectedVersion == 145) {
+            // Updater set it to true because plugin upgrading
+            // Default configuration disable it cause probably fresh install
+            getConfiguration().set("logger.location", 0);
             getConfiguration().set("config-version", ++selectedVersion);
         }
         if (getConfiguration().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
