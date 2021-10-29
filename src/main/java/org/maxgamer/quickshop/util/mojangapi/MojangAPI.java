@@ -19,8 +19,8 @@
 
 package org.maxgamer.quickshop.util.mojangapi;
 
+import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.LoadingCache;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -29,14 +29,12 @@ import lombok.Data;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.util.HttpCacheLoader;
+import org.maxgamer.quickshop.util.HttpUtil;
 import org.maxgamer.quickshop.util.JsonUtil;
+import org.maxgamer.quickshop.util.Util;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class MojangAPI {
@@ -77,9 +75,12 @@ public class MojangAPI {
 
     @Data
     public static class ResourcesAPI {
-        private final LoadingCache<URL, Optional<String>> request = CacheBuilder.newBuilder()
-                .expireAfterAccess(10, TimeUnit.MINUTES)
-                .build(new HttpCacheLoader());
+        protected final Cache<String, String> requestCachePool = CacheBuilder.newBuilder()
+                .expireAfterWrite(7, TimeUnit.DAYS)
+                .build();
+        //        private final LoadingCache<URL, Optional<String>> request = CacheBuilder.newBuilder()
+//                .expireAfterAccess(10, TimeUnit.MINUTES)
+//                .build(new HttpCacheLoader());
         private final MojangApiMirror apiMirror;
 
         public ResourcesAPI(MojangApiMirror mirror) {
@@ -87,19 +88,27 @@ public class MojangAPI {
         }
 
         public Optional<String> get(@NotNull String hash) {
-            try {
-                return request.get(new URL(apiMirror.getResourcesDownloadRoot() + "/" + hash.substring(0, 2) + "/" + hash));
-            } catch (ExecutionException | MalformedURLException e) {
-                return Optional.empty();
-            }
+            String url = apiMirror.getResourcesDownloadRoot() + "/" + hash.substring(0, 2) + "/" + hash;
+            return Optional.ofNullable(HttpUtil.createGet(url));
+            // return data;
+
+
+//            try {
+//                return request.get(new URL(apiMirror.getResourcesDownloadRoot() + "/" + hash.substring(0, 2) + "/" + hash));
+//            } catch (ExecutionException | MalformedURLException e) {
+//                return Optional.empty();
+//            }
         }
     }
 
 
     public static class AssetsAPI {
-        private final LoadingCache<URL, Optional<String>> request = CacheBuilder.newBuilder()
-                .expireAfterAccess(10, TimeUnit.MINUTES)
-                .build(new HttpCacheLoader());
+        protected final Cache<String, String> requestCachePool = CacheBuilder.newBuilder()
+                .expireAfterWrite(7, TimeUnit.DAYS)
+                .build();
+        //        private final LoadingCache<URL, Optional<String>> request = CacheBuilder.newBuilder()
+//                .expireAfterAccess(10, TimeUnit.MINUTES)
+//                .build(new HttpCacheLoader());
         private final MetaAPI metaAPI;
 
         AssetsAPI(@NotNull MojangApiMirror apiMirror, @NotNull String version) {
@@ -124,13 +133,15 @@ public class MojangAPI {
             if (assetIndexBean == null || assetIndexBean.getUrl() == null || assetIndexBean.getId() == null) {
                 return Optional.empty();
             }
+            String data = HttpUtil.createGet(assetIndexBean.getUrl());
+            return Optional.of(new AssetsFileData(data, assetIndexBean.getSha1(), assetIndexBean.getId()));
 
-            try {
-                Optional<String> fileContent = request.get(new URL(assetIndexBean.getUrl()));
-                return fileContent.map(s -> new AssetsFileData(s, assetIndexBean.getSha1(), assetIndexBean.getId()));
-            } catch (ExecutionException | MalformedURLException e) {
-                return Optional.empty();
-            }
+//            try {
+//                Optional<String> fileContent = request.get(new URL(assetIndexBean.getUrl()));
+//                return fileContent.map(s -> new AssetsFileData(s, assetIndexBean.getSha1(), assetIndexBean.getId()));
+//            } catch (ExecutionException | MalformedURLException e) {
+//                return Optional.empty();
+//            }
 
         }
 
@@ -154,6 +165,9 @@ public class MojangAPI {
     public static class GameInfoAPI {
         private final String json;
         private final Gson gson = JsonUtil.getGson();
+        protected final Cache<String, String> requestCachePool = CacheBuilder.newBuilder()
+                .expireAfterWrite(7, TimeUnit.DAYS)
+                .build();
 
         public GameInfoAPI(@NotNull String json) {
             this.json = json;
@@ -195,16 +209,18 @@ public class MojangAPI {
 
     public static class MetaAPI {
         //Cache with URL and Content(String)
-        private final LoadingCache<URL, Optional<String>> request = CacheBuilder.newBuilder()
-                .expireAfterAccess(10, TimeUnit.MINUTES)
-                .build(new HttpCacheLoader());
-        private final URL metaEndpoint;
+//        private final LoadingCache<URL, Optional<String>> request = CacheBuilder.newBuilder()
+//                .expireAfterAccess(10, TimeUnit.MINUTES)
+//                .build(new HttpCacheLoader());
+        protected final Cache<String, String> requestCachePool = CacheBuilder.newBuilder()
+                .expireAfterWrite(7, TimeUnit.DAYS)
+                .build();
+        private final String metaEndpoint;
         private final String version;
 
-        @SneakyThrows
         public MetaAPI(@NotNull MojangApiMirror mirror, @NotNull String version) {
             this.version = version;
-            this.metaEndpoint = new URL(mirror.getLauncherMetaRoot() + "/mc/game/version_manifest.json");
+            this.metaEndpoint = mirror.getLauncherMetaRoot() + "/mc/game/version_manifest.json";
         }
 
         /**
@@ -214,12 +230,18 @@ public class MojangAPI {
          */
         @SneakyThrows
         public Optional<String> get() {
-            Optional<String> result = request.get(this.metaEndpoint);
-            if (!result.isPresent()) {
+
+            String result = HttpUtil.createGet(this.metaEndpoint);
+//            Optional<String> result = request.get(this.metaEndpoint);
+//            if (!result.isPresent()) {
+//                return Optional.empty();
+//            }
+            if (result == null) {
+                Util.debugLog("Request Meta Endpoint failed.");
                 return Optional.empty();
             }
             try {
-                JsonElement index = new JsonParser().parse(result.get());
+                JsonElement index = new JsonParser().parse(result);
                 if (!index.isJsonObject()) {
                     return Optional.empty();
                 }
@@ -232,7 +254,7 @@ public class MojangAPI {
                         JsonElement gameId = gameVersionData.getAsJsonObject().get("id");
                         JsonElement gameIndexUrl = gameVersionData.getAsJsonObject().get("url");
                         if (Objects.equals(gameId.getAsString(), version)) {
-                            return request.get(new URL(gameIndexUrl.getAsString()));
+                            return Optional.ofNullable(HttpUtil.createGet(gameIndexUrl.getAsString()));
                         }
                     }
                 }

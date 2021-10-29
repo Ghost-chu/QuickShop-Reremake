@@ -247,6 +247,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                     if (cachedFile.exists()) { //File exists
                         try (FileInputStream cacheFileInputSteam = new FileInputStream(cachedFile)) {
                             if (DigestUtils.sha1Hex(cacheFileInputSteam).equals(cacheSha1)) { //Check if file broken
+                                Util.debugLog("MojangAPI in-game translation digest check passed.");
                                 if (cacheVersion.equals(ReflectFactory.getServerVersion())) {
                                     isLatest = true;
                                     try (FileReader reader = new FileReader(cachedFile)) {

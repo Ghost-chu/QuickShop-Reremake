@@ -19,15 +19,21 @@
 
 package org.maxgamer.quickshop.util;
 
+import com.google.common.cache.CacheBuilder;
+import lombok.val;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class HttpUtil {
     private final OkHttpClient client = new OkHttpClient.Builder()
             .cache(new Cache(getCacheFolder(), 50L * 1024L * 1024L)).build();
+    protected static final com.google.common.cache.Cache<String, String> requestCachePool = CacheBuilder.newBuilder()
+            .expireAfterWrite(7, TimeUnit.DAYS)
+            .build();
 
     public static HttpUtil create() {
         return new HttpUtil();
@@ -35,6 +41,27 @@ public class HttpUtil {
 
     public static Response makeGet(@NotNull String url) throws IOException {
         return HttpUtil.create().getClient().newCall(new Request.Builder().get().url(url).build()).execute();
+    }
+
+    public static String createGet(@NotNull String url) {
+        String cache = requestCachePool.getIfPresent(url);
+        if (cache != null) {
+            return cache;
+        }
+        try (Response response = HttpUtil.create().getClient().newCall(new Request.Builder().get().url(url).build()).execute()) {
+            val body = response.body();
+            if (body == null) {
+                return null;
+            }
+            cache = body.string();
+            if (response.code() != 200) {
+                return null;
+            }
+            requestCachePool.put(url, cache);
+            return cache;
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     public static Response makePost(@NotNull String url, @NotNull RequestBody body) throws IOException {
