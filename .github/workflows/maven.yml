@@ -1,7 +1,7 @@
 # This workflow will build a Java project with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Maven Compile Test
+name: Maven Test
 
 on:
   push:
@@ -28,4 +28,4 @@ jobs:
       #      - name: Build Integration
       #        run: mvn -B install --file src/integration/plotsquared/5/pom.xml
       - name: Build with Maven
-        run: mvn -B compile --file pom.xml -Pdebug
+        run: mvn -B test --file pom.xml -Pdebug
