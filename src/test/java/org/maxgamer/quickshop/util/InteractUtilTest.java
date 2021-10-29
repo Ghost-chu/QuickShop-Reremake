@@ -23,7 +23,7 @@ import de.leonhard.storage.LightningBuilder;
 import de.leonhard.storage.Yaml;
 import de.leonhard.storage.sections.FlatFileSection;
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.io.File;
 

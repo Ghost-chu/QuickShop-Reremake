@@ -19,55 +19,101 @@
 
 package org.maxgamer.quickshop.util;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 public class UtilTest {
 
     @Test
-    void array2String() {
+    public void array2String() {
         String sample = "A, B, C";
-        Assertions.assertEquals(sample, Util.array2String(new String[]{"A", "B", "C"}));
+        Assert.assertEquals(sample, Util.array2String(new String[]{"A", "B", "C"}));
     }
 
     @Test
-    void boolean2Status() {
-        Assertions.assertEquals(Util.boolean2Status(true), "Enabled");
-        Assertions.assertEquals(Util.boolean2Status(false), "Disabled");
+    public void boolean2Status() {
+        Assert.assertEquals(Util.boolean2Status(true), "Enabled");
+        Assert.assertEquals(Util.boolean2Status(false), "Disabled");
     }
 
     @Test
-    void isClassAvailable() {
-        Assertions.assertTrue(Util.isClassAvailable(getClass().getName()));
-        Assertions.assertFalse(Util.isClassAvailable("random.Class"));
+    public void isClassAvailable() {
+        Assert.assertTrue(Util.isClassAvailable(getClass().getName()));
+        Assert.assertFalse(Util.isClassAvailable("random.Class"));
     }
 
     @Test
-    void isUUID() {
-        Assertions.assertTrue(Util.isUUID("b188beda-8bfb-ed66-65e5-25147a4617cf"));
-        Assertions.assertFalse(Util.isUUID("b188beda8bfbed6665e525147a4617cf"));
-        Assertions.assertFalse(Util.isUUID("?"));
+    public void isUUID() {
+        Assert.assertTrue(Util.isUUID("b188beda-8bfb-ed66-65e5-25147a4617cf"));
+        Assert.assertFalse(Util.isUUID("b188beda8bfbed6665e525147a4617cf"));
+        Assert.assertFalse(Util.isUUID("?"));
     }
 
     @Test
-    void list2String() {
+    public void list2String() {
         String sample = "1, 2, 3, 4, 5";
-        Assertions.assertEquals(sample, Util.list2String(Arrays.asList("1", "2", "3", "4", "5")));
+        Assert.assertEquals(sample, Util.list2String(Arrays.asList("1", "2", "3", "4", "5")));
     }
 
     @Test
-    void firstUppercase() {
-        Assertions.assertEquals("QuickShop", Util.firstUppercase("quickShop"));
+    public void firstUppercase() {
+        Assert.assertEquals("Quickshop", Util.firstUppercase("quickshop"));
     }
 
     @Test
-    void mergeArgs() {
+    public void mergeArgs() {
         String[] args = new String[3];
         args[0] = "yaa";
         args[1] = "hoo";
         args[2] = "woo";
-        Assertions.assertEquals("yaa hoo woo", Util.mergeArgs(args));
+        Assert.assertEquals("yaa hoo woo", Util.mergeArgs(args));
+    }
+
+    @Test
+    public void testArray2String() {
+        String[] array = new String[]{"aaa", "bbb", "ccc", "ddd"};
+        Assert.assertEquals("aaa, bbb, ccc, ddd", Util.array2String(array));
+    }
+
+    @Test
+    public void testIsClassAvailable() {
+        Assert.assertTrue(Util.isClassAvailable("java.lang.String"));
+        Assert.assertFalse(Util.isClassAvailable("java.lang.NotExistedClassLoL"));
+    }
+
+    @Test
+    public void isMethodAvailable() {
+        Assert.assertTrue(Util.isMethodAvailable(String.class.getName(), "toLowerCase"));
+        Assert.assertFalse(Util.isMethodAvailable(String.class.getName(), "P90 RUSH B"));
+    }
+
+    @Test
+    public void testIsUUID() {
+        UUID uuid = UUID.randomUUID();
+        Assert.assertTrue(Util.isUUID(uuid.toString()));
+        Assert.assertTrue(Util.isUUID(Util.getNilUniqueId().toString()));
+        Assert.assertFalse(Util.isUUID(uuid.toString().replace("-", "")));
+    }
+
+    @Test
+    public void prettifyText() {
+        Assert.assertEquals("Diamond", Util.prettifyText("DIAMOND"));
+    }
+
+    @Test
+    public void testFirstUppercase() {
+        Assert.assertEquals("Foobar", Util.firstUppercase("foobar"));
+    }
+
+    @Test
+    public void testMergeArgs() {
+    }
+
+    @Test
+    public void getNilUniqueId() {
+        Assert.assertEquals(new UUID(0, 0), Util.getNilUniqueId());
     }
 }
