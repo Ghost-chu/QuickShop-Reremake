@@ -39,6 +39,7 @@ public class SimpleInfo implements Info {
     private final Block last;
     private final Location loc;
     private final boolean dirty;
+    private final boolean bypass;
     private ShopAction action;
     private ItemStack item;
     private Shop shop;
@@ -47,25 +48,30 @@ public class SimpleInfo implements Info {
             @NotNull Location loc,
             @NotNull ShopAction action,
             @Nullable ItemStack item,
-            @Nullable Block last) {
+            @Nullable Block last,
+            boolean bypass) {
         this.loc = loc;
         this.action = action;
         this.last = last;
+        this.bypass = bypass;
         if (item != null) {
             this.item = item.clone();
         }
         this.dirty = true;
     }
 
+
     public SimpleInfo(
             @NotNull Location loc,
             @NotNull ShopAction action,
             @Nullable ItemStack item,
             @Nullable Block last,
-            @Nullable Shop shop) {
+            @Nullable Shop shop,
+            boolean bypass) {
         this.loc = loc;
         this.action = action;
         this.last = last;
+        this.bypass = bypass;
         if (item != null) {
             this.item = item.clone();
         }
@@ -146,6 +152,11 @@ public class SimpleInfo implements Info {
             return false;
         }
         return !this.shop.matches(shop.getItem());
+    }
+
+    @Override
+    public boolean isBypassed() {
+        return bypass;
     }
 
 }

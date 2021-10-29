@@ -234,7 +234,7 @@ public class PlayerListener extends AbstractQSListener {
             }
             // Add the new action
             Map<UUID, Info> actions = plugin.getShopManager().getActions();
-            Info info = new SimpleInfo(shop.getLocation(), ShopAction.BUY, null, null, shop);
+            Info info = new SimpleInfo(shop.getLocation(), ShopAction.BUY, null, null, shop, false);
             actions.put(p.getUniqueId(), info);
         }
         // Handles creating shops
@@ -287,7 +287,7 @@ public class PlayerListener extends AbstractQSListener {
                 last = n;
             }
             // Send creation menu.
-            final SimpleInfo info = new SimpleInfo(b.getLocation(), ShopAction.CREATE, e.getItem(), last);
+            final SimpleInfo info = new SimpleInfo(b.getLocation(), ShopAction.CREATE, e.getItem(), last, false);
 
             plugin.getShopManager().getActions().put(p.getUniqueId(), info);
             plugin.text().of(p, "how-much-to-trade-for", MsgUtil.convertItemStackToTranslateText(Objects.requireNonNull(e.getItem()).getType()), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1)).send();

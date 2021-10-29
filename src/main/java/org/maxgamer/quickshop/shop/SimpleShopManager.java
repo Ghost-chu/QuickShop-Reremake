@@ -515,11 +515,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     @Override
     public void handleChat(@NotNull Player p, @NotNull String msg) {
-        handleChat(p, msg, false);
-    }
-
-    @Override
-    public void handleChat(@NotNull Player p, @NotNull String msg, boolean bypassProtectionChecks) {
         if (!plugin.getShopManager().getActions().containsKey(p.getUniqueId())) {
             return;
         }
@@ -544,7 +539,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 return;
             }
             if (info.getAction() == ShopAction.CREATE) {
-                actionCreate(p, info, finalMessage, bypassProtectionChecks);
+                actionCreate(p, info, finalMessage);
             }
             if (info.getAction() == ShopAction.BUY) {
                 actionTrade(p, info, finalMessage);
@@ -844,8 +839,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         return taxEvent.getTax();
     }
 
-    public void actionCreate(@NotNull Player p, Info info, @NotNull String message,
-                             boolean bypassProtectionChecks) {
+    public void actionCreate(@NotNull Player p, Info info, @NotNull String message) {
         Util.ensureThread(false);
         if (plugin.getEconomy() == null) {
             MsgUtil.sendDirectMessage(p, "Error: Economy system not loaded, type /qs main command to get details.");
@@ -859,7 +853,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // Checking the shop can be created
         Util.debugLog("Calling for protection check...");
         // Fix openInv compatible issue
-        if (!bypassProtectionChecks) {
+        if (!info.isBypassed()) {
             Result result = plugin.getPermissionChecker().canBuild(p, info.getLocation());
             if (!result.isSuccess()) {
                 plugin.text().of(p, "3rd-plugin-build-check-failed", result.getMessage()).send();
@@ -979,7 +973,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 null,
                 false,
                 null);
-        if (!bypassProtectionChecks) {
+        if (!info.isBypassed()) {
             Result result = ((SimpleIntegrationManager) plugin.getIntegrationHelper()).callIntegrationsCanCreate(p, info.getLocation());
             if (!result.isSuccess()) {
                 plugin.text().of(p, "integrations-check-failed-create", result.getMessage()).send();
