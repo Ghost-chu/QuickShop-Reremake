@@ -55,7 +55,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualDisplayItem extends AbstractDisplayItem {
-    private static final AtomicInteger COUNTER = new AtomicInteger(0);
+    private static final AtomicInteger COUNTER = new AtomicInteger(Integer.MAX_VALUE);
     private static final GameVersion VERSION = QuickShop.getInstance().getGameVersion();
     private static final ProtocolManager PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
     private static PacketAdapter packetAdapter = null;
