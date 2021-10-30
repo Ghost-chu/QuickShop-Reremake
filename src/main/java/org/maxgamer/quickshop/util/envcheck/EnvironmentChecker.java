@@ -90,13 +90,14 @@ public final class EnvironmentChecker {
         Map<EnvCheckEntry, ResultContainer> results = new LinkedHashMap<>();
         boolean skipAllTest = false;
         ResultContainer executeResult = null;
-        CheckResult result = CheckResult.PASSED;
-        Properties properties = System.getProperties();
 
+        Properties properties = System.getProperties();
+        CheckResult gResult = CheckResult.PASSED;
         for (Method declaredMethod : this.tests) {
             if (skipAllTest) {
                 break;
             }
+            CheckResult result = CheckResult.PASSED;
             try {
                 EnvCheckEntry envCheckEntry = declaredMethod.getAnnotation(EnvCheckEntry.class);
                 if (Arrays.stream(envCheckEntry.stage()).noneMatch(entry -> entry == stage)) {
@@ -145,12 +146,15 @@ public final class EnvironmentChecker {
                 } else {
                     results.put(envCheckEntry, new ResultContainer(CheckResult.SKIPPED, "Startup flag mark this check should be skipped."));
                 }
+                if (result.ordinal() > gResult.ordinal()) { //set bad result if its worse than the latest one.
+                    gResult = result;
+                }
             } catch (Exception e) {
                 plugin.getLogger().log(Level.WARNING, "Failed to execute EnvCheckEntry [" + declaredMethod.getName() + "]: Exception thrown out without getting caught. Something went wrong!", e);
                 plugin.getLogger().warning("[FAIL] " + declaredMethod.getName());
             }
         }
-        return new ResultReport(result, results);
+        return new ResultReport(gResult, results);
     }
 
     public boolean isOutdatedJvm() {

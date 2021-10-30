@@ -676,7 +676,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         if (calendarWatcher != null) {
             calendarWatcher.stop();
         }
-        tpsWatcher.cancel();
+
+        try {
+            tpsWatcher.cancel();
+        } catch (IllegalStateException ignored) {
+        }
+
         /* Unload UpdateWatcher */
         if (this.updateWatcher != null) {
             this.updateWatcher.uninit();
