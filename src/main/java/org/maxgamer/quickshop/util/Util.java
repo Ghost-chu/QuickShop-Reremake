@@ -1206,11 +1206,18 @@ public class Util {
      * @return The caching folder
      */
     public static File getCacheFolder() {
-        File cache = new File(QuickShop.getInstance().getDataFolder(), "cache");
-        if (!cache.exists()) {
-            cache.mkdirs();
+        QuickShop qs = QuickShop.getInstance();
+        if (qs != null) {
+            File cache = new File(QuickShop.getInstance().getDataFolder(), "cache");
+            if (!cache.exists()) {
+                cache.mkdirs();
+            }
+            return cache;
+        } else {
+            File file = new File("cache");
+            file.mkdirs();
+            return file;
         }
-        return cache;
     }
 
     /**
