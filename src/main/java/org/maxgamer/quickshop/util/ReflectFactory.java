@@ -45,8 +45,8 @@ public class ReflectFactory {
     private static Class<?> craftServerClass;
     private static Class<?> cachedNMSClass;
     private static String nmsVersion;
-    private static Object serverInstance;
-    private static Field tpsField;
+//    private static Object serverInstance;
+//    private static Field tpsField;
 
     static {
         String name = Bukkit.getServer().getClass().getPackage().getName();
