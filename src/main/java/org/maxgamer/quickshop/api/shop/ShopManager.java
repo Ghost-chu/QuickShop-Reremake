@@ -116,6 +116,7 @@ public interface ShopManager {
 
     /**
      * Gets a shop in a specific location
+     * ATTENTION: This not include attached shops (double-chest)
      *
      * @param loc The location to get the shop from
      * @return The shop at that location
@@ -124,6 +125,7 @@ public interface ShopManager {
 
     /**
      * Gets a shop in a specific location
+     * ATTENTION: This not include attached shops (double-chest)
      *
      * @param loc                  The location to get the shop from
      * @param skipShopableChecking whether to check is shopable
