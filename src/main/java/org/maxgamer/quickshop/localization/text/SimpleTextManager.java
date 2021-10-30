@@ -123,6 +123,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
         // parallel threads
         List<String> enabledLanguagesRegex = plugin.getConfiguration().getStringList("enabled-languages");
         // Multi File and Multi-Language loader
+        // Offline Initiated
+        mapper.deployBundled("/master/crowdin/lang/%locale%/messages.json", loadBundled("/master/crowdin/lang/%locale%/messages.json"));
         distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode -> distribution.getAvailableFiles().parallelStream().forEach(crowdinFile -> {
             try {
                 // Minecraft client use lowercase wi
@@ -132,6 +134,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     return;
                 }
                 Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
+                Util.debugLog("CrowdinFile: " + crowdinFile);
                 // Deploy bundled to mapper
                 mapper.deployBundled(crowdinFile, loadBundled(crowdinFile));
                 JsonConfiguration configuration = getDistributionConfiguration(crowdinFile, crowdinCode);
