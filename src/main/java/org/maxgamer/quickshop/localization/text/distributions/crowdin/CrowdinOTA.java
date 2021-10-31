@@ -209,7 +209,7 @@ public class CrowdinOTA implements Distribution {
                     throw new OTAException(response.code(), data);
                 }
                 // save to local cache file
-                Files.write(cachedDataFile.toPath(), data.getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+                Files.write(cachedDataFile.toPath(), data.getBytes(StandardCharsets.UTF_8));
             } catch (IOException e) {
                 plugin.getLogger().log(Level.WARNING, "Failed to download manifest.json, multi-language system may won't work");
                 e.printStackTrace();
