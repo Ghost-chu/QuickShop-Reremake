@@ -34,6 +34,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
@@ -193,39 +194,16 @@ public class PlayerListener extends AbstractQSListener {
             final AbstractEconomy eco = plugin.getEconomy();
             final double price = shop.getPrice();
             final double money = plugin.getEconomy().getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
-
+            final Inventory playerInventory = p.getInventory();
             if (shop.isSelling()) {
-                int itemAmount = Math.min(shop.getRemainingSpace(), (int) Math.floor(money / price));
-                if (!shop.isUnlimited()) {
-                    itemAmount = Math.min(itemAmount, shop.getRemainingStock());
-                }
-                if (itemAmount < 0) {
-                    itemAmount = 0;
-                }
+                int itemAmount = getPlayerCanBuy(shop, money, price, playerInventory);
                 if (shop.isStackingShop()) {
                     plugin.text().of(p, "how-many-buy-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(itemAmount)).send();
                 } else {
                     plugin.text().of(p, "how-many-buy", Integer.toString(itemAmount)).send();
                 }
             } else {
-                final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
-                int items = shop.getRemainingStock();
-                final int ownerCanAfford = (int) (ownerBalance / shop.getPrice());
-
-                if (!shop.isUnlimited()) {
-                    // Amount check player amount and shop empty slot
-                    items = Math.min(items, shop.getRemainingSpace());
-                    // Amount check player selling item total cost and the shop owner's balance
-                    items = Math.min(items, ownerCanAfford);
-                } else if (plugin.getConfiguration().getBoolean("shop.pay-unlimited-shop-owners")) {
-                    // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
-                    // true,
-                    // the unlimited shop owner should have enough money.
-                    items = Math.min(items, ownerCanAfford);
-                }
-                if (items < 0) {
-                    items = 0;
-                }
+                int items = getPlayerCanSell(shop, money, price, playerInventory);
                 if (shop.isStackingShop()) {
                     plugin.text().of(p, "how-many-sell-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(items)).send();
                 } else {
@@ -292,6 +270,43 @@ public class PlayerListener extends AbstractQSListener {
             plugin.getShopManager().getActions().put(p.getUniqueId(), info);
             plugin.text().of(p, "how-much-to-trade-for", MsgUtil.convertItemStackToTranslateText(Objects.requireNonNull(e.getItem()).getType()), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1)).send();
         }
+    }
+
+    private int getPlayerCanBuy(Shop shop, double money, double price, Inventory playerInventory) {
+        if (shop.isFreeShop()) { // Free shop
+            return Math.min(shop.getRemainingStock(), Util.countSpace(playerInventory, shop.getItem()));
+        }
+        int itemAmount = Math.min(shop.getRemainingSpace(), (int) Math.floor(money / price));
+        if (!shop.isUnlimited()) {
+            itemAmount = Math.min(itemAmount, shop.getRemainingStock());
+        }
+        if (itemAmount < 0) {
+            itemAmount = 0;
+        }
+        return itemAmount;
+    }
+
+    private int getPlayerCanSell(Shop shop, double money, double price, Inventory playerInventory) {
+        if (shop.isFreeShop()) {
+            return Math.min(shop.getRemainingSpace(), Util.countItems(playerInventory, shop.getItem()));
+        }
+        int items = shop.getRemainingStock();
+        final int ownerCanAfford = (int) (money / price);
+        if (!shop.isUnlimited()) {
+            // Amount check player amount and shop empty slot
+            items = Math.min(items, shop.getRemainingSpace());
+            // Amount check player selling item total cost and the shop owner's balance
+            items = Math.min(items, ownerCanAfford);
+        } else if (plugin.getConfiguration().getBoolean("shop.pay-unlimited-shop-owners")) {
+            // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
+            // true,
+            // the unlimited shop owner should have enough money.
+            items = Math.min(items, ownerCanAfford);
+        }
+        if (items < 0) {
+            items = 0;
+        }
+        return items;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

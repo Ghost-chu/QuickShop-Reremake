@@ -583,6 +583,11 @@ public class ContainerShop implements Shop {
     }
 
     @Override
+    public boolean isFreeShop() {
+        return this.price == 0.0d;
+    }
+
+    @Override
     public @NotNull String ownerName() {
         return ownerName(false);
     }

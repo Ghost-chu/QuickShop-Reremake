@@ -606,4 +606,10 @@ public interface Shop {
         }
     }
 
+    /**
+     * Check if this shop is free shop
+     *
+     * @return Free Shop
+     */
+    boolean isFreeShop();
 }
