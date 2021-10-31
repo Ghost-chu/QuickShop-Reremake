@@ -468,7 +468,7 @@ public class HttpRequest implements Closeable {
          *
          * @param file the file
          * @return this object
-         * @throws java.io.IOException  on I/O error
+         * @throws java.io.IOException on I/O error
          */
         public BufferedResponse saveContent(File file) throws IOException {
 

@@ -1301,10 +1301,10 @@ public class ContainerShop implements Shop {
                     && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
                 OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
                 return openInv.getSpecialEnderChest(
-                                Objects.requireNonNull(
-                                        openInv.loadPlayer(
-                                                plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
-                                plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
+                        Objects.requireNonNull(
+                                openInv.loadPlayer(
+                                        plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
+                        plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
                         .getBukkitInventory();
             }
         } catch (Exception e) {

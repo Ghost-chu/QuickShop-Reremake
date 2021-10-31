@@ -138,11 +138,11 @@ public class MojangAPI {
 
     @Data
     public static class GameInfoAPI {
-        private final String json;
-        private final Gson gson = JsonUtil.getGson();
         protected final Cache<String, String> requestCachePool = CacheBuilder.newBuilder()
                 .expireAfterWrite(7, TimeUnit.DAYS)
                 .build();
+        private final String json;
+        private final Gson gson = JsonUtil.getGson();
 
         public GameInfoAPI(@NotNull String json) {
             this.json = json;

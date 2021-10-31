@@ -69,7 +69,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                     //ignore unloaded world
                     continue;
                 }
-                double cost=gobalCost;
+                double cost = gobalCost;
                 World world = location.getWorld();
                 //We must check balance manually to avoid shop missing hell when tax account broken
                 if (allowLoan || plugin.getEconomy().getBalance(shopOwner, Objects.requireNonNull(world), shop.getCurrency()) >= cost) {

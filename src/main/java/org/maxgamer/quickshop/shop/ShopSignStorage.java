@@ -37,7 +37,8 @@ public class ShopSignStorage {
     private int x;
     private int y;
     private int z;
-    public boolean equals(String world, int x, int y, int z){
-        return Objects.equals(this.world,world)&&this.x==x&&this.y==y&&this.z==z;
+
+    public boolean equals(String world, int x, int y, int z) {
+        return Objects.equals(this.world, world) && this.x == x && this.y == y && this.z == z;
     }
 }

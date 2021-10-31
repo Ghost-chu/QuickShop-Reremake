@@ -686,9 +686,9 @@ import java.util.LinkedList;
  * https://github.com/EssentialsX/Essentials/blob/90e4845627551a02a5868141544396bf50ac51a9/Essentials/src/main/java/com/earth2me/essentials/EssentialsTimer.java#L13
  */
 public class TpsWatcher extends BukkitRunnable {
-    private final LinkedList<Double> history = new LinkedList<>();
     @SuppressWarnings("FieldCanBeLocal")
     private final static long TICK_INTERVAL = 50;
+    private final LinkedList<Double> history = new LinkedList<>();
     private transient long lastPoll = System.nanoTime();
 
     public TpsWatcher() {

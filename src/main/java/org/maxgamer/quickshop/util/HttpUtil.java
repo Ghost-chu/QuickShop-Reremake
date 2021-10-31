@@ -29,11 +29,11 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class HttpUtil {
-    private final OkHttpClient client = new OkHttpClient.Builder()
-            .cache(new Cache(getCacheFolder(), 50L * 1024L * 1024L)).build();
     protected static final com.google.common.cache.Cache<String, String> requestCachePool = CacheBuilder.newBuilder()
             .expireAfterWrite(7, TimeUnit.DAYS)
             .build();
+    private final OkHttpClient client = new OkHttpClient.Builder()
+            .cache(new Cache(getCacheFolder(), 50L * 1024L * 1024L)).build();
 
     public static HttpUtil create() {
         return new HttpUtil();

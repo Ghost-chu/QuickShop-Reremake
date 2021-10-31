@@ -158,7 +158,7 @@ public interface ShopManager {
 
     void handleChat(@NotNull Player p, @NotNull String msg);
 
- //   void handleChat(@NotNull Player p, @NotNull String msg, boolean bypassProtectionChecks);
+    //   void handleChat(@NotNull Player p, @NotNull String msg, boolean bypassProtectionChecks);
 
     /**
      * Load shop method for loading shop into mapping, so getShops method will can find it. It also
