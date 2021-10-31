@@ -32,7 +32,7 @@ public class HttpUtil {
     protected static final com.google.common.cache.Cache<String, String> requestCachePool = CacheBuilder.newBuilder()
             .expireAfterWrite(7, TimeUnit.DAYS)
             .build();
-    private final OkHttpClient client = new OkHttpClient.Builder()
+    private static final OkHttpClient client = new OkHttpClient.Builder()
             .cache(new Cache(getCacheFolder(), 50L * 1024L * 1024L)).build();
 
     public static HttpUtil create() {
@@ -40,7 +40,7 @@ public class HttpUtil {
     }
 
     public static Response makeGet(@NotNull String url) throws IOException {
-        return HttpUtil.create().getClient().newCall(new Request.Builder().get().url(url).build()).execute();
+        return client.newCall(new Request.Builder().get().url(url).build()).execute();
     }
 
     public static String createGet(@NotNull String url) {
@@ -48,7 +48,7 @@ public class HttpUtil {
         if (cache != null) {
             return cache;
         }
-        try (Response response = HttpUtil.create().getClient().newCall(new Request.Builder().get().url(url).build()).execute()) {
+        try (Response response = client.newCall(new Request.Builder().get().url(url).build()).execute()) {
             val body = response.body();
             if (body == null) {
                 return null;
@@ -65,10 +65,10 @@ public class HttpUtil {
     }
 
     public static Response makePost(@NotNull String url, @NotNull RequestBody body) throws IOException {
-        return HttpUtil.create().getClient().newCall(new Request.Builder().post(body).url(url).build()).execute();
+        return client.newCall(new Request.Builder().post(body).url(url).build()).execute();
     }
 
-    private File getCacheFolder() {
+    private static File getCacheFolder() {
         File file = new File(Util.getCacheFolder(), "okhttp_tmp");
         file.mkdirs();
         return file;
