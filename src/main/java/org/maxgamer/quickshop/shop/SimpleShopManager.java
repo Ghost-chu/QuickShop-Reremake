@@ -105,8 +105,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     private void init() {
-//        this.useFastShopSearchAlgorithm =
-//                plugin.getConfiguration().getBoolean("shop.use-fast-shop-search-algorithm", false);
         Util.debugLog("Loading caching tax account...");
         String taxAccount = plugin.getConfiguration().getOrDefault("tax-account", "tax");
         if (!taxAccount.isEmpty()) {

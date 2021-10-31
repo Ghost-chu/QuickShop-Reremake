@@ -333,12 +333,6 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 .permission("quickshop.purge")
                 .executor(new SubCommand_Purge(plugin))
                 .build());
-//        registerCmd(CommandContainer.builder()
-//                .prefix("backup")
-//                .permission("quickshop.backup")
-//                .executor(new SubCommand_Backup(plugin))
-//                .hidden(true)
-//                .build());
     }
 
     /**
