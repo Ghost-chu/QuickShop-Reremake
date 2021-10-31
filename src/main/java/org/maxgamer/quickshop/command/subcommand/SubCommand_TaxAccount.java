@@ -56,7 +56,7 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
                 } else {
                     shop.setTaxAccount(Bukkit.getOfflinePlayer(cmdArg[0]).getUniqueId());
                 }
-                plugin.text().of(sender, "taxaccount-unset", cmdArg[0]).send();
+                plugin.text().of(sender, "taxaccount-set", cmdArg[0]).send();
                 return;
             }
         }
