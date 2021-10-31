@@ -1,7 +1,7 @@
 # QuickShop-Reremake Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 146
+config-version: 147
 
 #This language will used by Item Name, Enchantment Name,
 #and Potion Effect Name or the text on the shop info sign (nbtapi not installed) and other them related position.
@@ -284,7 +284,6 @@ shop:
   #This setting is for multi-currency setups.
   #If nothing matches in this list, it falls back to the name of currency itself.
   alternate-currency-symbol-list:
-    - CNY;¥
     - USD;$
 
   #This should fix Vault or an economy plugin incorrectly processing the price and returning a "0" result.

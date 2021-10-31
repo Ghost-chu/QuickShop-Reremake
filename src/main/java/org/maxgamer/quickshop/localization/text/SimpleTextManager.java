@@ -66,7 +66,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
         plugin.getLogger().info("Translation over-the-air platform selected: Crowdin");
         this.distribution = new CrowdinOTA(plugin);
         load();
-
     }
 
     /**
@@ -83,8 +82,10 @@ public class SimpleTextManager implements TextManager, Reloadable {
         File moduleFolder = new File(new File(plugin.getDataFolder(), "overrides"), module);
         moduleFolder.mkdirs();
         File fileFolder = new File(moduleFolder, file.getName());
-        fileFolder.mkdirs();
-        return file;
+        if (fileFolder.isDirectory())
+            fileFolder.delete();
+//        fileFolder.mkdirs();
+        return moduleFolder;
     }
 
     /**
@@ -227,8 +228,9 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @throws InvalidConfigurationException File invalid
      */
     private JsonConfiguration getOverrideConfiguration(@NotNull String overrideFile, @NotNull String locale) throws IOException, InvalidConfigurationException {
-        File localOverrideFile = new File(getOverrideFilesFolder(overrideFile.replace("%locale%", locale)), locale + ".json");
+        File localOverrideFile = new File(getOverrideFilesFolder(overrideFile.replace("%locale%", locale)), new File(overrideFile.replace("%locale%", locale)).getName());
         if (!localOverrideFile.exists()) {
+            Util.debugLog("Creating locale override file: " + localOverrideFile);
             localOverrideFile.getParentFile().mkdirs();
             localOverrideFile.createNewFile();
         }
@@ -389,14 +391,14 @@ public class SimpleTextManager implements TextManager, Reloadable {
         public List<String> forLocale(@NotNull String locale) {
             JsonConfiguration index = mapping.get(locale);
             if (index == null) {
-                if ("en_us".equals(locale)) {
+                if (MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")).equals(locale)) {
                     List<String> str = fallbackLocal();
                     if (str.isEmpty()) {
                         return Collections.singletonList("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                     }
                     return postProcess(str);
                 } else {
-                    return forLocale("en_us");
+                    return forLocale(MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")));
                 }
             } else {
                 List<String> str = index.getStringList(path);
@@ -420,7 +422,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             if (sender instanceof Player) {
                 return forLocale(((Player) sender).getLocale());
             } else {
-                return forLocale("en_us");
+                return forLocale(MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")));
             }
         }
 
@@ -506,14 +508,14 @@ public class SimpleTextManager implements TextManager, Reloadable {
         public String forLocale(@NotNull String locale) {
             JsonConfiguration index = mapping.get(locale);
             if (index == null) {
-                if ("en_us".equals(locale)) {
+                if (MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")).equals(locale)) {
                     String str = fallbackLocal();
                     if (str == null) {
                         return "Fallback Missing Language Key: " + path + ", report to QuickShop!";
                     }
                     return postProcess(str);
                 } else {
-                    return forLocale("en_us");
+                    return forLocale(MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")));
                 }
             } else {
                 String str = index.getString(path);
@@ -535,7 +537,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             if (sender instanceof Player) {
                 return forLocale(((Player) sender).getLocale());
             } else {
-                return forLocale("en_us");
+                return forLocale(MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")));
             }
         }
 

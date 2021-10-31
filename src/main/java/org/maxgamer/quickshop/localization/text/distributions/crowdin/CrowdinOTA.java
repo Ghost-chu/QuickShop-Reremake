@@ -1,3 +1,22 @@
+/*
+ * This file is a part of project QuickShop, the name is CrowdinOTA.java
+ *  Copyright (C) PotatoCraft Studio and contributors
+ *
+ *  This program is free software: you can redistribute it and/or modify it
+ *  under the terms of the GNU General Public License as published by the
+ *  Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT
+ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ *  for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 package org.maxgamer.quickshop.localization.text.distributions.crowdin;
 
 import com.google.common.cache.Cache;
@@ -177,7 +196,8 @@ public class CrowdinOTA implements Distribution {
         // force flush required OR local cache not exists OR outdated
         if (forceFlush || data == null || localeTimestamp != manifest.getTimestamp()) {
             String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);
-            Util.debugLog("Reading data from remote server: " + url);
+            //Util.debugLog("Reading data from remote server: " + url);
+            plugin.getLogger().info("Downloading translation " + crowdinLocale + " from: " + url);
             try (Response response = HttpUtil.create().getClient().newCall(new Request.Builder().get().url(url).build()).execute()) {
                 val body = response.body();
                 if (body == null) {
