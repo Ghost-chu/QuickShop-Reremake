@@ -1,8 +1,42 @@
 name: ${project.name}
 main: ${package}.${project.name}
 version: ${project.version}
-authors: [ PotatoCraft Studio, Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul, TiaraRinne, sandtechnology, Starmism, Chris6ix, Rean Schwarzer ]
-
+authors:
+  - PotatoCraft Studio
+  - Netherfoam
+  - Timtower
+  - KaiNoMood (KaiKikuchi)
+  - jho5245
+  - Ghost_chu
+  - cakoyo
+  - Ectabro
+  - portlek
+  - log4b0at
+  - Andre601
+  - deadman96385
+  - Vlvxingze
+  - DoctaEnkoda
+  - Mgazul
+  - TiaraRinne
+  - sandtechnology
+  - Starmism
+  - Chris6ix
+  - Rean Schwarzer
+  - mart-r
+  - raphtaliapt
+  - Tim269
+  - creatorfromhell
+  - LoneDev6
+  - judgetread
+  - confuxeon
+  - ibmibmibm
+  - yannicklamprecht
+  - PyvesB
+  - PaulBGD
+  - ORelio
+  - JoschuaSchneider
+  - Starmium
+  - harry0198
 description: Economy Shops plugin
 softdepend:
   - Vault
