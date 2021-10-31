@@ -313,10 +313,12 @@ public class ShopLoader {
                 plugin.getDatabaseHelper().createShop(shop, null, null);
                 plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
                 shop.update();
+                if (Util.isLoaded(shop.getLocation()) && !shop.isLoaded()) {
+                    shop.onLoad();
+                }
             }
             plugin.getLogger().info("Finished!");
         });
-
     }
 
 //    @NotNull
