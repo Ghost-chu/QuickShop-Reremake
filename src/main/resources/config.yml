@@ -285,6 +285,7 @@ shop:
   #If nothing matches in this list, it falls back to the name of currency itself.
   alternate-currency-symbol-list:
     - USD;$
+    - CNY;￥
 
   #This should fix Vault or an economy plugin incorrectly processing the price and returning a "0" result.
   #If you enable this setting, then QS will force use the "alternate-currency-symbol".
