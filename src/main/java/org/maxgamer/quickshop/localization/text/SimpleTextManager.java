@@ -227,7 +227,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @throws InvalidConfigurationException File invalid
      */
     private JsonConfiguration getOverrideConfiguration(@NotNull String overrideFile, @NotNull String locale) throws IOException, InvalidConfigurationException {
-        File localOverrideFile = new File(getOverrideFilesFolder(overrideFile), locale + ".json");
+        File localOverrideFile = new File(getOverrideFilesFolder(overrideFile.replace("%locale%", locale)), locale + ".json");
         if (!localOverrideFile.exists()) {
             localOverrideFile.getParentFile().mkdirs();
             localOverrideFile.createNewFile();
