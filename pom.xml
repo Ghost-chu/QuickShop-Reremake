@@ -196,8 +196,8 @@
                             <shadedPattern>org.maxgamer.quickshop.shade.org.com.squareup.</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>org.maxgamer.storage.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.shade.org.maxgamer.storage.</shadedPattern>
+                            <pattern>de.leonhard.storage.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.de.leonhard.storage.</shadedPattern>
                         </relocation>
                     </relocations>
                     <transformers>
@@ -839,7 +839,7 @@
         <dependency>
             <groupId>org.maxgamer.storage</groupId>
             <artifactId>simplixstorage</artifactId>
-            <version>3.2.3</version>
+            <version>3.2.3.1</version>
         </dependency>
         <dependency>
             <groupId>de.tr7zw</groupId>
