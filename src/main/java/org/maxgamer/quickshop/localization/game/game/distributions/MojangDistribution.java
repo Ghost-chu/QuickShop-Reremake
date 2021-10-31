@@ -132,7 +132,8 @@ public class MojangDistribution {
             }
             requestCachePool.put(url, data);
         } catch (IOException e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to download manifest.json, multi-language system won't work");
+            e.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Failed to download mojang manifest.json, multi-language system won't work");
             return false;
         }
         return true;

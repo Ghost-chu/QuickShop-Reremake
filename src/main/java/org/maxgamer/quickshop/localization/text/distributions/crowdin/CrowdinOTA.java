@@ -95,6 +95,7 @@ public class CrowdinOTA implements Distribution {
             }
             requestCachePool.put(url, data);
         } catch (IOException e) {
+            e.printStackTrace();
             plugin.getLogger().log(Level.WARNING, "Failed to download manifest.json, multi-language system won't work");
             return null;
         }
@@ -211,6 +212,7 @@ public class CrowdinOTA implements Distribution {
                 Files.write(cachedDataFile.toPath(), data.getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
             } catch (IOException e) {
                 plugin.getLogger().log(Level.WARNING, "Failed to download manifest.json, multi-language system may won't work");
+                e.printStackTrace();
                 return "";
             }
             // update cache index
