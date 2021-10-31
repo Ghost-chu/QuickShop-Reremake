@@ -1953,9 +1953,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         if (selectedVersion == 146) {
             // Updater set it to true because plugin upgrading
             // Default configuration disable it cause probably fresh install
-            if (StringUtils.isEmpty(getConfiguration().getString("language"))) {
-                getConfiguration().set("language", "en_us");
-            }
+            getConfiguration().set("language", null);
             getConfiguration().set("config-version", ++selectedVersion);
         }
         if (getConfiguration().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {

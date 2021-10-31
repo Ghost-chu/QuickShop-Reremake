@@ -391,14 +391,14 @@ public class SimpleTextManager implements TextManager, Reloadable {
         public List<String> forLocale(@NotNull String locale) {
             JsonConfiguration index = mapping.get(locale);
             if (index == null) {
-                if (plugin.getConfiguration().getString("language").equals(locale)) {
+                if (MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")).equals(locale)) {
                     List<String> str = fallbackLocal();
                     if (str.isEmpty()) {
                         return Collections.singletonList("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                     }
                     return postProcess(str);
                 } else {
-                    return forLocale(plugin.getConfiguration().getString("language"));
+                    return forLocale(MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")));
                 }
             } else {
                 List<String> str = index.getStringList(path);
@@ -422,7 +422,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             if (sender instanceof Player) {
                 return forLocale(((Player) sender).getLocale());
             } else {
-                return forLocale(plugin.getConfiguration().getString("language"));
+                return forLocale(MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")));
             }
         }
 
@@ -508,14 +508,14 @@ public class SimpleTextManager implements TextManager, Reloadable {
         public String forLocale(@NotNull String locale) {
             JsonConfiguration index = mapping.get(locale);
             if (index == null) {
-                if (plugin.getConfiguration().getString("language").equals(locale)) {
+                if (MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")).equals(locale)) {
                     String str = fallbackLocal();
                     if (str == null) {
                         return "Fallback Missing Language Key: " + path + ", report to QuickShop!";
                     }
                     return postProcess(str);
                 } else {
-                    return forLocale(plugin.getConfiguration().getString("language"));
+                    return forLocale(MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")));
                 }
             } else {
                 String str = index.getString(path);
@@ -537,7 +537,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             if (sender instanceof Player) {
                 return forLocale(((Player) sender).getLocale());
             } else {
-                return forLocale(plugin.getConfiguration().getString("language"));
+                return forLocale(MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")));
             }
         }
 
