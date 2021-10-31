@@ -3,6 +3,7 @@
 #Do not touch this if you don't know what you're doing!
 config-version: 147
 
+#This option used for sign text and language fallback
 language: en_us
 
 #This language will used by Item Name, Enchantment Name,
