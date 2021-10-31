@@ -66,7 +66,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
         plugin.getLogger().info("Translation over-the-air platform selected: Crowdin");
         this.distribution = new CrowdinOTA(plugin);
         load();
-
     }
 
     /**
@@ -83,8 +82,10 @@ public class SimpleTextManager implements TextManager, Reloadable {
         File moduleFolder = new File(new File(plugin.getDataFolder(), "overrides"), module);
         moduleFolder.mkdirs();
         File fileFolder = new File(moduleFolder, file.getName());
-        fileFolder.mkdirs();
-        return file;
+        if (fileFolder.isDirectory())
+            fileFolder.delete();
+//        fileFolder.mkdirs();
+        return moduleFolder;
     }
 
     /**
@@ -227,8 +228,9 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @throws InvalidConfigurationException File invalid
      */
     private JsonConfiguration getOverrideConfiguration(@NotNull String overrideFile, @NotNull String locale) throws IOException, InvalidConfigurationException {
-        File localOverrideFile = new File(getOverrideFilesFolder(overrideFile.replace("%locale%", locale)), locale + ".json");
+        File localOverrideFile = new File(getOverrideFilesFolder(overrideFile.replace("%locale%", locale)), new File(overrideFile.replace("%locale%", locale)).getName());
         if (!localOverrideFile.exists()) {
+            Util.debugLog("Creating locale override file: " + localOverrideFile);
             localOverrideFile.getParentFile().mkdirs();
             localOverrideFile.createNewFile();
         }
