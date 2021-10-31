@@ -78,9 +78,6 @@ public class MojangAPI {
         protected final Cache<String, String> requestCachePool = CacheBuilder.newBuilder()
                 .expireAfterWrite(7, TimeUnit.DAYS)
                 .build();
-        //        private final LoadingCache<URL, Optional<String>> request = CacheBuilder.newBuilder()
-//                .expireAfterAccess(10, TimeUnit.MINUTES)
-//                .build(new HttpCacheLoader());
         private final MojangApiMirror apiMirror;
 
         public ResourcesAPI(MojangApiMirror mirror) {
@@ -90,25 +87,11 @@ public class MojangAPI {
         public Optional<String> get(@NotNull String hash) {
             String url = apiMirror.getResourcesDownloadRoot() + "/" + hash.substring(0, 2) + "/" + hash;
             return Optional.ofNullable(HttpUtil.createGet(url));
-            // return data;
-
-
-//            try {
-//                return request.get(new URL(apiMirror.getResourcesDownloadRoot() + "/" + hash.substring(0, 2) + "/" + hash));
-//            } catch (ExecutionException | MalformedURLException e) {
-//                return Optional.empty();
-//            }
         }
     }
 
 
     public static class AssetsAPI {
-        protected final Cache<String, String> requestCachePool = CacheBuilder.newBuilder()
-                .expireAfterWrite(7, TimeUnit.DAYS)
-                .build();
-        //        private final LoadingCache<URL, Optional<String>> request = CacheBuilder.newBuilder()
-//                .expireAfterAccess(10, TimeUnit.MINUTES)
-//                .build(new HttpCacheLoader());
         private final MetaAPI metaAPI;
 
         AssetsAPI(@NotNull MojangApiMirror apiMirror, @NotNull String version) {
@@ -135,14 +118,6 @@ public class MojangAPI {
             }
             String data = HttpUtil.createGet(assetIndexBean.getUrl());
             return Optional.of(new AssetsFileData(data, assetIndexBean.getSha1(), assetIndexBean.getId()));
-
-//            try {
-//                Optional<String> fileContent = request.get(new URL(assetIndexBean.getUrl()));
-//                return fileContent.map(s -> new AssetsFileData(s, assetIndexBean.getSha1(), assetIndexBean.getId()));
-//            } catch (ExecutionException | MalformedURLException e) {
-//                return Optional.empty();
-//            }
-
         }
 
 
@@ -208,13 +183,6 @@ public class MojangAPI {
     }
 
     public static class MetaAPI {
-        //Cache with URL and Content(String)
-//        private final LoadingCache<URL, Optional<String>> request = CacheBuilder.newBuilder()
-//                .expireAfterAccess(10, TimeUnit.MINUTES)
-//                .build(new HttpCacheLoader());
-        protected final Cache<String, String> requestCachePool = CacheBuilder.newBuilder()
-                .expireAfterWrite(7, TimeUnit.DAYS)
-                .build();
         private final String metaEndpoint;
         private final String version;
 
@@ -232,10 +200,6 @@ public class MojangAPI {
         public Optional<String> get() {
 
             String result = HttpUtil.createGet(this.metaEndpoint);
-//            Optional<String> result = request.get(this.metaEndpoint);
-//            if (!result.isPresent()) {
-//                return Optional.empty();
-//            }
             if (result == null) {
                 Util.debugLog("Request Meta Endpoint failed.");
                 return Optional.empty();

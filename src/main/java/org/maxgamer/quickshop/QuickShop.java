@@ -744,26 +744,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getLogger().severe("Failed to save config.yml from jar, The binary file of QuickShop may corrupted. Please re-download from our website.");
         }
         reloadConfiguration();
-        /*
-        From https://bukkit.gamepedia.com/Configuration_API_Reference#CopyDefaults:
-        The copyDefaults option changes the behavior of Configuration's save method.
-        By default, the defaults of the configuration will not be written to the target save file.
-        If set to true, it will write out the default values, to the target file.
-        However, once written, you will not be able to tell the difference between a default and a value from the configuration.
-        ==========================================================================================================================
-        getConfiguration().options().copyDefaults(true).header("Read the example-configuration.yml file to get commented example config file."); // Load defaults.
-        saveDefaultConfig();
-        reloadConfig();
-        */
-//        getConfiguration().options().copyHeader(false).header(
-//                "=================================\n" +
-//                        "=    QuickShop  Configuration   =\n" +
-//                        "=================================\n" +
-//                        "\nNotes:\n" +
-//                        "Please read the example-configuration.yml file to get a commented example config.\n" +
-//                        "Please read the example-configuration.yml file to get a commented example config.\n" +
-//                        "Please read the example-configuration.yml file to get a commented example config.\n"
-//        );
         if (getConfiguration().getOrDefault("config-version", 0) == 0) {
             getConfiguration().set("config-version", 1);
         }
@@ -844,11 +824,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         MsgUtil.loadItemi18n();
         MsgUtil.loadEnchi18n();
         MsgUtil.loadPotioni18n();
-        //    shopControlPanelManager = new ShopControlPanel(this);
-//        this.previewProtectionLore = MsgUtil.getMessageOfflinePlayer("quickshop-gui-preview", null);
-//        if (this.previewProtectionLore == null || this.previewProtectionLore.isEmpty()) {
-//            this.previewProtectionLore = ChatColor.RED + "FIXME: DON'T SET THIS TO EMPTY STRING";
-//        }
 
         /* Load 3rd party supports */
         load3rdParty();

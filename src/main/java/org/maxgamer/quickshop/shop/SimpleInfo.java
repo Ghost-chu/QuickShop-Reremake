@@ -104,10 +104,6 @@ public class SimpleInfo implements Info {
         return this.item;
     }
 
-    /*
-     * public Material getMaterial(){ return this.item.getType(); } public byte
-     * getData(){ return this.getData(); }
-     */
 
     /**
      * @return Location loc, Get shop's location,
