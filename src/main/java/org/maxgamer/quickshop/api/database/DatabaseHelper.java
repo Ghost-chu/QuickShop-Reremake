@@ -159,8 +159,8 @@ public interface DatabaseHelper {
     /**
      * Insert a history record into logs table
      *
-     * @param record Record object that can be serialized by Gson.
+     * @param rec Record object that can be serialized by Gson.
      */
-    void insertHistoryRecord(Object record);
+    void insertHistoryRecord(Object rec);
 
 }
