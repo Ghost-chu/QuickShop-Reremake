@@ -45,7 +45,7 @@ public class HelpChatPastebinPaster implements PasteInterface {
         request.expectResponseCode(200, 201, 301, 302);
         String json = request.returnContent().asString("UTF-8");
         Response response = JsonUtil.getGson().fromJson(json, Response.class);
-        return response.getKey();
+        return "https://paste.helpch.at/" + response.getKey();
     }
 
     @NoArgsConstructor
