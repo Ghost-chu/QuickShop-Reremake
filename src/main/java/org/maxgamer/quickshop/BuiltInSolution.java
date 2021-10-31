@@ -24,14 +24,14 @@ import org.bukkit.ChatColor;
 /**
  * A class to check known issues that cause plugin boot failure.
  */
-class BuiltInSolution {
+public class BuiltInSolution {
 
     /**
      * Call îf database failed to load. This checks the failure reason.
      *
      * @return The error reason.
      */
-    static BootError databaseError() {
+    public static BootError databaseError() {
         return new BootError(QuickShop.getInstance().getLogger(),
                 "Error connecting to the database!",
                 "Please make sure your database service is running.",
@@ -43,7 +43,7 @@ class BuiltInSolution {
      *
      * @return The error reason.
      */
-    static BootError econError() {
+    public static BootError econError() {
         // Check if Vault is installed
         if (QuickShop.getInstance().getServer().getPluginManager().getPlugin("Vault") == null) {
             // Vault is not installed
