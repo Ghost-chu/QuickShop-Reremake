@@ -134,7 +134,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     return;
                 }
                 Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
-                Util.debugLog("CrowdinFile: " + crowdinFile);
                 // Deploy bundled to mapper
                 mapper.deployBundled(crowdinFile, loadBundled(crowdinFile));
                 JsonConfiguration configuration = getDistributionConfiguration(crowdinFile, crowdinCode);
