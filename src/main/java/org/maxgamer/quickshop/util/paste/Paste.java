@@ -459,6 +459,12 @@ public class Paste {
     public String paste(@NotNull String content) {
         PasteInterface paster;
         try {
+            paster = new HelpChatPastebinPaster();
+            return paster.pasteTheText(content);
+        } catch (Exception ex) {
+            Util.debugLog(ex.getMessage());
+        }
+        try {
             // Lucko Pastebin
             paster = new LuckoPastebinPaster();
             return paster.pasteTheText(content);
