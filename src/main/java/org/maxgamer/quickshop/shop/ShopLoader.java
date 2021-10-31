@@ -40,12 +40,14 @@ import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopModerator;
 import org.maxgamer.quickshop.api.shop.ShopType;
 import org.maxgamer.quickshop.util.JsonUtil;
-import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.Util;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,9 +56,9 @@ import java.util.logging.Logger;
  * A class allow plugin load shops fast and simply.
  */
 public class ShopLoader {
-    private final List<Long> loadTimes = new ArrayList<>();
-
-    private final Map<Timer, Double> timeCostCache = new HashMap<>();
+//    private final List<Long> loadTimes = new ArrayList<>();
+//
+//    private final Map<Timer, Double> timeCostCache = new HashMap<>();
 
     private final QuickShop plugin;
     /* This may contains broken shop, must use null check before load it. */
