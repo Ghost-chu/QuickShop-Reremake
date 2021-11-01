@@ -743,7 +743,7 @@ public class ContainerShop implements Shop {
         }
 
         // TODO No-longer use SHOP_SIGN_PREFIX since we use modern storage method. Pending for deletion.
-        lines.add(new ComponentPackage(new ComponentBuilder().appendLegacy(SHOP_SIGN_PREFIX).appendLegacy(line2).create()));
+        lines.add(new ComponentPackage(new ComponentBuilder().appendLegacy(SHOP_SIGN_PREFIX).color(ChatColor.RESET).appendLegacy(line2).create()));
 
         //line 3
         if (plugin.getConfiguration().getBoolean("shop.force-use-item-original-name") || !this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName()) {
