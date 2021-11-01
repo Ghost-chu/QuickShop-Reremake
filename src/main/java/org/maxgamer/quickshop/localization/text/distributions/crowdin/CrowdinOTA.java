@@ -22,7 +22,10 @@ package org.maxgamer.quickshop.localization.text.distributions.crowdin;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -253,11 +256,15 @@ public class CrowdinOTA implements Distribution {
             this.metadata = YamlConfiguration.loadConfiguration(this.metadataFile);
         }
 
-        @SneakyThrows
         private void save() {
             LOCK.lock();
-            this.metadata.save(this.metadataFile);
-            LOCK.unlock();
+            try {
+                this.metadata.save(this.metadataFile);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            } finally {
+                LOCK.unlock();
+            }
         }
 
         private String hash(String str) {
