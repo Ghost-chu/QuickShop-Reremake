@@ -24,9 +24,12 @@ import de.tr7zw.nbtapi.NBTTileEntity;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import me.lucko.helper.serialize.BlockPosition;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.TranslatableComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -740,31 +743,33 @@ public class ContainerShop implements Shop {
         }
 
         // TODO No-longer use SHOP_SIGN_PREFIX since we use modern storage method. Pending for deletion.
-        lines.add(new ComponentPackage(TextComponent.fromLegacyText(SHOP_SIGN_PREFIX + line2 + " ")));
+        lines.add(new ComponentPackage(new ComponentBuilder().appendLegacy(SHOP_SIGN_PREFIX).reset().color(ChatColor.RESET).appendLegacy(line2).create()));
 
         //line 3
-        if (!plugin.getConfiguration().getBoolean("shop.force-use-item-original-name") && (!this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName())) {
-            TextComponent left = new TextComponent(plugin.text().of("signs.item-left").forLocale());
-            TextComponent right = new TextComponent(plugin.text().of("signs.item-right").forLocale());
+        if (plugin.getConfiguration().getBoolean("shop.force-use-item-original-name") || !this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName()) {
+            BaseComponent[] left = TextComponent.fromLegacyText(plugin.text().of("signs.item-left").forLocale());
+            BaseComponent[] right = TextComponent.fromLegacyText(plugin.text().of("signs.item-right").forLocale());
             if (plugin.getNbtapi() == null) {
                 // NBTAPI not installed
                 lines.add(new ComponentPackage(new ComponentBuilder()
+                        .color(ChatColor.RESET)
                         .append(left)
-                        .append(TextComponent.fromLegacyText(Util.getItemStackName(getItem())))
+                        .appendLegacy(Util.getItemStackName(getItem()))
                         .append(right)
                         .create()));
             } else {
                 // NBTAPI installed
                 lines.add(new ComponentPackage(new ComponentBuilder()
+                        .color(ChatColor.RESET)
                         .append(left)
                         .append(new TranslatableComponent(ReflectFactory.getMaterialMinecraftNamespacedKey(getItem().getType())))
                         .append(right)
                         .create()));
             }
         } else {
-            lines.add(new ComponentPackage(new ComponentBuilder().append(TextComponent.fromLegacyText(plugin.text().of("signs.item-left").forLocale()))
-                    .append(new TextComponent(Util.getItemStackName(getItem())).toLegacyText())
-                    .append(TextComponent.fromLegacyText(plugin.text().of("signs.item-right").forLocale())).create()));
+            lines.add(new ComponentPackage(new ComponentBuilder().color(ChatColor.RESET).appendLegacy(plugin.text().of("signs.item-left").forLocale())
+                    .append(Util.getItemStackName(getItem()))
+                    .appendLegacy(plugin.text().of("signs.item-right").forLocale()).create()));
         }
 
         //line 4
@@ -776,7 +781,12 @@ public class ContainerShop implements Shop {
         } else {
             line4 = plugin.text().of("signs.price", plugin.getShopManager().format(this.getPrice(), this)).forLocale();
         }
-        lines.add(new ComponentPackage(TextComponent.fromLegacyText(line4)));
+        lines.add(new ComponentPackage(new ComponentBuilder().color(ChatColor.RESET).appendLegacy(line4).create()));
+
+        if(Util.isDevMode()) {
+            lines.forEach(pack -> Util.debugLog(ComponentSerializer.toString(pack.getComponents())));
+        }
+
         return lines;
     }
 

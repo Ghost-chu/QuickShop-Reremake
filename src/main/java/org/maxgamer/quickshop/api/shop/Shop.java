@@ -562,6 +562,7 @@ public interface Shop {
     default boolean isShopSign(@NotNull Sign sign) {
         // Check for new shop sign
         String[] lines = sign.getLines();
+        // Can be claim
         if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3].isEmpty()) {
             return true;
         }
