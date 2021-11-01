@@ -151,8 +151,8 @@ public class CrowdinOTA implements Distribution {
         String postProcessingPath = fileCrowdinPath.replace("%locale%", crowdinLocale);
         OTACacheControl otaCacheControl = new OTACacheControl();
         // Validating the manifest
-        Long manifestTimestamp = getManifest().getTimestamp();
-        if (Long.valueOf(otaCacheControl.readManifestTimestamp()).equals(getManifest().getTimestamp()) && !forceFlush) {
+        long manifestTimestamp = getManifest().getTimestamp();
+        if (otaCacheControl.readManifestTimestamp() == getManifest().getTimestamp() && !forceFlush) {
             // Use cache
             try {
                 // Check cache outdated
@@ -162,12 +162,13 @@ public class CrowdinOTA implements Distribution {
                     return new String(otaCacheControl.readObjectCache(postProcessingPath), StandardCharsets.UTF_8);
                 } else {
                     Util.debugLog("Local cache outdated for " + postProcessingPath);
+                    Util.debugLog("Excepted " + otaCacheControl.readCachedObjectTimestamp(postProcessingPath) + " actual: " + manifestTimestamp);
                 }
             } catch (Exception exception) {
                 MsgUtil.debugStackTrace(exception.getStackTrace());
             }
         } else {
-            Util.debugLog("Manifest timestamp check failed " + postProcessingPath + " excepted:" + otaCacheControl.readManifestTimestamp() + " actual: " + getManifest().getTimestamp());
+            Util.debugLog("Manifest timestamp check failed " + postProcessingPath + " excepted:" + otaCacheControl.readManifestTimestamp() + " actual: " + getManifest().getTimestamp() + " forceUpdate: " + forceFlush);
         }
         // Out of the cache
         String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);
@@ -259,7 +260,7 @@ public class CrowdinOTA implements Distribution {
         }
 
         public long readManifestTimestamp() {
-            return this.metadata.getLong("manifest.timestamp", 0);
+            return this.metadata.getLong("manifest.timestamp", -1);
         }
 
         public void writeManifestTimestamp(long timestamp) {
@@ -269,11 +270,10 @@ public class CrowdinOTA implements Distribution {
 
         public long readCachedObjectTimestamp(String path) {
             String cacheKey = hash(path);
-            return this.metadata.getLong("objects." + cacheKey + ".timestamp");
+            return this.metadata.getLong("objects." + cacheKey + ".time", -1);
         }
 
-        public boolean isCachedObjectOutdated(String path, long manifestTimestamp) {
-            String cacheKey = hash(path);
+        public synchronized boolean isCachedObjectOutdated(String path, long manifestTimestamp) {
             return readCachedObjectTimestamp(path) != manifestTimestamp;
         }
 
@@ -282,10 +282,10 @@ public class CrowdinOTA implements Distribution {
             return Files.readAllBytes(new File(Util.getCacheFolder(), cacheKey).toPath());
         }
 
-        public void writeObjectCache(String path, byte[] data, long manifestTimestamp) throws IOException {
+        public synchronized void writeObjectCache(String path, byte[] data, long manifestTimestamp) throws IOException {
             String cacheKey = hash(path);
             Files.write(new File(Util.getCacheFolder(), cacheKey).toPath(), data);
-            this.metadata.set("objects." + cacheKey, manifestTimestamp);
+            this.metadata.set("objects." + cacheKey + ".time", manifestTimestamp);
             save();
         }
 
