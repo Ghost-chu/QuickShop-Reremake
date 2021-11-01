@@ -193,7 +193,9 @@ public class SimpleTextManager implements TextManager, Reloadable {
             if ("language-version".equals(key) || "config-version".equals(key) || "version".equals(key)) {
                 continue;
             }
-            distributionConfiguration.set(key, distributionConfiguration.get(key));
+            Object content = overrideConfiguration.get(key);
+            Util.debugLog("Override key " + key + " with content: " + content);
+            distributionConfiguration.set(key, content);
         }
     }
 
@@ -234,9 +236,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             localOverrideFile.getParentFile().mkdirs();
             localOverrideFile.createNewFile();
         }
-        JsonConfiguration configuration = new JsonConfiguration();
-        configuration.loadFromString(Util.readToString(localOverrideFile));
-        return configuration;
+        return JsonConfiguration.loadConfiguration(localOverrideFile);
     }
 
     /**
