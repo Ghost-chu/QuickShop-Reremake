@@ -160,6 +160,7 @@ public class ShopLoader {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 this.plugin.getLogger().info("Loading the shops in worlds...");
                 for (Shop shop : pendingLoadShops) {
+                    plugin.getShopManager().loadShop(shop.getLocation().getWorld().getName(), shop);
                     shop.onLoad();
                     shop.update();
                 }
