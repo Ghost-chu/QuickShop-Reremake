@@ -19,14 +19,10 @@
 
 package org.maxgamer.quickshop.localization.text.distributions.crowdin;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import lombok.*;
-import okhttp3.Request;
-import okhttp3.Response;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -36,22 +32,17 @@ import org.maxgamer.quickshop.localization.text.distributions.Distribution;
 import org.maxgamer.quickshop.localization.text.distributions.crowdin.bean.Manifest;
 import org.maxgamer.quickshop.util.HttpUtil;
 import org.maxgamer.quickshop.util.JsonUtil;
+import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
 public class CrowdinOTA implements Distribution {
     protected static final String CROWDIN_OTA_HOST = "https://distributions.crowdin.net/daf1a8db40f132ce157c457xrm4/";
-    protected final Cache<String, String> requestCachePool = CacheBuilder.newBuilder()
-            .expireAfterWrite(7, TimeUnit.DAYS)
-            .build();
     private final QuickShop plugin;
 
     public CrowdinOTA(QuickShop plugin) {
@@ -79,27 +70,7 @@ public class CrowdinOTA implements Distribution {
     @Nullable
     public String getManifestJson() {
         String url = CROWDIN_OTA_HOST + "manifest.json";
-        String data;
-        if (requestCachePool.getIfPresent(url) != null) {
-            return requestCachePool.getIfPresent(url);
-        }
-        try (Response response = HttpUtil.create().getClient().newCall(new Request.Builder().get().url(url).build()).execute()) {
-            val body = response.body();
-            if (body == null) {
-                return null;
-            }
-            data = body.string();
-            if (response.code() != 200) {
-                plugin.getLogger().warning("Couldn't get manifest: " + response.code() + ", please report to QuickShop!");
-                return null;
-            }
-            requestCachePool.put(url, data);
-        } catch (IOException e) {
-            e.printStackTrace();
-            plugin.getLogger().log(Level.WARNING, "Failed to download manifest.json, multi-language system won't work");
-            return null;
-        }
-        return data;
+        return HttpUtil.createGet(url);
     }
 
     /**
@@ -178,49 +149,77 @@ public class CrowdinOTA implements Distribution {
         }
         // Post path (replaced with locale code)
         String postProcessingPath = fileCrowdinPath.replace("%locale%", crowdinLocale);
-        // Create path hash to store the file
-        String pathHash = DigestUtils.sha1Hex(postProcessingPath);
-        // Reading metadata
-        File metadataFile = new File(Util.getCacheFolder(), "i18n.metadata");
-        YamlConfiguration cacheMetadata = YamlConfiguration.loadConfiguration(metadataFile);
-        // Reading cloud timestamp
-        long localeTimestamp = cacheMetadata.getLong(pathHash + ".timestamp");
-        // Reading locale cache
-        File cachedDataFile = new File(Util.getCacheFolder(), pathHash);
-        String data = null;
-        // Getting local cache
-        if (cachedDataFile.exists()) {
-            Util.debugLog("Reading data from local cache: " + cachedDataFile.getCanonicalPath());
-            data = Util.readToString(cachedDataFile);
-        }
-        // invalidate cache, flush it
-        // force flush required OR local cache not exists OR outdated
-        if (forceFlush || data == null || localeTimestamp != manifest.getTimestamp()) {
-            String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);
-            //Util.debugLog("Reading data from remote server: " + url);
-            plugin.getLogger().info("Downloading translation " + crowdinLocale + " from: " + url);
-            try (Response response = HttpUtil.create().getClient().newCall(new Request.Builder().get().url(url).build()).execute()) {
-                val body = response.body();
-                if (body == null) {
-                    throw new OTAException(response.code(), ""); // Returns empty string (failed to getting content)
+        OTACacheControl otaCacheControl = new OTACacheControl();
+        // Validating the manifest
+        Long manifestTimestamp = getManifest().getTimestamp();
+        if (Long.valueOf(otaCacheControl.readManifestTimestamp()).equals(getManifest().getTimestamp()) && !forceFlush) {
+            // Use cache
+            try {
+                // Check cache outdated
+                if (!otaCacheControl.isCachedObjectOutdated(postProcessingPath, manifestTimestamp)) {
+                    // Return the caches
+                    return new String(otaCacheControl.readObjectCache(postProcessingPath), StandardCharsets.UTF_8);
                 }
-                data = body.string();
-                if (response.code() != 200) {
-                    throw new OTAException(response.code(), data);
-                }
-                // save to local cache file
-                Files.write(cachedDataFile.toPath(), data.getBytes(StandardCharsets.UTF_8));
-            } catch (IOException e) {
-                plugin.getLogger().log(Level.WARNING, "Failed to download manifest.json, multi-language system may won't work");
-                e.printStackTrace();
-                return "";
+            } catch (Exception exception) {
+                MsgUtil.debugStackTrace(exception.getStackTrace());
             }
-            // update cache index
-            cacheMetadata.set(pathHash + ".timestamp", manifest.getTimestamp());
-            cacheMetadata.save(metadataFile);
-            return data;
         }
+        // Out of the cache
+        if (manifestTimestamp == null) { // null-safe
+            manifestTimestamp = System.currentTimeMillis();
+        }
+        String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);
+        plugin.getLogger().info("Updating translation " + crowdinLocale + " from: " + url);
+        String data = HttpUtil.createGet(url);
+        if (data == null) {
+            // Failed to grab data
+            throw new OTAException();
+        }
+        // Successfully grab the data from the remote server
+        otaCacheControl.writeObjectCache(postProcessingPath, data.getBytes(StandardCharsets.UTF_8), manifestTimestamp);
         return data;
+
+//        String pathHash = DigestUtils.sha1Hex(postProcessingPath);
+//        // Reading metadata
+//        File metadataFile = new File(Util.getCacheFolder(), "i18n.metadata");
+//        YamlConfiguration cacheMetadata = YamlConfiguration.loadConfiguration(metadataFile);
+//        // Reading cloud timestamp
+//        long localeTimestamp = cacheMetadata.getLong(pathHash + ".timestamp");
+//        // Reading locale cache
+//        File cachedDataFile = new File(Util.getCacheFolder(), pathHash);
+//        String data = null;
+//        // Getting local cache
+//        if (cachedDataFile.exists()) {
+//            Util.debugLog("Reading data from local cache: " + cachedDataFile.getCanonicalPath());
+//            data = Util.readToString(cachedDataFile);
+//        }
+//        // invalidate cache, flush it
+//        // force flush required OR local cache not exists OR outdated
+//        if (forceFlush || data == null || localeTimestamp != manifest.getTimestamp()) {
+//            String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);
+//            //Util.debugLog("Reading data from remote server: " + url);
+//            plugin.getLogger().info("Downloading translation " + crowdinLocale + " from: " + url);
+//            try (Response response = HttpUtil.create().getClient().newCall(new Request.Builder().get().url(url).build()).execute()) {
+//                val body = response.body();
+//                if (body == null) {
+//                    throw new OTAException(response.code(), ""); // Returns empty string (failed to getting content)
+//                }
+//                data = body.string();
+//                if (response.code() != 200) {
+//                    throw new OTAException(response.code(), data);
+//                }
+//                // save to local cache file
+//                Files.write(cachedDataFile.toPath(), data.getBytes(StandardCharsets.UTF_8));
+//            } catch (IOException e) {
+//                plugin.getLogger().log(Level.WARNING, "Failed to download manifest.json, multi-language system may won't work");
+//                e.printStackTrace();
+//                return "";
+//            }
+//            // update cache index
+//            cacheMetadata.set(pathHash + ".timestamp", manifest.getTimestamp());
+//            cacheMetadata.save(metadataFile);
+//            return data;
+//        }
     }
 
     @EqualsAndHashCode(callSuper = true)
@@ -228,8 +227,6 @@ public class CrowdinOTA implements Distribution {
     @Builder
     @Data
     public static class OTAException extends Exception {
-        private int httpCode;
-        private String content;
     }
 
     @AllArgsConstructor
@@ -239,5 +236,56 @@ public class CrowdinOTA implements Distribution {
         private String fileCrowdinPath;
         private String crowdinLocale;
         private boolean forceFlush;
+    }
+
+    public static class OTACacheControl {
+        private final File metadataFile = new File(Util.getCacheFolder(), "i18n.metadata");
+        private final YamlConfiguration metadata;
+
+        public OTACacheControl() {
+            this.metadata = YamlConfiguration.loadConfiguration(this.metadataFile);
+        }
+
+        @SneakyThrows
+        private void save() {
+            this.metadata.save(this.metadataFile);
+        }
+
+        private String hash(String str) {
+            return DigestUtils.sha1Hex(str);
+        }
+
+        public long readManifestTimestamp() {
+            return this.metadata.getLong("manifest.timestamp", 0);
+        }
+
+        public void writeManifestTimestamp(long timestamp) {
+            this.metadata.set("manigest.timestamp", timestamp);
+            save();
+        }
+
+        public long readCachedObjectTimestamp(String path) {
+            String cacheKey = hash(path);
+            return this.metadata.getLong("objects." + cacheKey + ".timestamp");
+        }
+
+        public boolean isCachedObjectOutdated(String path, long manifestTimestamp) {
+            String cacheKey = hash(path);
+            return this.metadata.getLong("objects." + cacheKey + ".timestamp") != manifestTimestamp;
+        }
+
+        public byte[] readObjectCache(String path) throws IOException {
+            String cacheKey = hash(path);
+            return Files.readAllBytes(new File(Util.getCacheFolder(), cacheKey).toPath());
+        }
+
+        public void writeObjectCache(String path, byte[] data, long manifestTimestamp) throws IOException {
+            String cacheKey = hash(path);
+            Files.write(new File(Util.getCacheFolder(), cacheKey).toPath(), data);
+            this.metadata.set("objects." + cacheKey, manifestTimestamp);
+            save();
+        }
+
+
     }
 }
