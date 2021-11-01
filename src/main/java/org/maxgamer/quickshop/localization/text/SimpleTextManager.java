@@ -126,7 +126,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         // Multi File and Multi-Language loader
         // Offline Initiated
         mapper.deployBundled("/master/crowdin/lang/%locale%/messages.json", loadBundled("/master/crowdin/lang/%locale%/messages.json"));
-        distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode -> distribution.getAvailableFiles().parallelStream().forEach(crowdinFile -> {
+        distribution.getAvailableLanguages().stream().forEach(crowdinCode -> distribution.getAvailableFiles().parallelStream().forEach(crowdinFile -> {
             try {
                 // Minecraft client use lowercase wi
                 String minecraftCode = crowdinCode.toLowerCase(Locale.ROOT).replace("-", "_");
