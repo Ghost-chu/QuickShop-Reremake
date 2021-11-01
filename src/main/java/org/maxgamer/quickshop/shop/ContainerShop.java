@@ -24,6 +24,7 @@ import de.tr7zw.nbtapi.NBTTileEntity;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import me.lucko.helper.serialize.BlockPosition;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -742,7 +743,7 @@ public class ContainerShop implements Shop {
         }
 
         // TODO No-longer use SHOP_SIGN_PREFIX since we use modern storage method. Pending for deletion.
-        lines.add(new ComponentPackage(new ComponentBuilder().color(net.md_5.bungee.api.ChatColor.BLACK).appendLegacy(line2).create()));
+        lines.add(new ComponentPackage(new ComponentBuilder().color(ChatColor.RESET).appendLegacy(line2).create()));
 
         //line 3
         if (plugin.getConfiguration().getBoolean("shop.force-use-item-original-name") || !this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName()) {
@@ -751,7 +752,7 @@ public class ContainerShop implements Shop {
             if (plugin.getNbtapi() == null) {
                 // NBTAPI not installed
                 lines.add(new ComponentPackage(new ComponentBuilder()
-                        .color(net.md_5.bungee.api.ChatColor.BLACK)
+                        .color(ChatColor.RESET)
                         .append(left)
                         .appendLegacy(Util.getItemStackName(getItem()))
                         .append(right)
@@ -759,14 +760,14 @@ public class ContainerShop implements Shop {
             } else {
                 // NBTAPI installed
                 lines.add(new ComponentPackage(new ComponentBuilder()
-                        .color(net.md_5.bungee.api.ChatColor.BLACK)
+                        .color(ChatColor.RESET)
                         .append(left)
                         .append(new TranslatableComponent(ReflectFactory.getMaterialMinecraftNamespacedKey(getItem().getType())))
                         .append(right)
                         .create()));
             }
         } else {
-            lines.add(new ComponentPackage(new ComponentBuilder().color(net.md_5.bungee.api.ChatColor.BLACK).appendLegacy(plugin.text().of("signs.item-left").forLocale())
+            lines.add(new ComponentPackage(new ComponentBuilder().color(ChatColor.RESET).appendLegacy(plugin.text().of("signs.item-left").forLocale())
                     .append(Util.getItemStackName(getItem()))
                     .appendLegacy(plugin.text().of("signs.item-right").forLocale()).create()));
         }
@@ -780,9 +781,11 @@ public class ContainerShop implements Shop {
         } else {
             line4 = plugin.text().of("signs.price", plugin.getShopManager().format(this.getPrice(), this)).forLocale();
         }
-        lines.add(new ComponentPackage(new ComponentBuilder().color(net.md_5.bungee.api.ChatColor.BLACK).appendLegacy(line4).create()));
+        lines.add(new ComponentPackage(new ComponentBuilder().color(ChatColor.RESET).appendLegacy(line4).create()));
 
-        lines.forEach(pack -> Util.debugLog(ComponentSerializer.toString(pack.getComponents())));
+        if(Util.isDevMode()) {
+            lines.forEach(pack -> Util.debugLog(ComponentSerializer.toString(pack.getComponents())));
+        }
 
         return lines;
     }
