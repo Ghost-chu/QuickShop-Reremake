@@ -59,7 +59,7 @@ public class CrowdinOTA implements Distribution {
 
     @Nullable
     public Manifest getManifest() {
-        return JsonUtil.getGson().fromJson(getManifestJson(), Manifest.class);
+        return JsonUtil.regular().fromJson(getManifestJson(), Manifest.class);
     }
 
     /**
@@ -144,9 +144,9 @@ public class CrowdinOTA implements Distribution {
         if (!manifest.getFiles().contains(fileCrowdinPath)) {
             throw new IllegalArgumentException("The file " + fileCrowdinPath + " not exists on Crowdin");
         }
-        if (manifest.getCustomLanguages() != null && !manifest.getCustomLanguages().contains(crowdinLocale)) {
-            throw new IllegalArgumentException("The locale " + crowdinLocale + " not exists on Crowdin");
-        }
+//        if (manifest.getCustom_languages() != null && !manifest.getCustom_languages().contains(crowdinLocale)) {
+//            throw new IllegalArgumentException("The locale " + crowdinLocale + " not exists on Crowdin");
+//        }
         // Post path (replaced with locale code)
         String postProcessingPath = fileCrowdinPath.replace("%locale%", crowdinLocale);
         OTACacheControl otaCacheControl = new OTACacheControl();
@@ -158,16 +158,18 @@ public class CrowdinOTA implements Distribution {
                 // Check cache outdated
                 if (!otaCacheControl.isCachedObjectOutdated(postProcessingPath, manifestTimestamp)) {
                     // Return the caches
+                    Util.debugLog("Use local cache for " + postProcessingPath);
                     return new String(otaCacheControl.readObjectCache(postProcessingPath), StandardCharsets.UTF_8);
+                } else {
+                    Util.debugLog("Local cache outdated for " + postProcessingPath);
                 }
             } catch (Exception exception) {
                 MsgUtil.debugStackTrace(exception.getStackTrace());
             }
+        } else {
+            Util.debugLog("Manifest timestamp check failed " + postProcessingPath + " excepted:" + otaCacheControl.readManifestTimestamp() + " actual: " + getManifest().getTimestamp());
         }
         // Out of the cache
-        if (manifestTimestamp == null) { // null-safe
-            manifestTimestamp = System.currentTimeMillis();
-        }
         String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);
         plugin.getLogger().info("Updating translation " + crowdinLocale + " from: " + url);
         String data = HttpUtil.createGet(url);
@@ -177,6 +179,7 @@ public class CrowdinOTA implements Distribution {
         }
         // Successfully grab the data from the remote server
         otaCacheControl.writeObjectCache(postProcessingPath, data.getBytes(StandardCharsets.UTF_8), manifestTimestamp);
+        otaCacheControl.writeManifestTimestamp(getManifest().getTimestamp());
         return data;
 
 //        String pathHash = DigestUtils.sha1Hex(postProcessingPath);
@@ -260,7 +263,7 @@ public class CrowdinOTA implements Distribution {
         }
 
         public void writeManifestTimestamp(long timestamp) {
-            this.metadata.set("manigest.timestamp", timestamp);
+            this.metadata.set("manifest.timestamp", timestamp);
             save();
         }
 
@@ -271,7 +274,7 @@ public class CrowdinOTA implements Distribution {
 
         public boolean isCachedObjectOutdated(String path, long manifestTimestamp) {
             String cacheKey = hash(path);
-            return this.metadata.getLong("objects." + cacheKey + ".timestamp") != manifestTimestamp;
+            return readCachedObjectTimestamp(path) != manifestTimestamp;
         }
 
         public byte[] readObjectCache(String path) throws IOException {
