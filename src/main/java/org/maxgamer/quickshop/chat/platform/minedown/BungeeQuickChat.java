@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.chat.platform.minedown;
 
 import lombok.AllArgsConstructor;
 import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -83,16 +84,22 @@ public class BungeeQuickChat implements QuickChat {
             ComponentBuilder builder = new ComponentBuilder();
             TextSplitter.SpilledString spilledString = TextSplitter.deBakeItem(text);
             if (spilledString == null) {
+                Util.debugLog("Spilled string is null");
                 builder.append(text);
             } else {
+                Util.debugLog("Building component...");
                 builder.append(spilledString.getLeft())
                         .append(spilledString.getComponents())
                         .append(spilledString.getRight());
+                Util.debugLog("Left is  " + spilledString.getLeft());
+                Util.debugLog("Right is  " + spilledString.getRight());
+                Util.debugLog("Component is " + ComponentSerializer.toString(spilledString.getComponents()));
+                Util.debugLog("Success...");
             }
-            TextComponent centerItem = new TextComponent(builder.create());
-            ComponentBuilder cBuilder = new ComponentBuilder(json);
-            centerItem.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
-            player.spigot().sendMessage(centerItem);
+            builder.event(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create()));
+            BaseComponent[] components = builder.create();
+            Util.debugLog("Sending debug: " + ComponentSerializer.toString(components));
+            player.spigot().sendMessage(components);
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException | InstantiationException e) {
             plugin.getLogger().log(Level.WARNING, "Failed to process chat component", e);
             player.spigot().sendMessage(errorComponent);
@@ -103,7 +110,6 @@ public class BungeeQuickChat implements QuickChat {
     public @NotNull QuickComponent getItemHologramChat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String message) {
         TextComponent errorComponent = new TextComponent(plugin.text().of(player, "menu.item-holochat-error").forLocale());
         try {
-
             String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
             if (json == null) {
                 return new QuickComponentImpl(errorComponent);
@@ -111,25 +117,31 @@ public class BungeeQuickChat implements QuickChat {
             ComponentBuilder builder = new ComponentBuilder();
             TextSplitter.SpilledString spilledString = TextSplitter.deBakeItem(message);
             if (spilledString == null) {
+                Util.debugLog("Spilled string is null");
                 builder.append(message);
             } else {
+                Util.debugLog("Building component...");
                 builder.append(spilledString.getLeft())
                         .append(spilledString.getComponents())
                         .append(spilledString.getRight());
+                Util.debugLog("Left is  " + spilledString.getLeft());
+                Util.debugLog("Right is  " + spilledString.getRight());
+                Util.debugLog("Component is " + ComponentSerializer.toString(spilledString.getComponents()));
+                Util.debugLog("Success...");
             }
+
             builder.append(" ")
                     .append(plugin.text().of(player, "menu.preview").forLocale());
-            TextComponent normalmessage = new TextComponent(builder.create());
-            ComponentBuilder cBuilder = new ComponentBuilder(json);
+            // builder.event(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create()));
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
-                normalmessage.setClickEvent(new ClickEvent(
+                builder.event(new ClickEvent(
                         ClickEvent.Action.RUN_COMMAND,
                         MsgUtil.fillArgs(
                                 "/qs silentpreview {0}",
                                 shop.getRuntimeRandomUniqueId().toString())));
             }
-            normalmessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
-            return new QuickComponentImpl(normalmessage);
+            builder.event(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create()));
+            return new QuickComponentImpl(builder.create());
         } catch (Throwable t) {
             plugin.getLogger().log(Level.WARNING, "Failed to process chat component", t);
             return new QuickComponentImpl(errorComponent);

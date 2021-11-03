@@ -399,7 +399,6 @@ public class MsgUtil {
         if (shop.isUnlimited() && plugin.getConfiguration().getBoolean("shop.ignore-unlimited-shop-messages")) {
             return; // Ignore unlimited shops messages.
         }
-        Util.debugLog(transactionMessage.getMessage());
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
         if (!p.isOnline()) {
             List<TransactionMessage> msgs = OUTGOING_MESSAGES.getOrDefault(player, new LinkedList<>());
