@@ -58,7 +58,7 @@
   "not-enough-space": "&cDu har bare plass til {0} mer!",
   "refill-success": "&aPåfyllingen ble vellykket",
   "empty-success": "&aTømming av butikken ble gjennomført",
-  "admin-shop": "AdminShop",
+  "admin-shop": "AdminButikk",
   "unknown-owner": "Ukjent",
   "owner-bypass-check": "&aAlle sjekker ble ignorert. Overføringen ble gjennomført! (Du er nå eieren av butikken!)",
   "reached-maximum-can-create": "&cDu har allerede opprettet maksimum {0}/{1} butikker!",
@@ -115,8 +115,8 @@
   "blacklisted-item": "&cDu kan ikke selge denne gjenstanden fordi den er på svartelisten",
   "how-much-to-trade-for": "&aSkriv i chat hvor mye du ønsker å selge &e{1}x {0}&a for.",
   "command": {
-    "format": "&a/{0} {1} &e- {2}",
-    "format-disabled": "&c/{0} {1} &7- {2}",
+    "format": "&a/{0} {1} &- {2}",
+    "format-disabled": "&a/{0} {1} &- {2}",
     "toggle-unlimited": {
       "unlimited": "&aButikken er nå ubegrenset",
       "limited": "&aButikken er nå begrenset"
@@ -129,7 +129,7 @@
     "now-buying": "&aDenne butikken &dKJØPER &anå &e{0}",
     "now-selling": "&aDenne butikken &bSELGER &anå &e{0}",
     "cleaning": "&aFjerner butikker uten innhold...",
-    "reloading": "&aConfiguration reloaded. &eSome changes may require reboot to affect. \n&7(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won't crashed.)",
+    "reloading": "&aKonfigurasjon reloadet. &eNoen endringer kan kreve omstart til å påvirke. \n&7(Merknad: Omlastnings atferd er endret etter 4.0.9.10, vi bare omlaster på nytt, men ikke hele utvidelsen for å sikre at serveren ikke krasjer.)",
     "cleaned": "&aFjernet &e{0}&a butikker.",
     "no-type-given": "&cBruk: /qs find <gjenstand>",
     "no-world-given": "&cVennligst spesifiser en verden",
@@ -177,9 +177,9 @@
       "unban": "&eOpphev utestengelsen til en spiller på butikken",
       "freeze": "&eDeaktiver eller Aktiver all handel",
       "lock": "&eEndre butikkens låsestatus",
-      "taxaccount": "&eSet the tax account that shop using",
-      "toggledisplay": "&eToggle the shop display item status",
-      "purge": "&aStart the shop purge task in background"
+      "taxaccount": "&eSett avgift konto som butikken bruker",
+      "toggledisplay": "&eSlå av/på butikken vise varestatus",
+      "purge": "&aStart butikkrenseoppgaven i bakgrunnen"
     },
     "disabled": "&cDenne kommandoen er deaktivert: &e{0}",
     "feature-not-enabled": "Denne funksjonen er ikke aktivert i konfigurasjonsfilen."
@@ -238,7 +238,7 @@
   },
   "booleanformat": {
     "success": "&a✔",
-    "failed": "&c✘"
+    "failed": "&a✔"
   },
   "tabcomplete": {
     "price": "[pris]",
@@ -322,7 +322,7 @@
   "backup-success": "&aSikkerhetskopiering vellykket.",
   "console-only": "&cDenne kommandoen kan bare utføres i konsollen.",
   "console-only-danger": "&cDette er en skummel kommando du skal være forsiktig med, derfor kan den bare brukes i konsollen.",
-  "clean-warning": "&eThis command will purge &call &eshops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
+  "clean-warning": "&eDenne kommandoen vil rense &ringe &ebutikker hvis butikken er ødelagt, ble opprettet i ikke tillatte verdener, selger/kjøper ikke tillatte varer eller &c&lEKSISERER I EN ULOADET VERDEN&e. Sørg for å lage en fullstendig sikkerhetskopi av butikkdataene dine først og bruk &b/qs cleanghost bekreft &efor å fortsette.",
   "shop-creation-failed": "&cOpprettelse av butikk feilet, vennligst ta kontakt med server administrator.",
   "shop-owner-self-trade": "&eDu handler i din egen butikk, du vil ikke tjene penger på denne måten.",
   "chest-title": "QuickShop Butikk",
@@ -331,17 +331,17 @@
   "unlimited-shop-owner-keeped": "&eOBS: Butikkeieren er fortsatt ubegrenset butikkeier, du trenger å sette ny butikkeier manuelt.",
   "server-crash-warning": "&cServeren kan krasje etter å ha utført kommando /qs reload hvis du erstatter/sletter QuickShop plugin Jar filen mens serveren kjører.",
   "reloading-status": {
-    "success": "&aReload completed without any errors.",
-    "require-restart": "&aReload completed. &e(Some changes require server restart to affect)",
-    "failed": "&cReload failed, check the server console",
-    "scheduled": "&aReload completed. &7(Some changes required a while to affect)"
+    "success": "&aOmlastning fullført uten noen feil.",
+    "require-restart": "&aOmlasting fullført. &(Noen endringer krever at serveren starter på nytt)",
+    "failed": "&cOmlastningen mislyktes, sjekk serverkonsollen",
+    "scheduled": "&aOpplasting fullført. &7(Noen endringer tok en stund for å påvirke)"
   },
-  "client-language-changed": "&aQuickShop detected your client language setting has been changed, we're now using {0} locale for you.",
-  "client-language-unsupported": "&eQuickShop doesn't support your client language, we're fallback to {0} locale now.",
-  "taxaccount-set": "&aThis shop's tax account has been set to &e{0}",
-  "taxaccount-unset": "&aThis shop's tax account now following server global setting.",
-  "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
-  "display-turn-on": "&aSuccessfully turn on the shop display.",
-  "display-turn-off": "&aSuccessfully turn off the shop display.",
-  "shop-purged-start": "&aShop purge started, check the console for details."
+  "client-language-changed": "&aQuickShop oppdaget at språkinnstillingen for klienten din er endret, vi bruker nå lokaliteten {0} for deg.",
+  "client-language-unsupported": "&eQuickShop støtter ikke ditt klientspråk. Vi går tilbake til {0} lokale nå.",
+  "taxaccount-set": "&aDenne butikkens skattekonto er satt til &e{0}",
+  "taxaccount-unset": "&aDenne butikkens skattekonto følger nå server globale innstilling.",
+  "taxaccount-invalid": "&cTarget konto er ikke ugyldig, vennligst skriv inn et gyldig spillernavn eller uuid(med bindestrek).",
+  "display-turn-on": "&aVellykket aktivering av visning av butikk.",
+  "display-turn-off": "&aVellykket deaktivering av butikkvisning.",
+  "shop-purged-start": "&aShop renset, sjekk konsollen for detaljer."
 }
