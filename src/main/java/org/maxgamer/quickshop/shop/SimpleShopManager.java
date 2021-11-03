@@ -727,16 +727,17 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     Integer.toString(shop.getLocation().getBlockX()),
                     Integer.toString(shop.getLocation().getBlockY()),
                     Integer.toString(shop.getLocation().getBlockZ())).forLocale();
-        }
+            transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
 
-        transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
-
-        if (plugin.getConfiguration().getBoolean("shop.sending-stock-message-to-staffs")) {
-            for (UUID staff : shop.getModerator().getStaffs()) {
-                MsgUtil.send(shop, staff, transactionMessage);
+            if (plugin.getConfiguration().getBoolean("shop.sending-stock-message-to-staffs")) {
+                for (UUID staff : shop.getModerator().getStaffs()) {
+                    MsgUtil.send(shop, staff, transactionMessage);
+                }
             }
+            MsgUtil.send(shop, shop.getOwner(), transactionMessage);
         }
-        MsgUtil.send(shop, shop.getOwner(), transactionMessage);
+
+
 
 
         shop.buy(buyer, buyerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
@@ -1119,16 +1120,17 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     Integer.toString(shop.getLocation().getBlockY()),
                     Integer.toString(shop.getLocation().getBlockZ()),
                     MsgUtil.convertItemStackToTranslateText(shop.getItem().getType())).forLocale();
-        }
+            transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
 
-        transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
-
-        MsgUtil.send(shop, shop.getOwner(), transactionMessage);
-        if (plugin.getConfiguration().getBoolean("shop.sending-stock-message-to-staffs")) {
-            for (UUID staff : shop.getModerator().getStaffs()) {
-                MsgUtil.send(shop, staff, transactionMessage);
+            MsgUtil.send(shop, shop.getOwner(), transactionMessage);
+            if (plugin.getConfiguration().getBoolean("shop.sending-stock-message-to-staffs")) {
+                for (UUID staff : shop.getModerator().getStaffs()) {
+                    MsgUtil.send(shop, staff, transactionMessage);
+                }
             }
         }
+
+
         shop.sell(seller, sellerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
         sendPurchaseSuccess(seller, shop, amount);
         ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, seller, sellerInventory, amount, total, taxModifier);
