@@ -168,7 +168,9 @@ public class MsgUtil {
         }
         return raw;
     }
+
     private static Map.Entry<String, String> cachedGameLanguageCode = null;
+
     @Unstable
     public static String processGameLanguageCode(String languageCode) {
         if (cachedGameLanguageCode != null && cachedGameLanguageCode.getKey().equals(languageCode)) {
@@ -196,11 +198,12 @@ public class MsgUtil {
                     languageCode = language + '_' + country;
                 }
             }
+            languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
+            cachedGameLanguageCode = new AbstractMap.SimpleEntry<>(copyCode, languageCode);
+            return languageCode;
+        } else {
+            return languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
         }
-
-        languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
-        cachedGameLanguageCode = new AbstractMap.SimpleEntry<>(copyCode, languageCode);
-        return languageCode;
     }
 
     @Unstable
