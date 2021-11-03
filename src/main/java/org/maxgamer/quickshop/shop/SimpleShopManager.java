@@ -713,13 +713,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 String.valueOf(amount),
                 MsgUtil.convertItemStackToTranslateText(shop.getItem().getType())).forLocale();
 
-        if (space == amount) {
-            msg += "\n" + plugin.text().of(buyer, "shop-out-of-space",
-                    Integer.toString(shop.getLocation().getBlockX()),
-                    Integer.toString(shop.getLocation().getBlockY()),
-                    Integer.toString(shop.getLocation().getBlockZ())).forLocale();
-        }
-
         MsgUtil.TransactionMessage transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
 
         if (plugin.getConfiguration().getBoolean("shop.sending-stock-message-to-staffs")) {
@@ -728,6 +721,25 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         }
         MsgUtil.send(shop, shop.getOwner(), transactionMessage);
+
+        if (space == amount) {
+            msg = plugin.text().of(buyer, "shop-out-of-space",
+                    Integer.toString(shop.getLocation().getBlockX()),
+                    Integer.toString(shop.getLocation().getBlockY()),
+                    Integer.toString(shop.getLocation().getBlockZ())).forLocale();
+            transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
+
+            if (plugin.getConfiguration().getBoolean("shop.sending-stock-message-to-staffs")) {
+                for (UUID staff : shop.getModerator().getStaffs()) {
+                    MsgUtil.send(shop, staff, transactionMessage);
+                }
+            }
+            MsgUtil.send(shop, shop.getOwner(), transactionMessage);
+        }
+
+
+
+
         shop.buy(buyer, buyerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
         sendSellSuccess(buyer, shop, amount);
         ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, taxModifier);
@@ -1092,14 +1104,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     MsgUtil.convertItemStackToTranslateText(shop.getItem().getType()),
                     Double.toString(total)).forLocale();
         }
-        // Transfers the item from A to B
-        if (stock == amount) {
-            msg += "\n" + plugin.text().of(seller, "shop-out-of-stock",
-                    Integer.toString(shop.getLocation().getBlockX()),
-                    Integer.toString(shop.getLocation().getBlockY()),
-                    Integer.toString(shop.getLocation().getBlockZ()),
-                    MsgUtil.convertItemStackToTranslateText(shop.getItem().getType())).forLocale();
-        }
 
         MsgUtil.TransactionMessage transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
 
@@ -1109,6 +1113,24 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 MsgUtil.send(shop, staff, transactionMessage);
             }
         }
+        // Transfers the item from A to B
+        if (stock == amount) {
+            msg = plugin.text().of(seller, "shop-out-of-stock",
+                    Integer.toString(shop.getLocation().getBlockX()),
+                    Integer.toString(shop.getLocation().getBlockY()),
+                    Integer.toString(shop.getLocation().getBlockZ()),
+                    MsgUtil.convertItemStackToTranslateText(shop.getItem().getType())).forLocale();
+            transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
+
+            MsgUtil.send(shop, shop.getOwner(), transactionMessage);
+            if (plugin.getConfiguration().getBoolean("shop.sending-stock-message-to-staffs")) {
+                for (UUID staff : shop.getModerator().getStaffs()) {
+                    MsgUtil.send(shop, staff, transactionMessage);
+                }
+            }
+        }
+
+
         shop.sell(seller, sellerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
         sendPurchaseSuccess(seller, shop, amount);
         ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, seller, sellerInventory, amount, total, taxModifier);

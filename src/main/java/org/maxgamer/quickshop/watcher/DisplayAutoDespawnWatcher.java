@@ -89,12 +89,12 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
         if (shop.getDisplay() != null) {
             if (shop.getDisplay().isPendingRemoval()) {
                 // Actually remove the pending display
-                Util.debugLog("Removing the shop " + shop + " the display, cause nobody can see it");
+                //Util.debugLog("Removing the shop " + shop + " the display, cause nobody can see it");
                 Util.mainThreadRun(() -> shop.getDisplay().remove());
                 return true;
             } else {
                 // Delayed to next calling
-                Util.debugLog("Pending to remove the shop " + shop + " the display, cause nobody can see it");
+                //Util.debugLog("Pending to remove the shop " + shop + " the display, cause nobody can see it");
                 shop.getDisplay().pendingRemoval();
                 return false;
             }

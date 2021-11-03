@@ -27,7 +27,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -170,8 +169,15 @@ public class MsgUtil {
         return raw;
     }
 
+    private static Map.Entry<String, String> cachedGameLanguageCode = null;
+
     @Unstable
     public static String processGameLanguageCode(String languageCode) {
+        if (cachedGameLanguageCode != null && cachedGameLanguageCode.getKey().equals(languageCode)) {
+            return cachedGameLanguageCode.getValue();
+
+        }
+        String copyCode = languageCode;
         if ("default".equalsIgnoreCase(languageCode)) {
             Locale locale = Locale.getDefault();
             String language = locale.getLanguage();
@@ -179,7 +185,7 @@ public class MsgUtil {
             boolean isLanguageEmpty = StringUtils.isEmpty(language);
             boolean isCountryEmpty = StringUtils.isEmpty(country);
             if (isLanguageEmpty && isCountryEmpty) {
-                plugin.getLogger().warning("Unable to get language code, fallback to en_us, please change game-language option in config.yml.");
+                //plugin.getLogger().warning("Unable to get language code, fallback to en_us, please change game-language option in config.yml.");
                 languageCode = "en_us";
             } else {
                 if (isCountryEmpty || isLanguageEmpty) {
@@ -187,14 +193,17 @@ public class MsgUtil {
                     if ("en_en".equals(languageCode)) {
                         languageCode = "en_us";
                     }
-                    plugin.getLogger().warning("Unable to get language code, guessing " + languageCode + " instead, If it's incorrect, please change game-language option in config.yml.");
+                    // plugin.getLogger().warning("Unable to get language code, guessing " + languageCode + " instead, If it's incorrect, please change game-language option in config.yml.");
                 } else {
                     languageCode = language + '_' + country;
                 }
             }
+            languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
+            cachedGameLanguageCode = new AbstractMap.SimpleEntry<>(copyCode, languageCode);
+            return languageCode;
+        } else {
+            return languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
         }
-        languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
-        return languageCode;
     }
 
     @Unstable
@@ -399,7 +408,6 @@ public class MsgUtil {
         if (shop.isUnlimited() && plugin.getConfiguration().getBoolean("shop.ignore-unlimited-shop-messages")) {
             return; // Ignore unlimited shops messages.
         }
-        Util.debugLog(transactionMessage.getMessage());
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
         if (!p.isOnline()) {
             List<TransactionMessage> msgs = OUTGOING_MESSAGES.getOrDefault(player, new LinkedList<>());
@@ -716,14 +724,10 @@ public class MsgUtil {
                 if (spilledString == null) {
                     plugin.getQuickChat().send(sender, msg);
                 } else {
-                    Util.debugLog("Built successfully");
                     ComponentBuilder builder = new ComponentBuilder();
-                    Util.debugLog("Left " + Arrays.toString(TextComponent.fromLegacyText(spilledString.getLeft())));
-                    builder.append(TextComponent.fromLegacyText(spilledString.getLeft()));
-                    Util.debugLog("Center " + Arrays.toString(spilledString.getComponents()));
+                    builder.appendLegacy(spilledString.getLeft());
                     builder.append(spilledString.getComponents());
-                    Util.debugLog("Right " + Arrays.toString(TextComponent.fromLegacyText(spilledString.getRight())));
-                    builder.append(TextComponent.fromLegacyText(spilledString.getRight()));
+                    builder.appendLegacy(spilledString.getRight());
                     plugin.getQuickChat().send(sender, new QuickComponentImpl(builder.create()));
                 }
             } catch (Throwable throwable) {
