@@ -27,7 +27,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -715,14 +714,10 @@ public class MsgUtil {
                 if (spilledString == null) {
                     plugin.getQuickChat().send(sender, msg);
                 } else {
-                    Util.debugLog("Built successfully");
                     ComponentBuilder builder = new ComponentBuilder();
-                    Util.debugLog("Left " + Arrays.toString(TextComponent.fromLegacyText(spilledString.getLeft())));
-                    builder.append(TextComponent.fromLegacyText(spilledString.getLeft()));
-                    Util.debugLog("Center " + Arrays.toString(spilledString.getComponents()));
+                    builder.appendLegacy(spilledString.getLeft());
                     builder.append(spilledString.getComponents());
-                    Util.debugLog("Right " + Arrays.toString(TextComponent.fromLegacyText(spilledString.getRight())));
-                    builder.append(TextComponent.fromLegacyText(spilledString.getRight()));
+                    builder.appendLegacy(spilledString.getRight());
                     plugin.getQuickChat().send(sender, new QuickComponentImpl(builder.create()));
                 }
             } catch (Throwable throwable) {

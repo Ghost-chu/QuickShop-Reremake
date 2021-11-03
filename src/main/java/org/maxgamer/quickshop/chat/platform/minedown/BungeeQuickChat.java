@@ -85,16 +85,12 @@ public class BungeeQuickChat implements QuickChat {
             TextSplitter.SpilledString spilledString = TextSplitter.deBakeItem(text);
             if (spilledString == null) {
                 Util.debugLog("Spilled string is null");
-                builder.append(text);
+                builder.appendLegacy(text);
             } else {
-                Util.debugLog("Building component...");
-                builder.append(spilledString.getLeft())
-                        .append(spilledString.getComponents())
-                        .append(spilledString.getRight());
-                Util.debugLog("Left is  " + spilledString.getLeft());
-                Util.debugLog("Right is  " + spilledString.getRight());
-                Util.debugLog("Component is " + ComponentSerializer.toString(spilledString.getComponents()));
-                Util.debugLog("Success...");
+                builder.appendLegacy(spilledString.getLeft());
+                net.md_5.bungee.api.ChatColor color = builder.getCurrentComponent().getColorRaw();
+                builder.append(spilledString.getComponents()).color(color);
+                builder.appendLegacy(spilledString.getRight()).color(color);
             }
             builder.event(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create()));
             BaseComponent[] components = builder.create();
@@ -117,21 +113,15 @@ public class BungeeQuickChat implements QuickChat {
             ComponentBuilder builder = new ComponentBuilder();
             TextSplitter.SpilledString spilledString = TextSplitter.deBakeItem(message);
             if (spilledString == null) {
-                Util.debugLog("Spilled string is null");
-                builder.append(message);
+                builder.appendLegacy(message);
             } else {
-                Util.debugLog("Building component...");
-                builder.append(spilledString.getLeft())
-                        .append(spilledString.getComponents())
-                        .append(spilledString.getRight());
-                Util.debugLog("Left is  " + spilledString.getLeft());
-                Util.debugLog("Right is  " + spilledString.getRight());
-                Util.debugLog("Component is " + ComponentSerializer.toString(spilledString.getComponents()));
-                Util.debugLog("Success...");
+                builder.appendLegacy(spilledString.getLeft());
+                net.md_5.bungee.api.ChatColor color = builder.getCurrentComponent().getColorRaw();
+                builder.append(spilledString.getComponents()).color(color);
+                builder.appendLegacy(spilledString.getRight()).color(color);
             }
 
-            builder.append(" ")
-                    .append(plugin.text().of(player, "menu.preview").forLocale());
+            builder.appendLegacy(" ").appendLegacy(plugin.text().of(player, "menu.preview").forLocale());
             // builder.event(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create()));
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
                 builder.event(new ClickEvent(
