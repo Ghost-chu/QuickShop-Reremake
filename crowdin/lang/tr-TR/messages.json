@@ -5,7 +5,7 @@
   "translation-version": "Destek Versiyonu: Reremake",
   "translation-contributors": "Katkıda Bulunanlar: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Dil Bölgesi: Türkçe (tr_TR)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&sHiç QuickShop bulunamadı. Birine bakman lazım.",
   "no-anythings-in-your-hand": "&cElinde hiçbir şey yok.",
   "no-permission": "&cBunu yapmaya iznin yok.",
@@ -179,7 +179,7 @@
       "lock": "&eMarketin kilit statüsünü değiştir",
       "taxaccount": "&eSet the tax account that shop using",
       "toggledisplay": "&eToggle the shop display item status",
-      "purge": "&aStart the shop purge task in background"
+      "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&cBu komut aktif değil: &e{0}",
     "feature-not-enabled": "Bu özellik yapılandırma dosyasında aktif değil."
@@ -228,7 +228,9 @@
     "lock": "&eMarket kilidi: &b{0} &e[&d&lDurum&e]",
     "lock-hover": "&eMarketin kilit korumasını aktif/deaktif et.",
     "freeze": "&eDondurma modu: &b{0} &e[&d&lDurum&e]",
-    "freeze-hover": "&eMarketin dondurulma durumunu değiştir."
+    "freeze-hover": "&eMarketin dondurulma durumunu değiştir.",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
