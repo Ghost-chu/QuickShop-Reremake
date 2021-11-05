@@ -179,7 +179,7 @@
       "lock": "&eCambiar el estado de bloqueo de la tienda",
       "taxaccount": "&eConfigure la cuenta de impuestos que compra usando",
       "toggledisplay": "&eAlterna el estado de visualización del artículo de la tienda",
-      "purge": "&eStart the shop purge task in background"
+      "purge": "&aIniciar la tarea de purga de la tienda en segundo plano"
     },
     "disabled": "&cEste comando esta deshabilitado: &e{0}",
     "feature-not-enabled": "La característica no está habilitada en la configuración."
