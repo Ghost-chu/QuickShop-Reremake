@@ -229,8 +229,8 @@
     "lock-hover": "&eAktiviere/Deaktiviere den Sperrschutz des Shops.",
     "freeze": "&eFreeze Modus: &b{0} &e[&d&lÄndern&e]",
     "freeze-hover": "&eÄndere den Freeze-Status des Shops.",
-    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
-    "toggledisplay-hover": "&eToggle the shop's displayitem status"
+    "toggledisplay": "&eItem anzeigen: &b{0} &e[&d&lÄndern&e]",
+    "toggledisplay-hover": "&eÄndere den Item Anzeigemodus des Shops"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -340,10 +340,10 @@
   },
   "client-language-changed": "&aQuickShop hat festgestellt, dass deine Client-Spracheinstellungen geändert wurden. Wir verwenden jetzt die Spracheinstellung {0} für dich.",
   "client-language-unsupported": "&eQuickShop unterstützt deine Client-Sprache nicht. Wir verwenden die Spracheinstellung {0} jetzt.",
-  "taxaccount-set": "&aThis shop's tax account has been set to &e{0}",
-  "taxaccount-unset": "&aThis shop's tax account now following server global setting.",
-  "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
-  "display-turn-on": "&aSuccessfully turn on the shop display.",
-  "display-turn-off": "&aSuccessfully turn off the shop display.",
-  "shop-purged-start": "&aShop purge started, check the console for details."
+  "taxaccount-set": "&aDas Steuerkonto dieses Shops wurde auf &e{0} gesetzt",
+  "taxaccount-unset": "&aDas Steuerkonto dieses Shops wurde auf die globalen Servereinstellungen geändert.",
+  "taxaccount-invalid": "&cZielkonto ist nicht gültig. Bitte gib einen gültigen spielernamen oder eine gültige UUID (Mit Bindestrichen) an.",
+  "display-turn-on": "&aShopanzeige erfolgreich aktiviert.",
+  "display-turn-off": "&aShopanzeige erfolgreich deaktiviert.",
+  "shop-purged-start": "&aShop-Löschung gestartet. Überprüfe die Konsole für details."
 }
