@@ -3,7 +3,7 @@ description: 'Report a bug with QuickShop to us.'
 
 title: '[BUG] '
 labels:
-  - 'bug'
+  - 'Bug'
 
 body:
   - type: 'markdown'
