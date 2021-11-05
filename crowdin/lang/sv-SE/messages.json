@@ -5,7 +5,7 @@
   "translation-version": "Supportversion: Reremake",
   "translation-contributors": "Medhjälpare: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken och Andre_601",
   "translation-country": "Språkområde: Svenska (sv_SE)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&cKunde inte hitta en QuickShop. Du måste titta på en.",
   "no-anythings-in-your-hand": "&cDet finns inget i din hand.",
   "no-permission": "&cDu har inte tillåtelse till att göra detta.",
@@ -179,7 +179,7 @@
       "lock": "&eVäxla butikens låsstatus",
       "taxaccount": "&eAnge skattekontot som butiken använder",
       "toggledisplay": "&eVäxla butikens status för visningsobjekt",
-      "purge": "&aStarta butikens rensningsuppgifter i bakgrunden"
+      "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&cDetta kommando är inaktiverat: &e{0}",
     "feature-not-enabled": "Funktionen är inte aktiverad i konfigurationsfilen."
@@ -228,7 +228,9 @@
     "lock": "&eButikslås: &b{0} &e[&d&lVäxla&e]",
     "lock-hover": "&eAktivera/Inaktivera butikens låsskydd.",
     "freeze": "&eFryst läge: &b{0} &e[&d&lVäxla&e]",
-    "freeze-hover": "&eVäxla butikens frysningsstatus."
+    "freeze-hover": "&eVäxla butikens frysningsstatus.",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
