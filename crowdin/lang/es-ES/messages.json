@@ -5,7 +5,7 @@
   "translation-version": "&c&lVersión Soportada: &b&lReremake",
   "translation-contributors": "Contribuidores: Randall_Rut, Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken y Andre_601",
   "translation-country": "&c&lZona de idioma: &b&lEspañol (es_ES)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&cNo se pudo encontrar ninguna tienda. Tienes que mirar hacia una.",
   "no-anythings-in-your-hand": "&cNo hay nada en tu mano.",
   "no-permission": "&cNo tienes permiso para hacer eso.",
@@ -179,7 +179,7 @@
       "lock": "&eCambiar el estado de bloqueo de la tienda",
       "taxaccount": "&eConfigure la cuenta de impuestos que compra usando",
       "toggledisplay": "&eAlterna el estado de visualización del artículo de la tienda",
-      "purge": "&aIniciar la tarea de purga de la tienda en segundo plano"
+      "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&cEste comando esta deshabilitado: &e{0}",
     "feature-not-enabled": "La característica no está habilitada en la configuración."
@@ -228,7 +228,9 @@
     "lock": "&eTienda bloqueada: &b{0} &e[&d&lCambiar&e]",
     "lock-hover": "&eActivar/Desactivar protección contra bloqueo de la tienda.",
     "freeze": "&eTienda bloqueada: &b{0} &e[&d&lCambiar&e]",
-    "freeze-hover": "&eCambiar estado de congelación de la tienda.,"
+    "freeze-hover": "&eCambiar estado de congelación de la tienda.,",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
