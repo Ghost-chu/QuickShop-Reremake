@@ -5,7 +5,7 @@
   "translation-version": "Support Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: English (en_US)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&cCould not find a QuickShop. You need to look at one.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cYou do not have permission to do that.",
@@ -228,7 +228,9 @@
     "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
     "lock-hover": "&eEnable/Disable the shop's lock protection.",
     "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
-    "freeze-hover": "&eToggle the shop's freeze status."
+    "freeze-hover": "&eToggle the shop's freeze status.",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",

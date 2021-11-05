@@ -354,7 +354,7 @@ public class ShopLoader {
         errors = 0;
         List<ShopRawDatabaseInfo> shopRawDatabaseInfoList = new ArrayList<>();
         try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
-            this.plugin.getLogger().info("Getting shops from the database...");
+           // this.plugin.getLogger().info("Getting shops from the database...");
             while (rs.next()) {
                 ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
                 shopRawDatabaseInfoList.add(origin);
