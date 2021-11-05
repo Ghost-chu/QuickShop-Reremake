@@ -68,6 +68,10 @@ softdepend:
   - IridiumSkyblock
   - FabledSkyblock
   - NBTAPI
+  - TNE
+  - TNE-Bukkit
+  - TheNewEconomy
+  - GemsEconomy
 
 api-version: 1.15
 

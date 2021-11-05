@@ -62,6 +62,7 @@ import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
 import org.maxgamer.quickshop.command.SimpleCommandManager;
 import org.maxgamer.quickshop.database.*;
+import org.maxgamer.quickshop.economy.EconomyProviderNotFoundException;
 import org.maxgamer.quickshop.economy.Economy_GemsEconomy;
 import org.maxgamer.quickshop.economy.Economy_TNE;
 import org.maxgamer.quickshop.economy.Economy_Vault;
@@ -94,6 +95,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.Map.Entry;
@@ -496,13 +498,21 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 return false;
             }
             economy = ServiceInjector.getEconomy(economy);
+            if (Objects.equals(this.bootError, BuiltInSolution.econHandlerMissingError()) || Objects.equals(this.bootError, BuiltInSolution.econError())) {
+                this.bootError = null;
+            }
         } catch (Exception e) {
-            this.getSentryErrorReporter().ignoreThrow();
-            getLogger().log(Level.WARNING, "Something going wrong when loading up economy system", e);
-            getLogger().severe("QuickShop could not hook into a economy/Not found Vault or Reserve!");
-            getLogger().severe("QuickShop CANNOT start!");
-            setupBootError(BuiltInSolution.econError(), false);
-            getLogger().severe("Plugin listeners was disabled, please fix the economy issue.");
+            if (e instanceof EconomyProviderNotFoundException) {
+                getLogger().log(Level.WARNING, "Something going wrong when loading up economy system", e);
+                getLogger().severe("Failed to hook into the Economy Handler that configuration point to!");
+                getLogger().severe("QuickShop CANNOT start!");
+                setupBootError(BuiltInSolution.econHandlerMissingError(), false);
+            } else {
+                getLogger().log(Level.WARNING, "Something going wrong when loading up economy system", e);
+                getLogger().severe("QuickShop could not hook into a economy/Not found Vault or Reserve!");
+                getLogger().severe("QuickShop CANNOT start!");
+                setupBootError(BuiltInSolution.econError(), false);
+            }
             return false;
         }
         return true;
@@ -1138,12 +1148,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             selectedVersion = 10;
         }
         if (selectedVersion == 10) {
-            getConfiguration().set("shop.pay-player-from-unlimited-shop-owner", null); // Removed
+            getConfiguration().remove("shop.pay-player-from-unlimited-shop-owner"); // Removed
             getConfiguration().set("config-version", 11);
             selectedVersion = 11;
         }
         if (selectedVersion == 11) {
-            getConfiguration().set("shop.enable-enderchest", null); // Removed
+            getConfiguration().remove("shop.enable-enderchest"); // Removed
             getConfiguration().set("plugin.OpenInv", true);
             List<String> shoppable = getConfiguration().getStringList("shop-blocks");
             shoppable.add("ENDER_CHEST");
@@ -1152,12 +1162,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             selectedVersion = 12;
         }
         if (selectedVersion == 12) {
-            getConfiguration().set("plugin.ProtocolLib", null); // Removed
-            getConfiguration().set("plugin.BKCommonLib", null); // Removed
-            getConfiguration().set("database.use-varchar", null); // Removed
-            getConfiguration().set("database.reconnect", null); // Removed
+            getConfiguration().remove("plugin.ProtocolLib"); // Removed
+            getConfiguration().remove("plugin.BKCommonLib"); // Removed
+            getConfiguration().remove("database.use-varchar"); // Removed
+            getConfiguration().remove("database.reconnect"); // Removed
             getConfiguration().set("display-items-check-ticks", 1200);
-            getConfiguration().set("shop.bypass-owner-check", null); // Removed
+            getConfiguration().remove("shop.bypass-owner-check"); // Removed
             getConfiguration().set("config-version", 13);
             selectedVersion = 13;
         }
@@ -1166,13 +1176,13 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             selectedVersion = 14;
         }
         if (selectedVersion == 14) {
-            getConfiguration().set("plugin.AreaShop", null);
-            getConfiguration().set("shop.special-region-only", null);
+            getConfiguration().remove("plugin.AreaShop");
+            getConfiguration().remove("shop.special-region-only");
             getConfiguration().set("config-version", 15);
             selectedVersion = 15;
         }
         if (selectedVersion == 15) {
-            getConfiguration().set("ongoingfee", null);
+            getConfiguration().remove("ongoingfee");
             getConfiguration().set("shop.display-item-show-name", false);
             getConfiguration().set("shop.auto-fetch-shop-messages", true);
             getConfiguration().set("config-version", 16);
@@ -1184,7 +1194,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
         if (selectedVersion == 17) {
             getConfiguration().set("ignore-cancel-chat-event", false);
-            getConfiguration().set("float", null);
+            getConfiguration().remove("float");
             getConfiguration().set("config-version", 18);
             selectedVersion = 18;
         }
@@ -1214,11 +1224,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             selectedVersion = 23;
         }
         if (selectedVersion == 23) {
-            getConfiguration().set("lockette.enable", null);
-            getConfiguration().set("lockette.item", null);
-            getConfiguration().set("lockette.lore", null);
-            getConfiguration().set("lockette.displayname", null);
-            getConfiguration().set("float", null);
+            getConfiguration().remove("lockette.enable");
+            getConfiguration().remove("lockette.item");
+            getConfiguration().remove("lockette.lore");
+            getConfiguration().remove("lockette.displayname");
+            getConfiguration().remove("float");
             getConfiguration().set("lockette.enable", true);
             getConfiguration().set("shop.blacklist-world", Lists.newArrayList("disabled_world_name"));
             getConfiguration().set("config-version", 24);
@@ -1253,7 +1263,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             selectedVersion = 29;
         }
         if (selectedVersion == 29) {
-            getConfiguration().set("plugin.Multiverse-Core", null);
+            getConfiguration().remove("plugin.Multiverse-Core");
             getConfiguration().set("shop.protection-checking", true);
             getConfiguration().set("config-version", 30);
             selectedVersion = 30;
@@ -1295,7 +1305,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             selectedVersion = 35;
         }
         if (selectedVersion == 35) {
-            getConfiguration().set("queue", null); // Close it for everyone
+            getConfiguration().remove("queue"); // Close it for everyone
             getConfiguration().set("config-version", 36);
             selectedVersion = 36;
         }
@@ -1313,8 +1323,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfiguration().set("protect.inventorymove", true);
             getConfiguration().set("protect.spread", true);
             getConfiguration().set("protect.fromto", true);
-            getConfiguration().set("protect.minecart", null);
-            getConfiguration().set("protect.hopper", null);
+            getConfiguration().remove("protect.minecart");
+            getConfiguration().remove("protect.hopper");
             getConfiguration().set("config-version", 39);
             selectedVersion = 39;
         }
@@ -1361,16 +1371,16 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             selectedVersion = 48;
         }
         if (selectedVersion == 48) {
-            getConfiguration().set("permission-type", null);
-            getConfiguration().set("shop.use-protection-checking-filter", null);
-            getConfiguration().set("shop.protection-checking-filter", null);
+            getConfiguration().remove("permission-type");
+            getConfiguration().remove("shop.use-protection-checking-filter");
+            getConfiguration().remove("shop.protection-checking-filter");
             getConfiguration().set("config-version", 49);
             selectedVersion = 49;
         }
         if (selectedVersion == 49 || selectedVersion == 50) {
             getConfiguration().set("shop.enchance-display-protect", false);
             getConfiguration().set("shop.enchance-shop-protect", false);
-            getConfiguration().set("protect", null);
+            getConfiguration().remove("protect");
             getConfiguration().set("config-version", 51);
             selectedVersion = 51;
         }
@@ -1379,7 +1389,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             selectedVersion = 60;
         }
         if (selectedVersion == 60) { // Ahhh fuck versions
-            getConfiguration().set("shop.strict-matches-check", null);
+            getConfiguration().remove("shop.strict-matches-check");
             getConfiguration().set("shop.display-auto-despawn", true);
             getConfiguration().set("shop.display-despawn-range", 10);
             getConfiguration().set("shop.display-check-time", 10);
@@ -1426,7 +1436,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
         if (selectedVersion == 67) {
             getConfiguration().set("disable-debuglogger", false);
-            getConfiguration().set("matcher.use-bukkit-matcher", null);
+            getConfiguration().remove("matcher.use-bukkit-matcher");
             getConfiguration().set("config-version", 68);
             selectedVersion = 68;
         }
@@ -1460,7 +1470,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             } else {
                 getConfiguration().set("use-decimal-format", false);
             }
-            getConfiguration().set("use-deciaml-format", null);
+            getConfiguration().remove("use-deciaml-format");
 
             getConfiguration().set("shop.force-load-downgrade-items.enable", false);
             getConfiguration().set("shop.force-load-downgrade-items.method", 0);
@@ -1475,7 +1485,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
         if (selectedVersion == 74) {
             String langUtilsLanguage = getConfiguration().getOrDefault("langutils-language", "en_us");
-            getConfiguration().set("langutils-language", null);
+            getConfiguration().remove("langutils-language");
             if ("en_us".equals(langUtilsLanguage)) {
                 langUtilsLanguage = "default";
             }
@@ -1485,8 +1495,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             selectedVersion = 75;
         }
         if (selectedVersion == 75) {
-            getConfiguration().set("langutils-language", null);
-            if (getConfiguration().getString("game-language") == null) {
+            getConfiguration().remove("langutils-language");
+            if (getConfiguration().get("game-language") == null) {
                 getConfiguration().set("game-language", "default");
             }
             getConfiguration().set("config-version", 76);
@@ -1533,13 +1543,13 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfiguration().set("integration.factions.trade.require.safezone", false);
             getConfiguration().set("integration.factions.trade.require.own", false);
             getConfiguration().set("integration.factions.trade.require.warzone", false);
-            getConfiguration().set("anonymous-metrics", null);
+            getConfiguration().remove("anonymous-metrics");
             getConfiguration().set("shop.ongoing-fee.async", true);
             getConfiguration().set("config-version", 78);
             selectedVersion = 78;
         }
         if (selectedVersion == 78) {
-            getConfiguration().set("shop.display-type-specifics", null);
+            getConfiguration().remove("shop.display-type-specifics");
             getConfiguration().set("config-version", 79);
             selectedVersion = 79;
         }
@@ -1569,7 +1579,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             selectedVersion = 84;
         }
         if (selectedVersion == 84) {
-            getConfiguration().set("disable-debuglogger", null);
+            getConfiguration().remove("disable-debuglogger");
             getConfiguration().set("config-version", 85);
             selectedVersion = 85;
         }
@@ -1628,9 +1638,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             selectedVersion = 93;
         }
         if (selectedVersion == 93) {
-            getConfiguration().set("disable-creative-mode-trading", null);
-            getConfiguration().set("disable-super-tool", null);
-            getConfiguration().set("allow-owner-break-shop-sign", null);
+            getConfiguration().remove("disable-creative-mode-trading");
+            getConfiguration().remove("disable-super-tool");
+            getConfiguration().remove("allow-owner-break-shop-sign");
             getConfiguration().set("shop.disable-creative-mode-trading", true);
             getConfiguration().set("shop.disable-super-tool", true);
             getConfiguration().set("shop.allow-owner-break-shop-sign", false);
@@ -1640,11 +1650,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         if (selectedVersion == 94) {
             if (getConfiguration().get("price-restriction") != null) {
                 getConfiguration().set("shop.price-restriction", getConfiguration().getStringList("price-restriction"));
-                getConfiguration().set("price-restriction", null);
+                getConfiguration().remove("price-restriction");
             } else {
                 getConfiguration().set("shop.price-restriction", new ArrayList<>(0));
             }
-            getConfiguration().set("enable-log4j", null);
+            getConfiguration().remove("enable-log4j");
             getConfiguration().set("config-version", 95);
             selectedVersion = 95;
         }
@@ -1681,7 +1691,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
         if (selectedVersion == 101) {
             getConfiguration().set("matcher.work-type", 1);
-            getConfiguration().set("work-type", null);
+            getConfiguration().remove("work-type");
             getConfiguration().set("plugin.LWC", true);
             getConfiguration().set("config-version", 102);
             selectedVersion = 102;
@@ -1700,17 +1710,17 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             selectedVersion = 104;
         }
         if (selectedVersion == 104) {
-            getConfiguration().set("cachingpool", null);
+            getConfiguration().remove("cachingpool");
             getConfiguration().set("config-version", 105);
             selectedVersion = 105;
         }
         if (selectedVersion == 105) {
             getConfiguration().set("shop.interact.sneak-to-create", getConfiguration().getBoolean("shop.sneak-to-create"));
-            getConfiguration().set("shop.sneak-to-create", null);
+            getConfiguration().remove("shop.sneak-to-create");
             getConfiguration().set("shop.interact.sneak-to-trade", getConfiguration().getBoolean("shop.sneak-to-trade"));
-            getConfiguration().set("shop.sneak-to-trade", null);
+            getConfiguration().remove("shop.sneak-to-trade");
             getConfiguration().set("shop.interact.sneak-to-control", getConfiguration().getBoolean("shop.sneak-to-control"));
-            getConfiguration().set("shop.sneak-to-control", null);
+            getConfiguration().remove("shop.sneak-to-control");
             getConfiguration().set("config-version", 106);
             selectedVersion = 106;
         }
@@ -1748,7 +1758,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfiguration().set("logging.file-size", 10);
             getConfiguration().set("debug.disable-debuglogger", false);
             getConfiguration().set("trying-fix-banlance-insuffient", false);
-            getConfiguration().set("log-actions", null);
+            getConfiguration().remove("log-actions");
             getConfiguration().set("config-version", 112);
             selectedVersion = 112;
         }
@@ -1764,7 +1774,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
         if (selectedVersion == 114) {
             getConfiguration().set("shop.interact.interact-mode", getConfiguration().getBoolean("shop.interact.switch-mode") ? 0 : 1);
-            getConfiguration().set("shop.interact.switch-mode", null);
+            getConfiguration().remove("shop.interact.switch-mode");
             getConfiguration().set("config-version", 115);
             selectedVersion = 115;
         }
@@ -1785,7 +1795,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         if (selectedVersion == 117) {
             getConfiguration().set("shop.finding.distance", getConfiguration().getInt("shop.find-distance"));
             getConfiguration().set("shop.finding.limit", 10);
-            getConfiguration().set("shop.find-distance", null);
+            getConfiguration().remove("shop.find-distance");
             getConfiguration().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 118) {
@@ -1880,22 +1890,22 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfiguration().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 136) {
-            getConfiguration().set("shop.use-global-virtual-item-queue", null);
+            getConfiguration().remove("shop.use-global-virtual-item-queue");
             getConfiguration().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 137) {
-            getConfiguration().set("integration.griefprevention.create", null);
+            getConfiguration().remove("integration.griefprevention.create");
             getConfiguration().set("integration.griefprevention.create", "INVENTORY");
 
-            getConfiguration().set("integration.griefprevention.trade", null);
+            getConfiguration().remove("integration.griefprevention.trade");
             getConfiguration().set("integration.griefprevention.trade", Collections.emptyList());
 
             boolean oldValueUntrusted = getConfiguration().getOrDefault("integration.griefprevention.delete-on-untrusted", false);
-            getConfiguration().set("integration.griefprevention.delete-on-untrusted", null);
+            getConfiguration().remove("integration.griefprevention.delete-on-untrusted");
             getConfiguration().set("integration.griefprevention.delete-on-claim-trust-changed", oldValueUntrusted);
 
             boolean oldValueUnclaim = getConfiguration().getOrDefault("integration.griefprevention.delete-on-unclaim", false);
-            getConfiguration().set("integration.griefprevention.delete-on-unclaim", null);
+            getConfiguration().remove("integration.griefprevention.delete-on-unclaim");
             getConfiguration().set("integration.griefprevention.delete-on-claim-unclaimed", oldValueUnclaim);
 
             getConfiguration().set("integration.griefprevention.delete-on-subclaim-created", false);
@@ -1923,11 +1933,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfiguration().set("purge.banned", true);
             getConfiguration().set("purge.skip-op", true);
             getConfiguration().set("purge.return-create-fee", true);
-            getConfiguration().set("shop.use-fast-shop-search-algorithm", null);
+            getConfiguration().remove("shop.use-fast-shop-search-algorithm");
             getConfiguration().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 142) {
-            getConfiguration().set("disabled-languages", null);
+            getConfiguration().remove("disabled-languages");
             getConfiguration().set("enabled-languages", Collections.singletonList("*"));
             getConfiguration().set("config-version", ++selectedVersion);
         }
@@ -1953,7 +1963,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         if (selectedVersion == 146) {
             // Updater set it to true because plugin upgrading
             // Default configuration disable it cause probably fresh install
-            getConfiguration().set("language", null);
+            getConfiguration().remove("language");
             getConfiguration().set("config-version", ++selectedVersion);
         }
         if (getConfiguration().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
@@ -1973,6 +1983,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         new File(getDataFolder(), "example.config.yml").delete();
         new File(getDataFolder(), "example-configuration.txt").delete();
         new File(getDataFolder(), "example-configuration.yml").delete();
+
+        try {
+            if (new File(getDataFolder(), "messages.json").exists())
+                Files.move(new File(getDataFolder(), "messages.json").toPath(), new File(getDataFolder(), "messages.json.outdated").toPath());
+        } catch (Exception ignore) {
+        }
 
 //        // Path exampleConfigFile = new File(getDataFolder(), "example-configuration.yml").toPath();
 //        try {

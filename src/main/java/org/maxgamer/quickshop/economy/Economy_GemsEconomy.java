@@ -24,6 +24,7 @@ import lombok.Setter;
 import lombok.ToString;
 import me.xanium.gemseconomy.api.GemsEconomyAPI;
 import me.xanium.gemseconomy.currency.Currency;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
@@ -47,7 +48,7 @@ public class Economy_GemsEconomy extends AbstractEconomy {
     @Setter
     private GemsEconomyAPI api;
 
-    public Economy_GemsEconomy(@NotNull QuickShop plugin) {
+    public Economy_GemsEconomy(@NotNull QuickShop plugin) throws EconomyProviderNotFoundException {
         super();
         this.plugin = plugin;
         this.formatter = new BuiltInEconomyFormatter(plugin);
@@ -61,7 +62,10 @@ public class Economy_GemsEconomy extends AbstractEconomy {
         this.allowLoan = plugin.getConfiguration().getBoolean("shop.allow-economy-loan");
     }
 
-    private void setupEconomy() {
+    private void setupEconomy() throws EconomyProviderNotFoundException {
+        if (Bukkit.getPluginManager().getPlugin("GemsEconomy") == null) {
+            throw new EconomyProviderNotFoundException("Configuration set economy to GemsEconomy but GemsEconomy not installed");
+        }
         this.api = new GemsEconomyAPI();
     }
 

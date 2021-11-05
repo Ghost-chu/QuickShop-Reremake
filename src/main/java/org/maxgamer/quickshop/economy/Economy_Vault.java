@@ -58,7 +58,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
     private net.milkbowl.vault.economy.Economy vault;
 
 
-    public Economy_Vault(@NotNull QuickShop plugin) {
+    public Economy_Vault(@NotNull QuickShop plugin) throws EconomyProviderNotFoundException {
         super();
         this.plugin = plugin;
         this.formatter = new BuiltInEconomyFormatter(plugin);
@@ -71,15 +71,16 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
         this.allowLoan = plugin.getConfiguration().getBoolean("shop.allow-economy-loan");
     }
 
-    private boolean setupEconomy() {
+    private boolean setupEconomy() throws EconomyProviderNotFoundException {
         if (!Util.isClassAvailable("net.milkbowl.vault.economy.Economy")) {
-            return false; // QUICKSHOP-YS I can't believe it broken almost a year and nobody found it, my sentry exploded.
+            throw new EconomyProviderNotFoundException("Configuration set economy to Vault but Vault not installed");
         }
         RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> economyProvider;
         try {
             economyProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
         } catch (Exception e) {
-            return false;
+            plugin.getLogger().log(Level.SEVERE, "Failed to getting vault registration", e);
+            throw new EconomyProviderNotFoundException();
         }
 
         if (economyProvider != null) {

@@ -24,6 +24,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -194,6 +195,9 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 continue;
             }
             Object content = overrideConfiguration.get(key);
+            if (content instanceof ConfigurationSection) {
+                continue;
+            }
             Util.debugLog("Override key " + key + " with content: " + content);
             distributionConfiguration.set(key, content);
         }
