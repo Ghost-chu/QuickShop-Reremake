@@ -5,7 +5,7 @@
   "translation-version": "Versió suportada: Reremake",
   "translation-contributors": "Contributors: Hoswolf, Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Zona de l'idioma: Català (ca_ES)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "No s'ha trobat cap QuickShop. N'has d'estar mirant una.",
   "no-anythings-in-your-hand": "No tens res a la mà.",
   "no-permission": "No tens permisos per fer això.",
@@ -179,7 +179,7 @@
       "lock": "&eCanvia l'estat de bloqueig d'una botiga.",
       "taxaccount": "&eSet the tax account that shop using",
       "toggledisplay": "&eToggle the shop display item status",
-      "purge": "&aStart the shop purge task in background"
+      "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&cAquesta comanda està desactivada: &e{0}",
     "feature-not-enabled": "Aquesta opció no està activada a l'arxiu de configuració."
@@ -228,7 +228,9 @@
     "lock": "&eBloqueig de la botiga: &b{0} &e[&d&lCanvia&e]",
     "lock-hover": "&eActiva o desactiva la protecció de la botiga.",
     "freeze": "&eMode congelat: &b{0} &e[&d&lCanvia&e]",
-    "freeze-hover": "&eCongela o descongela la botiga."
+    "freeze-hover": "&eCongela o descongela la botiga.",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
