@@ -5,7 +5,7 @@
   "translation-version": "Unterstütze Version: Reremake",
   "translation-contributors": "Mitwirkende: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken und Andre_601",
   "translation-country": "Sprache: Deutsch (de_DE)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&cKonnte keinen QuickShop finden. Du musst auf einen schauen.",
   "no-anythings-in-your-hand": "&cEs befindet sich nichts in deiner Hand.",
   "no-permission": "&cDu hast keine Berechtigung um das zu tun.",
@@ -179,7 +179,7 @@
       "lock": "&eWechsle den Lock-Status des Shops",
       "taxaccount": "&eSet the tax account that shop using",
       "toggledisplay": "&eToggle the shop display item status",
-      "purge": "&aStart the shop purge task in background"
+      "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&cDieser Befehl ist deaktiviert: &e{0}",
     "feature-not-enabled": "Dieses Feature ist nicht in der Config Datei aktiviert."
@@ -228,7 +228,9 @@
     "lock": "&eShop Sperre: &b{0} &e[&d&lÄndern&e]",
     "lock-hover": "&eAktiviere/Deaktiviere den Sperrschutz des Shops.",
     "freeze": "&eFreeze Modus: &b{0} &e[&d&lÄndern&e]",
-    "freeze-hover": "&eÄndere den Freeze-Status des Shops."
+    "freeze-hover": "&eÄndere den Freeze-Status des Shops.",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
