@@ -62,7 +62,7 @@ public class Economy_Reserve extends AbstractEconomy {
      * @deprecated Reserve no-longer active after Minecraft 1.14.
      */
     @Deprecated
-    public Economy_Reserve(@NotNull QuickShop plugin) throws EconomyProviderNotFoundException {
+    public Economy_Reserve(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         this.formatter = new BuiltInEconomyFormatter(plugin);
         plugin.getReloadManager().register(this);
@@ -71,19 +71,14 @@ public class Economy_Reserve extends AbstractEconomy {
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void setup() throws EconomyProviderNotFoundException {
+    private void setup() {
         try {
-            Plugin pl = plugin.getServer().getPluginManager().getPlugin("Reserve");
-            if (pl == null) {
-                throw new EconomyProviderNotFoundException("Configuration set economy to Reserve but Reserve not installed");
-            }
             Reserve re = ((Reserve) plugin.getServer().getPluginManager().getPlugin("Reserve"));
             if (re.economyProvided()) {
                 reserve = re.economy();
             }
         } catch (Exception throwable) {
             reserve = null;
-            plugin.getLogger().log(Level.SEVERE, "Failed to load up Reserve", throwable);
         }
     }
 

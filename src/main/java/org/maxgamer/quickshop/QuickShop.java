@@ -62,7 +62,6 @@ import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
 import org.maxgamer.quickshop.command.SimpleCommandManager;
 import org.maxgamer.quickshop.database.*;
-import org.maxgamer.quickshop.economy.EconomyProviderNotFoundException;
 import org.maxgamer.quickshop.economy.Economy_GemsEconomy;
 import org.maxgamer.quickshop.economy.Economy_TNE;
 import org.maxgamer.quickshop.economy.Economy_Vault;
@@ -498,21 +497,13 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 return false;
             }
             economy = ServiceInjector.getEconomy(economy);
-            if (Objects.equals(this.bootError, BuiltInSolution.econHandlerMissingError()) || Objects.equals(this.bootError, BuiltInSolution.econError())) {
-                this.bootError = null;
-            }
         } catch (Exception e) {
-            if (e instanceof EconomyProviderNotFoundException) {
-                getLogger().log(Level.WARNING, "Something going wrong when loading up economy system", e);
-                getLogger().severe("Failed to hook into the Economy Handler that configuration point to!");
-                getLogger().severe("QuickShop CANNOT start!");
-                setupBootError(BuiltInSolution.econHandlerMissingError(), false);
-            } else {
-                getLogger().log(Level.WARNING, "Something going wrong when loading up economy system", e);
-                getLogger().severe("QuickShop could not hook into a economy/Not found Vault or Reserve!");
-                getLogger().severe("QuickShop CANNOT start!");
-                setupBootError(BuiltInSolution.econError(), false);
-            }
+            this.getSentryErrorReporter().ignoreThrow();
+            getLogger().log(Level.WARNING, "Something going wrong when loading up economy system", e);
+            getLogger().severe("QuickShop could not hook into a economy/Not found Vault or Reserve!");
+            getLogger().severe("QuickShop CANNOT start!");
+            setupBootError(BuiltInSolution.econError(), false);
+            getLogger().severe("Plugin listeners was disabled, please fix the economy issue.");
             return false;
         }
         return true;
