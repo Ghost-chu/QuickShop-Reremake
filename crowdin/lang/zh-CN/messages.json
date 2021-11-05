@@ -5,7 +5,7 @@
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
   "translation-country": "本地化语言：简体中文 (zh_CN)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&c无法找到商店，您需要注视着你想要操作的商店。",
   "no-anythings-in-your-hand": "&c你的手里没有任何物品。",
   "no-permission": "&c你没有权限这样做。",
@@ -179,7 +179,7 @@
       "lock": "&e切换商店锁状态",
       "taxaccount": "&e设置商店使用的税务账户",
       "toggledisplay": "&e切换商店是否显示悬浮物",
-      "purge": "&a在后台启动商店清理任务"
+      "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&c此命令已禁用: &e{0}",
     "feature-not-enabled": "该功能未在配置文件中启用。"
@@ -228,7 +228,9 @@
     "lock": "&e商店锁: &b{0} &e[&d&l切换&e]",
     "lock-hover": "&e启用/禁用商店锁",
     "freeze": "&e冻结模式： &b{0} &e[&d&l切换&e]",
-    "freeze-hover": "&e切换商店冻结状态。"
+    "freeze-hover": "&e切换商店冻结状态。",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
