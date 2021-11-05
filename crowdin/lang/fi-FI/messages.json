@@ -5,7 +5,7 @@
   "translation-version": "Tuettu versio: Reremake",
   "translation-contributors": "Avustajat: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Kielialue: Suomi (fi_FI)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&cQuickShoppia ei löytynyt. Sinun täytyy katsoa yhtä.",
   "no-anythings-in-your-hand": "&cKädessäsi ei ole mitään.",
   "no-permission": "&cSinulla ei ole oikeutta tehdä noin.",
@@ -179,7 +179,7 @@
       "lock": "&eVaihda kaupan lukituksen tila",
       "taxaccount": "&eSet the tax account that shop using",
       "toggledisplay": "&eToggle the shop display item status",
-      "purge": "&aStart the shop purge task in background"
+      "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&cTämä komento on poistettu käytöstä: &e{0}",
     "feature-not-enabled": "Tämä ominaisuus ei ole käytössä asetustiedostossa."
@@ -228,7 +228,9 @@
     "lock": "&eKaupan lukitus: &b{0} &e[&d&lVaihda&e]",
     "lock-hover": "&eOta käyttöön tai poista käytöstä kaupan lukitussuojaus.",
     "freeze": "&eJäädytyksen tila: &b{0} &e[&d&lVaihda&e]",
-    "freeze-hover": "&eVaihda kaupan jäädytystila."
+    "freeze-hover": "&eVaihda kaupan jäädytystila.",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
