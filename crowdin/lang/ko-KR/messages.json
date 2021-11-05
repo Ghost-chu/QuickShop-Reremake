@@ -5,7 +5,7 @@
   "translation-version": "지원 버전: Reremake",
   "translation-contributors": "기여자: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "언어 지역: 한국어 (ko_KR)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&c상점을 찾을수 없습니다. 상점을 보고있어야만 합니다.",
   "no-anythings-in-your-hand": "&c당신의 손에 아무것도 없습니다.",
   "no-permission": "&c당신에게는 이것을 사용할 권한이 없습니다.",
@@ -179,7 +179,7 @@
       "lock": "상점 잠금 상태 전환",
       "taxaccount": "&e쇼핑에서 사용하는 세금 계정 설정",
       "toggledisplay": "&e상점 표시 항목 상태 전환",
-      "purge": "&a백그라운드에서 상점 정리 작업 시작"
+      "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&c이 명령어는 비활성화 되어있습니다: &e{0}",
     "feature-not-enabled": "이옵션은 컨피그에서 비활성 상태입니다"
@@ -228,7 +228,9 @@
     "lock": "&e동결 생태: &b{0} &e[&d&l전환&e]",
     "lock-hover": "&e상점 잠금 보호를 활성화/비활성화 합니다. ",
     "freeze": "&e동결 상태: &b{0} &e[&d&l전환&e]",
-    "freeze-hover": "&e상점 동결 상태 전환."
+    "freeze-hover": "&e상점 동결 상태 전환.",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
