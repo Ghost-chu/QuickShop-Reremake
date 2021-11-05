@@ -5,7 +5,7 @@
   "translation-version": "Поддерживаемая версия: Reremake",
   "translation-contributors": "Участники: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken и Andre_601",
   "translation-country": "Языковой регион: Русский (ru_RU)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&cНе удалось найти магазин, возможно не зарегистрирован.",
   "no-anythings-in-your-hand": "&cУ вас ничего нет в руках.",
   "no-permission": "&cУ вас нет прав.",
@@ -179,7 +179,7 @@
       "lock": "&eПереключает состояние блокировки магазина",
       "taxaccount": "&eУстанавливает налоговый счет, который магазин использует",
       "toggledisplay": "&eПереключает отображение товара в магазине (над сундука)",
-      "purge": "&aЗапускает задачи очистки магазина в фоновом режиме"
+      "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&cДанная команда недоступна: &e{0}",
     "feature-not-enabled": "Функция не включена в конфигурации."
@@ -228,7 +228,9 @@
     "lock": "&eЗапрет: &b{0} &e[&d&lПереключить&e]",
     "lock-hover": "&eВключает/отключает запрет магазина.",
     "freeze": "&eЗаморозка: &b{0} &e[&d&lПереключить&e]",
-    "freeze-hover": "&eПереключает состояние заморозки магазина."
+    "freeze-hover": "&eПереключает состояние заморозки магазина.",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
