@@ -5,7 +5,7 @@
   "translation-version": "Verze: Reremake",
   "translation-contributors": "Přispěli: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Jazyková Zóna: Czech (cs_CZ)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&cNelze najít QuickShop. Musíš se na něj podívat.",
   "no-anythings-in-your-hand": "&cNemáš v ruce žádný předmět.",
   "no-permission": "&cNa tuto akci nemáš práva.",
@@ -179,7 +179,7 @@
       "lock": "&ePřepnout stav zámku obchodu",
       "taxaccount": "&eSet the tax account that shop using",
       "toggledisplay": "&eToggle the shop display item status",
-      "purge": "&aStart the shop purge task in background"
+      "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&cTento příkaz je zakázán: &e{0}",
     "feature-not-enabled": "Funkce není v konfiguraci povolena."
@@ -228,7 +228,9 @@
     "lock": "&eZámek obchodu: &b{0} &e[&d&lPřepnout&e]",
     "lock-hover": "&ePovolit/Zakázat ochranu zámku obchodu.",
     "freeze": "&eRežim zmražení: &b{0} &e[&d&lPřepnout&e]",
-    "freeze-hover": "&ePřepnout stav zmrazení obchodu."
+    "freeze-hover": "&ePřepnout stav zmrazení obchodu.",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
