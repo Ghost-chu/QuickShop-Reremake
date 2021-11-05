@@ -5,7 +5,7 @@
   "translation-version": "Wspierana wersja: Reremake",
   "translation-contributors": "Współtwórcy: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken i Andre_601",
   "translation-country": "Język: Polski (pl_PL)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&cNie można znaleźć QuickShop. Musisz na niego patrzeć.",
   "no-anythings-in-your-hand": "&cW twojej ręce nic nie ma.",
   "no-permission": "&cNie masz uprawnień, aby to zrobić.",
@@ -179,7 +179,7 @@
       "lock": "&eZmień status blokady sklepu",
       "taxaccount": "&eUstaw konto podatkowe, które sklep ma używać",
       "toggledisplay": "&ePrzełącz stan wyświetlania przedmiotu w sklepie",
-      "purge": "&aUruchom zadanie czyszczenia sklepu w tle"
+      "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&cTa komenda jest wyłączona: &e{0}",
     "feature-not-enabled": "Ta funkcja nie jest włączona w pliku konfiguracyjnym."
@@ -228,7 +228,9 @@
     "lock": "&eBlokada sklepu: &b{0} &e[&d&lPrzełącz&e]",
     "lock-hover": "&eWłącz/Wyłącz ochronę blokady sklepu.",
     "freeze": "&eTryb zamrożenia: &b{0} &e[&d&lPrzełącz&e]",
-    "freeze-hover": "&ePrzełącz status zamrożenia sklepu."
+    "freeze-hover": "&ePrzełącz status zamrożenia sklepu.",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
