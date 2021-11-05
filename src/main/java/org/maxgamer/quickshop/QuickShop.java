@@ -94,6 +94,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.Map.Entry;
@@ -1973,6 +1974,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         new File(getDataFolder(), "example.config.yml").delete();
         new File(getDataFolder(), "example-configuration.txt").delete();
         new File(getDataFolder(), "example-configuration.yml").delete();
+
+        try {
+            if (new File(getDataFolder(), "messages.json").exists())
+                Files.move(new File(getDataFolder(), "messages.json").toPath(), new File(getDataFolder(), "messages.json.outdated").toPath());
+        } catch (Exception ignore) {
+        }
 
 //        // Path exampleConfigFile = new File(getDataFolder(), "example-configuration.yml").toPath();
 //        try {
