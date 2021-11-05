@@ -5,7 +5,7 @@
   "translation-version": "Versiune suport: Reproducere",
   "translation-contributors": "Contribuitori: Turnul, Netherfoam, KaiNoMood, Mgazul, JackTheChicken și Andre_601",
   "translation-country": "Zona de Limbă: Engleză (ro_US)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&cNu am putut gasi un magazin. Trebuie sa te uiti la unul.",
   "no-anythings-in-your-hand": "&cNu este nimic in mana.",
   "no-permission": "&cNu ai permisiunea să faci asta.\".",
@@ -179,7 +179,7 @@
       "lock": "&eSwitch the shop's lock status",
       "taxaccount": "&eSet the tax account that shop using",
       "toggledisplay": "&eToggle the shop display item status",
-      "purge": "&aStart the shop purge task in background"
+      "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&cThis command is disabled: &e{0}",
     "feature-not-enabled": "This feature is not enabled in the config file."
@@ -228,7 +228,9 @@
     "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
     "lock-hover": "&eEnable/Disable the shop's lock protection.",
     "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
-    "freeze-hover": "&eToggle the shop's freeze status."
+    "freeze-hover": "&eToggle the shop's freeze status.",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
