@@ -3,7 +3,7 @@ description: 'Report performance issues with QuickShop.'
 
 title: '[PERFORMANCE] '
 labels:
-  - 'performance'
+  - 'Performance Issue'
 
 body:
   - type: 'markdown'
