@@ -65,7 +65,7 @@ public class Economy_TNE extends AbstractEconomy {
         if (Bukkit.getPluginManager().getPlugin("TNE") == null
                 && Bukkit.getPluginManager().getPlugin("TNE-Bukkit") == null
                 && Bukkit.getPluginManager().getPlugin("TheNewEconomy") == null) {
-            throw new EconomyProviderNotFoundException();
+            throw new EconomyProviderNotFoundException("Configuration set economy to TheNewEconomy but TheNewEconomy not installed");
         }
         this.api = TNE.instance().api();
     }

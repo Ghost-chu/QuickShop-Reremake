@@ -75,7 +75,7 @@ public class Economy_Reserve extends AbstractEconomy {
         try {
             Plugin pl = plugin.getServer().getPluginManager().getPlugin("Reserve");
             if (pl == null) {
-                throw new EconomyProviderNotFoundException();
+                throw new EconomyProviderNotFoundException("Configuration set economy to Reserve but Reserve not installed");
             }
             Reserve re = ((Reserve) plugin.getServer().getPluginManager().getPlugin("Reserve"));
             if (re.economyProvided()) {

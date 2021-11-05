@@ -73,7 +73,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
 
     private boolean setupEconomy() throws EconomyProviderNotFoundException {
         if (!Util.isClassAvailable("net.milkbowl.vault.economy.Economy")) {
-            throw new EconomyProviderNotFoundException();
+            throw new EconomyProviderNotFoundException("Configuration set economy to Vault but Vault not installed");
         }
         RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> economyProvider;
         try {

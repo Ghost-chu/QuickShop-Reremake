@@ -19,5 +19,21 @@
 
 package org.maxgamer.quickshop.economy;
 
-public class EconomyProviderNotFoundException extends RuntimeException {
+public class EconomyProviderNotFoundException extends IllegalStateException {
+    public EconomyProviderNotFoundException() {
+        super();
+    }
+
+    public EconomyProviderNotFoundException(String s) {
+        super(s);
+    }
+
+    public EconomyProviderNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public EconomyProviderNotFoundException(Throwable cause) {
+        super(cause);
+    }
+
 }

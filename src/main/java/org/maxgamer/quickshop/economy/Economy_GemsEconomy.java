@@ -64,7 +64,7 @@ public class Economy_GemsEconomy extends AbstractEconomy {
 
     private void setupEconomy() throws EconomyProviderNotFoundException {
         if (Bukkit.getPluginManager().getPlugin("GemsEconomy") == null) {
-            throw new EconomyProviderNotFoundException();
+            throw new EconomyProviderNotFoundException("Configuration set economy to GemsEconomy but GemsEconomy not installed");
         }
         this.api = new GemsEconomyAPI();
     }
