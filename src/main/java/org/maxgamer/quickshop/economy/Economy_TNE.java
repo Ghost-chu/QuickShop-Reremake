@@ -49,7 +49,7 @@ public class Economy_TNE extends AbstractEconomy {
     @Setter
     private TNEAPI api;
 
-    public Economy_TNE(@NotNull QuickShop plugin) {
+    public Economy_TNE(@NotNull QuickShop plugin) throws EconomyProviderNotFoundException {
         super();
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
@@ -61,7 +61,12 @@ public class Economy_TNE extends AbstractEconomy {
         this.allowLoan = plugin.getConfiguration().getBoolean("shop.allow-economy-loan");
     }
 
-    private void setupEconomy() {
+    private void setupEconomy() throws EconomyProviderNotFoundException {
+        if (Bukkit.getPluginManager().getPlugin("TNE") == null
+                && Bukkit.getPluginManager().getPlugin("TNE-Bukkit") == null
+                && Bukkit.getPluginManager().getPlugin("TheNewEconomy") == null) {
+            throw new EconomyProviderNotFoundException();
+        }
         this.api = TNE.instance().api();
     }
 

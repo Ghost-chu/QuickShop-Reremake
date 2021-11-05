@@ -66,4 +66,15 @@ public class BuiltInSolution {
                 "compatible economy plugin installed to get Vault working.");
     }
 
+    /**
+     * Call îf economy system failed to load. This checks the failure reason.
+     *
+     * @return The error reason.
+     */
+    public static BootError econHandlerMissingError() {
+        // Check if Vault is installed
+        return new BootError(QuickShop.getInstance().getLogger(),
+                "The selected economy handler not installed", "Please check the configuration.");
+    }
+
 }
