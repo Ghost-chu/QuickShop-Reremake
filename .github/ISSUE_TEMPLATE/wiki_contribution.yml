@@ -3,7 +3,7 @@ description: 'Inform about a Contribution that you want to make towards the wiki
 
 title: '[WIKI] '
 labels:
-  - 'wiki'
+  - 'Wiki'
 
 body:
   - type: 'markdown'
