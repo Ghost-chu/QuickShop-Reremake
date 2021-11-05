@@ -5,7 +5,7 @@
   "translation-version": "Version suportée: Reremake",
   "translation-contributors": "Contributeurs : Timtower, Netherfoam, KaiNoMood, Mgazul, JackThePicken, Andre_601 et brunopaiva15, HiiRaZ",
   "translation-country": "Langue: Français (fr_FR)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&cImpossible de trouver un QuickShop. Vous devez en regarder un.",
   "no-anythings-in-your-hand": "&cVous n'avez aucun objet dans votre main.",
   "no-permission": "&cVous n'avez pas la permission de faire ceci.",
@@ -179,7 +179,7 @@
       "lock": "&eChanger l'état de verrouillage de la boutique",
       "taxaccount": "&eSet the tax account that shop using",
       "toggledisplay": "&eToggle the shop display item status",
-      "purge": "&aStart the shop purge task in background"
+      "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&cCette commande est désactivée : &e{0}",
     "feature-not-enabled": "Cette fonctionnalité n'est pas activée dans le fichier de configuration."
@@ -228,7 +228,9 @@
     "lock": "&eVerrouillage de la boutique : &b{0} &e[&d&lActiver&e]",
     "lock-hover": "&eActiver/Désactiver la protection de verrouillage de la boutique.",
     "freeze": "&eVerrouillage de la boutique : &b{0} &e[&d&lActiver&e]",
-    "freeze-hover": "&eActiver/désactiver le statut de blocage de la boutique."
+    "freeze-hover": "&eActiver/désactiver le statut de blocage de la boutique.",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
