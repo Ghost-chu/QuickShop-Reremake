@@ -179,7 +179,7 @@
       "lock": "&eПереключает состояние блокировки магазина",
       "taxaccount": "&eУстанавливает налоговый счет, который магазин использует",
       "toggledisplay": "&eПереключает отображение товара в магазине (над сундука)",
-      "purge": "&eStart the shop purge task in background"
+      "purge": "&aЗапускает задачи очистки магазина в фоновом режиме"
     },
     "disabled": "&cДанная команда недоступна: &e{0}",
     "feature-not-enabled": "Функция не включена в конфигурации."
@@ -229,8 +229,8 @@
     "lock-hover": "&eВключает/отключает запрет магазина.",
     "freeze": "&eЗаморозка: &b{0} &e[&d&lПереключить&e]",
     "freeze-hover": "&eПереключает состояние заморозки магазина.",
-    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
-    "toggledisplay-hover": "&eToggle the shop's displayitem status"
+    "toggledisplay": "&eОтображение: &b{0} &e[&d&lПереключить&e]",
+    "toggledisplay-hover": "&eПереключает состояние отображения товара в магазине"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
