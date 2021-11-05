@@ -5,7 +5,7 @@
   "translation-version": "支持版本 ： Reremake （重製版）",
   "translation-contributors": "貢獻人員 ： Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
   "translation-country": "語言 ： &b&l繁體中文 Chinese Traditional （zh_TW）",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&c無法找到儲物箱商店，你需要注視著儲物箱。",
   "no-anythings-in-your-hand": "&c手上沒有任何東西。",
   "no-permission": "&4你沒有使用該指令的權限。",
@@ -179,7 +179,7 @@
       "lock": "&e切換商店上鎖狀態",
       "taxaccount": "&eSet the tax account that shop using",
       "toggledisplay": "&eToggle the shop display item status",
-      "purge": "&aStart the shop purge task in background"
+      "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&c這個指令被停用 ： &e{0}",
     "feature-not-enabled": "該功能沒有在設定檔案中啟用。"
@@ -228,7 +228,9 @@
     "lock": "&e商店鎖 ： &b{0} &e[&d&l切換&e]",
     "lock-hover": "&e開啟/關閉商店鎖保護。",
     "freeze": "&e凍結模式 ： &b{0} &e[&d&l切換&e]",
-    "freeze-hover": "&e切換商店凍結狀態。"
+    "freeze-hover": "&e切換商店凍結狀態。",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
