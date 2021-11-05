@@ -229,8 +229,8 @@
     "lock-hover": "&eActivar/Desactivar protección contra bloqueo de la tienda.",
     "freeze": "&eTienda bloqueada: &b{0} &e[&d&lCambiar&e]",
     "freeze-hover": "&eCambiar estado de congelación de la tienda.,",
-    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
-    "toggledisplay-hover": "&eToggle the shop's displayitem status"
+    "toggledisplay": "&eMostrar Item: &b{0} &e[&d&lCambiar&e]",
+    "toggledisplay-hover": "&eAlternar el estado del mostrar item de la tienda"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
