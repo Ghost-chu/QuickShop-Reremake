@@ -346,6 +346,6 @@
   "display-turn-on": "&aSuccessfully turn on the shop display.",
   "display-turn-off": "&aSuccessfully turn off the shop display.",
   "shop-purged-start": "&aShop purge started, check the console for details.",
-  "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
-  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
+  "purchase-out-of-stock": "&cThis shop has run out of stock. Contact the shop owner of staff to get it refilled.",
+  "purchase-out-of-space": "&cThis shop has run out of space. Contact the shop owner or staff to get it emptied."
 }
