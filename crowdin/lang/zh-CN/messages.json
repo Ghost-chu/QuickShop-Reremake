@@ -345,5 +345,7 @@
   "taxaccount-invalid": "&c目标帐户无效，请输入有效的玩家名称或uuid(带有破折号)。",
   "display-turn-on": "&a成功开启商店悬浮物显示",
   "display-turn-off": "&a成功关闭商店悬浮物显示",
-  "shop-purged-start": "&a商店清理已开始，请检查控制台获取详细信息。"
+  "shop-purged-start": "&a商店清理已开始，请检查控制台获取详细信息。",
+  "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
+  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
 }
