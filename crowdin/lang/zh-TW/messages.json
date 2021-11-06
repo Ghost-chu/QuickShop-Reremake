@@ -177,7 +177,7 @@
       "unban": "&e解除封禁商店中的玩家",
       "freeze": "&e停用或啟用商店交易",
       "lock": "&e切換商店上鎖狀態",
-      "taxaccount": "&eSet the tax account that shop using",
+      "taxaccount": "&e設定商店使用的稅金帳戶",
       "toggledisplay": "&eToggle the shop display item status",
       "purge": "&eStart the shop purge task in background"
     },
