@@ -346,6 +346,6 @@
   "display-turn-on": "&aSe encendió con éxito la visualización de la tienda.",
   "display-turn-off": "&aSe apagó con éxito la visualización de la tienda.",
   "shop-purged-start": "&aLa purga de la tienda ha comenzado, revisa la consola para más detalles.",
-  "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
-  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
+  "purchase-out-of-stock": "&cEsta tienda se quedó sin stock, Contacte con el propietario o personal de la tienda para rellenar el stock.",
+  "purchase-out-of-space": "&cEsta tienda se quedó sin espacio, Contacte con el propietario o personal de la tienda para vaciar la tienda."
 }
