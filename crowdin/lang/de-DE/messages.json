@@ -345,5 +345,7 @@
   "taxaccount-invalid": "&cZielkonto ist nicht gültig. Bitte gib einen gültigen spielernamen oder eine gültige UUID (Mit Bindestrichen) an.",
   "display-turn-on": "&aShopanzeige erfolgreich aktiviert.",
   "display-turn-off": "&aShopanzeige erfolgreich deaktiviert.",
-  "shop-purged-start": "&aShop-Löschung gestartet. Überprüfe die Konsole für details."
+  "shop-purged-start": "&aShop-Löschung gestartet. Überprüfe die Konsole für details.",
+  "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
+  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
 }
