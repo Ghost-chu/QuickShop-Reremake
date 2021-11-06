@@ -179,7 +179,7 @@
       "lock": "&eEndre butikkens låsestatus",
       "taxaccount": "&eSett avgift konto som butikken bruker",
       "toggledisplay": "&eSlå av/på butikken vise varestatus",
-      "purge": "&eStart the shop purge task in background"
+      "purge": "&eStart fjerning av butikker i bakgrunnen"
     },
     "disabled": "&cDenne kommandoen er deaktivert: &e{0}",
     "feature-not-enabled": "Denne funksjonen er ikke aktivert i konfigurasjonsfilen."
@@ -229,8 +229,8 @@
     "lock-hover": "&eAktiver/Deaktiver butikkens låsebeskyttelse.",
     "freeze": "&eFrys modus: &b{0} &e[&d&lVeksle&e]",
     "freeze-hover": "&eVeksle butikkens frysestatus.",
-    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
-    "toggledisplay-hover": "&eToggle the shop's displayitem status"
+    "toggledisplay": "&eUtstillingsvare: &b{0} &e[&d&lVeksle&e]",
+    "toggledisplay-hover": "&eSlå av/på butikkens utstillingsvare"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -346,6 +346,6 @@
   "display-turn-on": "&aVellykket aktivering av visning av butikk.",
   "display-turn-off": "&aVellykket deaktivering av butikkvisning.",
   "shop-purged-start": "&aShop renset, sjekk konsollen for detaljer.",
-  "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
-  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
+  "purchase-out-of-stock": "&cDenne butikken er tom på lager, kontakt butikkeier eller ansatte for å fylle på lageret.",
+  "purchase-out-of-space": "&cDenne butikken er tom for plass, kontakt butikkeier eller ansatte for å tømme butikken."
 }
