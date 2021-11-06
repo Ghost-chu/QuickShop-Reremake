@@ -344,6 +344,6 @@
   "taxaccount-unset": "&a该商店的税务帐户现在变为服务器的全局设置。",
   "taxaccount-invalid": "&c目标帐户无效，请输入有效的玩家名称或uuid(带有破折号)。",
   "display-turn-on": "&a成功开启商店悬浮物显示",
-  "display-turn-off": "&a成功关闭商店悬浮物显示。",
+  "display-turn-off": "&a成功关闭商店悬浮物显示",
   "shop-purged-start": "&a商店清理已开始，请检查控制台获取详细信息。"
 }
