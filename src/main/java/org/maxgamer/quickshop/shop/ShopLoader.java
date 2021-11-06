@@ -25,7 +25,6 @@ import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -40,6 +39,7 @@ import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopModerator;
 import org.maxgamer.quickshop.api.shop.ShopType;
 import org.maxgamer.quickshop.util.JsonUtil;
+import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.Util;
 
 import java.sql.ResultSet;
@@ -89,10 +89,16 @@ public class ShopLoader {
         this.plugin.getLogger().info("Fetching shops from the database...If plugin stuck there, check your database connection.");
         int loadAfterChunkLoaded = 0;
         int loadAfterWorldLoaded = 0;
-        List<Shop> pendingLoadShops = new ArrayList<>();
+        int loaded = 0;
+        int total = 0;
+        int valid = 0;
         try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
+            Timer timer = new Timer();
+            timer.start();
+            boolean deleteCorruptShops = plugin.getConfiguration().getOrDefault("debug.delete-corrupt-shops", false);
             this.plugin.getLogger().info("Loading shops from the database...");
             while (rs.next()) {
+                ++total;
                 ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
                 if (worldName != null && !origin.getWorld().equals(worldName)) {
                     continue;
@@ -125,7 +131,7 @@ public class ShopLoader {
                     shop.setDirty();
                 }
                 if (shopNullCheck(shop)) {
-                    if (plugin.getConfiguration().getOrDefault("debug.delete-corrupt-shops", false)) {
+                    if (deleteCorruptShops) {
                         plugin.getLogger().warning("Deleting shop " + shop + " caused by corrupted.");
                         plugin.getDatabaseHelper().removeShop(origin.getWorld(), origin.getX(), origin.getY(), origin.getZ());
                     } else {
@@ -134,6 +140,7 @@ public class ShopLoader {
                     }
                     continue;
                 }
+                ++valid;
                 //World unloaded but found
                 if (!shop.getLocation().isWorldLoaded()) {
                     ++loadAfterWorldLoaded;
@@ -141,6 +148,7 @@ public class ShopLoader {
                 }
                 // Load to RAM
                 plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
+
                 if (Util.isLoaded(shop.getLocation())) {
                     // Load to World
                     if (!Util.canBeShop(shop.getLocation().getBlock())) {
@@ -150,31 +158,21 @@ public class ShopLoader {
                         //TODO: Only remove from memory, so if it actually is a bug, user won't lost all shops.
                         //TODO: Old shop will be deleted when in same location creating new shop.
                     } else {
-                        pendingLoadShops.add(shop);
+                        shop.onLoad();
+                        shop.update();
+                        ++loaded;
                     }
                 } else {
                     loadAfterChunkLoaded++;
                 }
             }
-
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                this.plugin.getLogger().info("Loading the shops in worlds...");
-                for (Shop shop : pendingLoadShops) {
-                    plugin.getShopManager().loadShop(shop.getLocation().getWorld().getName(), shop);
-                    shop.onLoad();
-                    shop.update();
-                }
-                this.plugin
-                        .getLogger()
-                        .info(
-                                "Successfully loaded "
-                                        + pendingLoadShops.size()
-                                        + " shops!");
-            }, 1);
-            this.plugin.getLogger().info("Scheduled " + pendingLoadShops.size() + " shops to load in next tick, " + loadAfterChunkLoaded
-                    + " shops will load after chunk have loaded, "
-                    + loadAfterWorldLoaded
-                    + " shops will load after the world has loaded.");
+            this.plugin.getLogger().info(">> Shop Loader Information");
+            this.plugin.getLogger().info("Total           shops: " + total);
+            this.plugin.getLogger().info("Valid           shops: " + valid);
+            this.plugin.getLogger().info("Loaded          shops: " + loaded);
+            this.plugin.getLogger().info("Waiting worlds loaded: " + loadAfterWorldLoaded);
+            this.plugin.getLogger().info("Waiting chunks loaded: " + loadAfterChunkLoaded);
+            this.plugin.getLogger().info("Done! Used " + timer.stopAndGetTimePassed() + "ms to loaded shops in database.");
         } catch (Exception e) {
             exceptionHandler(e, null);
         }
