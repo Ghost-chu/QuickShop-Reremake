@@ -345,5 +345,7 @@
   "taxaccount-invalid": "&cKonto docelowe jest nieprawidłowe, wprowadź prawidłową nazwę gracza lub identyfikator uuid (z myślnikami).",
   "display-turn-on": "&aPomyślnie włączono wyświetlacz sklepu.",
   "display-turn-off": "&aPomyślnie wyłączono wyświetlacz sklepu.",
-  "shop-purged-start": "&aRozpoczęto czyszczenie sklepu, sprawdź konsolę, aby uzyskać szczegółowe informacje."
+  "shop-purged-start": "&aRozpoczęto czyszczenie sklepu, sprawdź konsolę, aby uzyskać szczegółowe informacje.",
+  "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
+  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
 }
