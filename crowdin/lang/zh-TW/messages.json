@@ -178,7 +178,7 @@
       "freeze": "&e停用或啟用商店交易",
       "lock": "&e切換商店上鎖狀態",
       "taxaccount": "&e設定商店使用的稅金帳戶",
-      "toggledisplay": "&eToggle the shop display item status",
+      "toggledisplay": "&e切換商店顯示物品狀態",
       "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&c這個指令被停用 ： &e{0}",
@@ -340,9 +340,9 @@
   },
   "client-language-changed": "&aQuickShop detected your client language setting has been changed, we're now using {0} locale for you.",
   "client-language-unsupported": "&eQuickShop doesn't support your client language, we're fallback to {0} locale now.",
-  "taxaccount-set": "&aThis shop's tax account has been set to &e{0}",
-  "taxaccount-unset": "&aThis shop's tax account now following server global setting.",
-  "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
+  "taxaccount-set": "&a已經設定 &e{0} &a為該商店的稅金帳戶",
+  "taxaccount-unset": "&a該商店的稅金帳戶現在按照伺服器全域設定。",
+  "taxaccount-invalid": "&c無效的目標帳戶，請輸入有效的玩家名稱或 uuid（須加破折號）。",
   "display-turn-on": "&aSuccessfully turn on the shop display.",
   "display-turn-off": "&aSuccessfully turn off the shop display.",
   "shop-purged-start": "&aShop purge started, check the console for details."
