@@ -196,6 +196,11 @@ public class PlayerListener extends AbstractQSListener {
             final double money = plugin.getEconomy().getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
             final Inventory playerInventory = p.getInventory();
             if (shop.isSelling()) {
+                if (shop.getRemainingStock() == 0) {
+                    plugin.text().of(p, "purchase-out-of-stock", shop.ownerName()).send();
+                    return;
+                }
+
                 int itemAmount = getPlayerCanBuy(shop, money, price, playerInventory);
                 if (shop.isStackingShop()) {
                     plugin.text().of(p, "how-many-buy-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(itemAmount)).send();
@@ -203,6 +208,11 @@ public class PlayerListener extends AbstractQSListener {
                     plugin.text().of(p, "how-many-buy", Integer.toString(itemAmount)).send();
                 }
             } else {
+                if (shop.getRemainingSpace() == 0) {
+                    plugin.text().of(p, "purchase-out-of-space", shop.ownerName()).send();
+                    return;
+                }
+
                 int items = getPlayerCanSell(shop, money, price, playerInventory);
                 if (shop.isStackingShop()) {
                     plugin.text().of(p, "how-many-sell-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(items)).send();
