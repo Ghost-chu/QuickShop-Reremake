@@ -1,11 +1,11 @@
 {
-  "_comment": "Hallo Übersetzer! Wenn du das in GitHub oder durch Codequellen bearbeitest, solltest du zu https://crowdin.com/project/quickshop-reremake gehen",
+  "_comment": "Hallo Übersetzer! Wenn du dies auf GitHub oder im Quellcode bearbeitest, solltest du zu https:/crowdin.com/projects/quickshop-reremake wechseln",
   "file-test": "Dies ist eine Text Testdatei. Wir verwenden sie um zu testen ob die messages.json kaputt ist. Du kannst sie mit jedem Easter Egg füllen wie du willst :)",
   "translation-author": "Übersetzer: Ghost_chu, Andre_601",
   "translation-version": "Unterstütze Version: Reremake",
   "translation-contributors": "Mitwirkende: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken und Andre_601",
   "translation-country": "Sprache: Deutsch (de_DE)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&cKonnte keinen QuickShop finden. Du musst auf einen schauen.",
   "no-anythings-in-your-hand": "&cEs befindet sich nichts in deiner Hand.",
   "no-permission": "&cDu hast keine Berechtigung um das zu tun.",
@@ -94,7 +94,7 @@
     "shop-information": "&aShop Informationen:",
     "owner": "&aBesitzer: {0}",
     "item": "&aGegenstand: &e{0}",
-    "item-holochat-error": "&c[Error]",
+    "item-holochat-error": "&c[Fehler]",
     "preview": "&b[Itemvorschau]",
     "space": "&aKapazität: &e{0}",
     "stock": "&aLagerbestand: &e{0}",
@@ -121,9 +121,9 @@
       "unlimited": "&aDer Shop ist nun unlimitiert",
       "limited": "&aDer Shop ist nun limitiert"
     },
-    "transfer-success": "&aTransferred &e{0} &ashop(s) to &e{1}",
-    "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
-    "some-shops-removed": "&e{0} &ashop(s) removed",
+    "transfer-success": "&e{0} &aShop(s) wurden zu &e{1} &aübertragen",
+    "transfer-success-other": "&e{0} &aShops von &e{1} &aauf &e{2} &aübertragen",
+    "some-shops-removed": "&e{0} &aShop(s) entfernt",
     "no-owner-given": "&cKein Eigentümer angegeben",
     "new-owner": "&aNeuer Besitzer: &e{0}",
     "now-buying": "&e{0} &awerden jetzt &dANGEKAUFT",
@@ -170,16 +170,16 @@
       "supercreate": "&eErstellen eines Shops, während alle Schutzprüfungen umgangen werden",
       "language": "&eÄndert die derzeitig verwendete Sprache",
       "removeall": "&eEntferne ALLE Shops eines bestimmten Spielers",
-      "transfer": "&eTransfer someone's ALL shops to other",
+      "transfer": "&eÜbertrage ALLE Shops eines Spielers zu einem anderen",
       "removeworld": "&eEntferne ALLE Shops in einer bestimmten Welt",
       "currency": "&eSetze oder Entferne die Währungseinstellungen des Shops",
       "ban": "&eBannt einen Spieler vom Shop",
       "unban": "&eEntbannt einen Spieler vom Shop",
       "freeze": "&e(De)aktiviere Shop-Handel",
       "lock": "&eWechsle den Lock-Status des Shops",
-      "taxaccount": "&eSet the tax account that shop using",
-      "toggledisplay": "&eToggle the shop display item status",
-      "purge": "&aStart the shop purge task in background"
+      "taxaccount": "&eSetze den Account welcher für die Steuern des Shops benutzt werden soll",
+      "toggledisplay": "&eÄndere den Anzeigestatus des Items für den Shop",
+      "purge": "&eStarte den Shop-Löschvorgang im Hintergrund"
     },
     "disabled": "&cDieser Befehl ist deaktiviert: &e{0}",
     "feature-not-enabled": "Dieses Feature ist nicht in der Config Datei aktiviert."
@@ -228,7 +228,9 @@
     "lock": "&eShop Sperre: &b{0} &e[&d&lÄndern&e]",
     "lock-hover": "&eAktiviere/Deaktiviere den Sperrschutz des Shops.",
     "freeze": "&eFreeze Modus: &b{0} &e[&d&lÄndern&e]",
-    "freeze-hover": "&eÄndere den Freeze-Status des Shops."
+    "freeze-hover": "&eÄndere den Freeze-Status des Shops.",
+    "toggledisplay": "&eItem anzeigen: &b{0} &e[&d&lÄndern&e]",
+    "toggledisplay-hover": "&eÄndere den Item Anzeigemodus des Shops"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -338,10 +340,12 @@
   },
   "client-language-changed": "&aQuickShop hat festgestellt, dass deine Client-Spracheinstellungen geändert wurden. Wir verwenden jetzt die Spracheinstellung {0} für dich.",
   "client-language-unsupported": "&eQuickShop unterstützt deine Client-Sprache nicht. Wir verwenden die Spracheinstellung {0} jetzt.",
-  "taxaccount-set": "&aThis shop's tax account has been set to &e{0}",
-  "taxaccount-unset": "&aThis shop's tax account now following server global setting.",
-  "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
-  "display-turn-on": "&aSuccessfully turn on the shop display.",
-  "display-turn-off": "&aSuccessfully turn off the shop display.",
-  "shop-purged-start": "&aShop purge started, check the console for details."
+  "taxaccount-set": "&aDas Steuerkonto dieses Shops wurde auf &e{0} gesetzt",
+  "taxaccount-unset": "&aDas Steuerkonto dieses Shops wurde auf die globalen Servereinstellungen geändert.",
+  "taxaccount-invalid": "&cZielkonto ist nicht gültig. Bitte gib einen gültigen spielernamen oder eine gültige UUID (Mit Bindestrichen) an.",
+  "display-turn-on": "&aShopanzeige erfolgreich aktiviert.",
+  "display-turn-off": "&aShopanzeige erfolgreich deaktiviert.",
+  "shop-purged-start": "&aShop-Löschung gestartet. Überprüfe die Konsole für details.",
+  "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
+  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
 }

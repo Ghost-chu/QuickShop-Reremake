@@ -5,7 +5,7 @@
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
   "translation-country": "本地化语言：简体中文 (zh_CN)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&c无法找到商店，您需要注视着你想要操作的商店。",
   "no-anythings-in-your-hand": "&c你的手里没有任何物品。",
   "no-permission": "&c你没有权限这样做。",
@@ -179,7 +179,7 @@
       "lock": "&e切换商店锁状态",
       "taxaccount": "&e设置商店使用的税务账户",
       "toggledisplay": "&e切换商店是否显示悬浮物",
-      "purge": "&a在后台启动商店清理任务"
+      "purge": "&e在后台启动商店清理任务"
     },
     "disabled": "&c此命令已禁用: &e{0}",
     "feature-not-enabled": "该功能未在配置文件中启用。"
@@ -228,7 +228,9 @@
     "lock": "&e商店锁: &b{0} &e[&d&l切换&e]",
     "lock-hover": "&e启用/禁用商店锁",
     "freeze": "&e冻结模式： &b{0} &e[&d&l切换&e]",
-    "freeze-hover": "&e切换商店冻结状态。"
+    "freeze-hover": "&e切换商店冻结状态。",
+    "toggledisplay": "&e悬浮物显示: &b{0} &e[&d&l切换&e]",
+    "toggledisplay-hover": "&e切换商店是否显示悬浮物"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -342,6 +344,8 @@
   "taxaccount-unset": "&a该商店的税务帐户现在变为服务器的全局设置。",
   "taxaccount-invalid": "&c目标帐户无效，请输入有效的玩家名称或uuid(带有破折号)。",
   "display-turn-on": "&a成功开启商店悬浮物显示",
-  "display-turn-off": "&a成功关闭商店悬浮物显示。",
-  "shop-purged-start": "&a商店清理已开始，请检查控制台获取详细信息。"
+  "display-turn-off": "&a成功关闭商店悬浮物显示",
+  "shop-purged-start": "&a商店清理已开始，请检查控制台获取详细信息。",
+  "purchase-out-of-stock": "&c这个商店已缺货，请联系商店所有者或助手补充库存",
+  "purchase-out-of-space": "&c这个商店空间已不足，请联系商店所有者或助手清空商店"
 }

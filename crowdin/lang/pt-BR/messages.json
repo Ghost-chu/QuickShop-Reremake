@@ -5,7 +5,7 @@
   "translation-version": "Versão de suporte: Remake",
   "translation-contributors": "Contribuidores: Torre de Timor, Netherfoam, KaiNoMood, Mgazul, JackTheChicken e Andre_601",
   "translation-country": "Zona do idioma: Português Brasileiro (pt_BR)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "Não conseguimos encontrar uma QuickShop. Você precisa estar olhando para uma.",
   "no-anythings-in-your-hand": "&cNão há nada na sua mão.",
   "no-permission": "&cVocê não tem permissão para fazer isso.",
@@ -179,7 +179,7 @@
       "lock": "&eAlterne o status de bloqueio da loja",
       "taxaccount": "&eSet the tax account that shop using",
       "toggledisplay": "&eToggle the shop display item status",
-      "purge": "&aStart the shop purge task in background"
+      "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&cEste comando está desativado: &e{0}",
     "feature-not-enabled": "Esse recurso não está ativado no arquivo de configuração."
@@ -228,7 +228,9 @@
     "lock": "&eBloqueio de Loja: &b{0} &e[&d&lToggle&e]",
     "lock-hover": "&eEnable/Disable proteção de bloqueio de loja",
     "freeze": "&eModo de bloqueio: &b{0} &e[&d&lToggle&e]",
-    "freeze-hover": "&eAlterna o status de congelamento da loja."
+    "freeze-hover": "&eAlterna o status de congelamento da loja.",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -343,5 +345,7 @@
   "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
   "display-turn-on": "&aSuccessfully turn on the shop display.",
   "display-turn-off": "&aSuccessfully turn off the shop display.",
-  "shop-purged-start": "&aShop purge started, check the console for details."
+  "shop-purged-start": "&aShop purge started, check the console for details.",
+  "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
+  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
 }
