@@ -97,7 +97,7 @@
     "item-holochat-error": "&c[Error]",
     "preview": "&b[Item Preview]",
     "space": "&aSpace: &e{0}",
-    "stock": "&aStock &e{0}",
+    "stock": "&aStock: &e{0}",
     "price-per": "&aPrice per &e{0} &a- &e{1}",
     "price-per-stack": "&aPrice per &e{2}x {0} - {1}",
     "total-value-of-chest": "&aTotal value of chest: &e{0}",
@@ -110,12 +110,12 @@
   "bypassing-lock": "&cBypassing a QuickShop lock!",
   "that-is-locked": "&cThis shop is locked.",
   "how-many-buy": "&aEnter in chat, how many you wish to &bBUY&a. You can buy &e{0}&a. Enter &ball&a to buy them all.",
-  "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You have &e{0}&a available. Enter &ball&a in chat, to sell all.",
+  "how-many-sell": "&aEnter in chat, how many you wish to &dSELL&a. You can buy &e{0}&a. Enter &ball&a to buy them all.",
   "not-allowed-to-create": "&cYou may not create a shop here.",
   "blacklisted-item": "&cYou cannot sell this item because it is on the blacklist",
   "how-much-to-trade-for": "&aEnter in chat, how much you wish to trade &e{1}x {0}&a for.",
   "command": {
-    "format": "&a/{0} {1} &e- {2}",
+    "format": "&a{0} {1} &e- {2}",
     "format-disabled": "&c/{0} {1} &7- {2}",
     "toggle-unlimited": {
       "unlimited": "&aShop is now unlimited",
