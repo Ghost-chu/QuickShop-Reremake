@@ -196,6 +196,11 @@ public class PlayerListener extends AbstractQSListener {
             final double money = plugin.getEconomy().getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
             final Inventory playerInventory = p.getInventory();
             if (shop.isSelling()) {
+                if (shop.getRemainingStock() == 0) {
+                    plugin.text().of(p, "purchase-out-of-stock", shop.ownerName()).send();
+                    return;
+                }
+
                 int itemAmount = getPlayerCanBuy(shop, money, price, playerInventory);
                 if (shop.isStackingShop()) {
                     plugin.text().of(p, "how-many-buy-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(itemAmount)).send();
@@ -203,6 +208,11 @@ public class PlayerListener extends AbstractQSListener {
                     plugin.text().of(p, "how-many-buy", Integer.toString(itemAmount)).send();
                 }
             } else {
+                if (shop.getRemainingSpace() == 0) {
+                    plugin.text().of(p, "purchase-out-of-space", shop.ownerName()).send();
+                    return;
+                }
+
                 int items = getPlayerCanSell(shop, money, price, playerInventory);
                 if (shop.isStackingShop()) {
                     plugin.text().of(p, "how-many-sell-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(items)).send();
@@ -290,14 +300,15 @@ public class PlayerListener extends AbstractQSListener {
         if (shop.isFreeShop()) {
             return Math.min(shop.getRemainingSpace(), Util.countItems(playerInventory, shop.getItem()));
         }
-        int items = shop.getRemainingStock();
+
+        int items = Util.countItems(playerInventory, shop.getItem());
         final int ownerCanAfford = (int) (money / price);
         if (!shop.isUnlimited()) {
             // Amount check player amount and shop empty slot
             items = Math.min(items, shop.getRemainingSpace());
             // Amount check player selling item total cost and the shop owner's balance
             items = Math.min(items, ownerCanAfford);
-        } else if (plugin.getConfiguration().getBoolean("shop.pay-unlimited-shop-owners")) {
+        } else if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
             // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
             // true,
             // the unlimited shop owner should have enough money.

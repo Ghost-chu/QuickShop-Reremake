@@ -29,7 +29,6 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.TranslatableComponent;
-import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -783,9 +782,9 @@ public class ContainerShop implements Shop {
         }
         lines.add(new ComponentPackage(new ComponentBuilder().color(ChatColor.RESET).appendLegacy(line4).create()));
 
-        if(Util.isDevMode()) {
-            lines.forEach(pack -> Util.debugLog(ComponentSerializer.toString(pack.getComponents())));
-        }
+//        if(Util.isDevMode()) {
+//            lines.forEach(pack -> Util.debugLog(ComponentSerializer.toString(pack.getComponents())));
+//        }
 
         return lines;
     }

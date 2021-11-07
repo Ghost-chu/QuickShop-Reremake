@@ -395,6 +395,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         public List<String> forLocale(@NotNull String locale) {
             JsonConfiguration index = mapping.get(locale);
             if (index == null) {
+                Util.debugLog("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
                 if (MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")).equals(locale)) {
                     List<String> str = fallbackLocal();
                     if (str.isEmpty()) {
@@ -407,12 +408,15 @@ public class SimpleTextManager implements TextManager, Reloadable {
             } else {
                 List<String> str = index.getStringList(path);
                 if (str.isEmpty()) {
-                    return Collections.singletonList("Missing Language Key: " + path);
-                } else {
-                    return postProcess(str);
+                    // Fallback
+                    Util.debugLog("Fallback " + path + " to bundle translation caused OTA & User's override file doesn't contains this key");
+                    str = fallbackLocal();
+                    if (str.isEmpty()) {
+                        return Collections.singletonList("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                    }
                 }
+                return postProcess(str);
             }
-
         }
 
         /**
@@ -512,6 +516,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         public String forLocale(@NotNull String locale) {
             JsonConfiguration index = mapping.get(locale);
             if (index == null) {
+                Util.debugLog("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
                 if (MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")).equals(locale)) {
                     String str = fallbackLocal();
                     if (str == null) {
@@ -524,7 +529,12 @@ public class SimpleTextManager implements TextManager, Reloadable {
             } else {
                 String str = index.getString(path);
                 if (str == null) {
-                    return "Missing Language Key: " + path;
+                    // Fallback
+                    Util.debugLog("Fallback " + path + " to bundle translation caused OTA & User's override file doesn't contains this key");
+                    str = fallbackLocal();
+                    if (str == null) {
+                        return "Fallback Missing Language Key: " + path + ", report to QuickShop!";
+                    }
                 }
                 return postProcess(str);
             }

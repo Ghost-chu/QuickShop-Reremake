@@ -155,6 +155,10 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
             return false;
         }
 
+        if (requireStack.isSimilar(givenStack)) {
+            return true;
+        }
+
         if (requireStack.hasItemMeta() != givenStack.hasItemMeta()) {
             return false;
         }

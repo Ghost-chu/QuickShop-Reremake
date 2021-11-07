@@ -268,7 +268,7 @@ public class RollbarErrorReporter {
             return PossiblyLevel.IMPOSSIBLE;
         }
 
-        if (stackTraceElements[0].getClassName().contains("org.maxgamer.quickshop")) {
+        if (stackTraceElements[0].getClassName().contains("org.maxgamer.quickshop") && stackTraceElements[1].getClassName().contains("org.maxgamer.quickshop")) {
             return PossiblyLevel.CONFIRM;
         }
 

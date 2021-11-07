@@ -5,7 +5,7 @@
   "translation-version": "&c&lVersión Soportada: &b&lReremake",
   "translation-contributors": "Contribuidores: Randall_Rut, Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken y Andre_601",
   "translation-country": "&c&lZona de idioma: &b&lEspañol (es_ES)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&cNo se pudo encontrar ninguna tienda. Tienes que mirar hacia una.",
   "no-anythings-in-your-hand": "&cNo hay nada en tu mano.",
   "no-permission": "&cNo tienes permiso para hacer eso.",
@@ -228,7 +228,9 @@
     "lock": "&eTienda bloqueada: &b{0} &e[&d&lCambiar&e]",
     "lock-hover": "&eActivar/Desactivar protección contra bloqueo de la tienda.",
     "freeze": "&eTienda bloqueada: &b{0} &e[&d&lCambiar&e]",
-    "freeze-hover": "&eCambiar estado de congelación de la tienda.,"
+    "freeze-hover": "&eCambiar estado de congelación de la tienda.,",
+    "toggledisplay": "&eMostrar Item: &b{0} &e[&d&lCambiar&e]",
+    "toggledisplay-hover": "&eAlternar el estado del mostrar item de la tienda"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -343,5 +345,7 @@
   "taxaccount-invalid": "&cLa cuenta de destino no es válida, por favor ingrese un nombre de jugador válido o uuid(con guiones).",
   "display-turn-on": "&aSe encendió con éxito la visualización de la tienda.",
   "display-turn-off": "&aSe apagó con éxito la visualización de la tienda.",
-  "shop-purged-start": "&aLa purga de la tienda ha comenzado, revisa la consola para más detalles."
+  "shop-purged-start": "&aLa purga de la tienda ha comenzado, revisa la consola para más detalles.",
+  "purchase-out-of-stock": "&cEsta tienda se quedó sin stock, Contacte con el propietario o personal de la tienda para rellenar el stock.",
+  "purchase-out-of-space": "&cEsta tienda se quedó sin espacio, Contacte con el propietario o personal de la tienda para vaciar la tienda."
 }
