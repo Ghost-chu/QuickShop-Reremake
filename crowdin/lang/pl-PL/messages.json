@@ -179,7 +179,7 @@
       "lock": "&eZmień status blokady sklepu",
       "taxaccount": "&eUstaw konto podatkowe, które sklep ma używać",
       "toggledisplay": "&ePrzełącz stan wyświetlania przedmiotu w sklepie",
-      "purge": "&eStart the shop purge task in background"
+      "purge": "&eUruchom zadanie czyszczenia sklepu w tle"
     },
     "disabled": "&cTa komenda jest wyłączona: &e{0}",
     "feature-not-enabled": "Ta funkcja nie jest włączona w pliku konfiguracyjnym."
@@ -229,8 +229,8 @@
     "lock-hover": "&eWłącz/Wyłącz ochronę blokady sklepu.",
     "freeze": "&eTryb zamrożenia: &b{0} &e[&d&lPrzełącz&e]",
     "freeze-hover": "&ePrzełącz status zamrożenia sklepu.",
-    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
-    "toggledisplay-hover": "&eToggle the shop's displayitem status"
+    "toggledisplay": "&eWyświetlacz Przedmiotu: &b{0} &e[&d&lPrzełącz&e]",
+    "toggledisplay-hover": "&ePrzełącz status wyświetlania przedmiotu w sklepie"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -346,6 +346,6 @@
   "display-turn-on": "&aPomyślnie włączono wyświetlacz sklepu.",
   "display-turn-off": "&aPomyślnie wyłączono wyświetlacz sklepu.",
   "shop-purged-start": "&aRozpoczęto czyszczenie sklepu, sprawdź konsolę, aby uzyskać szczegółowe informacje.",
-  "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
-  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
+  "purchase-out-of-stock": "&cW tym sklepie skończyły się zapasy, skontaktuj się z właścicielem sklepu lub personelem, aby uzupełnić zapasy.",
+  "purchase-out-of-space": "&cW tym sklepie zabrakło miejsca, skontaktuj się z właścicielem sklepu lub personelem, aby opróżnić sklep."
 }
