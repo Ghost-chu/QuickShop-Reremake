@@ -300,21 +300,29 @@ public class PlayerListener extends AbstractQSListener {
         if (shop.isFreeShop()) {
             return Math.min(shop.getRemainingSpace(), Util.countItems(playerInventory, shop.getItem()));
         }
-        int items = shop.getRemainingStock();
+
+        int items = Util.countItems(playerInventory, shop.getItem());
+        Util.debugLog("Items: " + items);
         final int ownerCanAfford = (int) (money / price);
+        Util.debugLog("CanAfford: " + ownerCanAfford);
+
         if (!shop.isUnlimited()) {
             // Amount check player amount and shop empty slot
             items = Math.min(items, shop.getRemainingSpace());
+            Util.debugLog("Items: " + items);
             // Amount check player selling item total cost and the shop owner's balance
             items = Math.min(items, ownerCanAfford);
-        } else if (plugin.getConfiguration().getBoolean("shop.pay-unlimited-shop-owners")) {
+            Util.debugLog("Items: " + items);
+        } else if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
             // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
             // true,
             // the unlimited shop owner should have enough money.
             items = Math.min(items, ownerCanAfford);
+            Util.debugLog("Items: " + items);
         }
         if (items < 0) {
             items = 0;
+            Util.debugLog("Items: " + items);
         }
         return items;
     }
