@@ -1090,7 +1090,7 @@ public class Util {
 
 
     /**
-     * Get the sign material using by plugin. With compatiabily process.
+     * Get the sign material using by plugin. With compatibly process.
      *
      * @return The material now using.
      */
