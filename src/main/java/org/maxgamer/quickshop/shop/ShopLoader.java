@@ -25,6 +25,7 @@ import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -92,6 +93,8 @@ public class ShopLoader {
         int loaded = 0;
         int total = 0;
         int valid = 0;
+        List<Shop> pendingLoading = new ArrayList<>();
+
         try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
             Timer timer = new Timer();
             timer.start();
@@ -158,18 +161,23 @@ public class ShopLoader {
                         //TODO: Only remove from memory, so if it actually is a bug, user won't lost all shops.
                         //TODO: Old shop will be deleted when in same location creating new shop.
                     } else {
-                        shop.onLoad();
-                        shop.update();
+                        pendingLoading.add(shop);
                         ++loaded;
                     }
                 } else {
                     loadAfterChunkLoaded++;
                 }
             }
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                for (Shop shop : pendingLoading) {
+                    shop.onLoad();
+                    shop.update();
+                }
+            }, 1);
             this.plugin.getLogger().info(">> Shop Loader Information");
             this.plugin.getLogger().info("Total           shops: " + total);
             this.plugin.getLogger().info("Valid           shops: " + valid);
-            this.plugin.getLogger().info("Loaded          shops: " + loaded);
+            this.plugin.getLogger().info("Pending loading shops: " + loaded);
             this.plugin.getLogger().info("Waiting worlds loaded: " + loadAfterWorldLoaded);
             this.plugin.getLogger().info("Waiting chunks loaded: " + loadAfterChunkLoaded);
             this.plugin.getLogger().info("Done! Used " + timer.stopAndGetTimePassed() + "ms to loaded shops in database.");
