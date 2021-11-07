@@ -525,6 +525,14 @@ public class Paste {
                 } catch (Exception ignore) {
                 }
                 break;
+            case HELPCHAT:
+                try {
+                    // Ubuntu Pastebin
+                    paster = new HelpChatPastebinPaster();
+                    return paster.pasteTheText(content);
+                } catch (Exception ignore) {
+                }
+                break;
             default:
                 try {
                     // Lucko Pastebin
@@ -540,6 +548,7 @@ public class Paste {
     public enum PasteType {
         LUCKO,
         PASTEBIN,
-        UBUNTU
+        UBUNTU,
+        HELPCHAT
     }
 }
