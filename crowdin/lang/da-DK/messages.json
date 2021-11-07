@@ -5,7 +5,7 @@
   "translation-version": "Supportversion: Reremake",
   "translation-contributors": "Bidragydere: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken og Andre_601",
   "translation-country": "Sprogzone: dansk (da_DA)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&cKunne ikke finde en QuickShop. Du skal kigge på en.",
   "no-anythings-in-your-hand": "&cDer er intet i din hånd.",
   "no-permission": "&cDu har ikke rettighederne til at gøre dette.",
@@ -179,7 +179,7 @@
       "lock": "&eSwitch the shop's lock status",
       "taxaccount": "&eSet the tax account that shop using",
       "toggledisplay": "&eToggle the shop display item status",
-      "purge": "&aStart the shop purge task in background"
+      "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&cThis command is disabled: &e{0}",
     "feature-not-enabled": "This feature is not enabled in the config file."
@@ -228,7 +228,9 @@
     "lock": "&eShop lock: &b{0} &e[&d&lToggle&e]",
     "lock-hover": "&eEnable/Disable the shop's lock protection.",
     "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
-    "freeze-hover": "&eToggle the shop's freeze status."
+    "freeze-hover": "&eToggle the shop's freeze status.",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -343,5 +345,7 @@
   "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
   "display-turn-on": "&aSuccessfully turn on the shop display.",
   "display-turn-off": "&aSuccessfully turn off the shop display.",
-  "shop-purged-start": "&aShop purge started, check the console for details."
+  "shop-purged-start": "&aShop purge started, check the console for details.",
+  "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
+  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
 }

@@ -5,7 +5,7 @@
   "translation-version": "Støttet versjon: Reremake",
   "translation-contributors": "Bidragsytere: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Språksone: Norsk (no_NO)",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&cKunne ikke finne en QuickShop. Du må se på en butikk.",
   "no-anythings-in-your-hand": "&cDet er ingenting i hånden din.",
   "no-permission": "&cDu har ikke tillatelse til å gjøre det.",
@@ -179,7 +179,7 @@
       "lock": "&eEndre butikkens låsestatus",
       "taxaccount": "&eSett avgift konto som butikken bruker",
       "toggledisplay": "&eSlå av/på butikken vise varestatus",
-      "purge": "&aStart butikkrenseoppgaven i bakgrunnen"
+      "purge": "&eStart fjerning av butikker i bakgrunnen"
     },
     "disabled": "&cDenne kommandoen er deaktivert: &e{0}",
     "feature-not-enabled": "Denne funksjonen er ikke aktivert i konfigurasjonsfilen."
@@ -228,7 +228,9 @@
     "lock": "&eButikklås: &b{0} &e[&d&lVeksle&e]",
     "lock-hover": "&eAktiver/Deaktiver butikkens låsebeskyttelse.",
     "freeze": "&eFrys modus: &b{0} &e[&d&lVeksle&e]",
-    "freeze-hover": "&eVeksle butikkens frysestatus."
+    "freeze-hover": "&eVeksle butikkens frysestatus.",
+    "toggledisplay": "&eUtstillingsvare: &b{0} &e[&d&lVeksle&e]",
+    "toggledisplay-hover": "&eSlå av/på butikkens utstillingsvare"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -343,5 +345,7 @@
   "taxaccount-invalid": "&cTarget konto er ikke ugyldig, vennligst skriv inn et gyldig spillernavn eller uuid(med bindestrek).",
   "display-turn-on": "&aVellykket aktivering av visning av butikk.",
   "display-turn-off": "&aVellykket deaktivering av butikkvisning.",
-  "shop-purged-start": "&aShop renset, sjekk konsollen for detaljer."
+  "shop-purged-start": "&aShop renset, sjekk konsollen for detaljer.",
+  "purchase-out-of-stock": "&cDenne butikken er tom på lager, kontakt butikkeier eller ansatte for å fylle på lageret.",
+  "purchase-out-of-space": "&cDenne butikken er tom for plass, kontakt butikkeier eller ansatte for å tømme butikken."
 }

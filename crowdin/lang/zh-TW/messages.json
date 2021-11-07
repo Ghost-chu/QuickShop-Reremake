@@ -5,7 +5,7 @@
   "translation-version": "支持版本 ： Reremake （重製版）",
   "translation-contributors": "貢獻人員 ： Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
   "translation-country": "語言 ： &b&l繁體中文 Chinese Traditional （zh_TW）",
-  "language-version": "61",
+  "language-version": "62",
   "not-looking-at-shop": "&c無法找到儲物箱商店，你需要注視著儲物箱。",
   "no-anythings-in-your-hand": "&c手上沒有任何東西。",
   "no-permission": "&4你沒有使用該指令的權限。",
@@ -177,9 +177,9 @@
       "unban": "&e解除封禁商店中的玩家",
       "freeze": "&e停用或啟用商店交易",
       "lock": "&e切換商店上鎖狀態",
-      "taxaccount": "&eSet the tax account that shop using",
-      "toggledisplay": "&eToggle the shop display item status",
-      "purge": "&aStart the shop purge task in background"
+      "taxaccount": "&e設定商店使用的稅金帳戶",
+      "toggledisplay": "&e切換商店顯示物品狀態",
+      "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&c這個指令被停用 ： &e{0}",
     "feature-not-enabled": "該功能沒有在設定檔案中啟用。"
@@ -228,7 +228,9 @@
     "lock": "&e商店鎖 ： &b{0} &e[&d&l切換&e]",
     "lock-hover": "&e開啟/關閉商店鎖保護。",
     "freeze": "&e凍結模式 ： &b{0} &e[&d&l切換&e]",
-    "freeze-hover": "&e切換商店凍結狀態。"
+    "freeze-hover": "&e切換商店凍結狀態。",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -338,10 +340,12 @@
   },
   "client-language-changed": "&aQuickShop detected your client language setting has been changed, we're now using {0} locale for you.",
   "client-language-unsupported": "&eQuickShop doesn't support your client language, we're fallback to {0} locale now.",
-  "taxaccount-set": "&aThis shop's tax account has been set to &e{0}",
-  "taxaccount-unset": "&aThis shop's tax account now following server global setting.",
-  "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
+  "taxaccount-set": "&a已經設定 &e{0} &a為該商店的稅金帳戶",
+  "taxaccount-unset": "&a該商店的稅金帳戶現在按照伺服器全域設定。",
+  "taxaccount-invalid": "&c無效的目標帳戶，請輸入有效的玩家名稱或 uuid（須加破折號）。",
   "display-turn-on": "&aSuccessfully turn on the shop display.",
   "display-turn-off": "&aSuccessfully turn off the shop display.",
-  "shop-purged-start": "&aShop purge started, check the console for details."
+  "shop-purged-start": "&aShop purge started, check the console for details.",
+  "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
+  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
 }
