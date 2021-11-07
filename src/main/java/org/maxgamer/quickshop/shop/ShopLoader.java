@@ -177,7 +177,7 @@ public class ShopLoader {
             this.plugin.getLogger().info(">> Shop Loader Information");
             this.plugin.getLogger().info("Total           shops: " + total);
             this.plugin.getLogger().info("Valid           shops: " + valid);
-            this.plugin.getLogger().info("Pending loading shops: " + loaded);
+            this.plugin.getLogger().info("Pending              : " + loaded);
             this.plugin.getLogger().info("Waiting worlds loaded: " + loadAfterWorldLoaded);
             this.plugin.getLogger().info("Waiting chunks loaded: " + loadAfterChunkLoaded);
             this.plugin.getLogger().info("Done! Used " + timer.stopAndGetTimePassed() + "ms to loaded shops in database.");
