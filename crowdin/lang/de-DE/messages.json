@@ -346,6 +346,6 @@
   "display-turn-on": "&aShopanzeige erfolgreich aktiviert.",
   "display-turn-off": "&aShopanzeige erfolgreich deaktiviert.",
   "shop-purged-start": "&aShop-Löschung gestartet. Überprüfe die Konsole für details.",
-  "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
-  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
+  "purchase-out-of-stock": "&cDieser Shop hat keine Items mehr. Kontaktiere den Shopeigentümer oder Shop-Mitarbeiter um den Bestand wieder aufzufüllen.",
+  "purchase-out-of-space": "&cDieser Shop hat keinen Platz mehr. Kontaktiere den Shopeigentümer oder Shop-Mitarbeiter damit er geleert wird."
 }
