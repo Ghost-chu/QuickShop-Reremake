@@ -308,7 +308,7 @@ public class PlayerListener extends AbstractQSListener {
             items = Math.min(items, shop.getRemainingSpace());
             // Amount check player selling item total cost and the shop owner's balance
             items = Math.min(items, ownerCanAfford);
-        } else if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
+        } else if (plugin.getConfiguration().getBoolean("shop.pay-unlimited-shop-owners")) {
             // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
             // true,
             // the unlimited shop owner should have enough money.
