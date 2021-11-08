@@ -129,7 +129,7 @@
     "now-buying": "&aŞimdi &e{0} &dALIYOR",
     "now-selling": "&aŞimdi &e{0} &bSATILIYOR",
     "cleaning": "&aStoksuz marketler kaldırılıyor...",
-    "reloading": "&aConfiguration reloaded. &eSome changes may require reboot to affect. \n&7(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won't crashed.)",
+    "reloading": "&aYapılandırma yeniden yüklendi. &eBazı değişikliklerin etki etmesi için yeniden başlatma gerekebilir. \\n&7(Yeniden yükleme davranışı 4.0.9.10'dan sonra değiştirildi. Sunucunun çökmemesi için artık sadece yapılandırmayı yeniden yüklüyoruz, tüm eklentiyi değil.)",
     "cleaned": "&e{0}&a market kaldırıldı.",
     "no-type-given": "&cKullanım: /qs find <item>",
     "no-world-given": "&cLütfen bir dünya adı belirtin",
@@ -177,9 +177,9 @@
       "unban": "&eBir oyuncunun bu marketteki yasaklamasını kaldırır",
       "freeze": "&eMarket takasını devre dışı bırak ya da aktifleştir",
       "lock": "&eMarketin kilit statüsünü değiştir",
-      "taxaccount": "&eSet the tax account that shop using",
+      "taxaccount": "&eAlışveriş yapılırken verginin aktarılacağı hesabı ayarlar",
       "toggledisplay": "&eToggle the shop display item status",
-      "purge": "&eStart the shop purge task in background"
+      "purge": "&eMarket temizleme görevini arka planda başlatır"
     },
     "disabled": "&cBu komut aktif değil: &e{0}",
     "feature-not-enabled": "Bu özellik yapılandırma dosyasında aktif değil."
@@ -333,8 +333,8 @@
   "unlimited-shop-owner-keeped": "&eDikkat: Marketin sahibi hala sınırsız market sahibidir, yeni dükkan sahibini yeniden ayarlamanız gerekmektedir.",
   "server-crash-warning": "&cEğer QuickShop Jar dosyasını sunucu çalışırken değiştirdiyseniz/sildiyseniz, /qs reload komutunu çalıştırdığınızda sunucu çökebilir.",
   "reloading-status": {
-    "success": "&aReload completed without any errors.",
-    "require-restart": "&aReload completed. &e(Some changes require server restart to affect)",
+    "success": "&aYeniden yükleme hata olmadan tamamlandı.",
+    "require-restart": "&aYeniden yükleme tamamlandı. &e(Bazı değişikliklerin etkilenmesi için sunucuyu yeniden başlatmak gerekebilir)",
     "failed": "&cReload failed, check the server console",
     "scheduled": "&aReload completed. &7(Some changes required a while to affect)"
   },
@@ -346,6 +346,6 @@
   "display-turn-on": "&aSuccessfully turn on the shop display.",
   "display-turn-off": "&aSuccessfully turn off the shop display.",
   "shop-purged-start": "&aShop purge started, check the console for details.",
-  "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
-  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
+  "purchase-out-of-stock": "&cBu marketin stoğu tükendi, stoğu yeniden doldurmaları için mağaza sahibi ya da personelleri ile iletişime geç.",
+  "purchase-out-of-space": "&cBu markette yer kalmadı, marketi boşaltmaları için mağaza sahibi ya da personelleri ile iletişime geç."
 }
