@@ -148,7 +148,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         if (plugin.getNbtapi() != null) {
             NBTItem nbtItemOriginal = new NBTItem(requireStack);
             NBTItem nbtItemTester = new NBTItem(givenStack);
-            if (Objects.equals(nbtItemOriginal.getString("shopId"), nbtItemTester.getString("shopId"))) {
+            if (Objects.equals(nbtItemOriginal.getString("shopItemId"), nbtItemTester.getString("shopItemId"))) {
                 return true;
             }
         }
