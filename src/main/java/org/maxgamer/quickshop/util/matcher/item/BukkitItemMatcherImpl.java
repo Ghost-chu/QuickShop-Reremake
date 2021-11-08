@@ -27,8 +27,6 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.shop.ItemMatcher;
 
-import java.util.Objects;
-
 /**
  * A simple impl for ItemMatcher
  *
@@ -68,21 +66,12 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
      */
     @Override
     public boolean matches(@Nullable ItemStack original, @Nullable ItemStack tester) {
-        return Objects.equals(original, tester);
-        /*
-        @Override
-        @Utility
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (!(obj instanceof ItemStack)) {
-                return false;
-            }
-
-            ItemStack stack = (ItemStack) obj;
-            return getAmount() == stack.getAmount() && isSimilar(stack);
+        if (original == null && tester == null) {
+            return true;
         }
-         */
+        if ((original == null) != (tester == null)) {
+            return false;
+        }
+        return tester.isSimilar(original);
     }
 }
