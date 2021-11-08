@@ -333,8 +333,8 @@
   "unlimited-shop-owner-keeped": "&eDikkat: Marketin sahibi hala sınırsız market sahibidir, yeni dükkan sahibini yeniden ayarlamanız gerekmektedir.",
   "server-crash-warning": "&cEğer QuickShop Jar dosyasını sunucu çalışırken değiştirdiyseniz/sildiyseniz, /qs reload komutunu çalıştırdığınızda sunucu çökebilir.",
   "reloading-status": {
-    "success": "&aReload completed without any errors.",
-    "require-restart": "&aReload completed. &e(Some changes require server restart to affect)",
+    "success": "&aYeniden yükleme hata olmadan tamamlandı.",
+    "require-restart": "&aYeniden yükleme tamamlandı. &e(Bazı değişikliklerin etkilenmesi için sunucuyu yeniden başlatmak gerekebilir)",
     "failed": "&cReload failed, check the server console",
     "scheduled": "&aReload completed. &7(Some changes required a while to affect)"
   },
@@ -346,6 +346,6 @@
   "display-turn-on": "&aSuccessfully turn on the shop display.",
   "display-turn-off": "&aSuccessfully turn off the shop display.",
   "shop-purged-start": "&aShop purge started, check the console for details.",
-  "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
-  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
+  "purchase-out-of-stock": "&cBu marketin stoğu tükendi, stoğu yeniden doldurmaları için mağaza sahibi ya da personelleri ile iletişime geç.",
+  "purchase-out-of-space": "&cBu markette yer kalmadı, marketi boşaltmaları için mağaza sahibi ya da personelleri ile iletişime geç."
 }
