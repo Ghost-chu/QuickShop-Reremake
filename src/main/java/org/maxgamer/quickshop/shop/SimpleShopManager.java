@@ -641,7 +641,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             space = 10000;
         }
         if (space < amount) {
-            plugin.text().of(buyer, "shop-has-no-space", Integer.toString(space), MsgUtil.convertItemStackToTranslateText(shop.getItem().getType())).send();
+            plugin.text().of(buyer, "shop-has-no-space", Integer.toString(space), MsgUtil.getTranslateText(shop.getItem())).send();
             return;
         }
         int count = Util.countItems(buyerInventory, shop.getItem());
@@ -650,7 +650,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             plugin.text().of(buyer,
                     "you-dont-have-that-many-items",
                     Integer.toString(count),
-                    MsgUtil.convertItemStackToTranslateText(shop.getItem().getType())).send();
+                    MsgUtil.getTranslateText(shop.getItem())).send();
             return;
         }
         if (amount < 1) {
@@ -711,7 +711,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         String msg = plugin.text().of(buyer, "player-sold-to-your-store",
                 player != null ? player.getName() : buyer.toString(),
                 String.valueOf(amount),
-                MsgUtil.convertItemStackToTranslateText(shop.getItem().getType())).forLocale();
+                MsgUtil.getTranslateText(shop.getItem())).forLocale();
 
         MsgUtil.TransactionMessage transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
 
@@ -895,7 +895,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 return;
             case PRICE_RESTRICTED:
                 plugin.text().of(p, "restricted-prices",
-                        MsgUtil.convertItemStackToTranslateText(info.getItem().getType()),
+                        MsgUtil.getTranslateText(info.getItem()),
                         String.valueOf(priceCheckResult.getMin()),
                         String.valueOf(priceCheckResult.getMax())).send();
                 return;
@@ -1023,7 +1023,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         if (stock < amount) {
             plugin.text().of(seller, "shop-stock-too-low", Integer.toString(stock),
-                    MsgUtil.convertItemStackToTranslateText(shop.getItem().getType())).send();
+                    MsgUtil.getTranslateText(shop.getItem())).send();
             return;
         }
         if (amount < 1) {
@@ -1094,14 +1094,14 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             msg = plugin.text().of(seller, "player-bought-from-your-store-tax",
                     player != null ? player.getName() : seller.toString(),
                     Integer.toString(amount * shop.getItem().getAmount()),
-                    MsgUtil.convertItemStackToTranslateText(shop.getItem().getType()),
+                    MsgUtil.getTranslateText(shop.getItem()),
                     Double.toString(total),
                     this.formatter.format(CalculateUtil.multiply(taxModifier, total), shop)).forLocale();
         } else {
             msg = plugin.text().of(seller, "player-bought-from-your-store",
                     player != null ? player.getName() : seller.toString(),
                     Integer.toString(amount * shop.getItem().getAmount()),
-                    MsgUtil.convertItemStackToTranslateText(shop.getItem().getType()),
+                    MsgUtil.getTranslateText(shop.getItem()),
                     Double.toString(total)).forLocale();
         }
 
@@ -1153,7 +1153,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(plugin.text().of(sender, "menu.successful-purchase").forLocale());
-        chatSheetPrinter.printLine(plugin.text().of(sender, "menu.item-name-and-price", Integer.toString(amount * shop.getItem().getAmount()), MsgUtil.convertItemStackToTranslateText(shop.getItem().getType()), format(amount * shop.getPrice(), shop)).forLocale());
+        chatSheetPrinter.printLine(plugin.text().of(sender, "menu.item-name-and-price", Integer.toString(amount * shop.getItem().getAmount()), MsgUtil.getTranslateText(shop.getItem()), format(amount * shop.getPrice(), shop)).forLocale());
         MsgUtil.printEnchantment(sender, shop, chatSheetPrinter);
         chatSheetPrinter.printFooter();
     }
@@ -1178,7 +1178,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 plugin.text().of(sender,
                         "menu.item-name-and-price",
                         Integer.toString(amount),
-                        MsgUtil.convertItemStackToTranslateText(shop.getItem().getType()),
+                        MsgUtil.getTranslateText(shop.getItem()),
                         format(amount * shop.getPrice(), shop)).forLocale());
         if (plugin.getConfiguration().getBoolean("show-tax")) {
             double tax = plugin.getConfiguration().getDouble("tax");
@@ -1211,11 +1211,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         chatSheetPrinter.printLine(plugin.text().of(p, "menu.shop-information").forLocale());
         chatSheetPrinter.printLine(plugin.text().of(p, "menu.owner", shop.ownerName()).forLocale());
         // Enabled
-        if (plugin.getConfiguration().getBoolean("force-use-item-original-name") || !items.hasItemMeta() || !items.getItemMeta().hasDisplayName()) {
-            plugin.getQuickChat().send(p, plugin.getQuickChat().getItemHologramChat(shop, items, p, ChatColor.DARK_PURPLE + plugin.text().of(p, "tableformat.left_begin").forLocale() + plugin.text().of(p, "menu.item", MsgUtil.convertItemStackToTranslateText(shop.getItem().getType())).forLocale() + "  "));
-        } else {
-            plugin.getQuickChat().send(p, plugin.getQuickChat().getItemHologramChat(shop, items, p, ChatColor.DARK_PURPLE + plugin.text().of(p, "tableformat.left_begin").forLocale() + plugin.text().of(p, "menu.item", Util.getItemStackName(shop.getItem())).forLocale() + "  "));
-        }
+        plugin.getQuickChat().send(p, plugin.getQuickChat().getItemHologramChat(shop, items, p, ChatColor.DARK_PURPLE + plugin.text().of(p, "tableformat.left_begin").forLocale() + plugin.text().of(p, "menu.item", MsgUtil.getTranslateText(shop.getItem())).forLocale() + "  "));
         if (Util.isTool(items.getType())) {
             chatSheetPrinter.printLine(
                     plugin.text().of(p, "menu.damage-percent-remaining", Util.getToolPercentage(items)).forLocale());
@@ -1238,9 +1234,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         }
         if (shop.getItem().getAmount() == 1) {
-            chatSheetPrinter.printLine(plugin.text().of(p, "menu.price-per", MsgUtil.convertItemStackToTranslateText(shop.getItem().getType()), format(shop.getPrice(), shop)).forLocale());
+            chatSheetPrinter.printLine(plugin.text().of(p, "menu.price-per", MsgUtil.getTranslateText(shop.getItem()), format(shop.getPrice(), shop)).forLocale());
         } else {
-            chatSheetPrinter.printLine(plugin.text().of(p, "menu.price-per-stack", MsgUtil.convertItemStackToTranslateText(shop.getItem().getType()), format(shop.getPrice(), shop), Integer.toString(shop.getItem().getAmount())).forLocale());
+            chatSheetPrinter.printLine(plugin.text().of(p, "menu.price-per-stack", MsgUtil.getTranslateText(shop.getItem()), format(shop.getPrice(), shop), Integer.toString(shop.getItem().getAmount())).forLocale());
         }
         if (shop.isBuying()) {
             chatSheetPrinter.printLine(plugin.text().of(p, "menu.this-shop-is-buying").forLocale());
@@ -1353,7 +1349,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                         if (shopHaveSpaces == 0) {
                             // when typed 'all' but the shop doesn't have any empty space
                             plugin.text().of(p, "shop-has-no-space", Integer.toString(shopHaveSpaces),
-                                    MsgUtil.convertItemStackToTranslateText(shop.getItem().getType())).send();
+                                    MsgUtil.getTranslateText(shop.getItem())).send();
                             return;
                         }
                         if (ownerCanAfford == 0
@@ -1373,7 +1369,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                         // when typed 'all' but player doesn't have any items to sell
                         plugin.text().of(p, "you-dont-have-that-many-items",
                                 Integer.toString(amount),
-                                MsgUtil.convertItemStackToTranslateText(shop.getItem().getType())).send();
+                                MsgUtil.getTranslateText(shop.getItem())).send();
                         return;
                     }
                 } else {
@@ -1411,7 +1407,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                             // but also the shop's stock is 0
                             plugin.text().of(p, "shop-stock-too-low",
                                     Integer.toString(shop.getRemainingStock()),
-                                    MsgUtil.convertItemStackToTranslateText(shop.getItem().getType())).send();
+                                    MsgUtil.getTranslateText(shop.getItem())).send();
                         } else {
                             // when if player's inventory is full
                             if (invHaveSpaces <= 0) {

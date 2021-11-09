@@ -54,6 +54,6 @@ public class SubCommand_SilentSell implements CommandHandler<Player> {
         shop.update();
         MsgUtil.sendControlPanelInfo(sender, shop);
         plugin.text().of(sender,
-                "command.now-selling", MsgUtil.convertItemStackToTranslateText(shop.getItem().getType())).send();
+                "command.now-selling", MsgUtil.getTranslateText(shop.getItem())).send();
     }
 }

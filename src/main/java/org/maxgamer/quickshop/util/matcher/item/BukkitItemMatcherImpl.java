@@ -72,6 +72,19 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
         if ((original == null) != (tester == null)) {
             return false;
         }
+
+        original = original.clone();
+        original.setAmount(1);
+        tester = tester.clone();
+        tester.setAmount(1);
+
+//        if (plugin.getNbtapi() != null) {
+//            NBTItem nbtItemOriginal = new NBTItem(original);
+//            NBTItem nbtItemTester = new NBTItem(tester);
+//            if (Objects.equals(nbtItemOriginal.getString("shopId"), nbtItemTester.getString("shopId"))) {
+//                return true;
+//            }
+//        }
         return tester.isSimilar(original);
     }
 }

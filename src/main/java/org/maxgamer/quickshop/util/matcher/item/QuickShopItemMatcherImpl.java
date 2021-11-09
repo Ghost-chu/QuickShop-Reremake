@@ -144,6 +144,14 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         givenStack = givenStack.clone();
         givenStack.setAmount(1);
 
+//        if (plugin.getNbtapi() != null) {
+//            NBTItem nbtItemOriginal = new NBTItem(requireStack);
+//            NBTItem nbtItemTester = new NBTItem(givenStack);
+//            if (Objects.equals(nbtItemOriginal.getString("shopItemId"), nbtItemTester.getString("shopItemId"))) {
+//                return true;
+//            }
+//        }
+
         if (workType == 1) {
             return requireStack.isSimilar(givenStack);
         }
