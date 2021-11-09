@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.util.matcher.item;
 
-import de.tr7zw.nbtapi.NBTItem;
 import lombok.AllArgsConstructor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -27,8 +26,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.shop.ItemMatcher;
-
-import java.util.Objects;
 
 /**
  * A simple impl for ItemMatcher
@@ -81,13 +78,13 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
         tester = tester.clone();
         tester.setAmount(1);
 
-        if (plugin.getNbtapi() != null) {
-            NBTItem nbtItemOriginal = new NBTItem(original);
-            NBTItem nbtItemTester = new NBTItem(tester);
-            if (Objects.equals(nbtItemOriginal.getString("shopId"), nbtItemTester.getString("shopId"))) {
-                return true;
-            }
-        }
+//        if (plugin.getNbtapi() != null) {
+//            NBTItem nbtItemOriginal = new NBTItem(original);
+//            NBTItem nbtItemTester = new NBTItem(tester);
+//            if (Objects.equals(nbtItemOriginal.getString("shopId"), nbtItemTester.getString("shopId"))) {
+//                return true;
+//            }
+//        }
         return tester.isSimilar(original);
     }
 }

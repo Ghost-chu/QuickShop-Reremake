@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.util.matcher.item;
 
 import de.leonhard.storage.sections.FlatFileSection;
-import de.tr7zw.nbtapi.NBTItem;
 import lombok.AllArgsConstructor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.ShulkerBox;
@@ -145,13 +144,13 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         givenStack = givenStack.clone();
         givenStack.setAmount(1);
 
-        if (plugin.getNbtapi() != null) {
-            NBTItem nbtItemOriginal = new NBTItem(requireStack);
-            NBTItem nbtItemTester = new NBTItem(givenStack);
-            if (Objects.equals(nbtItemOriginal.getString("shopItemId"), nbtItemTester.getString("shopItemId"))) {
-                return true;
-            }
-        }
+//        if (plugin.getNbtapi() != null) {
+//            NBTItem nbtItemOriginal = new NBTItem(requireStack);
+//            NBTItem nbtItemTester = new NBTItem(givenStack);
+//            if (Objects.equals(nbtItemOriginal.getString("shopItemId"), nbtItemTester.getString("shopItemId"))) {
+//                return true;
+//            }
+//        }
 
         if (workType == 1) {
             return requireStack.isSimilar(givenStack);
