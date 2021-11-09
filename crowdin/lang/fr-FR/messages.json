@@ -229,8 +229,8 @@
     "lock-hover": "&eActiver/Désactiver la protection de verrouillage de la boutique.",
     "freeze": "&eVerrouillage de la boutique : &b{0} &e[&d&lActiver&e]",
     "freeze-hover": "&eActiver/désactiver le statut de blocage de la boutique.",
-    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
-    "toggledisplay-hover": "&eToggle the shop's displayitem status"
+    "toggledisplay": "&eVisibilité des items: &b{0} &e[&d&lActiver/Désactiver&r&e]",
+    "toggledisplay-hover": "&eActiver/désactiver l'affichage de l'item de la boutique"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -333,19 +333,19 @@
   "unlimited-shop-owner-keeped": "&eAttention : Le propriétaire de la boutique est toujours propriétaire de la boutique illimitée, vous devez re-définir nouveau propriétaire de la boutique par vous-même.",
   "server-crash-warning": "&cLe serveur peut planter après l’éxécution de la commande /qs reload si vous remplacez ou supprimez le fichier Jar du plugin QuickShop pendant l’exécution du serveur.",
   "reloading-status": {
-    "success": "&aReload completed without any errors.",
-    "require-restart": "&aReload completed. &e(Some changes require server restart to affect)",
-    "failed": "&cReload failed, check the server console",
-    "scheduled": "&aReload completed. &7(Some changes required a while to affect)"
+    "success": "&aRechargement effectué sans erreurs.",
+    "require-restart": "&aRechargement terminé. &e(Certaines modifications nécessitent un redémarrage du serveur pour prendre effet)",
+    "failed": "&cRechargement échoué, vérifiez la console du serveur",
+    "scheduled": "&aRechargement terminé. &7(Certaines modifications nécessitent un certain temps)"
   },
-  "client-language-changed": "&aQuickShop detected your client language setting has been changed, we're now using {0} locale for you.",
-  "client-language-unsupported": "&eQuickShop doesn't support your client language, we're fallback to {0} locale now.",
-  "taxaccount-set": "&aThis shop's tax account has been set to &e{0}",
-  "taxaccount-unset": "&aThis shop's tax account now following server global setting.",
-  "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
-  "display-turn-on": "&aSuccessfully turn on the shop display.",
-  "display-turn-off": "&aSuccessfully turn off the shop display.",
-  "shop-purged-start": "&aShop purge started, check the console for details.",
-  "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
-  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
+  "client-language-changed": "&aQuickShop a détecté que votre paramètre de langue client a été modifié, nous utilisons maintenant la locale {0} pour vous.",
+  "client-language-unsupported": "&eQuickShop ne prend pas en charge la langue de votre client, nous sommes maintenant passés à la locale {0}.",
+  "taxaccount-set": "&aLe compte de taxe de cette boutique a été défini à &e{0}",
+  "taxaccount-unset": "&aLe compte de taxe de cette boutique suit maintenant le paramètre global du serveur.",
+  "taxaccount-invalid": "&cLe compte que vous avez défini est invalide, veuillez entrer un nom de joueur ou un uuid (avec les tirets) valide.",
+  "display-turn-on": "&aActivation réussie de l'affichage de la boutique.",
+  "display-turn-off": "Désactivation réussie de l'affichage de la boutique.",
+  "shop-purged-start": "&aLa purge a commencé, vérifiez la console pour plus de détails.",
+  "purchase-out-of-stock": "&cCette boutique est en rupture de stock, contactez le propriétaire ou le personnel de la boutique pour recharger le stock.",
+  "purchase-out-of-space": "&cCette boutique est à court d'espace, contactez le propriétaire ou le personnel de la boutique pour vider la boutique."
 }
