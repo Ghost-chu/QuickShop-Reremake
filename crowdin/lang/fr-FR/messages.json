@@ -177,9 +177,9 @@
       "unban": "&eDébannir un joueur de la boutique",
       "freeze": "&eDésactiver ou activer le trading en magasin",
       "lock": "&eChanger l'état de verrouillage de la boutique",
-      "taxaccount": "&eSet the tax account that shop using",
-      "toggledisplay": "&eToggle the shop display item status",
-      "purge": "&eStart the shop purge task in background"
+      "taxaccount": "&eDéfinir le compte de taxe que la boutique utilise",
+      "toggledisplay": "&eActiver/désactiver l'affichage de l'item de la boutique",
+      "purge": "&eLancer la purge des boutiques en arrière-plan"
     },
     "disabled": "&cCette commande est désactivée : &e{0}",
     "feature-not-enabled": "Cette fonctionnalité n'est pas activée dans le fichier de configuration."
