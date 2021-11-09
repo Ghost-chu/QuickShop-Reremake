@@ -278,7 +278,7 @@ public class PlayerListener extends AbstractQSListener {
             final SimpleInfo info = new SimpleInfo(b.getLocation(), ShopAction.CREATE, e.getItem(), last, false);
 
             plugin.getShopManager().getActions().put(p.getUniqueId(), info);
-            plugin.text().of(p, "how-much-to-trade-for", MsgUtil.convertItemStackToTranslateText(Objects.requireNonNull(e.getItem()).getType()), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1)).send();
+            plugin.text().of(p, "how-much-to-trade-for", MsgUtil.getTranslateText(Objects.requireNonNull(e.getItem())), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1)).send();
         }
     }
 

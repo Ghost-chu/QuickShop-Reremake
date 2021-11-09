@@ -48,7 +48,7 @@ public class SubCommand_Buy implements CommandHandler<Player> {
                 if (shop.getModerator().isModerator(sender.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control")) {
                     shop.setShopType(ShopType.BUYING);
                     shop.update();
-                    plugin.text().of(sender, "command.now-buying", MsgUtil.convertItemStackToTranslateText(shop.getItem().getType())).send();
+                    plugin.text().of(sender, "command.now-buying", MsgUtil.getTranslateText(shop.getItem())).send();
                 } else {
                     plugin.text().of(sender, "not-managed-shop").send();
                 }

@@ -212,6 +212,14 @@ public class MsgUtil {
         gameLanguage = ServiceInjector.getGameLanguage(new MojangGameLanguageImpl(plugin, languageCode));
     }
 
+    public static String getTranslateText(ItemStack stack) {
+        if (plugin.getConfiguration().getBoolean("force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
+            return convertItemStackToTranslateText(stack.getType());
+        } else {
+            return Util.getItemStackName(stack);
+        }
+    }
+
     public static String convertItemStackToTranslateText(Material mat) {
         return TextSplitter.bakeComponent(new ComponentBuilder().append(new TranslatableComponent(ReflectFactory.getMaterialMinecraftNamespacedKey(mat))).create());
     }

@@ -71,7 +71,7 @@ public class SubCommand_Item implements CommandHandler<Player> {
                         plugin.getConfiguration().getBoolean("whole-number-prices-only"));
                 PriceLimiterCheckResult checkResult = limiter.check(itemStack, shop.getPrice());
                 if (checkResult.getStatus() != PriceLimiterStatus.PASS) {
-                    plugin.text().of(sender, "restricted-prices", MsgUtil.convertItemStackToTranslateText(shop.getItem().getType()),
+                    plugin.text().of(sender, "restricted-prices", MsgUtil.getTranslateText(shop.getItem()),
                             String.valueOf(checkResult.getMin()),
                             String.valueOf(checkResult.getMax())).send();
                     return;

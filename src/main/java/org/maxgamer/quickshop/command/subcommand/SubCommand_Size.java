@@ -75,13 +75,13 @@ public class SubCommand_Size implements CommandHandler<Player> {
                             plugin.getConfiguration().getBoolean("whole-number-prices-only"));
                     PriceLimiterCheckResult checkResult = limiter.check(pendingItemStack, shop.getPrice());
                     if (checkResult.getStatus() != PriceLimiterStatus.PASS) {
-                        plugin.text().of(sender, "restricted-prices", MsgUtil.convertItemStackToTranslateText(shop.getItem().getType()),
+                        plugin.text().of(sender, "restricted-prices", MsgUtil.getTranslateText(shop.getItem()),
                                 String.valueOf(checkResult.getMin()),
                                 String.valueOf(checkResult.getMax())).send();
                         return;
                     }
                     shop.setItem(pendingItemStack);
-                    plugin.text().of(sender, "command.bulk-size-now", Integer.toString(shop.getItem().getAmount()), MsgUtil.convertItemStackToTranslateText(shop.getItem().getType())).send();
+                    plugin.text().of(sender, "command.bulk-size-now", Integer.toString(shop.getItem().getAmount()), MsgUtil.getTranslateText(shop.getItem())).send();
                     return;
                 } else {
                     plugin.text().of(sender, "not-managed-shop").send();
