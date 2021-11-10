@@ -937,7 +937,7 @@ public class ContainerShop implements Shop {
                 attachedShop.refresh();
             }
             // Don't make an item for this chest if it's a left shop.
-            if (!isLeftShop && !isDisableDisplay()) {
+            if (!isLeftShop && !isDisableDisplay() && displayItem != null) {
                 displayItem.spawn();
             }
         }
