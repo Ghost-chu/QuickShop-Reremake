@@ -19,8 +19,8 @@
 
 package org.maxgamer.quickshop.integration.advancedregionmarket;
 
-import net.alex9849.arm.events.RemoveRegionEvent;
 import net.alex9849.arm.events.RestoreRegionEvent;
+import net.alex9849.arm.events.UnsellRegionEvent;
 import net.alex9849.arm.regions.Region;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -165,8 +165,13 @@ public class AdvancedShopRegionMarketIntegration extends AbstractQSIntegratedPlu
         handleDeletion(event.getRegion());
     }
 
+//    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+//    public void onShopNeedDeletion(RemoveRegionEvent event) {
+//        handleDeletion(event.getRegion());
+//    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onShopNeedDeletion(RemoveRegionEvent event) {
+    public void onShopNeedDeletion(UnsellRegionEvent event) {
         handleDeletion(event.getRegion());
     }
 
