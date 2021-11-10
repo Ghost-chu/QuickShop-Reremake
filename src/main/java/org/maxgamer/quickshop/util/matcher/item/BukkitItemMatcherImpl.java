@@ -84,7 +84,7 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
         if (plugin.getNbtapi() != null) {
             NBTItem nbtItemOriginal = new NBTItem(original);
             NBTItem nbtItemTester = new NBTItem(tester);
-            if (Objects.equals(nbtItemOriginal.getString("shopId"), nbtItemTester.getString("shopId"))) {
+            if (Objects.equals(nbtItemOriginal.getString("shopItemId"), nbtItemTester.getString("shopItemId"))) {
                 return true;
             }
         }
