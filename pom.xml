@@ -798,12 +798,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>com.github.alex9849.arm-shopbridge</groupId>
-            <artifactId>armshopbridge</artifactId>
-            <version>1.2.5</version>
-            <scope>provided</scope>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.alex9849.arm-shopbridge</groupId>-->
+        <!--            <artifactId>armshopbridge</artifactId>-->
+        <!--            <version>1.2.5</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.github.alex9849</groupId>
             <artifactId>advanced-region-market</artifactId>
