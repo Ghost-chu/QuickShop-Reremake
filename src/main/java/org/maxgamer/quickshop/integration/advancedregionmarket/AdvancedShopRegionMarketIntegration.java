@@ -22,18 +22,12 @@ package org.maxgamer.quickshop.integration.advancedregionmarket;
 import net.alex9849.arm.events.RemoveRegionEvent;
 import net.alex9849.arm.events.RestoreRegionEvent;
 import net.alex9849.arm.regions.Region;
-import net.alex9849.armshopbridge.ArmShopBridge;
-import net.alex9849.armshopbridge.adapters.QuickShop4Adapter;
-import net.alex9849.armshopbridge.adapters.QuickShopAdapter;
-import net.alex9849.armshopbridge.interfaces.IShopPluginAdapter;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -44,8 +38,10 @@ import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
-import java.util.*;
-import java.util.logging.Level;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class AdvancedShopRegionMarketIntegration extends AbstractQSIntegratedPlugin {
@@ -94,36 +90,35 @@ public class AdvancedShopRegionMarketIntegration extends AbstractQSIntegratedPlu
      */
     @Override
     public void load() {
-        scanAndUnregister();
         registerListener();
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPluginLoad(PluginEnableEvent event) {
-        if ("ArmShopBridge".equals(event.getPlugin().getName())) {
-            scanAndUnregister();
-        }
-    }
-
-    private void scanAndUnregister() {
-        try {
-            if (Bukkit.getPluginManager().getPlugin("ArmShopBridge") == null || ArmShopBridge.getInstance() == null) {
-                return;
-            }
-            Iterator<IShopPluginAdapter> adapterListIterator = ArmShopBridge.getInstance().getShopPluginAdapters().iterator();
-            //noinspection
-            //Use legacy way to prevent lambda internal method causing listener load failed
-            while (adapterListIterator.hasNext()) {
-                IShopPluginAdapter adapter = adapterListIterator.next();
-                if (adapter instanceof QuickShopAdapter || adapter instanceof QuickShop4Adapter) {
-                    adapterListIterator.remove();
-                    plugin.getLogger().log(Level.INFO, "Successfully remove redundant ARM-ShopBridge handlers!");
-                }
-            }
-        } catch (Throwable exception) {
-            plugin.getLogger().log(Level.WARNING, "Cannot to handle ARM-ShopBridge handlers, ignoring...", exception);
-        }
-    }
+//    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+//    public void onPluginLoad(PluginEnableEvent event) {
+//        if ("ArmShopBridge".equals(event.getPlugin().getName())) {
+//            scanAndUnregister();
+//        }
+//    }
+//
+//    private void scanAndUnregister() {
+//        try {
+//            if (Bukkit.getPluginManager().getPlugin("ArmShopBridge") == null || ArmShopBridge.getInstance() == null) {
+//                return;
+//            }
+//            Iterator<IShopPluginAdapter> adapterListIterator = ArmShopBridge.getInstance().getShopPluginAdapters().iterator();
+//            //noinspection
+//            //Use legacy way to prevent lambda internal method causing listener load failed
+//            while (adapterListIterator.hasNext()) {
+//                IShopPluginAdapter adapter = adapterListIterator.next();
+//                if (adapter instanceof QuickShopAdapter || adapter instanceof QuickShop4Adapter) {
+//                    adapterListIterator.remove();
+//                    plugin.getLogger().log(Level.INFO, "Successfully remove redundant ARM-ShopBridge handlers!");
+//                }
+//            }
+//        } catch (Throwable exception) {
+//            plugin.getLogger().log(Level.WARNING, "Cannot to handle ARM-ShopBridge handlers, ignoring...", exception);
+//        }
+//    }
 
     /**
      * Unloding logic
@@ -136,9 +131,9 @@ public class AdvancedShopRegionMarketIntegration extends AbstractQSIntegratedPlu
 
     private void handleDeletion(Region region) {
         Vector minPoint = region.getRegion().getMinPoint();
-        Vector maxPoint = region.getRegion().getMaxPoint();
+        Vector maxPoint = region.getRegion().getMinPoint();
         World world = region.getRegionworld();
-        Set<Chunk> chuckLocations = new HashSet<>();
+        Set<Chunk> chuckLocations = new HashSet<Chunk>();
 
         for (int x = minPoint.getBlockX(); x <= maxPoint.getBlockX() + 16; x += 16) {
             for (int z = minPoint.getBlockZ(); z <= maxPoint.getBlockZ() + 16; z += 16) {
@@ -155,12 +150,10 @@ public class AdvancedShopRegionMarketIntegration extends AbstractQSIntegratedPlu
                 shopMap.putAll(shopsInChunk);
             }
         }
-        for (Map.Entry<Location, Shop> shopEntry : shopMap.entrySet()) {
-            Location shopLocation = shopEntry.getKey();
+        for (Location shopLocation : shopMap.keySet()) {
             if (region.getRegion().contains(shopLocation.getBlockX(), shopLocation.getBlockY(), shopLocation.getBlockZ())) {
-                Shop shop = shopEntry.getValue();
+                Shop shop = shopMap.get(shopLocation);
                 if (shop != null) {
-                    shop.onUnload();
                     shop.delete(false);
                 }
             }

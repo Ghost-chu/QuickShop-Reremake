@@ -723,7 +723,7 @@ integration:
     delete-shop-on-member-leave: true
   #AdvanvedRegionMarket shop deletion Integration
   advancedregionmarket:
-    enable: false
+    enable: true
 #The protection that a shop should check.
 protect:
   explode: true
