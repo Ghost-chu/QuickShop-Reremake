@@ -55,6 +55,7 @@ public class EconomyTransaction {
     @Getter
     private final World world;
     @Getter
+    @Nullable
     private final String currency;
     @JsonUtil.Hidden
     private final QuickShop plugin = QuickShop.getInstance();

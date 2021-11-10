@@ -144,17 +144,19 @@ public class ShopLoader {
                     continue;
                 }
                 ++valid;
+
+                Location shopLocation = shop.getLocation();
                 //World unloaded but found
-                if (!shop.getLocation().isWorldLoaded()) {
+                if (!shopLocation.isWorldLoaded()) {
                     ++loadAfterWorldLoaded;
                     continue;
                 }
                 // Load to RAM
-                plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
+                plugin.getShopManager().loadShop(shopLocation.getWorld().getName(), shop);
 
-                if (Util.isLoaded(shop.getLocation())) {
+                if (Util.isLoaded(shopLocation)) {
                     // Load to World
-                    if (!Util.canBeShop(shop.getLocation().getBlock())) {
+                    if (!Util.canBeShop(shopLocation.getBlock())) {
                         Util.debugLog("Target block can't be a shop, removing it from the memory...");
                         // shop.delete();
                         plugin.getShopManager().removeShop(shop); // Remove from Mem
@@ -173,9 +175,7 @@ public class ShopLoader {
                     try {
                         shop.onLoad();
                     } catch (IllegalStateException exception) {
-                        plugin.getShopManager().loadShop(shop.getLocation().getWorld().getName(), shop);
-                        plugin.getSentryErrorReporter().sendError(exception);
-                        shop.onLoad();
+                        exceptionHandler(exception, shop.getLocation());
                     }
                     shop.update();
                 }
