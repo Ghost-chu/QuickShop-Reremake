@@ -170,7 +170,13 @@ public class ShopLoader {
             }
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 for (Shop shop : pendingLoading) {
-                    shop.onLoad();
+                    try {
+                        shop.onLoad();
+                    } catch (IllegalStateException exception) {
+                        plugin.getShopManager().loadShop(shop.getLocation().getWorld().getName(), shop);
+                        plugin.getSentryErrorReporter().sendError(exception);
+                        shop.onLoad();
+                    }
                     shop.update();
                 }
             }, 1);
