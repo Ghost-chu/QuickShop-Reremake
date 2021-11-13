@@ -373,6 +373,10 @@
             <id>Sparky</id>
             <url>https://nexus.sparky.ac/repository/Sparky/</url>
         </repository>
+        <repository>
+            <id>songoda</id>
+            <url>https://repo.songoda.com/repository/public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -732,18 +736,24 @@
             <version>4.9.2</version>
             <systemPath>${project.basedir}/lib/TNE.jar</systemPath>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>com.songoda</groupId>-->
-        <!--            <artifactId>skyblock</artifactId>-->
-        <!--            <version>2.2.13</version>-->
-        <!--            <scope>provided</scope>-->
-        <!--            <exclusions>-->
-        <!--                <exclusion>-->
-        <!--                    <artifactId>MVdWPlaceholderAPI</artifactId>-->
-        <!--                    <groupId>be.maximvdw</groupId>-->
-        <!--                </exclusion>-->
-        <!--            </exclusions>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.songoda</groupId>
+            <artifactId>skyblock</artifactId>
+            <version>2.2.13</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>MVdWPlaceholderAPI</artifactId>
+                    <groupId>be.maximvdw</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.songoda</groupId>
+            <artifactId>SongodaCore</artifactId>
+            <version>2.5.14</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <dependency>
             <groupId>commons-codec</groupId>
