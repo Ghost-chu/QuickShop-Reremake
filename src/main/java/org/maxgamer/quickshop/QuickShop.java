@@ -280,8 +280,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     }
 
     /**
-     * Returns QS version, this method only exist on QSRR forks If running other QSRR forks,, result
-     * may not is "Reremake x.x.x" If running QS offical, Will throw exception.
+     * Returns QS version, this method only exist on QuickShop forks If running other QuickShop forks,, result
+     * may not is "Reremake x.x.x" If running QS official, Will throw exception.
      *
      * @return Plugin Version
      */

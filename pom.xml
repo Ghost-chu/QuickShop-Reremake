@@ -25,7 +25,7 @@
     <artifactId>QuickShop</artifactId>
 
     <properties>
-        <pluginver>5.0.0.11</pluginver>
+        <pluginver>5.0.0.12</pluginver>
         <package>org.maxgamer.quickshop</package>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -798,12 +798,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>com.github.alex9849.arm-shopbridge</groupId>
-            <artifactId>armshopbridge</artifactId>
-            <version>1.2.5</version>
-            <scope>provided</scope>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.alex9849.arm-shopbridge</groupId>-->
+        <!--            <artifactId>armshopbridge</artifactId>-->
+        <!--            <version>1.2.5</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.github.alex9849</groupId>
             <artifactId>advanced-region-market</artifactId>

@@ -144,17 +144,19 @@ public class ShopLoader {
                     continue;
                 }
                 ++valid;
+
+                Location shopLocation = shop.getLocation();
                 //World unloaded but found
-                if (!shop.getLocation().isWorldLoaded()) {
+                if (!shopLocation.isWorldLoaded()) {
                     ++loadAfterWorldLoaded;
                     continue;
                 }
                 // Load to RAM
-                plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
+                plugin.getShopManager().loadShop(shopLocation.getWorld().getName(), shop);
 
-                if (Util.isLoaded(shop.getLocation())) {
+                if (Util.isLoaded(shopLocation)) {
                     // Load to World
-                    if (!Util.canBeShop(shop.getLocation().getBlock())) {
+                    if (!Util.canBeShop(shopLocation.getBlock())) {
                         Util.debugLog("Target block can't be a shop, removing it from the memory...");
                         // shop.delete();
                         plugin.getShopManager().removeShop(shop); // Remove from Mem
@@ -170,7 +172,11 @@ public class ShopLoader {
             }
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 for (Shop shop : pendingLoading) {
-                    shop.onLoad();
+                    try {
+                        shop.onLoad();
+                    } catch (IllegalStateException exception) {
+                        exceptionHandler(exception, shop.getLocation());
+                    }
                     shop.update();
                 }
             }, 1);

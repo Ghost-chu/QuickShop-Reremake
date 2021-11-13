@@ -141,6 +141,7 @@ public class PlayerListener extends AbstractQSListener {
                 MsgUtil.sendControlPanelInfo(p, Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())));
                 this.playClickSound(e.getPlayer());
                 Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())).setSignText();
+                e.setCancelled(true);
             }
         }
     }
@@ -185,6 +186,7 @@ public class PlayerListener extends AbstractQSListener {
             if (!InteractUtil.check(InteractUtil.Action.TRADE, p.isSneaking())) {
                 return;
             }
+            e.setCancelled(true);
             shop.onClick();
             this.playClickSound(e.getPlayer());
             // Text menu
@@ -276,9 +278,9 @@ public class PlayerListener extends AbstractQSListener {
             }
             // Send creation menu.
             final SimpleInfo info = new SimpleInfo(b.getLocation(), ShopAction.CREATE, e.getItem(), last, false);
-
             plugin.getShopManager().getActions().put(p.getUniqueId(), info);
             plugin.text().of(p, "how-much-to-trade-for", MsgUtil.getTranslateText(Objects.requireNonNull(e.getItem())), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1)).send();
+            e.setCancelled(true);
         }
     }
 
