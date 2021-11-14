@@ -19,8 +19,8 @@
 
 package org.maxgamer.quickshop.integration.advancedregionmarket;
 
+import net.alex9849.arm.events.RemoveRegionEvent;
 import net.alex9849.arm.events.RestoreRegionEvent;
-import net.alex9849.arm.events.UnsellRegionEvent;
 import net.alex9849.arm.regions.Region;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -90,16 +90,17 @@ public class AdvancedShopRegionMarketIntegration extends AbstractQSIntegratedPlu
      */
     @Override
     public void load() {
+        //scanAndUnregister();
         registerListener();
     }
-
+//
 //    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 //    public void onPluginLoad(PluginEnableEvent event) {
 //        if ("ArmShopBridge".equals(event.getPlugin().getName())) {
 //            scanAndUnregister();
 //        }
 //    }
-//
+
 //    private void scanAndUnregister() {
 //        try {
 //            if (Bukkit.getPluginManager().getPlugin("ArmShopBridge") == null || ArmShopBridge.getInstance() == null) {
@@ -131,9 +132,9 @@ public class AdvancedShopRegionMarketIntegration extends AbstractQSIntegratedPlu
 
     private void handleDeletion(Region region) {
         Vector minPoint = region.getRegion().getMinPoint();
-        Vector maxPoint = region.getRegion().getMinPoint();
+        Vector maxPoint = region.getRegion().getMaxPoint();
         World world = region.getRegionworld();
-        Set<Chunk> chuckLocations = new HashSet<Chunk>();
+        Set<Chunk> chuckLocations = new HashSet<>();
 
         for (int x = minPoint.getBlockX(); x <= maxPoint.getBlockX() + 16; x += 16) {
             for (int z = minPoint.getBlockZ(); z <= maxPoint.getBlockZ() + 16; z += 16) {
@@ -150,10 +151,12 @@ public class AdvancedShopRegionMarketIntegration extends AbstractQSIntegratedPlu
                 shopMap.putAll(shopsInChunk);
             }
         }
-        for (Location shopLocation : shopMap.keySet()) {
+        for (Map.Entry<Location, Shop> shopEntry : shopMap.entrySet()) {
+            Location shopLocation = shopEntry.getKey();
             if (region.getRegion().contains(shopLocation.getBlockX(), shopLocation.getBlockY(), shopLocation.getBlockZ())) {
-                Shop shop = shopMap.get(shopLocation);
+                Shop shop = shopEntry.getValue();
                 if (shop != null) {
+                    shop.onUnload();
                     shop.delete(false);
                 }
             }
@@ -165,13 +168,8 @@ public class AdvancedShopRegionMarketIntegration extends AbstractQSIntegratedPlu
         handleDeletion(event.getRegion());
     }
 
-//    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-//    public void onShopNeedDeletion(RemoveRegionEvent event) {
-//        handleDeletion(event.getRegion());
-//    }
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onShopNeedDeletion(UnsellRegionEvent event) {
+    public void onShopNeedDeletion(RemoveRegionEvent event) {
         handleDeletion(event.getRegion());
     }
 
