@@ -366,10 +366,6 @@
             <url>https://nexus.iridiumdevelopment.net/repository/maven-releases/</url>
         </repository>
         <repository>
-            <id>MG-Dev Jenkins CI Maven Repository</id>
-            <url>https://ci.mg-dev.eu/plugin/repository/everything/</url>
-        </repository>
-        <repository>
             <id>Sparky</id>
             <url>https://nexus.sparky.ac/repository/Sparky/</url>
         </repository>
@@ -839,12 +835,6 @@
             <artifactId>commons-io</artifactId>
             <version>2.11.0</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.bergerkiller.bukkit</groupId>
-            <artifactId>BKCommonLib</artifactId>
-            <version>1.17.1-v3</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.maxgamer.storage</groupId>

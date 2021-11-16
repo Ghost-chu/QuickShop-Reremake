@@ -39,7 +39,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.ItemSpawnEvent;
-import org.bukkit.plugin.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -1954,6 +1953,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             // Updater set it to true because plugin upgrading
             // Default configuration disable it cause probably fresh install
             getConfiguration().remove("language");
+            getConfiguration().set("config-version", ++selectedVersion);
+        }
+        if (selectedVersion == 147) {
+            // Updater set it to true because plugin upgrading
+            // Default configuration disable it cause probably fresh install
+            getConfiguration().remove("plugin.BKCommonLib");
             getConfiguration().set("config-version", ++selectedVersion);
         }
         if (getConfiguration().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
