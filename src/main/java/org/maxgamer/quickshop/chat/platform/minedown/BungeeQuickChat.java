@@ -82,6 +82,7 @@ public class BungeeQuickChat implements QuickChat {
         try {
             String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
             ComponentBuilder builder = new ComponentBuilder();
+            builder.event(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create()));
             TextSplitter.SpilledString spilledString = TextSplitter.deBakeItem(text);
             if (spilledString == null) {
                 Util.debugLog("Spilled string is null");
@@ -92,7 +93,6 @@ public class BungeeQuickChat implements QuickChat {
                 builder.append(spilledString.getComponents()).color(color);
                 builder.appendLegacy(spilledString.getRight()).color(color);
             }
-            builder.event(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create()));
             BaseComponent[] components = builder.create();
             Util.debugLog("Sending debug: " + ComponentSerializer.toString(components));
             player.spigot().sendMessage(components);
@@ -111,6 +111,7 @@ public class BungeeQuickChat implements QuickChat {
                 return new QuickComponentImpl(errorComponent);
             }
             ComponentBuilder builder = new ComponentBuilder();
+            builder.event(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create()));
             TextSplitter.SpilledString spilledString = TextSplitter.deBakeItem(message);
             if (spilledString == null) {
                 builder.appendLegacy(message);
@@ -118,7 +119,7 @@ public class BungeeQuickChat implements QuickChat {
                 builder.appendLegacy(spilledString.getLeft());
                 net.md_5.bungee.api.ChatColor color = builder.getCurrentComponent().getColorRaw();
                 builder.append(spilledString.getComponents()).color(color);
-                builder.appendLegacy(spilledString.getRight()).color(color);
+                builder.reset().appendLegacy(spilledString.getRight()).color(color);
             }
 
             builder.appendLegacy(" ").appendLegacy(plugin.text().of(player, "menu.preview").forLocale());
@@ -130,7 +131,6 @@ public class BungeeQuickChat implements QuickChat {
                                 "/qs silentpreview {0}",
                                 shop.getRuntimeRandomUniqueId().toString())));
             }
-            builder.event(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create()));
             return new QuickComponentImpl(builder.create());
         } catch (Throwable t) {
             plugin.getLogger().log(Level.WARNING, "Failed to process chat component", t);
