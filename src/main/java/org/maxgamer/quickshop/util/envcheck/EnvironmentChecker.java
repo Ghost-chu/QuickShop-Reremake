@@ -73,7 +73,6 @@ public final class EnvironmentChecker {
             return;
         }
         tests.add(method);
-        //plugin.getLogger().info("Registered test entry [" + method.getName() + "].");
     }
 
     private void sortTests() {

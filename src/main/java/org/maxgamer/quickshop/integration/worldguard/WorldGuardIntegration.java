@@ -218,6 +218,7 @@ public class WorldGuardIntegration extends AbstractQSIntegratedPlugin {
                     if (!query.testState(wgLoc, localPlayer, Flags.INTERACT)) {
                         return false;
                     }
+                    break;
                 case OWN:
                     if (anyOwner) {
                         return query.getApplicableRegions(wgLoc).getRegions().stream().anyMatch(region -> region.isOwner(localPlayer));

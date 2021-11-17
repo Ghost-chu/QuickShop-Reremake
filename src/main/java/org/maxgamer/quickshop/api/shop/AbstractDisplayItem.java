@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.ShopProtectionFlag;
 import org.maxgamer.quickshop.util.JsonUtil;
+import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
@@ -91,7 +92,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
         //noinspection ConstantConditions
         for (String lore : iMeta.getLore()) {
             try {
-                if (!lore.startsWith("{")) {
+                if (!MsgUtil.isJson(lore)) {
                     continue;
                 }
                 ShopProtectionFlag shopProtectionFlag = JsonUtil.getGson().fromJson(lore, ShopProtectionFlag.class);

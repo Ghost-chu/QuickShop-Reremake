@@ -146,10 +146,8 @@ public class ReloadManager {
                 }
                 if (reloadable.getReloadableMethod() != null) {
                     Method method = reloadable.getReloadableMethod();
-                    if (method != null) {
-                        if (!clazz.equals(method.getDeclaringClass())) {
-                            continue;
-                        }
+                    if (method != null && !clazz.equals(method.getDeclaringClass())) {
+                        continue;
                     }
                 }
             }

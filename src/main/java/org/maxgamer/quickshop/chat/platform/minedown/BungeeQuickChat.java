@@ -123,7 +123,6 @@ public class BungeeQuickChat implements QuickChat {
             }
 
             builder.appendLegacy(" ").appendLegacy(plugin.text().of(player, "menu.preview").forLocale());
-            // builder.event(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create()));
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
                 builder.event(new ClickEvent(
                         ClickEvent.Action.RUN_COMMAND,
@@ -132,7 +131,7 @@ public class BungeeQuickChat implements QuickChat {
                                 shop.getRuntimeRandomUniqueId().toString())));
             }
             return new QuickComponentImpl(builder.create());
-        } catch (Throwable t) {
+        } catch (Exception t) {
             plugin.getLogger().log(Level.WARNING, "Failed to process chat component", t);
             return new QuickComponentImpl(errorComponent);
         }
@@ -145,7 +144,7 @@ public class BungeeQuickChat implements QuickChat {
         String json;
         try {
             json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
-        } catch (Throwable throwable) {
+        } catch (Exception throwable) {
             plugin.getLogger().log(Level.SEVERE, "Failed to saving item to json for holochat", throwable);
             return new QuickComponentImpl(errorComponent);
         }

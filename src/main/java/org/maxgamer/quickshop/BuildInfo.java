@@ -44,17 +44,18 @@ public class BuildInfo {
     private final String pomGroupId;
     private final String pomArtifactId;
     private final String jobName;
+    private static final String UNKNOWN = "Unknown";
 
     public BuildInfo(@Nullable InputStream inputStream) {
         if (inputStream == null) {
             buildId = 0;
-            buildTag = "Unknown";
-            buildUrl = "Unknown";
+            buildTag = UNKNOWN;
+            buildUrl = UNKNOWN;
             gitCommit = "Custom Build";
-            gitBranch = "Unknown";
-            pomGroupId = "Unknown";
-            pomArtifactId = "Unknown";
-            jobName = "Unknown";
+            gitBranch = UNKNOWN;
+            pomGroupId = UNKNOWN;
+            pomArtifactId = UNKNOWN;
+            jobName = UNKNOWN;
             jobUrl = "https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/";
             return;
         }

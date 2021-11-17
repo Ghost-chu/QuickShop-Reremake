@@ -220,17 +220,6 @@ public class ShopLoader {
         return false;
     }
 
-//    private @NotNull Long mean(Long[] m) {
-//        long sum = 0;
-//        for (Long aM : m) {
-//            sum += aM;
-//        }
-//        if (m.length == 0) {
-//            return sum;
-//        }
-//        return sum / m.length;
-//    }
-
     @NotNull
     private YamlConfiguration extraUpgrade(@NotNull String extraString) {
         if (!StringUtils.isEmpty(extraString) && !"QuickShop: {}".equalsIgnoreCase(extraString)) {
@@ -334,33 +323,6 @@ public class ShopLoader {
         });
     }
 
-//    @NotNull
-//    public List<Shop> getShopsInDatabase() {
-//        errors = 0;
-//        List<Shop> shopsInDatabaseList = new ArrayList<>();
-//        this.plugin.getLogger().info("Loading shops from the database...");
-//        for (ShopRawDatabaseInfo shopRawDatabaseInfo : getOriginShopsInDatabase()) {
-//            try {
-//                ShopDatabaseInfo databaseInfo = new ShopDatabaseInfo(shopRawDatabaseInfo);
-//                Shop shop = new ContainerShop(plugin,
-//                        databaseInfo.getLocation(),
-//                        databaseInfo.getPrice(),
-//                        databaseInfo.getItem(),
-//                        databaseInfo.getModerators(),
-//                        databaseInfo.isUnlimited(),
-//                        databaseInfo.getType(),
-//                        databaseInfo.getExtra(),
-//                        databaseInfo.getCurrency(),
-//                        databaseInfo.isDisableDisplay(),
-//                        databaseInfo.getTaxAccount());
-//                shopsInDatabaseList.add(shop);
-//            } catch (Exception e) {
-//                exceptionHandler(e, null);
-//            }
-//        }
-//        return shopsInDatabaseList;
-//    }
-
     @NotNull
     public List<ShopRawDatabaseInfo> getOriginShopsInDatabase() {
         errors = 0;
@@ -425,26 +387,6 @@ public class ShopLoader {
             this.currency = rs.getString("currency");
             this.disableDisplay = rs.getInt("disableDisplay") != 0;
             this.taxAccount = rs.getString("taxAccount");
-        }
-
-        ShopRawDatabaseInfo(int x, int y, int z, String world, String itemConfig, String owner, double price, int type, boolean unlimited, String extra, String currency, boolean disableDisplay, String taxAccount) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.world = world;
-            this.item = itemConfig;
-            this.moderators = owner;
-            this.price = price;
-            this.type = type;
-            this.unlimited = unlimited;
-            this.extra = extra;
-            this.currency = currency;
-            this.taxAccount = taxAccount;
-            this.disableDisplay = disableDisplay;
-        }
-
-        ShopRawDatabaseInfo() {
-
         }
 
         @Override

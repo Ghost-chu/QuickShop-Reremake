@@ -1976,9 +1976,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         reloadConfiguration();
 
         //Delete old example configuration files
-        new File(getDataFolder(), "example.config.yml").delete();
-        new File(getDataFolder(), "example-configuration.txt").delete();
-        new File(getDataFolder(), "example-configuration.yml").delete();
+        Files.deleteIfExists(new File(getDataFolder(), "example.config.yml").toPath());
+        Files.deleteIfExists(new File(getDataFolder(), "example-configuration.txt").toPath());
+        Files.deleteIfExists(new File(getDataFolder(), "example-configuration.yml").toPath());
 
         try {
             if (new File(getDataFolder(), "messages.json").exists())

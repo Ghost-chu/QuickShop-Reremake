@@ -71,7 +71,9 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
         if (original == null && tester == null) {
             return true;
         }
-        if ((original == null) != (tester == null)) {
+        boolean originalNull = original == null;
+        boolean testerNull = tester == null;
+        if (originalNull || testerNull) {
             return false;
         }
 
@@ -85,12 +87,8 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
             NBTItem nbtItemTester = new NBTItem(tester);
             String tagOriginal = nbtItemOriginal.getString("shopItemId");
             String tagTester = nbtItemTester.getString("shopItemId");
-            if (StringUtils.isNotEmpty(tagOriginal)) {
-                if (StringUtils.isNotEmpty(tagTester)) {
-                    if (tagOriginal.equals(tagTester)) {
-                        return true;
-                    }
-                }
+            if (StringUtils.isNotEmpty(tagOriginal) && StringUtils.isNotEmpty(tagTester) && tagOriginal.equals(tagTester)) {
+                return true;
             }
         }
         return tester.isSimilar(original);

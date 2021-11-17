@@ -90,36 +90,8 @@ public class AdvancedShopRegionMarketIntegration extends AbstractQSIntegratedPlu
      */
     @Override
     public void load() {
-        //scanAndUnregister();
         registerListener();
     }
-//
-//    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-//    public void onPluginLoad(PluginEnableEvent event) {
-//        if ("ArmShopBridge".equals(event.getPlugin().getName())) {
-//            scanAndUnregister();
-//        }
-//    }
-
-//    private void scanAndUnregister() {
-//        try {
-//            if (Bukkit.getPluginManager().getPlugin("ArmShopBridge") == null || ArmShopBridge.getInstance() == null) {
-//                return;
-//            }
-//            Iterator<IShopPluginAdapter> adapterListIterator = ArmShopBridge.getInstance().getShopPluginAdapters().iterator();
-//            //noinspection
-//            //Use legacy way to prevent lambda internal method causing listener load failed
-//            while (adapterListIterator.hasNext()) {
-//                IShopPluginAdapter adapter = adapterListIterator.next();
-//                if (adapter instanceof QuickShopAdapter || adapter instanceof QuickShop4Adapter) {
-//                    adapterListIterator.remove();
-//                    plugin.getLogger().log(Level.INFO, "Successfully remove redundant ARM-ShopBridge handlers!");
-//                }
-//            }
-//        } catch (Throwable exception) {
-//            plugin.getLogger().log(Level.WARNING, "Cannot to handle ARM-ShopBridge handlers, ignoring...", exception);
-//        }
-//    }
 
     /**
      * Unloding logic
