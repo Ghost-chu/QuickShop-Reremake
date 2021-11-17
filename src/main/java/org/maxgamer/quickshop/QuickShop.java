@@ -902,10 +902,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         new ShopProtectionListener(this, this.shopCache).register();
         new PluginListener(this).register();
         new EconomySetupListener(this).register();
-        // shopVaildWatcher = new ShopVaildWatcher(this);
-        ongoingFeeWatcher = new OngoingFeeWatcher(this);
         InternalListener internalListener = new InternalListener(this);
-        Bukkit.getPluginManager().registerEvents(internalListener, this);
+        internalListener.register();
+        ongoingFeeWatcher = new OngoingFeeWatcher(this);
+
         if (this.display && AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayWatcher = new DisplayWatcher(this);
             new DisplayProtectionListener(this, this.shopCache).register();
