@@ -95,9 +95,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
                     }
                 }
                 if (excludeOutOfStock) {
-                    if (shop.isSelling() && shop.getRemainingStock() == 0) {
-                        continue;
-                    } else if (shop.isBuying() && shop.getRemainingSpace() == 0) {
+                    if ((shop.isSelling() && shop.getRemainingStock() == 0) || (shop.isBuying() && shop.getRemainingSpace() == 0)) {
                         continue;
                     }
                 }

@@ -294,11 +294,11 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     @Override
     public SimpleWarpedResultSet selectTable(String table) throws SQLException {
         DatabaseConnection databaseConnection = manager.getDatabase().getConnection();
-        try (Statement st = databaseConnection.get().createStatement()) {
-            String sql = "SELECT * FROM " + plugin.getDbPrefix() + table;
-            ResultSet resultSet = st.executeQuery(sql);
-            return new SimpleWarpedResultSet(st, resultSet, databaseConnection);
-        }
+        Statement st = databaseConnection.get().createStatement();
+        String sql = "SELECT * FROM " + plugin.getDbPrefix() + table;
+        ResultSet resultSet = st.executeQuery(sql);
+        //Resource closes will complete in this class
+        return new SimpleWarpedResultSet(st, resultSet, databaseConnection);
     }
 
     @Override
