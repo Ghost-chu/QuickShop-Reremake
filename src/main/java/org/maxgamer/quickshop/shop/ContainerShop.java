@@ -168,14 +168,12 @@ public class ContainerShop implements Shop {
         }
         if (item.hasItemMeta()) {
             ItemMeta meta = item.getItemMeta();
-            if (meta.hasDisplayName()) {
+            if (meta.hasDisplayName() && meta.getDisplayName().matches("\\{.*}")) {
                 //https://hub.spigotmc.org/jira/browse/SPIGOT-5964
-                if (meta.getDisplayName().matches("\\{.*}")) {
-                    meta.setDisplayName(meta.getDisplayName());
-                    //Correct both items
-                    item.setItemMeta(meta);
-                    this.item.setItemMeta(meta);
-                }
+                meta.setDisplayName(meta.getDisplayName());
+                //Correct both items
+                item.setItemMeta(meta);
+                this.item.setItemMeta(meta);
             }
         }
         this.shopType = type;
@@ -381,10 +379,8 @@ public class ContainerShop implements Shop {
     public void checkDisplay() {
         Util.ensureThread(false);
         if (!plugin.isDisplayEnabled() || this.disableDisplay || !this.isLoaded || this.isDeleted()) { // FIXME: Reinit scheduler on reloading config
-            if (this.displayItem != null) {
-                if (this.displayItem.isSpawned()) {
-                    this.displayItem.remove();
-                }
+            if (this.displayItem != null && this.displayItem.isSpawned()) {
+                this.displayItem.remove();
             }
             return;
         }
@@ -425,7 +421,6 @@ public class ContainerShop implements Shop {
         }
         /* Dupe is always need check, if enabled display */
         this.displayItem.removeDupe();
-        // plugin.getDisplayDupeRemoverWatcher().add(this.displayItem);
     }
 
     @Override
@@ -781,10 +776,6 @@ public class ContainerShop implements Shop {
             line4 = plugin.text().of("signs.price", plugin.getShopManager().format(this.getPrice(), this)).forLocale();
         }
         lines.add(new ComponentPackage(new ComponentBuilder().color(ChatColor.RESET).appendLegacy(line4).create()));
-
-//        if(Util.isDevMode()) {
-//            lines.forEach(pack -> Util.debugLog(ComponentSerializer.toString(pack.getComponents())));
-//        }
 
         return lines;
     }
@@ -1264,7 +1255,7 @@ public class ContainerShop implements Shop {
     @Override
     public String toString() {
 
-        String sb = "Shop " +
+        return "Shop " +
                 (location.getWorld() == null ? "unloaded world" : location.getWorld().getName()) +
                 "(" +
                 location.getBlockX() +
@@ -1276,7 +1267,6 @@ public class ContainerShop implements Shop {
                 " Owner: " + this.ownerName(false) + " - " + getOwner() +
                 ", Unlimited: " + isUnlimited() +
                 " Price: " + getPrice();
-        return sb;
     }
 
     /**

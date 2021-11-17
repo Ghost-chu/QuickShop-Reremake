@@ -150,12 +150,8 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
             NBTItem nbtItemTester = new NBTItem(givenStack);
             String tagOriginal = nbtItemOriginal.getString("shopItemId");
             String tagTester = nbtItemTester.getString("shopItemId");
-            if (StringUtils.isNotEmpty(tagOriginal)) {
-                if (StringUtils.isNotEmpty(tagTester)) {
-                    if (tagOriginal.equals(tagTester)) {
-                        return true;
-                    }
-                }
+            if (StringUtils.isNotEmpty(tagOriginal) && StringUtils.isNotEmpty(tagTester) && tagOriginal.equals(tagTester)) {
+                return true;
             }
         }
         if (workType == 1) {

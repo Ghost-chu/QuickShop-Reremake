@@ -19,9 +19,7 @@
 
 package org.maxgamer.quickshop.api.economy;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -81,67 +79,9 @@ public abstract class AbstractEconomy implements EconomyCore, Reloadable {
     }
 
     @Override
-    public abstract boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency);
-
-    @Override
-    public abstract boolean deposit(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency);
-
-    /**
-     * Formats the given number... E.g. 50.5 becomes $50.5 Dollars, or 50 Dollars 5 Cents
-     *
-     * @param balance The given number
-     * @return The balance in human readable text.
-     */
-    @Override
-    public abstract String format(double balance, @NotNull World world, @Nullable String currency);
-    //    return Util.parseColours(core.format(balance, world, currency));
-    //    // Fix color issue from some stupid economy plugin....
-    //}
-
-    @Override
-    public abstract double getBalance(@NotNull UUID name, @NotNull World world, @Nullable String currency);
-
-    @Override
-    public abstract double getBalance(@NotNull OfflinePlayer player, @NotNull World world, @Nullable String currency);
-
-    @Override
-    public abstract boolean withdraw(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency);
-
-    @Override
-    public abstract boolean withdraw(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency);
-
-    /**
-     * Gets the currency does exists
-     *
-     * @param currency Currency name
-     * @return exists
-     */
-    @Override
-    public abstract boolean hasCurrency(@NotNull World world, @NotNull String currency);
-
-    /**
-     * Gets currency supports status
-     *
-     * @return true if supports
-     */
-    @Override
-    public abstract boolean supportCurrency();
-
-    /**
-     * Checks that this economy is valid. Returns false if it is not valid.
-     *
-     * @return True if this economy will work, false if it will not.
-     */
-    @Override
-    public abstract boolean isValid();
-
-    @Override
     public @NotNull String getName() {
         return "BuiltIn-Economy Processor";
     }
-
-    @Override
-    public abstract @NotNull Plugin getPlugin();
 
     /**
      * Callback for reloading

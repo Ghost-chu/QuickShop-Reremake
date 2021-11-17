@@ -56,7 +56,7 @@ public class SQLiteCore extends AbstractDatabaseCore {
 
 
     @Override
-    synchronized protected DatabaseConnection getConnection0() {
+    protected synchronized DatabaseConnection getConnection0() {
         if (this.connection == null) {
             return connection = genConnection();
         }
@@ -75,7 +75,7 @@ public class SQLiteCore extends AbstractDatabaseCore {
     }
 
     @Nullable
-    synchronized private DatabaseConnection genConnection() {
+    private synchronized DatabaseConnection genConnection() {
         if (this.dbFile.exists()) {
             try {
                 Class.forName("org.sqlite.JDBC");

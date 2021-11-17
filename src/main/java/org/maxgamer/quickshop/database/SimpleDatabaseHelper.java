@@ -297,6 +297,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
         Statement st = databaseConnection.get().createStatement();
         String sql = "SELECT * FROM " + plugin.getDbPrefix() + table;
         ResultSet resultSet = st.executeQuery(sql);
+        //Resource closes will complete in this class
         return new SimpleWarpedResultSet(st, resultSet, databaseConnection);
     }
 

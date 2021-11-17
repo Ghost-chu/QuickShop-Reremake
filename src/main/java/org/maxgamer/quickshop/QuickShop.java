@@ -1956,6 +1956,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfiguration().remove("language");
             getConfiguration().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 147) {
+            // Updater set it to true because plugin upgrading
+            // Default configuration disable it cause probably fresh install
+            getConfiguration().remove("plugin.BKCommonLib");
+            getConfiguration().set("config-version", ++selectedVersion);
+        }
         if (getConfiguration().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }
@@ -1970,9 +1976,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         reloadConfiguration();
 
         //Delete old example configuration files
-        new File(getDataFolder(), "example.config.yml").delete();
-        new File(getDataFolder(), "example-configuration.txt").delete();
-        new File(getDataFolder(), "example-configuration.yml").delete();
+        Files.deleteIfExists(new File(getDataFolder(), "example.config.yml").toPath());
+        Files.deleteIfExists(new File(getDataFolder(), "example-configuration.txt").toPath());
+        Files.deleteIfExists(new File(getDataFolder(), "example-configuration.yml").toPath());
 
         try {
             if (new File(getDataFolder(), "messages.json").exists())

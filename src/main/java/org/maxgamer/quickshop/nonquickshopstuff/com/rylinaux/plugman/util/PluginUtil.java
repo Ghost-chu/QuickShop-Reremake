@@ -168,7 +168,7 @@ public class PluginUtil {
 
         // Will not work on processes started with the -XX:+DisableExplicitGC flag, but lets try it anyway.
         // This tries to get around the issue where Windows refuses to unlock jar files that were previously loaded into the JVM.
-        System.gc();
+        //System.gc();
 
         return null;
 

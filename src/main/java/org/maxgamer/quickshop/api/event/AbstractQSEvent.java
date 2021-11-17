@@ -45,7 +45,7 @@ public abstract class AbstractQSEvent extends Event {
     @NotNull
     @Override
     public HandlerList getHandlers() {
-        return HANDLERS;
+        return getHandlerList();
     }
 
     /**

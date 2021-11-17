@@ -95,14 +95,8 @@ public class SubCommand_Find implements CommandHandler<Player> {
                     }
                 }
                 if (excludeOutOfStock) {
-                    if (shop.isSelling()) {
-                        if (shop.getRemainingStock() == 0) {
-                            continue;
-                        }
-                    } else if (shop.isBuying()) {
-                        if (shop.getRemainingSpace() == 0) {
-                            continue;
-                        }
+                    if ((shop.isSelling() && shop.getRemainingStock() == 0) || (shop.isBuying() && shop.getRemainingSpace() == 0)) {
+                        continue;
                     }
                 }
                 aroundShops.put(shop, distance);

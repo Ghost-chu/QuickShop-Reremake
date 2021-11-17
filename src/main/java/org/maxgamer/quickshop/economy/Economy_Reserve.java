@@ -94,7 +94,7 @@ public class Economy_Reserve extends AbstractEconomy {
     @Override
     public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
         try {
-            return Objects.requireNonNull(reserve).addHoldings(name, new BigDecimal(amount), world.getName(), currency);
+            return Objects.requireNonNull(reserve).addHoldings(name, BigDecimal.valueOf(amount), world.getName(), currency);
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
             plugin.getLogger().log(Level.WARNING, errorMsg, throwable);
@@ -118,7 +118,7 @@ public class Economy_Reserve extends AbstractEconomy {
     @Override
     public String format(double balance, @NotNull World world, @Nullable String currency) {
         try {
-            return Objects.requireNonNull(reserve).format(new BigDecimal(balance), world.getName(), currency);
+            return Objects.requireNonNull(reserve).format(BigDecimal.valueOf(balance), world.getName(), currency);
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
             plugin.getLogger().log(Level.WARNING, errorMsg, throwable);
@@ -172,7 +172,7 @@ public class Economy_Reserve extends AbstractEconomy {
     @Deprecated
     public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @NotNull World world, @Nullable String currency) {
         try {
-            return Objects.requireNonNull(reserve).transferHoldings(from, to, new BigDecimal(amount), world.getName(), currency);
+            return Objects.requireNonNull(reserve).transferHoldings(from, to, BigDecimal.valueOf(amount), world.getName(), currency);
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
             plugin.getLogger().log(Level.WARNING, errorMsg, throwable);
@@ -190,7 +190,7 @@ public class Economy_Reserve extends AbstractEconomy {
     @Override
     public boolean withdraw(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
         try {
-            return Objects.requireNonNull(reserve).removeHoldings(name, new BigDecimal(amount));
+            return Objects.requireNonNull(reserve).removeHoldings(name, BigDecimal.valueOf(amount));
         } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
             plugin.getLogger().log(Level.WARNING, errorMsg, throwable);

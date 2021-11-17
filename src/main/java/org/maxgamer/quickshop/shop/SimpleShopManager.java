@@ -616,10 +616,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         final List<Shop> worldShops = new ArrayList<>();
         for (final Shop shop : getAllShops()) {
             Location location = shop.getLocation();
-            if (location.isWorldLoaded()) {
-                if (Objects.equals(location.getWorld(), world)) {
-                    worldShops.add(shop);
-                }
+            if (location.isWorldLoaded() && Objects.equals(location.getWorld(), world)) {
+                worldShops.add(shop);
             }
         }
         return worldShops;

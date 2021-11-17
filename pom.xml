@@ -25,7 +25,7 @@
     <artifactId>QuickShop</artifactId>
 
     <properties>
-        <pluginver>5.0.0.14</pluginver>
+        <pluginver>5.0.0.15</pluginver>
         <package>org.maxgamer.quickshop</package>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -364,10 +364,6 @@
         <repository>
             <id>IridiumDevelopment</id>
             <url>https://nexus.iridiumdevelopment.net/repository/maven-releases/</url>
-        </repository>
-        <repository>
-            <id>MG-Dev Jenkins CI Maven Repository</id>
-            <url>https://ci.mg-dev.eu/plugin/repository/everything/</url>
         </repository>
         <repository>
             <id>Sparky</id>
@@ -839,12 +835,6 @@
             <artifactId>commons-io</artifactId>
             <version>2.11.0</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.bergerkiller.bukkit</groupId>
-            <artifactId>BKCommonLib</artifactId>
-            <version>1.17.1-v3</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.maxgamer.storage</groupId>

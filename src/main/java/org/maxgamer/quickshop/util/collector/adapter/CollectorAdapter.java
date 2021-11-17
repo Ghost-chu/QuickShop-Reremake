@@ -147,8 +147,8 @@ public class CollectorAdapter {
             perWorld.put("environment", world.getEnvironment());
             perWorld.put("entities", world.getEntities());
             perWorld.put("view_distance", world.getViewDistance());
-            perWorld.put("items", world.getEntities().stream().filter(entity -> entity instanceof Item).count()); //DISPLAY
-            perWorld.put("armor_stands", world.getEntities().stream().filter(entity -> entity instanceof ArmorStand).toArray().length); //DISPLAY
+            perWorld.put("items", world.getEntities().stream().filter(Item.class::isInstance).count()); //DISPLAY
+            perWorld.put("armor_stands", world.getEntities().stream().filter(ArmorStand.class::isInstance).toArray().length); //DISPLAY
             perWorld.put("force_loaded_chunks", world.getForceLoadedChunks().size());
             perWorld.put("shops_in_force_loaded_chunks", plugin.getShopManager().getShopsInWorld(world).stream().filter(shop -> world.getForceLoadedChunks().contains(shop.getLocation().getChunk())).toArray().length);
             perWorld.put("max_height", world.getMaxHeight());

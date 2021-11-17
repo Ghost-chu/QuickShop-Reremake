@@ -47,13 +47,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public class SimpleTextManager implements TextManager, Reloadable {
-    private final static String CROWDIN_LANGUAGE_FILE = "/master/crowdin/lang/%locale%/messages.json";
+    private static final String CROWDIN_LANGUAGE_FILE = "/master/crowdin/lang/%locale%/messages.json";
     public final List<PostProcessor> postProcessors = new ArrayList<>();
     private final QuickShop plugin;
     private final Distribution distribution;
@@ -84,8 +85,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         moduleFolder.mkdirs();
         File fileFolder = new File(moduleFolder, file.getName());
         if (fileFolder.isDirectory())
-            fileFolder.delete();
-//        fileFolder.mkdirs();
+            Files.deleteIfExists(fileFolder.toPath()); //TODO Workaround for v5 beta stage a bug, delete it in future
         return moduleFolder;
     }
 

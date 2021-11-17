@@ -1,7 +1,7 @@
 # QuickShop-Reremake Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 147
+config-version: 148
 
 #This language will used by Item Name, Enchantment Name,
 #and Potion Effect Name or the text on the shop info sign (nbtapi not installed) and other them related position.
@@ -456,8 +456,6 @@ plugin:
   PlaceHolderAPI: true
   #If you have LWC/LWCX, QuickShop will check access.
   LWC: true
-  #If you have BKCommonLib, QuickShop will load fast utils to improve performance.
-  BKCommonLib: true
   #If you use BlockHub, Should QuickShop use BlockHub to check region access for players?
   BlockHub:
     enable: true
