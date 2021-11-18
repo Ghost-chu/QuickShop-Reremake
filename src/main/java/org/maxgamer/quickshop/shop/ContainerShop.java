@@ -1295,11 +1295,12 @@ public class ContainerShop implements Shop {
     public @Nullable Inventory getInventory() {
         Util.ensureThread(false);
         BlockState state = PaperLib.getBlockState(location.getBlock(), false).getState();
+        Inventory inv = null;
         try {
             if (state.getType() == Material.ENDER_CHEST
                     && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
                 OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
-                return openInv.getSpecialEnderChest(
+                inv = openInv.getSpecialEnderChest(
                         Objects.requireNonNull(
                                 openInv.loadPlayer(
                                         plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
@@ -1313,7 +1314,7 @@ public class ContainerShop implements Shop {
         InventoryHolder container;
         try {
             container = (InventoryHolder) state;
-            return container.getInventory();
+            inv = container.getInventory();
         } catch (Exception e) {
             if (!createBackup) {
                 createBackup = Util.backupDatabase();
@@ -1328,6 +1329,10 @@ public class ContainerShop implements Shop {
                     "Inventory doesn't exist anymore: " + this + " shop was removed.");
             return null;
         }
+
+        ShopInventoryEvent event = new ShopInventoryEvent(this, inv);
+        event.callEvent();
+        return event.getInventory();
     }
 
     /**
