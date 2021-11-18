@@ -694,6 +694,10 @@
                     <artifactId>paperlib</artifactId>
                     <groupId>io.papermc</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>particleeffect</artifactId>
+                    <groupId>com.darkblade12</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
