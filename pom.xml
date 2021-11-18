@@ -345,10 +345,6 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>minebench-repo</id>
-            <url>https://repo.minebench.de/</url>
-        </repository>
-        <repository>
             <id>papermc</id>
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
@@ -713,9 +709,9 @@
             <artifactId>rollbar-java</artifactId>
         </dependency>
         <dependency>
-            <groupId>de.themoep</groupId>
-            <artifactId>minedown</artifactId>
-            <version>1.7.1-SNAPSHOT</version>
+            <groupId>com.github.Phoenix616</groupId>
+            <artifactId>MineDown</artifactId>
+            <version>211f6e6789</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
