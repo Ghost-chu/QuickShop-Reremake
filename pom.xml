@@ -709,9 +709,9 @@
             <artifactId>rollbar-java</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.Phoenix616</groupId>
+            <groupId>com.github.Ghost-chu</groupId>
             <artifactId>MineDown</artifactId>
-            <version>211f6e6789</version>
+            <version>master-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
