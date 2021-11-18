@@ -169,36 +169,25 @@ public class BlockListener extends AbstractProtectionListener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onInventoryMove(InventoryMoveItemEvent event) {
         if (!this.update_sign_when_inventory_moving) {
-            Util.debugLog("Sign update was disabled");
             return;
         }
-
         Location destination = event.getDestination().getLocation();
         Location source = event.getSource().getLocation();
         Shop destShop = null;
         Shop sourceShop = null;
         if (destination != null) {
             destination = Util.getBlockLocation(destination);
-            Util.debugLog("Destination found: " + destination);
-            destShop = getShopPlayer(destination, true);
+            destShop = getShopRedstone(destination, true);
         }
         if (source != null) {
             source = Util.getBlockLocation(source);
-            Util.debugLog("Source found: " + destination);
-            sourceShop = getShopPlayer(source, true);
+            sourceShop = getShopRedstone(source, true);
         }
-
         if (destShop != null) {
-            Util.debugLog("Destination shop found: " + destShop);
             super.getPlugin().getSignUpdateWatcher().scheduleSignUpdate(destShop);
-        } else {
-            Util.debugLog("Destination shop not found.");
         }
         if (sourceShop != null) {
-            Util.debugLog("Source shop found: " + sourceShop);
             super.getPlugin().getSignUpdateWatcher().scheduleSignUpdate(sourceShop);
-        } else {
-            Util.debugLog("Source shop not found.");
         }
     }
 
