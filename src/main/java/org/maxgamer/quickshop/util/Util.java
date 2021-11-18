@@ -1330,4 +1330,19 @@ public class Util {
         return out.toString();
     }
 
+    /**
+     * Get location that converted to block position (.0)
+     *
+     * @param loc location
+     * @return blocked location
+     */
+    @NotNull
+    public static Location getBlockLocation(@NotNull Location loc) {
+        loc = loc.clone();
+        loc.setX(loc.getBlockX());
+        loc.setY(loc.getBlockY());
+        loc.setZ(loc.getBlockZ());
+        return loc;
+    }
+
 }
