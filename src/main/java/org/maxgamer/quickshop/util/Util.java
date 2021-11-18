@@ -1110,7 +1110,6 @@ public class Util {
      * @return Json
      */
     public static String componentsToJson(BaseComponent[] components) {
-        plugin.getLogger().info(ComponentSerializer.toString(components));
         return ComponentSerializer.toString(components);
     }
 
