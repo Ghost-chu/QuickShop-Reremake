@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is ProtectionListenerBase.java
+ * This file is a part of project QuickShop, the name is AbstractProtectionListener.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -52,7 +52,7 @@ public abstract class AbstractProtectionListener extends AbstractQSListener {
     @Nullable
     public Shop getShopRedstone(@NotNull Location location, boolean includeAttached) {
         if (cache != null) {
-            return cache.getCaching(location, includeAttached);
+            return cache.find(location, includeAttached);
         } else {
             if (includeAttached) {
                 return plugin.getShopManager().getShopIncludeAttached(location);

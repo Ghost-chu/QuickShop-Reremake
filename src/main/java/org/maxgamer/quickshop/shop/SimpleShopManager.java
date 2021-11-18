@@ -417,7 +417,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             Util.debugLog("Location is null.");
             return null;
         }
-        return getShopIncludeAttached_Fast(loc, false, useCache);
+        if (useCache) {
+            if (plugin.getShopCache() != null) {
+                return plugin.getShopCache().find(loc, true);
+            }
+        }
+        return findShopIncludeAttached(loc, false);
     }
 
     @Override
@@ -1439,8 +1444,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
     }
 
-    private @Nullable Shop getShopIncludeAttached_Fast(
-            @NotNull Location loc, boolean fromAttach, boolean writeCache) {
+    @Nullable
+    public Shop findShopIncludeAttached(@NotNull Location loc, boolean fromAttach) {
         Shop shop = getShop(loc);
 
         // failed, get attached shop
@@ -1455,7 +1460,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 if (Util.isWallSign(currentBlock.getType())) {
                     final Block attached = Util.getAttached(currentBlock);
                     if (attached != null) {
-                        shop = this.getShopIncludeAttached_Fast(attached.getLocation(), true, writeCache);
+                        shop = this.findShopIncludeAttached(attached.getLocation(), true);
                     }
                 } else {
                     // optimize for performance
@@ -1471,7 +1476,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         }
         // add cache if using
-        if (plugin.getShopCache() != null && writeCache) {
+        if (plugin.getShopCache() != null) {
             plugin.getShopCache().setCache(loc, shop);
         }
         return shop;

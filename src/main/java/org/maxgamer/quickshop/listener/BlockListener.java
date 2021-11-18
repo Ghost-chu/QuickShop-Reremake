@@ -36,7 +36,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Cache;
@@ -60,6 +59,7 @@ public class BlockListener extends AbstractProtectionListener {
 
     public BlockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
         super(plugin, cache);
+        init();
     }
 
     private void init() {
@@ -171,18 +171,23 @@ public class BlockListener extends AbstractProtectionListener {
         if (!this.update_sign_when_inventory_moving) {
             return;
         }
-
-        final Inventory inventory = event.getDestination();
-        final Location location = inventory.getLocation();
-
-        if (location == null) {
-            return;
+        Location destination = event.getDestination().getLocation();
+        Location source = event.getSource().getLocation();
+        Shop destShop = null;
+        Shop sourceShop = null;
+        if (destination != null) {
+            destination = Util.getBlockLocation(destination);
+            destShop = getShopRedstone(destination, true);
         }
-
-        // Delayed task. Event triggers when item is moved, not when it is received.
-        final Shop shop = getShopRedstone(location, true);
-        if (shop != null) {
-            super.getPlugin().getSignUpdateWatcher().scheduleSignUpdate(shop);
+        if (source != null) {
+            source = Util.getBlockLocation(source);
+            sourceShop = getShopRedstone(source, true);
+        }
+        if (destShop != null) {
+            super.getPlugin().getSignUpdateWatcher().scheduleSignUpdate(destShop);
+        }
+        if (sourceShop != null) {
+            super.getPlugin().getSignUpdateWatcher().scheduleSignUpdate(sourceShop);
         }
     }
 

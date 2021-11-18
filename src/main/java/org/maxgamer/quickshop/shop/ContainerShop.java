@@ -748,7 +748,7 @@ public class ContainerShop implements Shop {
                 lines.add(new ComponentPackage(new ComponentBuilder()
                         .color(ChatColor.RESET)
                         .append(left)
-                        .appendLegacy(Util.getItemStackName(getItem()))
+                        .append(TextComponent.fromLegacyText(Util.getItemStackName(getItem())))
                         .append(right)
                         .create()));
             } else {
@@ -762,7 +762,7 @@ public class ContainerShop implements Shop {
             }
         } else {
             lines.add(new ComponentPackage(new ComponentBuilder().color(ChatColor.RESET).appendLegacy(plugin.text().of("signs.item-left").forLocale())
-                    .append(Util.getItemStackName(getItem()))
+                    .append(TextComponent.fromLegacyText(Util.getItemStackName(getItem())))
                     .appendLegacy(plugin.text().of("signs.item-right").forLocale()).create()));
         }
 

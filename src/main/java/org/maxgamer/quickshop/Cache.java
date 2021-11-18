@@ -21,11 +21,14 @@ package org.maxgamer.quickshop;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheStats;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.bukkit.Location;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.shop.SimpleShopManager;
 
 import java.util.concurrent.TimeUnit;
 
@@ -36,11 +39,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class Cache {
     private final QuickShop plugin;
-    private final com.google.common.cache.Cache<Location, Shop> accessCaching = CacheBuilder
+    private final com.google.common.cache.Cache<Location, BoxedShop> accessCaching = CacheBuilder
             .newBuilder()
-            .initialCapacity(1000)
+            .initialCapacity(5000)
             .expireAfterAccess(120, TimeUnit.MINUTES)
-            .weakValues()
             .recordStats()
             .build();
 
@@ -56,24 +58,22 @@ public class Cache {
     /**
      * Gets shop from plugin caching
      *
-     * @param location        The shop location that you want to get
-     * @param includeAttached Include attached shops
+     * @param location The shop location that you want to get
+     * @param attached Does search for attached
      * @return The shop, null for no shops found in caching and memory
      */
     @Nullable
-    public Shop getCaching(@NotNull Location location, boolean includeAttached) {
-        Shop shop = accessCaching.getIfPresent(location);
-        if (shop == null) {
-            if (includeAttached) {
-                shop = plugin.getShopManager().getShopIncludeAttached(location, false);
+    public Shop find(@NotNull Location location, boolean attached) {
+        BoxedShop boxedShop = accessCaching.getIfPresent(location);
+        if (boxedShop == null) {
+            if (attached) {
+                boxedShop = new BoxedShop(((SimpleShopManager) plugin.getShopManager()).findShopIncludeAttached(location, false));
             } else {
-                shop = plugin.getShopManager().getShop(location);
+                boxedShop = new BoxedShop(plugin.getShopManager().getShop(location));
             }
         }
-        if (shop != null) {
-            setCache(location, shop);
-        }
-        return shop;
+        setCache(location, boxedShop.getShop());
+        return boxedShop.getShop();
     }
 
     /**
@@ -83,10 +83,20 @@ public class Cache {
      * @param shop     null for invalidate and Shop object for update
      */
     public void setCache(@NotNull Location location, @Nullable Shop shop) {
-        if (shop == null) {
-            accessCaching.invalidate(location);
-            return;
+        accessCaching.put(location, new BoxedShop(shop));
+    }
+
+    public void invalidate(@NotNull Location location) {
+        accessCaching.invalidate(location);
+    }
+
+    @AllArgsConstructor
+    @Data
+    static class BoxedShop {
+        private Shop shop;
+
+        public boolean isPresent() {
+            return shop != null;
         }
-        accessCaching.put(location, shop);
     }
 }
