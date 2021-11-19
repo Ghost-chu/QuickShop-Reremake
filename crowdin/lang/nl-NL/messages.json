@@ -97,7 +97,7 @@
     "item-holochat-error": "&c[Error]",
     "preview": "&b[Item voorbeeld]",
     "space": "&aSpatie: &e{0}",
-    "stock": "&aVoorraad &{0}",
+    "stock": "&aVoorraad &e{0}",
     "price-per": "&aPrice per &e{0} &a- &e{1}",
     "price-per-stack": "&aPrice per &e{2}x {0} - {1}",
     "total-value-of-chest": "&aTotale waarde van kist: &e{0}",
